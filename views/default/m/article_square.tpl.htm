@@ -1,0 +1,41 @@
+<?php TPL::output('m/header.tpl.htm'); ?>
+
+<div class="container">
+	<?php if ($this->content_nav_menu) { ?>
+	<!-- 话题标签 -->
+	<div class="top-category">
+		<ul>
+			<li><a <?php if (!$_GET['category'] AND !$this->feature_info) { ?> class="active"<?php } ?> href="<?php echo $this->content_nav_menu['base']['link']; ?>"><?php _e('全部'); ?></a></li>
+			<?php foreach ($this->content_nav_menu as $key => $val) { ?>
+			<?php if ($val['title']) { ?>
+			<li>
+				<a <?php if (($val['type'] == 'category' AND $_GET['category'] AND ($val['type_id'] == $this->category_info['id'])) OR ($val['type'] == 'feature' AND $this->feature_info['id'] == $val['type_id'])) { ?> class="active"<?php } ?> href="<?php echo $val['link']; ?>"<?php if ($val['type'] == 'custom') { ?> target="_blank"<?php } ?>><?php echo $val['title']; ?></a>
+			</li>
+			<?php } ?>
+			<?php } ?>
+		</ul>
+	</div>
+	<!-- end 话题标签 -->
+	<?php } ?>
+
+	<!-- 动态列表 -->
+	<div class="aw-question-list">
+		<div class="mod-body">
+			<ul id="article_listview"></ul>
+		</div>
+		<div class="mod-footer">
+			<a id="load_article" class="aw-load-more"><i class="icon icon-loading icon-spin"></i> <span><?php _e('更多'); ?></span></a>
+		</div>
+	</div>
+	<!-- end 动态列表 -->
+
+</div>
+<!-- end 内容 -->
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		AWS.load_list_view(G_BASE_URL + '/explore/ajax/list/post_type-article__sort_type-new__feature_id-<?php echo $_GET['feature_id']; ?>__category_id-<?php echo $_GET['category']; ?>', $('#load_article'), $('#article_listview'), 1);
+	});
+</script>
+
+<?php TPL::output('m/footer.tpl.htm'); ?>

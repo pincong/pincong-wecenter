@@ -1,0 +1,17 @@
+<?php TPL::output('global/header_meta.tpl.htm'); ?>
+
+<div class="aw-register-box">
+	<div class="mod-head">
+		<a href=""><img src="<?php echo G_STATIC_URL; ?>/css/<?php echo $this->template_name; ?>/img/login_logo.png" alt="" /></a>
+		<h1><?php _e('等待审核'); ?></h1>
+	</div>
+	<div class="mod-body">
+		<p>
+			<?php _e('感谢您的注册!'); ?><br />
+			<?php _e('本站点会员注册需要经过管理员审核,请耐心等待'); ?><br />
+			<?php _e('如果审核被拒绝会邮件告知原因'); ?>
+		</p>
+	</div>
+</div>
+
+<?php TPL::output('global/footer.tpl.htm'); ?>

@@ -1,0 +1,315 @@
+<?php TPL::output('m/header.tpl.htm'); ?>
+
+<?php if ($this->redirect_message) { ?>
+<?php foreach ($this->redirect_message AS $key => $message) { ?>
+	<div class="alert alert-warning"><?php echo $message; ?></div>
+<?php } ?>
+<?php } ?>
+
+	<!-- 内容 -->
+	<div class="container padding-0">
+		<!-- 话题bar -->
+		<div class="aw-topic-bar clearfix" data-id="<?php echo $this->question_info['question_id']; ?>" data-type="question">
+			<div class="tag-bar">
+				<?php if ($this->question_topics) { ?>
+					<?php foreach($this->question_topics as $key => $val) { if ($key > 2) { break; } ?>
+						<span class="topic-tag" data-id="<?php echo $val['topic_id']?>">
+							<a class="text" href="m/topic/<?php echo $val['url_token']; ?>"><?php echo $val['topic_title']; ?></a>
+						</span>
+					<?php } ?>
+				<?php } ?>
+				<?php if ($this->user_id AND !$this->question_info['lock']) { ?>
+					<a class="icon icon-inverse aw-add-topic-box"><i class="icon icon-edit"></i> <?php if (!count($this->question_topics) > 0) { ?><?php _e('添加话题'); ?><?php } ?></a>
+				<?php } ?>
+			</div>
+		</div>
+		<!-- end 话题bar -->
+
+		<!-- 问题详情 -->
+		<div class="aw-question-detail">
+			<div class="mod-head">
+				<h1><?php echo $this->question_info['question_content']; ?></h1>
+			</div>
+			<div class="mod-body">
+				<div class="markitup-box clearfix">
+					<?php echo $this->question_info['question_detail']; ?>
+					<div id="weixin-desc" style="display:none;"><?php cjk_substr(str_replace(array("\r","\n"),array(' ',' '), strip_tags($this->question_info['question_detail'])), 0, 130, 'UTF-8', '...'); ?></div>
+
+					<?php if ($this->question_info['attachs']) {  ?>
+						<div class="aw-upload-img-list">
+						<?php foreach ($this->question_info['attachs'] AS $key => $attach) { ?>
+						<?php if ($attach['is_image'] AND !in_array($attach['id'], $this->question_info['attachs_ids'])) { ?>
+							<a href="<?php echo $attach['attachment']; ?>" target="_blank">
+							<img src="<?php echo $attach['attachment']; ?>" alt="<?php echo $attach['attach_name']; ?>" class="img-thumbnail" /></a>
+						<?php } ?>
+						<?php } ?>
+						</div>
+					<?php } ?>
+
+					<?php if ($this->question_info['attachs']) {  ?>
+					<ul class="aw-upload-file-list">
+						<?php foreach ($this->question_info['attachs'] AS $attach) { ?>
+						<?php if (!$attach['is_image'] AND !in_array($attach['id'], $this->question_info['attachs_ids'])) { ?>
+							<li><a href="<?php echo download_url($attach['file_name'], $attach['attachment']); ?>"><i class="icon icon-attach"></i> <?php echo $attach['file_name']; ?></a></li>
+						<?php } ?>
+						<?php } ?>
+					</ul>
+					<?php } ?>
+
+					<?php if ((!$this->question_info['lock'] AND ($this->question_info['published_uid'] == $this->user_id OR $this->user_info['permission']['edit_question'])) OR $this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator']) { ?>
+					<a href="m/publish/<?php echo $this->question_info['question_id']; ?>" class="icon icon-inverse">	<i class="icon icon-edit"></i> <?php _e('编辑'); ?>
+					</a>
+					<?php }?>
+				</div>
+			</div>
+			<?php if ($this->user_id) { ?>
+
+			<div class="mod-footer">
+				<div class="meta">
+					<a class="aw-invite-replay"><i class="icon icon-inviteask"></i> <?php _e('邀请回复'); ?></a>
+					<a onclick="AWS.User.share_out({webid: 'tsina'});"><i class="icon icon-weibo"></i></a>
+
+					<a class="btn btn-success btn-mini pull-right <?php if ($this->question_focus) { ?> active<?php } ?>" onclick="AWS.User.follow($(this), 'question', <?php echo $this->question_info['question_id']; ?>);"><?php if ($this->question_focus) { ?><?php _e('取消关注'); ?><?php } else { ?><?php _e('关注'); ?><?php } ?></a>
+				</div>
+				<div class="aw-invite-box collapse">
+					<div class="mod-head users-list">
+						<?php if ($this->invite_users) { ?>
+						<span class="color-999"><?php _e('已邀请');?> :</span>
+						<?php foreach($this->invite_users as $key => $val) { ?>
+							<a href="people/<?php echo $val['url_token']; ?>" data-id="<?php echo $val['uid']; ?>"><img class="img" width="20" src="<?php echo get_avatar_url($val['uid'], 'mid'); ?>" /></a>
+						<?php } ?>
+						<?php } ?>
+					</div>
+					<div class="mod-body">
+						<input type="text" class="form-control" name="" />
+						<i class="icon icon-search"></i>
+						<div class="aw-dropdown-list collapse">
+							<ul></ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<?php } ?>
+		</div>
+		<!-- end 问题详情 -->
+
+		<!-- 回复列表 -->
+		<div class="aw-replay-list">
+			<div class="mod-head">
+				<h2><?php if ($_GET['single']) { ?><?php _e('查看单个回答'); ?><?php } else { ?><?php _e('%s 个回复', $this->question_info['answer_count']); ?><?php } ?></h2>
+			</div>
+			<div class="mod-body">
+				<ul>
+					<?php foreach ($this->answers_list AS $key => $val) { ?>
+					<li uninterested_count="<?php echo $val['uninterested_count']; ?>" force_fold="<?php if ($val['user_rated_uninterested']) { ?>1<?php } else { ?><?php echo $val['force_fold']; ?><?php } ?>" id="answer_list_<?php echo $val['answer_id']; ?>">
+						<div class="mod-head">
+							<a class="anchor" name="answer_<?php echo $val['answer_id']; ?>"></a>
+							<?php if ($this->question_info['best_answer'] == $val['answer_id']) { ?>
+							<!-- 最佳回答 -->
+							<p class="aw-best-replay"><i class="icon icon-best"></i><i class="icon icon-flag"></i></p>
+							<!-- end 最佳回答 -->
+							<?php } ?>
+							<a href="<?php if ($val['anonymous']) { ?>javascript:;<?php } else { ?>m/people/<?php echo $val['uid']; ?><?php } ?>"><img class="img" width="20" src="<?php if ($val['anonymous']) { ?><?php echo G_STATIC_URL; ?>/common/avatar-mid-img.png<?php } else { ?><?php echo get_avatar_url($val['uid'], 'mid'); ?><?php } ?>" alt="" /></a>
+							<a href="<?php if ($val['anonymous']) { ?>javascript:;<?php } else { ?>m/people/<?php echo $val['uid']; ?><?php } ?>"><?php if ($val['anonymous']) { ?><?php _e('匿名用户'); ?><?php } else { ?><?php echo $val['user_info']['user_name']; ?><?php } ?></a><?php if (!$val['anonymous']) { ?>
+								<?php if ($val['user_info']['verified']) { ?> <i class="icon-v<?php if ($val['user_info']['verified'] == 'enterprise') { ?> i-ve<?php } ?>" title="<?php if ($this->user['verified'] == 'enterprise') { ?>个人认证<?php } else { ?>企业认证<?php } ?>"></i><?php } ?>
+								<?php echo $val['user_info']['signature']; ?><?php } ?>
+						</div>
+						<div class="mod-body">
+							<div class="markitup-box clearfix">
+								<?php echo nl2br($val['answer_content']); ?>
+
+								<?php if ($val['attachs']) {  ?>
+								<div class="aw-upload-img-list">
+								<?php foreach ($val['attachs'] AS $attach) { ?>
+								<?php if ($attach['is_image'] AND !($val['insert_attach_ids'] AND in_array($attach['id'], $val['insert_attach_ids']))) { ?>
+								<a href="<?php echo $attach['attachment']; ?>" target="_blank" data-fancybox-group="thumb" rel="lightbox"><img src="<?php echo $attach['attachment']; ?>" class="img-polaroid" alt="<?php echo $attach['attach_name']; ?>" /></a>
+								<?php } ?>
+								<?php } ?>
+								</div>
+								<?php } ?>
+							</div>
+						</div>
+						<div class="mod-footer">
+							<div class="meta">
+								<span class="operate">
+									<a class="answer_vote agree <?php if ($val['agree_status'] == 1) { ?> active<?php } ?>" <?php if ($this->user_id) { ?>onclick="AWS.User.agree_vote($(this), <?php echo $val['answer_id']; ?>)"<?php } ?>><i class="icon icon-agree"></i> <b><?php echo $val['agree_count']; ?></b></a>
+									<?php if ($this->user_id != $val['uid']) { ?>
+									<a class="answer_vote disagree <?php if ($val['agree_status'] == -1) { ?> active<?php } ?>" <?php if ($this->user_id) { ?>onclick="AWS.User.disagree_vote($(this), <?php echo $val['answer_id']; ?>)"<?php }?>><i class="icon icon-disagree"></i></a>
+									<?php } ?>
+								</span>
+								<?php if ($this->user_id) { ?>
+								<span class="operate">
+									<a class="aw-add-comment" data-id="<?php echo $val['answer_id']; ?>" data-type="answer" <?php if ($this->question_info['lock'] OR !$this->user_info['permission']['publish_comment']) { ?> data-close="true"<?php } ?>><i class="icon icon-comment"></i> <?php echo $val['comment_count']; ?></a>
+								</span>
+								<span class="operate">
+									<a onclick="AWS.User.favorite('answer', <?php echo $val['answer_id']; ?>)"><i class="icon icon-favor"></i></a>
+								</span>
+								<?php } ?>
+
+								<?php if (($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator']) OR ($val['uid'] == $this->user_id AND ((TIMESTAMP - $val['add_time']) < (get_setting('answer_edit_time') * 60) OR (!get_setting('answer_edit_time'))))) { ?>
+								<span class="operate">
+									<a class="text-color-999" href="javascript:;" onclick="AWS.dialog('commentEdit', {answer_id:<?php echo $val['answer_id']; ?>,attach_access_key:'<?php echo $this->attach_access_key; ?>'});"><i class="icon icon-edit"></i></a>
+								</span>
+								<?php } ?>
+
+								<span class="pull-right"><?php echo date_friendly($val['add_time']); ?></span>
+							</div>
+						</div>
+					</li>
+					<?php } ?>
+				</ul>
+			</div>
+		</div>
+		<!-- end 回复列表 -->
+
+		<!-- 折叠回复 -->
+		<div class="aw-replay-list uninterest">
+			<div class="mod-head text-center">
+				<a href="javascript:;" class="aw-load-more-content"><?php _e('%s 个回复被折叠', '<span class="hide_answers_count">0</span>'); ?></a>
+			</div>
+			<div class="mod-body">
+				<div class="collapse" id="uninterested_answers_list">
+					<ul></ul>
+				</div>
+			</div>
+		</div>
+		<!-- end 折叠回复 -->
+
+		<!-- 回复box -->
+		<div class="aw-replay-box question">
+			<a name="answer_form"></a>
+			<?php if ($_GET['single']) { ?>
+			<a href="question/<?php echo $this->question_info['question_id']; ?>" class="aw-load-more"><?php _e('查看全部回答'); ?></a>
+			<?php } else if ($this->next_page) { ?>
+			<a href="m/question/<?php echo $this->question_info['question_id']; ?>?page=<?php echo $this->next_page; ?>" class="aw-load-more"><?php _e('下一页'); ?></a>
+			<?php } ?>
+
+			<?php if (!$this->user_id) { ?>
+			<a class="aw-load-more no-border" id="load_index_actions" href="account/login/"><?php _e('登录进行回复'); ?></a>
+			<?php } else if ($this->question_info['lock']) { ?>
+			<p align="center"><?php _e('该问题目前已经被锁定, 无法添加新回复'); ?></p>
+			<?php } else if ($this->user_answered) { ?>
+			<p align="center"><?php _e('一个问题只能回复一次'); ?><?php if (get_setting('answer_edit_time')) { ?>, <?php _e('你可以在发言后 %s 分钟内编辑回复过的内容', get_setting('answer_edit_time')); ?><?php } ?></p>
+			<?php } else if ((get_setting('answer_self_question') == 'N') && ($this->user_id == $this->question_info['published_uid'])) { ?>
+			<p align="center"><?php _e('不能回复自己发布的问题, 你可以修改问题内容'); ?></p>
+			<?php } else { ?>
+			<form action="question/ajax/save_answer/" onsubmit="return false;" method="post" id="answer_form" class="question_answer_form">
+				<input type="hidden" name="attach_access_key" value="<?php echo $this->attach_access_key; ?>" />
+				<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
+				<input type="hidden" name="question_id" value="<?php echo $this->question_info['question_id']; ?>" />
+
+				<div class="mod-head">
+					<a href="m/people/"><img class="img" width="20" src="<?php echo get_avatar_url($this->user_id, 'mid'); ?>" alt="" /></a>
+					<?php echo $this->user_info['user_name']; ?>
+					<span class="pull-right">
+						<?php if (!$this->question_focus) { ?>
+						<label>
+							<input type="checkbox" checked="checked" value="1" name="auto_focus" /> <?php _e('关注问题'); ?>
+						</label>
+						<?php } ?>
+						<?php if (get_setting('anonymous_enable') == 'Y') { ?>
+						<label>
+							<input type="checkbox" value="1" name="anonymous" /> <?php _e('匿名回复'); ?>
+						</label>
+						<?php } ?>
+					</span>
+				</div>
+				<div class="mod-body">
+					<textarea class="autosize form-control textarea_content" rows="5" name="answer_content"><?php echo htmlspecialchars($this->draft_content['message']); ?></textarea>
+				</div>
+				<div class="mod-footer">
+					<a class="btn btn-success btn-normal pull-right" onclick="AWS.ajax_post($('#answer_form'), AWS.ajax_processer, 'reply');"><?php _e('回复'); ?></a>
+
+					<?php if ($this->human_valid) { ?>
+					<div class="captcha pull-right clearfix">
+						<input type="text" class="form-control" name="seccode_verify" placeholder="<?php _e('验证码'); ?>" />
+						<img src="" class="img" onclick="this.src = G_BASE_URL + '/account/captcha/' + Math.floor(Math.random() * 10000);" id="captcha" />
+					</div>
+					<?php } ?>
+
+					<!-- 上传控件 -->
+					<div class="aw-upload-box">
+						<a class="icon icon-pic">
+							<span class="tips">上传图片</span>
+						</a>
+					</div>
+
+					<!-- end 上传控件 -->
+					<div class="upload-container"></div>
+
+				</div>
+			</form>
+			<?php } ?>
+		</div>
+		<!-- end 回复box -->
+
+	</div>
+	<!-- end 内容 -->
+
+<script type="text/javascript">
+	var QUESTION_ID = <?php echo $this->question_info['question_id'];?>;
+	var UNINTERESTED_COUNT = <?php echo get_setting('uninterested_fold'); ?>;
+	var ATTACH_ACCESS_KEY = '<?php echo $this->attach_access_key; ?>';
+	var ANSWER_EDIT_TIME = <?php echo get_setting('answer_edit_time'); ?>;
+	var USER_ANSWERED = '<?php echo $this->user_answered; ?>';
+
+	$(document).ready(function () {
+		var fileupload = new FileUpload('file', '.aw-upload-box .icon-pic', '.aw-replay-box .upload-container', G_BASE_URL + '/publish/ajax/attach_upload/id-answer__attach_access_key' + '-' + ATTACH_ACCESS_KEY, {'deleteBtnTemplate' : '<a class="delete-file"><i class="icon icon-delete"></i></a>', 'insertBtnTemplate' : '<a class="insert-file"><i class="icon icon-insert"></i></a>', 'editor': $('.textarea_content')})
+
+		// 自动保存草稿
+		if ($('#answer_form textarea').length)
+		{
+			$('#answer_form textarea').bind('keyup', function() {
+				if ($(this).val() != '')
+				{
+					$.post(G_BASE_URL + '/account/ajax/save_draft/?item_id=' + QUESTION_ID + '&type=answer', 'message=' + $(this).val(), function (result) {
+						$('#answer_content_message').html(result.err);
+					}, 'json');
+				}
+			});
+		}
+
+		// 折叠回复
+		$.each($('li.aw-item'), function (i, e) {
+			if ($(this).attr('uninterested_count') >= UNINTERESTED_COUNT || $(this).attr('force_fold') == 1)
+			{
+				$('#uninterested_answers_list').append('<li class="aw-item">' + $(e).html() + '</li>');
+
+				$(e).remove();
+			}
+		});
+
+		//折叠回复
+		$.each($('.aw-replay-list ul li'), function (i, e)
+		{
+			if ($(this).attr('uninterested_count') >= UNINTERESTED_COUNT || $(this).attr('force_fold') == 1)
+			{
+				$('#uninterested_answers_list ul').append($(e));
+			}
+		});
+
+		if ($('#uninterested_answers_list li').length > 0)
+		{
+			$('.uninterest span.hide_answers_count').html($('#uninterested_answers_list li').length);
+			$('.uninterest').fadeIn();
+		}
+
+		//回复折叠显示按钮
+		$('.uninterest a').click(function()
+		{
+			if ($('#uninterested_answers_list').is(':visible'))
+			{
+				$('#uninterested_answers_list').hide();
+			}
+			else
+			{
+				$('#uninterested_answers_list').show();
+			}
+		});
+
+		
+	});
+
+</script>
+
+<?php TPL::output('m/footer.tpl.htm'); ?>
