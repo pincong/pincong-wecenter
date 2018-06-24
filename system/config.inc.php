@@ -16,18 +16,18 @@
 define('G_COOKIE_DOMAIN', '');
 
 // 定义 Cookies 前缀
-define('G_COOKIE_PREFIX', $_SERVER['WECENTER_COOKIE_PREFIX']);
+define('G_COOKIE_PREFIX', getenv('WECENTER_COOKIE_PREFIX'));
 
 // 定义应用加密 KEY
-define('G_SECUKEY', $_SERVER['WECENTER_SECUKEY']);
-define('G_COOKIE_HASH_KEY', $_SERVER['WECENTER_COOKIE_HASH_KEY']);
+define('G_SECUKEY', getenv('WECENTER_SECUKEY'));
+define('G_COOKIE_HASH_KEY', getenv('WECENTER_COOKIE_HASH_KEY'));
 
 define('G_INDEX_SCRIPT', '?/');
 
 define('X_UA_COMPATIBLE', 'IE=edge,Chrome=1');
 
 // GZIP 压缩输出页面
-define('G_GZIP_COMPRESS', $_SERVER['WECENTER_GZIP_COMPRESS'] === 'true');
+define('G_GZIP_COMPRESS', getenv('WECENTER_GZIP_COMPRESS') === 'true');
 
 // Session 存储类型 (db, file)
 define('G_SESSION_SAVE', 'db');
