@@ -43,7 +43,7 @@
                         <div class="mod-body">
                             <div class="meta">
                                 <span><i class="icon icon-prestige"></i> <?php _e('威望'); ?> : <em class="aw-text-color-green"><?php echo $this->user['reputation']; ?></em></span>
-                                <?php if (get_setting('integral_system_enabled') == 'Y') { ?><span><i class="icon icon-score"></i> <?php _e('积分'); ?> : <em class="aw-text-color-orange"><?php echo $this->user['integral']; ?></em></span><?php } ?>
+                                <?php if (get_setting('integral_system_enabled') == 'Y') { ?><span><i class="icon icon-score"></i> <?php _e('%s', get_setting('integral_unit')); ?> : <em class="aw-text-color-orange"><?php echo $this->user['integral']; ?></em></span><?php } ?>
                                 <span><i class="icon icon-agree"></i> <?php _e('赞同'); ?> : <em class="aw-text-color-orange"><?php echo $this->user['agree_count']; ?></em></span>
                                 <span><i class="icon icon-thank"></i> <?php _e('感谢'); ?> : <em class="aw-text-color-orange"><?php echo $this->user['thanks_count']; ?></em></span>
                             </div>
@@ -79,7 +79,7 @@
                                 <li><a href="#actions" id="page_actions" data-toggle="tab"><?php _e('动态'); ?></a></li>
                                 <li><a href="#detail" id="page_detail" data-toggle="tab"><?php _e('详细资料'); ?></a></li>
                                 <?php if ($this->user_id == $this->user['uid'] AND get_setting('integral_system_enabled') == 'Y') { ?>
-                                <li><a href="#integral" id="page_integral" data-toggle="tab"><?php _e('我的积分'); ?></a></li>
+                                <li><a href="#integral" id="page_integral" data-toggle="tab"><?php _e('我的%s', get_setting('integral_unit')); ?></a></li>
                                 <?php } ?>
                             </ul>
                         </div>
@@ -306,7 +306,7 @@
                                             <p class="meta">
                                                 <span><i class="icon icon-prestige"></i><?php _e('威望'); ?>: <em class="aw-text-color-green"><?php echo $this->user['reputation']; ?></em></span>
                                                 <?php if (get_setting('integral_system_enabled') == 'Y') { ?>
-                                                <span><i class="icon icon-score"></i><?php _e('积分'); ?>: <em class="aw-text-color-orange"><?php echo $this->user['integral']; ?></em></span>
+                                                <span><i class="icon icon-score"></i><?php _e('%s', get_setting('integral_unit')); ?>: <em class="aw-text-color-orange"><?php echo $this->user['integral']; ?></em></span>
                                                 <?php } ?>
                                                 <span><i class="icon icon-agree"></i><?php _e('赞同'); ?>: <em class="aw-text-color-orange"><?php echo $this->user['agree_count']; ?></em></span>
                                                 <span><i class="icon icon-thank"></i><?php _e('感谢'); ?>: <em class="aw-text-color-orange"><?php echo $this->user['thanks_count']; ?></em></span>
@@ -383,7 +383,7 @@
                             <div class="tab-pane" id="integral">
                                 <div class="aw-mod">
                                     <div class="mod-head">
-                                        <h3><i class="icon icon-point"></i><?php _e('我的积分'); ?></h3>
+                                        <h3><i class="icon icon-point"></i><?php _e('我的%s', get_setting('integral_unit')); ?></h3>
                                     </div>
                                     <div class="mod-body">
                                         <table class="table table-hover aw-table">

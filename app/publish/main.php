@@ -70,7 +70,7 @@ class main extends AWS_CONTROLLER
 
 		if ($this->user_info['integral'] < 0 AND get_setting('integral_system_enabled') == 'Y' AND !$_GET['id'])
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('你的剩余积分已经不足以进行此操作'));
+			H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit')));
 		}
 
 		if (($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator'] OR $question_info['published_uid'] == $this->user_id AND $_GET['id']) OR !$_GET['id'])

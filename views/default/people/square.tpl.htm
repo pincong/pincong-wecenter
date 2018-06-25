@@ -24,7 +24,7 @@
 								<p class="text-color-999 signature"><?php echo $val['signature']; ?></p>
 								<div class="meta">
 									<span><i class="icon icon-prestige"></i><?php _e('威望'); ?> <b><?php echo $val['reputation']; ?></b></span>
-									<?php if (get_setting('integral_system_enabled') == 'Y') { ?><span><i class="icon icon-score"></i><?php _e('积分'); ?> <b><?php echo $val['integral']; ?></b></span><?php } ?>
+									<?php if (get_setting('integral_system_enabled') == 'Y') { ?><span><i class="icon icon-score"></i><?php _e('%s', get_setting('integral_unit')); ?> <b><?php echo $val['integral']; ?></b></span><?php } ?>
 									<span><i class="icon icon-agree"></i><?php _e('赞同'); ?> <b><?php echo $val['agree_count']; ?></b></span>
 									<span><i class="icon icon-thank"></i><?php _e('感谢'); ?> <b><?php echo $val['thanks_count']; ?></b></span>
 								</div>

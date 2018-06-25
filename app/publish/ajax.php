@@ -400,7 +400,7 @@ class ajax extends AWS_CONTROLLER
 
         if ($this->user_info['integral'] < 0 AND get_setting('integral_system_enabled') == 'Y')
         {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余积分已经不足以进行此操作')));
+            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
         }
 
         if (!$_POST['question_content'])

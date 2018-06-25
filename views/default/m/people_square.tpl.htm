@@ -49,7 +49,7 @@
 							<?php if (get_setting('integral_system_enabled') == 'Y') { ?>
 							<li>
 								<b><?php echo $val['integral']; ?></b>
-								<?php _e('积分'); ?>
+								<?php _e('%s', get_setting('integral_unit')); ?>
 							</li>
 							<?php } ?>
 							<li>

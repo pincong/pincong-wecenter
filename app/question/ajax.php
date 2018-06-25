@@ -114,7 +114,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($this->user_info['integral'] < 0 and get_setting('integral_system_enabled') == 'Y')
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余积分已经不足以进行此操作')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
 		}
 
 		if ($this->model('answer')->has_answer_by_uid($_POST['question_id'], $invite_user_info['uid']))
@@ -422,7 +422,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if ($this->user_info['integral'] < 0 AND get_setting('integral_system_enabled') == 'Y')
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余积分已经不足以进行此操作')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
 		}
 
 		if (!$question_info = $this->model('question')->get_question_info_by_id($_POST['question_id']))
@@ -470,7 +470,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($this->user_info['integral'] < 0 and get_setting('integral_system_enabled') == 'Y' and $_POST['type'] == 'thanks')
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余积分已经不足以进行此操作')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
 		}
 
 		if ($this->model('answer')->user_rate($_POST['type'], $_POST['answer_id'], $this->user_id, $this->user_info['user_name']))
@@ -517,7 +517,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if ($this->user_info['integral'] < 0 and get_setting('integral_system_enabled') == 'Y')
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余积分已经不足以进行此操作')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
 		}
 
 		if (!$question_info = $this->model('question')->get_question_info_by_id($_POST['question_id']))
