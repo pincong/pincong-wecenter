@@ -552,7 +552,7 @@ function &load_class($class)
 
 function _show_error($exception_message)
 {
-	$name = strtoupper($_SERVER['HTTP_HOST']);
+	$name = 'HTTP_HOST'; //strtoupper($_SERVER['HTTP_HOST']);
 
 	if ($exception_message)
 	{
@@ -1094,12 +1094,12 @@ function is_mobile($ignore_cookie = false)
  */
 function in_weixin()
 {
-	$user_agent = strtolower($_SERVER['HTTP_USER_AGENT']);
+	/*$user_agent = strtolower($_SERVER['HTTP_USER_AGENT']);
 
 	if (preg_match('/micromessenger/i', $user_agent))
 	{
 		return true;
-	}
+	}*/
 
 	return false;
 }

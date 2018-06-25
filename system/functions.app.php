@@ -175,7 +175,7 @@ function get_feature_pic_url($size = null, $pic_file = null)
 }
 
 function get_host_top_domain()
-{
+{	return '';
 	$host = strtolower($_SERVER['HTTP_HOST']);
 
 	if (strpos($host, '/') !== false)
