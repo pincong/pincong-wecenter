@@ -1,2 +1,0 @@
-Options -Indexes
-RedirectMatch 403 ^/\.git(.*)$
