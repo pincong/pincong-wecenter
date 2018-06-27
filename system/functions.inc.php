@@ -28,7 +28,7 @@
  * @return string
  */
 function base_url()
-{	return '';
+{	return rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
 	$clean_url = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : NULL;
 	$clean_url = dirname(rtrim($_SERVER['PHP_SELF'], $clean_url));
 	$clean_url = rtrim($_SERVER['HTTP_HOST'] . $clean_url, '/\\');
