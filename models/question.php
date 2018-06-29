@@ -121,7 +121,7 @@ class question_class extends AWS_MODEL
 			$ip_address = fetch_ip();
 		}
 
-		$now = time();
+		$now = fake_time();
 
 		$to_save_question = array(
 			'question_content' => htmlspecialchars($question_content),
@@ -235,7 +235,7 @@ class question_class extends AWS_MODEL
 		{
 			$this->update('question', array(
 				'question_content' => $action_log['associate_content'],
-				'update_time' => time()
+				'update_time' => fake_time()
 			), 'question_id = ' . intval($question_id));
 
 			$this->model('search_fulltext')->push_index('question', $action_log['associate_content'], $question_id);
@@ -248,7 +248,7 @@ class question_class extends AWS_MODEL
 		{
 			$this->update('question', array(
 				'question_detail' => $action_log['associate_content'],
-				'update_time' => time()
+				'update_time' => fake_time()
 			), 'question_id = ' . intval($question_id));
 
 			$this->clean_unverified_modify($question_id, 'detail');
@@ -447,7 +447,7 @@ class question_class extends AWS_MODEL
 			if ($this->insert('question_focus', array(
 				'question_id' => intval($question_id),
 				'uid' => intval($uid),
-				'add_time' => time()
+				'add_time' => fake_time()
 			)))
 			{
 				$this->update_focus_count($question_id);
@@ -719,7 +719,7 @@ class question_class extends AWS_MODEL
 			return $this->insert('question_uninterested', array(
 				"question_id" => $question_id,
 				"uid" => $uid,
-				"add_time" => time()
+				"add_time" => fake_time()
 			));
 		}
 		else
@@ -761,7 +761,7 @@ class question_class extends AWS_MODEL
 		$data = array(
 			'question_id' => intval($question_id),
 			'sender_uid' => intval($sender_uid),
-			'add_time' => time(),
+			'add_time' => fake_time(),
 		);
 
 		if ($recipients_uid)
@@ -987,7 +987,7 @@ class question_class extends AWS_MODEL
 			'uid' => intval($uid),
 			'question_id' => intval($question_id),
 			'message' => htmlspecialchars($message),
-			'time' => time()
+			'time' => fake_time()
 		));
 
 		if ($question_info['published_uid'] != $uid)
@@ -1209,7 +1209,7 @@ class question_class extends AWS_MODEL
 				$redirect_id = $this->insert('redirect', array(
 					'item_id' => intval($item_id),
 					'target_id' => intval($target_id),
-					'time' => time(),
+					'time' => fake_time(),
 					'uid' => intval($uid)
 				));
 
@@ -1291,7 +1291,7 @@ class question_class extends AWS_MODEL
 			'target_id' => $target_id,
 			'reason' => htmlspecialchars($reason),
 			'url' => htmlspecialchars($url),
-			'add_time' => time(),
+			'add_time' => fake_time(),
 			'status' => 0,
 		));
 	}

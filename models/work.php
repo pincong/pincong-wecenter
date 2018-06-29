@@ -28,7 +28,7 @@ class work_class extends AWS_MODEL
 			'end_year' => intval($end_year),
 			'company_name' => htmlspecialchars($company_name),
 			'job_id' => intval($job_id),
-			'add_time' => time()
+			'add_time' => fake_time()
 		));
 	}
 

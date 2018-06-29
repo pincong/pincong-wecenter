@@ -33,7 +33,7 @@ class favorite_class extends AWS_MODEL
 				'item_id' => intval($item_id),
 				'type' => $item_type,
 				'uid' => intval($uid),
-				'time' => time()
+				'time' => fake_time()
 			));
 		}
 	}

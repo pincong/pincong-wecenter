@@ -53,7 +53,7 @@ class geo_class extends AWS_MODEL
 			'item_id' => intval($item_id),
 			'longitude' => $longitude,
 			'latitude' => $latitude,
-			'add_time' => time()
+			'add_time' => fake_time()
 		));
 	}
 

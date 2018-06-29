@@ -60,7 +60,8 @@ class reputation_class extends AWS_MODEL
 
 					unset($article_topics_query);
 				}
-			}	
+			}
+	
 			foreach ($user_articles as $articles_key => $articles_val)
 			{
 				// 赞同的用户
@@ -81,7 +82,9 @@ class reputation_class extends AWS_MODEL
 					}
 				}
 			}
-						$article_reputation = $s_agree_value - $s_against_value;			
+			
+			$article_reputation = $s_agree_value - $s_against_value;
+			
 			$reputation_log_factor = get_setting('reputation_log_factor');
 
 			if ($article_reputation < 0)
@@ -304,7 +307,7 @@ class reputation_class extends AWS_MODEL
 						'uid' => $uid,
 						'topic_id' => $t_val['topic_id'],
 						'topic_count' => $t_val['count'],
-						'update_time' => time(),
+						'update_time' => fake_time(),
 						'agree_count' => $t_val['agree_count'],
 						'thanks_count' => $t_val['thanks_count'],
 						'reputation' => round($t_val['reputation'])
@@ -316,7 +319,7 @@ class reputation_class extends AWS_MODEL
 						'uid' => $uid,
 						'topic_id' => $t_val['topic_id'],
 						'topic_count' => $t_val['count'],
-						'update_time' => time(),
+						'update_time' => fake_time(),
 						'agree_count' => $t_val['agree_count'],
 						'thanks_count' => $t_val['thanks_count'],
 						'reputation' => round($t_val['reputation'])
@@ -334,7 +337,7 @@ class reputation_class extends AWS_MODEL
 					$this->update('reputation_category', array(
 						'uid' => intval($uid),
 						'category_id' => $t_key,
-						'update_time' => time(),
+						'update_time' => fake_time(),
 						'reputation' => round($t_val['reputation']),
 						'agree_count' => $t_val['agree_count'],
 						'question_count' => count($t_val['questions'])
@@ -345,7 +348,7 @@ class reputation_class extends AWS_MODEL
 					$this->insert('reputation_category', array(
 						'uid' => intval($uid),
 						'category_id' => $t_key,
-						'update_time' => time(),
+						'update_time' => fake_time(),
 						'reputation' => round($t_val['reputation']),
 						'agree_count' => $t_val['agree_count'],
 						'question_count' => count($t_val['questions'])
@@ -356,7 +359,7 @@ class reputation_class extends AWS_MODEL
 
 		$this->model('account')->update_users_fields(array(
 			'reputation' => round($user_reputation),
-			'reputation_update_time' => time()
+			'reputation_update_time' => fake_time()
 		), $uid);
 
 		$this->model('account')->update_user_reputation_group($uid);

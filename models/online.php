@@ -21,12 +21,12 @@ if (!defined('IN_ANWSION'))
 class online_class extends AWS_MODEL
 {
 	public function online_active($uid, $last_active)
-	{		
-		if (!$uid OR ($last_active + 60) > time())
+	{
+		if (!$uid OR ($last_active + 60 * 60) > time())
 		{
 			return false;
 		}
-		
+		/*
 		$online_data = array(
 			'uid' => $uid,
 			'last_active' => time(),
@@ -43,15 +43,15 @@ class online_class extends AWS_MODEL
 		{			
 			$this->insert('users_online', $online_data);
 		}
+		*/
+		//$online_time = time() - $last_active;
 		
-		$online_time = time() - $last_active;
-		
-		if ($online_time > 300)
-		{
+		//if ($online_time > 300)
+		//{
 			$online_time = 1;
-		}
+		//}
 		
-		$this->shutdown_query("UPDATE " . get_table('users') . ' SET online_time = online_time + ' . intval($online_time) . ', last_active = ' . time() . ' WHERE uid = ' . intval($uid));
+		$this->shutdown_query("UPDATE " . get_table('users') . ' SET online_time = online_time + ' . intval($online_time) . ', last_active = ' . fake_time() . ' WHERE uid = ' . intval($uid));
 		
 		return true;
 	}

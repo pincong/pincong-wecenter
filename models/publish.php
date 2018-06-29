@@ -235,7 +235,7 @@ class publish_class extends AWS_MODEL
 			'type' => $type,
 			'data' => serialize($data),
 			'uid' => intval($uid),
-			'time' => time()
+			'time' => fake_time()
 		));
 	}
 
@@ -327,7 +327,7 @@ class publish_class extends AWS_MODEL
 			'title' => htmlspecialchars($title),
 			'message' => htmlspecialchars($message),
 			'category_id' => intval($category_id),
-			'add_time' => time()
+			'add_time' => fake_time()
 		)))
 		{
 			set_human_valid('question_valid_hour');
@@ -373,7 +373,7 @@ class publish_class extends AWS_MODEL
 			'uid' => intval($uid),
 			'article_id' => intval($article_id),
 			'message' => htmlspecialchars($message),
-			'add_time' => time(),
+			'add_time' => fake_time(),
 			'at_uid' => intval($at_uid)
 		));
 

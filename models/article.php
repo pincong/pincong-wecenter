@@ -216,7 +216,7 @@ class article_class extends AWS_MODEL
 
 		if ($day)
 		{
-			$where[] = 'add_time > ' . (time() - $day * 24 * 60 * 60);
+			$where[] = 'add_time > ' . (fake_time() - $day * 24 * 60 * 60);
 		}
 
 		return $this->fetch_page('article', implode(' AND ', $where), $order_by, $page, $per_page);
@@ -301,7 +301,7 @@ class article_class extends AWS_MODEL
 			{
 				$this->update('article_vote', array(
 					'rating' => intval($rating),
-					'time' => time(),
+					'time' => fake_time(),
 					'reputation_factor' => $reputation_factor
 				), 'id = ' . intval($article_vote['id']));
 			}
@@ -311,7 +311,7 @@ class article_class extends AWS_MODEL
 					'type' => $type,
 					'item_id' => intval($item_id),
 					'rating' => intval($rating),
-					'time' => time(),
+					'time' => fake_time(),
 					'uid' => intval($uid),
 					'item_uid' => intval($item_uid),
 					'reputation_factor' => $reputation_factor

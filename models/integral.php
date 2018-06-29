@@ -55,7 +55,7 @@ class integral_class extends AWS_MODEL
 				'balance' => ((int)$user_info['integral'] + (int)$integral),
 				'note' => $note,
 				'item_id' => (int)$item_id,
-				'time' => time()
+				'time' => fake_time()
 			));
 		}
 	}

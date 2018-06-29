@@ -264,7 +264,7 @@ class answer_class extends AWS_MODEL
 		if (!$answer_id = $this->insert('answer', array(
 			'question_id' => $question_info['question_id'],
 			'answer_content' => htmlspecialchars($answer_content),
-			'add_time' => time(),
+			'add_time' => fake_time(),
 			'uid' => intval($uid),
 			'category_id' => $question_info['category_id'],
 			'anonymous' => intval($anonymous),
@@ -275,7 +275,7 @@ class answer_class extends AWS_MODEL
 		}
 
 		$this->update('question', array(
-			'update_time' => time(),
+			'update_time' => fake_time(),
 		), 'question_id = ' . intval($question_id));
 
 		$this->model('question')->update_answer_count($question_id);
@@ -308,7 +308,7 @@ class answer_class extends AWS_MODEL
 
 		// 更新问题最后时间
 		$this->shutdown_update('question', array(
-			'update_time' => time(),
+			'update_time' => fake_time(),
 		), 'question_id = ' . intval($question_id));
 
 		if ($attach_access_key)
@@ -368,7 +368,7 @@ class answer_class extends AWS_MODEL
 				'answer_id' => $answer_id,
 				'answer_uid' => $answer_uid,
 				'vote_uid' => $uid,
-				'add_time' => time(),
+				'add_time' => fake_time(),
 				'vote_value' => $vote_value,
 				'reputation_factor' => $reputation_factor
 			));
@@ -469,7 +469,7 @@ class answer_class extends AWS_MODEL
 	public function set_answer_vote_status($voter_id, $vote_value)
 	{
 		return $this->update('answer_vote', array(
-			"add_time" => time(),
+			"add_time" => fake_time(),
 			"vote_value" => $vote_value
 		), "voter_id = " . intval($voter_id));
 	}
@@ -672,7 +672,7 @@ class answer_class extends AWS_MODEL
 			'uid' => intval($uid),
 			'answer_id' => intval($answer_id),
 			'message' => htmlspecialchars($message),
-			'time' => time()
+			'time' => fake_time()
 		));
 
 		if ($answer_info['uid'] != $uid)
@@ -832,7 +832,7 @@ class answer_class extends AWS_MODEL
 				'uid' => $uid,
 				'answer_id' => $answer_id,
 				'user_name' => $user_name,
-				'time' => time()
+				'time' => fake_time()
 			));
 		}
 
@@ -901,7 +901,7 @@ class answer_class extends AWS_MODEL
 			return false;
 		}
 
-		$start_time = time() - $best_answer_day * 3600 * 24;
+		$start_time = fake_time() - $best_answer_day * 3600 * 24;
 
 		if ($questions = $this->query_all("SELECT question_id FROM " . $this->get_table('question') . " WHERE add_time < " . $start_time . " AND best_answer = 0 AND answer_count > " . get_setting('best_answer_min_count')))
 		{

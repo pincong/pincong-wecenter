@@ -27,7 +27,7 @@ class related_class extends AWS_MODEL
 			'item_type' => $item_type,
 			'item_id' => $item_id,
 			'link' => htmlspecialchars($link),
-			'add_time' => time()
+			'add_time' => fake_time()
 		));
 	}
 

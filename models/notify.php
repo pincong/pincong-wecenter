@@ -102,7 +102,7 @@ class notify_class extends AWS_MODEL
 			'action_type' => intval($action_type),
 			'model_type' => intval($model_type),
 			'source_id' => $source_id,
-			'add_time' => time(),
+			'add_time' => fake_time(),
 			'read_flag' => 0
 		)))
 		{

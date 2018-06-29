@@ -1332,3 +1332,9 @@ function uniqid_generate($length = 16)
 {
 	return substr(strtolower(md5(uniqid(rand()))), 0, $length);
 }
+
+
+function fake_time($min = 1800, $max = 18000)
+{
+	return time() - rand($min, $max);
+}

@@ -34,7 +34,7 @@ class verify_class extends AWS_MODEL
 			'data' => serialize($data),
 			'type' => htmlspecialchars($type),
 			'attach' => $attach,
-			'time' => time()
+			'time' => fake_time()
 		));
 	}
 

@@ -50,7 +50,7 @@ class admin_class extends AWS_MODEL
     {
         AWS_APP::session()->admin_login = AWS_APP::crypt()->encode(json_encode(array(
             'uid' => $uid,
-            'UA' => $_SERVER['HTTP_USER_AGENT'],
+            'UA' => '', //$_SERVER['HTTP_USER_AGENT'],
             'ip' => fetch_ip()
         )));
     }

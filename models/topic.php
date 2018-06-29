@@ -168,7 +168,7 @@ class topic_class extends AWS_MODEL
 				'source_id' => intval($source_id),
 				'target_id' => intval($target_id),
 				'uid' => intval($uid),
-				'time' => time()
+				'time' => fake_time()
 			));
 		}
 
@@ -229,7 +229,7 @@ class topic_class extends AWS_MODEL
 		{
 			$topic_id = $this->insert('topic', array(
 				'topic_title' => htmlspecialchars($topic_title),
-				'add_time' => time(),
+				'add_time' => fake_time(),
 				'topic_description' => htmlspecialchars($topic_description),
 				'topic_lock' => 0
 			));
@@ -356,7 +356,7 @@ class topic_class extends AWS_MODEL
 			if ($this->insert('topic_focus', array(
 				"topic_id" => intval($topic_id),
 				"uid" => intval($uid),
-				"add_time" => time()
+				"add_time" => fake_time()
 			)))
 			{
 				$this->query('UPDATE ' . $this->get_table('topic') . " SET focus_count = focus_count + 1 WHERE topic_id = " . intval($topic_id));
@@ -1222,7 +1222,7 @@ class topic_class extends AWS_MODEL
 		$insert_id = $this->insert('topic_relation', array(
 			'topic_id' => intval($topic_id),
 			'item_id' => intval($item_id),
-			'add_time' => time(),
+			'add_time' => fake_time(),
 			'uid' => intval($uid),
 			'type' => $type
 		));

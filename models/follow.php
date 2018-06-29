@@ -41,7 +41,7 @@ class follow_class extends AWS_MODEL
 			$result = $this->insert('user_follow', array(
 				'fans_uid' => intval($fans_uid),
 				'friend_uid' => intval($friend_uid),
-				'add_time' => time()
+				'add_time' => fake_time()
 			));
 
 			$this->update_user_count($friend_uid);

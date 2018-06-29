@@ -42,7 +42,7 @@ class draft_class extends AWS_MODEL
 				'item_id' => intval($item_id),
 				'type' => $type,
 				'data' => serialize($data),
-				'time' => time()
+				'time' => fake_time()
 			));
 
 			$this->shutdown_update('users', array(
