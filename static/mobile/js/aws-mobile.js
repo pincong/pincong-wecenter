@@ -720,8 +720,8 @@ AWS.User =
 	share_out: function(options)
 	{
 		var url = url || window.location.href, pic = '';
-
-		if (options.title)
+		window.open(url);
+		/*if (options.title)
 		{
 			var title = options.title + ' - ' + G_SITE_NAME;
 		}
@@ -740,7 +740,7 @@ AWS.User =
 			}
 		}
 
-		window.open(shareURL);
+		window.open(shareURL);*/
 	}
 }
 
