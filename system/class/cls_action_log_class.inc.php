@@ -122,7 +122,7 @@ class ACTION_LOG
 
 		if (!$add_time)
 		{
-			$add_time = time();
+			$add_time = fake_time();
 		}
 
 		$history_id = AWS_APP::model()->insert('user_action_history', array(
@@ -258,7 +258,7 @@ class ACTION_LOG
 	public static function update_action_time_by_history_id($history_id)
 	{
 		return AWS_APP::model()->update('user_action_history', array(
-			'add_time' => time()
+			'add_time' => fake_time()
 		), 'history_id = ' . intval($history_id));
 	}
 

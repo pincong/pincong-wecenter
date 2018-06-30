@@ -22,7 +22,7 @@ class online_class extends AWS_MODEL
 {
 	public function online_active($uid, $last_active)
 	{
-		if (!$uid OR ($last_active + 60 * 60) > time())
+		if (!$uid OR ($last_active + 60 * 60 * 6) > time())
 		{
 			return false;
 		}
