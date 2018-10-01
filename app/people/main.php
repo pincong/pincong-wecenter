@@ -48,13 +48,9 @@ class main extends AWS_CONTROLLER
 				$user = $this->model('account')->get_user_info_by_username($_GET['id'], TRUE);
 			}
 		}
-		else if ($user = $this->model('account')->get_user_info_by_username($_GET['id'], TRUE))
-		{
-
-		}
 		else
 		{
-			$user = $this->model('account')->get_user_info_by_url_token($_GET['id'], TRUE);
+			$user = $this->model('account')->get_user_info_by_username($_GET['id'], TRUE);
 		}
 
 		if (!$user)

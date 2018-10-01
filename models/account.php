@@ -40,7 +40,7 @@ class account_class extends AWS_MODEL
     {
     	$user_name = trim($user_name);
 
-        return $this->fetch_one('users', 'uid', "user_name = '" . $this->quote($user_name) . "' OR url_token = '" . $this->quote($user_name) . "'");
+        return $this->fetch_one('users', 'uid', "user_name = '" . $this->quote($user_name) . "'");
     }
 
     /**
@@ -196,29 +196,6 @@ class account_class extends AWS_MODEL
     }
 
     /**
-     * 通过 URL TOKEN 获取用户信息
-     *
-     * $cache_result 为是否缓存结果
-     *
-     * @param string
-     * @param boolean
-     * @param boolean
-     * @return array
-     */
-    public function get_user_info_by_url_token($url_token, $attrb = false, $cache_result = true)
-    {
-        if (!$url_token)
-        {
-            return false;
-        }
-
-        if ($uid = $this->fetch_one('users', 'uid', "url_token = '" . $this->quote($url_token) . "'"))
-        {
-            return $this->get_user_info_by_uid($uid, $attrb, $cache_result);
-        }
-    }
-
-    /**
      * 通过 UID 获取用户信息
      *
      * $cache_result 为是否缓存结果
@@ -273,7 +250,7 @@ class account_class extends AWS_MODEL
 	        }
         }
 
-        if (!$user_info['url_token'] AND $user_info['user_name'])
+        if ($user_info['user_name'])
         {
             $user_info['url_token'] = urlencode($user_info['user_name']);
         }
@@ -334,7 +311,6 @@ class account_class extends AWS_MODEL
         {
             foreach ($user_info as $key => $val)
             {
-                if (!$val['url_token'])
                 {
                     $val['url_token'] = urlencode($val['user_name']);
                 }
@@ -803,7 +779,7 @@ class account_class extends AWS_MODEL
 
                 $data[$val['uid']] = $val;
 
-                if (!$val['url_token'] AND $val['user_name'])
+                if ($val['user_name'])
                 {
                     $data[$val['uid']]['url_token'] = urlencode($val['user_name']);
                 }
@@ -1176,11 +1152,6 @@ class account_class extends AWS_MODEL
         }
 
         return $this->model('account')->get_user_group_by_id($group_id);
-    }
-
-    public function check_url_token($url_token, $uid)
-    {
-        return $this->count('users', "(url_token = '" . $this->quote($url_token) . "' OR user_name = '" . $this->quote($url_token) . "') AND uid != " . intval($uid));
     }
 
     public function forbidden_user_by_uid($uid, $status, $admin_uid)
