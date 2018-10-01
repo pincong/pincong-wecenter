@@ -448,7 +448,7 @@ var AW_TEMPLATE = {
 						'</div>'+
 							'<div class="modal-body">'+
 								'<div class="alert alert-danger collapse error_message"><i class="icon icon-delete"></i> <em></em></div>'+
-								'<textarea class="form-control" name="reason" rows="5">{{message}}</textarea>'+
+								'<textarea class="form-control" rows="5">{{message}}</textarea>'+
 							'</div>'+
 							'<div class="modal-footer">'+
 								'<a data-dismiss="modal" aria-hidden="true" class="btn btn-large btn-success">' + _t('确定') + '</a>'+
