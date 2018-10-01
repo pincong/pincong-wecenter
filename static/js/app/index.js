@@ -63,14 +63,6 @@ $(function()
 				var request_url = G_BASE_URL + '/home/ajax/index_actions/page-' + $(this).attr('data-page') + '__filter-' + cur_filter;
 			break;
 
-			case '#draft_list__draft':
-				var request_url = G_BASE_URL + '/home/ajax/draft/page-' + $(this).attr('data-page');
-				if($('#main_title .btn-success').length <=0)
-				{
-					$('#main_title').prepend('<a class="pull-right btn btn-mini btn-success" onclick="AWS.User.delete_draft(\'\', \'clean\');">' + _t('清空所有') + '</a>');
-				}
-			break;
-
 			case '#invite_list__invite':
 				var request_url = G_BASE_URL + '/home/ajax/invite/page-' + $(this).attr('data-page');
 			break;

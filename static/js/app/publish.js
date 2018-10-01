@@ -101,14 +101,4 @@ $(function()
 	//自动展开话题选择
 	$('.aw-edit-topic').click();
 
-    // 自动保存草稿
-	$('textarea.wmd-input').bind('blur', function() {
-		if ($(this).val() != '')
-		{
-			$.post(G_BASE_URL + '/account/ajax/save_draft/item_id-1__type-' +　PUBLISH_TYPE, 'message=' + $(this).val(), function (result) {
-				$('#question_detail_message').html(result.err + ' <a href="#" onclick="$(\'textarea#advanced_editor\').attr(\'value\', \'\'); AWS.User.delete_draft(1, \'' + PUBLISH_TYPE + '\'); $(this).parent().html(\' \'); return false;">' + _t('删除草稿') + '</a>');
-			}, 'json');
-		}
-	});
-
 });

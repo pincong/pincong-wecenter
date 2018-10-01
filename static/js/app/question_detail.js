@@ -23,19 +23,6 @@ $(function()
 			if (G_ADVANCED_EDITOR_ENABLE == 'Y')
 			{
 				EDITOR = CKEDITOR.replace( 'wmd-input');
-
-				EDITOR_CALLBACK = function (evt)
-				{
-					if (evt.editor.getData().length)
-					{
-						$.post(G_BASE_URL + '/account/ajax/save_draft/item_id-' + QUESTION_ID + '__type-' + ANSWER_TYPE, 'message=' + evt.editor.getData(), function (result) {
-							$('#answer_content_message').html(result.err + ' <a href="#" onclick="$(\'textarea#advanced_editor\').attr(\'value\', \'\'); AWS.User.delete_draft(QUESTION_ID, ANSWER_TYPE); $(this).parent().html(\' \'); return false;">' + _t('删除草稿') + '</a>');
-						}, 'json');
-					}
-				}
-
-				// 自动保存草稿
-				EDITOR.on( 'blur', EDITOR_CALLBACK);
 			}
 
 		}
