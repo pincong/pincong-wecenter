@@ -203,42 +203,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
         switch ($_POST['type'])
         {
-            case 'received_email':
-                $receiving_email_global_config = get_setting('receiving_email_global_config');
-
-                if ($receiving_email_global_config['enabled'] != 'question')
-                {
-                    H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('导入邮件至问题未启用')));
-                }
-
-                switch ($_POST['batch_type'])
-                {
-                    case 'approval':
-                        $receiving_email_global_config = get_setting('receiving_email_global_config');
-
-                        if (!$receiving_email_global_config['publish_user']['uid'])
-                        {
-                            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('邮件发布用户不存在')));
-                        }
-
-                        foreach ($_POST['approval_ids'] AS $approval_id)
-                        {
-                            $this->model('edm')->save_received_email_to_question($approval_id, $receiving_email_global_config['publish_user']['uid']);
-                        }
-
-                        break;
-
-                    case 'decline':
-                        foreach ($_POST['approval_ids'] AS $approval_id)
-                        {
-                            $this->model('edm')->remove_received_email($approval_id);
-                        }
-
-                        break;
-                }
-
-                break;
-
             default:
                 $func = $_POST['batch_type'] . '_publish';
 
@@ -391,90 +355,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
         $this->model('category')->move_contents($_POST['from_id'], $_POST['target_id']);
 
         H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-    }
-
-    public function edm_add_group_action()
-    {
-        @set_time_limit(0);
-
-        if (trim($_POST['title']) == '')
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请填写用户群名称')));
-        }
-
-        $usergroup_id = $this->model('edm')->add_group($_POST['title']);
-
-        switch ($_POST['import_type'])
-        {
-            case 'text':
-                if ($email_list = explode("\n", str_replace(array("\r", "\t"), "\n", $_POST['email'])))
-                {
-                    foreach ($email_list AS $key => $email)
-                    {
-                        $this->model('edm')->add_user_data($usergroup_id, $email);
-                    }
-                }
-            break;
-
-            case 'system_group':
-                if ($_POST['user_groups'])
-                {
-                    foreach ($_POST['user_groups'] AS $key => $val)
-                    {
-                        $this->model('edm')->import_system_email_by_user_group($usergroup_id, $val);
-                    }
-                }
-            break;
-
-            case 'reputation_group':
-                if ($_POST['user_groups'])
-                {
-                    foreach ($_POST['user_groups'] AS $key => $val)
-                    {
-                        $this->model('edm')->import_system_email_by_reputation_group($usergroup_id, $val);
-                    }
-                }
-            break;
-
-            case 'last_active':
-                if ($_POST['last_active'])
-                {
-                    $this->model('edm')->import_system_email_by_last_active($usergroup_id, $_POST['last_active']);
-                }
-            break;
-        }
-
-        H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-    }
-
-    public function edm_add_task_action()
-    {
-        if (trim($_POST['title']) == '')
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请填写任务名称')));
-        }
-
-        if (trim($_POST['subject']) == '')
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请填写邮件标题')));
-        }
-
-        if (intval($_POST['usergroup_id']) == 0)
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择用户群组')));
-        }
-
-        if (trim($_POST['from_name']) == '')
-        {
-            $_POST['from_name'] = get_setting('site_name');
-        }
-
-        $task_id = $this->model('edm')->add_task($_POST['title'], $_POST['subject'], $_POST['message'], $_POST['from_name']);
-
-        $this->model('edm')->import_group_data_to_task($task_id, $_POST['usergroup_id']);
-
-        H::ajax_json_output(AWS_APP::RSM(null, 1, AWS_APP::lang()->_t('任务建立完成')));
-
     }
 
     public function save_feature_action()
@@ -1749,18 +1629,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
         switch ($_POST['type'])
         {
-            case 'received_email':
-                $approval_item = $this->model('edm')->get_received_email_by_id($_POST['id']);
-
-                if ($approval_item['question_id'])
-                {
-                    H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('该邮件已通过审核')));
-                }
-
-                $approval_item['type'] = 'received_email';
-
-                break;
-
             default:
                 $approval_item = $this->model('publish')->get_approval_item($_POST['id']);
 
@@ -1777,7 +1645,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('类型不正确')));
         }
 
-        if (!$_POST['title'] AND in_array($_POST['type'], array('question', 'article', 'received_email')))
+        if (!$_POST['title'] AND in_array($_POST['type'], array('question', 'article')))
         {
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入标题')));
         }
@@ -1814,13 +1682,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
                 $approval_item['data']['message'] = htmlspecialchars_decode($_POST['content']);
 
                 break;
-
-            case 'received_email':
-                $approval_item['subject'] = htmlspecialchars_decode($_POST['title']);
-
-                $approval_item['content'] = htmlspecialchars_decode($_POST['content']);
-
-                break;
         }
 
         if ($approval_item['type'] != 'article_comment' AND $_POST['remove_attachs'])
@@ -1833,14 +1694,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
         switch ($approval_item['type'])
         {
-            case 'received_email':
-                $this->model('edm')->update('received_email', array(
-                    'subject' => $approval_item['subject'],
-                    'content' => $approval_item['content']
-                ), 'id = ' . $approval_item['id']);
-
-                break;
-
             default:
                 $this->model('publish')->update('approval', array(
                     'data' => serialize($approval_item['data'])
@@ -1863,112 +1716,12 @@ class ajax extends AWS_ADMIN_CONTROLLER
         H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('设置已保存')));
     }
 
-    public function save_receiving_email_config_action()
-    {
-        if ($_POST['id'])
-        {
-            $receiving_email_config = $this->model('edm')->get_receiving_email_config_by_id($_POST['id']);
-
-            if (!$receiving_email_config)
-            {
-                H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('该账号不存在')));
-            }
-        }
-
-        $_POST['server'] = trim($_POST['server']);
-
-        if (!$_POST['server'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入服务器地址')));
-        }
-
-        if (!$_POST['protocol'] OR !in_array($_POST['protocol'], array('pop3', 'imap')))
-        {
-             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择协议')));
-        }
-
-        if ($_POST['port'] AND (!is_digits($_POST['port']) OR $_POST['port'] < 0 OR $_POST['port'] > 65535))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入有效的端口号（0 ~ 65535）')));
-        }
-
-        if (!$_POST['uid'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择此账号对应的用户')));
-        }
-
-        $user_info = $this->model('account')->get_user_info_by_uid($_POST['uid']);
-
-        if (!$user_info)
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('所选用户不存在')));
-        }
-
-        $receiving_email_config = array(
-                                        'server' => $_POST['server'],
-                                        'protocol' => $_POST['protocol'],
-                                        'ssl' => ($_POST['ssl'] == '1') ? '1' : '0',
-                                        'username' => trim($_POST['username']),
-                                        'password' => trim($_POST['password']),
-                                        'uid' => $user_info['uid']
-                                    );
-
-        if ($_POST['port'])
-        {
-            $receiving_email_config['port'] = $_POST['port'];
-        }
-
-        if ($_POST['id'])
-        {
-            $this->model('edm')->update_receiving_email_config($_POST['id'], 'update', $receiving_email_config);
-
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('保存设置成功')));
-        }
-        else
-        {
-            $config_id = $this->model('edm')->update_receiving_email_config(null, 'add', $receiving_email_config);
-
-            H::ajax_json_output(AWS_APP::RSM(array(
-                'url' => get_js_url('/admin/edm/receiving/id-' . $config_id)
-            ), 1, null));
-        }
-    }
-
-    public function save_receiving_email_global_config_action()
-    {
-        if (!$_POST['uid'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请设置邮件内容对应提问用户')));
-        }
-
-        $user_info = $this->model('account')->get_user_info_by_uid($_POST['uid']);
-
-        if (!$user_info)
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('所选用户不存在')));
-        }
-
-        $this->model('setting')->set_vars(array(
-            'receiving_email_global_config' => array(
-                'enabled' => (in_array($_POST['enabled'], array('question', 'ticket'))) ? $_POST['enabled'] : 'N',
-                'publish_user' => array(
-                    'uid' => $user_info['uid'],
-                    'user_name' => $user_info['user_name'],
-                    'url_token' => $user_info['url_token']
-            )
-        )));
-
-        H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('保存设置成功')));
-    }
-
     public function remove_receiving_account_action()
     {
         if (!$_POST['id'])
         {
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择要删除的账号')));
         }
-
-        $this->model('edm')->delete('receiving_email_config', 'id = ' . intval($_POST['id']));
 
         H::ajax_json_output(AWS_APP::RSM(null, 1, null));
     }

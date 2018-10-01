@@ -403,18 +403,6 @@ class question_class extends AWS_MODEL
 
 		$this->delete('question', 'question_id = ' . intval($question_id));
 
-		if ($question_info['received_email_id'])
-		{
-			if ($question_info['ticket_id'])
-			{
-				remove_assoc('received_email', 'question', $question_info['question_id']);
-			}
-			else
-			{
-				$this->model('edm')->remove_received_email($question_info['received_email_id']);
-			}
-		}
-
 		if ($question_info['ticket_id'])
 		{
 			remove_assoc('ticket', 'question', $question_info['question_id']);

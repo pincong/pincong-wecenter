@@ -97,16 +97,8 @@ class admin_class extends AWS_MODEL
                                                         'build_day' => G_VERSION_BUILD //$last_version['build_day']
                                                     ),
 
-                                // 邮件导入失败
-                                'receive_email_error' => $admin_notifications['receive_email_error']
                             );
 
-        $receiving_email_global_config = get_setting('receiving_email_global_config');
-
-        if ($receiving_email_global_config['enabled'] == 'question')
-        {
-            $admin_notifications['received_email_approval'] = $this->count('received_email', 'question_id IS NULL AND ticket_id IS NUL');
-        }
 
         AWS_APP::cache()->set('admin_notifications', $admin_notifications, 1800);
 
@@ -167,14 +159,6 @@ class admin_class extends AWS_MODEL
                                         );
         }
 
-        if ($notifications['received_email_approval'])
-        {
-            $notifications_texts[] = array(
-                                            'url' => 'admin/approval/list/type-received_email',
-                                            'text' => AWS_APP::lang()->_t('有 %s 个邮件咨询待审核', $notifications['received_email_approval'])
-                                        );
-        }
-
         if ($notifications['user_report'])
         {
             $notifications_texts[] = array(
@@ -205,19 +189,6 @@ class admin_class extends AWS_MODEL
                                             'url' => 'http://www.wecenter.com/downloads/',
                                             'text' => AWS_APP::lang()->_t('程序需要更新，最新版本为 %s', $notifications['last_version']['version'])
                                         );
-        }
-
-        $receiving_email_global_config = get_setting('receiving_email_global_config');
-
-        if ($receiving_email_global_config['enabled'] == 'Y' AND $notifications['receive_email_error'])
-        {
-            foreach ($notifications['receive_email_error'] AS $error_msg)
-            {
-                $notifications_texts[] = array(
-                                                'url' => 'admin/edm/receiving/id-' . $error_msg['id'],
-                                                'text' => AWS_APP::lang()->_t('邮件导入失败，错误为 %s，请重新配置', $error_msg['msg'])
-                                            );
-            }
         }
 
         return $notifications_texts;

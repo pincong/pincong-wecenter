@@ -81,7 +81,7 @@ class crond_class extends AWS_MODEL
     // 每半分钟执行
     public function half_minute()
     {
-        $this->model('edm')->run_task();
+
     }
 
     // 每分钟执行
@@ -123,12 +123,6 @@ class crond_class extends AWS_MODEL
         if (check_extension_package('ticket'))
         {
 
-            $receiving_email_global_config = get_setting('receiving_email_global_config');
-
-            if ($receiving_email_global_config['enabled'] == 'ticket')
-            {
-                $this->model('ticket')->save_received_email_to_ticket_crond();
-            }
         }
 
         $this->model('admin')->notifications_crond();
@@ -152,12 +146,6 @@ class crond_class extends AWS_MODEL
             $this->model('project')->send_project_open_close_notify();
         }
 
-        $receiving_email_global_config = get_setting('receiving_email_global_config');
-
-        if ($receiving_email_global_config['enabled'] == 'Y')
-        {
-            $this->model('edm')->receive_email_crond();
-        }
     }
 
     // 每小时执行

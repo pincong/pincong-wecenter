@@ -41,26 +41,8 @@ class approval extends AWS_ADMIN_CONTROLLER
 
 		TPL::assign('unverified_modifies_count', $this->model('question')->count('question', 'unverified_modify_count <> 0'));
 
-		$receiving_email_global_config = get_setting('receiving_email_global_config');
-
-		if ($receiving_email_global_config['enabled'] == 'question')
-		{
-			TPL::assign('received_email_count', $this->model('edm')->count('received_email', 'question_id IS NULL AND ticket_id IS NULL'));
-		}
-		else if ($_GET['type'] == 'received_email')
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('导入邮件至问题未启用')));
-		}
-
 		switch ($_GET['type'])
 		{
-			case 'received_email':
-				$approval_list = $this->model('admin')->fetch_page($_GET['type'], 'question_id IS NULL AND ticket_id IS NULL', 'id ASC', $_GET['page'], $this->per_page);
-
-				$found_rows = $this->model('admin')->found_rows();
-
-				break;
-
 			case 'unverified_modify':
 				$approval_list = $this->model('question')->fetch_page('question', 'unverified_modify_count <> 0', 'question_id ASC', $_GET['page'], $this->per_page);
 
@@ -134,25 +116,6 @@ class approval extends AWS_ADMIN_CONTROLLER
 
 		switch ($_GET['type'])
 		{
-			case 'received_email':
-				$receiving_email_global_config = get_setting('receiving_email_global_config');
-
-				if ($receiving_email_global_config['enabled'] != 'question')
-				{
-					H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('导入邮件至问题未启用')));
-				}
-
-				$approval_item = $this->model('edm')->get_received_email_by_id($_GET['id']);
-
-				if ($approval_item['question_id'])
-				{
-					exit();
-				}
-
-				$approval_item['type'] = 'received_email';
-
-				break;
-
 			default:
 				$approval_item = $this->model('publish')->get_approval_item($_GET['id']);
 
@@ -192,12 +155,6 @@ class approval extends AWS_ADMIN_CONTROLLER
 
 				break;
 
-			case 'received_email':
-				$approval_item['title'] = htmlspecialchars($approval_item['subject']);
-
-				$approval_item['content'] = htmlspecialchars($approval_item['content']);
-
-				break;
 		}
 
 		if ($approval_item['data']['attach_access_key'])
