@@ -47,12 +47,6 @@ $config[] = array(
         ),
 
         array(
-            'id' => 'SETTINGS_MAIL',
-            'title' => AWS_APP::lang()->_t('邮件设置'),
-            'url' => 'admin/settings/category-mail'
-        ),
-
-        array(
             'id' => 'SETTINGS_CACHE',
             'title' => AWS_APP::lang()->_t('性能优化'),
             'url' => 'admin/settings/category-cache'

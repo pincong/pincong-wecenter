@@ -20,7 +20,7 @@ if (!defined('IN_ANWSION'))
 class active_class extends AWS_MODEL
 {
 
-	public function new_find_password($uid, $server = 'master')
+	public function new_find_password($uid)
 	{
 		return false;
 	}

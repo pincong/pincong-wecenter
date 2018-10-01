@@ -140,11 +140,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
             $_POST['new_user_notification_setting'] = $notification_setting;
         }
 
-        if ($_POST['slave_mail_config']['server'])
-        {
-            $_POST['slave_mail_config']['charset'] = $_POST['mail_config']['charset'];
-        }
-
         $this->model('setting')->set_vars($_POST);
 
         H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('保存设置成功')));

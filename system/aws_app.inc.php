@@ -36,7 +36,6 @@ class AWS_APP
 	private static $lang;
 	private static $session;
 	private static $captcha;
-	private static $mail;
 	private static $user;
 	private static $crypt;
 
@@ -415,24 +414,6 @@ class AWS_APP
 		}
 
 		return self::$form;
-	}
-
-	/**
-	 * 获取系统邮件处理类
-	 *
-	 * 调用 core/mail.php
-	 *
-	 * @access	public
-	 * @return	object
-	 */
-	public static function mail()
-	{
-		if (!self::$mail)
-		{
-			self::$mail = load_class('core_mail');
-		}
-
-		return self::$mail;
 	}
 
 	/**
