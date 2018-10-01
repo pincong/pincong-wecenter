@@ -547,6 +547,14 @@ var AWS =
 				var template = Hogan.compile(AW_TEMPLATE.recommend).render();
 			break;
 
+			case 'textBox':
+				var template = Hogan.compile(AW_TEMPLATE.textBox).render(
+				{
+					'title': data.title,
+					'message': data.message
+				});
+			break;
+
 		}
 
 		if (template)
@@ -1426,6 +1434,10 @@ AWS.User =
 	{
 		var title = $('title').text();
 		var url = window.location.href;
+		AWS.dialog('textBox', {
+			title: _t('分享'),
+			message: title + '\r\n' + url
+		});
 	},
 
 	// 赞成投票
