@@ -503,11 +503,6 @@ class ajax extends AWS_CONTROLLER
         {
             $question_id = $this->model('publish')->publish_question($_POST['question_content'], $_POST['question_detail'], $_POST['category_id'], $this->user_id, $_POST['topics'], $_POST['anonymous'], $_POST['attach_access_key'], $_POST['ask_user_id'], $this->user_info['permission']['create_topic']);
 
-            if ($_POST['_is_mobile'])
-            {
-                $url = get_js_url('/m/question/' . $question_id);
-            }
-            else
             {
                 $url = get_js_url('/question/' . $question_id);
             }
@@ -616,11 +611,6 @@ class ajax extends AWS_CONTROLLER
         {
             $article_id = $this->model('publish')->publish_article($_POST['title'], $_POST['message'], $this->user_id, $_POST['topics'], $_POST['category_id'], $_POST['attach_access_key'], $this->user_info['permission']['create_topic']);
 
-            if ($_POST['_is_mobile'])
-            {
-                $url = get_js_url('/m/article/' . $article_id);
-            }
-            else
             {
                 $url = get_js_url('/article/' . $article_id);
             }

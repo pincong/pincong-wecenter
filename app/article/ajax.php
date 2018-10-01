@@ -86,7 +86,7 @@ class ajax extends AWS_CONTROLLER
 			), $this->user_id);
 
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/publish/wait_approval/article_id-' . intval($_POST['article_id']) . '__is_mobile-' . $_POST['_is_mobile'])
+				'url' => get_js_url('/publish/wait_approval/article_id-' . intval($_POST['article_id']) )
 			), 1, null));
 		}
 		else
@@ -101,13 +101,6 @@ class ajax extends AWS_CONTROLLER
 
 			TPL::assign('comment_info', $comment_info);
 
-			if (is_mobile())
-			{
-				H::ajax_json_output(AWS_APP::RSM(array(
-					'ajax_html' => TPL::output('m/ajax/article_answer', false)
-				), 1, null));
-			}
-			else
 			{
 				H::ajax_json_output(AWS_APP::RSM(array(
 					'ajax_html' => TPL::output('article/ajax/comment', false)

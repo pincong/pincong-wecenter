@@ -35,10 +35,6 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		if (is_mobile())
-		{
-			HTTP::redirect('/m/topic/' . $_GET['id']);
-		}
 
 		if (is_digits($_GET['id']))
 		{
@@ -236,10 +232,6 @@ class main extends AWS_CONTROLLER
 
 	public function index_square_action()
 	{
-		if (is_mobile())
-		{
-			HTTP::redirect('/m/topic/');
-		}
 
 		if ($today_topics = rtrim(get_setting('today_topics'), ','))
 		{

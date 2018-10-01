@@ -76,11 +76,6 @@ class ajax extends AWS_CONTROLLER
 
 		TPL::assign('search_result', $search_result);
 
-		if (is_mobile())
-		{
-			TPL::output('m/ajax/search_result');
-		}
-		else
 		{
 			TPL::output('search/ajax/search_result');
 		}

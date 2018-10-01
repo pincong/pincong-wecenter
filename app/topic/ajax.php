@@ -68,11 +68,6 @@ class ajax extends AWS_CONTROLLER
 
 		TPL::assign('list', $action_list);
 
-		if (is_mobile())
-		{
-			TPL::output('m/ajax/index_actions');
-		}
-		else
 		{
 			TPL::output('home/ajax/index_actions');
 		}
@@ -678,11 +673,6 @@ class ajax extends AWS_CONTROLLER
 
 		TPL::assign('topics_list', $topics_list);
 
-		if (is_mobile())
-		{
-			TPL::output('m/ajax/focus_topics_list');
-		}
-		else
 		{
 			TPL::output('topic/ajax/focus_topics_list');
 		}

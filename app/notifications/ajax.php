@@ -62,10 +62,6 @@ class ajax extends AWS_CONTROLLER
 		{
 			TPL::output("notifications/ajax/header_list");
 		}
-		else if (is_mobile())
-		{
-			TPL::output('m/ajax/notifications_list');
-		}
 		else
 		{
 			TPL::output("notifications/ajax/list");

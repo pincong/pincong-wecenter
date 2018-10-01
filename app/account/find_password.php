@@ -50,10 +50,6 @@ class find_password extends AWS_CONTROLLER
 
 	public function modify_action()
 	{
-		if (is_mobile())
-		{
-			HTTP::redirect('/m/find_password_modify/?key=' . $_GET['key']);
-		}
 
 		if (!$active_code_row = $this->model('active')->get_active_code($_GET['key'], 'FIND_PASSWORD'))
 		{

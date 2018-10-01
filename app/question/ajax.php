@@ -300,11 +300,6 @@ class ajax extends AWS_CONTROLLER
 		TPL::assign('answer_info', $answer_info);
 		TPL::assign('comments', $comments);
 
-		if (is_mobile())
-		{
-			TPL::output("m/ajax/question_comments");
-		}
-		else
 		{
 			TPL::output("question/ajax/comments");
 		}
@@ -581,20 +576,13 @@ class ajax extends AWS_CONTROLLER
 			), $this->user_id, $_POST['attach_access_key']);
 
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/publish/wait_approval/question_id-' . $question_info['question_id'] . '__is_mobile-' . $_POST['_is_mobile'])
+				'url' => get_js_url('/publish/wait_approval/question_id-' . $question_info['question_id'] )
 			), 1, null));
 		}
 		else
 		{
 			$answer_id = $this->model('publish')->publish_answer($question_info['question_id'], $answer_content, $this->user_id, $_POST['anonymous'], $_POST['attach_access_key'], $_POST['auto_focus']);
 
-			if ($_POST['_is_mobile'])
-			{
-				//$url = get_js_url('/m/question/id-' . $question_info['question_id'] . '__item_id-' . $answer_id . '__rf-false');
-
-				$this->model('answer')->set_answer_publish_source($answer_id, 'mobile');
-			}
-			else
 			{
 				//$url = get_js_url('/question/' . $question_info['question_id'] . '?item_id=' . $answer_id . '&rf=false');
 			}
@@ -614,13 +602,6 @@ class ajax extends AWS_CONTROLLER
 
 			TPL::assign('answer_info', $answer_info);
 
-			if (is_mobile())
-			{
-				H::ajax_json_output(AWS_APP::RSM(array(
-					'ajax_html' => TPL::output('m/ajax/question_answer', false)
-				), 1, null));
-			}
-			else
 			{
 				H::ajax_json_output(AWS_APP::RSM(array(
 					'ajax_html' => TPL::output('question/ajax/answer', false)

@@ -46,14 +46,10 @@ class menu_class extends AWS_MODEL
 		{
 			case 'explore':
 				$url_prefix = '';
-
-				$url_mobile_prefix = 'm/explore/';
 			break;
 
 			case 'article':
 				$url_prefix = 'article/';
-
-				$url_mobile_prefix = 'm/article/';
 			break;
 		}
 
@@ -64,11 +60,6 @@ class menu_class extends AWS_MODEL
 				$val['url_token'] = $val['id'];
 			}
 
-			if (defined('IN_MOBILE'))
-			{
-				$data[$key]['link'] = $url_mobile_prefix . 'category-' . $val['id'];
-			}
-			else
 			{
 				$data[$key]['link'] = $url_prefix . 'category-' . $val['url_token'];
 			}
@@ -96,30 +87,18 @@ class menu_class extends AWS_MODEL
 			{
 				case 'explore':
 					$url_prefix = 'explore/';
-
-					$url_mobile_prefix = 'm/';
-
 					break;
 
 				case 'question':
 					$url_prefix = 'question/';
-
-					$url_mobile_prefix = 'm/';
-
 					break;
 
 				case 'article':
 					$url_prefix = 'article/';
-
-					$url_mobile_prefix = 'm/article/';
-
 					break;
 
 				case 'project':
 					$url_prefix = 'project/';
-
-					$url_mobile_prefix = 'project/';
-
 					break;
 			}
 
@@ -128,11 +107,6 @@ class menu_class extends AWS_MODEL
 				switch ($val['type'])
 				{
 					case 'category':
-						if (defined('IN_MOBILE'))
-						{
-							$nav_menu_data[$key]['link'] = $url_mobile_prefix . 'category-' . $category_info[$val['type_id']]['id'];
-						}
-						else
 						{
 							$nav_menu_data[$key]['link'] = $url_prefix . 'category-' . $category_info[$val['type_id']]['url_token'];
 
@@ -144,11 +118,6 @@ class menu_class extends AWS_MODEL
 				$nav_menu_data['category_ids'][] = $val['type_id'];
 			}
 
-			if (defined('IN_MOBILE'))
-			{
-				$nav_menu_data['base']['link'] = $url_mobile_prefix;
-			}
-			else
 			{
 				$nav_menu_data['base']['link'] = $url_prefix;
 			}

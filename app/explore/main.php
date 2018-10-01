@@ -34,23 +34,11 @@ class main extends AWS_CONTROLLER
 	
 	public function setup()
 	{
-		if (is_mobile() AND !$_GET['ignore_ua_check'])
-		{
-			switch ($_GET['app'])
-			{
-				default:
-					HTTP::redirect('/m/');
-				break;
-			}
-		}
+
 	}
 
 	public function index_action()
 	{
-		if (is_mobile())
-		{
-			HTTP::redirect('/m/explore/' . $_GET['id']);
-		}
 
 		if ($this->user_id)
 		{
