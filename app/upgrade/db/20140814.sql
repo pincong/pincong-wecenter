@@ -1,1 +1,0 @@
-ALTER TABLE `[#DB_PREFIX#]notification` CHANGE `source_id` `source_id` VARCHAR( 16 ) NOT NULL DEFAULT '0' COMMENT '关联 ID';
