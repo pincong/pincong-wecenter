@@ -734,16 +734,6 @@ class ajax extends AWS_CONTROLLER
 			$this->model('active')->new_valid_email($this->user_id, $_POST['email']);
 		}
 
-		if ($_POST['common_email'])
-		{
-			if (! H::valid_email($_POST['common_email']))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入正确的常用邮箱地址')));
-			}
-
-			$update_data['common_email'] = $_POST['common_email'];
-		}
-
 		$update_data['sex'] = intval($_POST['sex']);
 
 
@@ -757,10 +747,7 @@ class ajax extends AWS_CONTROLLER
 			$this->model('integral')->process($this->user_id, 'UPDATE_SIGNATURE', round((get_setting('integral_system_config_profile') * 0.1)), AWS_APP::lang()->_t('完善一句话介绍'));
 		}
 
-		$update_attrib_data['homepage'] = htmlspecialchars($_POST['homepage']);
-		$update_data['mobile'] = htmlspecialchars($_POST['mobile']);
-
-		if (($update_attrib_data['homepage'] OR $update_data['mobile']) AND !$this->model('integral')->fetch_log($this->user_id, 'UPDATE_CONTACT'))
+		if ($_POST['signature']  AND !$this->model('integral')->fetch_log($this->user_id, 'UPDATE_CONTACT'))
 		{
 			$this->model('integral')->process($this->user_id, 'UPDATE_CONTACT', round((get_setting('integral_system_config_profile') * 0.1)), AWS_APP::lang()->_t('完善联系资料'));
 		}

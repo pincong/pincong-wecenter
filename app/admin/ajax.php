@@ -1180,8 +1180,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
             }
 
             $this->model('account')->update_users_attrib_fields(array(
-                'signature' => htmlspecialchars($_POST['signature']),
-                'homepage' => htmlspecialchars($_POST['homepage'])
+                'signature' => htmlspecialchars($_POST['signature'])
             ), $user_info['uid']);
 
             if ($_POST['user_name'] != $user_info['user_name'])

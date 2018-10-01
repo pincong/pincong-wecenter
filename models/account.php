@@ -510,7 +510,6 @@ class account_class extends AWS_MODEL
             'salt' => $salt,
             'email' => htmlspecialchars($email),
             'sex' => intval($sex),
-            'mobile' => htmlspecialchars($mobile),
             'reg_time' => fake_time(),
             'reg_ip' => ip2long(fetch_ip()),
             'email_settings' => serialize(get_setting('new_user_email_setting'))
