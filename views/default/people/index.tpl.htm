@@ -294,29 +294,6 @@
                                             </p>
                                         </dd>
                                     </dl>
-                                    <?php if ($this->user['area_name']) { ?>
-                                    <dl>
-                                        <dt><span><?php _e('现居'); ?>:</span></dt>
-                                        <dd>
-                                            <?php echo $this->user['area_name']; ?>
-                                        </dd>
-                                    </dl>
-                                    <?php } ?>
-
-                                    <?php if ($this->education_experience_list) { ?>
-                                    <dl>
-                                        <dt><span><?php _e('教育经历'); ?>:</span></dt>
-                                        <dd>
-                                            <ul>
-                                                <?php foreach($this->education_experience_list as $k => $v) { ?>
-                                                <li>
-                                                    <?php echo $v['education_years']; ?> <?php _e('年'); ?> <?php _e('就读于%s', $v['school_name']); ?> <?php echo $v['departments']; ?>
-                                                </li>
-                                                <?php } ?>
-                                            </ul>
-                                        </dd>
-                                    </dl>
-                                    <?php } ?>
 
                                     <?php if (false && $this->user['last_active']) { ?>
                                     <dl>
