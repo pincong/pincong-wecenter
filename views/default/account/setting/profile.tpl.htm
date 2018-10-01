@@ -12,7 +12,10 @@
 			<div class="mod-body">
 				<dl>
 					<dt><?php _e('用户名'); ?>:</dt>
-					<dd><?php if ($this->user_info['user_name']) { ?><?php echo $this->user_info['user_name']; ?><?php } else { ?><input type="text" name="user_name" value="<?php echo $this->user_info['user_name']; ?>" class="form-control" /><?php } ?></dd>
+					<dd>
+						<input type="text" name="user_name" value="<?php echo $this->user_info['user_name']; ?>" class="form-control" <?php if ($this->user_info['user_name_update_time'] AND $this->user_info['user_name_update_time'] > (TIMESTAMP - 3600 * 24 * 30)) { ?> disabled="disabled"<?php } ?> />
+						<p class="text-color-999"><?php _e('30 天内只能修改一次'); ?></p>
+					</dd>
 				</dl>
 				<dl>
 					<dt><?php _e('性别'); ?>:</dt>
@@ -30,15 +33,9 @@
 				</dl>
 				<dl>
 					<dt><label><?php _e('介绍'); ?>:</label></dt>
-					<dd class="introduce"><input class="form-control" name="signature" maxlength="128" type="text" value="<?php echo $this->user_info['signature']; ?>"<?php if ($this->user_info['verified']) { ?> disabled="disabled"<?php } ?> /></dd>
-			</dl>
-			<dl class="form-horizontal">
-					<dt><label><?php _e('个性网址'); ?>:</label></dt>
-					<dd>
-						<script type="text/javascript">document.write(G_BASE_URL);</script>/people/ <input type="text" class="form-control" value="<?php echo $this->user_info['url_token']; ?>" maxlength="32" name="url_token" style="display:inline;width:30%;margin-bottom:0;"<?php if ($this->user_info['url_token_update'] AND $this->user_info['url_token_update'] > (TIMESTAMP - 3600 * 24 * 30)) { ?> disabled="disabled"<?php } ?> />
-						<p class="text-color-999"><?php _e('可输入 4~20 位的英文或数字, 30 天内只能修改一次'); ?></p>
-					</dd>
+					<dd class="introduce"><input class="form-control" name="signature" maxlength="128" type="text" value="<?php echo $this->user_info['signature']; ?>" /></dd>
 				</dl>
+
 				<dl>
 					<dt><label><?php _e('时区'); ?>:</label></dt>
 					<dd>

@@ -522,6 +522,7 @@ class account_class extends AWS_MODEL
     {
         $this->update('users', array(
             'user_name' => htmlspecialchars($user_name),
+            'user_name_update_time' => fake_time()
         ), 'uid = ' . intval($uid));
 
         //return $this->model('search_fulltext')->push_index('user', $user_name, $uid);
@@ -1180,14 +1181,6 @@ class account_class extends AWS_MODEL
     public function check_url_token($url_token, $uid)
     {
         return $this->count('users', "(url_token = '" . $this->quote($url_token) . "' OR user_name = '" . $this->quote($url_token) . "') AND uid != " . intval($uid));
-    }
-
-    public function update_url_token($url_token, $uid)
-    {
-        return $this->update('users', array(
-            'url_token' => $url_token,
-            'url_token_update' => time()
-        ), 'uid = ' . intval($uid));
     }
 
     public function forbidden_user_by_uid($uid, $status, $admin_uid)

@@ -446,54 +446,33 @@ class ajax extends AWS_CONTROLLER
 
 	public function profile_setting_action()
 	{
-		if (!$this->user_info['user_name'] AND $_POST['user_name'])
+		if ($_POST['user_name'] AND $_POST['user_name'] != $this->user_info['user_name'])
 		{
-			$update_data['user_name'] = htmlspecialchars(trim($_POST['user_name']));
-
-			if ($check_result = $this->model('account')->check_username_char($_POST['user_name']))
+			if ($user_name = htmlspecialchars(trim($_POST['user_name'])))
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', $check_result));
+				if ($this->user_info['user_name_update_time'] AND $this->user_info['user_name_update_time'] > (time() - 3600 * 24 * 30))
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你距离上次修改用户名未满 30 天')));
+				}
+				if ($check_result = $this->model('account')->check_username_char($user_name))
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', $check_result));
+				}
+				if ($this->model('account')->check_username_sensitive_words($user_name))
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名不符合规则')));
+				}
+				if ($this->model('account')->check_username($user_name))
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('已经存在相同的姓名, 请重新填写')));
+				}
+				$this->model('account')->update_user_name($user_name, $this->user_id);
 			}
 		}
-
-		if ($_POST['url_token'] AND $_POST['url_token'] != $this->user_info['url_token'])
-		{
-			if ($this->user_info['url_token_update'] AND $this->user_info['url_token_update'] > (time() - 3600 * 24 * 30))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你距离上次修改个性网址未满 30 天')));
-			}
-
-			if (!preg_match("/^(?!__)[a-zA-Z0-9_]+$/i", $_POST['url_token']))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('个性网址只允许输入英文或数字')));
-			}
-
-			if ($this->model('account')->check_url_token($_POST['url_token'], $this->user_id))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('个性网址已经被占用请更换一个')));
-			}
-
-			if (preg_match("/^[\d]+$/i", $_POST['url_token']))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('个性网址不允许为纯数字')));
-			}
-
-			$this->model('account')->update_url_token($_POST['url_token'], $this->user_id);
-		}
-
-		if ($update_data['user_name'] and $this->model('account')->check_username($update_data['user_name']) and $this->user_info['user_name'] != $update_data['user_name'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经存在相同的姓名, 请重新填写')));
-		}
-
 
 		$update_data['sex'] = intval($_POST['sex']);
 
-
-		if (!$this->user_info['verified'])
-		{
-			$update_attrib_data['signature'] = htmlspecialchars($_POST['signature']);
-		}
+		$update_attrib_data['signature'] = htmlspecialchars($_POST['signature']);
 
 		if ($_POST['signature'] AND !$this->model('integral')->fetch_log($this->user_id, 'UPDATE_SIGNATURE'))
 		{
