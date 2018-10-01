@@ -466,7 +466,6 @@ class system_class extends AWS_MODEL
 			'active_data',
 			'answer_uninterested',
 			'draft',
-			'education_experience',
 			'favorite',
 			'favorite_tag',
 			'integral_log',

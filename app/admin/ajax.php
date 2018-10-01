@@ -1165,9 +1165,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
                 unset($update_data['group_id']);
             }
 
-            $update_data['province'] = htmlspecialchars($_POST['province']);
-            $update_data['city'] = htmlspecialchars($_POST['city']);
-
             $update_data['sex'] = intval($_POST['sex']);
 
             $this->model('account')->update_users_fields($update_data, $user_info['uid']);

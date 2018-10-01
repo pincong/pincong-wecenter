@@ -78,8 +78,6 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('user', $user);
 
-		TPL::assign('education_experience_list', $this->model('education')->get_education_experience_list($user['uid']));
-
 		TPL::assign('user_follow_check', $this->model('follow')->user_follow_check($this->user_id, $user['uid']));
 
 		$this->crumb(AWS_APP::lang()->_t('%s 的个人主页', $user['user_name']), 'people/' . $user['url_token']);

@@ -58,8 +58,6 @@ class setting extends AWS_CONTROLLER
 
 		TPL::assign('birthday_d', $birthday_d);
 
-		TPL::assign('education_experience_list', $this->model('education')->get_education_experience_list($this->user_id));
-
 		TPL::import_js('js/fileupload.js');
 
 		TPL::output('account/setting/profile');

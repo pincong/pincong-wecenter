@@ -138,11 +138,6 @@ class ajax extends AWS_CONTROLLER
 		{
 			$update_data['sex'] = intval($_POST['sex']);
 
-			if ($_POST['province'])
-			{
-				$update_data['province'] = htmlspecialchars($_POST['province']);
-				$update_data['city'] = htmlspecialchars($_POST['city']);
-			}
 
 			$update_attrib_data['signature'] = htmlspecialchars($_POST['signature']);
 
@@ -638,107 +633,6 @@ class ajax extends AWS_CONTROLLER
 		)), ENT_NOQUOTES);
 	}
 
-	function add_edu_action()
-	{
-		$school_name = htmlspecialchars($_POST['school_name']);
-		$education_years = intval($_POST['education_years']);
-		$departments = htmlspecialchars($_POST['departments']);
-
-		if (!$_POST['school_name'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入学校名称')));
-		}
-
-		if (!$_POST['departments'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入院系')));
-		}
-
-		if ($_POST['education_years'] == AWS_APP::lang()->_t('请选择') OR !$_POST['education_years'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请选择入学年份')));
-		}
-
-		if (preg_match('/\//is', $_POST['school_name']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('学校名称不能包含 /')));
-		}
-
-		if (preg_match('/\//is', $_POST['departments']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('院系名称不能包含 /')));
-		}
-
-		if (get_setting('auto_create_social_topics') == 'Y')
-		{
-			$this->model('topic')->save_topic($_POST['school_name']);
-			$this->model('topic')->save_topic($_POST['departments']);
-		}
-
-		$edu_id = $this->model('education')->add_education_experience($this->user_id, $school_name, $education_years, $departments);
-
-		if (!$this->model('integral')->fetch_log($this->user_id, 'UPDATE_EDU'))
-		{
-			$this->model('integral')->process($this->user_id, 'UPDATE_EDU', round((get_setting('integral_system_config_profile') * 0.2)), AWS_APP::lang()->_t('完善教育经历'));
-		}
-
-		H::ajax_json_output(AWS_APP::RSM(array(
-			'id' => $edu_id
-		), 1, null));
-
-	}
-
-	function remove_edu_action()
-	{
-		$this->model('education')->del_education_experience($_POST['id'], $this->user_id);
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-
-	}
-
-	//修改教育经历
-	function edit_edu_action()
-	{
-		if (!$_POST['school_name'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入学校名称')));
-		}
-
-		if (!$_POST['departments'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入院系')));
-		}
-
-		if (!$_POST['education_years'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请选择入学年份')));
-		}
-
-		$update_data['school_name'] = htmlspecialchars($_POST['school_name']);
-		$update_data['education_years'] = intval($_POST['education_years']);
-		$update_data['departments'] = htmlspecialchars($_POST['departments']);
-
-		if (preg_match('/\//is', $_POST['school_name']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('学校名称不能包含 /')));
-		}
-
-		if (preg_match('/\//is', $_POST['departments']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('院系名称不能包含 /')));
-		}
-
-		if (get_setting('auto_create_social_topics') == 'Y')
-		{
-			$this->model('topic')->save_topic($_POST['school_name']);
-			$this->model('topic')->save_topic($_POST['departments']);
-		}
-
-		$this->model('education')->update_education_experience($update_data, $_GET['id'], $this->user_id);
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
-
 
 	public function privacy_setting_action()
 	{
@@ -853,10 +747,6 @@ class ajax extends AWS_CONTROLLER
 		$update_data['sex'] = intval($_POST['sex']);
 
 
-		$update_data['province'] = htmlspecialchars($_POST['province']);
-
-		$update_data['city'] = htmlspecialchars($_POST['city']);
-
 		if ($_POST['birthday_y'])
 		{
 			$update_data['birthday'] = intval(strtotime(intval($_POST['birthday_y']) . '-' . intval($_POST['birthday_m']) . '-' . intval($_POST['birthday_d'])));
@@ -878,19 +768,6 @@ class ajax extends AWS_CONTROLLER
 		if (($update_attrib_data['homepage'] OR $update_data['mobile']) AND !$this->model('integral')->fetch_log($this->user_id, 'UPDATE_CONTACT'))
 		{
 			$this->model('integral')->process($this->user_id, 'UPDATE_CONTACT', round((get_setting('integral_system_config_profile') * 0.1)), AWS_APP::lang()->_t('完善联系资料'));
-		}
-
-		if (get_setting('auto_create_social_topics') == 'Y')
-		{
-			if ($_POST['city'])
-			{
-				$this->model('topic')->save_topic($_POST['city']);
-			}
-
-			if ($_POST['province'])
-			{
-				$this->model('topic')->save_topic($_POST['province']);
-			}
 		}
 
 		// 更新主表

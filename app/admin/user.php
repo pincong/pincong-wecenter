@@ -103,15 +103,6 @@ class user extends AWS_ADMIN_CONTROLLER
             $where[] = 'reputation <= ' . intval($_GET['reputation_max']);
         }
 
-        if ($_GET['province'])
-        {
-            $where[] = "province = '" . $this->model('people')->quote($_GET['province']) . "'";
-        }
-
-        if ($_GET['city'])
-        {
-            $where[] = "city = '" . $this->model('people')->quote($_GET['city']) . "'";
-        }
 
         $user_list = $this->model('people')->fetch_page('users', implode(' AND ', $where), 'uid DESC', $_GET['page'], $this->per_page);
 
