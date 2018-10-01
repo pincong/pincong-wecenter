@@ -44,20 +44,6 @@ class setting extends AWS_CONTROLLER
 	{
 		$this->crumb(AWS_APP::lang()->_t('基本资料'), '/account/setting/profile/');
 
-		for ($i = date('Y'); $i > 1900; $i--)
-		{
-			$birthday_y[$i] = $i;
-		}
-
-		TPL::assign('birthday_y', $birthday_y);
-
-		for ($tmp_i = 1; $tmp_i <= 31; $tmp_i ++)
-		{
-			$birthday_d[$tmp_i] = $tmp_i;
-		}
-
-		TPL::assign('birthday_d', $birthday_d);
-
 		TPL::import_js('js/fileupload.js');
 
 		TPL::output('account/setting/profile');
