@@ -727,7 +727,7 @@ class question_class extends AWS_MODEL
 			return false;
 		}
 
-		if (!$recipients_uid AND !$email)
+		if (!$recipients_uid)
 		{
 			return false;
 		}
@@ -741,10 +741,6 @@ class question_class extends AWS_MODEL
 		if ($recipients_uid)
 		{
 			$data['recipients_uid'] = intval($recipients_uid);
-		}
-		else if ($email)
-		{
-			$data['email'] = $email;
 		}
 
 		return $this->insert('question_invite', $data);
@@ -805,11 +801,6 @@ class question_class extends AWS_MODEL
 		{
 			return $this->fetch_one('question_invite',  'question_invite_id', 'question_id = ' . intval($question_id) . ' AND sender_uid = ' . intval($sender_uid) . ' AND recipients_uid = ' . intval($recipients_uid));
 		}
-	}
-
-	public function check_email_invite($question_id, $sender_uid, $email)
-	{
-		return $this->fetch_row('question_invite', 'question_id = ' . intval($question_id) . ' AND email = \'' . $email . '\'');
 	}
 
 	public function get_invite_users($question_id, $limit = 10)

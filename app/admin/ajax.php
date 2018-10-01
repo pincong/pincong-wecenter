@@ -1407,13 +1407,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
                 {
                     if ($user_info = $this->model('account')->get_user_info_by_uid($approval_uid))
                     {
-                        if ($user_info['email'])
-                        {
-                            $this->model('email')->action_email('REGISTER_DECLINE', $user_info['email'], null, array(
-                                'message' => htmlspecialchars($_POST['reason'])
-                            ));
-                        }
-
                         $this->model('system')->remove_user_by_uid($approval_uid, true);
                     }
                 }

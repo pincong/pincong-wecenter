@@ -111,9 +111,7 @@ class invitation_class extends AWS_MODEL
 
 		$user_info = $this->model('account')->get_user_info_by_uid($invitation_row['uid']);
 		
-		return $this->model('email')->action_email('INVITE_REG', $invitation_row['invitation_email'], get_js_url('/account/register/email-' . urlencode($invitation_row['invitation_email']) . '__icode-' . $invitation_row['invitation_code']), array(
-			'user_name' => $user_info['user_name'],
-		));
+		return true;
 	}
 
 	public function send_batch_invitations($email_list, $uid, $user_name)
@@ -129,9 +127,6 @@ class invitation_class extends AWS_MODEL
 
 			$this->model('invitation')->add_invitation($uid, $invitation_code, $email, time(), ip2long($_SERVER['REMOTE_ADDR']));
 
-			$this->model('email')->action_email('INVITE_REG', $email, get_js_url('/account/register/email-' . urlencode($email) . '__icode-' . $invitation_code), array(
-				'user_name' => $user_name,
-			));
 		}
 
 		return true;

@@ -59,10 +59,7 @@ class message_class extends AWS_MODEL
 
 		if ($user_info = $this->model('account')->get_user_info_by_uid($sender_uid))
 		{
-			$this->model('email')->action_email('NEW_MESSAGE', $recipient_uid, get_js_url('/inbox/'), array(
-				'user_name' => $user_info['user_name'],
-				'message' => nl2br(htmlspecialchars($message)),
-			));
+
 		}
 
 		return $message_id;

@@ -146,11 +146,6 @@ class ajax extends AWS_CONTROLLER
 			'question_id' => intval($_POST['question_id'])
 		));
 
-		$this->model('email')->action_email('QUESTION_INVITE', $_POST['uid'], get_js_url('/question/' . $question_info['question_id'] . '?notification_id-' . $notification_id), array(
-			'user_name' => $this->user_info['user_name'],
-			'question_title' => $question_info['question_content'],
-		));
-
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
@@ -756,35 +751,6 @@ class ajax extends AWS_CONTROLLER
 		AWS_APP::cache()->set('function_interval_timer_redirect_' . $this->user_id, time(), 86400);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
-
-	public function email_invite_action()
-	{
-		if (! H::valid_email($_POST['email']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请填写正确的 Email')));
-		}
-
-		if ($_POST['email'] == $this->user_info['email'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('你不能邀请自己')));
-		}
-
-		if ($this->model('question')->check_email_invite($_GET['question_id'], $this->user_id, $_POST['email']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('此 E-mail 已接收过邀请')));
-		}
-
-		$this->model('question')->add_invite($_GET['question_id'], $this->user_id, 0, $_POST['email']);
-
-		$question_info = $this->model('question')->get_question_info_by_id($_GET['question_id']);
-
-		$this->model('email')->action_email('INVITE_QUESTION', $_POST['email'], get_js_url('/question/' . $_GET['question_id'] . '?fromuid=' . $this->user_id), array(
-			'user_name' => $this->user_info['user_name'],
-			'question_title' => $question_info['question_content']
-		));
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, AWS_APP::lang()->_t('邀请成功')));
 	}
 
 	public function remove_question_action()

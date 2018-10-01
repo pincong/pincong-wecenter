@@ -170,10 +170,6 @@ class publish_class extends AWS_MODEL
 			{
 				if ($focus_user['uid'] != $uid)
 				{
-					$this->model('email')->action_email('NEW_ANSWER', $focus_user['uid'], get_js_url('/question/' . $question_id), array(
-						'question_title' => $question_info['question_content']
-					));
-
 					$this->model('notify')->send($uid, $focus_user['uid'], notify_class::TYPE_NEW_ANSWER, notify_class::CATEGORY_QUESTION, $question_id, array(
 						'question_id' => $question_id,
 						'from_uid' => $uid,
@@ -257,10 +253,6 @@ class publish_class extends AWS_MODEL
 
 				$user_info = $this->model('account')->get_user_info_by_uid($uid);
 
-				$this->model('email')->action_email('QUESTION_INVITE', $ask_user_id, get_js_url('/question/' . $question_id), array(
-					'user_name' => $user_info['user_name'],
-					'question_title' => $question_content
-				));
 			}
 
 			// 自动关注该问题

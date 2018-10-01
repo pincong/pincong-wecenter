@@ -1321,11 +1321,6 @@ class account_class extends AWS_MODEL
         $delete_message .= "\r\n-----------------------------\r\n";
         $delete_message .= AWS_APP::lang()->_t('如有疑问, 请联系管理员');
 
-        $this->model('email')->action_email('QUESTION_DEL', $uid, get_js_url('/inbox/'), array(
-            'question_title' => $title,
-            'question_detail' => $delete_message
-        ));
-
         return true;
     }
 

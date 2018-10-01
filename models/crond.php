@@ -114,7 +114,6 @@ class crond_class extends AWS_MODEL
             }
         }
 
-        $this->model('email')->send_mail_queue(120);
     }
 
     // 每五分钟执行
@@ -174,6 +173,5 @@ class crond_class extends AWS_MODEL
     {
 	    $this->model('notify')->clean_mark_read_notifications(2592000);
         $this->model('system')->clean_break_attach();
-        $this->model('email')->mail_queue_error_clean();
     }
 }

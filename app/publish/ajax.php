@@ -363,11 +363,6 @@ class ajax extends AWS_CONTROLLER
                 'from_uid' => $this->user_id,
                 'question_id' => $question_info['question_id']
             ));
-
-            $this->model('email')->action_email('QUESTION_MOD', $question_info['published_uid'], get_js_url('/question/' . $question_info['question_id']), array(
-                'user_name' => $this->user_info['user_name'],
-                'question_title' => $question_info['question_content']
-            ));
         }
 
         if ($_POST['category_id'] AND $_POST['category_id'] != $question_info['category_id'])

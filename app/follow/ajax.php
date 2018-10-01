@@ -49,10 +49,6 @@ class ajax extends AWS_CONTROLLER
 			$this->model('notify')->send($this->user_id, $_POST['uid'], notify_class::TYPE_PEOPLE_FOCUS, notify_class::CATEGORY_PEOPLE, $this->user_id, array(
 				'from_uid' => $this->user_id
 			));
-
-			$this->model('email')->action_email('FOLLOW_ME', $_POST['uid'], get_js_url('/people/' . $this->user_info['url_token']), array(
-				'user_name' => $this->user_info['user_name'],
-			));
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
