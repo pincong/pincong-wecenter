@@ -1,14 +1,14 @@
 <?php TPL::output('global/header.tpl.htm'); ?>
 <?php TPL::output('account/setting/setting_header.tpl.htm'); ?>
 
-<!-- 基本信息 -->
 <div class="aw-mod">
 	<div class="mod-body">
+		<form id="setting_form" method="post" action="account/ajax/profile_setting/">
+		<!-- 基本信息 -->
 		<div class="aw-mod mod-base">
 			<div class="mod-head">
 				<h3><?php _e('基本信息'); ?></h3>
 			</div>
-			<form id="setting_form" method="post" action="account/ajax/profile_setting/">
 			<div class="mod-body">
 				<dl>
 					<dt><?php _e('用户名'); ?>:</dt>
@@ -93,16 +93,18 @@
 			</div>
 		</div>
 		<!-- end 基本信息 -->
-
 		</form>
-
 	</div>
 	<div class="mod-footer clearfix">
 		<a href="javascript:;" class="btn btn-large btn-success pull-right" onclick="AWS.ajax_post($('#setting_form'));"><?php _e('保存'); ?></a>
 	</div>
 </div>
 
-<script type="text/javascript" src="<?php echo G_STATIC_URL; ?>/js/app/setting.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+    var fileUpload = new FileUpload('avatar', $('#avatar_uploader'), $('#avatar_src'), G_BASE_URL + '/account/ajax/avatar_upload/', {'loading_status' : '#avatar_uploading_status'});
+});
+</script>
 
 <?php TPL::output('account/setting/setting_footer.tpl.htm'); ?>
 <?php TPL::output('global/footer.tpl.htm'); ?>
