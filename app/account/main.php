@@ -92,7 +92,7 @@ class main extends AWS_CONTROLLER
 
 		$this->crumb(AWS_APP::lang()->_t('登录'), '/account/login/');
 
-		TPL::import_css('css/login.css');
+		TPL::import_css('css/register.css');
 
 		// md5 password...
 		TPL::import_js('js/md5.js');

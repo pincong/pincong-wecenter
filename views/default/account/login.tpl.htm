@@ -1,47 +1,47 @@
 <?php TPL::output('global/header_meta.tpl.htm'); ?>
 
-<div id="wrapper">
-	<div class="aw-login-box">
-		<div class="mod-body clearfix">
-			<div class="content pull-left">
-				<h1 class="logo"><a href=""></a></h1>
-				<h2><?php echo get_setting('site_name'); ?></h2>
-				<form id="login_form" method="post" onsubmit="return false" action="account/ajax/login_process/">
-					<input type="hidden" name="return_url" value="<?php echo $this->return_url; ?>" />
-					<ul>
-						<li>
-							<input type="text" id="aw-login-user-name" class="form-control" placeholder="<?php _e('用户名'); ?>" name="user_name" />
-						</li>
-						<li>
-							<input type="password" id="aw-login-user-password" class="form-control" placeholder="<?php _e('密码'); ?>" name="password" />
-						</li>
-						<li class="alert alert-danger collapse error_message">
-							<i class="icon icon-delete"></i> <em></em>
-						</li>
-						<li class="last">
-							<a href="javascript:;" onclick="AWS.ajax_post($('#login_form'), AWS.ajax_processer, 'error_message');" id="login_submit" class="pull-right btn btn-large btn-primary"><?php _e('登录'); ?></a>
-							<label>
-								<input type="checkbox" value="1" name="net_auto_login" />
-								<?php _e('记住我'); ?>
-							</label>
-							<a href="account/find_password/">&nbsp;&nbsp;<?php _e('忘记密码'); ?></a>
-						</li>
-					</ul>
-				</form>
-			</div>
-			<div class="side-bar pull-left">
-
-			</div>
-		</div>
-		<div class="mod-footer">
-			<span>还没有账号?</span>&nbsp;&nbsp;
-			<a href="account/register/"><?php _e('立即注册'); ?></a>&nbsp;&nbsp;•&nbsp;&nbsp;
-			<a href="">游客访问</a>&nbsp;&nbsp;•&nbsp;&nbsp;
-			<a href="reader/"><?php _e('问答阅读'); ?></a>
-		</div>
+<div class="aw-register-box">
+	<div class="mod-head">
+		<img src="<?php echo G_STATIC_URL; ?>/css/<?php echo $this->template_name; ?>/img/login_logo.png" alt="" />
+		<h1><?php echo get_setting('site_name'); ?></h1>
+	</div>
+	<div class="mod-body">
+		<form class="aw-register-form" id="login_form" method="post" onsubmit="return false" action="account/ajax/login_process/">
+			<input type="hidden" name="return_url" value="<?php echo $this->return_url; ?>" />
+			<ul>
+				<li class="alert alert-danger collapse error_message text-left">
+					<i class="icon icon-delete"></i><em></em>
+				</li>
+				<li>
+					<input type="text" id="aw-login-user-name" class="form-control" placeholder="<?php _e('用户名'); ?>" name="user_name" />
+				</li>
+				<li>
+					<input type="password" id="aw-login-user-password" class="form-control" placeholder="<?php _e('密码'); ?>" name="password" />
+				</li>
+				<li class="last">
+					<label><input type="checkbox" value="1" name="net_auto_login" /> <?php _e('记住我'); ?></label>
+					<a href="account/find_password/" class="pull-right">忘记密码</a>
+					<div class="aw-register-agreement collapse">
+						<div class="aw-register-agreement-txt" id="register_agreement"></div>
+					</div>
+				</li>
+				<li class="clearfix">
+					<button class="btn btn-large btn-blue btn-block" onclick="AWS.ajax_post($('#login_form'), AWS.ajax_processer, 'error_message'); return false;"><?php _e('登录'); ?></button>
+				</li>
+			</ul>
+		</form>
 	</div>
 </div>
 
-<script type="text/javascript" src="<?php echo G_STATIC_URL; ?>/js/app/login.js"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+    $('#login_form input').keydown(function (e) {
+        if (e.keyCode == 13)
+        {
+            $('#login_submit').click();
+        }
+    });
+});
+</script>
 
 <?php TPL::output('global/footer.tpl.htm'); ?>
