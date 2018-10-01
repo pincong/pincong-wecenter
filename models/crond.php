@@ -99,8 +99,6 @@ class crond_class extends AWS_MODEL
             AWS_APP::cache()->set('reputation_calculate_start', 0, 604800);
         }
 
-        $this->model('online')->delete_expire_users();
-
     }
 
     // 每五分钟执行
