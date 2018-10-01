@@ -84,18 +84,6 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('education_experience_list', $this->model('education')->get_education_experience_list($user['uid']));
 
-		$jobs_list = $this->model('work')->get_jobs_list();
-
-		if ($work_experience_list = $this->model('work')->get_work_experience_list($user['uid']))
-		{
-			foreach ($work_experience_list as $key => $val)
-			{
-				$work_experience_list[$key]['job_name'] = $jobs_list[$val['job_id']];
-			}
-		}
-
-		TPL::assign('work_experience_list', $work_experience_list);
-
 		TPL::assign('user_follow_check', $this->model('follow')->user_follow_check($this->user_id, $user['uid']));
 
 		$this->crumb(AWS_APP::lang()->_t('%s 的个人主页', $user['user_name']), 'people/' . $user['url_token']);

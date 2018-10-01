@@ -1257,62 +1257,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
         H::ajax_json_output(AWS_APP::RSM(null, 1, null));
     }
 
-    public function remove_job_action()
-    {
-        $this->model('work')->remove_job($_POST['id']);
-
-        H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-    }
-
-    public function add_job_action()
-    {
-        if (!$_POST['jobs'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入职位名称')));
-        }
-
-        $job_list = array();
-
-        if ($job_list_tmp = explode("\n", $_POST['jobs']))
-        {
-            foreach($job_list_tmp as $key => $job)
-            {
-                $job_name = trim(strtolower($job));
-
-                if ($job_name)
-                {
-                    $job_list[] = $job_name;
-                }
-            }
-        }
-        else
-        {
-            $job_list[] = $_POST['jobs'];
-        }
-
-        foreach($job_list as $key => $val)
-        {
-            $this->model('work')->add_job($val);
-        }
-
-        H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-    }
-
-    public function save_job_action()
-    {
-        if ($_POST['job_list'])
-        {
-            foreach($_POST['job_list'] as $key => $val)
-            {
-                $this->model('work')->update_job($key, array(
-                    'job_name' => $val,
-                ));
-            }
-        }
-
-        H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('职位列表更新成功')));
-    }
-
     public function integral_process_action()
     {
         if (!$_POST['uid'])

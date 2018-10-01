@@ -284,7 +284,6 @@ class ajax extends AWS_CONTROLLER
 
 	public function welcome_message_template_action()
 	{
-		TPL::assign('job_list', $this->model('work')->get_jobs_list());
 
 		TPL::output('account/ajax/welcome_message_template');
 	}
@@ -702,52 +701,6 @@ class ajax extends AWS_CONTROLLER
 
 	}
 
-	function add_work_action()
-	{
-		if (!$_POST['company_name'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入公司名称')));
-		}
-
-		if (!$_POST['job_id'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请选择职位')));
-		}
-
-		if (!$_POST['start_year'] OR !$_POST['end_year'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请选择工作时间')));
-		}
-
-		if (preg_match('/\//is', $_POST['company_name']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('公司名称不能包含 /')));
-		}
-
-		if (get_setting('auto_create_social_topics') == 'Y')
-		{
-			$this->model('topic')->save_topic($_POST['company_name']);
-		}
-
-		$work_id = $this->model('work')->add_work_experience($this->user_id, $_POST['start_year'], $_POST['end_year'], $_POST['company_name'], $_POST['job_id']);
-
-		if (!$this->model('integral')->fetch_log($this->user_id, 'UPDATE_WORK'))
-		{
-			$this->model('integral')->process($this->user_id, 'UPDATE_WORK', round((get_setting('integral_system_config_profile') * 0.2)), AWS_APP::lang()->_t('完善工作经历'));
-		}
-
-		H::ajax_json_output(AWS_APP::RSM(array(
-			'id' => $work_id
-		), 1, null));
-	}
-
-	function remove_work_action()
-	{
-		$this->model('work')->del_work_experience($_POST['id'], $this->user_id);
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
-
 	//修改教育经历
 	function edit_edu_action()
 	{
@@ -791,44 +744,6 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
-	//修改工作经历
-	function edit_work_action()
-	{
-		if (!$_POST['company_name'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入公司名称')));
-		}
-
-		if (!$_POST['job_id'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请选择职位')));
-		}
-
-		if (!$_POST['start_year'] OR !$_POST['end_year'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请选择工作时间')));
-		}
-
-		$update_data['job_id'] = intval($_POST['job_id']);
-		$update_data['company_name'] = htmlspecialchars($_POST['company_name']);
-
-		$update_data['start_year'] = intval($_POST['start_year']);
-		$update_data['end_year'] = intval($_POST['end_year']);
-
-		if (preg_match('/\//is', $_POST['company_name']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('公司名称不能包含 /')));
-		}
-
-		if (get_setting('auto_create_social_topics') == 'Y')
-		{
-			$this->model('topic')->save_topic($_POST['company_name']);
-		}
-
-		$this->model('work')->update_work_experience($update_data, $_GET['id'], $this->user_id);
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
 
 	public function privacy_setting_action()
 	{

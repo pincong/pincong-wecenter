@@ -116,12 +116,6 @@ $config[] = array(
             'id' => 406,
             'title' => AWS_APP::lang()->_t('批量邀请'),
             'url' => 'admin/user/invites/'
-        ),
-
-        array(
-            'id' => 407,
-            'title' => AWS_APP::lang()->_t('职位设置'),
-            'url' => 'admin/user/job_list/'
         )
     )
 );

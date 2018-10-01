@@ -477,7 +477,6 @@ class system_class extends AWS_MODEL
 			'reputation_topic',
 			'related_links',
 			'topic_focus',
-			'work_experience',
 			'users_attrib',
 			'users'
 		);
