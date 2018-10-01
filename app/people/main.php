@@ -78,10 +78,6 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('user', $user);
 
-		$job_info = $this->model('account')->get_jobs_by_id($user['job_id']);
-
-		TPL::assign('job_name', $job_info['job_name']);
-
 		TPL::assign('education_experience_list', $this->model('education')->get_education_experience_list($user['uid']));
 
 		TPL::assign('user_follow_check', $this->model('follow')->user_follow_check($this->user_id, $user['uid']));

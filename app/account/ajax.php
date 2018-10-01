@@ -144,11 +144,6 @@ class ajax extends AWS_CONTROLLER
 				$update_data['city'] = htmlspecialchars($_POST['city']);
 			}
 
-			if ($_POST['job_id'])
-			{
-				$update_data['job_id'] = intval($_POST['job_id']);
-			}
-
 			$update_attrib_data['signature'] = htmlspecialchars($_POST['signature']);
 
 			// 更新主表
@@ -871,8 +866,6 @@ class ajax extends AWS_CONTROLLER
 		{
 			$update_attrib_data['signature'] = htmlspecialchars($_POST['signature']);
 		}
-
-		$update_data['job_id'] = intval($_POST['job_id']);
 
 		if ($_POST['signature'] AND !$this->model('integral')->fetch_log($this->user_id, 'UPDATE_SIGNATURE'))
 		{

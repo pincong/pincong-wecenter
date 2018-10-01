@@ -103,11 +103,6 @@ class user extends AWS_ADMIN_CONTROLLER
             $where[] = 'reputation <= ' . intval($_GET['reputation_max']);
         }
 
-        if ($_GET['job_id'])
-        {
-            $where[] = 'job_id = ' . intval($_GET['job_id']);
-        }
-
         if ($_GET['province'])
         {
             $where[] = "province = '" . $this->model('people')->quote($_GET['province']) . "'";
@@ -216,14 +211,6 @@ class user extends AWS_ADMIN_CONTROLLER
         TPL::assign('system_group', $this->model('account')->get_user_group_list(0));
 
         TPL::output('admin/user/add');
-    }
-
-    public function invites_action()
-    {
-        $this->crumb(AWS_APP::lang()->_t('批量邀请'), "admin/user/invites/");
-
-        TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(406));
-        TPL::output('admin/user/invites');
     }
 
 

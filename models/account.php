@@ -1014,28 +1014,6 @@ class account_class extends AWS_MODEL
         return $users_list;
     }
 
-    /**
-     * 根据职位 ID 获取职位信息
-     *
-     * @param int
-     * @return array
-     */
-    public function get_jobs_by_id($id)
-    {
-        if (!$id)
-        {
-            return false;
-        }
-
-        static $jobs_info;
-
-        if (!$jobs_info[$id])
-        {
-            $jobs_info[$id] = $this->fetch_row('jobs', 'id = ' . intval($id));
-        }
-
-        return $jobs_info[$id];
-    }
 
     /**
      * 获取头像地址

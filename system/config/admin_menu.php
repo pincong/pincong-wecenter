@@ -110,12 +110,6 @@ $config[] = array(
             'id' => 403,
             'title' => AWS_APP::lang()->_t('用户组'),
             'url' => 'admin/user/group_list/'
-        ),
-
-        array(
-            'id' => 406,
-            'title' => AWS_APP::lang()->_t('批量邀请'),
-            'url' => 'admin/user/invites/'
         )
     )
 );
