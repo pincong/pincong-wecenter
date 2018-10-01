@@ -160,62 +160,6 @@ class main extends AWS_CONTROLLER
 		H::redirect_msg(AWS_APP::lang()->_t('欢迎回来: %s , 正在带您进入站点...', $this->user_info['user_name']) . $sync_code, $url);
 	}
 
-	public function valid_email_action()
-	{
-		if (!AWS_APP::session()->valid_email)
-		{
-			HTTP::redirect('/');
-		}
-
-		if (!$user_info = $this->model('account')->get_user_info_by_email(AWS_APP::session()->valid_email))
-		{
-			HTTP::redirect('/');
-		}
-
-		if ($user_info['valid_email'])
-		{
-			H::redirect_msg(AWS_APP::lang()->_t('邮箱已通过验证，请返回登录'), '/account/login/');
-		}
-
-		$this->crumb(AWS_APP::lang()->_t('邮件验证'), '/account/valid_email/');
-
-		TPL::import_css('css/register.css');
-
-		TPL::assign('email', AWS_APP::session()->valid_email);
-
-		TPL::output("account/valid_email");
-	}
-
-	public function valid_email_active_action()
-	{
-		if (!$active_code_row = $this->model('active')->get_active_code($_GET['key'], 'VALID_EMAIL'))
-		{
-			H::redirect_msg(AWS_APP::lang()->_t('链接已失效, 请使用最新的验证链接'), '/');
-		}
-
-		if ($active_code_row['active_time'] OR $active_code_row['active_ip'])
-		{
-			H::redirect_msg(AWS_APP::lang()->_t('邮箱已通过验证, 请返回登录'), '/account/login/');
-		}
-
-		$users = $this->model('account')->get_user_info_by_uid($active_code_row['uid']);
-
-		if ($users['valid_email'])
-		{
-			H::redirect_msg(AWS_APP::lang()->_t('帐户已激活, 请返回登录'), '/account/login/');
-		}
-
-		$this->crumb(AWS_APP::lang()->_t('邮件验证'), '/account/valid_email/');
-
-		TPL::assign('active_code', $_GET['key']);
-
-		TPL::assign('email', $users['email']);
-
-		TPL::import_css('css/register.css');
-
-		TPL::output('account/valid_email_active');
-	}
-
 	public function complete_profile_action()
 	{
 		if ($this->user_info['email'])

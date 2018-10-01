@@ -122,17 +122,11 @@ class account_class extends AWS_MODEL
             return false;
         }
 
-        if (H::valid_email($user_name))
-        {
-            $user_info = $this->get_user_info_by_email($user_name);
-        }
+        $user_info = $this->get_user_info_by_username($user_name);
 
         if (! $user_info)
         {
-            if (! $user_info = $this->get_user_info_by_username($user_name))
-            {
-                return false;
-            }
+            return false;
         }
 
         if (! $this->check_password($password, $user_info['password'], $user_info['salt']))
@@ -160,17 +154,11 @@ class account_class extends AWS_MODEL
             return false;
         }
 
-        if (H::valid_email($user_name))
-        {
-            $user_info = $this->get_user_info_by_email($user_name);
-        }
+        $user_info = $this->get_user_info_by_username($user_name);
 
         if (! $user_info)
         {
-            if (! $user_info = $this->get_user_info_by_username($user_name))
-            {
-                return false;
-            }
+            return false;
         }
 
         if ( $password_md5 != $user_info['password'])
@@ -218,27 +206,6 @@ class account_class extends AWS_MODEL
     public function get_user_info_by_username($user_name, $attrb = false, $cache_result = true)
     {
         if ($uid = $this->fetch_one('users', 'uid', "user_name = '" . $this->quote($user_name) . "'"))
-        {
-            return $this->get_user_info_by_uid($uid, $attrb, $cache_result);
-        }
-    }
-
-    /**
-     * 通过用户邮箱获取用户信息
-     *
-     * $cache_result 为是否缓存结果
-     *
-     * @param string
-     * @return array
-     */
-    public function get_user_info_by_email($email, $cache_result = true)
-    {
-        if (!H::valid_email($email))
-        {
-            return false;
-        }
-
-        if ($uid = $this->fetch_one('users', 'uid', "email = '" . $this->quote($email) . "'"))
         {
             return $this->get_user_info_by_uid($uid, $attrb, $cache_result);
         }
@@ -493,11 +460,6 @@ class account_class extends AWS_MODEL
         }
 
         if ($this->check_username($user_name))
-        {
-            return false;
-        }
-
-        if ($email AND $user_info = $this->get_user_info_by_email($email, false))
         {
             return false;
         }

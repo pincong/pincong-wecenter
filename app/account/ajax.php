@@ -334,11 +334,6 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1',  AWS_APP::lang()->_t('请填写正确的验证码')));
 		}
 
-		if (!$user_info = $this->model('account')->get_user_info_by_email($_POST['email']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1,  AWS_APP::lang()->_t('邮箱地址错误或帐号不存在')));
-		}
-
 		$this->model('active')->new_find_password($user_info['uid']);
 
 		AWS_APP::session()->find_password = $user_info['email'];
