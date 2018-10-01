@@ -547,36 +547,6 @@ var AWS =
 				var template = Hogan.compile(AW_TEMPLATE.recommend).render();
 			break;
 
-			// modify by wecenter 活动模块
-			case 'projectEventForm':
-				var template = Hogan.compile(AW_TEMPLATE.projectEventForm).render(
-				{
-					'project_id': data.project_id,
-					'contact_name': data.contact_name,
-					'contact_tel': data.contact_tel,
-					'contact_email': data.contact_email
-				});
-			break;
-
-			case 'projectStockForm':
-				var template = Hogan.compile(AW_TEMPLATE.projectStockForm).render(
-				{
-					'project_id': data.project_id,
-					'contact_name': data.contact_name,
-					'contact_tel': data.contact_tel,
-					'contact_email': data.contact_email
-				});
-			break;
-
-			case 'activityBox':
-				var template = Hogan.compile(AW_TEMPLATE.activityBox).render(
-				{
-					'contact_name': data.contact_name,
-					'contact_tel': data.contact_tel,
-					'contact_qq': data.contact_qq
-				});
-
-			break;
 		}
 
 		if (template)
