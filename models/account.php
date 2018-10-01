@@ -336,15 +336,6 @@ class account_class extends AWS_MODEL
             $user_info['email_settings'] = array();
         }
 
-        if ($user_info['weixin_settings'])
-        {
-            $user_info['weixin_settings'] = unserialize($user_info['weixin_settings']);
-        }
-        else
-        {
-            $user_info['weixin_settings'] = array();
-        }
-
         $users_info[$uid] = $user_info;
 
         if ($attrib)
@@ -413,15 +404,6 @@ class account_class extends AWS_MODEL
                 else
                 {
                     $val['email_settings'] = array();
-                }
-
-                if ($val['weixin_settings'])
-                {
-                    $val['weixin_settings'] = unserialize($val['weixin_settings']);
-                }
-                else
-                {
-                    $val['weixin_settings'] = array();
                 }
 
                 unset($val['password'], $val['salt']);
@@ -906,11 +888,6 @@ class account_class extends AWS_MODEL
                 if ($val['email_settings'])
                 {
                     $data[$val['uid']]['email_settings'] = unserialize($val['email_settings']);
-                }
-
-                if ($val['weixin_settings'])
-                {
-                    $data[$val['uid']]['weixin_settings'] = unserialize($val['weixin_settings']);
                 }
 
                 $uids[] = $val['uid'];

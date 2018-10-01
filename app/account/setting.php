@@ -103,11 +103,6 @@ class setting extends AWS_CONTROLLER
 			TPL::assign('sina_weibo', $this->model('openid_weibo_oauth')->get_weibo_user_by_uid($this->user_id));
 		}
 
-		if (get_setting('weixin_app_id'))
-		{
-			TPL::assign('weixin', $this->model('openid_weixin_weixin')->get_user_info_by_uid($this->user_id));
-		}
-
 		if (get_setting('google_login_enabled') == 'Y')
 		{
 			TPL::assign('google', $this->model('openid_google')->get_google_user_by_uid($this->user_id));

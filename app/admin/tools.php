@@ -299,27 +299,4 @@ class tools extends AWS_ADMIN_CONTROLLER
         }
     }
 
-    public function update_weixin_menu_action()
-    {
-        $accounts_info = $this->model('weixin')->get_accounts_info();
-
-        foreach ($accounts_info AS $account_info)
-        {
-            if ($error_message = $this->model('weixin')->update_client_menu($account_info))
-            {
-                $messages .= '<br />' . $error_message;
-            }
-        }
-
-        if ($messages)
-        {
-            $messages = '更新微信菜单出现错误：<br />' . $messages;
-        }
-        else
-        {
-            $messages = '更新微信菜单完成';
-        }
-
-        H::redirect_msg(AWS_APP::lang()->_t($messages), '/admin/weixin/mp_menu/');
-    }
 }

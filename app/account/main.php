@@ -129,18 +129,6 @@ class main extends AWS_CONTROLLER
 		TPL::output("account/login");
 	}
 
-	public function weixin_login_action()
-	{
-		if ($this->user_id OR !get_setting('weixin_app_id') OR !get_setting('weixin_app_secret') OR get_setting('weixin_account_role') != 'service')
-		{
-			HTTP::redirect('/');
-		}
-
-		$this->crumb(AWS_APP::lang()->_t('微信登录'), '/account/weixin_login/');
-
-		TPL::output('account/weixin_login');
-	}
-
 	public function register_action()
 	{
 		if (is_mobile() AND !$_GET['ignore_ua_check'])
@@ -154,16 +142,7 @@ class main extends AWS_CONTROLLER
 		}
 		else if (get_setting('register_type') == 'invite' AND !$_GET['icode'])
 		{
-			if (get_setting('weixin_app_id') AND get_setting('weixin_account_role') == 'service')
-			{
-				HTTP::redirect('/account/weixin_login/command-REGISTER');
-			}
-
 			H::redirect_msg(AWS_APP::lang()->_t('本站只接受邀请注册'), '/');
-		}
-		else if (get_setting('register_type') == 'weixin')
-		{
-			H::redirect_msg(AWS_APP::lang()->_t('本站只能通过微信注册'), '/');
 		}
 
 		if ($_GET['icode'])

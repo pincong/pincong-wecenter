@@ -35,8 +35,7 @@ class ajax extends AWS_CONTROLLER
 			'send_valid_mail',
 			'valid_email_active',
 			'request_find_password',
-			'find_password_modify',
-			'weixin_login_process'
+			'find_password_modify'
 		);
 
 		return $rule_action;
@@ -86,10 +85,6 @@ class ajax extends AWS_CONTROLLER
 		else if (get_setting('register_type') == 'invite' AND !$_POST['icode'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('本站只能通过邀请注册')));
-		}
-		else if (get_setting('register_type') == 'weixin')
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('本站只能通过微信注册')));
 		}
 
 		if ($_POST['icode'])
@@ -936,25 +931,8 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		$weixin_settings = array(
-			'AT_ME' => 'N',
-			'NEW_ANSWER' => 'N',
-			'NEW_ARTICLE_COMMENT',
-			'NEW_COMMENT' => 'N',
-			'QUESTION_INVITE' => 'N'
-		);
-
-		if ($_POST['weixin_settings'])
-		{
-			foreach ($_POST['weixin_settings'] AS $key => $val)
-			{
-				unset($weixin_settings[$val]);
-			}
-		}
-
 		$this->model('account')->update_users_fields(array(
 			'email_settings' => serialize($email_settings),
-			'weixin_settings' => serialize($weixin_settings),
 			'weibo_visit' => intval($_POST['weibo_visit']),
 			'inbox_recv' => intval($_POST['inbox_recv'])
 		), $this->user_id);
@@ -1208,40 +1186,6 @@ class ajax extends AWS_CONTROLLER
 	public function clean_user_recommend_cache_action()
 	{
 		AWS_APP::cache()->delete('user_recommend_' . $this->user_id);
-	}
-
-	public function unbinding_weixin_action()
-	{
-		if (! $this->user_info['email'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('当前帐号没有绑定 Email, 不允许解除绑定')));
-		}
-
-		if (get_setting('register_type') == 'weixin')
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('当前系统设置不允许解除绑定')));
-		}
-
-		$this->model('openid_weixin_weixin')->weixin_unbind($this->user_id);
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
-
-	public function weixin_login_process_action()
-	{
-		if (!get_setting('weixin_app_id') OR !get_setting('weixin_app_secret') OR get_setting('weixin_account_role') != 'service')
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('当前微信公众号暂不支持此功能')));
-		}
-
-		if ($user_info = $this->model('openid_weixin_weixin')->weixin_login_process(session_id()))
-		{
-			$this->model('account')->setcookie_login($user_info['uid'], $user_info['user_name'], $user_info['password'], $user_info['salt'], null, false);
-
-			H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-		}
-
-		H::ajax_json_output(AWS_APP::RSM(null, -1, null));
 	}
 
 	public function complete_profile_action()

@@ -470,83 +470,6 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('只允许插入当前页面上传的附件')));
         }
 
-        if ($_POST['weixin_media_id'])
-        {
-            $_POST['weixin_media_id'] = base64_decode($_POST['weixin_media_id']);
-
-            $weixin_pic_url = AWS_APP::cache()->get('weixin_pic_url_' . md5($_POST['weixin_media_id']));
-
-            if (!$weixin_pic_url)
-            {
-                H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('图片已过期或 media_id 无效')));
-            }
-
-            $file = $this->model('openid_weixin_weixin')->get_file($_POST['weixin_media_id']);
-
-            if (!$file)
-            {
-                H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('远程服务器忙')));
-            }
-
-            if (is_array($file) AND $file['errmsg'])
-            {
-                H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('获取图片失败，错误为: %s', $file['errmsg'])));
-            }
-
-            AWS_APP::upload()->initialize(array(
-                'allowed_types' => get_setting('allowed_upload_types'),
-                'upload_path' => get_setting('upload_dir') . '/questions/' . gmdate('Ymd'),
-                'is_image' => TRUE,
-                'max_size' => get_setting('upload_size_limit')
-            ));
-
-            AWS_APP::upload()->do_upload($_POST['weixin_media_id'] . '.jpg', $file);
-
-            $upload_error = AWS_APP::upload()->get_error();
-
-            if ($upload_error)
-            {
-                switch ($upload_error)
-                {
-                    default:
-                        H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('保存图片失败，错误为: %s', $upload_error)));
-
-                        break;
-
-                    case 'upload_invalid_filetype':
-                        H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('保存图片失败，本站不允许上传 jpeg 格式的图片')));
-
-                        break;
-
-                    case 'upload_invalid_filesize':
-                        H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('图片尺寸过大, 最大允许尺寸为 %s KB', get_setting('upload_size_limit'))));
-
-                        break;
-                }
-            }
-
-            $upload_data = AWS_APP::upload()->data();
-
-            if (!$upload_data)
-            {
-                H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('保存图片失败，请与管理员联系')));
-            }
-
-            foreach (AWS_APP::config()->get('image')->attachment_thumbnail AS $key => $val)
-            {
-                $thumb_file[$key] = $upload_data['file_path'] . $val['w'] . 'x' . $val['h'] . '_' . basename($upload_data['full_path']);
-
-                AWS_APP::image()->initialize(array(
-                    'quality' => 90,
-                    'source_image' => $upload_data['full_path'],
-                    'new_image' => $thumb_file[$key],
-                    'width' => $val['w'],
-                    'height' => $val['h']
-                ))->resize();
-            }
-
-            $this->model('publish')->add_attach('question', $upload_data['orig_name'], $_POST['attach_access_key'], time(), basename($upload_data['full_path']), true);
-        }
 
         // !注: 来路检测后面不能再放报错提示
         if (!valid_post_hash($_POST['post_hash']))
@@ -582,13 +505,6 @@ class ajax extends AWS_CONTROLLER
 
             if ($_POST['_is_mobile'])
             {
-                if ($weixin_user = $this->model('openid_weixin_weixin')->get_user_info_by_uid($this->user_id))
-                {
-                    if ($weixin_user['location_update'] > time() - 7200)
-                    {
-                    }
-                }
-
                 $url = get_js_url('/m/question/' . $question_id);
             }
             else

@@ -194,16 +194,6 @@ class publish_class extends AWS_MODEL
 
 		$this->model('question')->delete_question_uninterested($uid, $question_id);
 
-		if ($weixin_user = $this->model('openid_weixin_weixin')->get_user_info_by_uid($question_info['published_uid']) AND $question_info['published_uid'] != $uid)
-		{
-			$weixin_user_info = $this->model('account')->get_user_info_by_uid($weixin_user['uid']);
-
-			if ($weixin_user_info['weixin_settings']['NEW_ANSWER'] != 'N')
-			{
-				$this->model('weixin')->send_text_message($weixin_user['openid'], "您的问题 [" . $question_info['question_content'] . "] 收到了新的回答:\n\n" . strip_tags($answer_content), $this->model('openid_weixin_weixin')->redirect_url('/m/question/' . $question_id));
-			}
-		}
-
 		$this->model('posts')->set_posts_index($question_id, 'question');
 
 		if ($reply_to_openid)
@@ -414,16 +404,6 @@ class publish_class extends AWS_MODEL
 				'article_id' => $article_info['id'],
 				'item_id' => $comment_id
 			));
-		}
-
-		if ($weixin_user = $this->model('openid_weixin_weixin')->get_user_info_by_uid($article_info['uid']) AND $article_info['uid'] != $uid)
-		{
-			$weixin_user_info = $this->model('account')->get_user_info_by_uid($weixin_user['uid']);
-
-			if ($weixin_user_info['weixin_settings']['NEW_ARTICLE_COMMENT'] != 'N')
-			{
-				$this->model('weixin')->send_text_message($weixin_user['openid'], "您的文章 [" . $article_info['title'] . "] 收到了新的评论:\n\n" . strip_tags($message), $this->model('openid_weixin_weixin')->redirect_url('/article/' . $article_info['id']));
-			}
 		}
 
 		ACTION_LOG::save_action($uid, $article_info['id'], ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_COMMENT_ARTICLE, $message, $comment_id);

@@ -996,15 +996,6 @@ class question_class extends AWS_MODEL
 				'comment_id' => $comment_id
 			));
 
-			if ($weixin_user = $this->model('openid_weixin_weixin')->get_user_info_by_uid($question_info['published_uid']))
-			{
-				$weixin_user_info = $this->model('account')->get_user_info_by_uid($weixin_user['uid']);
-
-				if ($weixin_user_info['weixin_settings']['NEW_COMMENT'] != 'N')
-				{
-					$this->model('weixin')->send_text_message($weixin_user['openid'], "您的问题 [" . $question_info['question_content'] . "] 收到了新的评论:\n\n" . strip_tags($message), $this->model('openid_weixin_weixin')->redirect_url('/m/question/' . $question_info['question_id']));
-				}
-			}
 		}
 
 		if ($at_users = $this->model('question')->parse_at_user($message, false, true))
@@ -1022,15 +1013,6 @@ class question_class extends AWS_MODEL
 					'comment_id' => $comment_id
 				));
 
-				if ($weixin_user = $this->model('openid_weixin_weixin')->get_user_info_by_uid($user_id))
-				{
-					$weixin_user_info = $this->model('account')->get_user_info_by_uid($weixin_user['uid']);
-
-					if ($weixin_user_info['weixin_settings']['AT_ME'] != 'N')
-					{
-						$this->model('weixin')->send_text_message($weixin_user['openid'], "有会员在问题 [" . $question_info['question_content'] . "] 评论中提到了您", $this->model('openid_weixin_weixin')->redirect_url('/m/question/' . $question_info['question_id']));
-					}
-				}
 			}
 		}
 

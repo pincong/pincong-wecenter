@@ -120,25 +120,6 @@ class main extends AWS_CONTROLLER
 			'mobile/js/aw-mobile-template.js'
 		));
 
-		if (in_weixin())
-		{
-			$noncestr = mt_rand(1000000000, 9999999999);
-
-			TPL::assign('weixin_noncestr', $noncestr);
-
-			$jsapi_ticket = $this->model('openid_weixin_weixin')->get_jsapi_ticket($this->model('openid_weixin_weixin')->get_access_token(get_setting('weixin_app_id'), get_setting('weixin_app_secret')));
-
-			$url = ($_SERVER['HTTPS'] AND !in_array(strtolower($_SERVER['HTTPS']), array('off', 'no'))) ? 'https' : 'http';
-
-			$url .= '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-
-			TPL::assign('weixin_signature', $this->model('openid_weixin_weixin')->generate_jsapi_ticket_signature(
-				$jsapi_ticket,
-				$noncestr,
-				TIMESTAMP,
-				$url
-			));
-		}
 	}
 
 	public function home_action()
@@ -545,11 +526,6 @@ class main extends AWS_CONTROLLER
 			$return_url = get_js_url('/m/');
 		}
 
-		if (in_weixin() AND get_setting('weixin_app_id') AND get_setting('weixin_account_role') == 'service')
-		{
-			HTTP::redirect($this->model('openid_weixin_weixin')->redirect_url($return_url));
-		}
-
 		TPL::assign('body_class', 'explore-body');
 		TPL::assign('return_url', strip_tags($return_url));
 
@@ -560,7 +536,7 @@ class main extends AWS_CONTROLLER
 
 	public function register_action()
 	{
-		if (($this->user_id AND !$_GET['weixin_id']) OR $this->user_info['weixin_id'])
+		if ($this->user_id)
 		{
 			if ($url)
 			{
@@ -579,10 +555,6 @@ class main extends AWS_CONTROLLER
 		else if (get_setting('register_type') == 'invite' AND !$_GET['icode'])
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('本站只能通过邀请注册'));
-		}
-		else if (get_setting('register_type') == 'weixin')
-		{
-			H::redirect_msg(AWS_APP::lang()->_t('本站只能通过微信注册'));
 		}
 
 		if ($_GET['icode'])
@@ -1033,19 +1005,6 @@ class main extends AWS_CONTROLLER
 				'category_id' => intval($_POST['category_id'])
 			);
 		}
-		else if ($_GET['weixin_media_id'])
-		{
-			$weixin_pic_url = AWS_APP::cache()->get('weixin_pic_url_' . md5(base64_decode($_GET['weixin_media_id'])));
-
-			if (!$weixin_pic_url)
-			{
-				H::redirect_msg(AWS_APP::lang()->_t('图片已过期或 media_id 无效'));
-			}
-
-			TPL::assign('weixin_media_id', $_GET['weixin_media_id']);
-
-			TPL::assign('weixin_pic_url', $weixin_pic_url);
-		}
 		else
 		{
 			$draft_content = $this->model('draft')->get_data(1, 'question', $this->user_id);
@@ -1181,14 +1140,6 @@ class main extends AWS_CONTROLLER
 	{
 		$this->crumb(AWS_APP::lang()->_t('附近的人'), '/m/nearby_people/');
 
-		if ($weixin_user = $this->model('openid_weixin_weixin')->get_user_info_by_uid($this->user_id))
-		{
-			/*if (!$near_by_users = $this->model('people')->get_near_by_users($weixin_user['longitude'], $weixin_user['latitude'], $this->user_id, 20))
-			{
-				H::redirect_msg(AWS_APP::lang()->_t('你的附近暂时没有人'));
-			}*/
-		}
-		else
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('请先绑定微信或打开地理位置分享'));
 		}
@@ -1202,14 +1153,6 @@ class main extends AWS_CONTROLLER
 	{
 		$this->crumb(AWS_APP::lang()->_t('附近的问题'), '/m/nearby_question/');
 
-		if ($weixin_user = $this->model('openid_weixin_weixin')->get_user_info_by_uid($this->user_id))
-		{
-			/*if (!$near_by_questions = $this->model('question')->get_near_by_questions($weixin_user['longitude'], $weixin_user['latitude'], $this->user_id, 20))
-			{
-				H::redirect_msg(AWS_APP::lang()->_t('你的附近暂时没有问题'));
-			}*/
-		}
-		else
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('请先绑定微信或打开地理位置分享'));
 		}

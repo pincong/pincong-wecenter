@@ -478,14 +478,12 @@ class system_class extends AWS_MODEL
 			'reputation_topic',
 			'related_links',
 			'topic_focus',
-			'weixin_login',
 			'work_experience',
 			'users_attrib',
 			'users_online',
 			'users_qq',
 			'users_sina',
 			'users_ucenter',
-			'users_weixin',
 			'users_google',
 			'users'
 		);

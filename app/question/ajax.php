@@ -141,11 +141,6 @@ class ajax extends AWS_CONTROLLER
 
 		$this->model('account')->update_question_invite_count($invite_user_info['uid']);
 
-		if ($weixin_user = $this->model('openid_weixin_weixin')->get_user_info_by_uid($invite_user_info['uid']) AND $invite_user_info['weixin_settings']['QUESTION_INVITE'] != 'N')
-		{
-			$this->model('weixin')->send_text_message($weixin_user['openid'], "有会员在问题 [" . $question_info['question_content'] . "] 邀请了你进行回答", $this->model('openid_weixin_weixin')->redirect_url('/m/question/' . $question_info['question_id']));
-		}
-
 		$notification_id = $this->model('notify')->send($this->user_id, $invite_user_info['uid'], notify_class::TYPE_INVITE_QUESTION, notify_class::CATEGORY_QUESTION, intval($_POST['question_id']), array(
 			'from_uid' => $this->user_id,
 			'question_id' => intval($_POST['question_id'])
