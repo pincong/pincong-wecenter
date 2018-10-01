@@ -337,20 +337,6 @@
                                     </dl>
                                     <?php } ?>
 
-                                    <?php if ($this->work_experience_list) { ?>
-                                    <dl>
-                                        <dt><span><?php _e('职业经历'); ?>:</span></dt>
-                                        <dd>
-                                            <ul>
-                                            <?php foreach($this->work_experience_list as $k => $v) { ?>                     <li>
-                                                    <?php echo $v['start_year']; ?> - <?php if ($v['end_year'] == -1) { ?><?php _e('至今'); ?><?php } else { ?><?php echo $v['end_year']; ?><?php } ?> <?php _e('就职于%s', $v['company_name']); ?> <?php if ($v['job_name']) { ?> <?php _e('担任 %s', $v['job_name']); ?> <?php } ?>
-                                                </li>
-                                            <?php } ?>
-                                            </ul>
-                                        </dd>
-                                    </dl>
-                                    <?php } ?>
-
                                     <?php if (false && $this->user['last_active']) { ?>
                                     <dl>
                                         <dt><span><?php _e('最后活跃'); ?>:</span></dt>

@@ -25,11 +25,6 @@
 					<?php } ?>
 					<?php if ($this->answer_info['user_info']['signature']) { ?> - <span class="text-color-999"><?php echo $this->answer_info['user_info']['signature']; ?></span><?php } ?>
 				<?php } ?>
-				<?php if ($this->answer_info['publish_source'] == 'mobile') { ?>
-					<i class="icon icon-phone"></i>
-				<?php } else if ($this->answer_info['publish_source'] == 'weixin') { ?>
-					<i class="icon icon-wechat"></i>
-				<?php } ?>
 			</p>
 			<p class="text-color-999 aw-agree-by<?php if (sizeof($this->answer_info['agree_users']) == 0) { ?> collapse<?php } ?>">
 				<?php _e('赞同来自'); ?>:
