@@ -1183,10 +1183,10 @@ class main extends AWS_CONTROLLER
 
 		if ($weixin_user = $this->model('openid_weixin_weixin')->get_user_info_by_uid($this->user_id))
 		{
-			if (!$near_by_users = $this->model('people')->get_near_by_users($weixin_user['longitude'], $weixin_user['latitude'], $this->user_id, 20))
+			/*if (!$near_by_users = $this->model('people')->get_near_by_users($weixin_user['longitude'], $weixin_user['latitude'], $this->user_id, 20))
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('你的附近暂时没有人'));
-			}
+			}*/
 		}
 		else
 		{
@@ -1204,10 +1204,10 @@ class main extends AWS_CONTROLLER
 
 		if ($weixin_user = $this->model('openid_weixin_weixin')->get_user_info_by_uid($this->user_id))
 		{
-			if (!$near_by_questions = $this->model('question')->get_near_by_questions($weixin_user['longitude'], $weixin_user['latitude'], $this->user_id, 20))
+			/*if (!$near_by_questions = $this->model('question')->get_near_by_questions($weixin_user['longitude'], $weixin_user['latitude'], $this->user_id, 20))
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('你的附近暂时没有问题'));
-			}
+			}*/
 		}
 		else
 		{

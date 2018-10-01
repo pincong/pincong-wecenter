@@ -586,7 +586,6 @@ class ajax extends AWS_CONTROLLER
                 {
                     if ($weixin_user['location_update'] > time() - 7200)
                     {
-                        $this->model('geo')->set_location('question', $question_id, $weixin_user['longitude'], $weixin_user['latitude']);
                     }
                 }
 

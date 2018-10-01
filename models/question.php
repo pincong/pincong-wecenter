@@ -401,8 +401,6 @@ class question_class extends AWS_MODEL
 
 		$this->model('posts')->remove_posts_index($question_id, 'question');
 
-		$this->delete('geo_location', "`item_type` = 'question' AND `item_id` = " . intval($question_id));
-
 		$this->delete('question', 'question_id = ' . intval($question_id));
 
 		if ($question_info['weibo_msg_id'])
@@ -1525,37 +1523,4 @@ class question_class extends AWS_MODEL
 		return $result;
 	}
 
-	public function get_near_by_questions($longitude, $latitude, $uid, $limit = 10)
-	{
-		$squares = $this->model('geo')->get_square_point($longitude, $latitude, 1);
-
-		if ($near_by_locations = $this->fetch_all('geo_location', "item_type = 'question' AND `latitude` > 0 AND `latitude` > " . $squares['BR']['latitude'] . " AND `latitude` < " . $squares['TL']['latitude'] . " AND `longitude` > " . $squares['TL']['longitude'] . " AND `longitude` < " . $squares['BR']['longitude'], 'add_time DESC', null, $limit))
-		{
-			foreach ($near_by_locations AS $key => $val)
-			{
-				$near_by_question_ids[$val['item_id']] = $val['item_id'];
-				$near_by_location_longitude[$val['item_id']] = $val['longitude'];
-				$near_by_location_latitude[$val['item_id']] = $val['latitude'];
-			}
-
-			if ($near_by_questions = $this->get_question_info_by_ids($near_by_question_ids))
-			{
-				foreach ($near_by_questions AS $key => $val)
-				{
-					$near_by_uids = $val['published_uid'];
-				}
-
-				$near_by_users = $this->model('account')->get_user_info_by_uids($near_by_uids);
-
-				foreach ($near_by_questions AS $key => $val)
-				{
-					$near_by_questions[$key]['user_info'] = $near_by_users[$val['published_uid']];
-
-					$near_by_questions[$key]['distance'] = $this->model('geo')->get_distance($longitude, $latitude, $near_by_location_longitude[$val['question_id']], $near_by_location_longitude[$val['question_id']]);
-				}
-			}
-		}
-
-		return $near_by_questions;
-	}
 }
