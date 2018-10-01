@@ -28,26 +28,13 @@
  * @return string
  */
 function base_url()
-{	return rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-	$clean_url = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : NULL;
-	$clean_url = dirname(rtrim($_SERVER['PHP_SELF'], $clean_url));
-	$clean_url = rtrim($_SERVER['HTTP_HOST'] . $clean_url, '/\\');
-
-	if ((isset($_SERVER['HTTPS']) AND !in_array(strtolower($_SERVER['HTTPS']), array('off', 'no', 'false', 'disabled'))) OR $_SERVER['SERVER_PORT'] == 443)
-	{
-		$scheme = 'https';
-	}
-	else
-	{
-		$scheme = 'http';
-	}
-
-	return $scheme . '://' . $clean_url;
+{
+	return rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
 }
 
 function base64_current_path()
 {
-	return base64_encode('/' . ltrim($_SERVER['REQUEST_URI'], dirname($_SERVER['PHP_SELF'])));
+	return '';
 }
 
 /**
@@ -92,31 +79,7 @@ function aasort($source_array, $order_field, $sort_type = 'DESC')
  */
 function fetch_ip()
 {
-	/*if ($_SERVER['HTTP_X_FORWARDED_FOR'] and valid_internal_ip($_SERVER['REMOTE_ADDR']))
-	{
-		$ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
-	}
-
-	if ($ip_address)
-	{
-		if (strstr($ip_address, ','))
-		{
-			$x = explode(',', $ip_address);
-			$ip_address = end($x);
-		}
-	}
-
-	if (!valid_ip($ip_address) AND $_SERVER['REMOTE_ADDR'])
-	{
-		$ip_address = $_SERVER['REMOTE_ADDR'];
-	}*/
-
-	//if (!valid_ip($ip_address))
-	//{
-		$ip_address = '0.0.0.0';
-	//}
-
-	return $ip_address;
+	return '0.0.0.0';
 }
 
 /**
