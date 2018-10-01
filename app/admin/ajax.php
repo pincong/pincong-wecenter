@@ -1158,8 +1158,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
                 $update_data['email'] = htmlspecialchars($_POST['email']);
             }
 
-            $update_data['invitation_available'] = intval($_POST['invitation_available']);
-
             $verify_apply = $this->model('verify')->fetch_apply($user_info['uid']);
 
             if ($verify_apply)
@@ -1282,33 +1280,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
         $this->model('account')->forbidden_user_by_uid($_POST['uid'], $_POST['status'], $this->user_id);
 
         H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-    }
-
-    public function send_invites_action()
-    {
-        if ($_POST['email_list'])
-        {
-            if ($emails = explode("\n", str_replace("\r", "\n", $_POST['email_list'])))
-            {
-                foreach($emails as $key => $email)
-                {
-                    if (!H::valid_email($email))
-                    {
-                        continue;
-                    }
-
-                    $email_list[] = strtolower($email);
-                }
-            }
-        }
-        else
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入邮箱地址')));
-        }
-
-        $this->model('invitation')->send_batch_invitations(array_unique($email_list), $this->user_id, $this->user_info['user_name']);
-
-        H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('邀请已发送')));
     }
 
     public function remove_job_action()

@@ -89,10 +89,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($_POST['icode'])
 		{
-			if (!$invitation = $this->model('invitation')->check_code_available($_POST['icode']) AND $_POST['email'] == $invitation['invitation_email'])
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('邀请码无效或与邀请邮箱不一致')));
-			}
+
 		}
 
 		if (trim($_POST['user_name']) == '')
@@ -151,14 +148,6 @@ class ajax extends AWS_CONTROLLER
 			$uid = $this->model('account')->user_register($_POST['user_name'], $_POST['password'], $_POST['email']);
 		}
 
-
-		if ($_POST['email'] == $invitation['invitation_email'])
-		{
-			$this->model('active')->set_user_email_valid_by_uid($uid);
-
-			$this->model('active')->active_user_by_uid($uid);
-		}
-
 		if (isset($_POST['sex']))
 		{
 			$update_data['sex'] = intval($_POST['sex']);
@@ -188,7 +177,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($_POST['icode'])
 		{
-			$follow_users = $this->model('invitation')->get_invitation_by_code($_POST['icode']);
+
 		}
 		else if (HTTP::get_cookie('fromuid'))
 		{
@@ -205,7 +194,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($_POST['icode'])
 		{
-			$this->model('invitation')->invitation_code_active($_POST['icode'], time(), fetch_ip(), $uid);
+
 		}
 
 		if (get_setting('register_valid_type') == 'N' OR (get_setting('register_valid_type') == 'email' AND get_setting('register_type') == 'invite'))
@@ -215,7 +204,7 @@ class ajax extends AWS_CONTROLLER
 
 		$user_info = $this->model('account')->get_user_info_by_uid($uid);
 
-		if (get_setting('register_valid_type') == 'N' OR $user_info['group_id'] != 3 OR $_POST['email'] == $invitation['invitation_email'])
+		if (get_setting('register_valid_type') == 'N' OR $user_info['group_id'] != 3)
 		{
 			$this->model('account')->setcookie_login($user_info['uid'], $user_info['user_name'], $_POST['password'], $user_info['salt']);
 

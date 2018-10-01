@@ -138,11 +138,6 @@ class main extends AWS_CONTROLLER
 
 		if ($_GET['icode'])
 		{
-			if ($this->model('invitation')->check_code_available($_GET['icode']))
-			{
-				TPL::assign('icode', $_GET['icode']);
-			}
-			else
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('邀请码无效或已经使用, 请使用新的邀请码'), '/');
 			}
