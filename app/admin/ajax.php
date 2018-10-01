@@ -1334,7 +1334,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
             $this->model('account')->update_users_attrib_fields(array(
                 'signature' => htmlspecialchars($_POST['signature']),
-                'qq' => htmlspecialchars($_POST['qq']),
                 'homepage' => htmlspecialchars($_POST['homepage'])
             ), $user_info['uid']);
 

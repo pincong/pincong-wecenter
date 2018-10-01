@@ -481,9 +481,7 @@ class system_class extends AWS_MODEL
 			'work_experience',
 			'users_attrib',
 			'users_online',
-			'users_qq',
 			'users_ucenter',
-			'users_google',
 			'users'
 		);
 

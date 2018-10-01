@@ -89,33 +89,6 @@ class setting extends AWS_CONTROLLER
 		TPL::output('account/setting/privacy');
 	}
 
-	public function openid_action()
-	{
-		$this->crumb(AWS_APP::lang()->_t('账号绑定'), '/account/setting/openid/');
-
-		if (get_setting('qq_login_enabled') == 'Y')
-		{
-			TPL::assign('qq', $this->model('openid_qq')->get_qq_user_by_uid($this->user_id));
-		}
-
-		if (get_setting('google_login_enabled') == 'Y')
-		{
-			TPL::assign('google', $this->model('openid_google')->get_google_user_by_uid($this->user_id));
-		}
-
-		if (get_setting('facebook_login_enabled') == 'Y')
-		{
-			TPL::assign('facebook', $this->model('openid_facebook')->get_facebook_user_by_uid($this->user_id));
-		}
-
-		if (get_setting('twitter_login_enabled') == 'Y')
-		{
-			TPL::assign('twitter', $this->model('openid_twitter')->get_twitter_user_by_uid($this->user_id));
-		}
-
-		TPL::output('account/setting/openid');
-	}
-
 	public function integral_action()
 	{
 		$this->crumb(AWS_APP::lang()->_t('我的%s', get_setting('integral_unit')), '/account/setting/integral/');

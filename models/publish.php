@@ -110,7 +110,7 @@ class publish_class extends AWS_MODEL
 		return true;
 	}
 
-	public function publish_answer($question_id, $answer_content, $uid, $anonymous = null, $attach_access_key = null, $auto_focus = true, $reply_to_openid = true)
+	public function publish_answer($question_id, $answer_content, $uid, $anonymous = null, $attach_access_key = null, $auto_focus = true)
 	{
 		if (!$question_info = $this->model('question')->get_question_info_by_id($question_id))
 		{
@@ -195,14 +195,6 @@ class publish_class extends AWS_MODEL
 		$this->model('question')->delete_question_uninterested($uid, $question_id);
 
 		$this->model('posts')->set_posts_index($question_id, 'question');
-
-		if ($reply_to_openid)
-		{
-			if ($question_info['received_email_id'])
-			{
-				$this->model('edm')->reply_answer_by_email($question_info['question_id'], nl2br(FORMAT::parse_bbcode($answer_content)));
-			}
-		}
 
 		return $answer_id;
 	}

@@ -1034,11 +1034,10 @@ class ajax extends AWS_CONTROLLER
 			$this->model('integral')->process($this->user_id, 'UPDATE_SIGNATURE', round((get_setting('integral_system_config_profile') * 0.1)), AWS_APP::lang()->_t('完善一句话介绍'));
 		}
 
-		$update_attrib_data['qq'] = htmlspecialchars($_POST['qq']);
 		$update_attrib_data['homepage'] = htmlspecialchars($_POST['homepage']);
 		$update_data['mobile'] = htmlspecialchars($_POST['mobile']);
 
-		if (($update_attrib_data['qq'] OR $update_attrib_data['homepage'] OR $update_data['mobile']) AND !$this->model('integral')->fetch_log($this->user_id, 'UPDATE_CONTACT'))
+		if (($update_attrib_data['homepage'] OR $update_data['mobile']) AND !$this->model('integral')->fetch_log($this->user_id, 'UPDATE_CONTACT'))
 		{
 			$this->model('integral')->process($this->user_id, 'UPDATE_CONTACT', round((get_setting('integral_system_config_profile') * 0.1)), AWS_APP::lang()->_t('完善联系资料'));
 		}
