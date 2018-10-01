@@ -135,13 +135,6 @@ class ACTION_LOG
 			'anonymous' => intval($anonymous),
 		));
 
-		AWS_APP::model()->insert('user_action_history_data', array(
-			'history_id' => $history_id,
-			'associate_content' => htmlspecialchars($action_content),
-			'associate_attached' => htmlspecialchars($action_attch_update),
-			'addon_data' => $addon_data ? serialize($addon_data) : '',
-		));
-
 		self::associate_fresh_action($history_id, $associate_id, $action_type, $action_id, $uid, $anonymous, $add_time);
 
 		return $history_id;
@@ -197,60 +190,14 @@ class ACTION_LOG
 			{
 				$history_ids[] = $val['history_id'];
 			}
-
-			$actions_data = self::get_action_data_by_history_ids($history_ids);
-
-			foreach ($user_action_history AS $key => $val)
-			{
-				$user_action_history[$key]['addon_data'] = $actions_data[$val['history_id']]['addon_data'];
-				$user_action_history[$key]['associate_content'] = $actions_data[$val['history_id']]['associate_content'];
-
-				if ($val['associate_attached'] == -1)
-				{
-					$user_action_history[$key]['associate_attached'] = $actions_data[$val['history_id']]['associate_attached'];
-				}
-			}
 		}
 
 		return $user_action_history;
 	}
 
-	public static function get_action_data_by_history_ids($history_ids)
-	{
-		if ($action_data = AWS_APP::model()->fetch_all('user_action_history_data', 'history_id IN(' . implode(',', $history_ids) . ')'))
-		{
-			foreach ($action_data AS $key => $val)
-			{
-				if ($val['addon_data'])
-				{
-					$val['addon_data'] = unserialize($val['addon_data']);
-				}
-
-				$result[$val['history_id']] = $val;
-			}
-		}
-
-		return $result;
-	}
-
-	public static function get_action_data_by_history_id($history_id)
-	{
-		return AWS_APP::model()->fetch_row('user_action_history_data', 'history_id = ' . intval($history_id));
-	}
-
 	public static function get_action_by_history_id($history_id)
 	{
-		if ($action_history = AWS_APP::model()->fetch_row('user_action_history', 'history_id = ' . intval($history_id)))
-		{
-			$action_history_data = self::get_action_data_by_history_id($action_history['history_id']);
-
-			$action_history['associate_content'] = $action_history_data['associate_content'];
-
-			if ($action_history['associate_attached'] == -1)
-			{
-				$action_history['associate_attached'] = $action_history_data['associate_attached'];
-			}
-		}
+		$action_history = AWS_APP::model()->fetch_row('user_action_history', 'history_id = ' . intval($history_id));
 
 		return $action_history;
 	}
@@ -283,17 +230,6 @@ class ACTION_LOG
 				$history_ids[] = $val['history_id'];
 			}
 
-			$actions_data = self::get_action_data_by_history_ids($history_ids);
-
-			foreach ($user_action_history AS $key => $val)
-			{
-				$user_action_history[$key]['associate_content'] = $actions_data[$val['history_id']]['associate_content'];
-
-				if ($val['associate_attached'] == -1)
-				{
-					$user_action_history[$key]['associate_attached'] = $actions_data[$val['history_id']]['associate_attached'];
-				}
-			}
 		}
 
 		return $user_action_history;
@@ -487,7 +423,6 @@ class ACTION_LOG
 		{
 			foreach ($action_history AS $key => $val)
 			{
-				AWS_APP::model()->delete('user_action_history_data', 'history_id = ' . $val['history_id']);
 				AWS_APP::model()->delete('user_action_history_fresh', 'history_id = ' . $val['history_id']);
 			}
 
