@@ -945,6 +945,8 @@ class question_class extends AWS_MODEL
 			'time' => fake_time()
 		));
 
+        set_repeat_submission_digest($message);
+
 		if ($question_info['published_uid'] != $uid)
 		{
 			$this->model('notify')->send($uid, $question_info['published_uid'], notify_class::TYPE_QUESTION_COMMENT, notify_class::CATEGORY_QUESTION, $question_info['question_id'], array(

@@ -235,6 +235,16 @@ class ajax extends AWS_CONTROLLER
 
 	public function save_answer_comment_action()
 	{
+		if (trim($_POST['message']) == '')
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请输入评论内容')));
+		}
+
+        if (!check_repeat_submission($_POST['message']))
+        {
+            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请不要重复提交')));
+        }
+
 		if (! $_GET['answer_id'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('回复不存在')));
@@ -243,11 +253,6 @@ class ajax extends AWS_CONTROLLER
 		if (!$this->user_info['permission']['publish_comment'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有发表评论的权限')));
-		}
-
-		if (trim($_POST['message']) == '')
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请输入评论内容')));
 		}
 
 		if (get_setting('comment_limit') > 0 AND cjk_strlen($_POST['message']) > get_setting('comment_limit'))
@@ -302,6 +307,16 @@ class ajax extends AWS_CONTROLLER
 
 	public function save_question_comment_action()
 	{
+		if (trim($_POST['message']) == '')
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入评论内容')));
+		}
+
+        if (!check_repeat_submission($_POST['message']))
+        {
+            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请不要重复提交')));
+        }
+
 		if (! $_GET['question_id'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('问题不存在')));
@@ -310,11 +325,6 @@ class ajax extends AWS_CONTROLLER
 		if (!$this->user_info['permission']['publish_comment'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有发表评论的权限')));
-		}
-
-		if (trim($_POST['message']) == '')
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入评论内容')));
 		}
 
 		$question_info = $this->model('question')->get_question_info_by_id($_GET['question_id']);
@@ -498,6 +508,18 @@ class ajax extends AWS_CONTROLLER
 
 	public function save_answer_action()
 	{
+		$answer_content = trim($_POST['answer_content'], "\r\n\t");
+
+		if (! $answer_content)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入回复内容')));
+		}
+
+		if (!check_repeat_submission($answer_content))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请不要重复提交')));
+		}
+
 		if ($this->user_info['integral'] < 0 and get_setting('integral_system_enabled') == 'Y')
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
@@ -511,13 +533,6 @@ class ajax extends AWS_CONTROLLER
 		if ($question_info['lock'] AND ! ($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的问题不能回复')));
-		}
-
-		$answer_content = trim($_POST['answer_content'], "\r\n\t");
-
-		if (! $answer_content)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入回复内容')));
 		}
 
 		// 判断是否是问题发起者

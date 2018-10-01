@@ -115,6 +115,22 @@ function set_human_valid($permission_tag)
 	return count(AWS_APP::session()->human_valid[$permission_tag]);
 }
 
+// 防止重复提交
+function check_repeat_submission($text)
+{
+    if (isset(AWS_APP::session()->repeat_submission_digest))
+    {
+        if (md5($text) === AWS_APP::session()->repeat_submission_digest)
+            return FALSE;
+    }
+    return TRUE;
+}
+
+function set_repeat_submission_digest($text)
+{
+    AWS_APP::session()->repeat_submission_digest = md5($text);
+}
+
 /**
  * 仅附件处理中的preg_replace_callback()的每次搜索时的回调
  * @param  array $matches preg_replace_callback()搜索时返回给第二参数的结果

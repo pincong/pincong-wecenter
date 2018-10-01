@@ -39,6 +39,18 @@ class ajax extends AWS_CONTROLLER
 
 	public function save_comment_action()
 	{
+		$message = trim($_POST['message'], "\r\n\t");
+
+		if (! $message)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入回复内容')));
+		}
+
+        if (!check_repeat_submission($message))
+        {
+            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请不要重复提交')));
+        }
+
 		if (!$article_info = $this->model('article')->get_article_info_by_id($_POST['article_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定文章不存在')));
@@ -47,13 +59,6 @@ class ajax extends AWS_CONTROLLER
 		if ($article_info['lock'] AND !($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的文章不能回复')));
-		}
-
-		$message = trim($_POST['message'], "\r\n\t");
-
-		if (! $message)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入回复内容')));
 		}
 
 		if (strlen($message) < get_setting('answer_length_lower'))

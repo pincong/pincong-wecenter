@@ -138,6 +138,8 @@ class publish_class extends AWS_MODEL
 			}
 		}
 
+        set_repeat_submission_digest($answer_content);
+
 		set_human_valid('answer_valid_hour');
 
 		if ($auto_focus)
@@ -216,6 +218,9 @@ class publish_class extends AWS_MODEL
 	{
 		if ($question_id = $this->model('question')->save_question($question_content, $question_detail, $uid, $anonymous, null, $from))
 		{
+
+            set_repeat_submission_digest($question_content);
+
 			set_human_valid('question_valid_hour');
 
 			if ($category_id)
@@ -294,6 +299,9 @@ class publish_class extends AWS_MODEL
 			'add_time' => fake_time()
 		)))
 		{
+
+            set_repeat_submission_digest($title);
+
 			set_human_valid('question_valid_hour');
 
 			if (is_array($topics))
@@ -368,6 +376,8 @@ class publish_class extends AWS_MODEL
 				}
 			}
 		}
+
+        set_repeat_submission_digest($message);
 
 		set_human_valid('answer_valid_hour');
 
