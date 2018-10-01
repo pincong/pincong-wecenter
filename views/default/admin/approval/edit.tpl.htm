@@ -15,7 +15,7 @@
                 <input type="hidden" name="type" value="<?php echo $this->approval_item['type']; ?>" />
 
                 <table class="table table-striped">
-                    <?php if (in_array($this->approval_item['type'], array('question', 'article', 'received_email'))) { ?>
+                    <?php if (in_array($this->approval_item['type'], array('question', 'article'))) { ?>
                     <tr>
                         <td>
                             <div class="form-group">

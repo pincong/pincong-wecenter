@@ -275,12 +275,6 @@
                                         <h3><?php _e('详细资料'); ?></h3>
                                     </div>
                                     <div class="mod-body aw-user-center-details">
-                                        <?php if (get_setting('sina_weibo_enabled') == 'Y' AND $this->sina_weibo_url) { ?>
-                                        <dl>
-                                            <dt><span><?php _e('绑定认证'); ?>:</span></dt>
-                                            <?php if ($this->sina_weibo_url AND get_setting('sina_weibo_enabled') == 'Y') { ?><dd><a href="<?php if ($this->sina_weibo_url) { ?><?php echo $this->sina_weibo_url; ?><?php } else { ?>javascript:;<?php } ?>" class="text-color-999"><i class="icon icon-weibo"></i><?php _e('微博'); ?></a></dd><?php } ?>
-                                        </dl>
-                                        <?php } ?>
                                     <dl>
                                         <dt><span><?php _e('个人成就'); ?>:</span></dt>
                                         <dd>

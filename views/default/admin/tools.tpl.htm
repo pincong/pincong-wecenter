@@ -28,28 +28,6 @@
                     </form>
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <form action="admin/tools/email_setting_test/" method="post" id="email_setting_test_form" onsubmit="return false">
-                    <div class="form-group">
-                        <span class="col-sm-3 col-xs-3 control-label middle"><?php _e('邮件系统测试'); ?>:</span>
-                        <div class="col-sm-7 col-xs-8 middle">
-                            <?php _e('使用此功能测试邮件系统配置是否正确'); ?>
-                            <div class="row">
-                                <span class="col-sm-1 mod-text-inline"><?php _e('&nbsp 收件人地址'); ?>:</span>
-                                <div class="col-sm-6">
-                                    <input class="form-control" type="text" name="test_email" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-2 col-xs-12">
-                            <input type="button" class="btn btn-primary" onclick="AWS.ajax_post($('#email_setting_test_form'));" value="<?php _e('开始处理'); ?>">
-                        </div>
-                    </div>
-                    </form>
-                </td>
-            </tr>
 
             <tr>
                 <td>

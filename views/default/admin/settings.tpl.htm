@@ -196,9 +196,7 @@
                         <div class="form-group">
                             <span class="col-sm-3 col-xs-3 control-label"><?php _e('新用户注册验证类型'); ?>:</span>
                             <div class="col-sm-8 col-xs-8">
-                                <label class="checkbox-inline"><input type="radio" name="register_valid_type" value="email"<?php if ($this->setting['register_valid_type'] == 'email') { ?> checked="checked"<?php } ?> /> <?php _e('邮件验证'); ?></label>
-
-                                <label class="checkbox-inline"><input type="radio" name="register_valid_type" value="approval"<?php if ($this->setting['register_valid_type'] == 'approval') { ?> checked="checked"<?php } ?> /> <?php _e('邮件验证 + 后台审核'); ?></label>
+                                <label class="checkbox-inline"><input type="radio" name="register_valid_type" value="approval"<?php if ($this->setting['register_valid_type'] == 'approval') { ?> checked="checked"<?php } ?> /> <?php _e('后台审核'); ?></label>
 
                                 <label class="checkbox-inline"><input type="radio" name="register_valid_type" value="N"<?php if ($this->setting['register_valid_type'] == 'N') { ?> checked="checked"<?php } ?> /> <?php _e('不验证'); ?></label>
                             </div>
@@ -322,32 +320,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        <div class="form-group mod-width">
-                            <span class="col-sm-2 col-xs-3 control-label"><?php _e('新用户默认邮件提醒设置'); ?>:</span>
-                            <div class="col-sm-10 col-xs-8">
-                                <input type="hidden" name="set_email_settings" value="1" />
 
-                                <label>
-                                    <input type="checkbox" name="new_user_email_setting[]" value="FOLLOW_ME"<?php if ($this->setting['new_user_email_setting']['FOLLOW_ME'] != 'N') { ?> checked="checked"<?php } ?> /> <?php _e('当有人关注我'); ?>
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="new_user_email_setting[]" value="QUESTION_INVITE"<?php if ($this->setting['new_user_email_setting']['QUESTION_INVITE'] != 'N') { ?> checked="checked"<?php } ?> /> <?php _e('有人邀请我回答问题'); ?>
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="new_user_email_setting[]" value="NEW_ANSWER"<?php if ($this->setting['new_user_email_setting']['NEW_ANSWER'] != 'N') { ?> checked="checked"<?php } ?> /> <?php _e('我关注的问题有了新回复'); ?>
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="new_user_email_setting[]" value="NEW_MESSAGE"<?php if ($this->setting['new_user_email_setting']['NEW_MESSAGE'] != 'N') { ?> checked="checked"<?php } ?> /> <?php _e('有人向我发送私信'); ?>
-                                </label>
-                                <label>
-                                    <input type="checkbox" name="new_user_email_setting[]" value="QUESTION_MOD"<?php if ($this->setting['new_user_email_setting']['QUESTION_MOD'] != 'N') { ?> checked="checked"<?php } ?> /> <?php _e('我的问题被编辑'); ?>
-                                </label>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
                 <tr>
                     <td>
                         <div class="form-group mod-width">
@@ -1320,16 +1293,6 @@
                     </td>
                 </tr>
                 <?php } ?>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('系统邮件来源邮箱地址'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
-                                <input name="from_email" type="text" class="form-control" value="<?php echo $this->setting['from_email']; ?>"/>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
             </table>
         </div>
 
