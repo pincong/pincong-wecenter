@@ -323,13 +323,6 @@ class answer_class extends AWS_MODEL
 		return $this->update('answer', $answer_info, 'answer_id = ' . intval($answer_id));
 	}
 
-	public function set_answer_publish_source($answer_id, $publish_source)
-	{
-		return $this->update('answer', array(
-			'publish_source' => htmlspecialchars($publish_source)
-		), 'answer_id = ' . intval($answer_id));
-	}
-
 	/**
 	 *
 	 * 回复投票
