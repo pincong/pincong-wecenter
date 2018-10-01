@@ -61,7 +61,7 @@ class module_class extends AWS_MODEL
 
 	public function sidebar_hot_users($uid = 0, $limit = 5)
 	{
-		if ($users_list = $this->fetch_all('users', 'uid <> ' . intval($uid) . ' AND last_active > ' . (time() - (60 * 60 * 24 * 7)), 'answer_count DESC', ($limit * 4)))
+		if ($users_list = $this->fetch_all('users', 'uid <> ' . intval($uid) . ' AND last_login > ' . (time() - (60 * 60 * 24 * 7)), 'answer_count DESC', ($limit * 4)))
 		{
 			foreach($users_list as $key => $val)
 			{
