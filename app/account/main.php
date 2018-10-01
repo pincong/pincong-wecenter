@@ -69,16 +69,6 @@ class main extends AWS_CONTROLLER
 
 		$this->model('admin')->admin_logout();
 
-		if (get_setting('ucenter_enabled') == 'Y')
-		{
-			if ($uc_uid = $this->model('ucenter')->is_uc_user($this->user_info['email']))
-			{
-				$sync_code = $this->model('ucenter')->sync_logout($uc_uid);
-			}
-
-			H::redirect_msg(AWS_APP::lang()->_t('您已退出站点, 现在将以游客身份进入站点, 请稍候...') . $sync_code, $url);
-		}
-		else
 		{
 			HTTP::redirect($url);
 		}
@@ -105,11 +95,8 @@ class main extends AWS_CONTROLLER
 		TPL::import_css('css/login.css');
 
 		// md5 password...
-		if (get_setting('ucenter_enabled') != 'Y')
-		{
-			TPL::import_js('js/md5.js');
-		}
-		
+		TPL::import_js('js/md5.js');
+
 		if ($_GET['url'])
 		{
 			$return_url = htmlspecialchars(base64_decode($_GET['url']));
@@ -159,13 +146,6 @@ class main extends AWS_CONTROLLER
 
 	public function sync_login_action()
 	{
-		if (get_setting('ucenter_enabled') == 'Y')
-		{
-			if ($uc_uid = $this->model('ucenter')->is_uc_user($this->user_info['email']))
-			{
-				$sync_code = $this->model('ucenter')->sync_login($uc_uid);
-			}
-		}
 
 		if ($_GET['url'])
 		{

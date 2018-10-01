@@ -130,20 +130,6 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请填写正确的验证码')));
 		}
 
-		if (get_setting('ucenter_enabled') == 'Y')
-		{
-			$result = $this->model('ucenter')->register($_POST['user_name'], $_POST['password'], $_POST['email']);
-
-			if (is_array($result))
-			{
-				$uid = $result['user_info']['uid'];
-			}
-			else
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, $result));
-			}
-		}
-		else
 		{
 			$uid = $this->model('account')->user_register($_POST['user_name'], $_POST['password'], $_POST['email']);
 		}
@@ -231,14 +217,6 @@ class ajax extends AWS_CONTROLLER
 
 	public function login_process_action()
 	{
-		if (get_setting('ucenter_enabled') == 'Y')
-		{
-			if (!$user_info = $this->model('ucenter')->login($_POST['user_name'], $_POST['password']))
-			{
-				$user_info = $this->model('account')->check_login($_POST['user_name'], $_POST['password']);
-			}
-		}
-		else
 		{
 			$user_info = $this->model('account')->check_login($_POST['user_name'], $_POST['password']);
 		}
@@ -291,12 +269,6 @@ class ajax extends AWS_CONTROLLER
 					$url = get_js_url($_POST['return_url']);
 				}
 
-				if (get_setting('ucenter_enabled') == 'Y')
-				{
-					$sync_url = get_js_url('/account/sync_login/');
-
-					$url = ($url) ? $sync_url . 'url-' . base64_encode($url) : $sync_url;
-				}
 			}
 
 			H::ajax_json_output(AWS_APP::RSM(array(
@@ -1039,19 +1011,6 @@ class ajax extends AWS_CONTROLLER
 		if (strlen($_POST['password']) < 6 OR strlen($_POST['password']) > 16)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('密码长度不符合规则')));
-		}
-
-		if (get_setting('ucenter_enabled') == 'Y')
-		{
-			if ($this->model('ucenter')->is_uc_user($this->user_info['email']))
-			{
-				$result = $this->model('ucenter')->user_edit($this->user_id, $this->user_info['user_name'], $_POST['old_password'], $_POST['password']);
-
-				if ($result !== 1)
-				{
-					H::ajax_json_output(AWS_APP::RSM(null, -1, $result));
-				}
-			}
 		}
 
 		if ($this->model('account')->update_user_password($_POST['old_password'], $_POST['password'], $this->user_id, $this->user_info['salt']))

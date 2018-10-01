@@ -39,14 +39,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请填写正确的验证码')));
         }
 
-        if (get_setting('ucenter_enabled') == 'Y')
-        {
-            if (! $user_info = $this->model('ucenter')->login($this->user_info['email'], $_POST['password']))
-            {
-                $user_info = $this->model('account')->check_login($this->user_info['email'], $_POST['password']);
-            }
-        }
-        else
         {
             $user_info = $this->model('account')->check_login($this->user_info['email'], $_POST['password']);
         }
@@ -172,11 +164,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
         if ($_POST['slave_mail_config']['server'])
         {
             $_POST['slave_mail_config']['charset'] = $_POST['mail_config']['charset'];
-        }
-
-        if ($_POST['ucenter_path'])
-        {
-            $_POST['ucenter_path'] = rtrim(trim($_POST['ucenter_path']), '\/');
         }
 
         $this->model('setting')->set_vars($_POST);
