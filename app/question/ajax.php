@@ -558,8 +558,6 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
 		}
 
-		$this->model('draft')->delete_draft($question_info['question_id'], 'answer', $this->user_id);
-
 		if ($this->publish_approval_valid($answer_content))
 		{
 			$this->model('publish')->publish_approval('answer', array(

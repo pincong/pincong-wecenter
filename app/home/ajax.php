@@ -124,23 +124,6 @@ class ajax extends AWS_CONTROLLER
 		), 1, null));
 	}
 
-	public function draft_action()
-	{
-		if ($drafts = $this->model('draft')->get_all('answer', $this->user_id, intval($_GET['page']) * $this->per_page .', '. $this->per_page))
-		{
-			foreach ($drafts AS $key => $val)
-			{
-				$drafts[$key]['question_info'] = $this->model("question")->get_question_info_by_id($val['item_id']);
-			}
-		}
-
-		TPL::assign('drafts', $drafts);
-
-		{
-			TPL::output('home/ajax/draft');
-		}
-	}
-
 	public function invite_action()
 	{
 		if ($list = $this->model('question')->get_invite_question_list($this->user_id, intval($_GET['page']) * $this->per_page .', '. $this->per_page))

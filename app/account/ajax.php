@@ -326,37 +326,6 @@ class ajax extends AWS_CONTROLLER
 		die('success');
 	}
 
-	public function delete_draft_action()
-	{
-		if (!$_POST['type'])
-		{
-			die;
-		}
-
-		if ($_POST['type'] == 'clean')
-		{
-			$this->model('draft')->clean_draft($this->user_id);
-		}
-		else
-		{
-			$this->model('draft')->delete_draft($_POST['item_id'], $_POST['type'], $this->user_id);
-		}
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
-
-	public function save_draft_action()
-	{
-		if (!$_GET['item_id'] OR !$_GET['type'] OR !$_POST)
-		{
-			die;
-		}
-
-		$this->model('draft')->save_draft($_GET['item_id'], $_GET['type'], $this->user_id, $_POST);
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, AWS_APP::lang()->_t('已保存草稿, %s', date('H:i:s', time()))));
-	}
-
 	public function modify_unvalid_email_action()
 	{
 		if (!$user_info = $this->model('account')->get_user_info_by_email(AWS_APP::session()->valid_email))

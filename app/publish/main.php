@@ -60,11 +60,9 @@ class main extends AWS_CONTROLLER
 		}
 		else
 		{
-			$draft_content = $this->model('draft')->get_data(1, 'question', $this->user_id);
-
 			$question_info = array(
 				'question_content' => htmlspecialchars($_POST['question_content']),
-				'question_detail' => htmlspecialchars($draft_content['message'])
+				'question_detail' => ''
 			);
 		}
 
@@ -145,11 +143,9 @@ class main extends AWS_CONTROLLER
 		}
 		else
 		{
-			$draft_content = $this->model('draft')->get_data(1, 'article', $this->user_id);
-
 			$article_info =  array(
 				'title' => htmlspecialchars($_POST['title']),
-				'message' => htmlspecialchars($draft_content['message'])
+				'message' => ''
 			);
 		}
 

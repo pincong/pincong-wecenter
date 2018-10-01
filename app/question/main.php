@@ -290,10 +290,6 @@ class main extends AWS_CONTROLLER
 
 			TPL::assign('user_follow_check', $this->model('follow')->user_follow_check($this->user_id, $question_info['published_uid']));
 
-			if ($this->user_info['draft_count'] > 0)
-			{
-				TPL::assign('draft_content', $this->model('draft')->get_data($question_info['question_id'], 'answer', $this->user_id));
-			}
 		}
 
 		$question_info['question_detail'] = FORMAT::parse_attachs(nl2br(FORMAT::parse_bbcode($question_info['question_detail'])));
