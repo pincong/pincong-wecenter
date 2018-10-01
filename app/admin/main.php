@@ -36,7 +36,6 @@ class main extends AWS_ADMIN_CONTROLLER
         }
 
         TPL::assign('users_count', $this->model('system')->count('users'));
-        TPL::assign('users_valid_email_count', $this->model('system')->count('users', 'valid_email = 1'));
         TPL::assign('question_count', $this->model('system')->count('question'));
         TPL::assign('answer_count', $this->model('system')->count('answer'));
         TPL::assign('question_count', $this->model('system')->count('question'));

@@ -162,11 +162,6 @@ class main extends AWS_CONTROLLER
 
 	public function complete_profile_action()
 	{
-		if ($this->user_info['email'])
-		{
-			HTTP::redirect('/');
-		}
-
 		TPL::import_css('css/register.css');
 
 		TPL::output('account/complete_profile');

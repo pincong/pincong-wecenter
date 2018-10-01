@@ -26,7 +26,7 @@ class user extends AWS_ADMIN_CONTROLLER
         {
             foreach ($_POST as $key => $val)
             {
-                if (in_array($key, array('user_name', 'email')))
+                if (in_array($key, array('user_name')))
                 {
                     $val = rawurlencode($val);
                 }
@@ -49,11 +49,6 @@ class user extends AWS_ADMIN_CONTROLLER
         if ($_GET['user_name'])
         {
             $where[] = "user_name LIKE '%" . $this->model('people')->quote($_GET['user_name']) . "%'";
-        }
-
-        if ($_GET['email'])
-        {
-            $where[] = "email = '" . $this->model('people')->quote($_GET['email']) . "'";
         }
 
         if ($_GET['group_id'])

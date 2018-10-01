@@ -40,7 +40,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
         }
 
         {
-            $user_info = $this->model('account')->check_login($this->user_info['email'], $_POST['password']);
+            $user_info = $this->model('account')->check_login($this->user_info['user_name'], $_POST['password']);
         }
 
         if ($user_info['uid'])
@@ -138,27 +138,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
             }
 
             $_POST['new_user_notification_setting'] = $notification_setting;
-        }
-
-        if ($_POST['set_email_settings'])
-        {
-            $email_settings = array(
-                'FOLLOW_ME' => 'N',
-                'QUESTION_INVITE' => 'N',
-                'NEW_ANSWER' => 'N',
-                'NEW_MESSAGE' => 'N',
-                'QUESTION_MOD' => 'N',
-            );
-
-            if ($_POST['new_user_email_setting'])
-            {
-                foreach ($_POST['new_user_email_setting'] AS $key => $val)
-                {
-                    unset($email_settings[$val]);
-                }
-            }
-
-            $_POST['new_user_email_setting'] = $email_settings;
         }
 
         if ($_POST['slave_mail_config']['server'])
@@ -1070,11 +1049,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
                 H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名已存在')));
             }
 
-            if ($_POST['email'] != $user_info['email'] AND $this->model('account')->get_user_info_by_username($_POST['email']))
-            {
-                H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('E-mail 已存在')));
-            }
-
             if ($_FILES['user_avatar']['name'])
             {
                 AWS_APP::upload()->initialize(array(
@@ -1128,11 +1102,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
                 $update_data['avatar_file'] = $this->model('account')->get_avatar($user_info['uid'], null, 1) . basename($thumb_file['min']);
             }
 
-            if ($_POST['email'])
-            {
-                $update_data['email'] = htmlspecialchars($_POST['email']);
-            }
-
             $verify_apply = $this->model('verify')->fetch_apply($user_info['uid']);
 
             if ($verify_apply)
@@ -1155,7 +1124,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
                 $this->model('verify')->approval_verify($verified_id);
             }
 
-            $update_data['valid_email'] = intval($_POST['valid_email']);
             $update_data['forbidden'] = intval($_POST['forbidden']);
 
             $update_data['group_id'] = intval($_POST['group_id']);
@@ -1194,8 +1162,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
         {
             $_POST['user_name'] = trim($_POST['user_name']);
 
-            $_POST['email'] = trim($_POST['email']);
-
             $_POST['password'] = trim($_POST['password']);
 
             $_POST['group_id'] = intval($_POST['group_id']);
@@ -1210,19 +1176,12 @@ class ajax extends AWS_ADMIN_CONTROLLER
                 H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名已经存在')));
             }
 
-            if ($this->model('account')->check_email($_POST['email']))
-            {
-                H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('E-Mail 已经被使用, 或格式不正确')));
-            }
-
             if (strlen($_POST['password']) < 6 or strlen($_POST['password']) > 16)
             {
                 H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('密码长度不符合规则')));
             }
 
-            $uid = $this->model('account')->user_register($_POST['user_name'], $_POST['password'], $_POST['email']);
-
-            $this->model('active')->set_user_email_valid_by_uid($uid);
+            $uid = $this->model('account')->user_register($_POST['user_name'], $_POST['password']);
 
             $this->model('active')->active_user_by_uid($uid);
 
@@ -1459,7 +1418,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
                 case 'new_answer':  // 新增答案
                 case 'new_question':    // 新增问题
                 case 'new_user':    // 新注册用户
-                case 'user_valid':  // 新激活用户
                 case 'new_topic':   // 新增话题
                 case 'new_answer_vote': // 新增答案投票
                 case 'new_answer_thanks': // 新增答案感谢

@@ -716,7 +716,7 @@ class question_class extends AWS_MODEL
 		return $this->fetch_row('question_uninterested', 'question_id = ' . intval($question_id) . " AND uid = " . intval($uid));
 	}
 
-	public function add_invite($question_id, $sender_uid, $recipients_uid = 0, $email = null)
+	public function add_invite($question_id, $sender_uid, $recipients_uid = 0)
 	{
 		if (!$question_id OR !$sender_uid)
 		{

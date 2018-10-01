@@ -28,11 +28,9 @@ class ajax extends AWS_CONTROLLER
 
 		$rule_action['actions'] = array(
 			'check_username',
-			'check_email',
 			'register_process',
 			'login_process',
 			'register_agreement',
-			'valid_email_active',
 			'request_find_password',
 			'find_password_modify'
 		);
@@ -55,21 +53,6 @@ class ajax extends AWS_CONTROLLER
 		if ($this->model('account')->check_username($_POST['username']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名已被注册')));
-		}
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
-
-	public function check_email_action()
-	{
-		if (!$_GET['email'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入邮箱地址')));
-		}
-
-		if ($this->model('account')->check_email($_GET['email']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('邮箱地址已被使用')));
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
@@ -108,11 +91,6 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名中包含敏感词或系统保留字')));
 		}
 
-		if ($this->model('account')->check_email($_POST['email']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('E-Mail 已经被使用, 或格式不正确')));
-		}
-
 		if (strlen($_POST['password']) < 6 OR strlen($_POST['password']) > 16)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('密码长度不符合规则')));
@@ -130,7 +108,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		{
-			$uid = $this->model('account')->user_register($_POST['user_name'], $_POST['password'], $_POST['email']);
+			$uid = $this->model('account')->user_register($_POST['user_name'], $_POST['password']);
 		}
 
 		if (isset($_POST['sex']))
@@ -172,7 +150,7 @@ class ajax extends AWS_CONTROLLER
 
 		}
 
-		if (get_setting('register_valid_type') == 'N' OR (get_setting('register_valid_type') == 'email' AND get_setting('register_type') == 'invite'))
+		if (get_setting('register_valid_type') == 'N')
 		{
 			$this->model('active')->active_user_by_uid($uid);
 		}
@@ -239,13 +217,7 @@ class ajax extends AWS_CONTROLLER
 
 				$this->model('account')->setcookie_login($user_info['uid'], $_POST['user_name'], $_POST['password'], $user_info['salt'], $expire);
 
-				if (get_setting('register_valid_type') == 'email' AND !$user_info['valid_email'])
-				{
-					AWS_APP::session()->valid_email = $user_info['email'];
-
-					$url = get_js_url('/account/valid_email/');
-				}
-				else if ($user_info['is_first_login'])
+				if ($user_info['is_first_login'])
 				{
 					$url = get_js_url('/home/first_login-TRUE');
 				}
@@ -324,19 +296,12 @@ class ajax extends AWS_CONTROLLER
 
 	public function request_find_password_action()
 	{
-		if (!H::valid_email($_POST['email']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1,  AWS_APP::lang()->_t('请填写正确的邮箱地址')));
-		}
-
 		if (!AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1',  AWS_APP::lang()->_t('请填写正确的验证码')));
 		}
 
 		$this->model('active')->new_find_password($user_info['uid']);
-
-		AWS_APP::session()->find_password = $user_info['email'];
 
 		{
 			$url = get_js_url('/account/find_password/process_success/');
@@ -354,16 +319,6 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1,  AWS_APP::lang()->_t('请填写正确的验证码')));
 		}
 
-		$active_data = $this->model('active')->get_active_code($_POST['active_code'], 'FIND_PASSWORD');
-
-		if ($active_data)
-		{
-			if ($active_data['active_time'] OR $active_data['active_ip'])
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1,  AWS_APP::lang()->_t('链接已失效，请重新找回密码')));
-			}
-		}
-		else
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1,  AWS_APP::lang()->_t('链接已失效，请重新找回密码')));
 		}
@@ -378,16 +333,9 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1,  AWS_APP::lang()->_t('两次输入的密码不一致')));
 		}
 
-		if (! $uid = $this->model('active')->active_code_active($_POST['active_code'], 'FIND_PASSWORD'))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1,  AWS_APP::lang()->_t('链接已失效，请重新找回密码')));
-		}
-
 		$user_info = $this->model('account')->get_user_info_by_uid($uid);
 
 		$this->model('account')->update_user_password_ingore_oldpassword($_POST['password'], $uid, $user_info['salt']);
-
-		$this->model('active')->set_user_email_valid_by_uid($user_info['uid']);
 
 		if ($user_info['group_id'] == 3)
 		{
@@ -487,24 +435,7 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		$email_settings = array(
-			'FOLLOW_ME' => 'N',
-			'QUESTION_INVITE' => 'N',
-			'NEW_ANSWER' => 'N',
-			'NEW_MESSAGE' => 'N',
-			'QUESTION_MOD' => 'N',
-		);
-
-		if ($_POST['email_settings'])
-		{
-			foreach ($_POST['email_settings'] AS $key => $val)
-			{
-				unset($email_settings[$val]);
-			}
-		}
-
 		$this->model('account')->update_users_fields(array(
-			'email_settings' => serialize($email_settings),
 			'inbox_recv' => intval($_POST['inbox_recv'])
 		), $this->user_id);
 
@@ -515,7 +446,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function profile_setting_action()
 	{
-		if (!$this->user_info['user_name'] OR $this->user_info['user_name'] == $this->user_info['email'] AND $_POST['user_name'])
+		if (!$this->user_info['user_name'] AND $_POST['user_name'])
 		{
 			$update_data['user_name'] = htmlspecialchars(trim($_POST['user_name']));
 
@@ -555,21 +486,6 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经存在相同的姓名, 请重新填写')));
 		}
 
-		if (! H::valid_email($this->user_info['email']))
-		{
-			if (! H::valid_email($_POST['email']))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入正确的 E-Mail 地址')));
-			}
-
-			if ($this->model('account')->check_email($_POST['email']))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('邮箱已经存在, 请使用新的邮箱')));
-			}
-
-			$update_data['email'] = $_POST['email'];
-
-		}
 
 		$update_data['sex'] = intval($_POST['sex']);
 
@@ -709,11 +625,6 @@ class ajax extends AWS_CONTROLLER
 
 	public function complete_profile_action()
 	{
-		if ($this->user_info['email'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('当前帐号已经完善资料')));
-		}
-
 		$_POST['user_name'] = htmlspecialchars(trim($_POST['user_name']));
 
 		if ($check_result = $this->model('account')->check_username_char($_POST['user_name']))
@@ -730,22 +641,6 @@ class ajax extends AWS_CONTROLLER
 		}
 		
 		$update_data['user_name'] = $_POST['user_name'];
-
-		if (! H::valid_email($this->user_info['email']))
-		{
-			if (! H::valid_email($_POST['email']))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入正确的 E-Mail 地址')));
-			}
-
-			if ($this->model('account')->check_email($_POST['email']))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('邮箱已经存在, 请使用新的邮箱')));
-			}
-
-			$update_data['email'] = $_POST['email'];
-
-		}
 
 		$this->model('account')->update_users_fields($update_data, $this->user_id);
 

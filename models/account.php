@@ -93,22 +93,6 @@ class account_class extends AWS_MODEL
     }
 
     /**
-     * 检查电子邮件地址是否已经存在
-     *
-     * @param string
-     * @return boolean
-     */
-    public function check_email($email)
-    {
-        if (! H::valid_email($email))
-        {
-            return TRUE;
-        }
-
-        return $this->fetch_one('users', 'uid', "email = '" . $this->quote($email) . "'");
-    }
-
-    /**
      * 用户登录验证
      *
      * @param string
@@ -294,15 +278,6 @@ class account_class extends AWS_MODEL
             $user_info['url_token'] = urlencode($user_info['user_name']);
         }
 
-        if ($user_info['email_settings'])
-        {
-            $user_info['email_settings'] = unserialize($user_info['email_settings']);
-        }
-        else
-        {
-            $user_info['email_settings'] = array();
-        }
-
         $users_info[$uid] = $user_info;
 
         if ($attrib)
@@ -362,15 +337,6 @@ class account_class extends AWS_MODEL
                 if (!$val['url_token'])
                 {
                     $val['url_token'] = urlencode($val['user_name']);
-                }
-
-                if ($val['email_settings'])
-                {
-                    $val['email_settings'] = unserialize($val['email_settings']);
-                }
-                else
-                {
-                    $val['email_settings'] = array();
                 }
 
                 unset($val['password'], $val['salt']);
@@ -452,7 +418,7 @@ class account_class extends AWS_MODEL
      * @param string
      * @return int
      */
-    public function insert_user($user_name, $password, $email = null, $sex = 0, $mobile = null)
+    public function insert_user($user_name, $password)
     {
         if (!$user_name OR !$password)
         {
@@ -470,11 +436,9 @@ class account_class extends AWS_MODEL
             'user_name' => htmlspecialchars($user_name),
             'password' => compile_password($password, $salt),
             'salt' => $salt,
-            'email' => htmlspecialchars($email),
-            'sex' => intval($sex),
+            'sex' => 0,
             'reg_time' => fake_time(),
-            'reg_ip' => ip2long(fetch_ip()),
-            'email_settings' => serialize(get_setting('new_user_email_setting'))
+            'reg_ip' => ip2long(fetch_ip())
         )))
         {
             $this->insert('users_attrib', array(
@@ -497,9 +461,9 @@ class account_class extends AWS_MODEL
      * @param string
      * @return int
      */
-    public function user_register($user_name, $password = null, $email = null)
+    public function user_register($user_name, $password = null)
     {
-        if ($uid = $this->insert_user($user_name, $password, $email))
+        if ($uid = $this->insert_user($user_name, $password))
         {
             if ($def_focus_uids_str = get_setting('def_focus_uids'))
             {
@@ -843,11 +807,6 @@ class account_class extends AWS_MODEL
                 if (!$val['url_token'] AND $val['user_name'])
                 {
                     $data[$val['uid']]['url_token'] = urlencode($val['user_name']);
-                }
-
-                if ($val['email_settings'])
-                {
-                    $data[$val['uid']]['email_settings'] = unserialize($val['email_settings']);
                 }
 
                 $uids[] = $val['uid'];

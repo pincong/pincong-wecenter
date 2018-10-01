@@ -43,20 +43,12 @@ class find_password extends AWS_CONTROLLER
 
 	public function process_success_action()
 	{
-		TPL::assign('email', AWS_APP::session()->find_password);
-
 		TPL::output('account/find_password/process_success');
 	}
 
 	public function modify_action()
 	{
 
-		if (!$active_code_row = $this->model('active')->get_active_code($_GET['key'], 'FIND_PASSWORD'))
-		{
-			H::redirect_msg(AWS_APP::lang()->_t('链接已失效'), '/');
-		}
-
-		if ($active_code_row['active_time'] OR $active_code_row['active_ip'])
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('链接已失效'), '/');
 		}

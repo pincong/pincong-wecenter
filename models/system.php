@@ -463,7 +463,6 @@ class system_class extends AWS_MODEL
 	public function remove_user_by_uid($uid, $remove_user_data = false)
 	{
 		$delete_tables = array(
-			'active_data',
 			'answer_uninterested',
 			'favorite',
 			'favorite_tag',
@@ -597,10 +596,6 @@ class system_class extends AWS_MODEL
 		{
 			case 'new_user':
 				$query = "SELECT COUNT(uid) AS count, FROM_UNIXTIME(reg_time, '%y-%m') AS statistic_date FROM " . get_table('users') . " WHERE reg_time BETWEEN " . intval($start_time) . " AND " . intval($end_time) . " GROUP BY statistic_date ASC";
-			break;
-
-			case 'user_valid':
-				$query = "SELECT COUNT(uid) AS count, FROM_UNIXTIME(reg_time, '%y-%m') AS statistic_date FROM " . get_table('users') . " WHERE valid_email = 1 AND reg_time BETWEEN " . intval($start_time) . " AND " . intval($end_time) . " GROUP BY statistic_date ASC";
 			break;
 
 			case 'new_question':

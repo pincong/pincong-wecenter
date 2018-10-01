@@ -41,15 +41,10 @@ class main extends AWS_CONTROLLER
 	}
 
 	public function index_action()
-	{		
+	{
 		if (! $this->user_id)
 		{
 			HTTP::redirect('/explore/');
-		}
-
-		if (! $this->user_info['email'])
-		{
-			HTTP::redirect('/account/complete_profile/');
 		}
 
 		// 边栏可能感兴趣的人或话题

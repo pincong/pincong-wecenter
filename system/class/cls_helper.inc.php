@@ -49,13 +49,6 @@ class H
 		exit;
 	}
 
-	public static function valid_email($email)
-	{
-		//return Zend_Validate::is($email, 'EmailAddress');
-
-		return ( ! preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $email)) ? FALSE : TRUE;
-	}
-
 	public static function redirect_msg($message, $url = NULL, $interval = 5, $exit = true)
 	{
 		TPL::assign('message', $message);
