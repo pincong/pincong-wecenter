@@ -130,13 +130,6 @@ class actions_class extends AWS_MODEL
 					$action_list_article_comment_ids[] = $val['associate_attached'];
 				}
 			}
-			else if (in_array($val['associate_action'], array(
-				ACTION_LOG::ADD_LIKE_PROJECT,
-				ACTION_LOG::ADD_SUPPORT_PROJECT
-			)))
-			{
-				$action_list_project_ids[] = $val['associate_id'];
-			}
 			else
 			{
 				$action_list_question_ids[] = $val['associate_id'];
@@ -175,15 +168,6 @@ class actions_class extends AWS_MODEL
 			}
 
 			$answer_attachs = $this->model('publish')->get_attachs('answer', $action_list_answer_ids, 'min');
-		}
-
-		if ($action_list_project_ids)
-		{
-			$project_infos = $this->model('project')->get_project_info_by_ids($action_list_project_ids);
-
-			foreach ($project_infos as $key => $val) {
-				$project_infos[$key]['description'] = strip_ubb($val['description']);
-			}
 		}
 
 		if ($action_list_uids)
@@ -235,17 +219,6 @@ class actions_class extends AWS_MODEL
 					{
 						$action_list[$key]['comment_info'] = $article_comment[$val['associate_attached']];
 					}
-
-					break;
-
-				case ACTION_LOG::ADD_LIKE_PROJECT:
-				case ACTION_LOG::ADD_SUPPORT_PROJECT:
-					$project_info = $project_infos[$val['associate_id']];
-
-					$action_list[$key]['title'] = $project_info['title'];
-					$action_list[$key]['link'] = get_js_url('/project/' . $project_info['id']);
-
-					$action_list[$key]['project_info'] = $project_info;
 
 					break;
 
@@ -397,13 +370,6 @@ class actions_class extends AWS_MODEL
 					{
 						$article_ids[] = $val['associate_id'];
 					}
-					else if (in_array($val['associate_action'], array(
-						ACTION_LOG::ADD_LIKE_PROJECT,
-						ACTION_LOG::ADD_SUPPORT_PROJECT
-					)))
-					{
-						$action_list_project_ids[] = $val['associate_id'];
-					}
 					else
 					{
 						$question_ids[] = $val['associate_id'];
@@ -444,11 +410,6 @@ class actions_class extends AWS_MODEL
 			$action_articles_info = $this->model('article')->get_article_info_by_ids($article_ids);
 		}
 
-		if ($action_list_project_ids)
-		{
-			$project_infos = $this->model('project')->get_project_info_by_ids($action_list_project_ids);
-		}
-
 		foreach ($action_list as $key => $val)
 		{
 			$action_list[$key]['user_info'] = $action_list_users[$val['uid']];
@@ -466,19 +427,6 @@ class actions_class extends AWS_MODEL
 							$action_list[$key]['link'] = get_js_url('/article/' . $article_info['id']);
 
 							$action_list[$key]['article_info'] = $article_info;
-
-							$action_list[$key]['last_action_str'] = ACTION_LOG::format_action_data($val['associate_action'], $val['uid'], $action_list_users[$val['uid']]['user_name']);
-
-							break;
-
-						case ACTION_LOG::ADD_LIKE_PROJECT:
-						case ACTION_LOG::ADD_SUPPORT_PROJECT:
-							$project_info = $project_infos[$val['associate_id']];
-
-							$action_list[$key]['title'] = $project_info['title'];
-							$action_list[$key]['link'] = get_js_url('/project/' . $project_info['id']);
-
-							$action_list[$key]['project_info'] = $project_info;
 
 							$action_list[$key]['last_action_str'] = ACTION_LOG::format_action_data($val['associate_action'], $val['uid'], $action_list_users[$val['uid']]['user_name']);
 

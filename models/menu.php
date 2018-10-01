@@ -97,9 +97,6 @@ class menu_class extends AWS_MODEL
 					$url_prefix = 'article/';
 					break;
 
-				case 'project':
-					$url_prefix = 'project/';
-					break;
 			}
 
 			foreach ($nav_menu_data as $key => $val)

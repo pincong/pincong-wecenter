@@ -464,7 +464,6 @@ class publish_class extends AWS_MODEL
 					break;
 
 				case 'article':
-				case 'project':
 					$update_key = 'id';
 
 					break;

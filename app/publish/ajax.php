@@ -57,7 +57,6 @@ class ajax extends AWS_CONTROLLER
             case 'article':
             case 'ticket':
             case 'ticket_reply':
-            case 'project':
                 $item_type = $_GET['id'];
 
                 break;
