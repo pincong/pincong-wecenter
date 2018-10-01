@@ -73,60 +73,6 @@ function aasort($source_array, $order_field, $sort_type = 'DESC')
 }
 
 /**
- * 获取用户 IP
- *
- * @return string
- */
-function fetch_ip()
-{
-	return '0.0.0.0';
-}
-
-/**
- * 验证 IP 地址是否为内网 IP
- *
- * @param string
- * @return string
- */
-function valid_internal_ip($ip)
-{
-	if (!valid_ip($ip))
-	{
-		return false;
-	}
-
-	$ip_address = explode('.', $ip);
-
-	if ($ip_address[0] == 10)
-	{
-		return true;
-	}
-
-	if ($ip_address[0] == 172 and $ip_address[1] > 15 and $ip_address[1] < 32)
-	{
-		return true;
-	}
-
-	if ($ip_address[0] == 192 and $ip_address[1] == 168)
-	{
-		return true;
-	}
-
-	return false;
-}
-
-/**
- * 校验 IP 有效性
- *
- * @param  string
- * @return boolean
- */
-function valid_ip($ip)
-{
-	return Zend_Validate::is($ip, 'Ip');
-}
-
-/**
  * 检查整型、字符串或数组内的字符串是否为纯数字（十进制数字，不包括负数和小数）
  *
  * @param integer or string or array

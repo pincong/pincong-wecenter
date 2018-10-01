@@ -116,11 +116,6 @@ class question_class extends AWS_MODEL
 	 */
 	public function save_question($question_content, $question_detail, $published_uid, $anonymous = 0, $ip_address = null, $from = null)
 	{
-		if (!$ip_address)
-		{
-			$ip_address = fetch_ip();
-		}
-
 		$now = fake_time();
 
 		$to_save_question = array(
@@ -129,8 +124,7 @@ class question_class extends AWS_MODEL
 			'add_time' => $now,
 			'update_time' => $now,
 			'published_uid' => intval($published_uid),
-			'anonymous' => intval($anonymous),
-			'ip' => ip2long($ip_address)
+			'anonymous' => intval($anonymous)
 		);
 
 		if ($from AND is_array($from))

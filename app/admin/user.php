@@ -56,28 +56,6 @@ class user extends AWS_ADMIN_CONTROLLER
             $where[] = 'group_id = ' . intval($_GET['group_id']);
         }
 
-        if ($_GET['ip'] AND preg_match('/(\d{1,3}\.){3}(\d{1,3}|\*)/', $_GET['ip']))
-        {
-            if (substr($_GET['ip'], -2, 2) == '.*')
-            {
-                $ip_base = ip2long(str_replace('.*', '.0', $_GET['ip']));
-
-                if ($ip_base)
-                {
-                    $where[] = 'last_ip BETWEEN ' . $ip_base . ' AND ' . ($ip_base + 255);
-                }
-            }
-            else
-            {
-                $ip_base = ip2long($_GET['ip']);
-
-                if ($ip_base)
-                {
-                    $where[] = 'last_ip = ' . $ip_base;
-                }
-            }
-        }
-
         if ($_GET['integral_min'])
         {
             $where[] = 'integral >= ' . intval($_GET['integral_min']);

@@ -372,7 +372,7 @@ class HTTP
 		}
 
 		$headers = array(
-			//'API-RemoteIP' => fetch_ip()
+			//'key' => 'value'
 		);
 
 		if ($header)

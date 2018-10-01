@@ -228,7 +228,7 @@ class AWS_APP
 	 */
 	public static function exception_handle($exception)
     {
-		$exception_message = "Application error\n------\nMessage: " . $exception->getMessage() . "\nFile: " . $exception->getFile() . "\nLine: " . $exception->getLine() . "\n------\nBuild: " . G_DISPLAY_VERSION . " " . G_DISPLAY_VERSION_BUILD . "\nPHP Version: " . PHP_VERSION . "\nURI: " . $_SERVER['REQUEST_URI'] . "\nUser Agent: " . '' . "\nAccept Language: " . $_SERVER['HTTP_ACCEPT_LANGUAGE'] . "\nIP Address: " . fetch_ip() . "\n------\n" . $exception->getTraceAsString();
+		$exception_message = "Application error\n------\nMessage: " . $exception->getMessage() . "\nFile: " . $exception->getFile() . "\nLine: " . $exception->getLine() . "\nURI: " . $_SERVER['REQUEST_URI'] . "\nAccept Language: " . $_SERVER['HTTP_ACCEPT_LANGUAGE'] . "\n------\n" . $exception->getTraceAsString();
 
         show_error($exception_message, $exception->getMessage());
     }

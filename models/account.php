@@ -437,8 +437,7 @@ class account_class extends AWS_MODEL
             'password' => compile_password($password, $salt),
             'salt' => $salt,
             'sex' => 0,
-            'reg_time' => fake_time(),
-            'reg_ip' => ip2long(fetch_ip())
+            'reg_time' => fake_time()
         )))
         {
             $this->insert('users_attrib', array(
@@ -622,8 +621,7 @@ class account_class extends AWS_MODEL
         }
 
         return $this->shutdown_update('users', array(
-            'last_login' => fake_time(),
-            'last_ip' => ip2long(fetch_ip())
+            'last_login' => fake_time()
         ), 'uid = ' . intval($uid));
     }
 

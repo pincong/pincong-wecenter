@@ -267,8 +267,7 @@ class answer_class extends AWS_MODEL
 			'add_time' => fake_time(),
 			'uid' => intval($uid),
 			'category_id' => $question_info['category_id'],
-			'anonymous' => intval($anonymous),
-			'ip' => ip2long(fetch_ip())
+			'anonymous' => intval($anonymous)
 		)))
 		{
 			return false;
