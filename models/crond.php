@@ -106,11 +106,6 @@ class crond_class extends AWS_MODEL
     // 每五分钟执行
     public function five_minutes()
     {
-        if (check_extension_package('ticket'))
-        {
-
-        }
-
         $this->model('admin')->notifications_crond();
 
         $this->model('active')->send_valid_email_crond();

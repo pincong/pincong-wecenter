@@ -28,7 +28,7 @@ class notify_class extends AWS_MODEL
 
 	const CATEGORY_ARTICLE	= 8;	// 文章
 
-	const CATEGORY_TICKET	= 9;	// 文章
+	const CATEGORY_TICKET	= 9;	// 工单
 
 	//=========操作标示:action_type==================================================
 
@@ -178,11 +178,6 @@ class notify_class extends AWS_MODEL
 				$article_ids[] = $val['data']['article_id'];
 			}
 
-			if ($val['data']['ticket_id'])
-			{
-				$ticket_ids[] = $val['data']['ticket_id'];
-			}
-
 			if ($val['data']['from_uid'])
 			{
 				$uids[] = intval($val['data']['from_uid']);
@@ -203,11 +198,6 @@ class notify_class extends AWS_MODEL
 		if ($article_ids)
 		{
 			$article_list = $this->model('article')->get_article_info_by_ids($article_ids);
-		}
-
-		if ($ticket_ids)
-		{
-			$ticket_list = $this->model('ticket')->get_tickets_list($ticket_ids);
 		}
 
 		if ($uids)
@@ -442,19 +432,6 @@ class notify_class extends AWS_MODEL
 
 					break;
 
-				case self::CATEGORY_TICKET:
-					$querys[] = $token;
-
-					$tmp_data['title'] = $ticket_list[$data['ticket_id']]['title'];
-
-					if ($data['reply_id'])
-					{
-						$querys[] = 'reply_id=' . $data['reply_id'];
-					}
-
-					$tmp_data['key_url'] = get_js_url('/ticket/' . $data['ticket_id'] . '?' . implode('&', $querys));
-
-					break;
 			}
 
 			if ($tmp_data)
@@ -1071,21 +1048,6 @@ class notify_class extends AWS_MODEL
 
 						break;
 
-					case self::TYPE_TICKET_CLOSED:
-						$data[$key]['message'] = AWS_APP::lang()->_t('%s0 关闭了你发起的工单 %s1', array(
-							'<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a> ',
-							'<a href="' . $val['key_url'] . '">' . $val['title'] . '</a>'
-						));
-
-						break;
-
-					case self::TYPE_TICKET_REPLIED:
-						$data[$key]['message'] = AWS_APP::lang()->_t('%s0 回复了你发起的工单 %s1', array(
-							'<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a> ',
-							'<a href="' . $val['key_url'] . '">' . $val['title'] . '</a>'
-						));
-
-						break;
 				}
 			}
 		}

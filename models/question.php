@@ -403,10 +403,6 @@ class question_class extends AWS_MODEL
 
 		$this->delete('question', 'question_id = ' . intval($question_id));
 
-		if ($question_info['ticket_id'])
-		{
-			remove_assoc('ticket', 'question', $question_info['question_id']);
-		}
 	}
 
 	public function add_focus_question($question_id, $uid, $anonymous = 0, $save_action = true)
