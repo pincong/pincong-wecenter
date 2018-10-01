@@ -65,78 +65,7 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <div class="form-group">
-                                <label class="col-sm-4 col-xs-3 control-label"><?php _e('居住地'); ?>:</label>
 
-                                <div class="col-sm-5 col-xs-8">
-                                    <select name="province" class="select_area form-control"></select>
-                                </div>
-                                <div class="col-sm-3 col-xs-3">
-                                    <select name="city" class="select_area form-control collapse"></select>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-group">
-                                <label class="col-sm-4 col-xs-3 control-label"><?php _e('职业'); ?>:</label>
-
-                                <div class="col-sm-5 col-xs-8">
-                                    <select name="job_id" class="form-control">
-                                        <option value="">--</option>
-                                        <?php echo H::display_options($this->job_list, $this->user['job_id']); ?>
-                                    </select>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-group">
-                                <label class="col-sm-4 col-xs-3 control-label"><?php _e('手机号码'); ?>:</label>
-
-                                <div class="col-sm-5 col-xs-8">
-                                    <input class="form-control" name="mobile" type="text" value="<?php echo $this->user['mobile']; ?>" />
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-group">
-                                <label class="col-sm-4 col-xs-3 control-label">QQ:</label>
-
-                                <div class="col-sm-5 col-xs-8">
-                                    <input class="form-control" name="qq" type="text" value="<?php echo $this->user['qq']; ?>" />
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-group">
-                                <label class="col-sm-4 col-xs-3 control-label"><?php _e('常用邮箱'); ?>:</label>
-
-                                <div class="col-sm-5 col-xs-8">
-                                    <input class="form-control" name="common_email" type="text" value="<?php echo $this->user['common_email']; ?>" />
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="form-group">
-                                <label class="col-sm-4 col-xs-3 control-label"><?php _e('网站'); ?>:</label>
-
-                                <div class="col-sm-5 col-xs-8">
-                                    <input class="form-control" name="homepage" type="text" value="<?php echo $this->user['homepage']; ?>" />
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
                     <tr>
                         <td>
                             <div class="form-group">
@@ -353,22 +282,5 @@
         </div>
     </div>
 </div>
-
-<script type="text/javascript">
-$(document).ready(function () {
-    $('.select_area').LocationSelect({
-        labels: ["<?php _e('请选择省份或直辖市'); ?>", "<?php _e('请选择城市'); ?>"],
-        elements: document.getElementsByTagName("select"),
-        detector: function () {
-            this.select(["<?php echo $this->user['province']; ?>", "<?php echo $this->user['city']; ?>"]);
-        },
-        dataUrl: G_BASE_URL.replace('/?', '') + '/static/js/areas.js'
-    });
-
-    $('.mod-input-file').change(function(){
-        $('.filetext').text($('.mod-input-file').val());
-    });
-});
-</script>
 
 <?php TPL::output('admin/global/footer.tpl.htm'); ?>

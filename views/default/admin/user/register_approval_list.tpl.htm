@@ -32,7 +32,6 @@
 							<td><a href="people/<?php echo $val['user_name']; ?>" target="_blank"><?php echo $val['user_name']; ?></a> <?php if ($val['forbidden']) { ?><span class="text-color-999">[ <?php _e('封禁'); ?> ]</span><?php } else if (!$val['valid_email']) { ?><span class="text-color-999">[ <?php _e('邮件未验证'); ?> ]</span><?php } ?></td>
 							<td><?php echo $val['email']; ?></td>
 							<td><?php echo $val['signature']; ?></td>
-							<td><?php echo $val['province']; ?> <?php echo $val['city']; ?></td>
 							<td><?php echo date_friendly($val['reg_time']); ?></td>
 							<td><a href="admin/user/edit/uid-<?php echo $val['uid']; ?>" class="icon icon-edit md-tip" title="<?php _e('编辑'); ?>"></a></td>
 						</tr>

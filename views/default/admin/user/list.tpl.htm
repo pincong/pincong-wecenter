@@ -161,30 +161,6 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-2 col-xs-3 control-label"><?php _e('职业'); ?>:</label>
-
-                        <div class="col-sm-5 col-xs-8">
-                            <select name="category_id" class="form-control">
-                                <option value="0"></option>
-                                <?php foreach($this->job_list as $job_id => $job_name) { ?>
-                                    <option value="<?php echo $job_id; ?>"<?php if ($_GET['job_id'] == $job_id) { ?> selected="selected"<?php } ?>><?php echo $job_name; ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-2 col-xs-3 control-label"><?php _e('居住地'); ?>:</label>
-
-                        <div class="col-sm-3 col-xs-3">
-                            <select name="province" class="select_area form-control"></select>
-                        </div>
-                        <div class="col-sm-3 col-xs-3">
-                            <select name="city" class="select_area form-control collapse"></select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-5 col-xs-8">
                             <button type="button" onclick="AWS.ajax_post($('#search_form'));" class="btn btn-primary"><?php _e('搜索'); ?></button>
                         </div>
@@ -194,18 +170,5 @@
         </div>
     </div>
 </div>
-
-<script type="text/javascript">
-$(document).ready(function () {
-    $('.select_area').LocationSelect({
-        labels: ["<?php _e('请选择省份或直辖市'); ?>", "<?php _e('请选择城市'); ?>"],
-        elements: document.getElementsByTagName("select"),
-        detector: function () {
-            this.select(["<?php echo $_GET['province']; ?>", "<?php echo $_GET['city']; ?>"]);
-        },
-        dataUrl: G_BASE_URL.replace('/?', '') + '/static/js/areas.js'
-    });
-});
-</script>
 
 <?php TPL::output('admin/global/footer.tpl.htm'); ?>

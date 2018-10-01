@@ -19,25 +19,6 @@
                             <h1><?php echo $this->user['user_name']; ?> <?php if ($this->user['verified']) { ?><i class="icon-v <?php if ($this->user['verified'] == 'enterprise') { ?> i-ve<?php } ?>" title="<?php if ($this->user['verified'] == 'enterprise') { ?>企业认证<?php } else { ?>个人认证<?php } ?>"></i><?php } ?></h1>
                             <p class="text-color-999"><?php echo $this->user['signature']; ?></p>
                             <p class="aw-user-flag">
-                                <?php if ($this->user['province']) { ?>
-                                <span>
-                                    <i class="icon icon-location"></i>
-                                    <?php echo $this->user['province']; ?>
-                                    <?php echo $this->user['city']; ?>
-                                </span>
-                                <?php } ?>
-                                <?php if ($this->job_name) { ?>
-                                <span>
-                                    <i class="icon icon-job"></i>
-                                    <?php echo $this->job_name; ?>
-                                </span>
-                                <?php } ?>
-                                <?php if (get_setting('sina_weibo_enabled') == 'Y' AND $this->sina_weibo_url) { ?>
-                                <span>
-                                    <?php _e('绑定认证'); ?>
-                                    <?php if ($this->sina_weibo_url AND get_setting('sina_weibo_enabled') == 'Y') { ?><a href="<?php if ($this->sina_weibo_url) { ?><?php echo $this->sina_weibo_url; ?><?php } else { ?>javascript:;<?php } ?>" title="<?php _e('微博'); ?>"><i class="icon icon-weibo"></i></a><?php } ?>
-                                </span>
-                                <?php } ?>
                             </p>
                         </div>
                         <div class="mod-body">
