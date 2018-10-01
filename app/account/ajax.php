@@ -545,49 +545,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if ($this->is_post() AND !$this->user_info['verified'])
 		{
-			if (trim($_POST['name']) == '')
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入真实姓名或企业名称')));
-			}
-
-			if (trim($_POST['reason']) == '')
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入申请认证说明')));
-			}
-
-			if ($_FILES['attach']['name'])
-			{
-				AWS_APP::upload()->initialize(array(
-					'allowed_types' => 'jpg,png,gif',
-					'upload_path' => get_setting('upload_dir') . '/verify',
-					'is_image' => FALSE,
-					'encrypt_name' => TRUE
-				))->do_upload('attach');
-
-				if (AWS_APP::upload()->get_error())
-				{
-					switch (AWS_APP::upload()->get_error())
-					{
-						default:
-							H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('错误代码') . ': ' . AWS_APP::upload()->get_error()));
-						break;
-
-						case 'upload_invalid_filetype':
-							H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文件类型无效')));
-						break;
-					}
-				}
-
-				if (! $upload_data = AWS_APP::upload()->data())
-				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('上传失败, 请与管理员联系')));
-				}
-			}
-
-			$this->model('verify')->add_apply($this->user_id, $_POST['name'], $_POST['reason'], $_POST['type'], array(
-				'id_code' => htmlspecialchars($_POST['id_code']),
-				'contact' => htmlspecialchars($_POST['contact'])
-			), basename($upload_data['full_path']));
+			$this->model('verify')->add_apply($this->user_id, $_POST['name'], $_POST['reason'],$_POST['type']);
 
 			$recipient_uid = get_setting('report_message_uid') ? get_setting('report_message_uid') : 1;
 

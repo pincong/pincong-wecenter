@@ -20,7 +20,7 @@ if (!defined('IN_ANWSION'))
 
 class verify_class extends AWS_MODEL
 {
-	public function add_apply($uid, $name, $reason, $type, $data = array(), $attach = null)
+	public function add_apply($uid, $name, $reason, $type)
 	{
 		if ($verify_apply = $this->fetch_apply($uid))
 		{
@@ -31,30 +31,13 @@ class verify_class extends AWS_MODEL
 			'uid' => $uid,
 			'name' => htmlspecialchars($name),
 			'reason' => htmlspecialchars($reason),
-			'data' => serialize($data),
 			'type' => htmlspecialchars($type),
-			'attach' => $attach,
 			'time' => fake_time()
 		));
 	}
 
 	public function update_apply($uid, $name = null, $reason = null, $data = null, $attach = null, $type = null)
 	{
-		if ($attach)
-		{
-			if ($verify_apply = $this->fetch_row('verify_apply', 'uid = ' . intval($uid)))
-			{
-				if ($verify_apply['attach'])
-				{
-					unlink(get_setting('upload_dir') . '/verify/' . $verify_apply['attach']);
-				}
-
-				$this->update('verify_apply', array(
-					'attach' => $attach
-				), 'uid = ' . intval($uid));
-			}
-		}
-
 		$to_update_apply = array();
 
 		if (isset($name))
@@ -65,11 +48,6 @@ class verify_class extends AWS_MODEL
 		if (isset($reason))
 		{
 			$to_update_apply['reason'] = htmlspecialchars($reason);
-		}
-
-		if (isset($data) AND is_array($data))
-		{
-			$to_update_apply['data'] = serialize($data);
 		}
 
 		if (isset($type))
@@ -94,11 +72,6 @@ class verify_class extends AWS_MODEL
 	{
 		if ($verify_apply = $this->fetch_row('verify_apply', 'uid = ' . intval($uid)))
 		{
-			if ($verify_apply['attach'])
-			{
-				unlink(get_setting('upload_dir') . '/verify/' . $verify_apply['attach']);
-			}
-
 			return $this->delete('verify_apply', 'id = ' . intval($verify_apply['id']));
 		}
 	}

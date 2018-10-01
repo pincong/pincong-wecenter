@@ -21,9 +21,8 @@
 						<tr>
 							<?php if ($_GET['status'] != 1) { ?><th width="10%"><input type="checkbox" class="check-all"></th><?php } ?>
 							<th width="10%"><?php _e('会员'); ?></th>
-							<th width="20%"><?php _e('企业名称/真实姓名'); ?></th>
+							<th width="20%"><?php _e('认证名称'); ?></th>
 							<th width="10%"><?php _e('认证类型'); ?></th>
-							<th width="20%"><?php _e('详细资料'); ?></th>
 							<th><?php _e('认证说明'); ?></th>
 							<th><?php _e('操作'); ?></th>
 						</tr>
@@ -35,14 +34,8 @@
 							<td><a href="people/<?php echo $this->users_info[$val['uid']]['url_token']; ?>" target="_blank"><?php echo $this->users_info[$val['uid']]['user_name']; ?></a></td>
 							<td><?php echo $val['name']; ?></td>
 							<td><?php if ($val['type'] == 'enterprise') { ?><?php _e('机构认证'); ?><?php } else { ?><?php _e('个人认证'); ?><?php } ?></td>
-							<td>
-								<?php if ($val['type'] == 'enterprise') { ?><?php _e('组织机构代码'); ?><?php } else { ?><?php _e('身份证号码'); ?><?php } ?>: <?php echo $val['data']['id_code']; ?><br />
-								<?php _e('联系方式'); ?>: <?php echo $val['data']['contact']; ?>
-							</td>
 							<td><?php echo $val['reason']; ?></td>
 							<td class="nowrap">
-								<?php if ($val['attach']) { ?><a href="<?php echo get_setting('upload_url'); ?>/verify/<?php echo $val['attach']; ?>" target="_blank" data-toggle="tooltip" class="icon icon-log md-tip" title="<?php _e('附件'); ?>"></a><?php } ?>
-
 								<a href="admin/user/verify_approval_edit/<?php echo $val['uid']; ?>" data-toggle="tooltip" class="icon icon-edit md-tip" title="<?php _e('编辑'); ?>"></a>
 							</td>
 						</tr>

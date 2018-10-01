@@ -1258,10 +1258,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
     {
         if ($_POST['uid'])
         {
-            $this->model('verify')->update_apply($_POST['uid'], $_POST['name'], $_POST['reason'], array(
-                'id_code' => htmlspecialchars($_POST['id_code']),
-                'contact' => htmlspecialchars($_POST['contact'])
-            ));
+            $this->model('verify')->update_apply($_POST['uid'], $_POST['name'], $_POST['reason']);
         }
 
         H::ajax_json_output(AWS_APP::RSM(array(
