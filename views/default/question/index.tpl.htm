@@ -175,9 +175,7 @@
 									</a>
 									<div aria-labelledby="dropdownMenu" role="menu" class="aw-dropdown shareout pull-right">
 										<ul class="aw-dropdown-list">
-											<li><a onclick="AWS.User.share_out({webid: 'tsina', content: $(this).parents('.aw-question-detail').find('.markitup-box')});"><i class="icon icon-weibo"></i> <?php _e('微博'); ?></a></li>
-											<li><a onclick="AWS.User.share_out({webid: 'qzone', content: $(this).parents('.aw-question-detail')});"><i class="icon icon-qzone"></i> <?php _e('QZONE'); ?></a></li>
-											<li><a onclick="AWS.User.share_out({webid: 'weixin', content: $(this).parents('.aw-question-detail')});"><i class="icon icon-wechat"></i> <?php _e('微信'); ?></a></li>
+
 										</ul>
 									</div>
 
@@ -388,9 +386,7 @@
 													</a>
 													<div aria-labelledby="dropdownMenu" role="menu" class="aw-dropdown shareout pull-right">
 														<ul class="aw-dropdown-list">
-															<li><a onclick="AWS.User.share_out({webid: 'tsina', title: $(this).parents('.aw-item').find('.markitup-box').text()});"><i class="icon icon-weibo"></i> <?php _e('微博'); ?></a></li>
-															<li><a onclick="AWS.User.share_out({webid: 'qzone', title: $(this).parents('.aw-item').find('.markitup-box').text()});"><i class="icon icon-qzone"></i> <?php _e('QZONE'); ?></a></li>
-															<li><a onclick="AWS.User.share_out({webid: 'weixin', title: $(this).parents('.aw-item').find('.markitup-box').text()});"><i class="icon icon-wechat"></i> <?php _e('微信'); ?></a></li>
+
 														</ul>
 													</div>
 												</div>
@@ -526,24 +522,6 @@
 					</div>
 					<?php } ?>
 					<!-- end 发起人 -->
-
-					<?php if ($this->user_id) { ?>
-					<!-- 邀请别人回复 -->
-					<div class="aw-mod email-invite-replay">
-						<div class="mod-head">
-							<h3><?php _e('邮件邀请别人回复'); ?></h3>
-						</div>
-						<div class="mod-body clearfix">
-							<!-- 侧边栏邀请box -->
-							<form method="post" action="question/ajax/email_invite/question_id-<?php echo $this->question_info['question_id']; ?>" onsubmit="return false;" id="email_invite_form">
-								<input class="form-control" type="text" name="email" placeholder="<?php _e('邮件邀请回复...'); ?>"/>
-								<a class="pull-right btn btn-mini btn-success" onclick="AWS.ajax_post($('#email_invite_form'));"><?php _e('邀请'); ?></a>
-							</form>
-							<!-- end 侧边栏邀请box -->
-						</div>
-					</div>
-					<!-- end 邀请别人回复 -->
-					<?php } ?>
 
 					<?php if ($this->recommend_posts) { ?>
 					<!-- 推荐内容 -->
