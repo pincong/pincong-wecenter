@@ -1424,28 +1424,8 @@ AWS.User =
 
 	share_out: function(options)
 	{
-		var url = options.url || window.location.href, pic = '';
-		window.open(url);
-		/*if (options.title)
-		{
-			var title = options.title + ' - ' + G_SITE_NAME;
-		}
-		else
-		{
-			var title = $('title').text();
-		}
-
-		shareURL = 'http://www.jiathis.com/send/?webid=' + options.webid + '&url=' + url + '&title=' + title +'';
-
-		if (options.content)
-		{
-			if ($(options.content).find('img').length)
-			{
-				shareURL = shareURL + '&pic=' + $(options.content).find('img').eq(0).attr('src');
-			}
-		}
-
-		window.open(shareURL);*/
+		var title = $('title').text();
+		var url = window.location.href;
 	},
 
 	// 赞成投票

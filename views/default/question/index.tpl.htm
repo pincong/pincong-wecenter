@@ -164,15 +164,7 @@
 									<?php if ($this->user_id != $this->question_info['published_uid'] AND $this->user_id) { ?><a <?php if (!$this->question_thanks) { ?>data-placement="bottom" title="" data-toggle="tooltip" data-original-title="<?php _e('感谢提问者'); ?>" onclick="AWS.User.question_thanks($(this), <?php echo $this->question_info['question_id']; ?>);"<?php } ?> class="aw-icon-thank-tips text-color-999"><i class="icon icon-thank"></i><?php if ($this->question_thanks) { ?><?php _e('已感谢'); ?><?php } else { ?><?php _e('感谢'); ?><?php } ?></a>
 									<?php } ?>
 
-									<!-- <a class="text-color-999"  onclick="AWS.dialog('shareOut', {item_type:'question', item_id:<?php echo $this->question_info['question_id']; ?>});"> -->
-									<a class="text-color-999 dropdown-toggle" data-toggle="dropdown">
-										<i class="icon icon-share"></i><?php _e('分享'); ?>
-									</a>
-									<div aria-labelledby="dropdownMenu" role="menu" class="aw-dropdown shareout pull-right">
-										<ul class="aw-dropdown-list">
-
-										</ul>
-									</div>
+									<a href="javascript:;" class="text-color-999" onclick="AWS.User.share_out();"><i class="icon icon-share"></i><?php _e('分享'); ?></a>
 
 									<?php if ($this->user_id) { ?><a href="javascript:;" class="text-color-999" onclick="AWS.dialog('report', {item_type:'question', item_id:<?php echo $this->question_info['question_id']; ?>})"><i class="icon icon-report"></i><?php _e('举报'); ?></a><?php } ?>
 								</div>
@@ -376,14 +368,7 @@
 												<a href="javascript:;"<?php if (!$val['user_rated_thanks']) { ?> onclick="AWS.User.answer_user_rate($(this), 'thanks', <?php echo $val['answer_id']; ?>);"<?php } ?> class="aw-icon-thank-tips text-color-999" data-original-title="<?php _e('感谢热心的回复者'); ?>" data-toggle="tooltip" title="" data-placement="bottom"><i class="icon icon-thank"></i> <?php if ($val['user_rated_thanks']) { ?><?php _e('已感谢'); ?><?php } else { ?><?php _e('感谢'); ?><?php } ?></a>
 												<?php } ?>
 												<div class="btn-group pull-left">
-													<a class="text-color-999 dropdown-toggle" data-toggle="dropdown">
-														<i class="icon icon-share"></i> <?php _e('分享'); ?>
-													</a>
-													<div aria-labelledby="dropdownMenu" role="menu" class="aw-dropdown shareout pull-right">
-														<ul class="aw-dropdown-list">
-
-														</ul>
-													</div>
+													<a href="javascript:;" class="text-color-999" onclick="AWS.User.share_out();"><i class="icon icon-share"></i><?php _e('分享'); ?></a>
 												</div>
 												<?php if (($this->user_info['permission']['is_moderator'] OR $this->user_info['permission']['is_administortar']) AND !$this->question_info['best_answer']) { ?>
 												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/question/ajax/set_best_answer/', 'answer_id=<?php echo $val['answer_id']; ?>');" class="text-color-999"><i class="icon icon-best"></i><?php _e('最佳回复'); ?></a>
