@@ -32,7 +32,6 @@ class ajax extends AWS_CONTROLLER
 			'register_process',
 			'login_process',
 			'register_agreement',
-			'send_valid_mail',
 			'valid_email_active',
 			'request_find_password',
 			'find_password_modify'
@@ -192,13 +191,10 @@ class ajax extends AWS_CONTROLLER
 		}
 		else
 		{
-			AWS_APP::session()->valid_email = $user_info['email'];
-
-			$this->model('active')->new_valid_email($uid);
 
 			{
 				H::ajax_json_output(AWS_APP::RSM(array(
-					'url' => get_js_url('/account/valid_email/')
+					'url' => get_js_url('/account/valid_approval/')
 				), 1, null));
 			}
 		}
@@ -324,128 +320,6 @@ class ajax extends AWS_CONTROLLER
 		$this->model('account')->clean_first_login($this->user_id);
 
 		die('success');
-	}
-
-	public function modify_unvalid_email_action()
-	{
-		if (!$user_info = $this->model('account')->get_user_info_by_email(AWS_APP::session()->valid_email))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户不存在')));
-		}
-		
-		if ($user_info['valid_email'] == 1)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不允许已认证邮箱用户更改邮箱')));
-		}
-		
-		if ($this->model('account')->check_email($_POST['email']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('邮箱地址已被使用')));
-		}
-		
-		$this->model('account')->update_users_fields(array(
-			'email' => strtolower($_POST['email'])
-		), $user_info['uid']);
-		
-		$this->model('active')->new_valid_email($this->user_id);
-		
-		AWS_APP::session()->valid_email = strtolower($_POST['email']);
-		
-		H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('邮箱更改成功, 请前往邮箱接收验证邮件')));
-	}
-
-	public function send_valid_mail_action()
-	{
-		if (!$this->user_id)
-		{
-			if ( H::valid_email(AWS_APP::session()->valid_email))
-			{
-				$this->user_info = $this->model('account')->get_user_info_by_email(AWS_APP::session()->valid_email);
-				$this->user_id = $this->user_info['uid'];
-			}
-		}
-
-		if (! H::valid_email($this->user_info['email']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('错误, 用户没有提供 E-mail')));
-		}
-
-		if ($this->user_info['valid_email'] == 1)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户邮箱已经认证')));
-		}
-
-		$this->model('active')->new_valid_email($this->user_id);
-
-		H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('邮件发送成功')));
-	}
-
-	public function valid_email_active_action()
-	{
-		if (!$active_data = $this->model('active')->get_active_code($_POST['active_code'], 'VALID_EMAIL'))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('激活失败, 无效的链接')));
-		}
-
-		if ($active_data['active_time'] OR $active_data['active_ip'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/account/login/'),
-			), 1, null));
-		}
-
-		if (!$user_info = $this->model('account')->get_user_info_by_uid($active_data['uid']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('激活失败, 无效的链接')));
-		}
-
-		if ($user_info['valid_email'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/account/login/'),
-			), 1, null));
-		}
-
-		if ($this->model('active')->active_code_active($_POST['active_code'], 'VALID_EMAIL'))
-		{
-			if (AWS_APP::session()->valid_email)
-			{
-				unset(AWS_APP::session()->valid_email);
-			}
-
-			$this->model('active')->set_user_email_valid_by_uid($user_info['uid']);
-
-			if (get_setting('register_valid_type') == 'email' OR get_setting('register_valid_type') == 'N')
-			{
-				if ($user_info['group_id'] == 3)
-				{
-					$this->model('active')->active_user_by_uid($user_info['uid']);
-				}
-
-				// 帐户激活成功，切换为登录状态跳转至首页
-				$this->model('account')->setsession_logout();
-				$this->model('account')->setcookie_logout();
-
-				$this->model('account')->update_user_last_login($user_info['uid']);
-
-				$this->model('account')->setcookie_login($user_info['uid'], $user_info['user_name'], $user_info['password'], $user_info['salt'], null, false);
-			}
-
-			$this->model('account')->welcome_message($user_info['uid'], $user_info['user_name'], $user_info['email']);
-
-			if (get_setting('register_valid_type') == 'email' OR get_setting('register_valid_type') == 'N')
-			{
-				$url = $user_info['is_first_login'] ? '/first_login-TRUE' : '/';
-
-				H::ajax_json_output(AWS_APP::RSM(array(
-					'url' => get_js_url($url)
-				), 1, null));
-			}
-			else
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('激活成功, 请等待管理员审核账户')));
-			}
-		}
 	}
 
 	public function request_find_password_action()
@@ -700,7 +574,6 @@ class ajax extends AWS_CONTROLLER
 
 			$update_data['email'] = $_POST['email'];
 
-			$this->model('active')->new_valid_email($this->user_id, $_POST['email']);
 		}
 
 		$update_data['sex'] = intval($_POST['sex']);
@@ -877,7 +750,6 @@ class ajax extends AWS_CONTROLLER
 
 			$update_data['email'] = $_POST['email'];
 
-			$this->model('active')->new_valid_email($this->user_id, $_POST['email']);
 		}
 
 		$this->model('account')->update_users_fields($update_data, $this->user_id);
