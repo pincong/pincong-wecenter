@@ -2591,21 +2591,6 @@ AWS.Init =
 								}, 'json');
 							break;
 
-							case 'favorite':
-								$.post(G_BASE_URL + '/favorite/ajax/update_favorite_tag/', 'item_id=' + data_id + '&item_type=' + _topic_editor.attr('data-item-type') + '&tags=' + encodeURIComponent(_topic_editor.find('#aw_edit_topic_title').val()), function (result)
-								{
-									if (result.errno != 1)
-									{
-										AWS.alert(result.err);
-
-										return false;
-									}
-
-									_topic_editor.find('.tag-bar').prepend('<span class="topic-tag"><a href="' + G_BASE_URL + '/favorite/tag-' + encodeURIComponent(_topic_editor.find('#aw_edit_topic_title').val()) + '" class="text">' + _topic_editor.find('#aw_edit_topic_title').val() + '</a><a class="close"><i class="icon icon-delete"></i></a></span>').hide().fadeIn();
-
-									_topic_editor.find('#aw_edit_topic_title').val('');
-								}, 'json');
-							break;
 						}
 					}
 				});
