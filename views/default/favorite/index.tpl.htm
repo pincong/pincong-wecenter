@@ -10,20 +10,7 @@
 							<h2><?php _e('我的收藏'); ?> <span class="badge"><?php echo count($this->list); ?></span></h2>
 						</div>
 						<div class="mod-body">
-							<?php if (sizeof($this->favorite_tags) > 0) { ?>
-							<div class="aw-tag-list clearfix">
-								<span class="pull-left"><?php _e('标签'); ?>&nbsp;:&nbsp;</span>
-								<div class="aw-topic-bar">
-									<div class="topic-bar clearfix">
-										<?php foreach ($this->favorite_tags AS $key => $val) { ?>
-										<span class="topic-tag">
-											<a href="favorite/tag-<?php echo urlencode($val['title']); ?>" class="text"><?php echo $val['title']; ?></a>
-										</span>
-										<?php } ?>
-									</div>
-								</div>
-							</div>
-							<?php } ?>
+
 							<div class="aw-feed-list">
 								<?php if (sizeof ($this->list) > 0) { ?>
 								<?php foreach ($this->list AS $key => $val) { ?>
@@ -101,17 +88,6 @@
 										<a class="pull-right text-color-999" onclick="AWS.ajax_request(G_BASE_URL + '/favorite/ajax/remove_favorite_item/', 'item_type=<?php echo $val['item_type']; ?>&item_id=<?php echo $val['item_id']; ?>');"><?php _e('取消收藏'); ?></a>
 
 										<div class="aw-topic-bar" data-type="favorite" data-item-type="<?php echo $val['item_type']; ?>" data-id="<?php echo $val['item_id']; ?>">
-											<div class="tag-bar clearfix">
-												<?php if ($this->favorite_items_tags[$val['item_id']]) { ?>
-												<?php foreach ($this->favorite_items_tags[$val['item_id']] AS $k => $v) { ?>
-												<span class="topic-tag">
-													<a class="text"><?php echo $v['title']; ?></a>
-												</span>
-												<?php } ?>
-												<?php } ?>
-
-												<span class="icon-inverse aw-edit-topic"><i class="icon icon-edit"></i> <?php if (!$this->favorite_items_tags[$val['item_id']]) { ?><?php _e('添加标签'); ?><?php } else { ?><?php _e('编辑'); ?><?php } ?></span>
-											</div>
 										</div>
 									</div>
 								</div>

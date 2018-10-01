@@ -36,24 +36,9 @@ class ajax extends AWS_CONTROLLER
 		HTTP::no_cache_header();
 	}
 
-	public function get_favorite_tags_action()
-	{
-		echo json_encode($this->model('favorite')->get_favorite_tags($this->user_id, 10));
-	}
-	
-	public function get_item_tags_action()
-	{
-		echo json_encode($this->model('favorite')->get_item_tags_by_item_id($_POST['item_id'], $_POST['item_type']));
-	}
-
-	public function update_favorite_tag_action()
+	public function add_favorite_action()
 	{
 		$this->model('favorite')->add_favorite($_POST['item_id'], $_POST['item_type'], $this->user_id);
-
-		if (rtrim($_POST['tags'], ',') != '')
-		{
-			$this->model('favorite')->update_favorite_tag($_POST['item_id'], $_POST['item_type'], $_POST['tags'], $this->user_id);
-		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
@@ -65,10 +50,4 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
-	public function remove_favorite_tag_action()
-	{
-		$this->model('favorite')->remove_favorite_tag($_POST['item_id'], $_POST['item_type'], $_POST['tags'], $this->user_id);
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
 }

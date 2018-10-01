@@ -653,71 +653,11 @@ var AWS =
 				break;
 
 				case 'favorite':
-					$.get(G_BASE_URL + '/favorite/ajax/get_favorite_tags/', function (result)
+					$.post(G_BASE_URL + '/favorite/ajax/add_favorite/', {
+						'item_id' : $('#favorite_form input[name="item_id"]').val(),
+						'item_type' : $('#favorite_form input[name="item_type"]').val()
+					}, function (result)
 					{
-						var html = ''
-
-						$.each(result, function (i, e)
-						{
-							html += '<li><a data-value="' + e['title'] + '"><span class="title">' + e['title'] + '</span></a><i class="icon icon-followed"></i></li>';
-						});
-
-						$('.aw-favorite-tag-list ul').append(html);
-
-						$.post(G_BASE_URL + '/favorite/ajax/get_item_tags/', {
-							'item_id' : $('#favorite_form input[name="item_id"]').val(),
-							'item_type' : $('#favorite_form input[name="item_type"]').val()
-						}, function (result)
-						{
-							if (result != null)
-							{
-								$.each(result, function (i, e)
-								{
-									var index = i;
-
-									$.each($('.aw-favorite-tag-list ul li .title'), function (i, e)
-									{
-										if ($(this).text() == result[index])
-										{
-											$(this).parents('li').addClass('active');
-										}
-									});
-								});
-							}
-						}, 'json');
-
-						$(document).on('click', '.aw-favorite-tag-list ul li a', function()
-						{
-							var _this = this,
-								addClassFlag = true, url = G_BASE_URL + '/favorite/ajax/update_favorite_tag/';
-
-							if ($(this).parents('li').hasClass('active'))
-							{
-								url = G_BASE_URL + '/favorite/ajax/remove_favorite_tag/';
-
-								addClassFlag = false;
-							}
-
-							$.post(url,
-							{
-								'item_id' : $('#favorite_form input[name="item_id"]').val(),
-								'item_type' : $('#favorite_form input[name="item_type"]').val(),
-								'tags' : $(_this).attr('data-value')
-							}, function (result)
-							{
-								if (result.errno == 1)
-								{
-									if (addClassFlag)
-									{
-										$(_this).parents('li').addClass('active');
-									}
-									else
-									{
-										$(_this).parents('li').removeClass('active');
-									}
-								}
-							}, 'json');
-						});
 
 					}, 'json');
 				break;
@@ -1927,24 +1867,6 @@ AWS.User =
 		}, 'json');
 	},
 
-	// 创建收藏标签
-	add_favorite_tag: function()
-	{
-		$.post(G_BASE_URL + '/favorite/ajax/update_favorite_tag/', {
-			'item_id' : $('#favorite_form input[name="item_id"]').val(),
-			'item_type' : $('#favorite_form input[name="item_type"]').val(),
-			'tags' : $('#favorite_form .add-input').val()
-		}, function (result)
-		{
-			if (result.errno == 1)
-			{
-				$('.aw-favorite-box .aw-favorite-tag-list').show();
-				$('.aw-favorite-box .aw-favorite-tag-add').hide();
-
-				$('.aw-favorite-tag-list ul').prepend('<li class="active"><a data-value="' + $('#favorite_form .add-input').val() + '"><span class="title">' + $('#favorite_form .add-input').val() + '</span></a><i class="icon icon-followed"></i></li>');
-			}
-		}, 'json');
-	}
 }
 
 AWS.Dropdown =
