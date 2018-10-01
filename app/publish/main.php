@@ -41,7 +41,7 @@ class main extends AWS_CONTROLLER
 				H::redirect_msg(AWS_APP::lang()->_t('指定问题不存在'));
 			}
 
-			if (!$this->user_info['permission']['is_administortar'] AND !$this->user_info['permission']['is_moderator'] AND !$this->user_info['permission']['edit_question'] AND $question_info['published_uid'] != $this->user_id)
+			if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'] AND !$this->user_info['permission']['edit_question'] AND $question_info['published_uid'] != $this->user_id)
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑这个问题'), '/question/' . $question_info['question_id']);
 			}
@@ -71,7 +71,7 @@ class main extends AWS_CONTROLLER
 			H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit')));
 		}
 
-		if (($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator'] OR $question_info['published_uid'] == $this->user_id AND $_GET['id']) OR !$_GET['id'])
+		if (($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'] OR $question_info['published_uid'] == $this->user_id AND $_GET['id']) OR !$_GET['id'])
 		{
 			TPL::assign('attach_access_key', md5($this->user_id . time()));
 		}
@@ -122,7 +122,7 @@ class main extends AWS_CONTROLLER
 				H::redirect_msg(AWS_APP::lang()->_t('指定文章不存在'));
 			}
 
-			if (!$this->user_info['permission']['is_administortar'] AND !$this->user_info['permission']['is_moderator'] AND !$this->user_info['permission']['edit_article'] AND $article_info['uid'] != $this->user_id)
+			if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'] AND !$this->user_info['permission']['edit_article'] AND $article_info['uid'] != $this->user_id)
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑这个文章'), '/article/' . $article_info['id']);
 			}
@@ -149,7 +149,7 @@ class main extends AWS_CONTROLLER
 			);
 		}
 
-		if (($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator'] OR $article_info['uid'] == $this->user_id AND $_GET['id']) OR !$_GET['id'])
+		if (($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'] OR $article_info['uid'] == $this->user_id AND $_GET['id']) OR !$_GET['id'])
 		{
 			TPL::assign('attach_access_key', md5($this->user_id . time()));
 		}

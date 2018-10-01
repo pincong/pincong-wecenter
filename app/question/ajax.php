@@ -46,7 +46,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		$answer_info = $this->model('answer')->get_answer_by_id($_GET['id']);
 
-		if ($answer_info['uid'] == $this->user_id OR $this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator'])
+		if ($answer_info['uid'] == $this->user_id OR $this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'])
 		{
 			echo json_encode($answer_info);
 		}
@@ -263,7 +263,7 @@ class ajax extends AWS_CONTROLLER
 		$answer_info = $this->model('answer')->get_answer_by_id($_GET['answer_id']);
 		$question_info = $this->model('question')->get_question_info_by_id($answer_info['question_id']);
 
-		if ($question_info['lock'] AND ! ($this->user_info['permission']['is_administortar'] or $this->user_info['permission']['is_moderator']))
+		if ($question_info['lock'] AND ! ($this->user_info['permission']['is_administrator'] or $this->user_info['permission']['is_moderator']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能评论锁定的问题')));
 		}
@@ -329,7 +329,7 @@ class ajax extends AWS_CONTROLLER
 
 		$question_info = $this->model('question')->get_question_info_by_id($_GET['question_id']);
 
-		if ($question_info['lock'] AND ! ($this->user_info['permission']['is_administortar'] or $this->user_info['permission']['is_moderator']))
+		if ($question_info['lock'] AND ! ($this->user_info['permission']['is_administrator'] or $this->user_info['permission']['is_moderator']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能评论锁定的问题')));
 		}
@@ -530,7 +530,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
 		}
 
-		if ($question_info['lock'] AND ! ($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator']))
+		if ($question_info['lock'] AND ! ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的问题不能回复')));
 		}
@@ -629,7 +629,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($_POST['do_delete'])
 		{
-			if ($answer_info['uid'] != $this->user_id and ! $this->user_info['permission']['is_administortar'] and ! $this->user_info['permission']['is_moderator'])
+			if ($answer_info['uid'] != $this->user_id and ! $this->user_info['permission']['is_administrator'] and ! $this->user_info['permission']['is_moderator'])
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 			}
@@ -672,12 +672,12 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('只允许插入当前页面上传的附件')));
 		}
 
-		if ($answer_info['uid'] != $this->user_id and ! $this->user_info['permission']['is_administortar'] and ! $this->user_info['permission']['is_moderator'])
+		if ($answer_info['uid'] != $this->user_id and ! $this->user_info['permission']['is_administrator'] and ! $this->user_info['permission']['is_moderator'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个回复')));
 		}
 
-		if ($answer_info['uid'] == $this->user_id and (time() - $answer_info['add_time'] > get_setting('answer_edit_time') * 60) and get_setting('answer_edit_time') and ! $this->user_info['permission']['is_administortar'] and ! $this->user_info['permission']['is_moderator'])
+		if ($answer_info['uid'] == $this->user_id and (time() - $answer_info['add_time'] > get_setting('answer_edit_time') * 60) and get_setting('answer_edit_time') and ! $this->user_info['permission']['is_administrator'] and ! $this->user_info['permission']['is_moderator'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经超过允许编辑的时限')));
 		}
@@ -736,17 +736,17 @@ class ajax extends AWS_CONTROLLER
 	{
 		$question_info = $this->model('question')->get_question_info_by_id($_POST['item_id']);
 
-		if ($question_info['lock'] AND ! ($this->user_info['permission']['is_administortar'] or $this->user_info['permission']['is_moderator']))
+		if ($question_info['lock'] AND ! ($this->user_info['permission']['is_administrator'] or $this->user_info['permission']['is_moderator']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定的问题不能设置重定向')));
 		}
 
-		if (!$this->user_info['permission']['redirect_question'] AND ! ($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator']))
+		if (!$this->user_info['permission']['redirect_question'] AND ! ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
-		if ((!$this->user_info['permission']['is_administortar'] AND !$this->user_info['permission']['is_moderator']) AND $this->user_info['permission']['function_interval'] AND ((time() - AWS_APP::cache()->get('function_interval_timer_redirect_' . $this->user_id)) < $this->user_info['permission']['function_interval']))
+		if ((!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator']) AND $this->user_info['permission']['function_interval'] AND ((time() - AWS_APP::cache()->get('function_interval_timer_redirect_' . $this->user_id)) < $this->user_info['permission']['function_interval']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('灌水预防机制已经打开, 在 %s 秒内不能操作', $this->user_info['permission']['function_interval'])));
 		}
@@ -768,7 +768,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function remove_question_action()
 	{
-		if (!$this->user_info['permission']['is_administortar'] AND !$this->user_info['permission']['is_moderator'])
+		if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有删除问题的权限')));
 		}
@@ -790,7 +790,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function set_recommend_action()
 	{
-		if (!$this->user_info['permission']['is_administortar'] AND !$this->user_info['permission']['is_moderator'])
+		if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有设置推荐的权限')));
 		}
@@ -826,7 +826,7 @@ class ajax extends AWS_CONTROLLER
 
 		$comment = $this->model($_GET['type'])->get_comment_by_id($_GET['comment_id']);
 
-		if (! $this->user_info['permission']['is_moderator'] AND ! $this->user_info['permission']['is_administortar'] AND $this->user_id != $comment['uid'])
+		if (! $this->user_info['permission']['is_moderator'] AND ! $this->user_info['permission']['is_administrator'] AND $this->user_id != $comment['uid'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('你没有权限删除该评论')));
 		}
@@ -847,7 +847,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function answer_force_fold_action()
 	{
-		if (! $this->user_info['permission']['is_moderator'] AND ! $this->user_info['permission']['is_administortar'])
+		if (! $this->user_info['permission']['is_moderator'] AND ! $this->user_info['permission']['is_administrator'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
@@ -890,7 +890,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function lock_action()
 	{
-		if (! $this->user_info['permission']['is_moderator'] AND ! $this->user_info['permission']['is_administortar'])
+		if (! $this->user_info['permission']['is_moderator'] AND ! $this->user_info['permission']['is_administrator'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
@@ -943,7 +943,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function set_best_answer_action()
 	{
-		if (! $this->user_info['permission']['is_moderator'] AND ! $this->user_info['permission']['is_administortar'])
+		if (! $this->user_info['permission']['is_moderator'] AND ! $this->user_info['permission']['is_administrator'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}

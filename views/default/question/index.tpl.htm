@@ -68,7 +68,7 @@
 													<a href="question/<?php echo $this->question_info['question_id']; ?>?column=log&rf=false" rel="nofollow"><?php _e('修改记录'); ?></a>
 												<?php } ?>
 											</li>
-											<?php if ($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator']) { ?>
+											<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
 											<li>
 												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/question/ajax/lock/', 'question_id=<?php echo $this->question_info['question_id']; ?>');"><?php if ($this->question_info['lock']) { ?><?php _e('解除锁定'); ?><?php } else { ?><?php _e('锁定问题'); ?><?php } ?></a>
 											</li>
@@ -76,7 +76,7 @@
 												<a href="javascript:;" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认删除?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/question/ajax/remove_question/', 'question_id=<?php echo $this->question_info['question_id']; ?>');});"><?php _e('删除问题'); ?></a>
 											</li>
 											<?php } ?>
-											<?php if (($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator'] OR (!$this->question_info['lock'] AND $this->user_info['permission']['redirect_question'])) AND $this->user_id) { ?>
+											<?php if (($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'] OR (!$this->question_info['lock'] AND $this->user_info['permission']['redirect_question'])) AND $this->user_id) { ?>
 											<li class="hidden-xs">
 											<?php if ($this->question_info['redirect']) { ?>
 												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/question/ajax/redirect/', 'item_id=<?php echo $this->question_info['question_id']; ?>');"><?php _e('撤消重定向'); ?></a>
@@ -85,7 +85,7 @@
 											<?php } ?>
 											</li>
 											<?php } ?>
-											<?php if ($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator']) { ?>
+											<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
 												<li><a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/question/ajax/set_recommend/', 'action=<?php if ($this->question_info['is_recommend']) { ?>un<?php } ?>set&question_id=<?php echo $this->question_info['question_id']; ?>');"><?php if ($this->question_info['is_recommend']) { ?><?php _e('取消推荐'); ?><?php } else { ?><?php _e('推荐问题'); ?><?php } ?></a>
 												</li>
 												<li>
@@ -137,7 +137,7 @@
 								<div class="mod-body">
 									<ul>
 										<?php foreach ($this->question_related_links AS $key => $val) { ?>
-										<li><a href="<?php echo $val['link']; ?>" rel="nofollow" target="_blank"><?php echo $val['link']; ?></a> &nbsp; <?php if ($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator'] OR $this->user_id == $this->question_info['published_uid']) { ?><a class="text-color-999" onclick="AWS.ajax_request(G_BASE_URL + '/publish/ajax/remove_related_link/', 'item_id=<?php echo $this->question_info['question_id']; ?>&id=<?php echo $val['id']; ?>');">删除</a><?php } ?></li>
+										<li><a href="<?php echo $val['link']; ?>" rel="nofollow" target="_blank"><?php echo $val['link']; ?></a> &nbsp; <?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'] OR $this->user_id == $this->question_info['published_uid']) { ?><a class="text-color-999" onclick="AWS.ajax_request(G_BASE_URL + '/publish/ajax/remove_related_link/', 'item_id=<?php echo $this->question_info['question_id']; ?>&id=<?php echo $val['id']; ?>');">删除</a><?php } ?></li>
 										<?php } ?>
 									</ul>
 								</div>
@@ -154,10 +154,10 @@
 								<a class="text-color-999 aw-invite-replay"><i class="icon icon-invite"></i><?php _e('邀请'); ?> <?php if (sizeof($this->invite_users) > 0){ ?><em class="badge badge-info"><?php echo count($this->invite_users); ?></em><?php } ?></a>
 								<?php } ?>
 
-								<?php if ((!$this->question_info['lock'] AND ($this->question_info['published_uid'] == $this->user_id OR $this->user_info['permission']['edit_question'])) OR $this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator']) { ?><a class="text-color-999" href="publish/<?php echo $this->question_info['question_id']; ?>"><i class="icon icon-edit"></i><?php _e('编辑'); ?></a><?php } ?>
+								<?php if ((!$this->question_info['lock'] AND ($this->question_info['published_uid'] == $this->user_id OR $this->user_info['permission']['edit_question'])) OR $this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?><a class="text-color-999" href="publish/<?php echo $this->question_info['question_id']; ?>"><i class="icon icon-edit"></i><?php _e('编辑'); ?></a><?php } ?>
 								<?php if ($this->user_id AND $this->question_info['unverified_modify_count']) { ?><a href="question/<?php echo $this->question_info['question_id']; ?>?column=log&rf=false" class="text-color-999 aw-question-wait-edit"><i class="icon-check"></i><?php _e('待确认'); ?> <em class="badge badge-info"><?php echo $this->question_info['unverified_modify_count']; ?></em></a><?php } ?>
 
-								<?php if ($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator'] OR $this->user_id == $this->question_info['published_uid']) { ?>
+								<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'] OR $this->user_id == $this->question_info['published_uid']) { ?>
 								<a class="text-color-999 aw-add-question-related hidden-xs"><i class="icon icon-bind"></i> <?php _e('相关链接'); ?></a>
 								<?php } ?>
 								<div class="pull-right more-operate">
@@ -352,10 +352,10 @@
 											<!-- 可显示/隐藏的操作box -->
 											<div class="more-operate">
 												<?php if ($this->user_id) { ?>
-													<?php if (($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator']) OR ($val['uid'] == $this->user_id AND ((TIMESTAMP - $val['add_time']) < (get_setting('answer_edit_time') * 60) OR (!get_setting('answer_edit_time'))))) { ?>
+													<?php if (($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) OR ($val['uid'] == $this->user_id AND ((TIMESTAMP - $val['add_time']) < (get_setting('answer_edit_time') * 60) OR (!get_setting('answer_edit_time'))))) { ?>
 													<a class="text-color-999" href="javascript:;" onclick="AWS.dialog('commentEdit', {answer_id:<?php echo $val['answer_id']; ?>,attach_access_key:'<?php echo $this->attach_access_key; ?>'});"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
 													<?php } ?>
-													<?php if ($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator']) { ?>
+													<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
 													<a href="javascript:;" onclick="AWS.User.answer_force_fold($(this), <?php echo $val['answer_id']; ?>);" class="text-color-999"><i class="icon icon-fold"></i> <?php if ($val['force_fold']) { ?><?php _e('撤消折叠'); ?><?php } else { ?><?php _e('折叠'); ?><?php } ?></a>
 													<?php } else { ?>
 													<a class="aw-icon-thank-tips text-color-999" data-original-title="<?php _e('这是一个没有价值的回复'); ?>" data-toggle="tooltip" title="" data-placement="bottom" onclick="AWS.User.answer_user_rate($(this), 'uninterested', <?php echo $val['answer_id']; ?>);"><i class="icon icon-fold"></i><?php if ($val['user_rated_uninterested']) { ?><?php _e('撤消没有帮助'); ?><?php } else { ?><?php _e('没有帮助'); ?><?php } ?></a>
@@ -370,7 +370,7 @@
 												<div class="btn-group pull-left">
 													<a href="javascript:;" class="text-color-999" onclick="AWS.User.share_out();"><i class="icon icon-share"></i><?php _e('分享'); ?></a>
 												</div>
-												<?php if (($this->user_info['permission']['is_moderator'] OR $this->user_info['permission']['is_administortar']) AND !$this->question_info['best_answer']) { ?>
+												<?php if (($this->user_info['permission']['is_moderator'] OR $this->user_info['permission']['is_administrator']) AND !$this->question_info['best_answer']) { ?>
 												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/question/ajax/set_best_answer/', 'answer_id=<?php echo $val['answer_id']; ?>');" class="text-color-999"><i class="icon icon-best"></i><?php _e('最佳回复'); ?></a>
 												<?php } ?>
 											</div>

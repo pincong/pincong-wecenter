@@ -349,7 +349,7 @@ class main extends AWS_CONTROLLER
 			H::redirect_msg(AWS_APP::lang()->_t('话题不存在'), '/');
 		}
 
-		if (!($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator']))
+		if (!($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
 		{
 			if (!$this->user_info['permission']['edit_topic'])
 			{
@@ -387,7 +387,7 @@ class main extends AWS_CONTROLLER
 		$this->crumb(AWS_APP::lang()->_t('话题管理'), '/topic/manage/' . $topic_info['topic_id']);
 		$this->crumb($topic_info['topic_title'], '/topic/' . $topic_info['topic_id']);
 
-		if (!($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator']))
+		if (!($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
 		{
 			if (!$this->user_info['permission']['manage_topic'])
 			{

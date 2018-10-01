@@ -98,7 +98,7 @@ class main extends AWS_CONTROLLER
 			{
 				$message = AWS_APP::lang()->_t('此问题将跳转至') . ' <a href="' . get_js_url('/question/' . $question_info['redirect']['target_id'] . '?rf=' . $question_info['question_id']) . '">' . $target_question['question_content'] . '</a>';
 
-				if ($this->user_id AND ($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator'] OR (!$this->question_info['lock'] AND $this->user_info['permission']['redirect_question'])))
+				if ($this->user_id AND ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'] OR (!$this->question_info['lock'] AND $this->user_info['permission']['redirect_question'])))
 				{
 					$message .= '&nbsp; (<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + \'/question/ajax/redirect/\', \'item_id=' . $question_info['question_id'] . '\');">' . AWS_APP::lang()->_t('撤消重定向') . '</a>)';
 				}
@@ -517,7 +517,7 @@ class main extends AWS_CONTROLLER
 			H::redirect_msg(AWS_APP::lang()->_t('问题不存在'), '/');
 		}
 
-		if (($question_info['published_uid'] != $this->user_id) AND (! $this->user_info['permission']['is_administortar']) AND (! $this->user_info['permission']['is_moderator']))
+		if (($question_info['published_uid'] != $this->user_id) AND (! $this->user_info['permission']['is_administrator']) AND (! $this->user_info['permission']['is_moderator']))
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('你没有权限进行此操作'), '/');
 		}
@@ -534,7 +534,7 @@ class main extends AWS_CONTROLLER
 			H::redirect_msg(AWS_APP::lang()->_t('问题不存在'), '/');
 		}
 
-		if (($question_info['published_uid'] != $this->user_id) AND (! $this->user_info['permission']['is_administortar']) AND (! $this->user_info['permission']['is_moderator']))
+		if (($question_info['published_uid'] != $this->user_id) AND (! $this->user_info['permission']['is_administrator']) AND (! $this->user_info['permission']['is_moderator']))
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('你没有权限进行此操作'), '/');
 		}

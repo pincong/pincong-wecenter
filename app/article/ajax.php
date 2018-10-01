@@ -56,7 +56,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定文章不存在')));
 		}
 
-		if ($article_info['lock'] AND !($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator']))
+		if ($article_info['lock'] AND !($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的文章不能回复')));
 		}
@@ -116,7 +116,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function lock_action()
 	{
-		if (!$this->user_info['permission']['is_moderator'] AND !$this->user_info['permission']['is_administortar'])
+		if (!$this->user_info['permission']['is_moderator'] AND !$this->user_info['permission']['is_administrator'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
@@ -133,7 +133,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function remove_article_action()
 	{
-		if (!$this->user_info['permission']['is_administortar'] AND !$this->user_info['permission']['is_moderator'])
+		if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有删除文章的权限')));
 		}
@@ -155,7 +155,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function remove_comment_action()
 	{
-		if (!$this->user_info['permission']['is_administortar'] AND !$this->user_info['permission']['is_moderator'])
+		if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有删除评论的权限')));
 		}
@@ -203,7 +203,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function set_recommend_action()
 	{
-		if (!$this->user_info['permission']['is_administortar'] AND !$this->user_info['permission']['is_moderator'])
+		if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有设置推荐的权限')));
 		}

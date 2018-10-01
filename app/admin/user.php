@@ -112,7 +112,7 @@ class user extends AWS_ADMIN_CONTROLLER
     {
         $this->crumb(AWS_APP::lang()->_t('用户组管理'), "admin/user/group_list/");
 
-        if (!$this->user_info['permission']['is_administortar'])
+        if (!$this->user_info['permission']['is_administrator'])
         {
             H::redirect_msg(AWS_APP::lang()->_t('你没有访问权限, 请重新登录'), '/');
         }
@@ -128,7 +128,7 @@ class user extends AWS_ADMIN_CONTROLLER
     {
         $this->crumb(AWS_APP::lang()->_t('修改用户组'), "admin/user/group_list/");
 
-        if (!$this->user_info['permission']['is_administortar'])
+        if (!$this->user_info['permission']['is_administrator'])
         {
             H::redirect_msg(AWS_APP::lang()->_t('你没有访问权限, 请重新登录'), '/');
         }
@@ -153,7 +153,7 @@ class user extends AWS_ADMIN_CONTROLLER
             H::redirect_msg(AWS_APP::lang()->_t('用户不存在'), '/admin/user/list/');
         }
 
-        if ($user['group_id'] == 1 AND !$this->user_info['permission']['is_administortar'])
+        if ($user['group_id'] == 1 AND !$this->user_info['permission']['is_administrator'])
         {
             H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑管理员账号'), '/admin/user/list/');
         }

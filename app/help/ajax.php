@@ -34,7 +34,7 @@ class ajax extends AWS_CONTROLLER
     {
         HTTP::no_cache_header();
 
-        if (!$this->user_info['permission']['is_administortar'] AND !$this->user_info['permission']['is_moderator'])
+        if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
         {
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
         }

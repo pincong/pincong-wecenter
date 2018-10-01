@@ -58,7 +58,7 @@ class main extends AWS_CONTROLLER
 			HTTP::error_404();
 		}
 
-		if ($user['forbidden'] AND !$this->user_info['permission']['is_administortar'] AND !$this->user_info['permission']['is_moderator'])
+		if ($user['forbidden'] AND !$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
 		{
 			header('HTTP/1.1 404 Not Found');
 

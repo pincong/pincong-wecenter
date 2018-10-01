@@ -24,7 +24,7 @@ class help extends AWS_ADMIN_CONTROLLER
     {
         $this->crumb(AWS_APP::lang()->_t('帮助中心'), "admin/help/list/");
 
-        if (!$this->user_info['permission']['is_administortar'])
+        if (!$this->user_info['permission']['is_administrator'])
         {
             H::redirect_msg(AWS_APP::lang()->_t('你没有访问权限, 请重新登录'), '/');
         }

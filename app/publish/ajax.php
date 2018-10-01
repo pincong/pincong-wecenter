@@ -165,7 +165,7 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('无法获取附件列表')));
         }
 
-        if ($article_info['uid'] != $this->user_id AND !$this->user_info['permission']['is_administortar'] AND !$this->user_info['permission']['is_moderator'])
+        if ($article_info['uid'] != $this->user_id AND !$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个附件列表')));
         }
@@ -198,7 +198,7 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('无法获取附件列表')));
         }
 
-        if ($question_info['published_uid'] != $this->user_id AND !$this->user_info['permission']['is_administortar'] AND !$this->user_info['permission']['is_moderator'])
+        if ($question_info['published_uid'] != $this->user_id AND !$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个附件列表')));
         }
@@ -231,7 +231,7 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('回复不存在')));
         }
 
-        if ($answer_info['uid'] != $this->user_id AND !$this->user_info['permission']['is_administortar'] AND !$this->user_info['permission']['is_moderator'])
+        if ($answer_info['uid'] != $this->user_id AND !$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个附件列表')));
         }
@@ -273,12 +273,12 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
         }
 
-        if ($question_info['lock'] AND !($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator']))
+        if ($question_info['lock'] AND !($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题已锁定, 不能编辑')));
         }
 
-        if (!$this->user_info['permission']['is_administortar'] AND !$this->user_info['permission']['is_moderator'] AND !$this->user_info['permission']['edit_question'])
+        if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'] AND !$this->user_info['permission']['edit_question'])
         {
             if ($question_info['published_uid'] != $this->user_id)
             {
@@ -322,7 +322,7 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
         }
 
-        if ($_POST['do_delete'] AND !$this->user_info['permission']['is_administortar'] AND !$this->user_info['permission']['is_moderator'])
+        if ($_POST['do_delete'] AND !$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有删除问题的权限')));
         }
@@ -343,7 +343,7 @@ class ajax extends AWS_CONTROLLER
 
         $IS_MODIFY_VERIFIED = TRUE;
 
-        if (!$this->user_info['permission']['is_administortar'] AND !$this->user_info['permission']['is_moderator'] AND $question_info['published_uid'] != $this->user_id)
+        if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'] AND $question_info['published_uid'] != $this->user_id)
         {
             $IS_MODIFY_VERIFIED = FALSE;
         }
@@ -624,12 +624,12 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文章不存在')));
         }
 
-        if ($article_info['lock'] AND !($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator']))
+        if ($article_info['lock'] AND !($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文章已锁定, 不能编辑')));
         }
 
-        if (!$this->user_info['permission']['is_administortar'] AND !$this->user_info['permission']['is_moderator'] AND !$this->user_info['permission']['edit_article'])
+        if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'] AND !$this->user_info['permission']['edit_article'])
         {
             if ($article_info['uid'] != $this->user_id)
             {
@@ -678,7 +678,7 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
         }
 
-        if ($_POST['do_delete'] AND !$this->user_info['permission']['is_administortar'] AND !$this->user_info['permission']['is_moderator'])
+        if ($_POST['do_delete'] AND !$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有删除文章的权限')));
         }
@@ -716,7 +716,7 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
         }
 
-        if (!$this->user_info['permission']['is_administortar'] AND !$this->user_info['permission']['is_moderator'])
+        if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
         {
             if ($question_info['published_uid'] != $this->user_id)
             {
@@ -741,7 +741,7 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
         }
 
-        if (!$this->user_info['permission']['is_administortar'] AND !$this->user_info['permission']['is_moderator'])
+        if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
         {
             if ($question_info['published_uid'] != $this->user_id)
             {

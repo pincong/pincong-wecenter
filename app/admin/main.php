@@ -57,7 +57,7 @@ class main extends AWS_ADMIN_CONTROLLER
 
     public function login_action()
     {
-        if (!$this->user_info['permission']['is_administortar'] AND !$this->user_info['permission']['is_moderator'])
+        if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
         {
             H::redirect_msg(AWS_APP::lang()->_t('你没有访问权限, 请重新登录'), '/');
         }
@@ -87,7 +87,7 @@ class main extends AWS_ADMIN_CONTROLLER
     {
         $this->crumb(AWS_APP::lang()->_t('系统设置'), 'admin/settings/');
 
-        if (!$this->user_info['permission']['is_administortar'])
+        if (!$this->user_info['permission']['is_administrator'])
         {
             H::redirect_msg(AWS_APP::lang()->_t('你没有访问权限, 请重新登录'), '/');
         }
@@ -120,7 +120,7 @@ class main extends AWS_ADMIN_CONTROLLER
     {
         $this->crumb(AWS_APP::lang()->_t('导航设置'), 'admin/nav_menu/');
 
-        if (!$this->user_info['permission']['is_administortar'])
+        if (!$this->user_info['permission']['is_administrator'])
         {
             H::redirect_msg(AWS_APP::lang()->_t('你没有访问权限, 请重新登录'), '/');
         }

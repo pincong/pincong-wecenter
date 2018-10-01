@@ -48,7 +48,7 @@
                             <div class="col-sm-5 col-xs-8">
                                 <select class="form-control" name="group_id">
                                 <?php foreach ($this->system_group AS $group) { ?>
-                                <?php if ($group == 1 AND !$this->user_info['permission']['is_administortar']) { continue; } ?>
+                                <?php if ($group == 1 AND !$this->user_info['permission']['is_administrator']) { continue; } ?>
                                 <option value="<?php echo $group['group_id']; ?>"<?php if ($group['group_id'] == 4) { ?> selected="selected"<?php } ?>><?php echo $group['group_name']; ?></option>
                                 <?php } ?>
                                 </select>

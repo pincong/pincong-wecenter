@@ -240,7 +240,7 @@ class AWS_CONTROLLER
 
 	public function publish_approval_valid($content = null)
 	{
-		if ($this->user_info['permission']['is_administortar'] OR $this->user_info['permission']['is_moderator'])
+		if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'])
 		{
 			return false;
 		}
@@ -376,7 +376,7 @@ class AWS_ADMIN_CONTROLLER extends AWS_CONTROLLER
 
 		if ($admin_info['uid'])
 		{
-			if ($admin_info['uid'] != $this->user_id OR !AWS_APP::session()->permission['is_administortar'] AND !AWS_APP::session()->permission['is_moderator'])
+			if ($admin_info['uid'] != $this->user_id OR !AWS_APP::session()->permission['is_administrator'] AND !AWS_APP::session()->permission['is_moderator'])
 			{
 				unset(AWS_APP::session()->admin_login);
 
