@@ -97,17 +97,9 @@ class admin_class extends AWS_MODEL
                                                         'build_day' => G_VERSION_BUILD //$last_version['build_day']
                                                     ),
 
-                                // 新浪微博 Access Token 更新
-                                'sina_users' => $admin_notifications['sina_users'],
-
                                 // 邮件导入失败
                                 'receive_email_error' => $admin_notifications['receive_email_error']
                             );
-
-        if (get_setting('weibo_msg_enabled') == 'question')
-        {
-            $admin_notifications['weibo_msg_approval'] = $this->count('weibo_msg', 'question_id IS NULL AND ticket_id IS NULL');
-        }
 
         $receiving_email_global_config = get_setting('receiving_email_global_config');
 
@@ -175,14 +167,6 @@ class admin_class extends AWS_MODEL
                                         );
         }
 
-        if ($notifications['weibo_msg_approval'])
-        {
-            $notifications_texts[] = array(
-                                            'url' => 'admin/approval/list/type-weibo_msg',
-                                            'text' => AWS_APP::lang()->_t('有 %s 个微博消息待审核', $notifications['weibo_msg_approval'])
-                                        );
-        }
-
         if ($notifications['received_email_approval'])
         {
             $notifications_texts[] = array(
@@ -221,17 +205,6 @@ class admin_class extends AWS_MODEL
                                             'url' => 'http://www.wecenter.com/downloads/',
                                             'text' => AWS_APP::lang()->_t('程序需要更新，最新版本为 %s', $notifications['last_version']['version'])
                                         );
-        }
-
-        if (get_setting('weibo_msg_enabled') == 'Y' AND $notifications['sina_users'])
-        {
-            foreach ($notifications['sina_users'] AS $sina_user)
-            {
-                $notifications_texts[] = array(
-                                                'url' => 'admin/weibo/msg/',
-                                                'text' => AWS_APP::lang()->_t('用户 %s 的微博账号需要更新 Access Token，请重新授权', $sina_user['user_name'])
-                                            );
-            }
         }
 
         $receiving_email_global_config = get_setting('receiving_email_global_config');

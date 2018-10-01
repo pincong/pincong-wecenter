@@ -933,7 +933,6 @@ class ajax extends AWS_CONTROLLER
 
 		$this->model('account')->update_users_fields(array(
 			'email_settings' => serialize($email_settings),
-			'weibo_visit' => intval($_POST['weibo_visit']),
 			'inbox_recv' => intval($_POST['inbox_recv'])
 		), $this->user_id);
 

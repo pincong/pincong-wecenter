@@ -122,10 +122,6 @@ class crond_class extends AWS_MODEL
     {
         if (check_extension_package('ticket'))
         {
-            if (get_setting('weibo_msg_enabled') == 'ticket')
-            {
-                $this->model('ticket')->save_weibo_msg_to_ticket_crond();
-            }
 
             $receiving_email_global_config = get_setting('receiving_email_global_config');
 
@@ -143,10 +139,7 @@ class crond_class extends AWS_MODEL
     // 每十分钟执行
     public function ten_minutes()
     {
-        if (get_setting('weibo_msg_enabled') == 'Y')
-        {
-            $this->model('openid_weibo_weibo')->get_msg_from_sina_crond();
-        }
+
     }
 
     // 每半小时执行

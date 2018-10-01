@@ -230,9 +230,7 @@ class ajax extends AWS_CONTROLLER
 
 		$data = array(
 			'message' => $message,
-			'url' => $url,
-			'sina_akey' => get_setting('sina_akey') ? get_setting('sina_akey') : '3643094708',
-			'qq_app_key' => get_setting('qq_app_key') ? get_setting('qq_app_key') : '801158211',
+			'url' => $url
 		);
 
 		H::ajax_json_output(AWS_APP::RSM(array(

@@ -728,14 +728,6 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('job_name', $job_info['job_name']);
 
-		if ($user['weibo_visit'])
-		{
-			if ($users_sina = $this->model('openid_weibo_oauth')->get_weibo_user_by_uid($user['uid']))
-			{
-				TPL::assign('sina_weibo_url', 'http://www.weibo.com/' . $users_sina['id']);
-			}
-		}
-
 		TPL::output('m/people');
 	}
 

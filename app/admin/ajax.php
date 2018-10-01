@@ -130,19 +130,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
             $_POST['sensitive_words'] = trim($_POST['sensitive_words']);
         }
 
-        $curl_require_setting = array('qq_login_enabled', 'sina_weibo_enabled');
-
-        if (array_intersect(array_keys($_POST), $curl_require_setting))
-        {
-            foreach ($curl_require_setting AS $key)
-            {
-                if ($_POST[$key] == 'Y' AND !function_exists('curl_init'))
-                {
-                    H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('微博登录、QQ 登录等功能须服务器支持 CURL')));
-                }
-            }
-        }
-
         if ($_POST['set_notification_settings'])
         {
             if ($notify_actions = $this->model('notify')->notify_action_details)
@@ -216,40 +203,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
         switch ($_POST['type'])
         {
-            case 'weibo_msg':
-                if (get_setting('weibo_msg_enabled') != 'question')
-                {
-                    H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('导入微博消息至问题未启用')));
-                }
-
-                switch ($_POST['batch_type'])
-                {
-                    case 'approval':
-                        $published_user = get_setting('weibo_msg_published_user');
-
-                        if (!$published_user['uid'])
-                        {
-                            H::ajax_json_output(AWS_APP::RSM(AWS_APP::lang()->_t('微博发布用户不存在')));
-                        }
-
-                        foreach ($_POST['approval_ids'] AS $approval_id)
-                        {
-                            $this->model('openid_weibo_weibo')->save_msg_info_to_question($approval_id, $published_user['uid']);
-                        }
-
-                        break;
-
-                    case 'decline':
-                        foreach ($_POST['approval_ids'] AS $approval_id)
-                        {
-                            $this->model('openid_weibo_weibo')->del_msg_by_id($approval_id);
-                        }
-
-                        break;
-                }
-
-                break;
-
             case 'received_email':
                 $receiving_email_global_config = get_setting('receiving_email_global_config');
 
@@ -1784,123 +1737,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
         ));
     }
 
-    public function weibo_batch_action()
-    {
-        if (!$_POST['action'] OR !isset($_POST['uid']))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('错误的请求')));
-        }
-
-        if (in_array($_POST['action'], array('add_service_user', 'del_service_user')))
-        {
-            $user_info = $this->model('account')->get_user_info_by_uid($_POST['uid']);
-
-            if (!$user_info)
-            {
-                H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('所选用户不存在')));
-            }
-
-            $service_info = $this->model('openid_weibo_oauth')->get_weibo_user_by_uid($user_info['uid']);
-
-            $tmp_service_account = AWS_APP::cache()->get('tmp_service_account');
-        }
-
-        switch ($_POST['action'])
-        {
-            case 'add_service_user':
-                if ($service_info)
-                {
-                    if (isset($service_info['last_msg_id']))
-                    {
-                        H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('该用户已是回答用户')));
-                    }
-
-                    $this->model('openid_weibo_weibo')->update_service_account($user_info['uid'], 'add');
-
-                    $rsm = array('staus' => 'bound');
-                }
-                else
-                {
-                    if ($tmp_service_account[$user_info['uid']])
-                    {
-                        H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('该用户已是回答用户')));
-                    }
-
-                    $tmp_service_account[$user_info['uid']] = array(
-                                                                    'uid' => $user_info['uid'],
-                                                                    'user_name' => $user_info['user_name'],
-                                                                    'url_token' => $user_info['url_token']
-                                                                );
-
-                    natsort($tmp_service_account);
-
-                    AWS_APP::cache()->set('tmp_service_account', $tmp_service_account, 86400);
-
-                    $rsm = array('staus' => 'unbound');
-                }
-
-                break;
-
-            case 'del_service_user':
-                if ($service_info)
-                {
-                    if (!isset($service_info['last_msg_id']))
-                    {
-                        H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('该用户不是回答用户')));
-                    }
-
-                    $this->model('openid_weibo_weibo')->update_service_account($user_info['uid'], 'del');
-                }
-                else
-                {
-                    if (!$tmp_service_account[$user_info['uid']])
-                    {
-                        H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('该用户不是回答用户')));
-                    }
-
-                    unset($tmp_service_account[$user_info['uid']]);
-
-                    AWS_APP::cache()->set('tmp_service_account', $tmp_service_account, 86400);
-                }
-
-                break;
-
-            case 'add_published_user':
-                $weibo_msg_published_user = get_setting('weibo_msg_published_user');
-
-                if ($_POST['uid'] != $weibo_msg_published_user['uid'])
-                {
-                    $published_user_info = $this->model('account')->get_user_info_by_uid($_POST['uid']);
-
-                    if (!$published_user_info)
-                    {
-                        H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('所选用户不存在')));
-                    }
-
-                    $this->model('setting')->set_vars(array(
-                        'weibo_msg_published_user' => array(
-                            'uid' => $published_user_info['uid'],
-                            'user_name' => $published_user_info['user_name'],
-                            'url_token' => $published_user_info['url_token']
-                    )));
-                }
-
-                break;
-
-            case 'weibo_msg_enabled':
-                if (in_array($_POST['uid'], array('question', 'ticket', 'N')))
-                {
-                    $this->model('setting')->set_vars(array(
-                        'weibo_msg_enabled' => $_POST['uid']
-                    ));
-                }
-
-                break;
-        }
-
-        H::ajax_json_output(AWS_APP::RSM($rsm, 1, null));
-    }
-
     public function save_approval_item_action()
     {
         if (!$_POST['id'])
@@ -1915,18 +1751,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
         switch ($_POST['type'])
         {
-            case 'weibo_msg':
-                $approval_item = $this->model('openid_weibo_weibo')->get_msg_info_by_id($_POST['id']);
-
-                if ($approval_item['question_id'])
-                {
-                    H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('该消息已通过审核')));
-                }
-
-                $approval_item['type'] = 'weibo_msg';
-
-                break;
-
             case 'received_email':
                 $approval_item = $this->model('edm')->get_received_email_by_id($_POST['id']);
 
@@ -1993,13 +1817,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
                 break;
 
-            case 'weibo_msg':
-                $approval_item['text'] = htmlspecialchars_decode($_POST['content']);
-
-                $approval_item['data']['attach_access_key'] = $approval_item['access_key'];
-
-                break;
-
             case 'received_email':
                 $approval_item['subject'] = htmlspecialchars_decode($_POST['title']);
 
@@ -2018,13 +1835,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
         switch ($approval_item['type'])
         {
-            case 'weibo_msg':
-                $this->model('openid_weibo_weibo')->update('weibo_msg', array(
-                    'text' => $approval_item['text']
-                ), 'id = ' . $approval_item['id']);
-
-                break;
-
             case 'received_email':
                 $this->model('edm')->update('received_email', array(
                     'subject' => $approval_item['subject'],

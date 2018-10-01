@@ -198,11 +198,6 @@ class publish_class extends AWS_MODEL
 
 		if ($reply_to_openid)
 		{
-			if ($question_info['weibo_msg_id'])
-			{
-				$this->model('openid_weibo_weibo')->reply_answer_to_sina($question_info['question_id'], cjk_substr($answer_content, 0, 110, 'UTF-8', '...'));
-			}
-
 			if ($question_info['received_email_id'])
 			{
 				$this->model('edm')->reply_answer_by_email($question_info['question_id'], nl2br(FORMAT::parse_bbcode($answer_content)));
@@ -254,11 +249,6 @@ class publish_class extends AWS_MODEL
 
 			if ($attach_access_key)
 			{
-				if (is_digits($from['weibo_msg']) AND !$from['ticket'])
-				{
-					$this->model('openid_weibo_weibo')->update_attach($from['weibo_msg'], 'qusetion', $question_id, $attach_access_key);
-				}
-				else
 				{
 					$this->model('publish')->update_attach('question', $question_id, $attach_access_key);
 				}
@@ -490,7 +480,6 @@ class publish_class extends AWS_MODEL
 					break;
 
 				case 'article':
-				case 'weibo_msg':
 				case 'project':
 					$update_key = 'id';
 
@@ -503,8 +492,7 @@ class publish_class extends AWS_MODEL
 		}
 
 		if (in_array($attach['item_type'], array(
-			'question',
-			'weibo_msg'
+			'question'
 		)))
 		{
 			$attach['item_type'] = 'questions';
@@ -544,8 +532,7 @@ class publish_class extends AWS_MODEL
 		foreach ($attach as $key => $data)
 		{
 			if (in_array($item_type, array(
-				'question',
-				'weibo_msg'
+				'question'
 			)))
 			{
 				$item_type = 'questions';

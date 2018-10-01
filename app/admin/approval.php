@@ -41,15 +41,6 @@ class approval extends AWS_ADMIN_CONTROLLER
 
 		TPL::assign('unverified_modifies_count', $this->model('question')->count('question', 'unverified_modify_count <> 0'));
 
-		if (get_setting('weibo_msg_enabled') == 'question')
-		{
-			TPL::assign('weibo_msg_count', $this->model('openid_weibo_weibo')->count('weibo_msg', 'question_id IS NULL AND ticket_id IS NULL'));
-		}
-		else if ($_GET['type'] == 'weibo_msg')
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('导入微博消息至问题未启用')));
-		}
-
 		$receiving_email_global_config = get_setting('receiving_email_global_config');
 
 		if ($receiving_email_global_config['enabled'] == 'question')
@@ -63,7 +54,6 @@ class approval extends AWS_ADMIN_CONTROLLER
 
 		switch ($_GET['type'])
 		{
-			case 'weibo_msg':
 			case 'received_email':
 				$approval_list = $this->model('admin')->fetch_page($_GET['type'], 'question_id IS NULL AND ticket_id IS NULL', 'id ASC', $_GET['page'], $this->per_page);
 
@@ -144,23 +134,6 @@ class approval extends AWS_ADMIN_CONTROLLER
 
 		switch ($_GET['type'])
 		{
-			case 'weibo_msg':
-				if (get_setting('weibo_msg_enabled') != 'question')
-				{
-					H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('导入微博消息至问题未启用')));
-				}
-
-				$approval_item = $this->model('openid_weibo_weibo')->get_msg_info_by_id($_GET['id']);
-
-				if ($approval_item['question_id'])
-				{
-					exit();
-				}
-
-				$approval_item['type'] = 'weibo_msg';
-
-				break;
-
 			case 'received_email':
 				$receiving_email_global_config = get_setting('receiving_email_global_config');
 
@@ -216,16 +189,6 @@ class approval extends AWS_ADMIN_CONTROLLER
 
 			case 'article_comment':
 				$approval_item['content'] = htmlspecialchars($approval_item['data']['message']);
-
-				break;
-
-			case 'weibo_msg':
-				$approval_item['content'] = htmlspecialchars($approval_item['text']);
-
-				if ($approval_item['has_attach'])
-				{
-					$approval_item['attachs'] = $this->model('publish')->get_attach('weibo_msg', $_GET['id']);
-				}
 
 				break;
 

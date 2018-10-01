@@ -482,7 +482,6 @@ class system_class extends AWS_MODEL
 			'users_attrib',
 			'users_online',
 			'users_qq',
-			'users_sina',
 			'users_ucenter',
 			'users_google',
 			'users'

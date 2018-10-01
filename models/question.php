@@ -403,18 +403,6 @@ class question_class extends AWS_MODEL
 
 		$this->delete('question', 'question_id = ' . intval($question_id));
 
-		if ($question_info['weibo_msg_id'])
-		{
-			if ($question_info['ticket_id'])
-			{
-				remove_assoc('weibo_msg', 'question', $question_info['question_id']);
-			}
-			else
-			{
-				$this->model('openid_weibo_weibo')->del_msg_by_id($question_info['weibo_msg_id']);
-			}
-		}
-
 		if ($question_info['received_email_id'])
 		{
 			if ($question_info['ticket_id'])
