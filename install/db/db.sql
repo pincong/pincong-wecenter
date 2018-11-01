@@ -141,6 +141,7 @@ CREATE TABLE IF NOT EXISTS `aws_article` (
   `is_recommend` tinyint(1) DEFAULT '0',
   `chapter_id` int(10) unsigned DEFAULT NULL,
   `sort` tinyint(2) unsigned NOT NULL DEFAULT '0',
+  `anonymous` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `has_attach` (`has_attach`),
   KEY `uid` (`uid`),
@@ -154,6 +155,7 @@ CREATE TABLE IF NOT EXISTS `aws_article` (
   KEY `is_recommend` (`is_recommend`),
   KEY `chapter_id` (`chapter_id`),
   KEY `sort` (`sort`),
+  KEY `anonymous` (`anonymous`),
   FULLTEXT KEY `title_fulltext` (`title_fulltext`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
@@ -171,11 +173,13 @@ CREATE TABLE IF NOT EXISTS `aws_article_comments` (
   `add_time` int(10) NOT NULL,
   `at_uid` int(10) DEFAULT NULL,
   `votes` int(10) DEFAULT '0',
+  `anonymous` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
   KEY `article_id` (`article_id`),
   KEY `add_time` (`add_time`),
-  KEY `votes` (`votes`)
+  KEY `votes` (`votes`),
+  KEY `anonymous` (`anonymous`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 -- 正在导出表  db.aws_article_comments 的数据：0 rows
