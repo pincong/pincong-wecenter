@@ -291,12 +291,14 @@ class publish_class extends AWS_MODEL
 
 	public function publish_article($title, $message, $uid, $topics = null, $category_id = null, $attach_access_key = null, $create_topic = true)
 	{
+        $now = fake_time();
 		if ($article_id = $this->insert('article', array(
 			'uid' => intval($uid),
 			'title' => htmlspecialchars($title),
 			'message' => htmlspecialchars($message),
 			'category_id' => intval($category_id),
-			'add_time' => fake_time()
+			'add_time' => $now,
+			'update_time' => $now
 		)))
 		{
 
@@ -341,16 +343,19 @@ class publish_class extends AWS_MODEL
 			return false;
 		}
 
+        $now = fake_time();
+
 		$comment_id = $this->insert('article_comments', array(
 			'uid' => intval($uid),
 			'article_id' => intval($article_id),
 			'message' => htmlspecialchars($message),
-			'add_time' => fake_time(),
+			'add_time' => $now,
 			'at_uid' => intval($at_uid)
 		));
 
 		$this->update('article', array(
-			'comments' => $this->count('article_comments', 'article_id = ' . intval($article_id))
+			'comments' => $this->count('article_comments', 'article_id = ' . intval($article_id)),
+			'update_time' => $now
 		), 'id = ' . intval($article_id));
 
 		if ($at_uid AND $at_uid != $uid)
