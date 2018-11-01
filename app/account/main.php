@@ -24,7 +24,7 @@ class main extends AWS_CONTROLLER
 		$rule_action['rule_type'] = 'black';
 
 		$rule_action['actions'] = array(
-			'complete_profile'
+
 		);
 
 		return $rule_action;
@@ -158,13 +158,6 @@ class main extends AWS_CONTROLLER
 		}
 
 		H::redirect_msg(AWS_APP::lang()->_t('欢迎回来: %s , 正在带您进入站点...', $this->user_info['user_name']) . $sync_code, $url);
-	}
-
-	public function complete_profile_action()
-	{
-		TPL::import_css('css/register.css');
-
-		TPL::output('account/complete_profile');
 	}
 
 	public function valid_approval_action()

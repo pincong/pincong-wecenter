@@ -551,31 +551,4 @@ class ajax extends AWS_CONTROLLER
 		AWS_APP::cache()->delete('user_recommend_' . $this->user_id);
 	}
 
-	public function complete_profile_action()
-	{
-		$_POST['user_name'] = htmlspecialchars(trim($_POST['user_name']));
-
-		if ($check_result = $this->model('account')->check_username_char($_POST['user_name']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', $check_result));
-		}
-		
-		if ($this->user_info['user_name'] != $_POST['user_name'])
-		{
-			if ($this->model('account')->check_username_sensitive_words($_GET['username']) || $this->model('account')->check_username($_GET['username']))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名已被注册')));
-			}
-		}
-		
-		$update_data['user_name'] = $_POST['user_name'];
-
-		$this->model('account')->update_users_fields($update_data, $this->user_id);
-
-		$this->model('account')->update_user_password_ingore_oldpassword($_POST['password'], $this->user_id, $this->user_info['salt']);
-
-		$this->model('account')->setcookie_login($this->user_info['uid'], $update_data['user_name'], $_POST['password'], $this->user_info['salt']);
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
 }
