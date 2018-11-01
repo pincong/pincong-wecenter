@@ -234,11 +234,11 @@ function parse_link_callback($matches)
 
 	if (is_inside_url($url))
 	{
-		return '<a href="' . $url . '">' . FORMAT::sub_url($matches[1], 50) . '</a>';
+		return '<a href="' . $url . '">' . $url . '</a>';
 	}
 	else
 	{
-		return '<a href="' . $url . '" rel="nofollow" target="_blank">' . FORMAT::sub_url($matches[1], 50) . '</a>';
+		return '<a href="' . $url . '" rel="nofollow" target="_blank">' . $url . '</a>';
 	}
 }
 
