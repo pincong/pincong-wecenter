@@ -36,7 +36,6 @@ class core_user
 				{
 					AWS_APP::session()->client_info['__CLIENT_UID'] = $user_info['uid'];
 					AWS_APP::session()->client_info['__CLIENT_USER_NAME'] = $user_info['user_name'];
-					AWS_APP::session()->client_info['__CLIENT_PASSWORD'] = $sso_user_login['password'];
 
 					return true;
 				}

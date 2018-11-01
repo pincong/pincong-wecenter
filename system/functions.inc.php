@@ -620,6 +620,11 @@ function compile_password($password, $salt)
 	return $password;
 }
 
+function bcrypt_password_hash($password)
+{
+	return password_hash($password, PASSWORD_BCRYPT);
+}
+
 /**
  * 伪静态地址转换器
  *
@@ -701,12 +706,9 @@ function calc_page_limit($page, $per_page)
  * @param  boolean
  * @return string
  */
-function get_login_cookie_hash($user_name, $password, $salt, $uid, $hash_password = true)
+function get_login_cookie_hash($user_name, $password, $salt, $uid)
 {
-	if ($hash_password)
-	{
-		$password = compile_password($password, $salt);
-	}
+	$password = compile_password($password, $salt);
 
 	$auth_hash_key = md5(G_COOKIE_HASH_KEY . $_SERVER['HTTP_USER_AGENT']);
 

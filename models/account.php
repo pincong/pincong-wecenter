@@ -145,7 +145,7 @@ class account_class extends AWS_MODEL
             return false;
         }
 
-        if ( $password_md5 != $user_info['password'])
+        if (!password_verify($password_md5, $user_info['password']))
         {
             return false;
         }
@@ -168,7 +168,7 @@ class account_class extends AWS_MODEL
     {
         $password = compile_password($password, $salt);
 
-        if ($password == $db_password)
+        if (password_verify($password, $db_password))
         {
             return true;
         }
@@ -410,7 +410,7 @@ class account_class extends AWS_MODEL
 
         if ($uid = $this->insert('users', array(
             'user_name' => htmlspecialchars($user_name),
-            'password' => compile_password($password, $salt),
+            'password' => bcrypt_password_hash(compile_password($password, $salt)),
             'salt' => $salt,
             'sex' => 0,
             'reg_time' => fake_time()
@@ -535,7 +535,12 @@ class account_class extends AWS_MODEL
 
         $oldpassword = compile_password($oldpassword, $salt);
 
-        if ($this->count('users', "uid = " . intval($uid) . " AND password = '" . $this->quote($oldpassword) . "'") != 1)
+        if (! $user_info = $this->fetch_row('users', 'uid = ' . intval($uid)))
+        {
+            return false;
+        }
+
+        if (!password_verify($oldpassword, $user_info['password']))
         {
             return false;
         }
@@ -558,7 +563,7 @@ class account_class extends AWS_MODEL
         }
 
         $this->update('users', array(
-            'password' => compile_password($password, $salt),
+            'password' => bcrypt_password_hash(compile_password($password, $salt)),
             'salt' => $salt
         ), 'uid = ' . intval($uid));
 
@@ -650,7 +655,7 @@ class account_class extends AWS_MODEL
     }
 
 
-    public function setcookie_login($uid, $user_name, $password, $salt, $expire = null, $hash_password = true)
+    public function setcookie_login($uid, $user_name, $password, $salt, $expire = null)
     {
         if (! $uid)
         {
@@ -659,11 +664,11 @@ class account_class extends AWS_MODEL
 
         if (! $expire)
         {
-            HTTP::set_cookie('_user_login', get_login_cookie_hash($user_name, $password, $salt, $uid, $hash_password), null, '/', null, false, true);
+            HTTP::set_cookie('_user_login', get_login_cookie_hash($user_name, $password, $salt, $uid), null, '/', null, false, true);
         }
         else
         {
-            HTTP::set_cookie('_user_login', get_login_cookie_hash($user_name, $password, $salt, $uid, $hash_password), (time() + $expire), '/', null, false, true);
+            HTTP::set_cookie('_user_login', get_login_cookie_hash($user_name, $password, $salt, $uid), (time() + $expire), '/', null, false, true);
         }
 
         return true;
