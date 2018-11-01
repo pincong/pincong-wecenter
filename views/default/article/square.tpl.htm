@@ -11,7 +11,7 @@
 						<?php if ($this->article_list) { ?>
 						<?php foreach ($this->article_list AS $key => $val) { ?>
 						<div class="aw-item">
-							<a class="aw-user-name hidden-xs" href="people/<?php echo $val['user_info']['url_token']; ?>">
+							<a class="aw-user-name" href="people/<?php echo $val['user_info']['url_token']; ?>">
 								<img alt="" src="<?php echo get_avatar_url($val['uid'], 'mid'); ?>" />
 							</a>
 							<div class="aw-content">
@@ -32,7 +32,6 @@
 										<?php echo $val['user_info']['user_name']; ?> 发表于 : <?php echo date_friendly($val['add_time']); ?>
 
 										<a class="text-color-999" href="article/<?php echo $val['id']; ?>"><i class="icon icon-comment"></i> <?php _e('评论'); ?> (<?php echo $val['comments']; ?>)</a>
-										<a href="javascript:;" class="text-color-999" onclick="AWS.User.share_out();"><i class="icon icon-share"></i><?php _e('分享'); ?></a>
 									</span>
 								</div>
 							</div>
