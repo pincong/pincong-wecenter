@@ -142,24 +142,6 @@ class main extends AWS_CONTROLLER
 		TPL::output('account/register');
 	}
 
-	public function sync_login_action()
-	{
-
-		if ($_GET['url'])
-		{
-			$url = base64_decode($_GET['url']);
-		}
-
-		$base_url = base_url();
-
-		if (!$url OR strstr($url, '://') AND substr($url, 0, strlen($base_url)) != $base_url)
-		{
-			$url = '/';
-		}
-
-		H::redirect_msg(AWS_APP::lang()->_t('欢迎回来: %s , 正在带您进入站点...', $this->user_info['user_name']) . $sync_code, $url);
-	}
-
 	public function valid_approval_action()
 	{
 		if ($this->user_id AND $this->user_info['group_id'] != 3)
