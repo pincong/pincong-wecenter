@@ -61,12 +61,7 @@ class Services_BBCode
 
 	private function _img_callback($match)
 	{
-		if (substr($match[1], 0, 4) != 'http')
-		{
-			return $match[1];
-		}
-
-		return "<img src=\"$match[1]\" />";
+		return load_class('Services_ImageUrlParser')->parse($match[1]);
 	}
 
 	private function _list_callback($match)
