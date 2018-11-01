@@ -204,7 +204,7 @@ class question_class extends AWS_MODEL
 		//记录日志
 		if ($question_info['question_content'] != $question_content)
 		{
-			$log_id = ACTION_LOG::save_action($uid, $question_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::MOD_QUESTION_TITLE, $question_content, $question_info['question_content'], 0, 0, $addon_data);
+			$log_id = ACTION_LOG::save_action($uid, $question_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::MOD_QUESTION_TITLE, $question_content, $question_info['question_content'], null, null, $addon_data);
 
 			if (!$verified)
 			{
@@ -424,7 +424,7 @@ class question_class extends AWS_MODEL
 			// 记录日志
 			if ($save_action)
 			{
-				ACTION_LOG::save_action($uid, $question_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_REQUESTION_FOCUS, '', '', 0, intval($anonymous));
+				ACTION_LOG::save_action($uid, $question_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_REQUESTION_FOCUS, '', '', null, intval($anonymous));
 			}
 
 			return 'add';
