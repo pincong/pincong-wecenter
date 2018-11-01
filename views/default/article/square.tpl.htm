@@ -11,9 +11,15 @@
 						<?php if ($this->article_list) { ?>
 						<?php foreach ($this->article_list AS $key => $val) { ?>
 						<div class="aw-item">
+    						<?php if ($val['anonymous'] == 0) { ?>
 							<a class="aw-user-name" href="people/<?php echo $val['user_info']['url_token']; ?>">
 								<img alt="" src="<?php echo get_avatar_url($val['uid'], 'mid'); ?>" />
 							</a>
+    						<?php } else { ?>
+							<a class="aw-user-name" href="javascript:;">
+								<img src="<?php echo G_STATIC_URL; ?>/common/avatar-max-img.png" alt="<?php _e('匿名用户'); ?>" title="<?php _e('匿名用户'); ?>" />
+							</a>
+    						<?php } ?>
 							<div class="aw-content">
 								<div class="mod-body">
 									<h2><a href="article/<?php echo $val['id']; ?>"><?php echo $val['title']; ?></a></h2>
@@ -29,7 +35,7 @@
 								</div>
 								<div class="mod-footer clearfix">
 									<span class="pull-right more-operate text-color-999">
-										<?php echo $val['user_info']['user_name']; ?> 发表于 : <?php echo date_friendly($val['add_time']); ?>
+										<?php if ($val['anonymous'] == 0) { ?><?php echo $val['user_info']['user_name']; ?><?php } else { ?><?php _e('匿名用户'); ?><?php } ?> 发表于 : <?php echo date_friendly($val['add_time']); ?>
 
 										<a class="text-color-999" href="article/<?php echo $val['id']; ?>"><i class="icon icon-comment"></i> <?php _e('评论'); ?> (<?php echo $val['comments']; ?>)</a>
 									</span>
