@@ -1123,7 +1123,21 @@ function uniqid_generate($length = 16)
 }
 
 
-function fake_time($min = 1800, $max = 18000)
+function real_time()
 {
-	return time() - rand($min, $max);
+    return time();
+}
+
+function fake_time()
+{
+    $min = 1800;
+    $max = 18000;
+    return time() - rand($min, $max);
+}
+
+function future_time()
+{
+    $min = 1800;
+    $max = 18000;
+    return time() + rand($min, $max);
 }

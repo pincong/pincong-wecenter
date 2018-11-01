@@ -32,9 +32,11 @@ class question_class extends AWS_MODEL
 			return false;
 		}
 
+        $and = ' AND add_time <= ' . real_time();
+
 		if (!$cache)
 		{
-			$questions[$question_id] = $this->fetch_row('question', 'question_id = ' . intval($question_id));
+			$questions[$question_id] = $this->fetch_row('question', 'question_id = ' . intval($question_id) . $and);
 		}
 		else
 		{
@@ -45,7 +47,7 @@ class question_class extends AWS_MODEL
 				return $questions[$question_id];
 			}
 
-			$questions[$question_id] = $this->fetch_row('question', 'question_id = ' . intval($question_id));
+			$questions[$question_id] = $this->fetch_row('question', 'question_id = ' . intval($question_id) . $and);
 		}
 
 		if ($questions[$question_id])
@@ -77,7 +79,9 @@ class question_class extends AWS_MODEL
 
 		array_walk_recursive($question_ids, 'intval_string');
 
-		if ($questions_list = $this->fetch_all('question', "question_id IN(" . implode(',', $question_ids) . ")"))
+        $and = ' AND add_time <= ' . real_time();
+
+		if ($questions_list = $this->fetch_all('question', "question_id IN(" . implode(',', $question_ids) . ")" . $and))
 		{
 			foreach ($questions_list AS $key => $val)
 			{
@@ -540,7 +544,8 @@ class question_class extends AWS_MODEL
 
 		if ($question_ids)
 		{
-			return $this->fetch_all('question', "question_id IN(" . implode(',', $question_ids) . ")", 'add_time DESC');
+            $and = ' AND add_time <= ' . real_time();
+			return $this->fetch_all('question', "question_id IN(" . implode(',', $question_ids) . ")" . $and, 'add_time DESC');
 		}
 	}
 

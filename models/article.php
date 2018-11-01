@@ -31,7 +31,8 @@ class article_class extends AWS_MODEL
 
 		if (!$articles[$article_id])
 		{
-			$articles[$article_id] = $this->fetch_row('article', 'id = ' . $article_id);
+            $and = ' AND add_time <= ' . real_time();
+			$articles[$article_id] = $this->fetch_row('article', 'id = ' . $article_id . $and);
 		}
 
 		return $articles[$article_id];
@@ -46,7 +47,9 @@ class article_class extends AWS_MODEL
 
 		array_walk_recursive($article_ids, 'intval_string');
 
-		if ($articles_list = $this->fetch_all('article', 'id IN(' . implode(',', $article_ids) . ')'))
+        $and = ' AND add_time <= ' . real_time();
+
+		if ($articles_list = $this->fetch_all('article', 'id IN(' . implode(',', $article_ids) . ')' . $and))
 		{
 			foreach ($articles_list AS $key => $val)
 			{
@@ -219,6 +222,8 @@ class article_class extends AWS_MODEL
 			$where[] = 'add_time > ' . (fake_time() - $day * 24 * 60 * 60);
 		}
 
+        $where[] = 'add_time <= ' . real_time();
+
 		return $this->fetch_page('article', implode(' AND ', $where), $order_by, $page, $per_page);
 	}
 
@@ -263,6 +268,7 @@ class article_class extends AWS_MODEL
 			$where[] = "id IN (" . implode(',', $article_ids) . ")";
 		}
 
+        $where[] = 'add_time <= ' . real_time();
 
 		if (!$result)
 		{
