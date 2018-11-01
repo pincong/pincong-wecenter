@@ -96,7 +96,13 @@ class ajax extends AWS_CONTROLLER
 		}
 		else
 		{
-			$comment_id = $this->model('publish')->publish_article_comment($_POST['article_id'], $message, $this->user_id, $_POST['at_uid']);
+			$comment_id = $this->model('publish')->publish_article_comment(
+                $_POST['article_id'],
+                $message,
+                $this->user_id,
+                $_POST['at_uid'],
+                $_POST['anonymous']
+            );
 
 			//$url = get_js_url('/article/' . intval($_POST['article_id']) . '?item_id=' . $comment_id);
 

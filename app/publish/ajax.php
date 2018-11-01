@@ -485,7 +485,8 @@ class ajax extends AWS_CONTROLLER
                 'anonymous' => $_POST['anonymous'],
                 'attach_access_key' => $_POST['attach_access_key'],
                 'ask_user_id' => $_POST['ask_user_id'],
-                'permission_create_topic' => $this->user_info['permission']['create_topic']
+                'permission_create_topic' => $this->user_info['permission']['create_topic'],
+                'later' => $_POST['later']
             ), $this->user_id, $_POST['attach_access_key']);
 
             H::ajax_json_output(AWS_APP::RSM(array(
@@ -494,7 +495,19 @@ class ajax extends AWS_CONTROLLER
         }
         else
         {
-            $question_id = $this->model('publish')->publish_question($_POST['question_content'], $_POST['question_detail'], $_POST['category_id'], $this->user_id, $_POST['topics'], $_POST['anonymous'], $_POST['attach_access_key'], $_POST['ask_user_id'], $this->user_info['permission']['create_topic']);
+            $question_id = $this->model('publish')->publish_question(
+                $_POST['question_content'],
+                $_POST['question_detail'],
+                $_POST['category_id'],
+                $this->user_id,
+                $_POST['topics'],
+                $_POST['anonymous'],
+                $_POST['attach_access_key'],
+                $_POST['ask_user_id'],
+                $this->user_info['permission']['create_topic'],
+                null,
+                $_POST['later']
+            );
 
             {
                 $url = get_js_url('/question/' . $question_id);
@@ -596,7 +609,9 @@ class ajax extends AWS_CONTROLLER
                 'category_id' => $_POST['category_id'],
                 'topics' => $_POST['topics'],
                 'attach_access_key' => $_POST['attach_access_key'],
-                'permission_create_topic' => $this->user_info['permission']['create_topic']
+                'permission_create_topic' => $this->user_info['permission']['create_topic'],
+                'anonymous' => $_POST['anonymous'],
+                'later' => $_POST['later']
             ), $this->user_id, $_POST['attach_access_key']);
 
             H::ajax_json_output(AWS_APP::RSM(array(
@@ -605,7 +620,17 @@ class ajax extends AWS_CONTROLLER
         }
         else
         {
-            $article_id = $this->model('publish')->publish_article($_POST['title'], $_POST['message'], $this->user_id, $_POST['topics'], $_POST['category_id'], $_POST['attach_access_key'], $this->user_info['permission']['create_topic']);
+            $article_id = $this->model('publish')->publish_article(
+                $_POST['title'],
+                $_POST['message'],
+                $this->user_id,
+                $_POST['topics'],
+                $_POST['category_id'],
+                $_POST['attach_access_key'],
+                $this->user_info['permission']['create_topic'],
+                $_POST['anonymous'],
+                $_POST['later']
+            );
 
             {
                 $url = get_js_url('/article/' . $article_id);

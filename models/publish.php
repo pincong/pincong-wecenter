@@ -30,7 +30,19 @@ class publish_class extends AWS_MODEL
 		switch ($approval_item['type'])
 		{
 			case 'question':
-				$question_id = $this->publish_question($approval_item['data']['question_content'], $approval_item['data']['question_detail'], $approval_item['data']['category_id'], $approval_item['uid'], $approval_item['data']['topics'], $approval_item['data']['anonymous'], $approval_item['data']['attach_access_key'], $approval_item['data']['ask_user_id'], $approval_item['data']['permission_create_topic']);
+				$question_id = $this->publish_question(
+                    $approval_item['data']['question_content'],
+                    $approval_item['data']['question_detail'],
+                    $approval_item['data']['category_id'],
+                    $approval_item['uid'],
+                    $approval_item['data']['topics'],
+                    $approval_item['data']['anonymous'],
+                    $approval_item['data']['attach_access_key'],
+                    $approval_item['data']['ask_user_id'],
+                    $approval_item['data']['permission_create_topic'],
+                    null,
+                    $approval_item['data']['later']
+                );
 
 				$this->model('notify')->send(0, $approval_item['uid'], notify_class::TYPE_QUESTION_APPROVED, notify_class::CATEGORY_QUESTION, 0, array('question_id' => $question_id));
 
@@ -42,14 +54,30 @@ class publish_class extends AWS_MODEL
 				break;
 
 			case 'article':
-				$article_id = $this->publish_article($approval_item['data']['title'], $approval_item['data']['message'], $approval_item['uid'], $approval_item['data']['topics'], $approval_item['data']['category_id'], $approval_item['data']['attach_access_key'], $approval_item['data']['permission_create_topic']);
+				$article_id = $this->publish_article(
+                    $approval_item['data']['title'],
+                    $approval_item['data']['message'],
+                    $approval_item['uid'],
+                    $approval_item['data']['topics'],
+                    $approval_item['data']['category_id'],
+                    $approval_item['data']['attach_access_key'],
+                    $approval_item['data']['permission_create_topic'],
+                    $approval_item['data']['anonymous'],
+                    $approval_item['data']['later']
+                );
 
 				$this->model('notify')->send(0, $approval_item['uid'], notify_class::TYPE_ARTICLE_APPROVED, notify_class::CATEGORY_ARTICLE, 0, array('article_id' => $article_id));
 
 				break;
 
 			case 'article_comment':
-				$article_comment_id = $this->publish_article_comment($approval_item['data']['article_id'], $approval_item['data']['message'], $approval_item['uid'], $approval_item['data']['at_uid']);
+				$article_comment_id = $this->publish_article_comment(
+                    $approval_item['data']['article_id'],
+                    $approval_item['data']['message'],
+                    $approval_item['uid'],
+                    $approval_item['data']['at_uid'],
+                    $approval_item['data']['anonymous']
+                );
 
 				break;
 		}
@@ -214,9 +242,9 @@ class publish_class extends AWS_MODEL
 		));
 	}
 
-	public function publish_question($question_content, $question_detail, $category_id, $uid, $topics = null, $anonymous = null, $attach_access_key = null, $ask_user_id = null, $create_topic = true, $from = null)
+	public function publish_question($question_content, $question_detail, $category_id, $uid, $topics = null, $anonymous = null, $attach_access_key = null, $ask_user_id = null, $create_topic = true, $from = null, $later = null)
 	{
-		if ($question_id = $this->model('question')->save_question($question_content, $question_detail, $uid, $anonymous, null, $from))
+		if ($question_id = $this->model('question')->save_question($question_content, $question_detail, $uid, $anonymous, $later, $from))
 		{
 
             set_repeat_submission_digest($question_content);
@@ -289,16 +317,17 @@ class publish_class extends AWS_MODEL
 		return $question_id;
 	}
 
-	public function publish_article($title, $message, $uid, $topics = null, $category_id = null, $attach_access_key = null, $create_topic = true)
+	public function publish_article($title, $message, $uid, $topics = null, $category_id = null, $attach_access_key = null, $create_topic = true, $anonymous = null, $later = null)
 	{
-        $now = fake_time();
+        $now = intval($later) ? future_time : fake_time();
 		if ($article_id = $this->insert('article', array(
 			'uid' => intval($uid),
 			'title' => htmlspecialchars($title),
 			'message' => htmlspecialchars($message),
 			'category_id' => intval($category_id),
 			'add_time' => $now,
-			'update_time' => $now
+			'update_time' => $now,
+			'anonymous' => intval($anonymous)
 		)))
 		{
 
@@ -336,7 +365,7 @@ class publish_class extends AWS_MODEL
 		return $article_id;
 	}
 
-	public function publish_article_comment($article_id, $message, $uid, $at_uid = null)
+	public function publish_article_comment($article_id, $message, $uid, $at_uid = null, $anonymous = null)
 	{
 		if (!$article_info = $this->model('article')->get_article_info_by_id($article_id))
 		{
@@ -350,7 +379,8 @@ class publish_class extends AWS_MODEL
 			'article_id' => intval($article_id),
 			'message' => htmlspecialchars($message),
 			'add_time' => $now,
-			'at_uid' => intval($at_uid)
+			'at_uid' => intval($at_uid),
+			'anonymous' => intval($anonymous)
 		));
 
 		$this->update('article', array(
