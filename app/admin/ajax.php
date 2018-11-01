@@ -1178,6 +1178,11 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
             $uid = $this->model('account')->user_register($_POST['user_name'], $_POST['password']);
 
+            if (!$uid)
+            {
+                H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('注册失败')));
+            }
+
             $this->model('active')->active_user_by_uid($uid);
 
             if ($_POST['group_id'] == 1 AND !$this->user_info['permission']['is_administrator'])

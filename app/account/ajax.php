@@ -60,6 +60,11 @@ class ajax extends AWS_CONTROLLER
 
 	public function register_process_action()
 	{
+		if (! $_POST['agreement_chk'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你必需同意用户协议才能继续')));
+		}
+
 		if (get_setting('register_type') == 'close')
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('本站目前关闭注册')));
@@ -69,36 +74,14 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('本站只能通过邀请注册')));
 		}
 
-		if ($_POST['icode'])
-		{
-
-		}
-
 		if (trim($_POST['user_name']) == '')
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入用户名')));
-		}
-		else if ($this->model('account')->check_username($_POST['user_name']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名已经存在')));
-		}
-		else if ($check_rs = $this->model('account')->check_username_char($_POST['user_name']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名包含无效字符')));
-		}
-		else if ($this->model('account')->check_username_sensitive_words($_POST['user_name']) OR trim($_POST['user_name']) != $_POST['user_name'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名中包含敏感词或系统保留字')));
 		}
 
 		if (strlen($_POST['password']) < 6 OR strlen($_POST['password']) > 16)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('密码长度不符合规则')));
-		}
-
-		if (! $_POST['agreement_chk'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你必需同意用户协议才能继续')));
 		}
 
 		// 检查验证码
@@ -107,8 +90,25 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请填写正确的验证码')));
 		}
 
+		if ($check_rs = $this->model('account')->check_username_char($_POST['user_name']))
 		{
-			$uid = $this->model('account')->user_register($_POST['user_name'], $_POST['password']);
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名包含无效字符')));
+		}
+		if ($this->model('account')->check_username_sensitive_words($_POST['user_name']) OR trim($_POST['user_name']) != $_POST['user_name'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名中包含敏感词或系统保留字')));
+		}
+
+		if ($this->model('account')->check_username($_POST['user_name']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名已经存在')));
+		}
+
+		$uid = $this->model('account')->user_register($_POST['user_name'], $_POST['password']);
+
+		if (!$uid)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('注册失败')));
 		}
 
 		if (isset($_POST['sex']))
@@ -128,11 +128,7 @@ class ajax extends AWS_CONTROLLER
 		$this->model('account')->setcookie_logout();
 		$this->model('account')->setsession_logout();
 
-		if ($_POST['icode'])
-		{
-
-		}
-		else if (HTTP::get_cookie('fromuid'))
+		if (HTTP::get_cookie('fromuid'))
 		{
 			$follow_users = $this->model('account')->get_user_info_by_uid(HTTP::get_cookie('fromuid'));
 		}
@@ -143,11 +139,6 @@ class ajax extends AWS_CONTROLLER
 			$this->model('follow')->user_follow_add($follow_users['uid'], $uid);
 
 			$this->model('integral')->process($follow_users['uid'], 'INVITE', get_setting('integral_system_config_invite'), '邀请注册: ' . $_POST['user_name'], $follow_users['uid']);
-		}
-
-		if ($_POST['icode'])
-		{
-
 		}
 
 		if (get_setting('register_valid_type') == 'N')
