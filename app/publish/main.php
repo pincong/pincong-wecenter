@@ -201,4 +201,12 @@ class main extends AWS_CONTROLLER
 
 		H::redirect_msg(AWS_APP::lang()->_t('发布成功, 请等待管理员审核...'), $url);
 	}
+
+	public function delay_display_action()
+	{
+		$url = '/';
+
+		H::redirect_msg(AWS_APP::lang()->_t('发布成功, 内容将会延迟显示, 请稍后再来查看...'), $url);
+	}
+
 }

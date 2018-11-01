@@ -509,6 +509,11 @@ class ajax extends AWS_CONTROLLER
                 $_POST['later']
             );
 
+            if (intval($_POST['later']))
+            {
+                $url = get_js_url('/publish/delay_display/');
+            }
+            else
             {
                 $url = get_js_url('/question/' . $question_id);
             }
@@ -632,6 +637,11 @@ class ajax extends AWS_CONTROLLER
                 $_POST['later']
             );
 
+            if (intval($_POST['later']))
+            {
+                $url = get_js_url('/publish/delay_display/');
+            }
+            else
             {
                 $url = get_js_url('/article/' . $article_id);
             }
