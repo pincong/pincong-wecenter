@@ -110,7 +110,7 @@ class crond_class extends AWS_MODEL
     // 每十分钟执行
     public function ten_minutes()
     {
-
+        $this->model('message')->delete_expired_messages();
     }
 
     // 每半小时执行

@@ -234,4 +234,16 @@ class message_class extends AWS_MODEL
 		$this->delete('inbox', 'sender_remove = 1 AND recipient_receipt = 1');
 		$this->delete('inbox_dialog', 'sender_count = 0 AND recipient_count = 0');
 	}
+
+    public function delete_expired_messages()
+    {
+        $seconds = 7 * 24 * 3600;
+        $time_before = real_time() - $seconds;
+        if ($time_before < 0) {
+            $time_before = 0;
+        }
+        $this->delete('inbox', 'add_time < ' . $time_before);
+        $this->delete('inbox_dialog', 'add_time < ' . $time_before);
+    }
+
 }
