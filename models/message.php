@@ -27,6 +27,8 @@ class message_class extends AWS_MODEL
 			return false;
 		}
 
+        $now = fake_time();
+
 		if (! $inbox_dialog = $this->get_dialog_by_user($sender_uid, $recipient_uid))
 		{
 			$inbox_dialog_id = $this->insert('inbox_dialog', array(
@@ -34,8 +36,8 @@ class message_class extends AWS_MODEL
 				'sender_unread' => 0,
 				'recipient_uid' => $recipient_uid,
 				'recipient_unread' => 0,
-				'add_time' => fake_time(),
-				'update_time' => fake_time(),
+				'add_time' => $now,
+				'update_time' => $now,
 				'sender_count' => 0,
 				'recipient_count' => 0
 			));
@@ -48,7 +50,7 @@ class message_class extends AWS_MODEL
 		$message_id = $this->insert('inbox', array(
 			'dialog_id' => $inbox_dialog_id,
 			'message' => htmlspecialchars($message),
-			'add_time' => fake_time(),
+			'add_time' => $now,
 			'uid' => $sender_uid
 		));
 
@@ -72,6 +74,8 @@ class message_class extends AWS_MODEL
 			return false;
 		}
 
+        $now = fake_time();
+
 		if ($inbox_dialog['sender_uid'] == $uid)
 		{
 			$this->update('inbox_dialog', array(
@@ -81,7 +85,7 @@ class message_class extends AWS_MODEL
 			if ($receipt)
 			{
 				$this->update('inbox', array(
-				'receipt' => fake_time()
+				'receipt' => $now
 				), 'receipt = 0 AND uid = ' . $inbox_dialog['recipient_uid'] . ' AND dialog_id = ' . intval($dialog_id));
 			}
 
@@ -96,7 +100,7 @@ class message_class extends AWS_MODEL
 			if ($receipt)
 			{
 				$this->update('inbox', array(
-					'receipt' => fake_time()
+					'receipt' => $now
 				), 'receipt = 0 AND uid = ' . $inbox_dialog['sender_uid'] . ' AND dialog_id = ' . intval($dialog_id));
 			}
 		}
