@@ -1130,7 +1130,7 @@ CREATE TABLE IF NOT EXISTS `aws_topic_relation` (
 -- 导出  表 db.aws_users 结构
 CREATE TABLE IF NOT EXISTS `aws_users` (
   `uid` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户的 UID',
-  `user_name` varchar(240) DEFAULT NULL COMMENT '用户名',
+  `user_name` varchar(240) NOT NULL COMMENT '用户名',
   `password` varchar(60) DEFAULT NULL COMMENT '用户密码',
   `salt` varchar(16) DEFAULT NULL COMMENT '用户附加混淆码',
   `avatar_file` varchar(128) DEFAULT NULL COMMENT '头像文件',
@@ -1162,7 +1162,7 @@ CREATE TABLE IF NOT EXISTS `aws_users` (
   `default_timezone` varchar(32) DEFAULT NULL,
   `recent_topics` text,
   PRIMARY KEY (`uid`),
-  KEY `user_name` (`user_name`),
+  UNIQUE KEY `user_name` (`user_name`),
   KEY `reputation` (`reputation`),
   KEY `reputation_update_time` (`reputation_update_time`),
   KEY `group_id` (`group_id`),
