@@ -541,6 +541,11 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限发布文章')));
         }
 
+        if ($this->user_info['integral'] < 0 AND get_setting('integral_system_enabled') == 'Y')
+        {
+            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
+        }
+
         if (get_setting('category_enable') == 'N')
         {
             $_POST['category_id'] = 1;

@@ -104,6 +104,10 @@ class integral_class extends AWS_MODEL
 				case 'INVITE':
 					$user_ids[] = $item['item_id'];
 				break;
+
+				case 'NEW_ARTICLE':
+					$article_ids[] = $item['item_id'];
+				break;
 			}
 		}
 
@@ -120,6 +124,11 @@ class integral_class extends AWS_MODEL
 		if ($user_ids)
 		{
 			$users_info = $this->model('account')->get_user_info_by_uids($user_ids);
+		}
+
+		if ($article_ids)
+		{
+			$articles_info = $this->model('article')->get_article_info_by_ids($article_ids);
 		}
 
 		foreach ($parse_items AS $log_id => $item)
@@ -175,6 +184,17 @@ class integral_class extends AWS_MODEL
 						);
 					}
 				break;
+
+				case 'NEW_ARTICLE':
+					if ($articles_info[$item['item_id']])
+					{
+						$result[$log_id] = array(
+							'title' => '文章: ' . $articles_info[$item['item_id']]['title'],
+							'url' => get_js_url('/article/' . $item['item_id'])
+						);
+					}
+				break;
+
 			}
 		}
 
