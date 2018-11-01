@@ -406,7 +406,7 @@ class account_class extends AWS_MODEL
             return false;
         }
 
-        $salt = fetch_salt(4);
+        $salt = fetch_salt();
 
         if ($uid = $this->insert('users', array(
             'user_name' => htmlspecialchars($user_name),
