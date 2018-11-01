@@ -24,11 +24,14 @@
                                     this.imageElement.setAttribute( 'src', this.getValue() );
                                     editor.insertElement( this.imageElement );
                                 }
+                            },
+                            onLoad: function () {
+                                this.getInputElement().setAttribute( 'placeholder', 'https://' )
                             }
                         },
                         {
                             type: 'html',
-                            html : '<p style="font-size:14px;color:#999;">如需要插入本地图片, 请用编辑器下面上传附件功能上传后再插入!</p>'
+                            html : '<p style="font-size:14px;color:#999;"></p>'
                         }
                     ]
                 }

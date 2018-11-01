@@ -23,11 +23,14 @@
                                     editor.insertHtml('<br /><video title="' + this.getValue() + '">' + this.getValue()  + '</video>');
                                     //editor.insertText( '!![视频名称](' + this.getValue() + ')' );
                                 }
+                            },
+                            onLoad: function () {
+                                this.getInputElement().setAttribute( 'placeholder', 'https://' )
                             }
                         },
                         {
                             type: 'html',
-                            html : '<p style="font-size:14px;color:#999;">我们目前支持: 优酷、酷六、土豆、56、新浪播客、乐视、Youtube 与 SWF 文件!</p>'
+                            html : '<p style="font-size:14px;color:#999;"></p>'
                         }
                     ]
                 }
