@@ -121,8 +121,10 @@
 								<span class="aw-anonymity">
 									<?php if ($this->question_info['question_id'] AND ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'])) { ?>
 									<label><input type="checkbox" class="pull-left" value="1" name="do_delete" />
-										<?php _e('删除问题'); ?></label>
+										<?php _e('删除问题'); ?>&nbsp;</label>
 									<?php } ?>
+									<label><input type="checkbox" class="pull-left" value="1" name="later" />
+										<?php _e('延迟显示'); ?>&nbsp;</label>
 									<?php if (!$this->question_info['question_id'] AND get_setting('anonymous_enable') == 'Y') { ?>
 									<label><input type="checkbox" class="pull-left" value="1" name="anonymous" />
 										<?php _e('匿名'); ?></label>

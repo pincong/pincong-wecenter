@@ -433,7 +433,7 @@ a.aw-load-more-content{display: block;}
 .aw-article-replay-box .mod-head img{width: 32px;height: 32px;}
 .aw-article-replay-box .mod-body{margin-bottom:10px;padding:0 !important;}
 .aw-article-replay-box .mod-footer{padding:0 !important;}
-.aw-article-replay-box .mod-footer input{width: 80px;}
+.aw-article-replay-box .mod-footer input[type="text"]{width: 80px;}
 
 /* 新编辑器 */
 .cke_editable a{color: #666 !important;}
