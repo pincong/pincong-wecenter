@@ -989,6 +989,46 @@
                 <tr>
                     <td>
                         <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('提升问题或文章'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="integral_system_config_move_up_question" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_move_up_question']; ?>"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('问题或文章被提升'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="integral_system_config_question_moved_up" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_question_moved_up']; ?>"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('下沉问题或文章'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="integral_system_config_move_down_question" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_move_down_question']; ?>"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('问题或文章被下沉'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="integral_system_config_question_moved_down" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_question_moved_down']; ?>"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('发起者赞同反对威望系数'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <input name="publisher_reputation_factor" type="text" class="form-control" value="<?php echo get_setting('publisher_reputation_factor'); ?>"/>
