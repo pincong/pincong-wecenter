@@ -319,7 +319,7 @@ class publish_class extends AWS_MODEL
 
 	public function publish_article($title, $message, $uid, $topics = null, $category_id = null, $attach_access_key = null, $create_topic = true, $anonymous = null, $later = null)
 	{
-        $now = intval($later) ? future_time : fake_time();
+        $now = intval($later) ? future_time() : fake_time();
 		if ($article_id = $this->insert('article', array(
 			'uid' => intval($uid),
 			'title' => htmlspecialchars($title),

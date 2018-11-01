@@ -120,7 +120,7 @@ class question_class extends AWS_MODEL
 	 */
 	public function save_question($question_content, $question_detail, $published_uid, $anonymous = 0, $later = 0, $from = null)
 	{
-		$now = intval($later) ? future_time : fake_time();
+		$now = intval($later) ? future_time() : fake_time();
 
 		$to_save_question = array(
 			'question_content' => htmlspecialchars($question_content),
