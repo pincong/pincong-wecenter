@@ -184,12 +184,9 @@ class publish_class extends AWS_MODEL
 
 		if ($question_info['published_uid'] != $uid)
 		{
-			$this->model('integral')->process($uid, 'ANSWER_QUESTION', get_setting('integral_system_config_new_answer'), '回答问题 #' . $question_id, $question_id);
+			$this->model('integral')->process($uid, 'ANSWER_QUESTION', get_setting('integral_system_config_answer_question'), '回答问题 #' . $question_id, $question_id);
 
-			if (get_setting('integral_system_config_answer_change_source') == 'Y' AND get_setting('integral_system_config_new_answer') <= 0)
-			{
-				$this->model('integral')->process($question_info['published_uid'], 'QUESTION_ANSWER', -get_setting('integral_system_config_new_answer'), '问题被回答 #' . $question_id, $question_id);
-			}
+			$this->model('integral')->process($question_info['published_uid'], 'QUESTION_ANSWER', get_setting('integral_system_config_question_answered'), '问题被回答 #' . $question_id, $question_id);
 		}
 
 		$this->model('question')->save_last_answer($question_id, $answer_id);
