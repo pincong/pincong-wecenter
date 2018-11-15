@@ -29,6 +29,10 @@ class main extends AWS_CONTROLLER
 
 	public function setup()
 	{
+        if (get_setting('pm_enabled') != 'Y')
+        {
+            H::redirect_msg(AWS_APP::lang()->_t('本站未启用私信功能'), '/');
+        }
 		$this->crumb(AWS_APP::lang()->_t('私信'), '/inbox/');
 	}
 
