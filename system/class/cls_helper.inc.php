@@ -203,4 +203,43 @@ class H
 
 		return false;
 	}
+
+
+	public static function content_url_whitelist_check($url)
+	{
+		if (!$url or !get_setting('content_url_whitelist'))
+		{
+			return false;
+		}
+
+		$whitelist = explode("\n", get_setting('content_url_whitelist'));
+
+		foreach($whitelist as $word)
+		{
+			$word = trim($word);
+
+			if (!$word)
+			{
+				continue;
+			}
+
+			if (substr($word, 0, 1) == '{' AND substr($word, -1, 1) == '}')
+			{
+				if (preg_match(substr($word, 1, -1), $url))
+				{
+					return true;
+				}
+			}
+			else
+			{
+				if (stripos($url, $word) === 0)
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 }

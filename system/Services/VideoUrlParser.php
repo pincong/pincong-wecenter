@@ -5,11 +5,15 @@ class Services_VideoUrlParser
 
     static public function parse($url)
     {
-        if (strpos($url, 'https://') !== 0 && strpos($url, 'http://') !== 0)
+        if (stripos($url, 'https://') !== 0 && stripos($url, 'http://') !== 0)
         {
             return $url;
         }
-        return "<a href=\"$url\" rel=\"nofollow noreferrer noopener\" target=\"_blank\">$url</a>";
+        if (!H::content_url_whitelist_check($url))
+        {
+            return "<a href=\"$url\" rel=\"nofollow noreferrer noopener\" target=\"_blank\">$url</a>";
+        }
+        return "<video controls preload=\"none\" src=\"$url\" style=\"max-width:100%\"></video>";
     }
 
 }
