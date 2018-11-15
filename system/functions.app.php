@@ -190,37 +190,6 @@ function get_feature_pic_url($size = null, $pic_file = null)
 	return get_setting('upload_url') . '/feature/' . $pic_file;
 }
 
-function get_host_top_domain()
-{	return '';
-	$host = strtolower($_SERVER['HTTP_HOST']);
-
-	if (strpos($host, '/') !== false)
-	{
-		$parse = @parse_url($host);
-		$host = $parse['host'];
-	}
-
-	$top_level_domain_db = array('com', 'edu', 'gov', 'int', 'mil', 'net', 'org', 'biz', 'info', 'pro', 'name', 'coop', 'aero', 'xxx', 'idv', 'mobi', 'cc', 'me', 'jp', 'uk', 'ws', 'eu', 'pw', 'kr', 'io', 'us', 'cn');
-
-	foreach ($top_level_domain_db as $v)
-	{
-		$str .= ($str ? '|' : '') . $v;
-	}
-
-	$matchstr = "[^\.]+\.(?:(" . $str . ")|\w{2}|((" . $str . ")\.\w{2}))$";
-
-	if (preg_match('/' . $matchstr . '/ies', $host, $matchs))
-	{
-		$domain = $matchs['0'];
-	}
-	else
-	{
-		$domain = $host;
-	}
-
-	return $domain;
-}
-
 function parse_link_callback($matches)
 {
 	if (preg_match('/^(?!http).*/i', $matches[1]))
@@ -249,14 +218,27 @@ function is_inside_url($url)
 		return false;
 	}
 
-	if (preg_match('/^(?!http).*/i', $url))
+	// url like '//www.google.com'
+	if (strpos($url, '//') === 0)
 	{
-		$url = 'http://' . $url;
+		$url = 'http:' . $url;;
 	}
 
-	$domain = get_host_top_domain();
+	if (stripos($url, 'https://') !== 0 && stripos($url, 'http://') !== 0)
+	{
+		return true;
+	}
 
-	if (preg_match('/^http[s]?:\/\/([-_a-zA-Z0-9]+[\.])*?' . $domain . '(?!\.)[-a-zA-Z0-9@:;%_\+.~#?&\/\/=]*$/i', $url))
+	$host = $_SERVER['HTTP_HOST'];
+
+	// url like 'https://www.google.com'
+	if (strcasecmp($url, 'https://' . $host) === 0 || strcasecmp($url, 'http://' . $host) === 0)
+	{
+		return true;
+	}
+
+	// url like 'https://www.google.com/xxx'
+	if (stripos($url, 'https://' . $host . '/') === 0 || stripos($url, 'http://' . $host . '/') === 0)
 	{
 		return true;
 	}
