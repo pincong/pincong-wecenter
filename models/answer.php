@@ -833,7 +833,7 @@ class answer_class extends AWS_MODEL
 			{
 				ACTION_LOG::set_fold_action_history($answer_info['answer_id'], 1);
 
-				$this->model('integral')->process($answer_info['uid'], 'ANSWER_FOLD_' . $answer_info['answer_id'], get_setting('integral_system_config_answer_fold'), '回复折叠 #' . $answer_info['answer_id']);
+				$this->model('integral')->process($answer_info['uid'], 'ANSWER_FOLD_' . $answer_info['answer_id'], get_setting('integral_system_config_answer_fold'), '回复折叠 #' . $answer_info['answer_id'], $answer_info['answer_id']);
 			}
 		}
 
@@ -873,7 +873,7 @@ class answer_class extends AWS_MODEL
 			return false;
 		}
 
-		$this->model('integral')->process($answer_info['uid'], 'BEST_ANSWER', get_setting('integral_system_config_best_answer'), '问题 #' . $answer_info['question_id'] . ' 最佳回复');
+		$this->model('integral')->process($answer_info['uid'], 'BEST_ANSWER', get_setting('integral_system_config_best_answer'), '问题 #' . $answer_info['question_id'] . ' 最佳回复', $answer_info['answer_id']);
 
 		$this->shutdown_update('question', array(
 			'best_answer' => $answer_info['answer_id']
