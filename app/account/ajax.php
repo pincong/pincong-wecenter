@@ -534,6 +534,11 @@ class ajax extends AWS_CONTROLLER
 
 	public function verify_action()
 	{
+		if (get_setting('id_verification_disabled') == 'Y')
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('认证功能已经关闭')));
+		}
+
 		if ($this->is_post() AND !$this->user_info['verified'])
 		{
 			$this->model('verify')->add_apply($this->user_id, $_POST['name'], $_POST['reason'],$_POST['type']);
