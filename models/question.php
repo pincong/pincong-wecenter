@@ -1042,7 +1042,7 @@ class question_class extends AWS_MODEL
 			switch ($log['associate_action'])
 			{
 				case ACTION_LOG::ADD_QUESTION :
-					$title_list = $user_name_string . ' 添加了该问题</p><p>' . $log['associate_content'] . '</p><p>' . $log['associate_attached'] . '';
+					$title_list = $user_name_string . ' 添加了该问题'; // </p><p>' . $log['associate_content'] . '</p><p>' . $log['associate_attached'] . '';
 					break;
 
 				case ACTION_LOG::MOD_QUESTION_TITLE : //修改问题标题
