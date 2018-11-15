@@ -98,7 +98,7 @@ class article_class extends AWS_MODEL
 
 	public function get_comments($article_id, $page, $per_page)
 	{
-		if ($comments = $this->fetch_page('article_comments', 'article_id = ' . intval($article_id), 'add_time ASC', $page, $per_page))
+		if ($comments = $this->fetch_page('article_comments', 'article_id = ' . intval($article_id), 'id ASC', $page, $per_page))
 		{
 			foreach ($comments AS $key => $val)
 			{
