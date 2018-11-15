@@ -214,9 +214,10 @@ function is_inside_url($url)
 	// url like '//www.google.com'
 	if (strpos($url, '//') === 0)
 	{
-		$url = 'http:' . $url;;
+		$url = 'https:' . $url;
 	}
 
+	// relative url
 	if (stripos($url, 'https://') !== 0 && stripos($url, 'http://') !== 0)
 	{
 		return true;
@@ -259,19 +260,19 @@ function get_chapter_icon_url($id, $size = 'max', $default = true)
 	return false;
 }
 
-function base64_url_encode($parm)
+function base64_url_encode($param)
 {
-	if (!is_array($parm))
+	if (!is_array($param))
 	{
 		return false;
 	}
 
-	return strtr(base64_encode(json_encode($parm)), '+/=', '-_,');
+	return strtr(base64_encode(json_encode($param)), '+/=', '-_,');
 }
 
-function base64_url_decode($parm)
+function base64_url_decode($param)
 {
-	return json_decode(base64_decode(strtr($parm, '-_,', '+/=')), true);
+	return json_decode(base64_decode(strtr($param, '-_,', '+/=')), true);
 }
 
 function remove_assoc($from, $type, $id)
