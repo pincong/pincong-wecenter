@@ -55,7 +55,10 @@
 									</div>
 									<div class="mod-body">
 										<p class="text-color-999"><span class="pull-right" id="question_detail_message">&nbsp;</span></p>
-										<?php if (get_setting('upload_enable') == 'Y' AND get_setting('advanced_editor_enable' == 'Y')) { ?>
+
+										<?php if (get_setting('image_upload_link')) { ?><a class="pull-right" href="<?php echo get_setting('image_upload_link'); ?>" rel="nofollow noreferrer noopener" target="_blank"><?php _e('上传图片'); ?></a><?php } ?>
+
+										<?php if (get_setting('upload_enable') == 'Y') { ?>
 										<div class="aw-upload-box">
 											<a class="btn btn-default">上传附件</a>
 											<div class="upload-container"></div>
