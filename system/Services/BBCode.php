@@ -41,22 +41,28 @@ class Services_BBCode
 
 	private function _url_callback($match)
 	{
-		if (substr($match[1], 0, 4) != 'http')
+		if (stripos($match[1], 'https://') !== 0 && stripos($match[1], 'http://') !== 0)
 		{
 			return $match[1];
 		}
-
-		return "<a href=\"$match[1]\" rel=\"nofollow noreferrer noopener\" target=\"_blank\">$match[1]</a>";
+		return parse_link_callback($match);
 	}
 
 	private function _link_callback($match)
 	{
-		if (substr($match[1], 0, 4) != 'http')
+		if (stripos($match[1], 'https://') !== 0 && stripos($match[1], 'http://') !== 0)
 		{
 			return $match[2];
 		}
 
-		return "<a href=\"$match[1]\" rel=\"nofollow noreferrer noopener\" target=\"_blank\">$match[2]</a>";
+		if (is_inside_url($match[1]))
+		{
+			return '<a href="' . $match[1] . '">' . $match[2] . '</a>';
+		}
+		else
+		{
+			return '<a href="' . $match[1] . '" rel="nofollow noreferrer noopener" target="_blank">' . $match[2] . '</a>';
+		}
 	}
 
 	private function _img_callback($match)

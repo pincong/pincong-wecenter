@@ -192,14 +192,7 @@ function get_feature_pic_url($size = null, $pic_file = null)
 
 function parse_link_callback($matches)
 {
-	if (preg_match('/^(?!http).*/i', $matches[1]))
-	{
-		$url = 'http://' . $matches[1];
-	}
-	else
-	{
-		$url = $matches[1];
-	}
+	$url = $matches[1];
 
 	if (is_inside_url($url))
 	{
