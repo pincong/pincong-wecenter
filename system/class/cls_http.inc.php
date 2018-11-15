@@ -56,7 +56,7 @@ class HTTP
 	 * @param $secure
 	 * @param $httponly
 	 */
-	public static function set_cookie($name, $value = '', $expire = null, $path = '/', $domain = null, $secure = true, $httponly = true)
+	public static function set_cookie($name, $value = '', $expire = null, $path = '/', $domain = null, $secure = false, $httponly = true)
 	{
 		if (! $domain and G_COOKIE_DOMAIN)
 		{
