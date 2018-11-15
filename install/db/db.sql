@@ -919,7 +919,8 @@ INSERT INTO `aws_system_setting` (`id`, `varname`, `value`) VALUES
 	(141, 'integral_system_config_move_up_question', 's:2:"-5";'),
 	(142, 'integral_system_config_question_moved_up', 's:1:"0";'),
 	(143, 'integral_system_config_move_down_question', 's:2:"-5";'),
-	(144, 'integral_system_config_question_moved_down', 's:1:"0";');
+	(144, 'integral_system_config_question_moved_down', 's:1:"0";'),
+	(145, 'integral_system_config_uninterested', 's:2:"-1";');
 /*!40000 ALTER TABLE `aws_system_setting` ENABLE KEYS */;
 
 
