@@ -691,7 +691,7 @@ blockquote {margin: 0 40px;padding: 0 15px;font-size: 14px;color: #777;border-le
 .aw-mod-topic-edit-box .mod-head .img b{position: absolute;bottom: 0;display: block;width:50px;text-align: center;color: #fff;font-weight: normal;font-size: 12px;}
 .aw-mod-topic-edit-box .mod-head .img .icon-edit{position: relative;top: 1px;margin:0;}
 .aw-mod-topic-edit-box .mod-head .img form{z-index:1;}
-.aw-mod-topic-edit-box .mod-head .img form .file-input{left: 25px !important;top: 20px !important;width: 20px;height: 20px;}
+.aw-mod-topic-edit-box .mod-head .img form .file-input{left: 0 !important;top: 20px !important;width: 20px;height: 20px;}
 .aw-mod-topic-edit-box .mod-footer{position:relative;height:auto;overflow:hidden;margin-top:20px;}
 .aw-mod.new-topic .aw-topic-bar{margin:0;}
 /* 话题管理页面 */
