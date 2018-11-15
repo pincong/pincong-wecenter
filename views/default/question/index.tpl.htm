@@ -162,8 +162,8 @@
 								<?php } ?>
 								<div class="pull-right more-operate">
 									<?php if ($this->user_id) { ?>
-									<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认提升?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/question/ajax/bump_question/', 'question_id=<?php echo $this->question_info['question_id']; ?>');});"><i class="icon icon-up"></i><?php _e('提升'); ?></a>
-									<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认下沉?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/question/ajax/sink_question/', 'question_id=<?php echo $this->question_info['question_id']; ?>');});"><i class="icon icon-down"></i><?php _e('下沉'); ?></a>
+									<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认提升?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/question/ajax/bump/', 'question_id=<?php echo $this->question_info['question_id']; ?>');});"><i class="icon icon-up"></i><?php _e('提升'); ?></a>
+									<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认下沉?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/question/ajax/sink/', 'question_id=<?php echo $this->question_info['question_id']; ?>');});"><i class="icon icon-down"></i><?php _e('下沉'); ?></a>
 									<?php } ?>
 
 									<?php if ($this->user_id != $this->question_info['published_uid'] AND $this->user_id) { ?><a <?php if (!$this->question_thanks) { ?>data-placement="bottom" title="" data-toggle="tooltip" data-original-title="<?php _e('感谢提问者'); ?>" onclick="AWS.User.question_thanks($(this), <?php echo $this->question_info['question_id']; ?>);"<?php } ?> class="aw-icon-thank-tips text-color-999"><i class="icon icon-thank"></i><?php if ($this->question_thanks) { ?><?php _e('已感谢'); ?><?php } else { ?><?php _e('感谢'); ?><?php } ?></a>

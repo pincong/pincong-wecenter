@@ -227,4 +227,35 @@ class ajax extends AWS_CONTROLLER
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
+
+	public function bump_action()
+	{
+		if ($this->user_info['integral'] < 0 and get_setting('integral_system_enabled') == 'Y')
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
+		}
+
+		if (!$this->model('posts')->bump_post($this->user_id, $_POST['article_id'], 'article'))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('文章不存在')));
+		}
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
+	public function sink_action()
+	{
+		if ($this->user_info['integral'] < 0 and get_setting('integral_system_enabled') == 'Y')
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
+		}
+
+		if (!$this->model('posts')->sink_post($this->user_id, $_POST['article_id'], 'article'))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('文章不存在')));
+		}
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
 }

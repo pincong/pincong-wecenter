@@ -91,6 +91,10 @@ class integral_class extends AWS_MODEL
 				case 'ANSWER_INVITE':
 				case 'THANKS_QUESTION':
 				case 'QUESTION_THANKS':
+				case 'MOVE_UP_QUESTION':
+				case 'QUESTION_MOVED_UP':
+				case 'MOVE_DOWN_QUESTION':
+				case 'QUESTION_MOVED_DOWN':
 					$question_ids[] = $item['item_id'];
 				break;
 
@@ -106,6 +110,10 @@ class integral_class extends AWS_MODEL
 				break;
 
 				case 'NEW_ARTICLE':
+				case 'MOVE_UP_ARTICLE':
+				case 'ARTICLE_MOVED_UP':
+				case 'MOVE_DOWN_ARTICLE':
+				case 'ARTICLE_MOVED_DOWN':
 					$article_ids[] = $item['item_id'];
 				break;
 			}
@@ -152,6 +160,10 @@ class integral_class extends AWS_MODEL
 				case 'INVITE_ANSWER':
 				case 'THANKS_QUESTION':
 				case 'QUESTION_THANKS':
+				case 'MOVE_UP_QUESTION':
+				case 'QUESTION_MOVED_UP':
+				case 'MOVE_DOWN_QUESTION':
+				case 'QUESTION_MOVED_DOWN':
 					if ($questions_info[$item['item_id']])
 					{
 						$result[$log_id] = array(
@@ -186,6 +198,10 @@ class integral_class extends AWS_MODEL
 				break;
 
 				case 'NEW_ARTICLE':
+				case 'MOVE_UP_ARTICLE':
+				case 'ARTICLE_MOVED_UP':
+				case 'MOVE_DOWN_ARTICLE':
+				case 'ARTICLE_MOVED_DOWN':
 					if ($articles_info[$item['item_id']])
 					{
 						$result[$log_id] = array(

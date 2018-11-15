@@ -477,4 +477,103 @@ class posts_class extends AWS_MODEL
 
 		return $recommend_posts;
 	}
+
+    public function bump_post($uid, $post_id, $post_type)
+    {
+        $post_id = intval($post_id);
+        $result = $this->fetch_row('posts_index', "post_id = " . $post_id . " AND post_type = '" . $this->quote($post_type) . "'");
+        if (!$result)
+        {
+            return false;
+        }
+
+        $now = real_time();
+        $update_time = intval($result['update_time']);
+        if (!$update_time)
+        {
+            $update_time = $now;
+        }
+        $update_time += 24 * 3600;
+        if ($update_time > $now)
+        {
+            $update_time = $now;
+        }
+
+        $data = array(
+            'update_time' => $update_time,
+        );
+
+        $this->update('posts_index', $data, 'id = ' . $result['id']);
+
+        switch ($post_type)
+        {
+            case 'question':
+                $this->model('integral')->process($uid, 'MOVE_UP_QUESTION', get_setting('integral_system_config_move_up_question'), '提升问题 #' . $post_id, $post_id);
+                if ($result['uid'] != $uid)
+                {
+                    $this->model('integral')->process($result['uid'], 'QUESTION_MOVED_UP', get_setting('integral_system_config_question_moved_up'), '问题被提升 #' . $post_id, $post_id);
+                }
+                break;
+
+            case 'article':
+                $this->model('integral')->process($uid, 'MOVE_UP_ARTICLE', get_setting('integral_system_config_move_up_question'), '提升文章 #' . $post_id, $post_id);
+                if ($result['uid'] != $uid)
+                {
+                    $this->model('integral')->process($result['uid'], 'ARTICLE_MOVED_UP', get_setting('integral_system_config_question_moved_up'), '文章被提升 #' . $post_id, $post_id);
+                }
+                break;
+        }
+
+        return true;
+    }
+
+    public function sink_post($uid, $post_id, $post_type)
+    {
+        $post_id = intval($post_id);
+        $result = $this->fetch_row('posts_index', "post_id = " . $post_id . " AND post_type = '" . $this->quote($post_type) . "'");
+        if (!$result)
+        {
+            return false;
+        }
+
+        $now = real_time();
+        $update_time = intval($result['update_time']);
+        if (!$update_time)
+        {
+            $update_time = $now;
+        }
+        $update_time -= 24 * 3600;
+        if ($update_time <= 0)
+        {
+            $update_time = $now;
+        }
+
+        $data = array(
+            'update_time' => $update_time,
+        );
+
+        $this->update('posts_index', $data, 'id = ' . $result['id']);
+
+        switch ($post_type)
+        {
+            case 'question':
+                $this->model('integral')->process($uid, 'MOVE_DOWN_QUESTION', get_setting('integral_system_config_move_down_question'), '下沉问题 #' . $post_id, $post_id);
+                if ($result['uid'] != $uid)
+                {
+                    $this->model('integral')->process($result['uid'], 'QUESTION_MOVED_DOWN', get_setting('integral_system_config_question_moved_down'), '问题被下沉 #' . $post_id, $post_id);
+                }
+                break;
+
+            case 'article':
+                $this->model('integral')->process($uid, 'MOVE_DOWN_ARTICLE', get_setting('integral_system_config_move_down_question'), '下沉文章 #' . $post_id, $post_id);
+                if ($result['uid'] != $uid)
+                {
+                    $this->model('integral')->process($result['uid'], 'ARTICLE_MOVED_DOWN', get_setting('integral_system_config_question_moved_down'), '文章被下沉 #' . $post_id, $post_id);
+                }
+                break;
+        }
+
+        return true;
+    }
+
 }
