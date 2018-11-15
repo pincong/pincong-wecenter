@@ -1034,7 +1034,7 @@ blockquote {margin: 0 40px;padding: 0 15px;font-size: 14px;color: #777;border-le
 	.category dl dd {width: 115px;}
 	.category dl dt, .category dl dt img {width: 32px;height: 32px;}
 	/*话题详情页*/
-	.aw-topic-list-mod .aw-item {padding-left: 0;}
+	/*.aw-topic-list-mod .aw-item {padding-left: 0;}*/
 	/*文章广场*/
 	/*.aw-article-list .aw-item {padding: 10px 15px;}*/
 	/*弹窗*/
