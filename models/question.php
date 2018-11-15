@@ -1054,9 +1054,9 @@ class question_class extends AWS_MODEL
 						$title_list .= '[' . $log['addon_data']['modify_reason'] . ']';
 					}
 
-					$Services_Diff = new Services_Diff($log['associate_attached'], $log['associate_content']);
+					//$Services_Diff = new Services_Diff($log['associate_attached'], $log['associate_content']);
 
-					$title_list .= '<p>' . $Services_Diff->get_Text_Diff_Renderer_inline() . '</p>';
+					//$title_list .= '<p>' . $Services_Diff->get_Text_Diff_Renderer_inline() . '</p>';
 
 					break;
 
@@ -1069,9 +1069,9 @@ class question_class extends AWS_MODEL
 						$title_list .= '[' . $log['addon_data']['modify_reason'] . ']';
 					}
 
-					$Services_Diff = new Services_Diff($log['associate_attached'], $log['associate_content']);
+					//$Services_Diff = new Services_Diff($log['associate_attached'], $log['associate_content']);
 
-					$title_list .= '<p>' .$Services_Diff->get_Text_Diff_Renderer_inline() . '</p>';
+					//$title_list .= '<p>' .$Services_Diff->get_Text_Diff_Renderer_inline() . '</p>';
 
 					break;
 

@@ -904,17 +904,17 @@ class topic_class extends AWS_MODEL
 					break;
 
 				case ACTION_LOG::MOD_TOPIC : //修改话题标题
-					$Services_Diff = new Services_Diff($log['associate_attached'], $log['associate_content']);
+					//$Services_Diff = new Services_Diff($log['associate_attached'], $log['associate_content']);
 
-					$title_list = '<a href="' . $user_url . '">' . $user_name . '</a> ' . AWS_APP::lang()->_t('修改了话题标题') . ' <p>' . $Services_Diff->get_Text_Diff_Renderer_inline() . "</p>";
+					$title_list = '<a href="' . $user_url . '">' . $user_name . '</a> ' . AWS_APP::lang()->_t('修改了话题标题'); // . ' <p>' . $Services_Diff->get_Text_Diff_Renderer_inline() . "</p>";
 					break;
 
 				case ACTION_LOG::MOD_TOPIC_DESCRI : //修改话题描述
 					$log['associate_attached'] = trim($log['associate_attached']);
 					$log['associate_content'] = trim($log['associate_content']);
 
-					$Services_Diff = new Services_Diff($log['associate_attached'], $log['associate_content']);
-					$title_list = '<a href="' . $user_url . '">' . $user_name . '</a> ' . AWS_APP::lang()->_t('修改了话题描述') . ' <p>' . $Services_Diff->get_Text_Diff_Renderer_inline() . '</p>';
+					//$Services_Diff = new Services_Diff($log['associate_attached'], $log['associate_content']);
+					$title_list = '<a href="' . $user_url . '">' . $user_name . '</a> ' . AWS_APP::lang()->_t('修改了话题描述'); // . ' <p>' . $Services_Diff->get_Text_Diff_Renderer_inline() . '</p>';
 
 					break;
 
