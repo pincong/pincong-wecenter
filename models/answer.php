@@ -833,13 +833,13 @@ class answer_class extends AWS_MODEL
 			{
 				ACTION_LOG::set_fold_action_history($answer_info['answer_id'], 1);
 
-				$this->model('integral')->process($answer_info['uid'], 'ANSWER_FOLD', get_setting('integral_system_config_answer_fold'), '回复折叠 #' . $answer_info['answer_id'], $answer_info['answer_id']);
+				$this->model('integral')->process($answer_info['uid'], 'ANSWER_FOLD', get_setting('integral_system_config_answer_fold'), '回复被折叠 #' . $answer_info['answer_id'], $answer_info['answer_id']);
 			}
 		}
 
 		if ($type == 'uninterested')
 		{
-			$this->model('integral')->process($uid, 'ANSWER_UNINTERESTED', get_setting('integral_system_config_uninterested'), '发起制裁 #' . $answer_info['answer_id'], $answer_info['answer_id']);
+			$this->model('integral')->process($uid, 'ANSWER_UNINTERESTED', get_setting('integral_system_config_uninterested'), '折叠回复 #' . $answer_info['answer_id'], $answer_info['answer_id']);
 		}
 
 		$this->model('account')->update_thanks_count($answer_info['uid']);

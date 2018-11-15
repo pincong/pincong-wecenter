@@ -1576,11 +1576,11 @@ AWS.User =
 			{
 				if (result.rsm.action == 'fold')
 				{
-					selector.html(selector.html().replace(_t('折叠'), _t('撤消折叠')));
+					selector.html(selector.html().replace(_t('强制折叠'), _t('撤消强制折叠')));
 				}
 				else
 				{
-					selector.html(selector.html().replace(_t('撤消折叠'), _t('折叠')));
+					selector.html(selector.html().replace(_t('撤消强制折叠'), _t('强制折叠')));
 				}
 			}
 		}, 'json');
@@ -1701,11 +1701,11 @@ AWS.User =
 				case 'uninterested':
 					if (result.rsm.action == 'add')
 					{
-						selector.html(selector.html().replace(_t('制裁'), _t('撤消制裁')));
+						selector.html(selector.html().replace(_t('折叠'), _t('撤消折叠')));
 					}
 					else
 					{
-						selector.html(selector.html().replace(_t('撤消制裁'), _t('制裁')));
+						selector.html(selector.html().replace(_t('撤消折叠'), _t('折叠')));
 					}
 					break;
 				}

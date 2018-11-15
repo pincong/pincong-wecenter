@@ -889,7 +889,7 @@ class ajax extends AWS_CONTROLLER
 
 			H::ajax_json_output(AWS_APP::RSM(array(
 				'action' => 'unfold'
-			), 1, AWS_APP::lang()->_t('撤销折叠回复')));
+			), 1, AWS_APP::lang()->_t('撤消强制折叠回复')));
 		}
 	}
 
