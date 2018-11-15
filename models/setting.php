@@ -47,9 +47,27 @@ class setting_class extends AWS_MODEL
 
 		foreach ($vars as $key => $val)
 		{
-			$this->update('system_setting', array(
-				'value' => serialize($val)
-			), "`varname` = '" . $this->quote($key) . "'");
+            $key = trim($key);
+            // 过滤掉不需要的 $key 如 '_post_type'
+            if (substr($key, 0, 1) == "_")
+            {
+                continue;
+            }
+
+            $where = "varname = '" . $this->quote($key) . "'";
+            if (!$this->count('system_setting', $where))
+            {
+                $this->insert('system_setting', array(
+                    'value' => serialize($val),
+                    'varname' => $key
+                ));
+            }
+            else
+            {
+                $this->update('system_setting', array(
+                    'value' => serialize($val)
+                ), $where);
+            }
 		}
 
 		return true;
