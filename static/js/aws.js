@@ -1701,11 +1701,11 @@ AWS.User =
 				case 'uninterested':
 					if (result.rsm.action == 'add')
 					{
-						selector.html(selector.html().replace(_t('没有帮助'), _t('撤消没有帮助')));
+						selector.html(selector.html().replace(_t('制裁'), _t('撤消制裁')));
 					}
 					else
 					{
-						selector.html(selector.html().replace(_t('撤消没有帮助'), _t('没有帮助')));
+						selector.html(selector.html().replace(_t('撤消制裁'), _t('制裁')));
 					}
 					break;
 				}
