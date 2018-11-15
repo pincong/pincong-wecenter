@@ -291,12 +291,14 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请选择分类')));
         }
 
-        if (cjk_strlen($_POST['question_content']) < 5)
+        $question_content = trim($_POST['question_content']);
+
+        if (cjk_strlen($question_content) < 5)
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题标题字数不得少于 5 个字')));
         }
 
-        if (get_setting('question_title_limit') > 0 AND cjk_strlen($_POST['question_content']) > get_setting('question_title_limit'))
+        if (get_setting('question_title_limit') > 0 AND cjk_strlen($question_content) > get_setting('question_title_limit'))
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题标题字数不得大于') . ' ' . get_setting('question_title_limit') . ' ' . AWS_APP::lang()->_t('字节')));
         }
@@ -348,7 +350,7 @@ class ajax extends AWS_CONTROLLER
             $IS_MODIFY_VERIFIED = FALSE;
         }
 
-        $this->model('question')->update_question($question_info['question_id'], $_POST['question_content'], $_POST['question_detail'], $this->user_id, $IS_MODIFY_VERIFIED, $_POST['modify_reason'], $question_info['anonymous'], $_POST['category_id']);
+        $this->model('question')->update_question($question_info['question_id'], $question_content, $_POST['question_detail'], $this->user_id, $IS_MODIFY_VERIFIED, $_POST['modify_reason'], $question_info['anonymous'], $_POST['category_id']);
 
         if ($this->user_id != $question_info['published_uid'])
         {
@@ -383,12 +385,13 @@ class ajax extends AWS_CONTROLLER
 
     public function publish_question_action()
     {
-        if (!$_POST['question_content'])
+        $question_content = trim($_POST['question_content']);
+        if (!$question_content)
         {
             H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请输入问题标题')));
         }
 
-        if (!check_repeat_submission($_POST['question_content']))
+        if (!check_repeat_submission($question_content))
         {
             H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请不要重复提交')));
         }
@@ -413,12 +416,12 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择问题分类')));
         }
 
-        if (cjk_strlen($_POST['question_content']) < 5)
+        if (cjk_strlen($question_content) < 5)
         {
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('问题标题字数不得少于 5 个字')));
         }
 
-        if (get_setting('question_title_limit') > 0 AND cjk_strlen($_POST['question_content']) > get_setting('question_title_limit'))
+        if (get_setting('question_title_limit') > 0 AND cjk_strlen($question_content) > get_setting('question_title_limit'))
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题标题字数不得大于 %s 字节', get_setting('question_title_limit'))));
         }
@@ -473,12 +476,12 @@ class ajax extends AWS_CONTROLLER
         }
 
         if ($this->publish_approval_valid(array(
-                $_POST['question_content'],
+                $question_content,
                 $_POST['question_detail']
             )))
         {
             $this->model('publish')->publish_approval('question', array(
-                'question_content' => $_POST['question_content'],
+                'question_content' => $question_content,
                 'question_detail' => $_POST['question_detail'],
                 'category_id' => $_POST['category_id'],
                 'topics' => $_POST['topics'],
@@ -496,7 +499,7 @@ class ajax extends AWS_CONTROLLER
         else
         {
             $question_id = $this->model('publish')->publish_question(
-                $_POST['question_content'],
+                $question_content,
                 $_POST['question_detail'],
                 $_POST['category_id'],
                 $this->user_id,
