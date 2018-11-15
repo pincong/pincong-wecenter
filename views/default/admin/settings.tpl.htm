@@ -513,6 +513,24 @@
                 <tr>
                     <td>
                         <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('关闭举报功能'); ?>:</span>
+                            <div class="col-sm-6 col-xs-8">
+                                <div class="btn-group mod-btn">
+                                    <label type="button" class="btn mod-btn-color">
+                                        <input type="radio" name="reporting_disabled" value="Y"<?php if ($this->setting['reporting_disabled'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+                                    </label>
+
+                                    <label type="button" class="btn mod-btn-color">
+                                        <input type="radio" name="reporting_disabled" value="N"<?php if ($this->setting['reporting_disabled'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('系统时间显示格式'); ?>:</span>
                             <div class="col-sm-6 col-xs-8">
                                 <label><input type="radio" name="time_style" value="Y"<?php if ($this->setting['time_style'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('xx 分钟前形式'); ?></label>
