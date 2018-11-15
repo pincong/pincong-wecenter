@@ -331,7 +331,7 @@ function jsonp_encode($json = array(), $callback = 'jsoncallback')
  * @param  int
  * @return string
  */
-function date_friendly($timestamp, $time_limit = 604800, $out_format = 'Y-m-d H:i', $formats = null, $time_now = null)
+function date_friendly($timestamp, $time_limit = 604800, $out_format = 'Y-m-d', $formats = null, $time_now = null)
 {
 	if (get_setting('time_style') == 'N')
 	{
