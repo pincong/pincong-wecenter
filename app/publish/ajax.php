@@ -398,7 +398,7 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限发布问题')));
         }
 
-        if ($this->user_info['integral'] < 0 AND get_setting('integral_system_enabled') == 'Y')
+        if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_new_question'))
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
         }
@@ -541,7 +541,7 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限发布文章')));
         }
 
-        if ($this->user_info['integral'] < 0 AND get_setting('integral_system_enabled') == 'Y')
+        if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_new_question'))
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
         }

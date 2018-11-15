@@ -230,7 +230,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function bump_action()
 	{
-		if ($this->user_info['integral'] < 0 and get_setting('integral_system_enabled') == 'Y')
+		if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_move_up_question'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
 		}
@@ -245,7 +245,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function sink_action()
 	{
-		if ($this->user_info['integral'] < 0 and get_setting('integral_system_enabled') == 'Y')
+		if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_move_down_question'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
 		}

@@ -218,4 +218,27 @@ class integral_class extends AWS_MODEL
 
 		return $result;
 	}
+
+    public function check_balance_for_operation($integral, $key)
+    {
+        if (get_setting('integral_system_enabled') == 'N')
+        {
+            return true;
+        }
+
+        $reward = intval(get_setting($key));
+        if ($reward >= 0)
+        {
+            return true;
+        }
+
+        $integral += $reward;
+        if ($integral < 0)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
 }

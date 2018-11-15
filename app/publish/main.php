@@ -66,7 +66,7 @@ class main extends AWS_CONTROLLER
 			);
 		}
 
-		if ($this->user_info['integral'] < 0 AND get_setting('integral_system_enabled') == 'Y' AND !$_GET['id'])
+		if (!$_GET['id'] AND !$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_new_question'))
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit')));
 		}
@@ -147,6 +147,11 @@ class main extends AWS_CONTROLLER
 				'title' => htmlspecialchars($_POST['title']),
 				'message' => ''
 			);
+		}
+
+		if (!$_GET['id'] AND !$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_new_question'))
+		{
+			H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit')));
 		}
 
 		if (($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'] OR $article_info['uid'] == $this->user_id AND $_GET['id']) OR !$_GET['id'])

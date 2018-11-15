@@ -112,7 +112,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能邀请自己回复问题')));
 		}
 
-		if ($this->user_info['integral'] < 0 and get_setting('integral_system_enabled') == 'Y')
+		if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_invite_answer'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
 		}
@@ -413,7 +413,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function question_thanks_action()
 	{
-		if ($this->user_info['integral'] < 0 AND get_setting('integral_system_enabled') == 'Y')
+		if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_thanks'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
 		}
@@ -461,12 +461,12 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('已感谢过该回复, 请不要重复感谢')));
 		}
 
-		if ($this->user_info['integral'] < 0 and get_setting('integral_system_enabled') == 'Y' and $_POST['type'] == 'thanks')
+		if ($_POST['type'] == 'thanks' AND !$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_thanks'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
 		}
 
-		if ($this->user_info['integral'] < 0 and get_setting('integral_system_enabled') == 'Y' and $_POST['type'] == 'uninterested')
+		if ($_POST['type'] == 'uninterested' AND !$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_uninterested'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
 		}
@@ -525,7 +525,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请不要重复提交')));
 		}
 
-		if ($this->user_info['integral'] < 0 and get_setting('integral_system_enabled') == 'Y')
+		if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_answer_question'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
 		}
@@ -975,7 +975,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function bump_action()
 	{
-		if ($this->user_info['integral'] < 0 and get_setting('integral_system_enabled') == 'Y')
+		if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_move_up_question'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
 		}
@@ -990,7 +990,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function sink_action()
 	{
-		if ($this->user_info['integral'] < 0 and get_setting('integral_system_enabled') == 'Y')
+		if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_move_down_question'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
 		}
