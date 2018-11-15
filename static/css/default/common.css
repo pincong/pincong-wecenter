@@ -989,19 +989,11 @@ blockquote {margin: 0 40px;padding: 0 15px;font-size: 14px;color: #777;border-le
 /* noscript 提示 */
 .aw-noscript{position: absolute;z-index: 100;width: 100%;height: 100%;background-color: #f5f5f5;overflow: hidden;}
 
-@media not all, (min-resolution: 192dpi) {
-	.aw-logo a {
-	    background-image: url("img/logo@2x.png");
-	    background-size: 60px auto;
-	}
-}
-
 @media (max-width: 992px){
 	.container {width: 100% !important;}
 }
 /* ipad竖屏 */
 @media (max-width: 769px) {
-	/*.aw-feed-list .aw-item .more-operate{display:inline-block;}*/
 	.aw-main-content {border:none;}
 	/*导航条*/
 	.navbar-collapse.active{display: block;}
@@ -1026,17 +1018,12 @@ blockquote {margin: 0 40px;padding: 0 15px;font-size: 14px;color: #777;border-le
 	.markitup-box img {width: 100% !important;}
 	.aw-nav-tabs {padding:30px 10px 0;}
 	.aw-nav-tabs > li {margin:0;}
-	/*.aw-common-list .aw-item {padding:14px;}*/
 	/*分类*/
 	.category .col-sm-12 > ul > li {margin:2px 3px;padding:0 4px;}
 	.category dl:hover .aw-dropdown, .category ul li:hover .aw-dropdown, .category dl .aw-dropdown ul li a {display:none;}
 	.category dl {margin:10px 10px 10px 0;}
 	.category dl dd {width: 115px;}
 	.category dl dt, .category dl dt img {width: 32px;height: 32px;}
-	/*话题详情页*/
-	/*.aw-topic-list-mod .aw-item {padding-left: 0;}*/
-	/*文章广场*/
-	/*.aw-article-list .aw-item {padding: 10px 15px;}*/
 	/*弹窗*/
 	.aw-publish-box .modal-dialog, .aw-question-redirect-box .modal-dialog, .aw-inbox .modal-dialog, .aw-topic-edit-note-box .modal-dialog, .aw-tips-box .modal-dialog, .aw-image-box .modal-dialog, .aw-link-box .modal-dialog, .aw-edit-comment-box .modal-dialog, .aw-publish-box .modal-content {width: auto;}
 	/*发起问题页面*/
@@ -1066,10 +1053,8 @@ blockquote {margin: 0 40px;padding: 0 15px;font-size: 14px;color: #777;border-le
 	.aw-user-nav {margin-right: 10px;}
 	.aw-question-comment-box .aw-feed-list .aw-item .aw-user-img {display: none;}
 	.aw-feed-list .operate + .operate {margin-left: 1px;}
-	/*.aw-feed-list .aw-item .more-operate, .aw-feed-list .aw-item:hover .more-operate, .aw-feed-list .aw-item:hover .close {display: inline;}*/
 	.aw-question-detail-txt iframe {max-width: 100%;}
 	.aw-top-nav .navbar-collapse.active {left: 0;}
-	/*.aw-common-list .aw-item {padding:14px 0;}*/
 	.aw-global-tips {margin:0 0 15px;padding:0;}
 	/* 分类导航 */
 	.category dl {padding:0;}
