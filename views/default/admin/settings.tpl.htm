@@ -410,48 +410,7 @@
                         </div>
                     </td>
                 </tr>
-                <?php if (is_dir(ROOT_PATH . 'uc_client/')) { ?>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('UCenter 系统字符编码'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
-                                <input name="ucenter_charset" class="form-control" type="text" value="<?php echo $this->setting['ucenter_charset']; ?>" />
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('开启 Ucenter 用户对接'); ?>:</span>
-                            <div class="col-sm-6 col-xs-8">
-                                <div class="btn-group mod-btn">
-                                    <label type="button" class="btn mod-btn-color">
-                                        <input type="radio" name="ucenter_enabled" value="Y"<?php if ($this->setting['ucenter_enabled'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
-                                    </label>
 
-                                    <label type="button" class="btn mod-btn-color">
-                                        <input type="radio" name="ucenter_enabled" value="N"<?php if ($this->setting['ucenter_enabled'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('Ucenter 绝对路径'); ?></span>
-                            <div class="col-sm-5 col-xs-8">
-                                <input name="ucenter_path" class="form-control" type="text" value="<?php echo $this->setting['ucenter_path']; ?>"/>
-
-                                <span class="help-block"><?php _e('末尾不带 / 或 \\，留空无法同步头像'); ?></span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <?php } ?>
                 <tr>
                     <td>
                         <div class="form-group">
