@@ -987,7 +987,7 @@ class question_class extends AWS_MODEL
 
 	public function get_question_comments($question_id)
 	{
-		return $this->fetch_all('question_comments', 'question_id = ' . intval($question_id), "time ASC");
+		return $this->fetch_all('question_comments', 'question_id = ' . intval($question_id), "id ASC");
 	}
 
 	public function get_comment_by_id($comment_id)
