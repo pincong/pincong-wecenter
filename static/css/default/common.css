@@ -334,7 +334,7 @@ a.aw-load-more-content{display: block;}
 .aw-side-bar .aw-mod dl{height:auto;overflow:hidden;margin:10px 0;}
 .aw-side-bar .aw-mod h3{margin-bottom:0;}
 .aw-side-bar .aw-mod dt, .aw-side-bar .aw-mod dt img{width:32px;height:32px;}
-.aw-side-bar .aw-mod dd{width:160px;font-size:12px;}
+.aw-side-bar .aw-mod dd{font-size:12px;}
 .aw-side-bar .aw-mod p{margin-bottom:0;}
 .aw-side-bar .aw-mod p.signature{max-height: 34px;overflow: hidden;color: #666;}
 .aw-side-bar .aw-mod ul li{padding:3px 0;}
