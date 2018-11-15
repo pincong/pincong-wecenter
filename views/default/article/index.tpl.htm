@@ -15,7 +15,7 @@
                             <?php } ?>
                             <?php } ?>
 
-                            <?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?><span class="icon-inverse aw-edit-topic"><i class="icon icon-edit"></i> <?php if (sizeof($this->article_topics) == 0) { ?><?php _e('添加话题')?><?php } ?></span><?php } ?>
+                            <?php if ($this->user_id AND ($this->user_info['permission']['edit_topic'] OR $this->user_id == $this->article_info['uid'])) { ?><span class="icon-inverse aw-edit-topic"><i class="icon icon-edit"></i> <?php if (sizeof($this->article_topics) == 0) { ?><?php _e('添加话题')?><?php } ?></span><?php } ?>
                         </div>
                     </div>
                     <div class="aw-mod aw-question-detail">
