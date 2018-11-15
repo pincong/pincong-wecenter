@@ -24,9 +24,6 @@ define('G_COOKIE_HASH_KEY', '请修改此处');
 
 define('G_INDEX_SCRIPT', '?/');
 
-define('G_X_UA_COMPATIBLE', 'IE=edge,Chrome=1');
-define('G_CONTENT_SECURITY_POLICY', 'default-src https:');
-
 // GZIP 压缩输出页面
 define('G_GZIP_COMPRESS', FALSE);
 
