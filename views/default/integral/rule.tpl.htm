@@ -71,6 +71,10 @@
                         <dt><?php _e('问题或文章被下沉'); ?></dt>
                         <dd><span class="<?php if (get_setting('integral_system_config_question_moved_down') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('integral_system_config_question_moved_down'), get_setting('integral_unit'))); ?></span></dd>
                     </dl>
+                    <dl>
+                        <dt><?php _e('发起没有帮助'); ?></dt>
+                        <dd><span class="<?php if (get_setting('integral_system_config_uninterested') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('integral_system_config_uninterested'), get_setting('integral_unit'))); ?></span></dd>
+                    </dl>
                 </div>
             </div>
         </div>

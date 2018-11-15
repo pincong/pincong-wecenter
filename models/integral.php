@@ -102,6 +102,7 @@ class integral_class extends AWS_MODEL
 				case 'THANKS_ANSWER':
 				case 'ANSWER_FOLD':
 				case 'BEST_ANSWER':
+				case 'ANSWER_UNINTERESTED':
 					$answer_ids[] = $item['item_id'];
 				break;
 
@@ -178,6 +179,7 @@ class integral_class extends AWS_MODEL
 				case 'THANKS_ANSWER':
 				case 'ANSWER_FOLD':
 				case 'BEST_ANSWER':
+				case 'ANSWER_UNINTERESTED':
 					if ($answers_info[$item['item_id']])
 					{
 						$result[$log_id] = array(

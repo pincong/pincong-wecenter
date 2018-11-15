@@ -837,6 +837,11 @@ class answer_class extends AWS_MODEL
 			}
 		}
 
+		if ($type == 'uninterested')
+		{
+			$this->model('integral')->process($uid, 'ANSWER_UNINTERESTED', get_setting('integral_system_config_uninterested'), '发起没有帮助 #' . $answer_info['answer_id'], $answer_info['answer_id']);
+		}
+
 		$this->model('account')->update_thanks_count($answer_info['uid']);
 
 		return !$user_rated;
