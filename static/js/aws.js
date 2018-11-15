@@ -188,7 +188,7 @@ var AWS =
 				{
 					AWS.loading('hide');
 
-					alert(_t('网络链接异常'));
+					alert(_t('网络连接异常'));
 				}
 				else if (error.status == 500)
 				{

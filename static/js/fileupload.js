@@ -287,7 +287,7 @@ FileUpload.prototype =
 			}
 			else if (xhr.status == 0)
 			{
-				this.render(li, {'error':_t('网络链接异常')}, filesize);
+				this.render(li, {'error':_t('网络连接异常')}, filesize);
 			}
 		}
 	},
