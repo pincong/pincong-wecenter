@@ -39,9 +39,14 @@ class integral_class extends AWS_MODEL
 		return $log_id;
 	}
 
-	public function fetch_log($uid, $action)
+	public function fetch_log($uid, $action, $item_id = null)
 	{
-		return $this->fetch_row('integral_log', 'uid = ' . intval($uid) . ' AND action = \'' . $this->quote($action) . '\'');
+        $where = 'uid = ' . intval($uid) . ' AND action = \'' . $this->quote($action) . '\'';
+        if ($item_id !== null)
+        {
+            $where .= ' AND item_id = ' . intval($item_id);
+        }
+		return $this->fetch_row('integral_log', $where);
 	}
 
 	public function log($uid, $action, $integral, $note = '', $item_id = null)
@@ -77,11 +82,6 @@ class integral_class extends AWS_MODEL
 
 		foreach ($parse_items AS $log_id => $item)
 		{
-			if (strstr($item['action'], 'ANSWER_FOLD_'))
-			{
-				$item['action'] = 'ANSWER_FOLD';
-			}
-
 			switch ($item['action'])
 			{
 				case 'NEW_QUESTION':
@@ -145,11 +145,6 @@ class integral_class extends AWS_MODEL
 			if (!$item['item_id'])
 			{
 				continue;
-			}
-
-			if (strstr($item['action'], 'ANSWER_FOLD_'))
-			{
-				$item['action'] = 'ANSWER_FOLD';
 			}
 
 			switch ($item['action'])
