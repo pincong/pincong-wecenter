@@ -1171,7 +1171,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
                 H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名已经存在')));
             }
 
-            if (strlen($_POST['password']) < 6 or strlen($_POST['password']) > 16)
+            if (strlen($_POST['password']) < 6)
             {
                 H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('密码长度不符合规则')));
             }

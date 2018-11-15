@@ -79,7 +79,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入用户名')));
 		}
 
-		if (strlen($_POST['password']) < 6 OR strlen($_POST['password']) > 16)
+		if (strlen($_POST['password']) < 6)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('密码长度不符合规则')));
 		}
@@ -498,7 +498,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入相同的确认密码')));
 		}
 
-		if (strlen($_POST['password']) < 6 OR strlen($_POST['password']) > 16)
+		if (strlen($_POST['password']) < 6)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('密码长度不符合规则')));
 		}
