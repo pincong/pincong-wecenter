@@ -968,20 +968,6 @@ function fetch_file_lists($dir, $file_type = null)
 
 
 /**
- * CURL 获取文件内容
- *
- * 用法同 file_get_contents
- *
- * @param string
- * @param integerr
- * @return string
- */
-function curl_get_contents($url, $timeout = 30)
-{
-	return HTTP::request($url, 'GET', null, $timeout);
-}
-
-/**
  * 删除网页上看不见的隐藏字符串, 如 Java\0script
  *
  * @param	string
