@@ -538,14 +538,10 @@ class posts_class extends AWS_MODEL
 
         $now = real_time();
         $update_time = intval($result['update_time']);
-        if (!$update_time)
-        {
-            $update_time = $now;
-        }
         $update_time -= 24 * 3600;
         if ($update_time <= 0)
         {
-            $update_time = $now;
+            $update_time = 0;
         }
 
         $data = array(
