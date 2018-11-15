@@ -706,7 +706,7 @@ class answer_class extends AWS_MODEL
 
 	public function get_answer_comments($answer_id)
 	{
-		return $this->fetch_all('answer_comments', "answer_id = " . intval($answer_id), "time ASC");
+		return $this->fetch_all('answer_comments', "answer_id = " . intval($answer_id), "id ASC");
 	}
 
 	public function get_comment_by_id($comment_id)
