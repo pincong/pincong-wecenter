@@ -46,7 +46,7 @@ class Services_BBCode
 			return $match[1];
 		}
 
-		return "<a href=\"$match[1]\" rel=\"nofollow\" target=\"_blank\">$match[1]</a>";
+		return "<a href=\"$match[1]\" rel=\"nofollow noreferrer noopener\" target=\"_blank\">$match[1]</a>";
 	}
 
 	private function _link_callback($match)
@@ -56,7 +56,7 @@ class Services_BBCode
 			return $match[2];
 		}
 
-		return "<a href=\"$match[1]\" rel=\"nofollow\" target=\"_blank\">$match[2]</a>";
+		return "<a href=\"$match[1]\" rel=\"nofollow noreferrer noopener\" target=\"_blank\">$match[2]</a>";
 	}
 
 	private function _img_callback($match)

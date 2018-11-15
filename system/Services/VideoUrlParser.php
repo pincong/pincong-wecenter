@@ -9,7 +9,7 @@ class Services_VideoUrlParser
         {
             return $url;
         }
-        return "<a href=\"$url\" rel=\"nofollow\" target=\"_blank\">$url</a>";
+        return "<a href=\"$url\" rel=\"nofollow noreferrer noopener\" target=\"_blank\">$url</a>";
     }
 
 }
