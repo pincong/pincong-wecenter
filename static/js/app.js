@@ -236,7 +236,7 @@ $(document).ready(function ()
         }, 1000);
     }
 
-    if ($('.aw-back-top').length)
+    /*if ($('.aw-back-top').length)
     {
         $(window).scroll(function ()
         {
@@ -249,7 +249,7 @@ $(document).ready(function ()
                 $('.aw-back-top').fadeOut();
             }
         });
-    }
+    }*/
 });
 
 $(window).on('hashchange', function() {
