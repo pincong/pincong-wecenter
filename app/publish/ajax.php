@@ -529,12 +529,13 @@ class ajax extends AWS_CONTROLLER
 
     public function publish_article_action()
     {
-        if (!$_POST['title'])
+        $article_title = trim($_POST['title']);
+        if (!$article_title)
         {
             H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请输入文章标题')));
         }
 
-        if (!check_repeat_submission($_POST['title']))
+        if (!check_repeat_submission($article_title))
         {
             H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请不要重复提交')));
         }
@@ -559,7 +560,7 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择文章分类')));
         }
 
-        if (get_setting('question_title_limit') > 0 AND cjk_strlen($_POST['title']) > get_setting('question_title_limit'))
+        if (get_setting('question_title_limit') > 0 AND cjk_strlen($article_title) > get_setting('question_title_limit'))
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文章标题字数不得大于 %s 字节', get_setting('question_title_limit'))));
         }
@@ -612,12 +613,12 @@ class ajax extends AWS_CONTROLLER
         }
 
         if ($this->publish_approval_valid(array(
-                $_POST['title'],
+                $article_title,
                 $_POST['message']
             )))
         {
             $this->model('publish')->publish_approval('article', array(
-                'title' => $_POST['title'],
+                'title' => $article_title,
                 'message' => $_POST['message'],
                 'category_id' => $_POST['category_id'],
                 'topics' => $_POST['topics'],
@@ -634,7 +635,7 @@ class ajax extends AWS_CONTROLLER
         else
         {
             $article_id = $this->model('publish')->publish_article(
-                $_POST['title'],
+                $article_title,
                 $_POST['message'],
                 $this->user_id,
                 $_POST['topics'],
@@ -680,7 +681,9 @@ class ajax extends AWS_CONTROLLER
             }
         }
 
-        if (!$_POST['title'])
+        $article_title = trim($_POST['title']);
+
+        if (!$article_title)
         {
             H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请输入文章标题')));
         }
@@ -695,7 +698,7 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择文章分类')));
         }
 
-        if (get_setting('question_title_limit') > 0 AND cjk_strlen($_POST['title']) > get_setting('question_title_limit'))
+        if (get_setting('question_title_limit') > 0 AND cjk_strlen($article_title) > get_setting('question_title_limit'))
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文章标题字数不得大于') . ' ' . get_setting('question_title_limit') . ' ' . AWS_APP::lang()->_t('字节')));
         }
@@ -740,7 +743,7 @@ class ajax extends AWS_CONTROLLER
             ), 1, null));
         }
 
-        $this->model('article')->update_article($article_info['id'], $this->user_id, $_POST['title'], $_POST['message'], $_POST['topics'], $_POST['category_id'], $this->user_info['permission']['create_topic']);
+        $this->model('article')->update_article($article_info['id'], $this->user_id, $article_title, $_POST['message'], $_POST['topics'], $_POST['category_id'], $this->user_info['permission']['create_topic']);
 
         if ($_POST['attach_access_key'])
         {
