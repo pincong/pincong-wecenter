@@ -1051,6 +1051,17 @@ blockquote {margin: 0 40px;padding: 0 15px;font-size: 14px;color: #777;border-le
 }
 /* iphone竖屏幕 */
 @media (max-width:414px) {
+	/* 隐藏头像 */
+	.aw-common-list .aw-item {padding-left: 0;}
+	.aw-common-list .aw-item .aw-user-name img {display: none;}
+	.aw-common-list .aw-item .aw-user-name i {display: none;}
+	.aw-article-list .aw-item {padding: 0 10px;}
+	.aw-article-list .aw-item .aw-user-name img {display: none;}
+	.aw-topic-list-mod .aw-item {padding-left: 0;}
+	.aw-feed-list .aw-item .mod-head, .aw-feed-list .aw-item .mod-body, .aw-feed-list .aw-item .mod-footer {padding-left: 0;}
+	.aw-feed-list .aw-item .mod-head .aw-user-img {display: none;}
+	.aw-feed-list .aw-item .mod-head .title p i {display: none;}
+	/* end 隐藏头像 */
 	.aw-top-menu-wrap .container {padding: 0;}
 	.aw-user-nav {margin-right: 10px;}
 	.aw-question-comment-box .aw-feed-list .aw-item .aw-user-img {display: none;}
