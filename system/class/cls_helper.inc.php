@@ -124,7 +124,7 @@ class H
 			}
 			else
 			{
-				$content = str_replace($word, $sensitive_words_replacement, $content);
+				$content = str_ireplace($word, $sensitive_words_replacement, $content);
 			}
 		}
 
@@ -173,7 +173,7 @@ class H
 			}
 			else
 			{
-				if (strstr($content, $word))
+				if (stripos($content, $word) !== false)
 				{
 					return true;
 				}
