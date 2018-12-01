@@ -286,13 +286,11 @@ a.aw-load-more-content{display: block;}
 .aw-feed-list .aw-item .aw-user-img{position:absolute;left:0;top:3px;width: 40px;height: 40px;}
 .aw-feed-list .aw-item .aw-user-img img{width: 40px;height: 40px;}
 .aw-feed-list .aw-item .close{display: none;}
-/*.aw-feed-list .aw-item:hover .more-operate, .aw-feed-list .aw-item:hover .mod-head span.pull-right{display:block;}*/
 .aw-feed-list .aw-item h4, .aw-feed-list .aw-item p{margin:0;}
 .aw-feed-list .aw-item .aw-best-answer{position: absolute;right: 0;top: -14px;font-size: 12px;text-align: center;color: #69b5ff;}
 .aw-feed-list .aw-item .icon-bestbg{font-size: 40px;}
 .aw-feed-list .aw-user-name{color: #666;}
 .aw-feed-list .meta i, .aw-question-detail .meta i{font-size: 16px;vertical-align: -2px;}
-/*.aw-feed-list .more-operate{display:none;line-height: 28px;}*/
 .aw-feed-list .more-operate > a{float:left;height:28px;line-height:28px;margin-left:15px;font-size:12px;}
 .aw-feed-list .more-operate > a:hover i, .aw-question-detail .more-operate a:hover i, .aw-feed-list .more-operate .btn-group > a:hover i, .aw-article-content .aw-feed-list .meta a:hover i, .aw-article-list .aw-item .mod-footer .more-operate a:hover i, .aw-question-detail .meta a:hover i{color: #499ef3;}
 .aw-feed-list .more-operate .btn-group{margin-left: 15px;}
@@ -612,7 +610,7 @@ blockquote {margin: 0 40px;padding: 0 15px;font-size: 14px;color: #777;border-le
 .aw-article-content .aw-question-detail .mod-footer a img{width: 25px;height: 25px;margin-bottom:10px;border-radius: 15px;}
 .aw-article-content .aw-question-detail .mod-footer a.more-voters{display: inline-block;width: 25px;height: 25px;line-height:18px;border-radius: 15px;background-color: #f1f2f3;text-align: center;vertical-align: middle;color: #cdcecf;}
 .aw-article-content .aw-feed-list .aw-user-img img{width: 32px;height: 32px;}
-.aw-article-content .aw-feed-list .meta a{margin-right: 15px;}
+.aw-article-content .aw-feed-list .meta a:hover i{color: #fff !important;}
 .aw-article-content .aw-feed-list .mod-footer{margin:0;}
 .aw-article-content .aw-feed-list .aw-article-replay-box{margin:10px 0 0;padding:0;}
 
