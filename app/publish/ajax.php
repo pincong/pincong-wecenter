@@ -438,6 +438,7 @@ class ajax extends AWS_CONTROLLER
 
         if ($_POST['topics'])
         {
+			$topic_title_limit = intval(get_setting('topic_title_limit'));
             foreach ($_POST['topics'] AS $key => $topic_title)
             {
                 $topic_title = my_trim($topic_title);
@@ -448,6 +449,11 @@ class ajax extends AWS_CONTROLLER
                 }
                 else
                 {
+					if ($topic_title_limit AND cjk_strlen($topic_title) > $topic_title_limit AND !$this->model('topic')->get_topic_id_by_title($topic_title))
+					{
+						H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题标题字数不得超过 %s 字', $topic_title_limit)));
+						break;
+					}
                     $_POST['topics'][$key] = $topic_title;
                 }
             }
@@ -583,6 +589,7 @@ class ajax extends AWS_CONTROLLER
 
         if ($_POST['topics'])
         {
+			$topic_title_limit = intval(get_setting('topic_title_limit'));
             foreach ($_POST['topics'] AS $key => $topic_title)
             {
                 $topic_title = my_trim($topic_title);
@@ -593,6 +600,11 @@ class ajax extends AWS_CONTROLLER
                 }
                 else
                 {
+					if ($topic_title_limit AND cjk_strlen($topic_title) > $topic_title_limit AND !$this->model('topic')->get_topic_id_by_title($topic_title))
+					{
+						H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题标题字数不得超过 %s 字', $topic_title_limit)));
+						break;
+					}
                     $_POST['topics'][$key] = $topic_title;
                 }
             }
