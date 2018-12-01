@@ -30,7 +30,7 @@ class main extends AWS_CONTROLLER
 
     public function rule_action()
     {
-        $this->crumb(AWS_APP::lang()->_t('%s规则', get_setting('integral_name')));
+        $this->crumb(AWS_APP::lang()->_t(get_setting('integral_rule_name')));
 
         TPL::output('integral/rule');
     }

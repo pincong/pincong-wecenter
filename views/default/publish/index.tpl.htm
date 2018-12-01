@@ -120,7 +120,7 @@
 								<?php } ?>
 							</div>
 							<div class="mod-footer clearfix">
-								<a href="integral/rule/" target="_blank">[<?php _e('%s规则', get_setting('integral_name')); ?>]</a>
+								<a href="integral/rule/" target="_blank">[<?php _e(get_setting('integral_rule_name')); ?>]</a>
 								<span class="aw-anonymity">
 									<?php if ($this->question_info['question_id'] AND ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'])) { ?>
 									<label><input type="checkbox" class="pull-left" value="1" name="do_delete" />
