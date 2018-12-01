@@ -101,12 +101,10 @@ class TPL
 		{
 			$template_dirs = explode('/', $template_filename);
 
-			/*
-			/if ($template_dirs[0] != 'admin')
+			if ($template_dirs[0] != 'admin')
 			{
-				$output = H::sensitive_words($output);
+				$output = H::sensitive_words_replace($output);
 			}
-			*/
 
 			if (get_setting('url_rewrite_enable') != 'Y' OR $template_dirs[0] == 'admin')
 			{

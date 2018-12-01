@@ -301,10 +301,10 @@ class AWS_CONTROLLER
 			date_default_timezone_set($this->user_info['default_timezone']);
 		}
 
-		if ($content AND H::sensitive_word_exists($content))
+		/*if ($content AND H::sensitive_word_exists($content))
 		{
 			return true;
-		}
+		}*/
 
 		return false;
 	}

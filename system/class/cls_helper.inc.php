@@ -43,8 +43,6 @@ class H
 	{
 		//HTTP::no_cache_header('text/javascript');
 
-		//$array = H::sensitive_words($array);
-
 		echo str_replace(array("\r", "\n", "\t"), '', json_encode($array));
 		exit;
 	}
@@ -90,27 +88,26 @@ class H
 	/**
 	 * 敏感词替换
 	 * @param unknown_type $content
-	 * @param unknown_type $replace
 	 * @return mixed
 	 */
-	public static function sensitive_words($content, $replace = '*')
+	public static function sensitive_words_replace($content)
 	{
-		if (!$content or !get_setting('sensitive_words'))
+		if (!$content)
 		{
 			return $content;
 		}
 
-		if (is_array($content) && $content)
+		if (!$sensitive_words_replacement = get_setting('sensitive_words_replacement'))
 		{
-			foreach($content as $key => $val)
-			{
-				$content[$key] = self::sensitive_words($val, $replace);
-			}
-
 			return $content;
 		}
 
-		$sensitive_words = explode("\n", get_setting('sensitive_words'));
+		if (!$sensitive_words = get_setting('sensitive_words'))
+		{
+			return $content;
+		}
+
+		$sensitive_words = explode("\n", $sensitive_words);
 
 		foreach($sensitive_words as $word)
 		{
@@ -127,22 +124,13 @@ class H
 			}
 			else
 			{
-				$word_length = cjk_strlen($word);
-
-				$replace_str = '';
-
-				for($i = 0; $i < $word_length; $i++)
-				{
-					$replace_str .=  $replace;
-				}
-
-				$content = str_replace($word, $replace_str, $content);
+				$content = str_replace($word, $sensitive_words_replacement, $content);
 			}
 		}
 
 		if (isset($regex))
 		{
-			preg_replace($regex, '***', $content);
+			preg_replace($regex, $sensitive_words_replacement, $content);
 		}
 
 		return $content;
@@ -150,31 +138,22 @@ class H
 
 	/**
 	 * 是否包含敏感词
-	 * @param unknown_type $content
-	 * @param unknown_type $replace
+	 * @param string $content
 	 * @return mixed
 	 */
 	public static function sensitive_word_exists($content)
 	{
-		if (!$content or !get_setting('sensitive_words'))
+		if (!$content)
 		{
 			return false;
 		}
 
-		if (is_array($content))
+		if (!$sensitive_words = get_setting('sensitive_words'))
 		{
-			foreach($content as $key => $val)
-			{
-				if(self::sensitive_word_exists($val))
-				{
-					return true;
-				}
-			}
-
 			return false;
 		}
 
-		$sensitive_words = explode("\n", get_setting('sensitive_words'));
+		$sensitive_words = explode("\n", $sensitive_words);
 
 		foreach($sensitive_words as $word)
 		{
