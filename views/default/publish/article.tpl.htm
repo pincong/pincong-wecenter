@@ -124,7 +124,7 @@
 								<?php } ?>
 							</div>
 							<div class="mod-footer clearfix">
-								<?php if (get_setting('integral_system_enabled') == 'Y') { ?><a href="integral/rule/" target="_blank">[<?php _e('%s规则', get_setting('integral_unit')); ?>]</a><?php } ?>
+								<a href="integral/rule/" target="_blank">[<?php _e('%s规则', get_setting('integral_unit')); ?>]</a>
 								<span class="aw-anonymity">
 									<?php if ($this->article_info['id'] AND ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'])) { ?>
 									<label><input type="checkbox" class="pull-left" value="1" name="do_delete" />

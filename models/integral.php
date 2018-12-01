@@ -22,11 +22,6 @@ class integral_class extends AWS_MODEL
 {
 	public function process($uid, $action, $integral, $note = '', $item_id = null)
 	{
-		if (get_setting('integral_system_enabled') == 'N')
-		{
-			return false;
-		}
-
 		$integral = intval($integral);
 		if ($integral == 0)
 		{
@@ -246,11 +241,6 @@ class integral_class extends AWS_MODEL
 
     public function check_balance_for_operation($integral, $key)
     {
-        if (get_setting('integral_system_enabled') == 'N')
-        {
-            return true;
-        }
-
         $reward = intval(get_setting($key));
         if ($reward >= 0)
         {
