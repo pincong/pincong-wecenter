@@ -229,8 +229,8 @@ class main extends AWS_CONTROLLER
 
 				$answer_vote_status = $this->model('answer')->get_answer_vote_status($answer_ids, $this->user_id);
 
-				$answer_users_rated_thanks = $this->model('answer')->users_rated('thanks', $answer_ids, $this->user_id);
-				$answer_users_rated_uninterested = $this->model('answer')->users_rated('uninterested', $answer_ids, $this->user_id);
+				$answer_users_rated_thanks = $this->model('answer')->users_rated_thanks($answer_ids, $this->user_id);
+				$answer_users_rated_uninterested = $this->model('answer')->users_rated_uninterested($answer_ids, $this->user_id);
 				$answer_attachs = $this->model('publish')->get_attachs('answer', $has_attach_answer_ids, 'min');
 			}
 

@@ -153,6 +153,11 @@ class ajax extends AWS_CONTROLLER
 	{
 		$answer_info = $this->model('answer')->get_answer_by_id($_POST['answer_id']);
 
+		if (! $answer_info)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('回复不存在')));
+		}
+
 		if ($this->model('answer')->agree_answer($this->user_id, $_POST['answer_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(array(
@@ -371,6 +376,11 @@ class ajax extends AWS_CONTROLLER
 	{
 		$answer_info = $this->model('answer')->get_answer_by_id($_POST['answer_id']);
 
+		if (! $answer_info)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('回复不存在')));
+		}
+
 		if ($answer_info['uid'] == $this->user_id)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能对自己发表的回复进行投票')));
@@ -459,31 +469,26 @@ class ajax extends AWS_CONTROLLER
 		}
 	}
 
-	public function question_answer_rate_action()
+	public function question_answer_rate_thanks_action()
 	{
 		$answer_info = $this->model('answer')->get_answer_by_id($_POST['answer_id']);
 
+		if (! $answer_info)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('回复不存在')));
+		}
+
 		if ($this->user_id == $answer_info['uid'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('不能评价自己发表的回复')));
+			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('不能感谢自己发表的回复')));
 		}
 
-		if ($_POST['type'] == 'thanks' AND $this->model('answer')->user_rated('thanks', $_POST['answer_id'], $this->user_id))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('已感谢过该回复, 请不要重复感谢')));
-		}
-
-		if ($_POST['type'] == 'thanks' AND !$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_thanks'))
+		if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_thanks'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
 		}
 
-		if ($_POST['type'] == 'uninterested' AND !$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_uninterested'))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
-		}
-
-		if ($this->model('answer')->user_rate($_POST['type'], $_POST['answer_id'], $this->user_id, $this->user_info['user_name']))
+		if ($this->model('answer')->user_rate_thanks($_POST['answer_id'], $this->user_id))
 		{
 			if ($answer_info['uid'] != $this->user_id)
 			{
@@ -494,6 +499,33 @@ class ajax extends AWS_CONTROLLER
 				));
 			}
 
+			H::ajax_json_output(AWS_APP::RSM(array(
+				'action' => 'add'
+			), 1, null));
+		}
+	}
+
+	public function question_answer_rate_uninterested_action()
+	{
+		$answer_info = $this->model('answer')->get_answer_by_id($_POST['answer_id']);
+
+		if (! $answer_info)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('回复不存在')));
+		}
+
+		if ($this->user_id == $answer_info['uid'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('不能折叠自己发表的回复')));
+		}
+
+		if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_uninterested'))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
+		}
+
+		if ($this->model('answer')->user_rate_uninterested($_POST['answer_id'], $this->user_id))
+		{
 			H::ajax_json_output(AWS_APP::RSM(array(
 				'action' => 'add'
 			), 1, null));
@@ -873,32 +905,17 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('回复不存在')));
 		}
 
-		if (! $answer_info['force_fold'])
+		if ($this->model('answer')->force_fold($_POST['answer_id'], $this->user_id))
 		{
-			$this->model('answer')->update_answer_by_id($_POST['answer_id'], array(
-				'force_fold' => 1
-			));
-
-			if (! $this->model('integral')->fetch_log($answer_info['uid'], 'ANSWER_FOLD', $answer_info['answer_id']))
-			{
-				ACTION_LOG::set_fold_action_history($answer_info['answer_id'], 1);
-
-				$this->model('integral')->process($answer_info['uid'], 'ANSWER_FOLD', get_setting('integral_system_config_answer_fold'), AWS_APP::lang()->_t('回复折叠') . ' #' . $answer_info['answer_id'], $answer_info['answer_id']);
-			}
-
 			H::ajax_json_output(AWS_APP::RSM(array(
 				'action' => 'fold'
-			), 1, AWS_APP::lang()->_t('强制折叠回复')));
+			), 1, null));
 		}
 		else
 		{
-			$this->model('answer')->update_answer_by_id($_POST['answer_id'], array(
-				'force_fold' => 0
-			));
-
 			H::ajax_json_output(AWS_APP::RSM(array(
 				'action' => 'unfold'
-			), 1, AWS_APP::lang()->_t('撤消强制折叠回复')));
+			), 1, null));
 		}
 	}
 

@@ -726,38 +726,7 @@ class answer_class extends AWS_MODEL
 		return $this->delete('answer_comments', "id = " . intval($comment_id));
 	}
 
-	public function user_rated($type, $answer_id, $uid)
-	{
-		if (!$uid)
-		{
-			return false;
-		}
-
-		switch ($type)
-		{
-			default:
-				return false;
-			break;
-
-			case 'thanks':
-			case 'uninterested':
-
-			break;
-		}
-
-		static $user_rated;
-
-		if ($user_rated[$type . '_' . $answer_id . '_' . $uid])
-		{
-			return $user_rated[$type . '_' . $answer_id . '_' . $uid];
-		}
-
-		$user_rated[$type . '_' . $answer_id . '_' . $uid] = $this->fetch_row('answer_' . $type, 'uid = ' . intval($uid) . ' AND answer_id = ' . intval($answer_id));
-
-		return $user_rated[$type . '_' . $answer_id . '_' . $uid];
-	}
-
-	public function users_rated($type, $answer_ids, $uid)
+	public function users_rated_thanks($answer_ids, $uid)
 	{
 		if (!$uid)
 		{
@@ -769,19 +738,7 @@ class answer_class extends AWS_MODEL
 			return false;
 		}
 
-		switch ($type)
-		{
-			default:
-				return false;
-			break;
-
-			case 'thanks':
-			case 'uninterested':
-
-			break;
-		}
-
-		$all_rated = $this->fetch_all('answer_' . $type, 'uid = ' . intval($uid) . ' AND answer_id IN(' . implode(',', $answer_ids) . ')');
+		$all_rated = $this->fetch_all('answer_thanks', 'uid = ' . intval($uid) . ' AND answer_id IN(' . implode(',', $answer_ids) . ')');
 
 		foreach ($all_rated AS $key => $val)
 		{
@@ -791,86 +748,151 @@ class answer_class extends AWS_MODEL
 		return $users_rated;
 	}
 
-	public function user_rate($type, $answer_id, $uid, $user_name)
+	public function users_rated_uninterested($answer_ids, $uid)
 	{
-		switch ($type)
+		if (!$uid)
 		{
-			default:
-				return false;
-			break;
-
-			case 'thanks':
-			case 'uninterested':
-
-			break;
+			return false;
 		}
 
-		if ($user_rated = $this->user_rated($type, $answer_id, $uid))
+		if (!is_array($answer_ids))
 		{
-			if ($type == 'thanks')
-			{
-				return true;
-			}
+			return false;
+		}
 
-			$this->delete('answer_' . $type, 'uid = ' . intval($uid) . ' AND answer_id = ' . intval($answer_id));
+		$all_rated = $this->fetch_all('answer_uninterested', 'uid = ' . intval($uid) . ' AND answer_id IN(' . implode(',', $answer_ids) . ')');
+
+		foreach ($all_rated AS $key => $val)
+		{
+			$users_rated[$val['answer_id']] = $val;
+		}
+
+		return $users_rated;
+	}
+
+	public function user_rate_thanks($answer_id, $uid)
+	{
+		$answer_id = intval($answer_id);
+		$uid = intval($uid);
+
+		$user_rated = $this->fetch_row('answer_thanks', 'uid = ' . ($uid) . ' AND answer_id = ' . ($answer_id));
+		if ($user_rated)
+		{
+			return true;
 		}
 		else
 		{
-			$this->insert('answer_' . $type, array(
+			$this->insert('answer_thanks', array(
 				'uid' => $uid,
 				'answer_id' => $answer_id,
-				'user_name' => $user_name,
 				'time' => fake_time()
 			));
 		}
 
-		$this->update_user_rate_count($type, $answer_id);
+		$this->update_answer_by_id($answer_id, array(
+			'thanks_count' => $this->count('answer_thanks', 'answer_id = ' . ($answer_id))
+		));
 
 		$answer_info = $this->get_answer_by_id($answer_id);
 
-		if ($type == 'thanks')
-		{
-			$this->model('integral')->process($uid, 'ANSWER_THANKS', get_setting('integral_system_config_thanks'), '感谢回复 #' . $answer_info['answer_id'], $answer_info['answer_id']);
+		$this->model('integral')->process($uid, 'ANSWER_THANKS', get_setting('integral_system_config_thanks'), '感谢回复 #' . $answer_info['answer_id'], $answer_info['answer_id']);
+		$this->model('integral')->process($answer_info['uid'], 'THANKS_ANSWER', -get_setting('integral_system_config_thanks'), '回复被感谢 #' . $answer_info['answer_id'], $answer_info['answer_id']);
 
-			$this->model('integral')->process($answer_info['uid'], 'THANKS_ANSWER', -get_setting('integral_system_config_thanks'), '回复被感谢 #' . $answer_info['answer_id'], $answer_info['answer_id']);
-		}
-		else if ($answer_info['uninterested_count'] >= get_setting('uninterested_fold'))
+		$this->model('account')->update_thanks_count($answer_info['uid']);
+
+		return true;
+	}
+
+	public function user_rate_uninterested($answer_id, $uid)
+	{
+		$answer_id = intval($answer_id);
+		$uid = intval($uid);
+
+		$user_rated = $this->fetch_row('answer_uninterested', 'uid = ' . ($uid) . ' AND answer_id = ' . ($answer_id));
+		if ($user_rated)
 		{
-			if (!$this->model('integral')->fetch_log($answer_info['uid'], 'ANSWER_FOLD', $answer_info['answer_id']))
+			$this->delete('answer_uninterested', 'uid = ' . ($uid) . ' AND answer_id = ' . ($answer_id));
+		}
+		else
+		{
+			$this->insert('answer_uninterested', array(
+				'uid' => $uid,
+				'answer_id' => $answer_id,
+				'time' => fake_time()
+			));
+		}
+
+		$this->update_answer_by_id($answer_id, array(
+			'uninterested_count' => $this->count('answer_uninterested', 'answer_id = ' . ($answer_id))
+		));
+
+		$answer_info = $this->get_answer_by_id($answer_id);
+
+		if ($answer_info['uninterested_count'] >= get_setting('uninterested_fold'))
+		{
+			if (!$answer_info['force_fold'])
 			{
+				$this->update_answer_by_id($answer_id, array(
+					'force_fold' => 1
+				));
+
 				ACTION_LOG::set_fold_action_history($answer_info['answer_id'], 1);
 
 				$this->model('integral')->process($answer_info['uid'], 'ANSWER_FOLD', get_setting('integral_system_config_answer_fold'), '回复被折叠 #' . $answer_info['answer_id'], $answer_info['answer_id']);
 			}
 		}
 
-		if ($type == 'uninterested')
+		if (!$user_rated)
 		{
 			$this->model('integral')->process($uid, 'ANSWER_UNINTERESTED', get_setting('integral_system_config_uninterested'), '折叠回复 #' . $answer_info['answer_id'], $answer_info['answer_id']);
+			return true;
 		}
 
-		$this->model('account')->update_thanks_count($answer_info['uid']);
-
-		return !$user_rated;
+		return false;
 	}
 
-	public function update_user_rate_count($type, $answer_id)
+	public function force_fold($answer_id, $uid)
 	{
-		switch ($type)
+		$answer_id = intval($answer_id);
+
+		$this->delete('answer_uninterested', 'answer_id = ' . $answer_id);
+
+		$answer_info = $this->get_answer_by_id($answer_id);
+
+		if ($answer_info['uninterested_count'] >= get_setting('uninterested_fold'))
 		{
-			default:
-				return false;
-			break;
+			$this->update_answer_by_id($answer_id, array(
+				'uninterested_count' => 0
+			));
 
-			case 'thanks':
-			case 'uninterested':
+			$this->update_answer_by_id($answer_id, array(
+				'force_fold' => 0
+			));
 
-			break;
+			return false;
 		}
+		else
+		{
+			$this->update_answer_by_id($answer_id, array(
+				'uninterested_count' => get_setting('uninterested_fold')
+			));
 
-		$this->shutdown_update('answer', array(
-			$type . '_count' => $this->count('answer_' . $type, 'answer_id = ' . intval($answer_id))
-		), 'answer_id = ' . intval($answer_id));
+			if (!$answer_info['force_fold'])
+			{
+				$this->update_answer_by_id($answer_id, array(
+					'force_fold' => 1
+				));
+
+				ACTION_LOG::set_fold_action_history($answer_info['answer_id'], 1);
+
+				if ($uid != $answer_info['uid'])
+				{
+					$this->model('integral')->process($answer_info['uid'], 'ANSWER_FOLD', get_setting('integral_system_config_answer_fold'), '回复被折叠 #' . $answer_info['answer_id'], $answer_info['answer_id']);
+				}
+			}
+
+			return true;
+		}
 	}
 
 	public function set_best_answer($answer_id)
