@@ -697,7 +697,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($_POST['do_delete'])
 		{
-			if ($answer_info['uid'] != $this->user_id and ! $this->user_info['permission']['is_administrator'] and ! $this->user_info['permission']['is_moderator'])
+			if (/*$answer_info['uid'] != $this->user_id and*/ ! $this->user_info['permission']['is_administrator'] and ! $this->user_info['permission']['is_moderator'])
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 			}
