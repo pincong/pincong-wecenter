@@ -20,9 +20,22 @@ if (!defined('IN_ANWSION'))
 class active_class extends AWS_MODEL
 {
 
-	public function new_find_password($uid)
+	public function calc_user_recovery_code($uid)
 	{
-		return false;
+		if (! $user_info = $this->fetch_row('users', 'uid = ' . intval($uid)))
+		{
+			return false;
+		}
+		return md5(G_SECUKEY . md5($user_info['password'] . $user_info['salt']) . G_COOKIE_HASH_KEY);
+	}
+
+	public function verify_user_recovery_code($uid, $recovery_code)
+	{
+		if (!$code = $this->calc_user_recovery_code($uid))
+		{
+			return false;
+		}
+		return ($code == $recovery_code);
 	}
 
 	public function active_user_by_uid($uid)

@@ -287,31 +287,31 @@ class ajax extends AWS_CONTROLLER
 
 	public function request_find_password_action()
 	{
+		if (!$user_name = my_trim($_POST['user_name']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1',  AWS_APP::lang()->_t('请填写用户名')));
+		}
+
 		if (!AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1',  AWS_APP::lang()->_t('请填写正确的验证码')));
 		}
 
-		$this->model('active')->new_find_password($user_info['uid']);
-
+		if (!$user_info = $this->model('account')->get_user_info_by_username($user_name))
 		{
-			$url = get_js_url('/account/find_password/process_success/');
+			H::ajax_json_output(AWS_APP::RSM(null, '-1',  AWS_APP::lang()->_t('用户名不存在')));
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => $url
+			'url' => get_js_url('/account/find_password/modify/uid-') . $user_info['uid']
 		), 1, null));
 	}
 
 	public function find_password_modify_action()
 	{
-		if (!AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
+		if (!$recovery_code = my_trim($_POST['recovery_code']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1,  AWS_APP::lang()->_t('请填写正确的验证码')));
-		}
-
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1,  AWS_APP::lang()->_t('链接已失效，请重新找回密码')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1',  AWS_APP::lang()->_t('请填写恢复码')));
 		}
 
 		if (!$_POST['password'])
@@ -319,29 +319,33 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1,  AWS_APP::lang()->_t('请输入密码')));
 		}
 
+		if (strlen($_POST['password']) < 6)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('密码长度不符合规则')));
+		}
+
 		if ($_POST['password'] != $_POST['re_password'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1,  AWS_APP::lang()->_t('两次输入的密码不一致')));
 		}
 
-		$user_info = $this->model('account')->get_user_info_by_uid($uid);
-
-		$this->model('account')->update_user_password_ingore_oldpassword($_POST['password'], $uid, $user_info['salt']);
-
-		if ($user_info['group_id'] == 3)
+		if (!AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
 		{
-			$this->model('active')->active_user_by_uid($user_info['uid']);
+			H::ajax_json_output(AWS_APP::RSM(null, -1,  AWS_APP::lang()->_t('请填写正确的验证码')));
 		}
 
-		$this->model('account')->setcookie_logout();
+		$user_info = $this->model('account')->get_user_info_by_uid(intval($_POST['uid']));
 
-		$this->model('account')->setsession_logout();
+		if (!$this->model('active')->verify_user_recovery_code($user_info['uid'], $recovery_code))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1,  AWS_APP::lang()->_t('恢复码无效')));
+		}
 
-		unset(AWS_APP::session()->find_password);
+		$this->model('account')->update_user_password_ingore_oldpassword($_POST['password'], $user_info['uid'], $user_info['salt']);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => get_js_url('/account/login/'),
-		), 1, AWS_APP::lang()->_t('密码修改成功, 请返回登录')));
+			'url' => get_js_url('/account/find_password/process_success/')
+		), 1, null));
 	}
 
 	public function avatar_upload_action()

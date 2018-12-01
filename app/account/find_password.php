@@ -48,9 +48,9 @@ class find_password extends AWS_CONTROLLER
 
 	public function modify_action()
 	{
-
+		if (!$user_info = $this->model('account')->get_user_info_by_uid(intval($_GET['uid'])))
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('链接已失效'), '/');
+			H::redirect_msg(AWS_APP::lang()->_t('用户不存在'), '/');
 		}
 
 		TPL::output('account/find_password/modify');

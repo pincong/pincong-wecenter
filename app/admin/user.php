@@ -158,6 +158,8 @@ class user extends AWS_ADMIN_CONTROLLER
             H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑管理员账号'), '/admin/user/list/');
         }
 
+        $user['recovery_code'] = $this->model('active')->calc_user_recovery_code($user['uid']);
+
         TPL::assign('mem_group', $this->model('account')->get_user_group_by_id($user['reputation_group']));
         TPL::assign('system_group', $this->model('account')->get_user_group_list(0));
         TPL::assign('user', $user);
