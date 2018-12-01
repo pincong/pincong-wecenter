@@ -160,11 +160,13 @@
 											<a href="javascript:;" class="aw-load-more-content" onclick="$(this).parent().parent().children('.markitup-box').toggle();"><?php _e('评论被折叠'); ?></a>
 										</div>
 										<div class="markitup-box collapse">
-									<?php } else { ?>
-										<div class="markitup-box">
-									<?php } ?>
 											<?php echo nl2br($val['message']); ?>
 										</div>
+									<?php } else { ?>
+										<div class="markitup-box">
+											<?php echo nl2br($val['message']); ?>
+										</div>
+									<?php } ?>
                                     </div>
                                     <div class="mod-footer">
                                         <div class="meta">

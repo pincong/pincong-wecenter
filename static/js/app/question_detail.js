@@ -1,7 +1,6 @@
 var ATTACH_ACCESS_KEY;
 var COMMENT_UNFOLD;
 var QUESTION_ID;
-var UNINTERESTED_COUNT;
 var EDITOR;
 var EDITOR_CALLBACK;
 
@@ -42,29 +41,6 @@ $(function()
 				});
 			}
 		}
-
-
-		//折叠回复
-		$.each($('.aw-question-comment .aw-item'), function (i, e)
-		{
-			if ($(this).attr('uninterested_count') >= UNINTERESTED_COUNT)
-			{
-				$('#uninterested_answers_list').append($(e));
-			}
-		});
-
-		//折叠回复数量
-		if ($('#uninterested_answers_list div.aw-item').length > 0)
-		{
-			$('#load_uninterested_answers span.hide_answers_count').html($('#uninterested_answers_list div.aw-item').length);
-			$('#load_uninterested_answers').fadeIn();
-		}
-
-		//回复折叠显示按钮
-	    $('#load_uninterested_answers a').click(function()
-	    {
-	    	$('#uninterested_answers_list').toggle();
-	    });
 
 		//自动展开评论
 		if (COMMENT_UNFOLD == 'all')

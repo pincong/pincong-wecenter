@@ -1,5 +1,5 @@
 <?php TPL::output('global/header.tpl.htm'); ?>
-<?php $uninterested_fold = get_setting('uninterested_fold'); ?>
+
 <div class="aw-container-wrap">
 	<?php if ($this->redirect_message) { ?>
 	<div class="container">
@@ -285,7 +285,7 @@
 						</div>
 						<div class="mod-body aw-feed-list">
 							<?php if ($this->answers) { foreach ($this->answers AS $key => $val) { ?>
-								<div class="aw-item" uninterested_count="<?php echo $val['uninterested_count']; ?>" id="answer_list_<?php echo $val['answer_id']; ?>">
+								<div class="aw-item" id="answer_list_<?php echo $val['answer_id']; ?>">
 									<div class="mod-head">
 										<?php if ($this->question_info['best_answer'] == $val['answer_id']) { ?>
 										<!-- 最佳回答 -->
@@ -323,10 +323,20 @@
 										</div>
 									</div>
 									<div class="mod-body clearfix">
-										<!-- 评论内容 -->
+									<!-- 评论内容 -->
+									<?php if ($val['force_fold'] || $val['fold']) { ?>
+										<div class="aw-load-more-content">
+											<span class="text-color-999 aw-alert-box text-color-999" href="javascript:;" tabindex="-1" onclick="AWS.User.why_fold();"><?php _e('为什么被折叠?'); ?></span>
+											<a href="javascript:;" class="aw-load-more-content" onclick="$(this).parent().parent().children('.markitup-box').toggle();"><?php _e('回复被折叠'); ?></a>
+										</div>
+										<div class="markitup-box collapse">
+											<?php echo $val['answer_content']; ?>
+										</div>
+									<?php } else { ?>
 										<div class="markitup-box">
 											<?php echo $val['answer_content']; ?>
 										</div>
+									<?php } ?>
 
 										<?php if ($val['attachs']) {  ?>
 										<div class="aw-upload-img-list">
@@ -347,7 +357,7 @@
 											<?php } ?>
 										</ul>
 										<?php } ?>
-										<!-- end 评论内容 -->
+									<!-- end 评论内容 -->
 									</div>
 									<div class="mod-footer">
 										<!-- 社交操作 -->
@@ -367,23 +377,11 @@
 												<a class="aw-add-comment" data-id="<?php echo $val['answer_id']; ?>" data-type="answer" data-comment-count="<?php echo $val['comment_count']; ?>" data-first-click="<?php if ($val['comment_count'] == 0) {?>collapse<?php }?>" href="javascript:;"><i class="icon icon-comment"></i> <?php if ($val['comment_count']) { ?><?php echo $val['comment_count']; ?><?php } else { ?>0<?php } ?></a>
 											</span>
 
-											<?php if ($this->user_id) { ?>
-												<span class="operate">
-												<?php if ($this->user_info['user_name'] == $val['user_info']['user_name'] OR ($val['uninterested_count'] >= $uninterested_fold AND !$val['user_rated_uninterested'])) { ?>
-													<a class="disabled">
-												<?php } else { ?>
-													<a class="<?php if ($val['user_rated_uninterested']) { ?>active<?php } ?>" onclick="AWS.User.answer_user_rate_uninterested($(this), <?php echo $val['answer_id']; ?>);">
-												<?php } ?>
-														<i data-placement="right" class="icon icon-fold"></i>折叠<b class="count"><?php if ($val['uninterested_count']) { ?> (<?php echo $val['uninterested_count'] .'/'. $uninterested_fold; ?>)<?php } ?></b>
-													</a>
-												</span>
-											<?php } ?>
-
 											<!-- 可显示/隐藏的操作box -->
 											<div class="more-operate">
 												<?php if ($this->user_id) { ?>
 													<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
-													<a href="javascript:;" onclick="AWS.User.answer_force_fold($(this), <?php echo $val['answer_id']; ?>);" class="text-color-999"><i class="icon icon-fold"></i> <?php if ($val['uninterested_count'] >= $uninterested_fold) { ?><?php _e('取消折叠'); ?><?php } else { ?><?php _e('强制折叠'); ?><?php } ?></a>
+													<a href="javascript:;" onclick="AWS.User.answer_force_fold($(this), <?php echo $val['answer_id']; ?>);" class="text-color-999"><i class="icon icon-fold"></i> <?php if ($val['force_fold']) { ?><?php _e('撤消强制折叠'); ?><?php } else { ?><?php _e('强制折叠'); ?><?php } ?></a>
 													<?php } ?>
 
 													<?php if (($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) OR ($val['uid'] == $this->user_id AND ((TIMESTAMP - $val['add_time']) < (get_setting('answer_edit_time') * 60) OR (!get_setting('answer_edit_time'))))) { ?>
@@ -414,13 +412,6 @@
 								<a href="question/<?php echo $this->question_info['question_id']; ?>" class="aw-load-more-content">
 									<span><?php _e('查看全部回答'); ?></span>
 								</a>
-							<?php } else { ?>
-								<div class="aw-load-more-content collapse" id="load_uninterested_answers">
-									<span class="text-color-999 aw-alert-box text-color-999" href="javascript:;" tabindex="-1" onclick="AWS.alert('<?php _e('被折叠的回复是被你或者被大多数用户认为没有帮助的回复'); ?>');"><?php _e('为什么被折叠?'); ?></span>
-									<a href="javascript:;" class="aw-load-more-content"><?php _e('%s 个回复被折叠', '<span class="hide_answers_count">0</span>'); ?></a>
-								</div>
-
-								<div class="collapse aw-feed-list" id="uninterested_answers_list"></div>
 							<?php } ?>
 						</div>
 
@@ -600,7 +591,6 @@
 	var ITEM_IDS = '<?php echo addslashes($_GET['item_id']); ?>';
 	var COMMENT_UNFOLD = '<?php echo addslashes($_GET['comment_unfold']); ?>';
 	var QUESTION_ID = <?php echo $this->question_info['question_id'];?>;
-	var UNINTERESTED_COUNT = <?php echo $uninterested_fold; ?>;
 	var ANSWER_EDIT_TIME = <?php echo get_setting('answer_edit_time'); ?>;
 	var USER_ANSWERED = '<?php echo $this->user_answered; ?>';
 	var UPLOAD_ENABLE = '<?php echo get_setting('upload_enable') ?>';

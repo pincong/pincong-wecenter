@@ -1,4 +1,3 @@
-<?php $uninterested_fold = get_setting('uninterested_fold'); ?>
 <div class="aw-item" uninterested_count="<?php echo $this->answer_info['uninterested_count']; ?>" id="answer_list_<?php echo $this->answer_info['answer_id']; ?>">
 	<div class="mod-head">
 		<?php if ($this->question_info['best_answer'] == $this->answer_info['answer_id']) { ?>
@@ -82,23 +81,11 @@
 				<a class="aw-add-comment" data-id="<?php echo $this->answer_info['answer_id']; ?>" data-type="answer" data-comment-count="<?php echo $this->answer_info['comment_count']; ?>" data-first-click="<?php if ($this->answer_info['comment_count'] == 0) {?>hide<?php }?>" href="javascript:;"><i class="icon icon-comment"></i> <?php if ($this->answer_info['comment_count']) { ?><?php echo $this->answer_info['comment_count']; ?><?php } else { ?>0<?php } ?></a>
 			</span>
 
-			<?php if ($this->user_id) { ?>
-				<span class="operate">
-				<?php if ($this->user_info['user_name'] == $this->answer_info['user_info']['user_name'] OR ($this->answer_info['uninterested_count'] >= $uninterested_fold AND !$this->answer_info['user_rated_uninterested'])) { ?>
-					<a class="disabled">
-				<?php } else { ?>
-					<a class="<?php if ($this->answer_info['user_rated_uninterested']) { ?>active<?php } ?>" onclick="AWS.User.answer_user_rate_uninterested($(this), <?php echo $this->answer_info['answer_id']; ?>);">
-				<?php } ?>
-						<i data-placement="right" class="icon icon-fold"></i>折叠<b class="count"><?php if ($this->answer_info['uninterested_count']) { ?> (<?php echo $this->answer_info['uninterested_count'] .'/'. $uninterested_fold; ?>)<?php } ?></b>
-					</a>
-				</span>
-			<?php } ?>
-
 			<!-- 可显示/隐藏的操作box -->
 			<div class="more-operate">
 				<?php if ($this->user_id) { ?>
 					<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
-					<a href="javascript:;" onclick="AWS.User.answer_force_fold($(this), <?php echo $this->answer_info['answer_id']; ?>);" class="text-color-999"><i class="icon icon-fold"></i> <?php if ($this->answer_info['uninterested_count'] >= $uninterested_fold) { ?><?php _e('取消折叠'); ?><?php } else { ?><?php _e('强制折叠'); ?><?php } ?></a>
+					<a href="javascript:;" onclick="AWS.User.answer_force_fold($(this), <?php echo $this->answer_info['answer_id']; ?>);" class="text-color-999"><i class="icon icon-fold"></i> <?php if ($this->answer_info['force_fold']) { ?><?php _e('撤消强制折叠'); ?><?php } else { ?><?php _e('强制折叠'); ?><?php } ?></a>
 					<?php } ?>
 
 					<?php if (($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) OR ($this->answer_info['uid'] == $this->user_id AND ((TIMESTAMP - $this->answer_info['add_time']) < (get_setting('answer_edit_time') * 60) OR (!get_setting('answer_edit_time'))))) { ?>
