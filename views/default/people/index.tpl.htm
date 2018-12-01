@@ -28,8 +28,8 @@
                         <div class="mod-body">
                             <div class="meta">
                                 <span><i class="icon icon-prestige"></i> <?php _e('威望'); ?> : <em class="aw-text-color-green"><?php echo $this->user['reputation']; ?></em></span>
-                                <span><i class="icon icon-score"></i> <?php _e('%s', get_setting('integral_name')); ?> : <em class="aw-text-color-orange"><?php echo $this->user['integral']; ?></em></span>
                                 <span><i class="icon icon-agree"></i> <?php _e('赞同'); ?> : <em class="aw-text-color-orange"><?php echo $this->user['agree_count']; ?></em></span>
+                                <span><i class="icon icon-score"></i> <?php _e('%s', get_setting('integral_name')); ?> : <em class="aw-text-color-orange"><?php echo $this->user['integral']; ?></em></span>
                             </div>
                             <?php if ($this->reputation_topics) { ?>
                             <!-- 擅长话题 -->
@@ -282,10 +282,8 @@
                                         <dd>
                                             <p class="meta">
                                                 <span><i class="icon icon-prestige"></i><?php _e('威望'); ?>: <em class="aw-text-color-green"><?php echo $this->user['reputation']; ?></em></span>
-
-                                                <span><i class="icon icon-score"></i><?php _e('%s', get_setting('integral_name')); ?>: <em class="aw-text-color-orange"><?php echo $this->user['integral']; ?></em></span>
-
                                                 <span><i class="icon icon-agree"></i><?php _e('赞同'); ?>: <em class="aw-text-color-orange"><?php echo $this->user['agree_count']; ?></em></span>
+                                                <span><i class="icon icon-score"></i><?php _e('%s', get_setting('integral_name')); ?>: <em class="aw-text-color-orange"><?php echo $this->user['integral']; ?></em></span>
                                             </p>
                                         </dd>
                                     </dl>
