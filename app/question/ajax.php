@@ -497,10 +497,10 @@ class ajax extends AWS_CONTROLLER
 
 		if ($this->model('question')->question_thanks($_POST['question_id'], $this->user_id))
 		{
-			$this->model('notify')->send($this->user_id, $question_info['published_uid'], notify_class::TYPE_QUESTION_THANK, notify_class::CATEGORY_QUESTION, $_POST['question_id'], array(
+			/*$this->model('notify')->send($this->user_id, $question_info['published_uid'], notify_class::TYPE_QUESTION_THANK, notify_class::CATEGORY_QUESTION, $_POST['question_id'], array(
 				'question_id' => intval($_POST['question_id']),
 				'from_uid' => $this->user_id
-			));
+			));*/
 
 			H::ajax_json_output(AWS_APP::RSM(array(
 				'action' => 'add'
@@ -535,14 +535,14 @@ class ajax extends AWS_CONTROLLER
 
 		if ($this->model('answer')->answer_thanks($_POST['answer_id'], $this->user_id))
 		{
-			if ($answer_info['uid'] != $this->user_id)
+			/*if ($answer_info['uid'] != $this->user_id)
 			{
 				$this->model('notify')->send($this->user_id, $answer_info['uid'], notify_class::TYPE_ANSWER_THANK, notify_class::CATEGORY_QUESTION, $answer_info['question_id'], array(
 					'question_id' => $answer_info['question_id'],
 					'from_uid' => $this->user_id,
 					'item_id' => $answer_info['answer_id']
 				));
-			}
+			}*/
 
 			H::ajax_json_output(AWS_APP::RSM(array(
 				'action' => 'add'
