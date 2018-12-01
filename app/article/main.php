@@ -61,7 +61,7 @@ class main extends AWS_CONTROLLER
 			$article_info['vote_info'] = $this->model('article')->get_article_vote_by_id('article', $article_info['id'], null, $this->user_id);
 		}
 
-		$article_info['vote_users'] = $this->model('article')->get_article_vote_users_by_id('article', $article_info['id'], 1, 10);
+		//$article_info['vote_users'] = $this->model('article')->get_article_vote_users_by_id('article', $article_info['id'], 1, 10);
 
 		TPL::assign('article_info', $article_info);
 
