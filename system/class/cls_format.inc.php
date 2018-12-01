@@ -76,7 +76,11 @@ class FORMAT
 			return false;
 		}
 
-		return self::parse_links(load_class('Services_BBCode')->parse($text));
+		//临时添加
+		//不再主动解析链接
+		//Bug: [url]https://web.archive.org/web/20170602230234/http://www.sohu.com/a/145581401_670685[/url]
+		//return self::parse_links(load_class('Services_BBCode')->parse($text));
+		return load_class('Services_BBCode')->parse($text);
 	}
 
 	// 兼容旧版本
