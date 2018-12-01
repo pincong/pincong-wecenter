@@ -375,17 +375,6 @@ class actions_class extends AWS_MODEL
 						$question_ids[] = $val['associate_id'];
 					}
 
-					if (in_array($val['associate_action'], array(
-						ACTION_LOG::ADD_TOPIC,
-						ACTION_LOG::MOD_TOPIC,
-						ACTION_LOG::MOD_TOPIC_DESCRI,
-						ACTION_LOG::MOD_TOPIC_PIC,
-						ACTION_LOG::DELETE_TOPIC,
-						ACTION_LOG::ADD_TOPIC_FOCUS
-					)) AND $val['associate_attached'])
-					{
-						$associate_topic_ids[] = $val['associate_attached'];
-					}
 				break;
 			}
 		}
@@ -439,22 +428,6 @@ class actions_class extends AWS_MODEL
 							$action_list[$key]['link'] = get_js_url('/question/' . $question_info['question_id']);
 
 							if (in_array($val['associate_action'], array(
-								ACTION_LOG::ADD_TOPIC,
-								ACTION_LOG::MOD_TOPIC,
-								ACTION_LOG::MOD_TOPIC_DESCRI,
-								ACTION_LOG::MOD_TOPIC_PIC,
-								ACTION_LOG::DELETE_TOPIC,
-								ACTION_LOG::ADD_TOPIC_FOCUS
-							)) AND $val['associate_attached'])
-							{
-								$topic_info = $associate_topics[$val['associate_attached']];
-							}
-							else
-							{
-								unset($topic_info);
-							}
-
-							if (in_array($val['associate_action'], array(
 								ACTION_LOG::ADD_QUESTION
 							)) AND $question_info['has_attach'])
 							{
@@ -463,7 +436,7 @@ class actions_class extends AWS_MODEL
 
 							if ($val['uid'])
 							{
-								$action_list[$key]['last_action_str'] = ACTION_LOG::format_action_data($val['associate_action'], $val['uid'], $action_list_users[$val['uid']]['user_name'], $question_info, $topic_info);
+								$action_list[$key]['last_action_str'] = ACTION_LOG::format_action_data($val['associate_action'], $val['uid'], $action_list_users[$val['uid']]['user_name'], $question_info);
 							}
 
 							if (in_array($val['associate_action'], array(

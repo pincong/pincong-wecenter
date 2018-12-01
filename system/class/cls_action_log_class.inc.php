@@ -20,7 +20,6 @@ class ACTION_LOG
 
 	const CATEGORY_COMMENT = 3;	// 评论
 
-	const CATEGORY_TOPIC = 4;	// 话题
 
 
 	const ADD_QUESTION = 101;	// 添加问题
@@ -47,21 +46,7 @@ class ACTION_LOG
 
 	const ADD_UNUSEFUL = 207;	// 问题没有帮助
 
-	const ADD_TOPIC = 401;	// 创建话题
 
-	const MOD_TOPIC = 402;	// 修改话题
-
-	const MOD_TOPIC_DESCRI = 403;	// 修改话题描述
-
-	const MOD_TOPIC_PIC = 404;	// 修改话题图片
-
-	const DELETE_TOPIC = 405;	// 删除话题
-
-	const ADD_TOPIC_FOCUS = 406;	// 添加话题关注
-
-	const ADD_RELATED_TOPIC = 410;	// 添加相关话题
-
-	const DELETE_RELATED_TOPIC = 411;	// 删除相关话题
 
 	const ADD_ARTICLE = 501;	// 添加文章
 
@@ -276,15 +261,15 @@ class ACTION_LOG
 		if ($associate_topic_info)
 		{
 			$topic_link_attr = 'class="aw-topic-name" data-id="' . $associate_topic_info['topic_id'] . '"';
-		}
 
-		if ($associate_topic_info AND $associate_topic_info['url_token'])
-		{
-			$topic_url = 'topic/' . $associate_topic_info['url_token'];
-		}
-		else
-		{
-			$topic_url = 'topic/' . $associate_topic_info['topic_id'];
+			if ($associate_topic_info['url_token'])
+			{
+				$topic_url = 'topic/' . $associate_topic_info['url_token'];
+			}
+			else
+			{
+				$topic_url = 'topic/' . $associate_topic_info['topic_id'];
+			}
 		}
 
 		switch ($action)
@@ -334,51 +319,6 @@ class ACTION_LOG
 				$action_string = '<a href="' . $user_profile_url . '" ' . $user_link_attr . '>' . $user_name . '</a> ' . AWS_APP::lang()->_t('喜欢了该活动');
 				break;
 
-			case self::ADD_TOPIC : // '添加话题',
-				if ($associate_topic_info)
-				{
-					if (isset($associate_topic_info[0]))
-					{
-						$action_string = '<a href="' . $user_profile_url . '" ' . $user_link_attr . '>' . $user_name . '</a> ' . AWS_APP::lang()->_t('将该问题添加到');
-
-						foreach ($associate_topic_info as $key => $val)
-						{
-							if ($val['url_token'])
-							{
-								$action_string .= ' <a href="topic/' . $val['url_token'] . '" ' . $topic_link_attr . '>' . $val['topic_title'] . '</a> ';
-							}
-							else
-							{
-								$action_string .= ' <a href="topic/' . $val['topic_id'] . '" ' . $topic_link_attr . '>' . $val['topic_title'] . '</a> ';
-							}
-
-							if ($key > 2)
-							{
-								break;
-							}
-						}
-
-						if (sizeof($associate_topic_info) > 3)
-						{
-							$action_string .= AWS_APP::lang()->_t('等') . ' ';
-						}
-
-						$action_string .= AWS_APP::lang()->_t('话题');
-					}
-					else
-					{
-						$action_string = '<a href="' . $user_profile_url . '" ' . $user_link_attr . '>' . $user_name . '</a> ' . AWS_APP::lang()->_t('将该问题添加到') . ' <a href="' . $topic_url . '" ' . $topic_link_attr . '>' . $associate_topic_info['topic_title'] . '</a> ' . AWS_APP::lang()->_t('话题');
-					}
-				}
-				else
-				{
-					$action_string = '<a href="' . $user_profile_url . '" ' . $user_link_attr . '>' . $user_name . '</a> ' . AWS_APP::lang()->_t('添加了一个话题');
-				}
-				break;
-
-			case self::ADD_TOPIC_FOCUS : // '关注话题',
-				$action_string = '<a href="' . $user_profile_url . '" ' . $user_link_attr . '>' . $user_name . '</a> ' . AWS_APP::lang()->_t('关注话题');
-				break;
 
 			case self::ADD_ARTICLE :
 				if ($associate_topic_info)
