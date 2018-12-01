@@ -1230,7 +1230,7 @@ class account_class extends AWS_MODEL
         ), 'uid = ' . intval($uid));
 
 		// 临时添加
-		if ($count < -10)
+		if (-$count >= get_setting('user_downvote_forbidden') AND !$user_info['forbidden'])
 		{
 			$this->model('account')->forbidden_user_by_uid($uid, 1);
 		}
