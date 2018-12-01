@@ -39,7 +39,7 @@ class integral_class extends AWS_MODEL
 			return false;
 		}
 
-		if ($item_id AND $this->fetch_log($uid, $action, $item_id))
+		if ($item_id AND $integral > 0 AND $this->fetch_log($uid, $action, $item_id))
 		{
 			return false;
 		}
