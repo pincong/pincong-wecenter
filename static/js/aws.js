@@ -1446,8 +1446,13 @@ AWS.User =
 		$.post(G_BASE_URL + '/question/ajax/answer_vote/', 'answer_id=' + answer_id + '&value=1');
 
 		// 判断是否投票过
-		if ($(selector).parents('.aw-item').find('.aw-agree-by').text().match(user_name))
+		if ($(selector).hasClass('active'))
 		{
+			$(selector).removeClass('active');
+
+			$(selector).parents('.operate').find('.agree').find('.count').html(parseInt($(selector).parents('.operate').find('.agree').find('.count').html()) - 1);
+
+			// 删除赞同操作
 			$.each($(selector).parents('.aw-item').find('.aw-user-name'), function (i, e)
 			{
 				if ($(e).html() == user_name)
@@ -1465,13 +1470,7 @@ AWS.User =
 				}
 			});
 
-			$(selector).removeClass('active');
-
-			if (parseInt($(selector).parents('.operate').find('.count').html()) != 0)
-			{
-				$(selector).parents('.operate').find('.count').html(parseInt($(selector).parents('.operate').find('.count').html()) - 1);
-			}
-
+			// 判断赞同来自内是否有人
 			if ($(selector).parents('.aw-item').find('.aw-agree-by a').length == 0)
 			{
 				$(selector).parents('.aw-item').find('.aw-agree-by').hide();
@@ -1488,12 +1487,17 @@ AWS.User =
 			{
 				$(selector).parents('.aw-item').find('.aw-agree-by').append('<em>、</em><a class="aw-user-name">' + user_name + '</a>');
 			}
-
-			$(selector).parents('.operate').find('.count').html(parseInt($(selector).parents('.operate').find('.count').html()) + 1);
-
 			$(selector).parents('.aw-item').find('.aw-agree-by').show();
 
-			$(selector).parents('.operate').find('a.active').removeClass('active');
+			// 判断是否有反对过
+			if ($(selector).parents('.operate').find('.disagree').hasClass('active'))
+			{
+				$(selector).parents('.operate').find('.disagree').find('.count').html(parseInt($(selector).parents('.operate').find('.disagree').find('.count').html()) - 1);
+
+				$(selector).parents('.operate').find('.disagree').removeClass('active');
+			}
+
+			$(selector).parents('.operate').find('.agree').find('.count').html(parseInt($(selector).parents('.operate').find('.agree').find('.count').html()) + 1);
 
 			$(selector).addClass('active');
 		}
@@ -1504,9 +1508,12 @@ AWS.User =
 	{
 		$.post(G_BASE_URL + '/question/ajax/answer_vote/', 'answer_id=' + answer_id + '&value=-1', function (result) {});
 
+		// 判断是否投票过
 		if ($(selector).hasClass('active'))
 		{
 			$(selector).removeClass('active');
+
+			$(selector).parents('.operate').find('.disagree').find('.count').html(parseInt($(selector).parents('.operate').find('.disagree').find('.count').html()) - 1);
 		}
 		else
 		{
@@ -1537,16 +1544,14 @@ AWS.User =
 					$(selector).parents('.aw-item').find('.aw-agree-by').hide();
 				}
 
-				$(selector).parents('.operate').find('.count').html(parseInt($(selector).parents('.operate').find('.count').html()) - 1);
+				$(selector).parents('.operate').find('.agree').find('.count').html(parseInt($(selector).parents('.operate').find('.agree').find('.count').html()) - 1);
 
 				$(selector).parents('.operate').find('.agree').removeClass('active');
+			}
 
-				$(selector).addClass('active');
-			}
-			else
-			{
-				$(selector).addClass('active');
-			}
+			$(selector).parents('.operate').find('.disagree').find('.count').html(parseInt($(selector).parents('.operate').find('.disagree').find('.count').html()) + 1);
+
+			$(selector).addClass('active');
 		}
 	},
 
