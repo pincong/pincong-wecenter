@@ -133,18 +133,6 @@ class main extends AWS_CONTROLLER
 
 				TPL::assign('related_topics', $related_topics);
 
-				$log_list = ACTION_LOG::get_action_by_event_id($topic_info['topic_id'], 10, ACTION_LOG::CATEGORY_TOPIC, implode(',', array(
-					ACTION_LOG::ADD_TOPIC,
-					ACTION_LOG::MOD_TOPIC,
-					ACTION_LOG::MOD_TOPIC_DESCRI,
-					ACTION_LOG::MOD_TOPIC_PIC,
-					ACTION_LOG::DELETE_TOPIC,
-					ACTION_LOG::ADD_RELATED_TOPIC,
-					ACTION_LOG::DELETE_RELATED_TOPIC
-				)), -1);
-
-				$log_list = $this->model('topic')->analysis_log($log_list);
-
 				$contents_topic_id = $topic_info['topic_id'];
 				$contents_topic_title = $topic_info['topic_title'];
 
@@ -215,8 +203,6 @@ class main extends AWS_CONTROLLER
 
 				TPL::assign('contents_topic_id', $contents_topic_id);
 				TPL::assign('contents_topic_title', $contents_topic_title);
-
-				TPL::assign('log_list', $log_list);
 
 				TPL::assign('redirect_message', $redirect_message);
 

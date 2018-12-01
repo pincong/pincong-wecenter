@@ -81,21 +81,9 @@ class topic extends AWS_ADMIN_CONTROLLER
 		{
 			foreach ($topic_list AS $key => $topic_info)
 			{
-				$action_log = ACTION_LOG::get_action_by_event_id($topic_info['topic_id'], 1, ACTION_LOG::CATEGORY_TOPIC, implode(',', array(
-					ACTION_LOG::ADD_TOPIC,
-					ACTION_LOG::MOD_TOPIC,
-					ACTION_LOG::MOD_TOPIC_DESCRI,
-					ACTION_LOG::MOD_TOPIC_PIC,
-					ACTION_LOG::DELETE_TOPIC,
-					ACTION_LOG::ADD_RELATED_TOPIC,
-					ACTION_LOG::DELETE_RELATED_TOPIC
-				)), -1);
+				$topic_list[$key]['last_edited_uid'] = NULL;
 
-				$action_log = $action_log[0];
-
-				$topic_list[$key]['last_edited_uid'] = $action_log['uid'];
-
-				$topic_list[$key]['last_edited_time'] = $action_log['add_time'];
+				$topic_list[$key]['last_edited_time'] = NULL;
 
 				$last_edited_uids[] = $topic_list[$key]['last_edited_uid'];
 			}
@@ -149,21 +137,9 @@ class topic extends AWS_ADMIN_CONTROLLER
 		{
 			foreach ($topic_list AS $key => $topic_info)
 			{
-				$action_log = ACTION_LOG::get_action_by_event_id($topic_info['topic_id'], 1, ACTION_LOG::CATEGORY_TOPIC, implode(',', array(
-					ACTION_LOG::ADD_TOPIC,
-					ACTION_LOG::MOD_TOPIC,
-					ACTION_LOG::MOD_TOPIC_DESCRI,
-					ACTION_LOG::MOD_TOPIC_PIC,
-					ACTION_LOG::DELETE_TOPIC,
-					ACTION_LOG::ADD_RELATED_TOPIC,
-					ACTION_LOG::DELETE_RELATED_TOPIC
-				)), -1);
+				$topic_list[$key]['last_edited_uid'] = NULL;
 
-				$action_log = $action_log[0];
-
-				$topic_list[$key]['last_edited_uid'] = $action_log['uid'];
-
-				$topic_list[$key]['last_edited_time'] = $action_log['add_time'];
+				$topic_list[$key]['last_edited_time'] = NULL;
 
 				$last_edited_uids[] = $topic_list[$key]['last_edited_uid'];
 			}

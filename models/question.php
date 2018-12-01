@@ -378,8 +378,6 @@ class question_class extends AWS_MODEL
 
 		ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION .  ' AND associate_action = ' . ACTION_LOG::ANSWER_QUESTION . ' AND associate_attached = ' . intval($question_id));	// 删除动作
 
-		ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_TOPIC . ' AND associate_action = ' . ACTION_LOG::ADD_TOPIC . ' AND associate_attached = ' . intval($question_id));	// 删除动作
-
 		// 删除附件
 		if ($attachs = $this->model('publish')->get_attach('question', $question_id))
 		{
@@ -1072,20 +1070,6 @@ class question_class extends AWS_MODEL
 					//$Services_Diff = new Services_Diff($log['associate_attached'], $log['associate_content']);
 
 					//$title_list .= '<p>' .$Services_Diff->get_Text_Diff_Renderer_inline() . '</p>';
-
-					break;
-
-				case ACTION_LOG::ADD_TOPIC : //添加话题
-
-					$topic_info = $this->model('topic')->get_topic_by_id($log['associate_attached']);
-					$title_list = $user_name_string . ' 给该问题添加了一个话题 <p><a href="topic/' . $topic_info['url_token'] . '">' . $log['associate_content'] . '</a>';
-
-					break;
-
-				case ACTION_LOG::DELETE_TOPIC : //移除话题
-
-					$topic_info = $this->model('topic')->get_topic_by_id($log['associate_attached']);
-					$title_list = $user_name_string . ' 移除了该问题的一个话题 <p><a href="topic/' . $topic_info['url_token'] . '">' . $log['associate_content'] . '</a>';
 
 					break;
 

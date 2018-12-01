@@ -175,8 +175,6 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经存在相同推荐话题')));
 		}
 
-		ACTION_LOG::save_action($this->user_id, $_GET['topic_id'], ACTION_LOG::CATEGORY_TOPIC, ACTION_LOG::ADD_RELATED_TOPIC, '', $related_id);
-
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'related_id' => $related_id,
 		), 1, null));
@@ -197,8 +195,6 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		$this->model('topic')->remove_related_topic($_GET['topic_id'], $_GET['related_id']);
-
-		ACTION_LOG::save_action($this->user_id, $_GET['topic_id'], ACTION_LOG::CATEGORY_TOPIC, ACTION_LOG::DELETE_RELATED_TOPIC, '', $_GET['related_id']);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}

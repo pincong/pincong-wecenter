@@ -236,8 +236,6 @@ class topic_class extends AWS_MODEL
 
 			if ($uid)
 			{
-				ACTION_LOG::save_action($uid, $topic_id, ACTION_LOG::CATEGORY_TOPIC, ACTION_LOG::ADD_TOPIC, $topic_title);
-
 				$this->add_focus_topic($uid, $topic_id);
 			}
 		}
@@ -254,13 +252,6 @@ class topic_class extends AWS_MODEL
 		if (!$topic_info = $this->get_topic_by_id($topic_id))
 		{
 			return false;
-		}
-
-		switch ($type)
-		{
-			case 'question':
-				ACTION_LOG::save_action($uid, $item_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::DELETE_TOPIC, $topic_info['topic_title'], $topic_id);
-			break;
 		}
 
 		return $this->delete('topic_relation', 'topic_id = ' . intval($topic_id) . ' AND item_id = ' . intval($item_id) . " AND `type` = '" . $this->quote($type) . "'");
@@ -291,22 +282,6 @@ class topic_class extends AWS_MODEL
 		if ($data)
 		{
 			$this->update('topic', $data, 'topic_id = ' . intval($topic_id));
-
-			// 记录日志
-			if ($topic_title AND $topic_title != $topic_info['topic_title'])
-			{
-				ACTION_LOG::save_action($uid, $topic_id, ACTION_LOG::CATEGORY_TOPIC, ACTION_LOG::MOD_TOPIC, $topic_title, $topic_info['topic_title']);
-			}
-
-			if ($topic_description AND $topic_description != $topic_info['topic_description'])
-			{
-				ACTION_LOG::save_action($uid, $topic_id, ACTION_LOG::CATEGORY_TOPIC, ACTION_LOG::MOD_TOPIC_DESCRI, $topic_description, $topic_info['topic_description']);
-			}
-
-			if ($topic_pic AND $topic_pic != $topic_info['topic_pic'])
-			{
-				ACTION_LOG::save_action($uid, $topic_id, ACTION_LOG::CATEGORY_TOPIC, ACTION_LOG::MOD_TOPIC_PIC, $topic_pic, $topic_info['topic_pic']);
-			}
 		}
 
 		return TRUE;
@@ -364,8 +339,6 @@ class topic_class extends AWS_MODEL
 
 			$result = 'add';
 
-			// 记录日志
-			ACTION_LOG::save_action($uid, $topic_id, ACTION_LOG::CATEGORY_TOPIC, ACTION_LOG::ADD_TOPIC_FOCUS);
 		}
 		else
 		{
@@ -375,8 +348,6 @@ class topic_class extends AWS_MODEL
 			}
 
 			$result = 'remove';
-
-			ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action = ' . ACTION_LOG::ADD_TOPIC_FOCUS . ' AND uid = ' . intval($uid) . ' AND associate_id = ' . intval($topic_id));
 		}
 
 		// 更新个人计数
@@ -474,10 +445,6 @@ class topic_class extends AWS_MODEL
 
 				@unlink(get_setting('upload_dir') . '/topic/' . str_replace('_' . AWS_APP::config()->get('image')->topic_thumbnail['min']['w'] . '_' . AWS_APP::config()->get('image')->topic_thumbnail['min']['h'], '', $topic_info['topic_pic']));
 			}
-
-			// 删除动作
-			ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_TOPIC . ' AND associate_id = ' . intval($topic_id));
-			ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action = ' . ACTION_LOG::ADD_TOPIC . ' AND associate_attached = ' . intval($topic_id));
 
 			$this->delete('topic_focus', 'topic_id = ' . intval($topic_id));
 			$this->delete('topic_relation', 'topic_id = ' . intval($topic_id));
@@ -825,128 +792,6 @@ class topic_class extends AWS_MODEL
 		}
 	}
 
-	/**
-	 * 处理话题日志
-	 * @param array $log_list
-	 *
-	 * @return array
-	 */
-	public function analysis_log($log_list)
-	{
-		$uid_list = array();
-		$topic_list = array();
-
-		if (!$log_list)
-		{
-			return false;
-		}
-
-		foreach ($log_list as $key => $log)
-		{
-			if (! in_array($log['uid'], $uid_list))
-			{
-				$uid_list[] = $log['uid'];
-			}
-
-			if ($log['associate_attached'] AND is_digits($log['associate_attached']) AND !in_array($log['associate_attached'], $topic_list))
-			{
-				$topic_list[] = $log['associate_attached'];
-			}
-
-			if ($log['associate_content'] AND is_digits($log['associate_content']) AND !in_array($log['associate_content'], $topic_list))
-			{
-				$topic_list[] = $log['associate_content'];
-			}
-		}
-
-		/**
-		 * 格式话简单数据类型
-		 */
-		if ($topics_array = $this->get_topics_by_ids($topic_list))
-		{
-			foreach ($topics_array as $key => $val)
-			{
-				$topic_title_list[$val['topic_id']] = $val['topic_title'];
-			}
-		}
-
-		if ($user_name_array = $this->model('account')->get_user_info_by_uids($uid_list))
-		{
-			foreach ($user_name_array as $user_info)
-			{
-				$user_info_list[$user_info['uid']] = $user_info;
-			}
-		}
-
-		/**
-		 * 格式话数组
-		 */
-		foreach ($log_list as $key => $log)
-		{
-			$user_name = $user_info_list[$log['uid']]['user_name'];
-
-			$user_url = get_js_url('people/' . $user_info_list[$log['uid']]['url_token']);
-
-			switch ($log['associate_action'])
-			{
-				case ACTION_LOG::ADD_TOPIC : //增加话题
-					$title_list = '<a href="' . $user_url . '">' . $user_name . '</a> ' . AWS_APP::lang()->_t('创建了该话题'). '</p>';
-					break;
-
-				case ACTION_LOG::ADD_TOPIC_FOCUS : //关注话题
-
-
-					break;
-
-				case ACTION_LOG::DELETE_TOPIC : //删除话题
-
-
-					break;
-
-				case ACTION_LOG::MOD_TOPIC : //修改话题标题
-					//$Services_Diff = new Services_Diff($log['associate_attached'], $log['associate_content']);
-
-					$title_list = '<a href="' . $user_url . '">' . $user_name . '</a> ' . AWS_APP::lang()->_t('修改了话题标题'); // . ' <p>' . $Services_Diff->get_Text_Diff_Renderer_inline() . "</p>";
-					break;
-
-				case ACTION_LOG::MOD_TOPIC_DESCRI : //修改话题描述
-					$log['associate_attached'] = trim($log['associate_attached']);
-					$log['associate_content'] = trim($log['associate_content']);
-
-					//$Services_Diff = new Services_Diff($log['associate_attached'], $log['associate_content']);
-					$title_list = '<a href="' . $user_url . '">' . $user_name . '</a> ' . AWS_APP::lang()->_t('修改了话题描述'); // . ' <p>' . $Services_Diff->get_Text_Diff_Renderer_inline() . '</p>';
-
-					break;
-
-				case ACTION_LOG::MOD_TOPIC_PIC : //修改话题图片
-					$title_list = '<a href="' . $user_url . '">' . $user_name . '</a> ' . AWS_APP::lang()->_t('修改了话题图片');
-					break;
-
-				case ACTION_LOG::ADD_RELATED_TOPIC : //添加相关话题
-					$topic_info = $this->get_topic_by_id($log['associate_attached']);
-
-					$title_list = '<a href="' . $user_url . '">' . $user_name . '</a> ' . AWS_APP::lang()->_t('添加了相关话题') . '<p><a href="topic/' . rawurlencode($topic_info['topic_title']) . '">' . $topic_info['topic_title'] . '</a></p>';
-					break;
-
-				case ACTION_LOG::DELETE_RELATED_TOPIC : //删除相关话题
-					$topic_info = $this->get_topic_by_id($log['associate_attached']);
-
-					$title_list = '<a href="' . $user_url . '">' . $user_name . '</a> ' . AWS_APP::lang()->_t('删除了相关话题') . '<p><a href="topic/' . rawurlencode($topic_info['topic_title']) . '">' . $topic_info['topic_title'] . '</a></p>';
-					break;
-			}
-
-			$data_list[] = ($title_list) ? array(
-				'user_name' => $user_name,
-				'title' => $title_list,
-				'add_time' => date('Y-m-d', $log['add_time']),
-				'log_id' => sprintf('%06s', $log['history_id']),
-				'user_url' => $user_url
-			) : '';
-		}
-
-		return $data_list;
-	}
-
 	public function save_related_topic($topic_id, $related_id)
 	{
 		$this->pre_save_auto_related_topics($topic_id);
@@ -1206,15 +1051,6 @@ class topic_class extends AWS_MODEL
 		if ($flag = $this->check_topic_relation($topic_id, $item_id, $type))
 		{
 			return $flag;
-		}
-
-		switch ($type)
-		{
-			case 'question':
-				ACTION_LOG::save_action($uid, $item_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_TOPIC, $topic_info['topic_title'], $topic_id);
-
-				ACTION_LOG::save_action($uid, $topic_id, ACTION_LOG::CATEGORY_TOPIC, ACTION_LOG::ADD_TOPIC, $topic_info['topic_title'], $item_id);
-			break;
 		}
 
 		$this->model('account')->save_recent_topics($uid, $topic_info['topic_title']);
