@@ -11,10 +11,19 @@
                             <img src="<?php echo get_avatar_url($this->user['uid'], 'max'); ?>" alt="<?php echo $this->user['user_name']; ?>" />
                             <span class="pull-right operate">
                             <?php if ($this->user['uid'] != $this->user_id AND $this->user_id) { ?>
+
+                                <?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
+									<?php if ($this->user['forbidden']) { ?>
+									<a href="javascript:;" class="text-color-999" onclick="AWS.ajax_request(G_BASE_URL + '/admin/ajax/forbidden_user/' , 'uid=<?php echo $this->user['uid']; ?>&status=0');"><i class="icon icon-forbid"></i> 解封</a>
+									<?php } else { ?>
+									<a href="javascript:;" class="text-color-999" onclick="AWS.ajax_request(G_BASE_URL + '/admin/ajax/forbidden_user/' , 'uid=<?php echo $this->user['uid']; ?>&status=1');"><i class="icon icon-forbid"></i> 封禁</a>
+									<?php } ?>
+								<?php } ?>
+
                                 <?php if (get_setting('pm_enabled') == 'Y') { ?>
-                                <a class="text-color-999" onclick="AWS.dialog('inbox', '<?php echo $this->user['user_name']; ?>');"><i class="icon icon-inbox"></i> 私信</a>
+                                <a href="javascript:;" class="text-color-999" onclick="AWS.dialog('inbox', '<?php echo $this->user['user_name']; ?>');"><i class="icon icon-inbox"></i> 私信</a>
                                 <?php } ?>
-                                <a onclick="AWS.dialog('publish', {category_enable:<?php echo (get_setting('category_enable') == 'Y') ? '1' : '0'; ?>, ask_user_id:<?php echo $this->user['uid']; ?>, ask_user_name:'<?php echo $this->user['user_name']; ?>'});" class="text-color-999 hidden-xs"><i class="icon icon-at"></i> <?php _e('问Ta'); ?></a>
+                                <a href="javascript:;" class="text-color-999 hidden-xs" onclick="AWS.dialog('publish', {category_enable:<?php echo (get_setting('category_enable') == 'Y') ? '1' : '0'; ?>, ask_user_id:<?php echo $this->user['uid']; ?>, ask_user_name:'<?php echo $this->user['user_name']; ?>'});"><i class="icon icon-at"></i> <?php _e('问Ta'); ?></a>
                                 <a href="javascript:;" class="follow btn btn-normal btn-success<?php if ($this->user_follow_check) { ?> active<?php } ?>" onclick="AWS.User.follow($(this), 'user', <?php echo $this->user['uid']; ?>);"><span><?php if ($this->user_follow_check) { ?><?php _e('取消关注'); ?><?php } else { ?><?php _e('关注'); ?><?php } ?></span> <em>|</em> <b><?php echo $this->user['fans_count']; ?></b></a>
                             <?php } else if ($this->user_id == $this->user['uid']) { ?>
                                 <a href="account/setting/profile/" class="btn btn-mini btn-success"><?php _e('编辑'); ?></a>
