@@ -371,10 +371,7 @@ class ajax extends AWS_CONTROLLER
 
         if ($_POST['attach_access_key'] AND $IS_MODIFY_VERIFIED)
         {
-            if ($this->model('publish')->update_attach('question', $question_info['question_id'], $_POST['attach_access_key']))
-            {
-                ACTION_LOG::save_action($this->user_id, $question_info['question_id'], ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::MOD_QUESTION_ATTACH);
-            }
+            $this->model('publish')->update_attach('question', $question_info['question_id'], $_POST['attach_access_key']);
         }
 
         H::ajax_json_output(AWS_APP::RSM(array(

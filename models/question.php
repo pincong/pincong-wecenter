@@ -1080,13 +1080,6 @@ class question_class extends AWS_MODEL
 
 					break;
 
-				case ACTION_LOG::MOD_QUESTION_ATTACH : //修改附件
-
-
-					$title_list = $user_name_string . ' 修改了该问题的附件 ';
-
-					break;
-
 				case ACTION_LOG::REDIRECT_QUESTION : //问题重定向
 
 					$question_info = $this->get_question_info_by_id($log['associate_attached']);

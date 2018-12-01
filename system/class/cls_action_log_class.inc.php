@@ -34,8 +34,6 @@ class ACTION_LOG
 
 	const MOD_QUESTION_CATEGORY = 108;	// 修改问题分类
 
-	const MOD_QUESTION_ATTACH = 109;	// 修改问题附件
-
 	const DEL_REDIRECT_QUESTION = 110;	// 删除问题重定向
 
 	const ANSWER_QUESTION = 201;	// 回复问题
