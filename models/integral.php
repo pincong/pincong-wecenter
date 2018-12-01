@@ -238,4 +238,20 @@ class integral_class extends AWS_MODEL
         return true;
     }
 
+	public function delete_expired_logs()
+	{
+		$days = intval(get_setting('expiration_integral_logs'));
+		if (!$days)
+		{
+			return;
+		}
+		$seconds = $days * 24 * 3600;
+		$time_before = real_time() - $seconds;
+		if ($time_before < 0)
+		{
+			$time_before = 0;
+		}
+		$this->delete('integral_log', 'time < ' . $time_before);
+	}
+
 }

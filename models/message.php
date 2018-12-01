@@ -235,15 +235,21 @@ class message_class extends AWS_MODEL
 		$this->delete('inbox_dialog', 'sender_count = 0 AND recipient_count = 0');
 	}
 
-    public function delete_expired_messages()
-    {
-        $seconds = 7 * 24 * 3600;
-        $time_before = real_time() - $seconds;
-        if ($time_before < 0) {
-            $time_before = 0;
-        }
-        $this->delete('inbox', 'add_time < ' . $time_before);
-        $this->delete('inbox_dialog', 'add_time < ' . $time_before);
-    }
+	public function delete_expired_messages()
+	{
+		$days = intval(get_setting('expiration_private_messages'));
+		if (!$days)
+		{
+			return;
+		}
+		$seconds = $days * 24 * 3600;
+		$time_before = real_time() - $seconds;
+		if ($time_before < 0)
+		{
+			$time_before = 0;
+		}
+		$this->delete('inbox', 'add_time < ' . $time_before);
+		$this->delete('inbox_dialog', 'add_time < ' . $time_before);
+	}
 
 }
