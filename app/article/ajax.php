@@ -53,7 +53,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_comment_article'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_name'))));
 		}
 
 		if (!$article_info = $this->model('article')->get_article_info_by_id($_POST['article_id']))
@@ -204,12 +204,12 @@ class ajax extends AWS_CONTROLLER
 			case 'article':
 				if ($rating === 1 AND !$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_agree_question'))
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_name'))));
 				}
 				else
 				if ($rating === -1 AND !$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_disagree_question'))
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_name'))));
 				}
 				$item_info = $this->model('article')->get_article_info_by_id($_POST['item_id']);
 			break;
@@ -217,12 +217,12 @@ class ajax extends AWS_CONTROLLER
 			case 'comment':
 				if ($rating === 1 AND !$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_agree_answer'))
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_name'))));
 				}
 				else
 				if ($rating === -1 AND !$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_disagree_answer'))
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_name'))));
 				}
 				$item_info = $this->model('article')->get_comment_by_id($_POST['item_id']);
 			break;
@@ -271,7 +271,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_thanks'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_name'))));
 		}
 
 		if (!$article_info = $this->model('article')->get_article_info_by_id($_POST['article_id']))
@@ -307,7 +307,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_move_up_question'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_name'))));
 		}
 
 		if (!$this->model('posts')->bump_post($this->user_id, $_POST['article_id'], 'article'))
@@ -322,7 +322,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_move_down_question'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_name'))));
 		}
 
 		if (!$this->model('posts')->sink_post($this->user_id, $_POST['article_id'], 'article'))

@@ -61,7 +61,7 @@ class setting extends AWS_CONTROLLER
 
 	public function integral_action()
 	{
-		$this->crumb(AWS_APP::lang()->_t('我的%s', get_setting('integral_unit')), '/account/setting/integral/');
+		$this->crumb(AWS_APP::lang()->_t('我的%s', get_setting('integral_name')), '/account/setting/integral/');
 
 		TPL::output('account/setting/integral');
 	}

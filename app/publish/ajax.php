@@ -402,7 +402,7 @@ class ajax extends AWS_CONTROLLER
 
         if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_new_question'))
         {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
+            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_name'))));
         }
 
         if (get_setting('category_enable') == 'N')
@@ -553,7 +553,7 @@ class ajax extends AWS_CONTROLLER
 
         if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_new_article'))
         {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
+            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_name'))));
         }
 
         if (get_setting('category_enable') == 'N')
