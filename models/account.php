@@ -1223,10 +1223,15 @@ class account_class extends AWS_MODEL
         ), 'uid = ' . intval($uid));
     }
 
-    public function sum_user_agree_count($uid)
+    public function add_user_agree_count($uid)
     {
+		$user_info = $this->model('account')->get_user_info_by_uid($uid);
+		if (!$user_info)
+		{
+			return false;
+		}
         return $this->update('users', array(
-            'agree_count' => ($this->count('answer_vote', 'vote_value = 1 AND answer_uid = ' . intval($uid)) + $this->count('article_vote', 'rating = 1 AND item_uid = ' . intval($uid)))
+            'agree_count' => intval($user_info['agree_count']) + 1
         ), 'uid = ' . intval($uid));
     }
 

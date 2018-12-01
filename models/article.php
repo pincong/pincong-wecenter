@@ -409,7 +409,7 @@ class article_class extends AWS_MODEL
 			break;
 		}
 
-		$this->model('account')->sum_user_agree_count($item_uid);
+		$this->model('account')->add_user_agree_count($item_uid);
 
 		return true;
 	}

@@ -335,7 +335,7 @@ class answer_class extends AWS_MODEL
 	 *
 	 * @return boolean true|false
 	 */
-	public function change_answer_vote($answer_id, $vote_value = 1, $uid = 0,$reputation_factor=0)
+	public function change_answer_vote($answer_id, $vote_value, $uid, $reputation_factor)
 	{
 		if (!$answer_id)
 		{
@@ -344,7 +344,6 @@ class answer_class extends AWS_MODEL
 
 		if (! in_array($vote_value, array(
 			- 1,
-			0,
 			1
 		)))
 		{
@@ -360,7 +359,6 @@ class answer_class extends AWS_MODEL
 		{
 			$this->insert('answer_vote', array(
 				'answer_id' => $answer_id,
-				'answer_uid' => $answer_uid,
 				'vote_uid' => $uid,
 				'add_time' => fake_time(),
 				'vote_value' => $vote_value,
@@ -411,7 +409,7 @@ class answer_class extends AWS_MODEL
 		$this->update_question_vote_count($question_id);
 
 		// 更新回复作者的被赞同数
-		$this->model('account')->sum_user_agree_count($answer_uid);
+		$this->model('account')->add_user_agree_count($answer_uid);
 
 		return true;
 	}
