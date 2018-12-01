@@ -270,7 +270,7 @@ class actions_class extends AWS_MODEL
 
 		if ($final_list_answer_ids)
 		{
-			$answer_agree_users = $this->model('answer')->get_vote_user_by_answer_ids($final_list_answer_ids);
+			//$answer_agree_users = $this->model('answer')->get_vote_user_by_answer_ids($final_list_answer_ids);
 			$answer_vote_status = $this->model('answer')->get_answer_vote_status($final_list_answer_ids, $uid);
 
 			$answer_users_rated_thanks = $this->model('answer')->get_answers_thanks($final_list_answer_ids, $uid);
@@ -282,10 +282,10 @@ class actions_class extends AWS_MODEL
 			{
 				$answer_id = $action_list[$key]['answer_info']['answer_id'];
 
-				if (isset($answer_agree_users[$answer_id]))
+				/*if (isset($answer_agree_users[$answer_id]))
 				{
 					$action_list[$key]['answer_info']['agree_users'] = $answer_agree_users[$answer_id];
-				}
+				}*/
 
 				if (isset($answer_vote_status[$answer_id]))
 				{

@@ -225,7 +225,7 @@ class main extends AWS_CONTROLLER
 
 			if ($answer_ids)
 			{
-				$answer_agree_users = $this->model('answer')->get_vote_user_by_answer_ids($answer_ids);
+				//$answer_agree_users = $this->model('answer')->get_vote_user_by_answer_ids($answer_ids);
 
 				$answer_vote_status = $this->model('answer')->get_answer_vote_status($answer_ids, $this->user_id);
 
@@ -247,7 +247,7 @@ class main extends AWS_CONTROLLER
 
 				$answer['answer_content'] = $this->model('question')->parse_at_user(FORMAT::parse_attachs(nl2br(FORMAT::parse_bbcode($answer['answer_content']))));
 
-				$answer['agree_users'] = $answer_agree_users[$answer['answer_id']];
+				//$answer['agree_users'] = $answer_agree_users[$answer['answer_id']];
 				$answer['agree_status'] = $answer_vote_status[$answer['answer_id']];
 
 				if ($question_info['best_answer'] == $answer['answer_id'] AND intval($_GET['page']) < 2)
