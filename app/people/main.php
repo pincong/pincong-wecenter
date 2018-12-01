@@ -135,7 +135,7 @@ class main extends AWS_CONTROLLER
 				$where[] = 'group_id = ' . intval($_GET['group_id']);
 			}
 
-			$users_list = $this->model('account')->get_users_list(implode('', $where), calc_page_limit($_GET['page'], get_setting('contents_per_page')), true, false, 'reputation DESC');
+			$users_list = $this->model('account')->get_users_list(implode('', $where), calc_page_limit($_GET['page'], get_setting('contents_per_page')), true, false, 'forbidden ASC, reputation DESC');
 
 			$where[] = 'group_id <> 3';
 
