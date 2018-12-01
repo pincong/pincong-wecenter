@@ -1329,7 +1329,7 @@ class question_class extends AWS_MODEL
 		return $this->fetch_row('question_thanks', 'question_id = ' . intval($question_id) . " AND uid = " . intval($uid));
 	}
 
-	public function question_thanks($question_id, $uid, $user_name)
+	public function question_thanks($question_id, $uid)
 	{
 		if (!$question_id OR !$uid)
 		{
@@ -1351,8 +1351,7 @@ class question_class extends AWS_MODEL
 		{
 			$this->insert('question_thanks', array(
 				'question_id' => $question_id,
-				'uid' => $uid,
-				'user_name' => $user_name
+				'uid' => $uid
 			));
 
 			$this->shutdown_update('question', array(
