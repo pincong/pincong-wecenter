@@ -514,37 +514,4 @@ class main extends AWS_CONTROLLER
 		TPL::output('question/square');
 	}
 
-	public function unverify_modify_action()
-	{
-		if (! $question_info = $this->model('question')->get_question_info_by_id($_GET['question_id']) or ! $_GET['log_id'])
-		{
-			H::redirect_msg(AWS_APP::lang()->_t('问题不存在'), '/');
-		}
-
-		if (($question_info['published_uid'] != $this->user_id) AND (! $this->user_info['permission']['is_administrator']) AND (! $this->user_info['permission']['is_moderator']))
-		{
-			H::redirect_msg(AWS_APP::lang()->_t('你没有权限进行此操作'), '/');
-		}
-
-		$this->model('question')->unverify_modify($_GET['question_id'], $_GET['log_id']);
-
-		H::redirect_msg(AWS_APP::lang()->_t('取消确认修改成功, 正在返回...'), '/question/id-' . $_GET['question_id'] . '__column-log__rf-false');
-	}
-
-	public function verify_modify_action()
-	{
-		if (! $question_info = $this->model('question')->get_question_info_by_id($_GET['question_id']) or ! $_GET['log_id'])
-		{
-			H::redirect_msg(AWS_APP::lang()->_t('问题不存在'), '/');
-		}
-
-		if (($question_info['published_uid'] != $this->user_id) AND (! $this->user_info['permission']['is_administrator']) AND (! $this->user_info['permission']['is_moderator']))
-		{
-			H::redirect_msg(AWS_APP::lang()->_t('你没有权限进行此操作'), '/');
-		}
-
-		$this->model('question')->verify_modify($_GET['question_id'], $_GET['log_id']);
-
-		H::redirect_msg(AWS_APP::lang()->_t('确认修改成功, 正在返回...'), '/question/id-' . $_GET['question_id'] . '__column-log__rf-false');
-	}
 }

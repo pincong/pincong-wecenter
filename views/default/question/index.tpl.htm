@@ -164,7 +164,6 @@
 								<?php } ?>
 
 								<?php if ((!$this->question_info['lock'] AND ($this->question_info['published_uid'] == $this->user_id OR $this->user_info['permission']['edit_question'])) OR $this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?><a class="text-color-999" href="publish/<?php echo $this->question_info['question_id']; ?>"><i class="icon icon-edit"></i><?php _e('编辑'); ?></a><?php } ?>
-								<?php if ($this->user_id AND $this->question_info['unverified_modify_count']) { ?><a href="question/<?php echo $this->question_info['question_id']; ?>?column=log&rf=false" class="text-color-999 aw-question-wait-edit"><i class="icon-check"></i><?php _e('待确认'); ?> <em class="badge badge-info"><?php echo $this->question_info['unverified_modify_count']; ?></em></a><?php } ?>
 
 								<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'] OR $this->user_id == $this->question_info['published_uid']) { ?>
 								<a class="text-color-999 aw-add-question-related hidden-xs"><i class="icon icon-bind"></i> <?php _e('相关链接'); ?></a>

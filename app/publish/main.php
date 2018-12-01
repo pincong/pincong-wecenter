@@ -86,11 +86,6 @@ class main extends AWS_CONTROLLER
 			TPL::assign('question_category_list', $this->model('system')->build_category_html('question', 0, $question_info['category_id']));
 		}
 
-		if ($modify_reason = $this->model('question')->get_modify_reason())
-		{
-			TPL::assign('modify_reason', $modify_reason);
-		}
-
 		TPL::assign('human_valid', human_valid('question_valid_hour'));
 
 		TPL::import_js('js/app/publish.js');

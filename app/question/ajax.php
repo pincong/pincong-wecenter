@@ -829,19 +829,6 @@ class ajax extends AWS_CONTROLLER
 		//处理日志记录
 		$log_list = $this->model('question')->analysis_log($log_list, $question_info['published_uid'], $question_info['anonymous']);
 
-		if (! $unverified_modify_all = $question_info['unverified_modify'])
-		{
-			$unverified_modify_all = array();
-		}
-
-		$unverified_modify = array();
-
-		foreach ($unverified_modify_all as $key => $val)
-		{
-			$unverified_modify = array_merge($unverified_modify, $val);
-		}
-
-		TPL::assign('unverified_modify', $unverified_modify);
 		TPL::assign('question_info', $question_info);
 
 		TPL::assign('list', $log_list);

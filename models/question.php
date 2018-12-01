@@ -50,23 +50,6 @@ class question_class extends AWS_MODEL
 			$questions[$question_id] = $this->fetch_row('question', 'question_id = ' . intval($question_id) . $and);
 		}
 
-		if ($questions[$question_id])
-		{
-			$questions[$question_id]['unverified_modify'] = @unserialize($questions[$question_id]['unverified_modify']);
-
-			if (is_array($questions[$question_id]['unverified_modify']))
-			{
-				$counter = 0;
-
-				foreach ($questions[$question_id]['unverified_modify'] AS $key => $val)
-				{
-					$counter = $counter + sizeof($val);
-				}
-
-				$questions[$question_id]['unverified_modify_count'] = $counter;
-			}
-		}
-
 		return $questions[$question_id];
 	}
 
@@ -186,170 +169,22 @@ class question_class extends AWS_MODEL
 			), 'question_id = ' . intval($question_id));
 		}
 
-		$addon_data = array(
-			'modify_reason' => $modify_reason,
-		);
+		$addon_data = null;
 
 		if ($question_info['question_detail'] != $question_detail)
 		{
 			$log_id = ACTION_LOG::save_action($uid, $question_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::MOD_QUESTION_DESCRI, $question_detail, $question_info['question_detail'], null, $anonymous, $addon_data);
-
-			if (!$verified)
-			{
-				$this->track_unverified_modify($question_id, $log_id, 'detail');
-			}
-
 		}
 
 		//记录日志
 		if ($question_info['question_content'] != $question_content)
 		{
 			$log_id = ACTION_LOG::save_action($uid, $question_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::MOD_QUESTION_TITLE, $question_content, $question_info['question_content'], null, null, $addon_data);
-
-			if (!$verified)
-			{
-				$this->track_unverified_modify($question_id, $log_id, 'content');
-			}
 		}
 
 		$this->model('posts')->set_posts_index($question_id, 'question');
 
 		return true;
-	}
-
-	public function verify_modify($question_id, $log_id)
-	{
-		if (!$unverified_modify = $this->get_unverified_modify($question_id))
-		{
-			return false;
-		}
-
-		if (!$action_log = ACTION_LOG::get_action_by_history_id($log_id))
-		{
-			return false;
-		}
-
-		if (@in_array($log_id, $unverified_modify['content']))
-		{
-			$this->update('question', array(
-				'question_content' => $action_log['associate_content'],
-				'update_time' => fake_time()
-			), 'question_id = ' . intval($question_id));
-
-			$this->model('search_fulltext')->push_index('question', $action_log['associate_content'], $question_id);
-
-			$this->clean_unverified_modify($question_id, 'content');
-
-			ACTION_LOG::update_action_time_by_history_id($log_id);
-		}
-		else if (@in_array($log_id, $unverified_modify['detail']))
-		{
-			$this->update('question', array(
-				'question_detail' => $action_log['associate_content'],
-				'update_time' => fake_time()
-			), 'question_id = ' . intval($question_id));
-
-			$this->clean_unverified_modify($question_id, 'detail');
-
-			ACTION_LOG::update_action_time_by_history_id($log_id);
-		}
-
-		return false;
-	}
-
-	public function unverify_modify($question_id, $log_id)
-	{
-		if (!$unverified_modify = $this->get_unverified_modify($question_id))
-		{
-			return false;
-		}
-
-		if (!$log_id)
-		{
-			return false;
-		}
-
-		if (@in_array($log_id, $unverified_modify['content']))
-		{
-			unset($unverified_modify['content'][$log_id]);
-
-			ACTION_LOG::delete_action_history('history_id = ' . intval($log_id));
-		}
-		else if (@in_array($log_id, $unverified_modify['detail']))
-		{
-			unset($unverified_modify['detail'][$log_id]);
-
-			ACTION_LOG::delete_action_history('history_id = ' . intval($log_id));
-		}
-
-		$this->save_unverified_modify($question_id, $unverified_modify);
-
-		return false;
-	}
-
-	public function get_unverified_modify($question_id)
-	{
-		if (!$question_info = $this->get_question_info_by_id($question_id, false))
-		{
-			return false;
-		}
-
-		if (is_array($question_info['unverified_modify']))
-		{
-			return $question_info['unverified_modify'];
-		}
-
-		if ($question_info['unverified_modify'] = @unserialize($question_info['unverified_modify']))
-		{
-			return $question_info['unverified_modify'];
-		}
-
-		return array();
-	}
-
-	public function save_unverified_modify($question_id, $unverified_modify = array())
-	{
-		$unverified_modify_count = 0;
-
-		foreach ($unverified_modify AS $unverified_modify_info)
-		{
-			$unverified_modify_count = $unverified_modify_count + count($unverified_modify_info);
-		}
-
-		return $this->update('question', array(
-			'unverified_modify' => serialize($unverified_modify),
-			'unverified_modify_count' => $unverified_modify_count
-		), 'question_id = ' . intval($question_id));
-	}
-
-	public function track_unverified_modify($question_id, $log_id, $type)
-	{
-		$unverified_modify = $this->get_unverified_modify($question_id);
-
-		$unverified_modify[$type][$log_id] = $log_id;
-
-		return $this->save_unverified_modify($question_id, $unverified_modify);
-	}
-
-	public function clean_unverified_modify($question_id, $type)
-	{
-		$unverified_modify = $this->get_unverified_modify($question_id);
-
-		unset($unverified_modify[$type]);
-
-		return $this->save_unverified_modify($question_id, $unverified_modify);
-	}
-
-	public function get_unverified_modify_count($question_id)
-	{
-		$question_info = $this->get_question_info_by_id($question_id, false);
-
-		if (!$question_info)
-		{
-			return false;
-		}
-
-		return $question_info['unverified_modify_count'];
 	}
 
 	public function remove_question($question_id)
@@ -1048,29 +883,11 @@ class question_class extends AWS_MODEL
 
 					$title_list = $user_name_string . ' 修改了问题标题';
 
-					if ($log['addon_data']['modify_reason'])
-					{
-						$title_list .= '[' . $log['addon_data']['modify_reason'] . ']';
-					}
-
-					//$Services_Diff = new Services_Diff($log['associate_attached'], $log['associate_content']);
-
-					//$title_list .= '<p>' . $Services_Diff->get_Text_Diff_Renderer_inline() . '</p>';
-
 					break;
 
 				case ACTION_LOG::MOD_QUESTION_DESCRI : //修改问题
 
 					$title_list = $user_name_string . ' 修改了问题内容';
-
-					if ($log['addon_data']['modify_reason'])
-					{
-						$title_list .= '[' . $log['addon_data']['modify_reason'] . ']';
-					}
-
-					//$Services_Diff = new Services_Diff($log['associate_attached'], $log['associate_content']);
-
-					//$title_list .= '<p>' .$Services_Diff->get_Text_Diff_Renderer_inline() . '</p>';
 
 					break;
 
@@ -1179,30 +996,6 @@ class question_class extends AWS_MODEL
 			'popular_value' => $popular_value,
 			'popular_value_update' => time()
 		), 'question_id = ' . intval($question_id));
-	}
-
-	public function get_modify_reason()
-	{
-		if ($modify_reasons = explode("\n", get_setting('question_modify_reason')))
-		{
-			$modify_reason = array();
-
-			foreach($modify_reasons as $key => $val)
-			{
-				$val = trim($val);
-
-				if ($val)
-				{
-					$modify_reason[] = $val;
-				}
-			}
-
-			return $modify_reason;
-		}
-		else
-		{
-			return false;
-		}
 	}
 
 	public function save_report($uid, $type, $target_id, $reason, $url)

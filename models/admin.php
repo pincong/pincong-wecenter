@@ -76,7 +76,6 @@ class admin_class extends AWS_MODEL
                                 'question_approval' => $this->count('approval', 'type = "question"'),
                                 'article_approval' => $this->count('approval', 'type = "article"'),
                                 'article_comment_approval' => $this->count('approval', 'type = "article_comment"'),
-                                'unverified_modify_count' => $this->count('question', 'unverified_modify_count <> 0'),
 
                                 // 用户举报
                                 'user_report' => $this->count('report', 'status = 0'),
@@ -114,14 +113,6 @@ class admin_class extends AWS_MODEL
             $notifications_texts[] = array(
                                             'url' => 'admin/approval/list/',
                                             'text' => AWS_APP::lang()->_t('有 %s 个问题待审核', $notifications['question_approval'])
-                                        );
-        }
-
-        if ($notifications['unverified_modify_count'])
-        {
-            $notifications_texts[] = array(
-                                            'url' => 'admin/approval/list/type-unverified_modify',
-                                            'text' => AWS_APP::lang()->_t('有 %s 个问题修改待审核', $notifications['unverified_modify_count'])
                                         );
         }
 

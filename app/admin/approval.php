@@ -39,24 +39,9 @@ class approval extends AWS_ADMIN_CONTROLLER
 
 		TPL::assign('article_comment_count', $this->model('publish')->count('approval', "type = 'article_comment'"));
 
-		TPL::assign('unverified_modifies_count', $this->model('question')->count('question', 'unverified_modify_count <> 0'));
+		$approval_list = $this->model('publish')->get_approval_list($_GET['type'], $_GET['page'], $this->per_page);
 
-		switch ($_GET['type'])
-		{
-			case 'unverified_modify':
-				$approval_list = $this->model('question')->fetch_page('question', 'unverified_modify_count <> 0', 'question_id ASC', $_GET['page'], $this->per_page);
-
-				$found_rows = $this->model('question')->found_rows();
-
-				break;
-
-			default:
-				$approval_list = $this->model('publish')->get_approval_list($_GET['type'], $_GET['page'], $this->per_page);
-
-				$found_rows = $this->model('publish')->found_rows();
-
-				break;
-		}
+		$found_rows = $this->model('publish')->found_rows();
 
 		if ($approval_list)
 		{
@@ -66,28 +51,11 @@ class approval extends AWS_ADMIN_CONTROLLER
 				'per_page' => $this->per_page
 			))->create_links());
 
-			if ($_GET['type'] == 'unverified_modify')
+			foreach ($approval_list AS $approval_info)
 			{
-				foreach ($approval_list AS $key => $approval_info)
+				if (!$approval_uids[$approval_info['uid']])
 				{
-					$approval_list[$key]['uid'] = $approval_info['published_uid'];
-
-					if (!$approval_uids[$approval_list[$key]['uid']])
-					{
-						$approval_uids[$approval_list[$key]['uid']] = $approval_list[$key]['uid'];
-					}
-
-					$approval_list[$key]['unverified_modify'] = @unserialize($approval_info['unverified_modify']);
-				}
-			}
-			else
-			{
-				foreach ($approval_list AS $approval_info)
-				{
-					if (!$approval_uids[$approval_info['uid']])
-					{
-						$approval_uids[$approval_info['uid']] = $approval_info['uid'];
-					}
+					$approval_uids[$approval_info['uid']] = $approval_info['uid'];
 				}
 			}
 
