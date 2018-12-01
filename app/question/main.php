@@ -229,7 +229,7 @@ class main extends AWS_CONTROLLER
 
 				$answer_vote_status = $this->model('answer')->get_answer_vote_status($answer_ids, $this->user_id);
 
-				$answer_users_rated_thanks = $this->model('answer')->users_rated_thanks($answer_ids, $this->user_id);
+				$answer_users_rated_thanks = $this->model('answer')->get_answers_thanks($answer_ids, $this->user_id);
 
 				$answer_attachs = $this->model('publish')->get_attachs('answer', $has_attach_answer_ids, 'min');
 			}
@@ -243,7 +243,7 @@ class main extends AWS_CONTROLLER
 					$answer['insert_attach_ids'] = FORMAT::parse_attachs($answer['answer_content'], true);
 				}
 
-				$answer['user_rated_thanks'] = $answer_users_rated_thanks[$answer['answer_id']];
+				$answer['answer_thanks'] = $answer_users_rated_thanks[$answer['answer_id']];
 
 				$answer['answer_content'] = $this->model('question')->parse_at_user(FORMAT::parse_attachs(nl2br(FORMAT::parse_bbcode($answer['answer_content']))));
 

@@ -1712,9 +1712,9 @@ AWS.User =
 	},
 
 	// 感谢评论回复者
-	answer_user_rate_thanks: function(selector, answer_id)
+	answer_thanks: function(selector, answer_id)
 	{
-		$.post(G_BASE_URL + '/question/ajax/question_answer_rate_thanks/', 'answer_id=' + answer_id, function (result)
+		$.post(G_BASE_URL + '/question/ajax/answer_thanks/', 'answer_id=' + answer_id, function (result)
 		{
 			if (result.errno != 1)
 			{

@@ -722,7 +722,7 @@ class answer_class extends AWS_MODEL
 		return $this->delete('answer_comments', "id = " . intval($comment_id));
 	}
 
-	public function users_rated_thanks($answer_ids, $uid)
+	public function get_answers_thanks($answer_ids, $uid)
 	{
 		if (!$uid)
 		{
@@ -744,7 +744,7 @@ class answer_class extends AWS_MODEL
 		return $users_rated;
 	}
 
-	public function user_rate_thanks($answer_id, $uid)
+	public function answer_thanks($answer_id, $uid)
 	{
 		$answer_id = intval($answer_id);
 		$uid = intval($uid);
