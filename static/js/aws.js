@@ -1690,6 +1690,27 @@ AWS.User =
 		}, 'json');
 	},
 
+	// 文章感谢
+	article_thanks: function(selector, article_id)
+	{
+		$.post(G_BASE_URL + '/article/ajax/article_thanks/', 'article_id=' + article_id, function (result)
+		{
+			if (result.errno != 1)
+			{
+				AWS.alert(result.err);
+			}
+			else if (result.rsm.action == 'add')
+			{
+				selector.html(selector.html().replace(_t('感谢'), _t('已感谢')));
+				selector.removeAttr('onclick');
+			}
+			else
+			{
+				selector.html(selector.html().replace(_t('已感谢'), _t('感谢')));
+			}
+		}, 'json');
+	},
+
 	// 感谢评论回复者
 	answer_user_rate_thanks: function(selector, answer_id)
 	{

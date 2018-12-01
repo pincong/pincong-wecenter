@@ -1352,7 +1352,8 @@ class question_class extends AWS_MODEL
 		{
 			$this->insert('question_thanks', array(
 				'question_id' => $question_id,
-				'uid' => $uid
+				'uid' => $uid,
+				'time' => fake_time()
 			));
 
 			$this->shutdown_update('question', array(

@@ -596,12 +596,13 @@ class article_class extends AWS_MODEL
 		{
 			$this->insert('article_thanks', array(
 				'article_id' => $article_id,
-				'uid' => $uid
+				'uid' => $uid,
+				'time' => fake_time()
 			));
 
 			$this->shutdown_update('article', array(
 				'thanks_count' => $this->count('article_thanks', 'article_id = ' . intval($article_id)),
-			), 'article_id = ' . intval($article_id));
+			), 'id = ' . intval($article_id));
 
 			$this->model('integral')->process($uid, 'ARTICLE_THANKS', get_setting('integral_system_config_thanks'), '感谢文章 #' . $article_id, $article_id);
 
