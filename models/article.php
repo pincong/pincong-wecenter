@@ -375,26 +375,38 @@ class article_class extends AWS_MODEL
 			{
 				if ($rating == 1)
 				{
-					$this->model('integral')->process($uid, 'AGREE_ARTICLE', get_setting('integral_system_config_agree_question'), '赞同文章 #' . $item_id, $item_id);
-					$this->model('integral')->process($item_uid, 'ARTICLE_AGREED', get_setting('integral_system_config_question_agreed'), '文章被赞同 #' . $item_id, $item_id);
+					if (!$this->model('integral')->fetch_log($uid, 'AGREE_ARTICLE', $item_id))
+					{
+						$this->model('integral')->process($uid, 'AGREE_ARTICLE', get_setting('integral_system_config_agree_question'), '赞同文章 #' . $item_id, $item_id);
+						$this->model('integral')->process($item_uid, 'ARTICLE_AGREED', get_setting('integral_system_config_question_agreed'), '文章被赞同 #' . $item_id, $item_id);
+					}
 				}
 				else
 				{
-					$this->model('integral')->process($uid, 'DISAGREE_ARTICLE', get_setting('integral_system_config_disagree_question'), '反对文章 #' . $item_id, $item_id);
-					$this->model('integral')->process($item_uid, 'ARTICLE_DISAGREED', get_setting('integral_system_config_question_disagreed'), '文章被反对 #' . $item_id, $item_id);
+					if (!$this->model('integral')->fetch_log($uid, 'DISAGREE_ARTICLE', $item_id))
+					{
+						$this->model('integral')->process($uid, 'DISAGREE_ARTICLE', get_setting('integral_system_config_disagree_question'), '反对文章 #' . $item_id, $item_id);
+						$this->model('integral')->process($item_uid, 'ARTICLE_DISAGREED', get_setting('integral_system_config_question_disagreed'), '文章被反对 #' . $item_id, $item_id);
+					}
 				}
 			}
 			else //评论
 			{
 				if ($rating == 1)
 				{
-					$this->model('integral')->process($uid, 'AGREE_ARTICLE_COMMENT', get_setting('integral_system_config_agree_answer'), '赞同文章评论 #' . $item_id, $item_id);
-					$this->model('integral')->process($item_uid, 'ARTICLE_COMMENT_AGREED', get_setting('integral_system_config_answer_agreed'), '文章评论被赞同 #' . $item_id, $item_id);
+					if (!$this->model('integral')->fetch_log($uid, 'AGREE_ARTICLE_COMMENT', $item_id))
+					{
+						$this->model('integral')->process($uid, 'AGREE_ARTICLE_COMMENT', get_setting('integral_system_config_agree_answer'), '赞同文章评论 #' . $item_id, $item_id);
+						$this->model('integral')->process($item_uid, 'ARTICLE_COMMENT_AGREED', get_setting('integral_system_config_answer_agreed'), '文章评论被赞同 #' . $item_id, $item_id);
+					}
 				}
 				else
 				{
-					$this->model('integral')->process($uid, 'DISAGREE_ARTICLE_COMMENT', get_setting('integral_system_config_disagree_answer'), '反对文章评论 #' . $item_id, $item_id);
-					$this->model('integral')->process($item_uid, 'ARTICLE_COMMENT_DISAGREED', get_setting('integral_system_config_answer_disagreed'), '文章评论被反对 #' . $item_id, $item_id);
+					if (!$this->model('integral')->fetch_log($uid, 'DISAGREE_ARTICLE_COMMENT', $item_id))
+					{
+						$this->model('integral')->process($uid, 'DISAGREE_ARTICLE_COMMENT', get_setting('integral_system_config_disagree_answer'), '反对文章评论 #' . $item_id, $item_id);
+						$this->model('integral')->process($item_uid, 'ARTICLE_COMMENT_DISAGREED', get_setting('integral_system_config_answer_disagreed'), '文章评论被反对 #' . $item_id, $item_id);
+					}
 				}
 			}
 
