@@ -251,7 +251,7 @@ class user extends AWS_ADMIN_CONTROLLER
 
     public function integral_log_action()
     {
-        if ($log = $this->model('integral')->fetch_page('integral_log', 'uid = ' . intval($_GET['uid']), 'time DESC', $_GET['page'], 50))
+        if ($log = $this->model('integral')->fetch_page('integral_log', 'uid = ' . intval($_GET['uid']), 'id DESC', $_GET['page'], 50))
         {
             TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
                 'base_url' => get_js_url('/admin/user/integral_log/uid-' . intval($_GET['uid'])),
