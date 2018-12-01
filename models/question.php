@@ -1101,7 +1101,7 @@ class question_class extends AWS_MODEL
 
 			$data_list[] = ($title_list) ? array(
 				'title' => $title_list,
-				'add_time' => date('Y-m-d H:i:s', $log['add_time']),
+				'add_time' => date_friendly($log['add_time']),
 				'log_id' => sprintf('%06s', $log['history_id'])
 			) : '';
 		}
