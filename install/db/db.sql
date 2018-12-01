@@ -186,6 +186,21 @@ CREATE TABLE IF NOT EXISTS `aws_article_comments` (
 /*!40000 ALTER TABLE `aws_article_comments` ENABLE KEYS */;
 
 
+-- 导出  表 panic.aws_article_thanks 结构
+CREATE TABLE IF NOT EXISTS `aws_article_thanks` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(11) DEFAULT '0',
+  `article_id` int(11) DEFAULT '0',
+  `time` int(10) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `article_id` (`article_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+-- 正在导出表  panic.aws_article_thanks 的数据：0 rows
+/*!40000 ALTER TABLE `aws_article_thanks` DISABLE KEYS */;
+/*!40000 ALTER TABLE `aws_article_thanks` ENABLE KEYS */;
+
+
 -- 导出  表 panic.aws_article_vote 结构
 CREATE TABLE IF NOT EXISTS `aws_article_vote` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
