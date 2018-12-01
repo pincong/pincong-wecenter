@@ -133,6 +133,7 @@ CREATE TABLE IF NOT EXISTS `aws_article` (
   `add_time` int(10) NOT NULL DEFAULT '0',
   `has_attach` tinyint(1) NOT NULL DEFAULT '0',
   `lock` int(1) NOT NULL DEFAULT '0',
+  `thanks_count` int(11) DEFAULT '0',
   `votes` int(10) DEFAULT '0',
   `title_fulltext` text,
   `category_id` int(10) DEFAULT '0',
