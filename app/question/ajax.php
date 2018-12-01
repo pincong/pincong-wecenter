@@ -179,7 +179,7 @@ class ajax extends AWS_CONTROLLER
 			case 'question':
 				$question_info = $this->model('question')->get_question_info_by_id($_GET['item_id']);
 
-				$question_info['question_content'] = trim(cjk_substr($question_info['question_content'], 0, 100, 'UTF-8', '...'), "\r\n\t");
+				$question_info['question_content'] = trim(cjk_substr($question_info['question_content'], 0, 100, 'UTF-8', '...'));
 
 				$url = get_js_url('/question/' . $question_info['question_id'] . '?fromuid=' . $this->user_id);
 
@@ -193,7 +193,7 @@ class ajax extends AWS_CONTROLLER
 
 				$question_info = $this->model('question')->get_question_info_by_id($answer_info['question_id']);
 
-				$answer_info['answer_content'] = trim(cjk_substr($answer_info['answer_content'], 0, 100, 'UTF-8', '...'), "\r\n\t");
+				$answer_info['answer_content'] = trim(cjk_substr($answer_info['answer_content'], 0, 100, 'UTF-8', '...'));
 
 				$answer_info['answer_content'] = str_replace(array(
 					"\r",
@@ -214,7 +214,7 @@ class ajax extends AWS_CONTROLLER
 			case 'article':
 				$article_info = $this->model('article')->get_article_info_by_id($_GET['item_id']);
 
-				$article_info['message'] = trim(cjk_substr($article_info['message'], 0, 100, 'UTF-8', '...'), "\r\n\t");
+				$article_info['message'] = trim(cjk_substr($article_info['message'], 0, 100, 'UTF-8', '...'));
 
 				$article_info['message'] = str_replace(array(
 					"\r",
@@ -573,7 +573,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function save_answer_action()
 	{
-		$answer_content = trim($_POST['answer_content'], "\r\n\t");
+		$answer_content = trim($_POST['answer_content']);
 
 		if (! $answer_content)
 		{
@@ -722,7 +722,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 		}
 
-		$answer_content = trim($_POST['answer_content'], "\r\n\t");
+		$answer_content = trim($_POST['answer_content']);
 
 		if (!$answer_content)
 		{
