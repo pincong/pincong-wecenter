@@ -96,19 +96,21 @@ class notify_class extends AWS_MODEL
 			return false;
 		}
 
+		$add_time = fake_time();
 		if ($notification_id = $this->insert('notification', array(
 			'sender_uid' => intval($sender_uid),
 			'recipient_uid' => intval($recipient_uid),
 			'action_type' => intval($action_type),
 			'model_type' => intval($model_type),
 			'source_id' => $source_id,
-			'add_time' => fake_time(),
+			'add_time' => $add_time,
 			'read_flag' => 0
 		)))
 		{
 			$this->insert('notification_data', array(
 				'notification_id' => $notification_id,
-				'data' => serialize($data)
+				'data' => serialize($data),
+				'add_time' => $add_time,
 			));
 
 			$this->model('account')->update_notification_unread($recipient_uid);
@@ -1088,5 +1090,22 @@ class notify_class extends AWS_MODEL
 		}
 		
 		return true;
+	}
+
+	public function delete_expired_data()
+	{
+		$days = intval(get_setting('expiration_notifications'));
+		if (!$days)
+		{
+			return;
+		}
+		$seconds = $days * 24 * 3600;
+		$time_before = real_time() - $seconds;
+		if ($time_before < 0)
+		{
+			$time_before = 0;
+		}
+		$this->delete('notification', 'add_time < ' . $time_before);
+		$this->delete('notification_data', 'add_time < ' . $time_before);
 	}
 }

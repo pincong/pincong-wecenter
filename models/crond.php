@@ -125,6 +125,7 @@ class crond_class extends AWS_MODEL
         $this->model('message')->delete_expired_messages();
         $this->model('integral')->delete_expired_logs();
         ACTION_LOG::delete_expired_data();
+        $this->model('notify')->delete_expired_data();
     }
 
     // 每日时执行
