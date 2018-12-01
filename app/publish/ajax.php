@@ -291,7 +291,7 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请选择分类')));
         }
 
-        $question_content = trim($_POST['question_content']);
+        $question_content = my_trim($_POST['question_content']);
 
         if (cjk_strlen($question_content) < 5)
         {
@@ -303,12 +303,14 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题标题字数不得大于') . ' ' . get_setting('question_title_limit') . ' ' . AWS_APP::lang()->_t('字节')));
         }
 
-        if (!$this->user_info['permission']['publish_url'] AND FORMAT::outside_url_exists($_POST['question_detail']))
+        $question_detail = my_trim($_POST['question_detail']);
+
+        if (!$this->user_info['permission']['publish_url'] AND FORMAT::outside_url_exists($question_detail))
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在的用户组不允许发布站外链接')));
         }
 
-        if (!$this->model('publish')->insert_attach_is_self_upload($_POST['question_detail'], $_POST['attach_ids']))
+        if (!$this->model('publish')->insert_attach_is_self_upload($question_detail, $_POST['attach_ids']))
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('只允许插入当前页面上传的附件')));
         }
@@ -350,7 +352,7 @@ class ajax extends AWS_CONTROLLER
             $IS_MODIFY_VERIFIED = FALSE;
         }
 
-        $this->model('question')->update_question($question_info['question_id'], $question_content, $_POST['question_detail'], $this->user_id, $IS_MODIFY_VERIFIED, $_POST['modify_reason'], $question_info['anonymous'], $_POST['category_id']);
+        $this->model('question')->update_question($question_info['question_id'], $question_content, $question_detail, $this->user_id, $IS_MODIFY_VERIFIED, $_POST['modify_reason'], $question_info['anonymous'], $_POST['category_id']);
 
         if ($this->user_id != $question_info['published_uid'])
         {
@@ -382,7 +384,7 @@ class ajax extends AWS_CONTROLLER
 
     public function publish_question_action()
     {
-        $question_content = trim($_POST['question_content']);
+        $question_content = my_trim($_POST['question_content']);
         if (!$question_content)
         {
             H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请输入问题标题')));
@@ -423,7 +425,8 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题标题字数不得大于 %s 字节', get_setting('question_title_limit'))));
         }
 
-        if (!$this->user_info['permission']['publish_url'] AND FORMAT::outside_url_exists($_POST['question_detail']))
+        $question_detail = my_trim($_POST['question_detail']);
+        if (!$this->user_info['permission']['publish_url'] AND FORMAT::outside_url_exists($question_detail))
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在的用户组不允许发布站外链接')));
         }
@@ -437,7 +440,7 @@ class ajax extends AWS_CONTROLLER
         {
             foreach ($_POST['topics'] AS $key => $topic_title)
             {
-                $topic_title = trim($topic_title);
+                $topic_title = my_trim($topic_title);
 
                 if (!$topic_title)
                 {
@@ -460,7 +463,7 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请为问题添加话题')));
         }
 
-        if (!$this->model('publish')->insert_attach_is_self_upload($_POST['question_detail'], $_POST['attach_ids']))
+        if (!$this->model('publish')->insert_attach_is_self_upload($question_detail, $_POST['attach_ids']))
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('只允许插入当前页面上传的附件')));
         }
@@ -474,12 +477,12 @@ class ajax extends AWS_CONTROLLER
 
         if ($this->publish_approval_valid(array(
                 $question_content,
-                $_POST['question_detail']
+                $question_detail
             )))
         {
             $this->model('publish')->publish_approval('question', array(
                 'question_content' => $question_content,
-                'question_detail' => $_POST['question_detail'],
+                'question_detail' => $question_detail,
                 'category_id' => $_POST['category_id'],
                 'topics' => $_POST['topics'],
                 'anonymous' => $_POST['anonymous'],
@@ -497,7 +500,7 @@ class ajax extends AWS_CONTROLLER
         {
             $question_id = $this->model('publish')->publish_question(
                 $question_content,
-                $_POST['question_detail'],
+                $question_detail,
                 $_POST['category_id'],
                 $this->user_id,
                 $_POST['topics'],
@@ -526,7 +529,7 @@ class ajax extends AWS_CONTROLLER
 
     public function publish_article_action()
     {
-        $article_title = trim($_POST['title']);
+        $article_title = my_trim($_POST['title']);
         if (!$article_title)
         {
             H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请输入文章标题')));
@@ -562,12 +565,13 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文章标题字数不得大于 %s 字节', get_setting('question_title_limit'))));
         }
 
-        if (!$this->user_info['permission']['publish_url'] AND FORMAT::outside_url_exists($_POST['message']))
+        $article_content = my_trim($_POST['message']);
+        if (!$this->user_info['permission']['publish_url'] AND FORMAT::outside_url_exists($article_content))
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在的用户组不允许发布站外链接')));
         }
 
-        if (!$this->model('publish')->insert_attach_is_self_upload($_POST['message'], $_POST['attach_ids']))
+        if (!$this->model('publish')->insert_attach_is_self_upload($article_content, $_POST['attach_ids']))
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('只允许插入当前页面上传的附件')));
         }
@@ -581,7 +585,7 @@ class ajax extends AWS_CONTROLLER
         {
             foreach ($_POST['topics'] AS $key => $topic_title)
             {
-                $topic_title = trim($topic_title);
+                $topic_title = my_trim($topic_title);
 
                 if (!$topic_title)
                 {
@@ -611,12 +615,12 @@ class ajax extends AWS_CONTROLLER
 
         if ($this->publish_approval_valid(array(
                 $article_title,
-                $_POST['message']
+                $article_content
             )))
         {
             $this->model('publish')->publish_approval('article', array(
                 'title' => $article_title,
-                'message' => $_POST['message'],
+                'message' => $article_content,
                 'category_id' => $_POST['category_id'],
                 'topics' => $_POST['topics'],
                 'attach_access_key' => $_POST['attach_access_key'],
@@ -633,7 +637,7 @@ class ajax extends AWS_CONTROLLER
         {
             $article_id = $this->model('publish')->publish_article(
                 $article_title,
-                $_POST['message'],
+                $article_content,
                 $this->user_id,
                 $_POST['topics'],
                 $_POST['category_id'],
@@ -678,7 +682,7 @@ class ajax extends AWS_CONTROLLER
             }
         }
 
-        $article_title = trim($_POST['title']);
+        $article_title = my_trim($_POST['title']);
 
         if (!$article_title)
         {
@@ -700,7 +704,9 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文章标题字数不得大于') . ' ' . get_setting('question_title_limit') . ' ' . AWS_APP::lang()->_t('字节')));
         }
 
-        if (!$this->user_info['permission']['publish_url'] AND FORMAT::outside_url_exists($_POST['message']))
+        $article_content = my_trim($_POST['message']);
+
+        if (!$this->user_info['permission']['publish_url'] AND FORMAT::outside_url_exists($article_content))
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在的用户组不允许发布站外链接')));
         }
@@ -710,7 +716,7 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写正确的验证码')));
         }
 
-        if (!$this->model('publish')->insert_attach_is_self_upload($_POST['message'], $_POST['attach_ids']))
+        if (!$this->model('publish')->insert_attach_is_self_upload($article_content, $_POST['attach_ids']))
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('只允许插入当前页面上传的附件')));
         }
@@ -740,7 +746,7 @@ class ajax extends AWS_CONTROLLER
             ), 1, null));
         }
 
-        $this->model('article')->update_article($article_info['id'], $this->user_id, $article_title, $_POST['message'], $_POST['topics'], $_POST['category_id'], $this->user_info['permission']['create_topic']);
+        $this->model('article')->update_article($article_info['id'], $this->user_id, $article_title, $article_content, $_POST['topics'], $_POST['category_id'], $this->user_info['permission']['create_topic']);
 
         if ($_POST['attach_access_key'])
         {

@@ -34,7 +34,7 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('本站未启用私信功能')));
         }
 
-		if (trim($_POST['message']) == '')
+		if (my_trim($_POST['message']) == '')
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入私信内容')));
 		}

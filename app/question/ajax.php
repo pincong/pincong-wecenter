@@ -240,7 +240,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function save_answer_comment_action()
 	{
-		$message = trim($_POST['message']);
+		$message = my_trim($_POST['message']);
 		if (!$message)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请输入评论内容')));
@@ -320,7 +320,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function save_question_comment_action()
 	{
-		$message = trim($_POST['message']);
+		$message = my_trim($_POST['message']);
 		if (!$message)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入评论内容')));
@@ -573,7 +573,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function save_answer_action()
 	{
-		$answer_content = trim($_POST['answer_content']);
+		$answer_content = my_trim($_POST['answer_content']);
 
 		if (! $answer_content)
 		{
@@ -722,7 +722,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 		}
 
-		$answer_content = trim($_POST['answer_content']);
+		$answer_content = my_trim($_POST['answer_content']);
 
 		if (!$answer_content)
 		{
@@ -993,7 +993,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('举报功能已经关闭')));
 		}
 
-		if (trim($_POST['reason']) == '')
+		if (my_trim($_POST['reason']) == '')
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请填写举报理由')));
 		}

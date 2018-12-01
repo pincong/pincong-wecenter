@@ -150,7 +150,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题不存在')));
 		}
 
-		if (!$topic_title = trim($_POST['topic_title']))
+		if (!$topic_title = my_trim($_POST['topic_title']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入话题标题')));
 		}
@@ -601,7 +601,7 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		if (trim($_POST['topic_title']) == '')
+		if (my_trim($_POST['topic_title']) == '')
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入话题标题')));
 		}

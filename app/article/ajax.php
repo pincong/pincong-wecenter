@@ -39,7 +39,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function save_comment_action()
 	{
-		$message = trim($_POST['message']);
+		$message = my_trim($_POST['message']);
 
 		if (! $message)
 		{

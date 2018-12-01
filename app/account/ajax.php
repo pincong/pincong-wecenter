@@ -74,7 +74,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('本站只能通过邀请注册')));
 		}
 
-		if (trim($_POST['user_name']) == '')
+		if (my_trim($_POST['user_name']) == '')
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入用户名')));
 		}
@@ -94,7 +94,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名包含无效字符')));
 		}
-		if ($this->model('account')->check_username_sensitive_words($_POST['user_name']) OR trim($_POST['user_name']) != $_POST['user_name'])
+		if ($this->model('account')->check_username_sensitive_words($_POST['user_name']) OR my_trim($_POST['user_name']) != $_POST['user_name'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名中包含敏感词或系统保留字')));
 		}
@@ -434,7 +434,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if ($_POST['user_name'] AND $_POST['user_name'] != $this->user_info['user_name'])
 		{
-			if ($user_name = htmlspecialchars(trim($_POST['user_name'])))
+			if ($user_name = htmlspecialchars(my_trim($_POST['user_name'])))
 			{
 				if ($this->user_info['user_name_update_time'] AND $this->user_info['user_name_update_time'] > (time() - 3600 * 24 * 30))
 				{

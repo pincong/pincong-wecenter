@@ -38,7 +38,7 @@ class account_class extends AWS_MODEL
      */
     public function check_username($user_name)
     {
-    	$user_name = trim($user_name);
+    	$user_name = my_trim($user_name);
 
         return $this->fetch_one('users', 'uid', "user_name = '" . $this->quote($user_name) . "'");
     }
