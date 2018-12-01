@@ -30,7 +30,6 @@
                                 <span><i class="icon icon-prestige"></i> <?php _e('威望'); ?> : <em class="aw-text-color-green"><?php echo $this->user['reputation']; ?></em></span>
                                 <?php if (get_setting('integral_system_enabled') == 'Y') { ?><span><i class="icon icon-score"></i> <?php _e('%s', get_setting('integral_unit')); ?> : <em class="aw-text-color-orange"><?php echo $this->user['integral']; ?></em></span><?php } ?>
                                 <span><i class="icon icon-agree"></i> <?php _e('赞同'); ?> : <em class="aw-text-color-orange"><?php echo $this->user['agree_count']; ?></em></span>
-                                <span><i class="icon icon-thank"></i> <?php _e('感谢'); ?> : <em class="aw-text-color-orange"><?php echo $this->user['thanks_count']; ?></em></span>
                             </div>
                             <?php if ($this->reputation_topics) { ?>
                             <!-- 擅长话题 -->
@@ -43,8 +42,7 @@
                                             <a href="topic/<?php echo $val['url_token']; ?>" class="text" data-id="<?php echo $val['topic_id']; ?>"><?php echo $val['topic_title']; ?></a>
                                         </span>
                                         <span>
-                                            <i class="icon icon-agree"></i> <?php echo $val['agree_count']; ?>&nbsp;&nbsp;
-                                            <i class="icon icon-thank"></i> <?php echo $val['thanks_count']; ?>
+                                            <i class="icon icon-agree"></i> <?php echo $val['agree_count']; ?>
                                         </span>
                                     </li>
                                     <?php } ?>
@@ -288,7 +286,6 @@
                                                 <span><i class="icon icon-score"></i><?php _e('%s', get_setting('integral_unit')); ?>: <em class="aw-text-color-orange"><?php echo $this->user['integral']; ?></em></span>
                                                 <?php } ?>
                                                 <span><i class="icon icon-agree"></i><?php _e('赞同'); ?>: <em class="aw-text-color-orange"><?php echo $this->user['agree_count']; ?></em></span>
-                                                <span><i class="icon icon-thank"></i><?php _e('感谢'); ?>: <em class="aw-text-color-orange"><?php echo $this->user['thanks_count']; ?></em></span>
                                             </p>
                                         </dd>
                                     </dl>
@@ -303,8 +300,7 @@
                                                     <a href="topic/<?php echo $val['url_token']; ?>" class="text" data-id="<?php echo $val['topic_id']; ?>"><?php echo $val['topic_title']; ?></a>
                                                 </span>
                                                 <span>
-                                                    <i class="icon icon-agree"></i> <?php echo $val['agree_count']; ?>&nbsp;&nbsp;
-                                                    <i class="icon icon-thank"></i> <?php echo $val['thanks_count']; ?>
+                                                    <i class="icon icon-agree"></i> <?php echo $val['agree_count']; ?>
                                                 </span>
                                             </div>
                                             <?php } ?>

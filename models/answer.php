@@ -778,7 +778,7 @@ class answer_class extends AWS_MODEL
 		$this->model('integral')->process($uid, 'ANSWER_THANKS', get_setting('integral_system_config_thanks'), '感谢回复 #' . $answer_info['answer_id'], $answer_info['answer_id']);
 		$this->model('integral')->process($answer_info['uid'], 'THANKS_ANSWER', -get_setting('integral_system_config_thanks'), '回复被感谢 #' . $answer_info['answer_id'], $answer_info['answer_id']);
 
-		$this->model('account')->update_thanks_count($answer_info['uid']);
+		//$this->model('account')->update_thanks_count($answer_info['uid']);
 
 		return true;
 	}

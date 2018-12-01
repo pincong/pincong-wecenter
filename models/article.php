@@ -650,7 +650,7 @@ class article_class extends AWS_MODEL
 
 			$this->model('integral')->process($article_info['uid'], 'THANKS_ARTICLE', -get_setting('integral_system_config_thanks'), '文章被感谢 #' . $article_id, $article_id);
 
-			$this->model('account')->update_thanks_count($article_info['uid']);
+			//$this->model('account')->update_thanks_count($article_info['uid']);
 
 			return true;
 		}
