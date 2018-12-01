@@ -182,7 +182,7 @@ class publish_class extends AWS_MODEL
 
 		ACTION_LOG::save_action($uid, $question_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ANSWER_QUESTION, $answer_content, $answer_id, null, intval($anonymous));
 
-		if ($question_info['published_uid'] != $uid)
+		if ($question_info['published_uid'] != $uid AND !$this->model('integral')->fetch_log($uid, 'ANSWER_QUESTION', $question_id))
 		{
 			$this->model('integral')->process($uid, 'ANSWER_QUESTION', get_setting('integral_system_config_answer_question'), '回答问题 #' . $question_id, $question_id);
 
@@ -374,7 +374,7 @@ class publish_class extends AWS_MODEL
 		{
 			return false;
 		}
-
+		$article_id = $article_info['id'];
         $now = fake_time();
 
 		$comment_id = $this->insert('article_comments', array(
@@ -393,9 +393,9 @@ class publish_class extends AWS_MODEL
 
 		if ($at_uid AND $at_uid != $uid)
 		{
-			$this->model('notify')->send($uid, $at_uid, notify_class::TYPE_ARTICLE_COMMENT_AT_ME, notify_class::CATEGORY_ARTICLE, $article_info['id'], array(
+			$this->model('notify')->send($uid, $at_uid, notify_class::TYPE_ARTICLE_COMMENT_AT_ME, notify_class::CATEGORY_ARTICLE, $article_id, array(
 				'from_uid' => $uid,
-				'article_id' => $article_info['id'],
+				'article_id' => $article_id,
 				'item_id' => $comment_id,
 				'anonymous' => intval($anonymous)
 			));
@@ -407,9 +407,9 @@ class publish_class extends AWS_MODEL
 			{
 				if ($user_id != $uid)
 				{
-					$this->model('notify')->send($uid, $user_id, notify_class::TYPE_ARTICLE_COMMENT_AT_ME, notify_class::CATEGORY_ARTICLE, $article_info['id'], array(
+					$this->model('notify')->send($uid, $user_id, notify_class::TYPE_ARTICLE_COMMENT_AT_ME, notify_class::CATEGORY_ARTICLE, $article_id, array(
 						'from_uid' => $uid,
-						'article_id' => $article_info['id'],
+						'article_id' => $article_id,
 						'item_id' => $comment_id,
 						'anonymous' => intval($anonymous)
 					));
@@ -423,24 +423,24 @@ class publish_class extends AWS_MODEL
 
 		if ($article_info['uid'] != $uid)
 		{
-			$this->model('notify')->send($uid, $article_info['uid'], notify_class::TYPE_ARTICLE_NEW_COMMENT, notify_class::CATEGORY_ARTICLE, $article_info['id'], array(
+			$this->model('notify')->send($uid, $article_info['uid'], notify_class::TYPE_ARTICLE_NEW_COMMENT, notify_class::CATEGORY_ARTICLE, $article_id, array(
 				'from_uid' => $uid,
-				'article_id' => $article_info['id'],
+				'article_id' => $article_id,
 				'item_id' => $comment_id,
 				'anonymous' => intval($anonymous)
 			));
 		}
 
-		ACTION_LOG::save_action($uid, $article_info['id'], ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_COMMENT_ARTICLE, $message, $comment_id, null, intval($anonymous));
+		ACTION_LOG::save_action($uid, $article_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_COMMENT_ARTICLE, $message, $comment_id, null, intval($anonymous));
 
-		if ($article_info['uid'] != $uid)
+		if ($article_info['uid'] != $uid AND !$this->model('integral')->fetch_log($uid, 'COMMENT_ARTICLE', $article_id))
 		{
-			$this->model('integral')->process($uid, 'COMMENT_ARTICLE', get_setting('integral_system_config_comment_article'), '评论文章 #' . $article_info['id'], $article_info['id']);
+			$this->model('integral')->process($uid, 'COMMENT_ARTICLE', get_setting('integral_system_config_comment_article'), '评论文章 #' . $article_id, $article_id);
 
-			$this->model('integral')->process($article_info['uid'], 'ARTICLE_COMMENTED', get_setting('integral_system_config_article_commented'), '文章被评论 #' . $article_info['id'], $article_info['id']);
+			$this->model('integral')->process($article_info['uid'], 'ARTICLE_COMMENTED', get_setting('integral_system_config_article_commented'), '文章被评论 #' . $article_id, $article_id);
 		}
 
-		$this->model('posts')->set_posts_index($article_info['id'], 'article');
+		$this->model('posts')->set_posts_index($article_id, 'article');
 
 		return $comment_id;
 	}
