@@ -178,13 +178,37 @@ class ajax extends AWS_CONTROLLER
 
 	public function article_vote_action()
 	{
+		$rating = intval($_POST['rating']);
+		if ($rating !== 1 AND $rating !== -1)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('投票数据错误, 无法进行投票')));
+		}
+
 		switch ($_POST['type'])
 		{
 			case 'article':
+				if ($rating === 1 AND !$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_agree_question'))
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
+				}
+				else
+				if ($rating === -1 AND !$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_disagree_question'))
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
+				}
 				$item_info = $this->model('article')->get_article_info_by_id($_POST['item_id']);
 			break;
 
 			case 'comment':
+				if ($rating === 1 AND !$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_agree_answer'))
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
+				}
+				else
+				if ($rating === -1 AND !$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_disagree_answer'))
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
+				}
 				$item_info = $this->model('article')->get_comment_by_id($_POST['item_id']);
 			break;
 
@@ -202,7 +226,7 @@ class ajax extends AWS_CONTROLLER
 
 		$reputation_factor = $this->model('account')->get_user_group_by_id($this->user_info['reputation_group'], 'reputation_factor');
 
-		$this->model('article')->article_vote($_POST['type'], $_POST['item_id'], $_POST['rating'], $this->user_id, $reputation_factor, $item_info['uid']);
+		$this->model('article')->article_vote($_POST['type'], $_POST['item_id'], $rating, $this->user_id, $reputation_factor, $item_info['uid']);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}

@@ -297,40 +297,98 @@ class article_class extends AWS_MODEL
 		), 'id = ' . intval($article_id));
 	}
 
+	/**
+	 *
+	 * 文章或评论投票
+	 * @param string $type     //article|comment
+	 * @param int $item_id     //文章或评论id
+	 * @param int $rating      //-1反对 1 赞同
+	 * @param int $uid         //投票用户ID
+	 * @param int $reputation_factor
+	 * @param int $item_uid    //被投票用户ID
+	 *
+	 * @return boolean true|false
+	 */
 	public function article_vote($type, $item_id, $rating, $uid, $reputation_factor, $item_uid)
 	{
-		$this->delete('article_vote', "`type` = '" . $this->quote($type) . "' AND item_id = " . intval($item_id) . ' AND uid = ' . intval($uid));
-
-		if ($rating)
+		$rating = intval($rating);
+		if ($rating !== 1 AND $rating !== -1)
 		{
-			if ($article_vote = $this->fetch_row('article_vote', "`type` = '" . $this->quote($type) . "' AND item_id = " . intval($item_id) . " AND rating = " . intval($rating) . ' AND uid = ' . intval($uid)))
-			{
-				$this->update('article_vote', array(
-					'rating' => intval($rating),
-					'time' => fake_time(),
-					'reputation_factor' => $reputation_factor
-				), 'id = ' . intval($article_vote['id']));
-			}
-			else
-			{
-				$this->insert('article_vote', array(
-					'type' => $type,
-					'item_id' => intval($item_id),
-					'rating' => intval($rating),
-					'time' => fake_time(),
-					'uid' => intval($uid),
-					'item_uid' => intval($item_uid),
-					'reputation_factor' => $reputation_factor
-				));
-			}
+			return false;
 		}
+		if ($type !== 'article' AND $type !== 'comment')
+		{
+			return false;
+		}
+
+		$item_id = intval($item_id);
+		$uid = intval($uid);
+		$item_uid = intval($item_uid);
+
+		$vote_info = $this->fetch_row('article_vote', "`type` = '" . ($type) . "' AND item_id = " . ($item_id) . ' AND uid = ' . ($uid));
+		if (!$vote_info) //添加记录
+		{
+			$this->insert('article_vote', array(
+				'type' => $type,
+				'item_id' => $item_id,
+				'rating' => $rating,
+				'time' => fake_time(),
+				'uid' => $uid,
+				'reputation_factor' => $reputation_factor
+			));
+
+			if ($type == 'article') //文章
+			{
+				if ($rating == 1)
+				{
+					$this->model('integral')->process($uid, 'AGREE_ARTICLE', get_setting('integral_system_config_agree_question'), '赞同文章 #' . $item_id, $item_id);
+					$this->model('integral')->process($item_uid, 'ARTICLE_AGREED', get_setting('integral_system_config_question_agreed'), '文章被赞同 #' . $item_id, $item_id);
+				}
+				else
+				{
+					$this->model('integral')->process($uid, 'DISAGREE_ARTICLE', get_setting('integral_system_config_disagree_question'), '反对文章 #' . $item_id, $item_id);
+					$this->model('integral')->process($item_uid, 'ARTICLE_DISAGREED', get_setting('integral_system_config_question_disagreed'), '文章被反对 #' . $item_id, $item_id);
+				}
+			}
+			else //评论
+			{
+				if ($rating == 1)
+				{
+					$this->model('integral')->process($uid, 'AGREE_ARTICLE_COMMENT', get_setting('integral_system_config_agree_answer'), '赞同文章评论 #' . $item_id, $item_id);
+					$this->model('integral')->process($item_uid, 'ARTICLE_COMMENT_AGREED', get_setting('integral_system_config_answer_agreed'), '文章评论被赞同 #' . $item_id, $item_id);
+				}
+				else
+				{
+					$this->model('integral')->process($uid, 'DISAGREE_ARTICLE_COMMENT', get_setting('integral_system_config_disagree_answer'), '反对文章评论 #' . $item_id, $item_id);
+					$this->model('integral')->process($item_uid, 'ARTICLE_COMMENT_DISAGREED', get_setting('integral_system_config_answer_disagreed'), '文章评论被反对 #' . $item_id, $item_id);
+				}
+			}
+
+		}
+		else if ($vote_info['rating'] == $rating) //删除记录
+		{
+			$this->delete('article_vote', 'id = ' . intval($vote_info['id']));
+		}
+		else //更新记录
+		{
+			$this->update('article_vote', array(
+					'rating' => $rating,
+					'time' => fake_time(),
+					'reputation_factor' => $reputation_factor
+			), 'id = ' . intval($vote_info['id']));
+		}
+
+		$agree_count = $this->count('article_vote', "`type` = '" . ($type) . "' AND item_id = " . ($item_id) . " AND rating = 1");
+		$disagree_count = $this->count('article_vote', "`type` = '" . ($type) . "' AND item_id = " . ($item_id) . " AND rating = -1");
+
+		$votes = $agree_count - $disagree_count;
 
 		switch ($type)
 		{
 			case 'article':
 				$this->update('article', array(
-					'votes' => $this->count('article_vote', "`type` = '" . $this->quote($type) . "' AND item_id = " . intval($item_id) . " AND rating = 1")
-				), 'id = ' . intval($item_id));
+					'votes' => $votes
+				), 'id = ' . ($item_id));
 
 				switch ($rating)
 				{
@@ -339,15 +397,15 @@ class article_class extends AWS_MODEL
 					break;
 
 					case -1:
-						ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action = ' . ACTION_LOG::ADD_AGREE_ARTICLE . ' AND uid = ' . intval($uid) . ' AND associate_id = ' . intval($item_id));
+						ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action = ' . ACTION_LOG::ADD_AGREE_ARTICLE . ' AND uid = ' . ($uid) . ' AND associate_id = ' . ($item_id));
 					break;
 				}
 			break;
 
 			case 'comment':
 				$this->update('article_comments', array(
-					'votes' => $this->count('article_vote', "`type` = '" . $this->quote($type) . "' AND item_id = " . intval($item_id) . " AND rating = 1")
-				), 'id = ' . intval($item_id));
+					'votes' => $votes
+				), 'id = ' . ($item_id));
 			break;
 		}
 

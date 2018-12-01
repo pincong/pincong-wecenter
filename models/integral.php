@@ -89,6 +89,10 @@ class integral_class extends AWS_MODEL
 				case 'QUESTION_MOVED_UP':
 				case 'MOVE_DOWN_QUESTION':
 				case 'QUESTION_MOVED_DOWN':
+				case 'AGREE_QUESTION':
+				case 'QUESTION_AGREED':
+				case 'DISAGREE_QUESTION':
+				case 'QUESTION_DISAGREED':
 					$question_ids[] = $item['item_id'];
 				break;
 
@@ -104,16 +108,23 @@ class integral_class extends AWS_MODEL
 					$answer_ids[] = $item['item_id'];
 				break;
 
-				case 'INVITE':
-					$user_ids[] = $item['item_id'];
-				break;
-
 				case 'NEW_ARTICLE':
 				case 'MOVE_UP_ARTICLE':
 				case 'ARTICLE_MOVED_UP':
 				case 'MOVE_DOWN_ARTICLE':
 				case 'ARTICLE_MOVED_DOWN':
+				case 'AGREE_ARTICLE':
+				case 'ARTICLE_AGREED':
+				case 'DISAGREE_ARTICLE':
+				case 'ARTICLE_DISAGREED':
 					$article_ids[] = $item['item_id'];
+				break;
+
+				case 'AGREE_ARTICLE_COMMENT':
+				case 'ARTICLE_COMMENT_AGREED':
+				case 'DISAGREE_ARTICLE_COMMENT':
+				case 'ARTICLE_COMMENT_DISAGREED':
+					$article_comment_ids[] = $item['item_id'];
 				break;
 			}
 		}
@@ -128,14 +139,14 @@ class integral_class extends AWS_MODEL
 			$answers_info = $this->model('answer')->get_answers_by_ids($answer_ids);
 		}
 
-		if ($user_ids)
-		{
-			$users_info = $this->model('account')->get_user_info_by_uids($user_ids);
-		}
-
 		if ($article_ids)
 		{
 			$articles_info = $this->model('article')->get_article_info_by_ids($article_ids);
+		}
+
+		if ($article_comment_ids)
+		{
+			$article_comments_info = $this->model('article')->get_comments_by_ids($article_comment_ids);
 		}
 
 		foreach ($parse_items AS $log_id => $item)
@@ -158,6 +169,10 @@ class integral_class extends AWS_MODEL
 				case 'QUESTION_MOVED_UP':
 				case 'MOVE_DOWN_QUESTION':
 				case 'QUESTION_MOVED_DOWN':
+				case 'AGREE_QUESTION':
+				case 'QUESTION_AGREED':
+				case 'DISAGREE_QUESTION':
+				case 'QUESTION_DISAGREED':
 					if ($questions_info[$item['item_id']])
 					{
 						$result[$log_id] = array(
@@ -177,6 +192,10 @@ class integral_class extends AWS_MODEL
 				case 'ANSWER_AGREED':
 				case 'DISAGREE_ANSWER':
 				case 'ANSWER_DISAGREED':
+				case 'AGREE_ANSWER':
+				case 'ANSWER_AGREED':
+				case 'DISAGREE_ANSWER':
+				case 'ANSWER_DISAGREED':
 					if ($answers_info[$item['item_id']])
 					{
 						$result[$log_id] = array(
@@ -186,26 +205,33 @@ class integral_class extends AWS_MODEL
 					}
 				break;
 
-				case 'INVITE':
-					if ($users_info[$item['item_id']])
-					{
-						$result[$log_id] = array(
-							'title' => '会员: ' . $users_info[$item['item_id']]['user_name'],
-							'url' => get_js_url('/people/' . $users_info[$item['item_id']]['uid'])
-						);
-					}
-				break;
-
 				case 'NEW_ARTICLE':
 				case 'MOVE_UP_ARTICLE':
 				case 'ARTICLE_MOVED_UP':
 				case 'MOVE_DOWN_ARTICLE':
 				case 'ARTICLE_MOVED_DOWN':
+				case 'AGREE_ARTICLE':
+				case 'ARTICLE_AGREED':
+				case 'DISAGREE_ARTICLE':
+				case 'ARTICLE_DISAGREED':
 					if ($articles_info[$item['item_id']])
 					{
 						$result[$log_id] = array(
 							'title' => '文章: ' . $articles_info[$item['item_id']]['title'],
 							'url' => get_js_url('/article/' . $item['item_id'])
+						);
+					}
+				break;
+
+				case 'AGREE_ARTICLE_COMMENT':
+				case 'ARTICLE_COMMENT_AGREED':
+				case 'DISAGREE_ARTICLE_COMMENT':
+				case 'ARTICLE_COMMENT_DISAGREED':
+					if ($article_comments_info[$item['item_id']])
+					{
+						$result[$log_id] = array(
+							'title' => '文章评论: ' . cjk_substr($article_comments_info[$item['item_id']]['message'], 0, 24, 'UTF-8', '...'),
+							'url' => get_js_url('/article/' . $article_comments_info[$item['item_id']]['article_id'])
 						);
 					}
 				break;
