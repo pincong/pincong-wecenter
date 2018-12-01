@@ -134,6 +134,10 @@ class article_class extends AWS_MODEL
 
 		$this->delete('article_comments', "article_id = " . intval($article_id)); // 删除关联的回复内容
 
+		$this->delete('article_vote', 'article_id = ' . intval($article_id));
+
+		$this->delete('article_thanks', 'article_id = ' . intval($article_id));
+
 		$this->delete('topic_relation', "`type` = 'article' AND item_id = " . intval($article_id));		// 删除话题关联
 
 		ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action IN(' . ACTION_LOG::ADD_ARTICLE . ', ' . ACTION_LOG::ADD_AGREE_ARTICLE . ', ' . ACTION_LOG::ADD_COMMENT_ARTICLE . ') AND associate_id = ' . intval($article_id));	// 删除动作
@@ -559,4 +563,54 @@ class article_class extends AWS_MODEL
 
 		$this->model('posts')->set_posts_index($article_id, 'article');
 	}
+
+	public function get_article_thanks($article_id, $uid)
+	{
+		if (!$article_id OR !$uid)
+		{
+			return false;
+		}
+
+		return $this->fetch_row('article_thanks', 'article_id = ' . intval($article_id) . " AND uid = " . intval($uid));
+	}
+
+	public function article_thanks($article_id, $uid)
+	{
+		if (!$article_id OR !$uid)
+		{
+			return false;
+		}
+
+		if (!$article_info = $this->get_article_info_by_id($article_id))
+		{
+			return false;
+		}
+
+		if ($article_thanks = $this->get_article_thanks($article_id, $uid))
+		{
+			//$this->delete('article_thanks', "id = " . $article_thanks['id']);
+
+			return false;
+		}
+		else
+		{
+			$this->insert('article_thanks', array(
+				'article_id' => $article_id,
+				'uid' => $uid
+			));
+
+			$this->shutdown_update('article', array(
+				'thanks_count' => $this->count('article_thanks', 'article_id = ' . intval($article_id)),
+			), 'article_id = ' . intval($article_id));
+
+			$this->model('integral')->process($uid, 'ARTICLE_THANKS', get_setting('integral_system_config_thanks'), '感谢文章 #' . $article_id, $article_id);
+
+			$this->model('integral')->process($article_info['uid'], 'THANKS_ARTICLE', -get_setting('integral_system_config_thanks'), '文章被感谢 #' . $article_id, $article_id);
+
+			$this->model('account')->update_thanks_count($article_info['uid']);
+
+			return true;
+		}
+	}
+
 }

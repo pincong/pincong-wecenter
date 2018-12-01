@@ -519,7 +519,7 @@ class system_class extends AWS_MODEL
 			$delete_tables[] = 'answer_comments';
 			$delete_tables[] = 'answer_thanks';
 			$delete_tables[] = 'article_comments';
-			$delete_tables[] = 'article_vote';
+			$delete_tables[] = 'article_thanks';
 			$delete_tables[] = 'question_comments';
 			$delete_tables[] = 'question_thanks';
 
@@ -539,7 +539,7 @@ class system_class extends AWS_MODEL
 			$update_tables[] = 'answer_thanks';
 			$update_tables[] = 'article';
 			$update_tables[] = 'article_comments';
-			$update_tables[] = 'article_vote';
+			$update_tables[] = 'article_thanks';
 			$update_tables[] = 'question_comments';
 			$update_tables[] = 'question_thanks';
 			$delete_tables[] = 'inbox';
@@ -560,6 +560,10 @@ class system_class extends AWS_MODEL
 				'uid' => '-1'
 			), 'uid = ' . intval($uid));
 		}
+
+		$this->update('article_vote', array(
+			'uid' => '-1'
+		), 'uid = ' . intval($uid));
 
 		$this->update('question_vote', array(
 			'vote_uid' => '-1'
