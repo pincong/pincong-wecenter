@@ -145,9 +145,18 @@
 							<?php } ?>
 						</div>
 						<div class="mod-footer">
+							<div class="clearfix aw-article-vote<?php if (!$this->user_id OR $this->user_id == $this->question_info['publish_uid']) { ?> disabled<?php } ?>">
+								<?php if ($this->user_id AND $this->user_id != $this->question_info['publish_uid']) { ?>
+									<a href="javascript:;" class="agree<?php if ($this->question_info['agree_status'] == 1) { ?> active<?php } ?>" onclick="AWS.User.question_vote_agree($(this), <?php echo $this->question_info['question_id']; ?>);"><i class="icon icon-agree"></i> <b><?php echo $this->question_info['agree_count']; ?></b></a>
+									<a href="javascript:;" class="disagree<?php if ($this->question_info['agree_status'] == -1) { ?> active<?php } ?>" onclick="AWS.User.question_vote_disagree($(this), <?php echo $this->question_info['question_id']; ?>);"><i class="icon icon-disagree"></i> <b><?php echo $this->question_info['against_count']; ?></b></a>
+								<?php } else { ?>
+									<a href="javascript:;" class="agree"><i class="icon icon-agree"></i> <b><?php echo $this->question_info['agree_count']; ?></b></a>
+									<a href="javascript:;" class="disagree"><i class="icon icon-disagree"></i> <b><?php echo $this->question_info['against_count']; ?></b></a>
+								<?php } ?>
+							</div>
+
 							<div class="meta">
 								<span class="text-color-999"><?php echo date_friendly($this->question_info['add_time'], 604800, 'Y-m-d'); ?></span>
-
 								<a data-id="<?php echo $this->question_info['question_id']; ?>" data-type="question" class="aw-add-comment text-color-999 <?php if ($this->question_info['comment_count'] > 0) {?>active<?php }?>" data-comment-count="<?php echo $this->question_info['comment_count']; ?>" data-first-click="<?php if ($this->question_info['comment_count'] == 0) {?>hide<?php }?>"><i class="icon icon-comment"></i><?php if ($this->question_info['comment_count']) { ?><?php _e('%s 条评论', $this->question_info['comment_count']); ?><?php } else { ?><?php _e('添加评论'); ?><?php } ?></a>
 
 								<?php if ($this->user_id) { ?>
