@@ -1153,7 +1153,7 @@ class account_class extends AWS_MODEL
         return $this->model('account')->get_user_group_by_id($group_id);
     }
 
-    public function forbidden_user_by_uid($uid, $status, $admin_uid)
+    public function forbidden_user_by_uid($uid, $status, $admin_uid = null)
     {
         if (!$uid)
         {
@@ -1224,9 +1224,16 @@ class account_class extends AWS_MODEL
 		{
 			return false;
 		}
-        return $this->update('users', array(
-            'agree_count' => intval($user_info['agree_count']) + intval($n)
+		$count = intval($user_info['agree_count']) + intval($n);
+        $this->update('users', array(
+            'agree_count' => $count
         ), 'uid = ' . intval($uid));
+
+		// 临时添加
+		if ($count < -10)
+		{
+			$this->model('account')->forbidden_user_by_uid($uid, 1);
+		}
     }
 
     public function associate_remote_avatar($uid, $headimgurl)
