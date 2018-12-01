@@ -25,29 +25,29 @@ class question_class extends AWS_MODEL
 		return $this->query_all('SELECT uid FROM ' . $this->get_table('question_focus') . ' WHERE question_id = ' . intval($question_id));
 	}
 
-	public function get_question_info_by_id($question_id, $cache = true)
+	public function get_question_info_by_id($question_id)
 	{
 		if (! $question_id)
 		{
 			return false;
 		}
 
-        $and = ' AND add_time <= ' . real_time();
+		static $questions;
 
-		if (!$cache)
+		if ($questions[$question_id])
 		{
-			$questions[$question_id] = $this->fetch_row('question', 'question_id = ' . intval($question_id) . $and);
+			return $questions[$question_id];
 		}
-		else
-		{
-			static $questions;
 
-			if ($questions[$question_id])
+        $and = ' AND add_time <= ' . real_time();
+		if ($question = $this->fetch_row('question', 'question_id = ' . intval($question_id) . $and))
+		{
+			if ($question['against_count'] - $question['agree_count'] >= get_setting('question_downvote_fold'))
 			{
-				return $questions[$question_id];
+				$question['fold'] = 1;
 			}
 
-			$questions[$question_id] = $this->fetch_row('question', 'question_id = ' . intval($question_id) . $and);
+			$questions[$question_id] = $question;
 		}
 
 		return $questions[$question_id];
@@ -66,8 +66,14 @@ class question_class extends AWS_MODEL
 
 		if ($questions_list = $this->fetch_all('question', "question_id IN(" . implode(',', $question_ids) . ")" . $and))
 		{
+			$question_downvote_fold = get_setting('question_downvote_fold');
 			foreach ($questions_list AS $key => $val)
 			{
+				if ($val['against_count'] - $val['agree_count'] >= $question_downvote_fold)
+				{
+					$val['fold'] = 1;
+				}
+
 				$result[$val['question_id']] = $val;
 			}
 		}
