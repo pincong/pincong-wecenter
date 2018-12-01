@@ -561,6 +561,10 @@ class system_class extends AWS_MODEL
 			), 'uid = ' . intval($uid));
 		}
 
+		$this->update('question_vote', array(
+			'vote_uid' => '-1'
+		), 'vote_uid = ' . intval($uid));
+
 		$this->update('answer_vote', array(
 			'vote_uid' => '-1'
 		), 'vote_uid = ' . intval($uid));

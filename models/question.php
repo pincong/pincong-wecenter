@@ -361,8 +361,9 @@ class question_class extends AWS_MODEL
 
 		$this->model('answer')->remove_answers_by_question_id($question_id); // 删除关联的回复内容
 
-		// 删除评论
-		$this->delete('question_comments', 'question_id = ' . intval($question_id));
+		$this->delete('question_vote', "question_id = " . intval($question_id)); // 删除赞同
+
+		$this->delete('question_comments', 'question_id = ' . intval($question_id)); // 删除评论
 
 		$this->delete('question_focus', 'question_id = ' . intval($question_id));
 
@@ -1443,6 +1444,139 @@ class question_class extends AWS_MODEL
 		}
 
 		return $result;
+	}
+
+
+	/**
+	 *
+	 * 问题投票
+	 * @param int $question_id //问题ID
+	 * @param int $vote_value  //-1反对 1 赞同
+	 * @param int $uid         //用户ID
+	 * @param int $reputation_factor
+	 * @param int $question_uid //被投票用户ID
+	 *
+	 * @return boolean true|false
+	 */
+	public function change_question_vote($question_id, $vote_value, $uid, $reputation_factor, $question_uid)
+	{
+		if (!$question_id)
+		{
+			return false;
+		}
+
+		if (! in_array($vote_value, array(
+			- 1,
+			1
+		)))
+		{
+			return false;
+		}
+
+		$question_id = intval($question_id);
+		$question_uid = intval($question_uid);
+
+		if (!$vote_info = $this->get_question_vote_status($question_id, $uid)) //添加记录
+		{
+			$this->insert('question_vote', array(
+				'question_id' => $question_id,
+				'vote_uid' => $uid,
+				'add_time' => fake_time(),
+				'vote_value' => $vote_value,
+				'reputation_factor' => $reputation_factor
+			));
+
+			if ($vote_value == 1)
+			{
+                $this->model('integral')->process($uid, 'AGREE_QUESTION', get_setting('integral_system_config_agree_question'), '赞同问题 #' . $question_id, $question_id);
+                $this->model('integral')->process($question_uid, 'QUESTION_AGREED', get_setting('integral_system_config_question_agreed'), '问题被赞同 #' . $question_id, $question_id);
+
+				//ACTION_LOG::save_action($uid, $question_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_AGREE, '', intval($question_id));
+			}
+			else if ($vote_value == -1)
+			{
+                $this->model('integral')->process($uid, 'DISAGREE_QUESTION', get_setting('integral_system_config_disagree_question'), '反对问题 #' . $question_id, $question_id);
+                $this->model('integral')->process($question_uid, 'QUESTION_DISAGREED', get_setting('integral_system_config_question_disagreed'), '问题被反对 #' . $question_id, $question_id);
+			}
+
+			$add_agree_count = $vote_value;
+		}
+		else if ($vote_info['vote_value'] == $vote_value) //删除记录
+		{
+			$this->delete_question_vote($vote_info['voter_id']);
+
+			//ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action = ' . ACTION_LOG::ADD_AGREE . ' AND uid = ' . intval($uid) . ' AND associate_id = ' . intval($question_id) . ' AND associate_attached = ' . intval($question_id));
+
+			$add_agree_count = -$vote_value;
+		}
+		else //更新记录
+		{
+			$this->set_question_vote_status($vote_info['voter_id'], $vote_value);
+
+			/*if ($vote_value == 1)
+			{
+				ACTION_LOG::save_action($uid, $question_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_AGREE, '', $question_id);
+			}*/
+
+			$add_agree_count = $vote_value * 2;
+		}
+
+		/*if ($vote_value == 1 AND $vote_info['vote_value'] != 1 AND $question_uid != $uid)
+		{
+			$this->model('notify')->send($uid, $question_uid, notify_class::TYPE_QUESTION_AGREE, notify_class::CATEGORY_QUESTION, $question_id, array(
+				'from_uid' => $uid,
+				'question_id' => $question_id,
+				'item_id' => $question_id,
+			));
+		}*/
+
+		$this->update_vote_count($question_id, 'against');
+		$this->update_vote_count($question_id, 'agree');
+
+		// 更新作者的被赞同数
+		$this->model('account')->add_user_agree_count($question_uid, $add_agree_count);
+
+		return true;
+	}
+
+	/**
+	 * 删除问题投票
+	 * Enter description here ...
+	 * @param unknown_type $voter_id
+	 */
+	public function delete_question_vote($voter_id)
+	{
+		return $this->delete('question_vote', "voter_id = " . intval($voter_id));
+	}
+
+	public function update_vote_count($question_id, $type)
+	{
+		if (! in_array($type, array(
+			'against',
+			'agree'
+		)))
+		{
+			return false;
+		}
+
+		$vote_value = ($type == 'agree') ? '1' : '-1';
+
+		$count = $this->count('question_vote', 'question_id = ' . intval($question_id) . ' AND vote_value = ' . $vote_value);
+
+		return $this->query("UPDATE " . $this->get_table('question') . " SET {$type}_count = {$count} WHERE question_id = " . intval($question_id));
+	}
+
+	public function set_question_vote_status($voter_id, $vote_value)
+	{
+		return $this->update('question_vote', array(
+			"add_time" => fake_time(),
+			"vote_value" => $vote_value
+		), "voter_id = " . intval($voter_id));
+	}
+
+	public function get_question_vote_status($question_id, $uid)
+	{
+		return $this->fetch_row('question_vote', "question_id = " . intval($question_id) . " AND vote_uid = " . intval($uid));
 	}
 
 }

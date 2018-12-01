@@ -290,6 +290,10 @@ class main extends AWS_CONTROLLER
 
 			TPL::assign('user_follow_check', $this->model('follow')->user_follow_check($this->user_id, $question_info['published_uid']));
 
+			if ($question_vote_status = $this->model('question')->get_question_vote_status($question_info['question_id'], $this->user_id))
+			{
+				$question_info['agree_status'] = $question_vote_status['vote_value'];
+			}
 		}
 
 		$question_info['question_detail'] = FORMAT::parse_attachs(nl2br(FORMAT::parse_bbcode($question_info['question_detail'])));

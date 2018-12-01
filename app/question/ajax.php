@@ -388,6 +388,47 @@ class ajax extends AWS_CONTROLLER
 		TPL::output("question/ajax/comments");
 	}
 
+	public function question_vote_action()
+	{
+		$question_info = $this->model('question')->get_question_info_by_id($_POST['question_id']);
+
+		if (! $question_info)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('问题不存在')));
+		}
+
+		if ($question_info['publish_uid'] == $this->user_id)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能对自己发表的问题进行投票')));
+		}
+
+		if (! in_array($_POST['value'], array(
+			- 1,
+			1
+		)))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('投票数据错误, 无法进行投票')));
+		}
+
+		$value = intval($_POST['value']);
+
+		if ($value === 1 AND !$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_agree_question'))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
+		}
+		else
+		if ($value === -1 AND !$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_disagree_question'))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
+		}
+
+		$reputation_factor = $this->model('account')->get_user_group_by_id($this->user_info['reputation_group'], 'reputation_factor');
+
+		$this->model('question')->change_question_vote($_POST['question_id'], $value, $this->user_id, $reputation_factor, $question_info['publish_uid']);
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
 	public function answer_vote_action()
 	{
 		$answer_info = $this->model('answer')->get_answer_by_id($_POST['answer_id']);

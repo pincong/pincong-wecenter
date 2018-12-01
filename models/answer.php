@@ -412,8 +412,6 @@ class answer_class extends AWS_MODEL
 		$this->update_vote_count($answer_id, 'against');
 		$this->update_vote_count($answer_id, 'agree');
 
-		$this->update_question_vote_count($question_id);
-
 		// 更新回复作者的被赞同数
 		$this->model('account')->add_user_agree_count($answer_uid, $add_agree_count);
 
@@ -445,30 +443,6 @@ class answer_class extends AWS_MODEL
 		$count = $this->count('answer_vote', 'answer_id = ' . intval($answer_id) . ' AND vote_value = ' . $vote_value);
 
 		return $this->query("UPDATE " . $this->get_table('answer') . " SET {$type}_count = {$count} WHERE answer_id = " . intval($answer_id));
-	}
-
-	public function update_question_vote_count($question_id)
-	{
-		if (!$answers = $this->get_answer_list_by_question_id($question_id, null))
-		{
-			return false;
-		}
-
-		$answer_ids = array();
-
-		foreach($answers as $key => $val)
-		{
-			$answer_ids[] = $val['answer_id'];
-		}
-
-		$agree_count = $this->count('answer_vote', 'answer_id IN(' . implode(',', $answer_ids) . ') AND vote_value = 1');
-
-		$against_count = $this->count('answer_vote', 'answer_id IN(' . implode(',', $answer_ids) . ') AND vote_value = -1');
-
-		return $this->update('question', array(
-			'agree_count' => $agree_count,
-			'against_count' => $against_count
-		), 'question_id = ' . intval($question_id));
 	}
 
 	public function set_answer_vote_status($voter_id, $vote_value)
