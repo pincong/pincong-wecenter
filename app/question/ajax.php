@@ -240,12 +240,13 @@ class ajax extends AWS_CONTROLLER
 
 	public function save_answer_comment_action()
 	{
-		if (trim($_POST['message']) == '')
+		$message = trim($_POST['message']);
+		if (!$message)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请输入评论内容')));
 		}
 
-        if (!check_repeat_submission($_POST['message']))
+        if (!check_repeat_submission($message))
         {
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请不要重复提交')));
         }
@@ -260,9 +261,16 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有发表评论的权限')));
 		}
 
-		if (get_setting('comment_limit') > 0 AND cjk_strlen($_POST['message']) > get_setting('comment_limit'))
+		$comment_length_min = intval(get_setting('comment_length_min'));
+		if ($comment_length_min AND cjk_strlen($message) < $comment_length_min)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得超过 %s 字节', get_setting('comment_limit'))));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得少于 %s 字', $comment_length_min)));
+		}
+
+		$comment_length_max = intval(get_setting('comment_length_max'));
+		if ($comment_length_max AND cjk_strlen($message) > $comment_length_max)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得超过 %s 字', $comment_length_max)));
 		}
 
 		$answer_info = $this->model('answer')->get_answer_by_id($_GET['answer_id']);
@@ -273,12 +281,12 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能评论锁定的问题')));
 		}
 
-		if (! $this->user_info['permission']['publish_url'] AND FORMAT::outside_url_exists($_POST['message']))
+		if (! $this->user_info['permission']['publish_url'] AND FORMAT::outside_url_exists($message))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在的用户组不允许发布站外链接')));
 		}
 
-		$this->model('answer')->insert_answer_comment($_GET['answer_id'], $this->user_id, $_POST['message']);
+		$this->model('answer')->insert_answer_comment($_GET['answer_id'], $this->user_id, $message);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'item_id' => intval($_GET['answer_id']),
@@ -312,12 +320,13 @@ class ajax extends AWS_CONTROLLER
 
 	public function save_question_comment_action()
 	{
-		if (trim($_POST['message']) == '')
+		$message = trim($_POST['message']);
+		if (!$message)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入评论内容')));
 		}
 
-        if (!check_repeat_submission($_POST['message']))
+        if (!check_repeat_submission($message))
         {
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请不要重复提交')));
         }
@@ -339,12 +348,19 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能评论锁定的问题')));
 		}
 
-		if (get_setting('comment_limit') > 0 AND (cjk_strlen($_POST['message']) > get_setting('comment_limit')))
+		$comment_length_min = intval(get_setting('comment_length_min'));
+		if ($comment_length_min AND cjk_strlen($message) < $comment_length_min)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得超过 %s 字节', get_setting('comment_limit'))));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得少于 %s 字', $comment_length_min)));
 		}
 
-		$this->model('question')->insert_question_comment($_GET['question_id'], $this->user_id, $_POST['message']);
+		$comment_length_max = intval(get_setting('comment_length_max'));
+		if ($comment_length_max AND cjk_strlen($message) > $comment_length_max)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得超过 %s 字', $comment_length_max)));
+		}
+
+		$this->model('question')->insert_question_comment($_GET['question_id'], $this->user_id, $message);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'item_id' => intval($_GET['question_id']),
