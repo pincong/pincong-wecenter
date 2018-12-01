@@ -397,7 +397,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('问题不存在')));
 		}
 
-		if ($question_info['publish_uid'] == $this->user_id)
+		if ($question_info['published_uid'] == $this->user_id)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能对自己发表的问题进行投票')));
 		}
@@ -424,7 +424,7 @@ class ajax extends AWS_CONTROLLER
 
 		$reputation_factor = $this->model('account')->get_user_group_by_id($this->user_info['reputation_group'], 'reputation_factor');
 
-		$this->model('question')->change_question_vote($_POST['question_id'], $value, $this->user_id, $reputation_factor, $question_info['publish_uid']);
+		$this->model('question')->change_question_vote($_POST['question_id'], $value, $this->user_id, $reputation_factor, $question_info['published_uid']);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
