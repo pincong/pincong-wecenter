@@ -68,6 +68,28 @@
                         <dd><span class="<?php if (get_setting('integral_system_config_answer_fold') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('integral_system_config_answer_fold'), get_setting('integral_unit'))); ?></span></dd>
                     </dl>
                     <dl>
+                        <dt><?php _e('发起文章'); ?></dt>
+                        <dd><span class="<?php if (get_setting('integral_system_config_new_article') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('integral_system_config_new_article'), get_setting('integral_unit'))); ?></span></dd>
+                    </dl>
+
+                    <dl>
+                        <dt><?php _e('赞同问题或文章'); ?></dt>
+                        <dd><span class="<?php if (get_setting('integral_system_config_agree_question') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('integral_system_config_agree_question'), get_setting('integral_unit'))); ?></span></dd>
+                    </dl>
+                    <dl>
+                        <dt><?php _e('问题或文章被赞同'); ?></dt>
+                        <dd><span class="<?php if (get_setting('integral_system_config_question_agreed') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('integral_system_config_question_agreed'), get_setting('integral_unit'))); ?></span></dd>
+                    </dl>
+                    <dl>
+                        <dt><?php _e('反对问题或文章'); ?></dt>
+                        <dd><span class="<?php if (get_setting('integral_system_config_disagree_question') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('integral_system_config_disagree_question'), get_setting('integral_unit'))); ?></span></dd>
+                    </dl>
+                    <dl>
+                        <dt><?php _e('问题或文章被反对'); ?></dt>
+                        <dd><span class="<?php if (get_setting('integral_system_config_question_disagreed') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('integral_system_config_question_disagreed'), get_setting('integral_unit'))); ?></span></dd>
+                    </dl>
+
+                    <dl>
                         <dt><?php _e('赞同回复'); ?></dt>
                         <dd><span class="<?php if (get_setting('integral_system_config_agree_answer') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('integral_system_config_agree_answer'), get_setting('integral_unit'))); ?></span></dd>
                     </dl>
@@ -82,10 +104,6 @@
                     <dl>
                         <dt><?php _e('回复被反对'); ?></dt>
                         <dd><span class="<?php if (get_setting('integral_system_config_answer_disagreed') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('integral_system_config_answer_disagreed'), get_setting('integral_unit'))); ?></span></dd>
-                    </dl>
-                    <dl>
-                        <dt><?php _e('发起文章'); ?></dt>
-                        <dd><span class="<?php if (get_setting('integral_system_config_new_article') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('integral_system_config_new_article'), get_setting('integral_unit'))); ?></span></dd>
                     </dl>
                 </div>
             </div>
