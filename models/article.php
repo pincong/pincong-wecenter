@@ -210,6 +210,24 @@ class article_class extends AWS_MODEL
 		return true;
 	}
 
+	public function update_comment($comment_id, $message, $at_uid = null, $anonymous = null)
+	{
+		$comment_info = $this->get_comment_by_id($comment_id);
+
+		if (!$comment_info)
+		{
+			return false;
+		}
+
+		$this->update('article_comments', array(
+			'message' => htmlspecialchars($message),
+			'at_uid' => intval($at_uid),
+			'anonymous' => intval($anonymous)
+		), 'id = ' . $comment_info['id']);
+
+		return true;
+	}
+
 	public function update_article($article_id, $uid, $title, $message, $topics, $category_id, $create_topic)
 	{
 		if (!$article_info = $this->model('article')->get_article_info_by_id($article_id))
