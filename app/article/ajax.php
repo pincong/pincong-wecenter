@@ -66,9 +66,9 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的文章不能回复')));
 		}
 
-		if (strlen($message) < get_setting('answer_length_lower'))
+		if (cjk_strlen($message) < 5)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('回复内容字数不得少于 %s 字节', get_setting('answer_length_lower'))));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('回复内容字数不得少于 5 个字')));
 		}
 
 		if (! $this->user_info['permission']['publish_url'] AND FORMAT::outside_url_exists($message))

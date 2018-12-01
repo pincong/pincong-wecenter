@@ -719,9 +719,21 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('回复内容最小字符数限制'); ?>:</span>
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('回复内容最小字数限制'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="answer_length_lower" class="form-control" type="text" value="<?php echo $this->setting['answer_length_lower']; ?>"/>
+                                <input name="answer_length_min" class="form-control" type="text" value="<?php echo $this->setting['answer_length_min']; ?>"/>
+
+                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('回复内容最大字数限制'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="answer_length_max" class="form-control" type="text" value="<?php echo $this->setting['answer_length_max']; ?>"/>
 
                                 <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
                             </div>

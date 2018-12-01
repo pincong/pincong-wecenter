@@ -596,9 +596,16 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('一个问题只能回复一次，你可以编辑回复过的回复')));
 		}
 
-		if (strlen($answer_content) < get_setting('answer_length_lower'))
+		$answer_length_min = intval(get_setting('answer_length_min'));
+		if ($answer_length_min AND cjk_strlen($answer_content) < $answer_length_min)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('回复内容字数不得少于 %s 字节', get_setting('answer_length_lower'))));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('回复内容字数不得少于 %s 字', $answer_length_min)));
+		}
+
+		$answer_length_max = intval(get_setting('answer_length_max'));
+		if ($answer_length_max AND cjk_strlen($answer_content) > $answer_length_max)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('回复内容字数不得多于 %s 字', $answer_length_max)));
 		}
 
 		if (! $this->user_info['permission']['publish_url'] AND FORMAT::outside_url_exists($answer_content))
@@ -706,9 +713,16 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入回复内容')));
 		}
 
-		if (strlen($answer_content) < get_setting('answer_length_lower'))
+		$answer_length_min = intval(get_setting('answer_length_min'));
+		if ($answer_length_min AND cjk_strlen($answer_content) < $answer_length_min)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('回复内容字数不得少于 %s 字节', get_setting('answer_length_lower'))));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('回复内容字数不得少于 %s 字', $answer_length_min)));
+		}
+
+		$answer_length_max = intval(get_setting('answer_length_max'));
+		if ($answer_length_max AND cjk_strlen($answer_content) > $answer_length_max)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('回复内容字数不得多于 %s 字', $answer_length_max)));
 		}
 
 		if (! $this->user_info['permission']['publish_url'] AND FORMAT::outside_url_exists($answer_content))
