@@ -215,8 +215,6 @@ class publish_class extends AWS_MODEL
 			$this->model('publish')->update_attach('answer', $answer_id, $attach_access_key);
 		}
 
-		$this->model('question')->delete_question_uninterested($uid, $question_id);
-
 		$this->model('posts')->set_posts_index($question_id, 'question');
 
 		return $answer_id;

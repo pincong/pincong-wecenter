@@ -1567,20 +1567,6 @@ AWS.User =
 		}
 	},
 
-	// 问题不感兴趣
-	question_uninterested: function(selector, question_id)
-	{
-		selector.fadeOut();
-
-		$.post(G_BASE_URL + '/question/ajax/uninterested/', 'question_id=' + question_id, function (result)
-		{
-			if (result.errno != '1')
-			{
-				AWS.alert(result.err);
-			}
-		}, 'json');
-	},
-
 	// 回复强制折叠
 	answer_force_fold: function(selector, answer_id)
 	{

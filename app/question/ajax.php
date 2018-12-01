@@ -52,18 +52,6 @@ class ajax extends AWS_CONTROLLER
 		}
 	}
 
-	public function uninterested_action()
-	{
-		if (!$_POST['question_id'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
-		}
-
-		$this->model('question')->add_question_uninterested($this->user_id, $_POST['question_id']);
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
-
 	public function get_focus_users_action()
 	{
 		if ($focus_users_info = $this->model('question')->get_focus_users_by_question($_GET['question_id'], 18))

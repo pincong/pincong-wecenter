@@ -92,14 +92,7 @@ class actions_class extends AWS_MODEL
 		// 添加问题, 添加文章
 		$where_in[] = "(associate_action IN (" . ACTION_LOG::ADD_QUESTION . ", " . ACTION_LOG::ADD_ARTICLE . ") AND uid = " . $uid . ")";
 
-		if ($questions_uninterested_ids = $this->model('question')->get_question_uninterested($uid))
-		{
-			$where = "(associate_type = " . ACTION_LOG::CATEGORY_QUESTION . " AND associate_id NOT IN (" . implode(',', $questions_uninterested_ids) . "))";
-		}
-		else
-		{
-			$where = "(associate_type = " . ACTION_LOG::CATEGORY_QUESTION . ")";
-		}
+		$where = "(associate_type = " . ACTION_LOG::CATEGORY_QUESTION . ")";
 
 		if ($where_in AND $where)
 		{

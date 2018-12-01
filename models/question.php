@@ -214,8 +214,6 @@ class question_class extends AWS_MODEL
 
 		$this->delete('question_invite', 'question_id = ' . intval($question_id));	// 删除邀请记录
 
-		$this->delete('question_uninterested', 'question_id = ' . intval($question_id));	// 删除不感兴趣的
-
 		ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION .  ' AND associate_id = ' . intval($question_id));	// 删除动作
 
 		ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION .  ' AND associate_action = ' . ACTION_LOG::ANSWER_QUESTION . ' AND associate_attached = ' . intval($question_id));	// 删除动作
@@ -487,72 +485,6 @@ class question_class extends AWS_MODEL
 		AWS_APP::cache()->set($cache_key, $question_related_list, get_setting('cache_level_low'));
 
 		return $question_related_list;
-	}
-
-	/**
-	 *
-	 * 得到用户感兴趣问题列表
-	 * @param int $uid
-	 * @return array
-	 */
-	public function get_question_uninterested($uid)
-	{
-		if ($questions = $this->fetch_all('question_uninterested', 'uid = ' . intval($uid)))
-		{
-			foreach ($questions as $key => $val)
-			{
-				$data[] = $val['question_id'];
-			}
-		}
-
-		return $data;
-	}
-
-	/**
-	 *
-	 * 保存用户不感兴趣问题列表
-	 * @param int $uid
-	 * @param int $question_id
-	 *
-	 * @return boolean true|false
-	 */
-	public function add_question_uninterested($uid, $question_id)
-	{
-		if (!$uid OR !$question_id)
-		{
-			return false;
-		}
-
-		if (! $this->has_question_uninterested($uid, $question_id))
-		{
-			return $this->insert('question_uninterested', array(
-				"question_id" => $question_id,
-				"uid" => $uid,
-				"add_time" => fake_time()
-			));
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	/**
-	 *
-	 * 删除用户不感兴趣问题列表
-	 * @param int $uid
-	 * @param int $question_id
-	 *
-	 * @return boolean true|false
-	 */
-	public function delete_question_uninterested($uid, $question_id)
-	{
-		return $this->delete('question_uninterested', 'question_id = ' . intval($question_id) . " AND uid = " . intval($uid));
-	}
-
-	public function has_question_uninterested($uid, $question_id)
-	{
-		return $this->fetch_row('question_uninterested', 'question_id = ' . intval($question_id) . " AND uid = " . intval($uid));
 	}
 
 	public function add_invite($question_id, $sender_uid, $recipients_uid = 0)
