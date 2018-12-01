@@ -1223,7 +1223,7 @@ class account_class extends AWS_MODEL
         ), 'uid = ' . intval($uid));
     }
 
-    public function add_user_agree_count($uid)
+    public function add_user_agree_count($uid, $n)
     {
 		$user_info = $this->model('account')->get_user_info_by_uid($uid);
 		if (!$user_info)
@@ -1231,7 +1231,7 @@ class account_class extends AWS_MODEL
 			return false;
 		}
         return $this->update('users', array(
-            'agree_count' => intval($user_info['agree_count']) + 1
+            'agree_count' => intval($user_info['agree_count']) + intval($n)
         ), 'uid = ' . intval($uid));
     }
 

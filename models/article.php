@@ -364,10 +364,13 @@ class article_class extends AWS_MODEL
 				}
 			}
 
+			$add_agree_count = $rating;
 		}
 		else if ($vote_info['rating'] == $rating) //删除记录
 		{
 			$this->delete('article_vote', 'id = ' . intval($vote_info['id']));
+
+			$add_agree_count = -$rating;
 		}
 		else //更新记录
 		{
@@ -376,6 +379,8 @@ class article_class extends AWS_MODEL
 					'time' => fake_time(),
 					'reputation_factor' => $reputation_factor
 			), 'id = ' . intval($vote_info['id']));
+
+			$add_agree_count = $rating * 2;
 		}
 
 		$agree_count = $this->count('article_vote', "`type` = '" . ($type) . "' AND item_id = " . ($item_id) . " AND rating = 1");
@@ -409,7 +414,7 @@ class article_class extends AWS_MODEL
 			break;
 		}
 
-		$this->model('account')->add_user_agree_count($item_uid);
+		$this->model('account')->add_user_agree_count($item_uid, $add_agree_count);
 
 		return true;
 	}

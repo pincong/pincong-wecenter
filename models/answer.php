@@ -377,14 +377,18 @@ class answer_class extends AWS_MODEL
                 $this->model('integral')->process($uid, 'DISAGREE_ANSWER', get_setting('integral_system_config_disagree_answer'), '反对回复 #' . $answer_info['answer_id'], $answer_info['answer_id']);
                 $this->model('integral')->process($answer_uid, 'ANSWER_DISAGREED', get_setting('integral_system_config_answer_disagreed'), '回复被反对 #' . $answer_info['answer_id'], $answer_info['answer_id']);
 			}
+
+			$add_agree_count = $vote_value;
 		}
-		else if ($vote_info['vote_value'] == $vote_value)
+		else if ($vote_info['vote_value'] == $vote_value) //删除记录
 		{
 			$this->delete_answer_vote($vote_info['voter_id']);
 
 			ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action = ' . ACTION_LOG::ADD_AGREE . ' AND uid = ' . intval($uid) . ' AND associate_id = ' . intval($question_id) . ' AND associate_attached = ' . intval($answer_id));
+
+			$add_agree_count = -$vote_value;
 		}
-		else
+		else //更新记录
 		{
 			$this->set_answer_vote_status($vote_info['voter_id'], $vote_value);
 
@@ -392,6 +396,8 @@ class answer_class extends AWS_MODEL
 			{
 				ACTION_LOG::save_action($uid, $question_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_AGREE, '', $answer_id);
 			}
+
+			$add_agree_count = $vote_value * 2;
 		}
 
 		if ($vote_value == 1 AND $vote_info['vote_value'] != 1 AND $answer_info['uid'] != $uid)
@@ -409,7 +415,7 @@ class answer_class extends AWS_MODEL
 		$this->update_question_vote_count($question_id);
 
 		// 更新回复作者的被赞同数
-		$this->model('account')->add_user_agree_count($answer_uid);
+		$this->model('account')->add_user_agree_count($answer_uid, $add_agree_count);
 
 		return true;
 	}
