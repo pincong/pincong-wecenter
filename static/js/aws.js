@@ -1457,48 +1457,12 @@ AWS.User =
 			$(selector).removeClass('active');
 
 			$(selector).parents('.operate').find('.agree').find('.count').html(parseInt($(selector).parents('.operate').find('.agree').find('.count').html()) - 1);
-
-			// 删除赞同操作
-			$.each($(selector).parents('.aw-item').find('.aw-user-name'), function (i, e)
-			{
-				if ($(e).html() == user_name)
-				{
-					if ($(e).prev())
-					{
-						$(e).prev().remove();
-					}
-					else
-					{
-						$(e).next().remove();
-					}
-
-					$(e).remove();
-				}
-			});
-
-			// 判断赞同来自内是否有人
-			if ($(selector).parents('.aw-item').find('.aw-agree-by a').length == 0)
-			{
-				$(selector).parents('.aw-item').find('.aw-agree-by').hide();
-			}
 		}
 		else
 		{
-			// 判断是否第一个投票
-			if ($(selector).parents('.aw-item').find('.aw-agree-by .aw-user-name').length == 0)
-			{
-				$(selector).parents('.aw-item').find('.aw-agree-by').append('<a class="aw-user-name">' + user_name + '</a>');
-			}
-			else
-			{
-				$(selector).parents('.aw-item').find('.aw-agree-by').append('<em>、</em><a class="aw-user-name">' + user_name + '</a>');
-			}
-			$(selector).parents('.aw-item').find('.aw-agree-by').show();
-
 			// 判断是否有反对过
 			if ($(selector).parents('.operate').find('.disagree').hasClass('active'))
 			{
-				//$(selector).parents('.operate').find('.disagree').find('.count').html(parseInt($(selector).parents('.operate').find('.disagree').find('.count').html()) - 1);
 				$(selector).parents('.operate').find('.agree').find('.count').html(parseInt($(selector).parents('.operate').find('.agree').find('.count').html()) + 1);
 
 				$(selector).parents('.operate').find('.disagree').removeClass('active');
@@ -1526,7 +1490,6 @@ AWS.User =
 		{
 			$(selector).removeClass('active');
 
-			//$(selector).parents('.operate').find('.disagree').find('.count').html(parseInt($(selector).parents('.operate').find('.disagree').find('.count').html()) - 1);
 			$(selector).parents('.operate').find('.agree').find('.count').html(parseInt($(selector).parents('.operate').find('.agree').find('.count').html()) + 1);
 		}
 		else
@@ -1534,36 +1497,11 @@ AWS.User =
 			// 判断是否有赞同过
 			if ($(selector).parents('.operate').find('.agree').hasClass('active'))
 			{
-				// 删除赞同操作
-				$.each($(selector).parents('.aw-item').find('.aw-user-name'), function (i, e)
-				{
-					if ($(e).html() == user_name)
-					{
-						if ($(e).prev())
-						{
-							$(e).prev().remove();
-						}
-						else
-						{
-							$(e).next().remove();
-						}
-
-						$(e).remove();
-					}
-				});
-
-				// 判断赞同来自内是否有人
-				if ($(selector).parents('.aw-item').find('.aw-agree-by a').length == 0)
-				{
-					$(selector).parents('.aw-item').find('.aw-agree-by').hide();
-				}
-
 				$(selector).parents('.operate').find('.agree').find('.count').html(parseInt($(selector).parents('.operate').find('.agree').find('.count').html()) - 1);
 
 				$(selector).parents('.operate').find('.agree').removeClass('active');
 			}
 
-			//$(selector).parents('.operate').find('.disagree').find('.count').html(parseInt($(selector).parents('.operate').find('.disagree').find('.count').html()) + 1);
 			$(selector).parents('.operate').find('.agree').find('.count').html(parseInt($(selector).parents('.operate').find('.agree').find('.count').html()) - 1);
 
 			$(selector).addClass('active');
