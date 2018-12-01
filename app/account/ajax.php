@@ -138,7 +138,7 @@ class ajax extends AWS_CONTROLLER
 			$this->model('follow')->user_follow_add($uid, $follow_users['uid']);
 			$this->model('follow')->user_follow_add($follow_users['uid'], $uid);
 
-			$this->model('integral')->process($follow_users['uid'], 'INVITE', get_setting('integral_system_config_invite'), '邀请注册: ' . $_POST['user_name'], $follow_users['uid']);
+			// 邀请注册
 		}
 
 		if (get_setting('register_valid_type') == 'N')
@@ -399,11 +399,6 @@ class ajax extends AWS_CONTROLLER
 		// 更新主表
 		$this->model('account')->update_users_fields($update_data, $this->user_id);
 
-		if (!$this->model('integral')->fetch_log($this->user_id, 'UPLOAD_AVATAR'))
-		{
-			$this->model('integral')->process($this->user_id, 'UPLOAD_AVATAR', round((get_setting('integral_system_config_profile') * 0.2)), '上传头像');
-		}
-
 		echo htmlspecialchars(json_encode(array(
 			'success' => true,
 			'thumb' => get_setting('upload_url') . '/avatar/' . $this->model('account')->get_avatar($this->user_id, null, 1) . basename($thumb_file['max'])
@@ -464,16 +459,6 @@ class ajax extends AWS_CONTROLLER
 		$update_data['sex'] = intval($_POST['sex']);
 
 		$update_attrib_data['signature'] = htmlspecialchars($_POST['signature']);
-
-		if ($_POST['signature'] AND !$this->model('integral')->fetch_log($this->user_id, 'UPDATE_SIGNATURE'))
-		{
-			$this->model('integral')->process($this->user_id, 'UPDATE_SIGNATURE', round((get_setting('integral_system_config_profile') * 0.1)), AWS_APP::lang()->_t('完善一句话介绍'));
-		}
-
-		if ($_POST['signature']  AND !$this->model('integral')->fetch_log($this->user_id, 'UPDATE_CONTACT'))
-		{
-			$this->model('integral')->process($this->user_id, 'UPDATE_CONTACT', round((get_setting('integral_system_config_profile') * 0.1)), AWS_APP::lang()->_t('完善联系资料'));
-		}
 
 		// 更新主表
 		$this->model('account')->update_users_fields($update_data, $this->user_id);

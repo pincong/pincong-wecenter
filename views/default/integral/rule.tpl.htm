@@ -12,14 +12,6 @@
                         <dd><span class="<?php if (get_setting('integral_system_config_register') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('integral_system_config_register'), get_setting('integral_unit'))); ?></span></dd>
                     </dl>
                     <dl>
-                        <dt><?php _e('用户完善资料获得%s（包括头像，一句话介绍，履历等资料）', get_setting('integral_unit')); ?></dt>
-                        <dd><span class="<?php if (get_setting('integral_system_config_profile') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('integral_system_config_profile'), get_setting('integral_unit'))); ?></span></dd>
-                    </dl>
-                    <dl>
-                        <dt><?php _e('用户邀请他人注册且被邀请人成功注册'); ?></dt>
-                        <dd><span class="<?php if (get_setting('integral_system_config_invite') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('integral_system_config_invite'), get_setting('integral_unit'))); ?></span></dd>
-                    </dl>
-                    <dl>
                         <dt><?php _e('发起问题或文章'); ?></dt>
                         <dd><span class="<?php if (get_setting('integral_system_config_new_question') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('integral_system_config_new_question'), get_setting('integral_unit'))); ?></span></dd>
                     </dl>

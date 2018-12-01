@@ -1281,11 +1281,6 @@ class account_class extends AWS_MODEL
             'avatar_file' => $this->get_avatar($uid)
         ), 'uid = ' . intval($uid));
 
-        if (!$this->model('integral')->fetch_log($new_user_id, 'UPLOAD_AVATAR'))
-        {
-            $this->model('integral')->process($new_user_id, 'UPLOAD_AVATAR', round((get_setting('integral_system_config_profile') * 0.2)), '上传头像');
-        }
-
         return true;
     }
 }
