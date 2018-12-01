@@ -29,7 +29,15 @@ class answer_class extends AWS_MODEL
 			return $answers[$answer_id];
 		}
 
-		$answers[$answer_id] = $this->fetch_row('answer', 'answer_id = ' . intval($answer_id));
+		if ($answer = $this->fetch_row('answer', 'answer_id = ' . intval($answer_id)))
+		{
+			if ($answer['against_count'] - $answer['agree_count'] >= get_setting('answer_downvote_fold'))
+			{
+				$answer['fold'] = 1;
+			}
+
+			$answers[$answer_id] = $answer;
+		}
 
 		return $answers[$answer_id];
 	}
@@ -43,8 +51,14 @@ class answer_class extends AWS_MODEL
 
 		if ($answers = $this->fetch_all('answer', "answer_id IN (" . implode(', ', $answer_ids) . ")"))
 		{
+			$answer_downvote_fold = get_setting('answer_downvote_fold');
 			foreach ($answers AS $key => $val)
 			{
+				if ($val['against_count'] - $val['agree_count'] >= $answer_downvote_fold)
+				{
+					$val['fold'] = 1;
+				}
+
 				$result[$val['answer_id']] = $val;
 			}
 		}
@@ -71,8 +85,14 @@ class answer_class extends AWS_MODEL
 
 		if ($answer_list = $this->fetch_all('answer', 'question_id = ' . intval($question_id) . $_where, $order, $limit))
 		{
+			$answer_downvote_fold = get_setting('answer_downvote_fold');
 			foreach($answer_list as $key => $val)
 			{
+				if ($val['against_count'] - $val['agree_count'] >= $answer_downvote_fold)
+				{
+					$answer_list[$key]['fold'] = 1;
+				}
+
 				$uids[] = $val['uid'];
 			}
 		}

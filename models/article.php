@@ -32,7 +32,15 @@ class article_class extends AWS_MODEL
 		if (!$articles[$article_id])
 		{
             $and = ' AND add_time <= ' . real_time();
-			$articles[$article_id] = $this->fetch_row('article', 'id = ' . $article_id . $and);
+			if ($article = $this->fetch_row('article', 'id = ' . $article_id . $and))
+			{
+				if (-$article['votes'] >= get_setting('article_downvote_fold'))
+				{
+					$article['fold'] = 1;
+				}
+
+				$articles[$article_id] = $article;
+			}
 		}
 
 		return $articles[$article_id];
@@ -51,8 +59,14 @@ class article_class extends AWS_MODEL
 
 		if ($articles_list = $this->fetch_all('article', 'id IN(' . implode(',', $article_ids) . ')' . $and))
 		{
+			$article_downvote_fold = get_setting('article_downvote_fold');
 			foreach ($articles_list AS $key => $val)
 			{
+				if (-$val['votes'] >= $article_downvote_fold)
+				{
+					$val['fold'] = 1;
+				}
+
 				$result[$val['id']] = $val;
 			}
 		}
@@ -71,6 +85,11 @@ class article_class extends AWS_MODEL
 
 			$comment['user_info'] = $comment_user_infos[$comment['uid']];
 			$comment['at_user_info'] = $comment_user_infos[$comment['at_uid']];
+
+			if (-$comment['votes'] >= get_setting('comment_downvote_fold'))
+			{
+				$comment['fold'] = 1;
+			}
 		}
 
 		return $comment;
@@ -87,8 +106,13 @@ class article_class extends AWS_MODEL
 
 		if ($comments = $this->fetch_all('article_comments', 'id IN (' . implode(',', $comment_ids) . ')'))
 		{
+			$comment_downvote_fold = get_setting('comment_downvote_fold');
 			foreach ($comments AS $key => $val)
 			{
+				if (-$val['votes'] >= $comment_downvote_fold)
+				{
+					$val['fold'] = 1;
+				}
 				$article_comments[$val['id']] = $val;
 			}
 		}
@@ -100,8 +124,14 @@ class article_class extends AWS_MODEL
 	{
 		if ($comments = $this->fetch_page('article_comments', 'article_id = ' . intval($article_id), 'id ASC', $page, $per_page))
 		{
+			$comment_downvote_fold = get_setting('comment_downvote_fold');
 			foreach ($comments AS $key => $val)
 			{
+				if (-$val['votes'] >= $comment_downvote_fold)
+				{
+					$comments[$key]['fold'] = 1;
+				}
+
 				$comment_uids[$val['uid']] = $val['uid'];
 
 				if ($val['at_uid'])

@@ -1,5 +1,5 @@
 <?php TPL::output('global/header.tpl.htm'); ?>
-<?php $comment_downvote_fold = get_setting('comment_downvote_fold'); ?>
+
 <div class="aw-container-wrap">
     <div class="container">
         <div class="row">
@@ -154,9 +154,9 @@
                                         </p>
                                     </div>
                                     <div class="mod-body">
-									<?php if ($comment_downvote_fold AND -$val['votes'] >= $comment_downvote_fold) { ?>
+									<?php if ($val['fold']) { ?>
 										<div class="aw-load-more-content">
-											<span class="text-color-999 aw-alert-box text-color-999" href="javascript:;" tabindex="-1" onclick="AWS.alert('<?php _e('被折叠的回复是被你或者被大多数用户认为没有帮助的回复'); ?>');"><?php _e('为什么被折叠?'); ?></span>
+											<span class="text-color-999 aw-alert-box text-color-999" href="javascript:;" tabindex="-1" onclick="AWS.User.why_fold();"><?php _e('为什么被折叠?'); ?></span>
 											<a href="javascript:;" class="aw-load-more-content" onclick="$(this).parent().parent().children('.markitup-box').toggle();"><?php _e('评论被折叠'); ?></a>
 										</div>
 										<div class="markitup-box collapse">

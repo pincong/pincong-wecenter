@@ -1963,6 +1963,11 @@ AWS.User =
 		}
 	},
 
+	why_fold: function()
+	{
+		AWS.alert(_t('被折叠的内容是被你或者被大多数用户认为没有帮助的内容'));
+	},
+
 }
 
 AWS.Dropdown =
