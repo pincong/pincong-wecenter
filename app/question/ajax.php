@@ -384,9 +384,21 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('投票数据错误, 无法进行投票')));
 		}
 
+		$value = intval($_POST['value']);
+
+		if ($value === 1 AND !$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_agree_answer'))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
+		}
+		else
+		if ($value === -1 AND !$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_disagree_answer'))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
+		}
+
 		$reputation_factor = $this->model('account')->get_user_group_by_id($this->user_info['reputation_group'], 'reputation_factor');
 
-		$this->model('answer')->change_answer_vote($_POST['answer_id'], $_POST['value'], $this->user_id, $reputation_factor);
+		$this->model('answer')->change_answer_vote($_POST['answer_id'], $value, $this->user_id, $reputation_factor);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}

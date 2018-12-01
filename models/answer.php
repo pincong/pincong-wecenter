@@ -369,9 +369,16 @@ class answer_class extends AWS_MODEL
 
 			if ($vote_value == 1)
 			{
+                $this->model('integral')->process($uid, 'AGREE_ANSWER', get_setting('integral_system_config_agree_answer'), '赞同回复 #' . $answer_info['answer_id'], $answer_info['answer_id']);
+                $this->model('integral')->process($answer_uid, 'ANSWER_AGREED', get_setting('integral_system_config_answer_agreed'), '回复被赞同 #' . $answer_info['answer_id'], $answer_info['answer_id']);
+
 				ACTION_LOG::save_action($uid, $question_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_AGREE, '', intval($answer_id));
 			}
-
+			else if ($vote_value == -1)
+			{
+                $this->model('integral')->process($uid, 'DISAGREE_ANSWER', get_setting('integral_system_config_disagree_answer'), '反对回复 #' . $answer_info['answer_id'], $answer_info['answer_id']);
+                $this->model('integral')->process($answer_uid, 'ANSWER_DISAGREED', get_setting('integral_system_config_answer_disagreed'), '回复被反对 #' . $answer_info['answer_id'], $answer_info['answer_id']);
+			}
 		}
 		else if ($vote_info['vote_value'] == $vote_value)
 		{

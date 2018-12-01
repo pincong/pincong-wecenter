@@ -1443,7 +1443,13 @@ AWS.User =
 	// 赞成投票
 	agree_vote: function(selector, user_name, answer_id)
 	{
-		$.post(G_BASE_URL + '/question/ajax/answer_vote/', 'answer_id=' + answer_id + '&value=1');
+		$.post(G_BASE_URL + '/question/ajax/answer_vote/', 'answer_id=' + answer_id + '&value=1', function (result)
+		{
+			if (result.errno != '1')
+			{
+				AWS.alert(result.err);
+			}
+		}, 'json');
 
 		// 判断是否投票过
 		if ($(selector).hasClass('active'))
@@ -1506,7 +1512,13 @@ AWS.User =
 	// 反对投票
 	disagree_vote: function(selector, user_name, answer_id)
 	{
-		$.post(G_BASE_URL + '/question/ajax/answer_vote/', 'answer_id=' + answer_id + '&value=-1', function (result) {});
+		$.post(G_BASE_URL + '/question/ajax/answer_vote/', 'answer_id=' + answer_id + '&value=-1', function (result)
+		{
+			if (result.errno != '1')
+			{
+				AWS.alert(result.err);
+			}
+		}, 'json');
 
 		// 判断是否投票过
 		if ($(selector).hasClass('active'))
