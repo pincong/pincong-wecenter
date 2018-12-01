@@ -435,6 +435,13 @@ class publish_class extends AWS_MODEL
 
 		ACTION_LOG::save_action($uid, $article_info['id'], ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_COMMENT_ARTICLE, $message, $comment_id, null, intval($anonymous));
 
+		if ($article_info['uid'] != $uid)
+		{
+			$this->model('integral')->process($uid, 'COMMENT_ARTICLE', get_setting('integral_system_config_comment_article'), '评论文章 #' . $article_info['id'], $article_info['id']);
+
+			$this->model('integral')->process($article_info['uid'], 'ARTICLE_COMMENTED', get_setting('integral_system_config_article_commented'), '文章被评论 #' . $article_info['id'], $article_info['id']);
+		}
+
 		$this->model('posts')->set_posts_index($article_info['id'], 'article');
 
 		return $comment_id;

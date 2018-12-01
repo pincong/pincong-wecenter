@@ -206,6 +206,8 @@ class integral_class extends AWS_MODEL
 				break;
 
 				case 'NEW_ARTICLE':
+				case 'COMMENT_ARTICLE':
+				case 'ARTICLE_COMMENTED':
 				case 'MOVE_UP_ARTICLE':
 				case 'ARTICLE_MOVED_UP':
 				case 'MOVE_DOWN_ARTICLE':

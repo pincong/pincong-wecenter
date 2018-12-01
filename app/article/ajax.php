@@ -51,6 +51,11 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请不要重复提交')));
         }
 
+		if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_comment_article'))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
+		}
+
 		if (!$article_info = $this->model('article')->get_article_info_by_id($_POST['article_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定文章不存在')));
