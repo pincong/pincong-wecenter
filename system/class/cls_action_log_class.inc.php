@@ -382,4 +382,22 @@ class ACTION_LOG
 
 		return $fold;
 	}
+
+	public static function delete_expired_data()
+	{
+		$days = intval(get_setting('expiration_user_actions'));
+		if (!$days)
+		{
+			return;
+		}
+		$seconds = $days * 24 * 3600;
+		$time_before = real_time() - $seconds;
+		if ($time_before < 0)
+		{
+			$time_before = 0;
+		}
+		AWS_APP::model()->delete('user_action_history', 'add_time < ' . $time_before);
+		AWS_APP::model()->delete('user_action_history_fresh', 'add_time < ' . $time_before);
+	}
+
 }
