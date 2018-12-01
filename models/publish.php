@@ -358,7 +358,7 @@ class publish_class extends AWS_MODEL
 			// 记录日志
 			ACTION_LOG::save_action($uid, $article_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_ARTICLE, $title, $message, null, intval($anonymous));
 
-            $this->model('integral')->process($uid, 'NEW_ARTICLE', get_setting('integral_system_config_new_question'), '发起文章 #' . $article_id, $article_id);
+            $this->model('integral')->process($uid, 'NEW_ARTICLE', get_setting('integral_system_config_new_article'), '发起文章 #' . $article_id, $article_id);
 
 			$this->model('posts')->set_posts_index($article_id, 'article');
 
