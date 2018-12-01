@@ -755,11 +755,11 @@ class account_class extends AWS_MODEL
     {
         if ($where)
         {
-            $where = '(' . $where . ') AND forbidden = 0 AND group_id <> 3';
+            $where = '(' . $where . ') AND group_id <> 3';
         }
         else
         {
-            $where = 'forbidden = 0 AND group_id <> 3';
+            $where = 'group_id <> 3';
         }
 
         if ($exclude_self)

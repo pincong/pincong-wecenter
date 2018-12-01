@@ -299,6 +299,7 @@
 											<p>
 												<?php if ($val['anonymous'] == 0) { ?>
 													<a class="aw-user-name" href="people/<?php echo $val['user_info']['url_token']; ?>" data-id="<?php echo $val['uid']; ?>"><?php echo $val['user_info']['user_name']; ?></a>
+													<?php if ($val['user_info']['forbidden']) { ?><span class="text-color-999">[ <?php _e('封禁'); ?> ]</span><?php } ?>
 												<?php } else { ?>
 													<a class="aw-user-name" href="javascript:;"><?php _e('匿名用户'); ?></a>
 												<?php } ?>

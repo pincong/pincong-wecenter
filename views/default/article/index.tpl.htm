@@ -145,11 +145,12 @@
                                         </a>
                                         <?php } ?>
                                         <p>
-                                            <?php if ($val['anonymous'] == 0) { ?>
+                                        <?php if ($val['anonymous'] == 0) { ?>
                                             <a href="people/<?php echo $val['user_info']['url_token']; ?>"><?php echo $val['user_info']['user_name']; ?></a>
-                                            <?php } else { ?>
+                                            <?php if ($val['user_info']['forbidden']) { ?><span class="text-color-999">[ <?php _e('封禁'); ?> ]</span><?php } ?>
+                                        <?php } else { ?>
                                             <a class="text-color-999" href="javascript:;"><?php _e('匿名用户'); ?></a>
-                                            <?php } ?>
+                                        <?php } ?>
                                             <?php if ($val['at_user_info']) { ?> <?php _e('回复'); ?> <a href="people/<?php echo $val['at_user_info']['url_token']; ?>"><?php echo $val['at_user_info']['user_name']; ?></a><?php } ?>
                                         </p>
                                     </div>

@@ -137,7 +137,7 @@ class main extends AWS_CONTROLLER
 
 			$users_list = $this->model('account')->get_users_list(implode('', $where), calc_page_limit($_GET['page'], get_setting('contents_per_page')), true, false, 'reputation DESC');
 
-			$where[] = 'forbidden = 0 AND group_id <> 3';
+			$where[] = 'group_id <> 3';
 
 			TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
 				'base_url' => get_js_url('/people/group_id-' . $_GET['group_id']),
