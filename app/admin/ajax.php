@@ -862,10 +862,10 @@ class ajax extends AWS_ADMIN_CONTROLLER
                         H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('威望系数必须为大于或等于 0')));
                     }
 
-                    if (!is_digits($val['reputation_lower']) || floatval($val['reputation_lower']) < 0 || !is_digits($val['reputation_higer']) || floatval($val['reputation_higer']) < 0)
-                    {
-                        H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('威望介于值必须为大于或等于 0')));
-                    }
+                    //if (!is_digits($val['reputation_lower']) || floatval($val['reputation_lower']) < 0 || !is_digits($val['reputation_higer']) || floatval($val['reputation_higer']) < 0)
+                    //{
+                    //    H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('威望介于值必须为大于或等于 0')));
+                    //}
 
                     $val['reputation_factor'] = floatval($val['reputation_factor']);
                 }
