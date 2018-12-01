@@ -42,7 +42,7 @@ class question_class extends AWS_MODEL
         $and = ' AND add_time <= ' . real_time();
 		if ($question = $this->fetch_row('question', 'question_id = ' . intval($question_id) . $and))
 		{
-			if ($question['against_count'] - $question['agree_count'] >= get_setting('question_downvote_fold'))
+			if (-$question['agree_count'] >= get_setting('question_downvote_fold'))
 			{
 				$question['fold'] = 1;
 			}
@@ -69,7 +69,7 @@ class question_class extends AWS_MODEL
 			$question_downvote_fold = get_setting('question_downvote_fold');
 			foreach ($questions_list AS $key => $val)
 			{
-				if ($val['against_count'] - $val['agree_count'] >= $question_downvote_fold)
+				if (-$val['agree_count'] >= $question_downvote_fold)
 				{
 					$val['fold'] = 1;
 				}
@@ -927,8 +927,7 @@ class question_class extends AWS_MODEL
 			return false;
 		}
 
-		//$popular_value = (log($question_info['view_count'], 10) * 4 + $question_info['focus_count'] + ($question_info['agree_count'] * $question_info['agree_count'] / ($question_info['agree_count'] + $question_info['against_count'] + 1))) / (round(((time() - $question_info['add_time']) / 3600), 1) / 2 + round(((time() - $question_info['update_time']) / 3600), 1) / 2 + 1);
-		$popular_value = log($question_info['view_count'], 10) + $question_info['focus_count'] + ($question_info['agree_count'] * $question_info['agree_count'] / ($question_info['agree_count'] + $question_info['against_count'] + 1));
+		$popular_value = log($question_info['view_count'], 10) + $question_info['focus_count'] + $question_info['agree_count'];
 
 		return $this->shutdown_update('question', array(
 			'popular_value' => $popular_value,
@@ -1240,8 +1239,7 @@ class question_class extends AWS_MODEL
 			));
 		}*/
 
-		$this->update_vote_count($question_id, 'against');
-		$this->update_vote_count($question_id, 'agree');
+		$this->update_vote_count($question_id);
 
 		// 更新作者的被赞同数
 		$this->model('account')->add_user_agree_count($question_uid, $add_agree_count);
@@ -1259,21 +1257,13 @@ class question_class extends AWS_MODEL
 		return $this->delete('question_vote', "voter_id = " . intval($voter_id));
 	}
 
-	public function update_vote_count($question_id, $type)
+	public function update_vote_count($question_id)
 	{
-		if (! in_array($type, array(
-			'against',
-			'agree'
-		)))
-		{
-			return false;
-		}
+		$agree_count = $this->count('question_vote', 'question_id = ' . intval($question_id) . ' AND vote_value = 1');
+		$disagree_count = $this->count('question_vote', 'question_id = ' . intval($question_id) . ' AND vote_value = -1');
 
-		$vote_value = ($type == 'agree') ? '1' : '-1';
-
-		$count = $this->count('question_vote', 'question_id = ' . intval($question_id) . ' AND vote_value = ' . $vote_value);
-
-		return $this->query("UPDATE " . $this->get_table('question') . " SET {$type}_count = {$count} WHERE question_id = " . intval($question_id));
+		$count = $agree_count - $disagree_count;
+		return $this->query("UPDATE " . $this->get_table('question') . " SET agree_count = {$count} WHERE question_id = " . intval($question_id));
 	}
 
 	public function set_question_vote_status($voter_id, $vote_value)

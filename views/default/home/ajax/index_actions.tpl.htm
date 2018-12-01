@@ -109,7 +109,7 @@
 					<i data-placement="right" title="" data-toggle="tooltip" class="icon icon-agree" data-original-title="赞同回复"></i> <b class="count"><?php echo $val['answer_info']['agree_count']; ?></b>
 				</a>
 				<a class="disagree<?php if ($this->user_id == $val['answer_info']['uid']) { ?> disabled<?php } ?> <?php if ($val['answer_info']['agree_status'] == -1) { ?>active<?php } ?>" <?php if ($this->user_id != $val['answer_info']['uid']) { ?>onclick="AWS.User.disagree_vote(this, '<?php echo $this->user_info['user_name']; ?>', <?php echo $val['answer_info']['answer_id']; ?>);"<?php } ?>>
-					<i data-placement="right" title="" data-toggle="tooltip" class="icon icon-disagree" data-original-title="对回复持反对意见"></i> <b class="count"><?php echo $val['answer_info']['against_count']; ?></b>
+					<i data-placement="right" title="" data-toggle="tooltip" class="icon icon-disagree" data-original-title="对回复持反对意见"></i>
 				</a>
 			</span>
 			<!-- end 投票栏 -->

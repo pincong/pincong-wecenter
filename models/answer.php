@@ -31,7 +31,7 @@ class answer_class extends AWS_MODEL
 
 		if ($answer = $this->fetch_row('answer', 'answer_id = ' . intval($answer_id)))
 		{
-			if ($answer['against_count'] - $answer['agree_count'] >= get_setting('answer_downvote_fold'))
+			if (-$answer['agree_count'] >= get_setting('answer_downvote_fold'))
 			{
 				$answer['fold'] = 1;
 			}
@@ -54,7 +54,7 @@ class answer_class extends AWS_MODEL
 			$answer_downvote_fold = get_setting('answer_downvote_fold');
 			foreach ($answers AS $key => $val)
 			{
-				if ($val['against_count'] - $val['agree_count'] >= $answer_downvote_fold)
+				if (-$val['agree_count'] >= $answer_downvote_fold)
 				{
 					$val['fold'] = 1;
 				}
@@ -88,7 +88,7 @@ class answer_class extends AWS_MODEL
 			$answer_downvote_fold = get_setting('answer_downvote_fold');
 			foreach($answer_list as $key => $val)
 			{
-				if ($val['against_count'] - $val['agree_count'] >= $answer_downvote_fold)
+				if (-$val['agree_count'] >= $answer_downvote_fold)
 				{
 					$answer_list[$key]['fold'] = 1;
 				}
@@ -435,8 +435,7 @@ class answer_class extends AWS_MODEL
 			));
 		}
 
-		$this->update_vote_count($answer_id, 'against');
-		$this->update_vote_count($answer_id, 'agree');
+		$this->update_vote_count($answer_id);
 
 		// 更新回复作者的被赞同数
 		$this->model('account')->add_user_agree_count($answer_uid, $add_agree_count);
@@ -454,21 +453,13 @@ class answer_class extends AWS_MODEL
 		return $this->delete('answer_vote', "voter_id = " . intval($voter_id));
 	}
 
-	public function update_vote_count($answer_id, $type)
+	public function update_vote_count($answer_id)
 	{
-		if (! in_array($type, array(
-			'against',
-			'agree'
-		)))
-		{
-			return false;
-		}
+		$agree_count = $this->count('answer_vote', 'answer_id = ' . intval($answer_id) . ' AND vote_value = 1');
+		$disagree_count = $this->count('answer_vote', 'answer_id = ' . intval($answer_id) . ' AND vote_value = -1');
 
-		$vote_value = ($type == 'agree') ? '1' : '-1';
-
-		$count = $this->count('answer_vote', 'answer_id = ' . intval($answer_id) . ' AND vote_value = ' . $vote_value);
-
-		return $this->query("UPDATE " . $this->get_table('answer') . " SET {$type}_count = {$count} WHERE answer_id = " . intval($answer_id));
+		$count = $agree_count - $disagree_count;
+		return $this->query("UPDATE " . $this->get_table('answer') . " SET agree_count = {$count} WHERE answer_id = " . intval($answer_id));
 	}
 
 	public function set_answer_vote_status($voter_id, $vote_value)

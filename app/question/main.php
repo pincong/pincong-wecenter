@@ -159,7 +159,7 @@ class main extends AWS_CONTROLLER
 			}
 			else
 			{
-				$answer_order_by = "agree_count " . $_GET['sort'] . ", against_count ASC, add_time ASC";
+				$answer_order_by = "agree_count " . $_GET['sort'] . ", add_time ASC";
 			}
 
 			if ($answer_count_where)

@@ -148,10 +148,10 @@
 							<div class="clearfix aw-article-vote<?php if (!$this->user_id OR $this->user_id == $this->question_info['publish_uid']) { ?> disabled<?php } ?>">
 								<?php if ($this->user_id AND $this->user_id != $this->question_info['publish_uid']) { ?>
 									<a href="javascript:;" class="agree<?php if ($this->question_info['agree_status'] == 1) { ?> active<?php } ?>" onclick="AWS.User.question_vote_agree($(this), <?php echo $this->question_info['question_id']; ?>);"><i class="icon icon-agree"></i> <b><?php echo $this->question_info['agree_count']; ?></b></a>
-									<a href="javascript:;" class="disagree<?php if ($this->question_info['agree_status'] == -1) { ?> active<?php } ?>" onclick="AWS.User.question_vote_disagree($(this), <?php echo $this->question_info['question_id']; ?>);"><i class="icon icon-disagree"></i> <b><?php echo $this->question_info['against_count']; ?></b></a>
+									<a href="javascript:;" class="disagree<?php if ($this->question_info['agree_status'] == -1) { ?> active<?php } ?>" onclick="AWS.User.question_vote_disagree($(this), <?php echo $this->question_info['question_id']; ?>);"><i class="icon icon-disagree"></i></a>
 								<?php } else { ?>
 									<a href="javascript:;" class="agree"><i class="icon icon-agree"></i> <b><?php echo $this->question_info['agree_count']; ?></b></a>
-									<a href="javascript:;" class="disagree"><i class="icon icon-disagree"></i> <b><?php echo $this->question_info['against_count']; ?></b></a>
+									<a href="javascript:;" class="disagree"><i class="icon icon-disagree"></i></a>
 								<?php } ?>
 							</div>
 
@@ -366,7 +366,7 @@
 													<i data-placement="right" title="" data-toggle="tooltip" class="icon icon-agree" data-original-title="赞同回复"></i> <b class="count"><?php echo $val['agree_count']; ?></b>
 												</a>
 												<a class="disagree<?php if (!$this->user_id OR $this->user_info['user_name'] == $val['user_info']['user_name']) { ?> disabled<?php } ?> <?php if ($val['agree_status'] == -1) { ?>active<?php } ?>" <?php if ($this->user_id && $this->user_info['user_name'] != $val['user_info']['user_name']) { ?>onclick="AWS.User.disagree_vote(this, '<?php echo $this->user_info['user_name']; ?>', <?php echo $val['answer_id']; ?>);"<?php } ?>>
-													<i data-placement="right" title="" data-toggle="tooltip" class="icon icon-disagree" data-original-title="对回复持反对意见"></i> <b class="count"><?php echo $val['against_count']; ?></b>
+													<i data-placement="right" title="" data-toggle="tooltip" class="icon icon-disagree" data-original-title="对回复持反对意见"></i>
 												</a>
 											</span>
 											<!-- end 投票栏 -->

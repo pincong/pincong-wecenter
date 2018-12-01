@@ -1498,7 +1498,8 @@ AWS.User =
 			// 判断是否有反对过
 			if ($(selector).parents('.operate').find('.disagree').hasClass('active'))
 			{
-				$(selector).parents('.operate').find('.disagree').find('.count').html(parseInt($(selector).parents('.operate').find('.disagree').find('.count').html()) - 1);
+				//$(selector).parents('.operate').find('.disagree').find('.count').html(parseInt($(selector).parents('.operate').find('.disagree').find('.count').html()) - 1);
+				$(selector).parents('.operate').find('.agree').find('.count').html(parseInt($(selector).parents('.operate').find('.agree').find('.count').html()) + 1);
 
 				$(selector).parents('.operate').find('.disagree').removeClass('active');
 			}
@@ -1525,7 +1526,8 @@ AWS.User =
 		{
 			$(selector).removeClass('active');
 
-			$(selector).parents('.operate').find('.disagree').find('.count').html(parseInt($(selector).parents('.operate').find('.disagree').find('.count').html()) - 1);
+			//$(selector).parents('.operate').find('.disagree').find('.count').html(parseInt($(selector).parents('.operate').find('.disagree').find('.count').html()) - 1);
+			$(selector).parents('.operate').find('.agree').find('.count').html(parseInt($(selector).parents('.operate').find('.agree').find('.count').html()) + 1);
 		}
 		else
 		{
@@ -1561,7 +1563,8 @@ AWS.User =
 				$(selector).parents('.operate').find('.agree').removeClass('active');
 			}
 
-			$(selector).parents('.operate').find('.disagree').find('.count').html(parseInt($(selector).parents('.operate').find('.disagree').find('.count').html()) + 1);
+			//$(selector).parents('.operate').find('.disagree').find('.count').html(parseInt($(selector).parents('.operate').find('.disagree').find('.count').html()) + 1);
+			$(selector).parents('.operate').find('.agree').find('.count').html(parseInt($(selector).parents('.operate').find('.agree').find('.count').html()) - 1);
 
 			$(selector).addClass('active');
 		}
@@ -1760,7 +1763,8 @@ AWS.User =
 			// 判断是否有反对过
 			if ($(selector).parents('.aw-article-vote').find('.disagree').hasClass('active'))
 			{
-				$(selector).parents('.aw-article-vote').find('.disagree').find('b').html(parseInt($(selector).parents('.aw-article-vote').find('.disagree').find('b').html()) - 1);
+				//$(selector).parents('.aw-article-vote').find('.disagree').find('b').html(parseInt($(selector).parents('.aw-article-vote').find('.disagree').find('b').html()) - 1);
+				$(selector).parents('.aw-article-vote').find('.agree').find('b').html(parseInt($(selector).parents('.aw-article-vote').find('.agree').find('b').html()) + 1);
 
 				$(selector).parents('.aw-article-vote').find('.disagree').removeClass('active');
 			}
@@ -1787,7 +1791,8 @@ AWS.User =
 		{
 			$(selector).removeClass('active');
 
-			$(selector).parents('.aw-article-vote').find('.disagree').find('b').html(parseInt($(selector).parents('.aw-article-vote').find('.disagree').find('b').html()) - 1);
+			//$(selector).parents('.aw-article-vote').find('.disagree').find('b').html(parseInt($(selector).parents('.aw-article-vote').find('.disagree').find('b').html()) - 1);
+			$(selector).parents('.aw-article-vote').find('.agree').find('b').html(parseInt($(selector).parents('.aw-article-vote').find('.agree').find('b').html()) + 1);
 		}
 		else
 		{
@@ -1799,7 +1804,8 @@ AWS.User =
 				$(selector).parents('.aw-article-vote').find('.agree').removeClass('active');
 			}
 
-			$(selector).parents('.aw-article-vote').find('.disagree').find('b').html(parseInt($(selector).parents('.aw-article-vote').find('.disagree').find('b').html()) + 1);
+			//$(selector).parents('.aw-article-vote').find('.disagree').find('b').html(parseInt($(selector).parents('.aw-article-vote').find('.disagree').find('b').html()) + 1);
+			$(selector).parents('.aw-article-vote').find('.agree').find('b').html(parseInt($(selector).parents('.aw-article-vote').find('.agree').find('b').html()) - 1);
 
 			$(selector).addClass('active');
 		}
