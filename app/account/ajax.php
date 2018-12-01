@@ -239,7 +239,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function welcome_get_topics_action()
 	{
-		if ($topics_list = $this->model('topic')->get_topic_list(null, 'RAND()', 8))
+		if ($topics_list = $this->model('topic')->get_topic_list("discuss_count > 5", 'RAND()', 8))
 		{
 			foreach ($topics_list as $key => $topic)
 			{
@@ -262,7 +262,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$users_list)
 		{
-			$users_list = $this->model('account')->get_activity_random_users(6);
+			$users_list = $this->model('account')->get_users_list("answer_count > 5 AND last_login > " . (time() - (60 * 60 * 24 * 7)), 6, true, true, 'RAND()');
 		}
 
 		if ($users_list)

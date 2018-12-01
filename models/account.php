@@ -988,13 +988,6 @@ class account_class extends AWS_MODEL
         ), "uid = " . intval($uid));
     }
 
-    // 获取活跃用户 (非垃圾用户)
-    public function get_activity_random_users($limit = 10)
-    {
-        // 好友 & 粉丝 > 5, 回复 > 5, 根据登陆时间, 倒序
-        return $this->get_users_list("fans_count > 5 AND friend_count > 5 AND answer_count > 1", $limit, true, true, 'last_login DESC');
-    }
-
     public function add_user_group($group_name, $type, $reputation_lower = 0, $reputation_higer = 0, $reputation_factor = 0)
     {
         return $this->insert('users_group', array(
