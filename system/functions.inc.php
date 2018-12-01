@@ -1116,14 +1116,22 @@ function real_time()
 
 function fake_time()
 {
-    $min = 1800;
-    $max = 18000;
+    $min = intval(get_setting('random_seconds_min'));
+    $max = intval(get_setting('random_seconds_max'));
+    if (!$min && !$max)
+    {
+        return time();
+    }
     return time() - rand($min, $max);
 }
 
 function future_time()
 {
-    $min = 1800;
-    $max = 18000;
+    $min = intval(get_setting('random_seconds_min'));
+    $max = intval(get_setting('random_seconds_max'));
+    if (!$min && !$max)
+    {
+        return time();
+    }
     return time() + rand($min, $max);
 }
