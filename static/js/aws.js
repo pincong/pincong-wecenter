@@ -1593,11 +1593,11 @@ AWS.User =
 			{
 				if (result.rsm.action == 'fold')
 				{
-					selector.html(selector.html().replace(_t('强制折叠'), _t('撤消强制折叠')));
+					selector.html(selector.html().replace(_t('强制折叠'), _t('取消折叠')));
 				}
 				else
 				{
-					selector.html(selector.html().replace(_t('撤消强制折叠'), _t('强制折叠')));
+					selector.html(selector.html().replace(_t('取消折叠'), _t('强制折叠')));
 				}
 			}
 		}, 'json');
@@ -1691,9 +1691,9 @@ AWS.User =
 	},
 
 	// 感谢评论回复者
-	answer_user_rate: function(selector, type, answer_id)
+	answer_user_rate_thanks: function(selector, answer_id)
 	{
-		$.post(G_BASE_URL + '/question/ajax/question_answer_rate/', 'type=' + type + '&answer_id=' + answer_id, function (result)
+		$.post(G_BASE_URL + '/question/ajax/question_answer_rate_thanks/', 'answer_id=' + answer_id, function (result)
 		{
 			if (result.errno != 1)
 			{
@@ -1701,9 +1701,6 @@ AWS.User =
 			}
 			else if (result.errno == 1)
 			{
-				switch (type)
-				{
-				case 'thanks':
 					if (result.rsm.action == 'add')
 					{
 						selector.html(selector.html().replace(_t('感谢'), _t('已感谢')));
@@ -1713,21 +1710,16 @@ AWS.User =
 					{
 						selector.html(selector.html().replace(_t('已感谢'), _t('感谢')));
 					}
-					break;
-
-				case 'uninterested':
-					if (result.rsm.action == 'add')
-					{
-						selector.html(selector.html().replace(_t('折叠'), _t('撤消折叠')));
-					}
-					else
-					{
-						selector.html(selector.html().replace(_t('撤消折叠'), _t('折叠')));
-					}
-					break;
-				}
 			}
 		}, 'json');
+	},
+
+	answer_user_rate_uninterested: function(selector, answer_id)
+	{
+		AWS.dialog('confirm', {'message': _t('确认?')}, function()
+		{
+			AWS.ajax_request(G_BASE_URL + '/question/ajax/question_answer_rate_uninterested/', 'answer_id=' + answer_id);
+		});
 	},
 
 	// 提交评论

@@ -47,7 +47,7 @@ $(function()
 		//折叠回复
 		$.each($('.aw-question-comment .aw-item'), function (i, e)
 		{
-			if ($(this).attr('uninterested_count') >= UNINTERESTED_COUNT || $(this).attr('force_fold') == 1)
+			if ($(this).attr('uninterested_count') >= UNINTERESTED_COUNT)
 			{
 				$('#uninterested_answers_list').append($(e));
 			}
