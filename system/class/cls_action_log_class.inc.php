@@ -54,9 +54,7 @@ class ACTION_LOG
 
 	const ADD_COMMENT_ARTICLE = 503;	// 评论文章
 
-	const ADD_LIKE_PROJECT = 701;	// 喜欢活动
 
-	const ADD_SUPPORT_PROJECT = 702;	// 参加活动
 
 	public static function associate_fresh_action($history_id, $associate_id, $associate_type, $associate_action, $uid, $anonymous, $add_time)
 	{
@@ -68,9 +66,7 @@ class ACTION_LOG
 			self::ANSWER_QUESTION,
 			self::ADD_REQUESTION_FOCUS,
 			self::ADD_AGREE_ARTICLE,
-			self::ADD_COMMENT_ARTICLE,
-			self::ADD_LIKE_PROJECT,
-			self::ADD_SUPPORT_PROJECT
+			self::ADD_COMMENT_ARTICLE
 		)))
 		{
 			// 删除相同关联 ID 下相同动作的旧动态
@@ -314,11 +310,6 @@ class ACTION_LOG
 					$action_string = '<a href="' . $user_profile_url . '" ' . $user_link_attr . '>' . $user_name . '</a> ' . AWS_APP::lang()->_t('赞同了该回复');
 				}
 				break;
-
-			case self::ADD_LIKE_PROJECT: // '增加赞同'
-				$action_string = '<a href="' . $user_profile_url . '" ' . $user_link_attr . '>' . $user_name . '</a> ' . AWS_APP::lang()->_t('喜欢了该活动');
-				break;
-
 
 			case self::ADD_ARTICLE :
 				if ($associate_topic_info)
