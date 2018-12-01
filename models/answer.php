@@ -393,7 +393,7 @@ class answer_class extends AWS_MODEL
 					$this->model('integral')->process($answer_uid, 'ANSWER_AGREED', get_setting('integral_system_config_answer_agreed'), '回复被赞同 #' . $answer_info['answer_id'], $answer_info['answer_id']);
 				}
 
-				ACTION_LOG::save_action($uid, $question_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_AGREE, '', intval($answer_id));
+				//ACTION_LOG::save_action($uid, $question_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_AGREE, '', intval($answer_id));
 			}
 			else if ($vote_value == -1)
 			{
@@ -410,7 +410,7 @@ class answer_class extends AWS_MODEL
 		{
 			$this->delete_answer_vote($vote_info['voter_id']);
 
-			ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action = ' . ACTION_LOG::ADD_AGREE . ' AND uid = ' . intval($uid) . ' AND associate_id = ' . intval($question_id) . ' AND associate_attached = ' . intval($answer_id));
+			//ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action = ' . ACTION_LOG::ADD_AGREE . ' AND uid = ' . intval($uid) . ' AND associate_id = ' . intval($question_id) . ' AND associate_attached = ' . intval($answer_id));
 
 			$add_agree_count = -$vote_value;
 		}
@@ -418,22 +418,22 @@ class answer_class extends AWS_MODEL
 		{
 			$this->set_answer_vote_status($vote_info['voter_id'], $vote_value);
 
-			if ($vote_value == 1)
+			/*if ($vote_value == 1)
 			{
 				ACTION_LOG::save_action($uid, $question_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_AGREE, '', $answer_id);
-			}
+			}*/
 
 			$add_agree_count = $vote_value * 2;
 		}
 
-		if ($vote_value == 1 AND $vote_info['vote_value'] != 1 AND $answer_info['uid'] != $uid)
+		/*if ($vote_value == 1 AND $vote_info['vote_value'] != 1 AND $answer_info['uid'] != $uid)
 		{
 			$this->model('notify')->send($uid, $answer_info['uid'], notify_class::TYPE_ANSWER_AGREE, notify_class::CATEGORY_QUESTION, $question_id, array(
 				'from_uid' => $uid,
 				'question_id' => $question_id,
 				'item_id' => $answer_id,
 			));
-		}
+		}*/
 
 		$this->update_vote_count($answer_id);
 

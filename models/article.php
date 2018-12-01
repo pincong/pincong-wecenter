@@ -441,7 +441,7 @@ class article_class extends AWS_MODEL
 					'votes' => $votes
 				), 'id = ' . ($item_id));
 
-				switch ($rating)
+				/*switch ($rating)
 				{
 					case 1:
 						ACTION_LOG::save_action($uid, $item_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_AGREE_ARTICLE);
@@ -450,7 +450,7 @@ class article_class extends AWS_MODEL
 					case -1:
 						ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action = ' . ACTION_LOG::ADD_AGREE_ARTICLE . ' AND uid = ' . ($uid) . ' AND associate_id = ' . ($item_id));
 					break;
-				}
+				}*/
 			break;
 
 			case 'comment':
