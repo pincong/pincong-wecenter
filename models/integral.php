@@ -22,19 +22,37 @@ class integral_class extends AWS_MODEL
 {
 	public function process($uid, $action, $integral, $note = '', $item_id = null)
 	{
-		/*if (get_setting('integral_system_enabled') == 'N')
+		if (get_setting('integral_system_enabled') == 'N')
 		{
 			return false;
-		}*/
+		}
 
+		$integral = intval($integral);
 		if ($integral == 0)
 		{
 			return false;
 		}
 
-		$log_id = $this->log($uid, $action, $integral, $note, $item_id);
+		$user_info = $this->model('account')->get_user_info_by_uid($uid);
+		if (!$user_info)
+		{
+			return false;
+		}
+		$balance = intval($user_info['integral']) + $integral;
 
-		$this->sum_integral($uid);
+		$log_id = $this->insert('integral_log', array(
+			'uid' => intval($uid),
+			'action' => $action,
+			'integral' => $integral,
+			'balance' => $balance,
+			'note' => $note,
+			'item_id' => intval($item_id),
+			'time' => fake_time()
+		));
+
+		$this->update('users', array(
+			'integral' => $balance
+		), 'uid = ' . intval($uid));
 
 		return $log_id;
 	}
@@ -47,30 +65,6 @@ class integral_class extends AWS_MODEL
             $where .= ' AND item_id = ' . intval($item_id);
         }
 		return $this->fetch_row('integral_log', $where);
-	}
-
-	public function log($uid, $action, $integral, $note = '', $item_id = null)
-	{
-		if ($user_info = $this->model('account')->get_user_info_by_uid($uid))
-		{
-			return $this->insert('integral_log', array(
-				'uid' => intval($uid),
-				'action' => $action,
-				'integral' => (int)$integral,
-				'balance' => ((int)$user_info['integral'] + (int)$integral),
-				'note' => $note,
-				'item_id' => (int)$item_id,
-				'time' => fake_time()
-			));
-		}
-	}
-
-	// 根据日志计算积分
-	public function sum_integral($uid)
-	{
-		return $this->update('users', array(
-			'integral' => $this->sum('integral_log', 'integral', 'uid = ' . intval($uid))
-		), 'uid = ' . intval($uid));
 	}
 
 	public function parse_log_item($parse_items)
