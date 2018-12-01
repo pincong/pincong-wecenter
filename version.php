@@ -12,7 +12,7 @@
 +---------------------------------------------------------------------------
 */
 
-define('G_VERSION', '3.1.9');
+define('G_VERSION', '19.0.0');
 define('G_VERSION_BUILD', '20160523');
 define('G_DISPLAY_VERSION', '');
 define('G_DISPLAY_VERSION_BUILD', '');
