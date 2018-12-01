@@ -281,7 +281,6 @@ class actions_class extends AWS_MODEL
 			$answer_vote_status = $this->model('answer')->get_answer_vote_status($final_list_answer_ids, $uid);
 
 			$answer_users_rated_thanks = $this->model('answer')->users_rated_thanks($final_list_answer_ids, $uid);
-			$answer_users_rated_uninterested = $this->model('answer')->users_rated_uninterested($final_list_answer_ids, $uid);
 		}
 
 		foreach ($action_list as $key => $val)
@@ -305,10 +304,6 @@ class actions_class extends AWS_MODEL
 					$action_list[$key]['answer_info']['user_rated_thanks'] = $answer_users_rated_thanks[$answer_id];
 				}
 
-				if (isset($answer_users_rated_uninterested[$answer_id]))
-				{
-					$action_list[$key]['answer_info']['user_rated_uninterested'] = $answer_users_rated_uninterested[$answer_id];
-				}
 			}
 		}
 

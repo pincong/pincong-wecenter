@@ -1735,14 +1735,6 @@ AWS.User =
 		}, 'json');
 	},
 
-	answer_user_rate_uninterested: function(selector, answer_id)
-	{
-		AWS.dialog('confirm', {'message': _t('确认?')}, function()
-		{
-			AWS.ajax_request(G_BASE_URL + '/question/ajax/question_answer_rate_uninterested/', 'answer_id=' + answer_id);
-		});
-	},
-
 	// 提交评论
 	save_comment: function(selector)
 	{

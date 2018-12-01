@@ -98,9 +98,7 @@ class integral_class extends AWS_MODEL
 
 				case 'ANSWER_THANKS':
 				case 'THANKS_ANSWER':
-				case 'ANSWER_FOLD':
 				case 'BEST_ANSWER':
-				case 'ANSWER_UNINTERESTED':
 				case 'AGREE_ANSWER':
 				case 'ANSWER_AGREED':
 				case 'DISAGREE_ANSWER':
@@ -187,9 +185,7 @@ class integral_class extends AWS_MODEL
 
 				case 'ANSWER_THANKS':
 				case 'THANKS_ANSWER':
-				case 'ANSWER_FOLD':
 				case 'BEST_ANSWER':
-				case 'ANSWER_UNINTERESTED':
 				case 'AGREE_ANSWER':
 				case 'ANSWER_AGREED':
 				case 'DISAGREE_ANSWER':

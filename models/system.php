@@ -463,7 +463,6 @@ class system_class extends AWS_MODEL
 	public function remove_user_by_uid($uid, $remove_user_data = false)
 	{
 		$delete_tables = array(
-			'answer_uninterested',
 			'favorite',
 			'integral_log',
 			'question_focus',

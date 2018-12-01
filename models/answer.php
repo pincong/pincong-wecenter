@@ -551,8 +551,6 @@ class answer_class extends AWS_MODEL
 
 			$this->delete('answer_thanks', 'answer_id = ' . intval($answer_id));	// 删除感谢
 
-			$this->delete('answer_uninterested', 'answer_id = ' . intval($answer_id));	// 删除没有帮助
-
 			ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_ANSWER . ' AND associate_id = ' . intval($answer_id));
 			ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action = ' . ACTION_LOG::ANSWER_QUESTION . ' AND associate_attached = ' . intval($answer_id));
 
@@ -746,28 +744,6 @@ class answer_class extends AWS_MODEL
 		return $users_rated;
 	}
 
-	public function users_rated_uninterested($answer_ids, $uid)
-	{
-		if (!$uid)
-		{
-			return false;
-		}
-
-		if (!is_array($answer_ids))
-		{
-			return false;
-		}
-
-		$all_rated = $this->fetch_all('answer_uninterested', 'uid = ' . intval($uid) . ' AND answer_id IN(' . implode(',', $answer_ids) . ')');
-
-		foreach ($all_rated AS $key => $val)
-		{
-			$users_rated[$val['answer_id']] = $val;
-		}
-
-		return $users_rated;
-	}
-
 	public function user_rate_thanks($answer_id, $uid)
 	{
 		$answer_id = intval($answer_id);
@@ -801,68 +777,14 @@ class answer_class extends AWS_MODEL
 		return true;
 	}
 
-	public function user_rate_uninterested($answer_id, $uid)
-	{
-		$answer_id = intval($answer_id);
-		$uid = intval($uid);
-
-		$user_rated = $this->fetch_row('answer_uninterested', 'uid = ' . ($uid) . ' AND answer_id = ' . ($answer_id));
-		if ($user_rated)
-		{
-			$this->delete('answer_uninterested', 'uid = ' . ($uid) . ' AND answer_id = ' . ($answer_id));
-		}
-		else
-		{
-			$this->insert('answer_uninterested', array(
-				'uid' => $uid,
-				'answer_id' => $answer_id,
-				'time' => fake_time()
-			));
-		}
-
-		$this->update_answer_by_id($answer_id, array(
-			'uninterested_count' => $this->count('answer_uninterested', 'answer_id = ' . ($answer_id))
-		));
-
-		$answer_info = $this->get_answer_by_id($answer_id);
-
-		if ($answer_info['uninterested_count'] >= get_setting('uninterested_fold'))
-		{
-			if (!$answer_info['force_fold'])
-			{
-				$this->update_answer_by_id($answer_id, array(
-					'force_fold' => 1
-				));
-
-				ACTION_LOG::set_fold_action_history($answer_info['answer_id'], 1);
-
-				$this->model('integral')->process($answer_info['uid'], 'ANSWER_FOLD', get_setting('integral_system_config_answer_fold'), '回复被折叠 #' . $answer_info['answer_id'], $answer_info['answer_id']);
-			}
-		}
-
-		if (!$user_rated)
-		{
-			$this->model('integral')->process($uid, 'ANSWER_UNINTERESTED', get_setting('integral_system_config_uninterested'), '折叠回复 #' . $answer_info['answer_id'], $answer_info['answer_id']);
-			return true;
-		}
-
-		return false;
-	}
-
 	public function force_fold($answer_id, $uid)
 	{
 		$answer_id = intval($answer_id);
 
-		$this->delete('answer_uninterested', 'answer_id = ' . $answer_id);
-
 		$answer_info = $this->get_answer_by_id($answer_id);
 
-		if ($answer_info['uninterested_count'] >= get_setting('uninterested_fold'))
+		if ($answer_info['force_fold'])
 		{
-			$this->update_answer_by_id($answer_id, array(
-				'uninterested_count' => 0
-			));
-
 			$this->update_answer_by_id($answer_id, array(
 				'force_fold' => 0
 			));
@@ -872,22 +794,10 @@ class answer_class extends AWS_MODEL
 		else
 		{
 			$this->update_answer_by_id($answer_id, array(
-				'uninterested_count' => get_setting('uninterested_fold')
+				'force_fold' => 1
 			));
 
-			if (!$answer_info['force_fold'])
-			{
-				$this->update_answer_by_id($answer_id, array(
-					'force_fold' => 1
-				));
-
-				ACTION_LOG::set_fold_action_history($answer_info['answer_id'], 1);
-
-				if ($uid != $answer_info['uid'])
-				{
-					$this->model('integral')->process($answer_info['uid'], 'ANSWER_FOLD', get_setting('integral_system_config_answer_fold'), '回复被折叠 #' . $answer_info['answer_id'], $answer_info['answer_id']);
-				}
-			}
+			ACTION_LOG::set_fold_action_history($answer_info['answer_id'], 1);
 
 			return true;
 		}

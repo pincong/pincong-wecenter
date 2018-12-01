@@ -562,39 +562,6 @@ class ajax extends AWS_CONTROLLER
 		}
 	}
 
-	public function question_answer_rate_uninterested_action()
-	{
-		$answer_info = $this->model('answer')->get_answer_by_id($_POST['answer_id']);
-
-		if (! $answer_info)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('回复不存在')));
-		}
-
-		if ($this->user_id == $answer_info['uid'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('不能折叠自己发表的回复')));
-		}
-
-		if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_uninterested'))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_unit'))));
-		}
-
-		if ($this->model('answer')->user_rate_uninterested($_POST['answer_id'], $this->user_id))
-		{
-			H::ajax_json_output(AWS_APP::RSM(array(
-				'action' => 'add'
-			), 1, null));
-		}
-		else
-		{
-			H::ajax_json_output(AWS_APP::RSM(array(
-				'action' => 'remove'
-			), 1, null));
-		}
-	}
-
 	public function focus_action()
 	{
 		if (!$_POST['question_id'])
