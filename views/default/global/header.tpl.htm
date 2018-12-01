@@ -83,9 +83,9 @@
 							<?php if (get_setting('pm_enabled') == 'Y') { ?>
 							<li><a href="inbox/"><i class="icon icon-inbox"></i> <?php _e('私信'); ?><span class="badge badge-important collapse" id="inbox_unread">0</span></a></li>
 							<?php } ?>
-							<li class="hidden-xs"><a href="account/setting/profile/"><i class="icon icon-setting"></i> <?php _e('设置'); ?></a></li>
+							<li><a href="account/setting/profile/"><i class="icon icon-setting"></i> <?php _e('设置'); ?></a></li>
 							<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
-							<li class="hidden-xs"><a href="admin/"><i class="icon icon-job"></i> <?php _e('管理'); ?></a></li>
+							<li><a href="admin/"><i class="icon icon-job"></i> <?php _e('管理'); ?></a></li>
 							<?php } ?>
 							<li><a href="account/logout/"><i class="icon icon-logout"></i> <?php _e('退出'); ?></a></li>
 						</ul>
