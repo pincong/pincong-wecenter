@@ -68,7 +68,7 @@ class main extends AWS_CONTROLLER
 
 		if (!$_GET['id'] AND !$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_new_question'))
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_name')));
+			H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_name')), '/integral/rule/');
 		}
 
 		if (($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'] OR $question_info['published_uid'] == $this->user_id AND $_GET['id']) OR !$_GET['id'])
@@ -146,7 +146,7 @@ class main extends AWS_CONTROLLER
 
 		if (!$_GET['id'] AND !$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_new_article'))
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_name')));
+			H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_name')), '/integral/rule/');
 		}
 
 		if (($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'] OR $article_info['uid'] == $this->user_id AND $_GET['id']) OR !$_GET['id'])
