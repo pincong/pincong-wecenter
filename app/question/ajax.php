@@ -949,47 +949,6 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
-	public function get_report_reason_action()
-	{
-		if ($report_reason = explode("\n", get_setting('report_reason')))
-		{
-			$data = array();
-
-			foreach ($report_reason as $key => $val)
-			{
-				$val = trim($val);
-
-				if ($val)
-				{
-					$data[] = $val;
-				}
-			}
-		}
-
-		H::ajax_json_output(AWS_APP::RSM($data, 1));
-	}
-
-	public function save_report_action()
-	{
-		if (get_setting('reporting_disabled') == 'Y')
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('举报功能已经关闭')));
-		}
-
-		if (my_trim($_POST['reason']) == '')
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请填写举报理由')));
-		}
-
-		$this->model('question')->save_report($this->user_id, $_POST['type'], $_POST['target_id'], htmlspecialchars($_POST['reason']), $_SERVER['HTTP_REFERER']);
-
-		$recipient_uid = get_setting('report_message_uid') ? get_setting('report_message_uid') : 1;
-
-		//$this->model('message')->send_message($this->user_id, $recipient_uid, AWS_APP::lang()->_t('有新的举报, 请登录后台查看处理: %s', get_js_url('/admin/question/report_list/')));
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, AWS_APP::lang()->_t('举报成功')));
-	}
-
 	public function set_best_answer_action()
 	{
 		if (! $this->user_info['permission']['is_moderator'] AND ! $this->user_info['permission']['is_administrator'])

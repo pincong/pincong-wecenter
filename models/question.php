@@ -936,34 +936,6 @@ class question_class extends AWS_MODEL
 		), 'question_id = ' . intval($question_id));
 	}
 
-	public function save_report($uid, $type, $target_id, $reason, $url)
-	{
-		return $this->insert('report', array(
-			'uid' => $uid,
-			'type' => htmlspecialchars($type),
-			'target_id' => $target_id,
-			'reason' => htmlspecialchars($reason),
-			'url' => htmlspecialchars($url),
-			'add_time' => fake_time(),
-			'status' => 0,
-		));
-	}
-
-	public function get_report_list($where, $page, $pre_page, $order = 'id DESC')
-	{
-		return $this->fetch_page('report', $where, $order, $page, $pre_page);
-	}
-
-	public function update_report($report_id, $data)
-	{
-		return $this->update('report', $data, 'id = ' . intval($report_id));
-	}
-
-	public function delete_report($report_id)
-	{
-		return $this->delete('report', 'id = ' . intval($report_id));
-	}
-
 	/**
 	 *
 	 * 根据问题ID,得到相关联的话题标题信息

@@ -145,31 +145,4 @@ class question extends AWS_ADMIN_CONTROLLER
 		TPL::output('admin/question/question_list');
 	}
 
-	public function report_list_action()
-	{
-		if ($report_list = $this->model('question')->get_report_list('status = ' . intval($_GET['status']), $_GET['page'], $this->per_page))
-		{
-			$report_total = $this->model('question')->found_rows();
-
-			$userinfos = $this->model('account')->get_user_info_by_uids(fetch_array_value($report_list, 'uid'));
-
-			foreach ($report_list as $key => $val)
-			{
-				$report_list[$key]['user'] = $userinfos[$val['uid']];
-			}
-		}
-
-		$this->crumb(AWS_APP::lang()->_t('用户举报'), 'admin/question/report_list/');
-
-		TPL::assign('list', $report_list);
-		TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(306));
-
-		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-			'base_url' => get_js_url('/admin/question/report_list/status-' . intval($_GET['status'])),
-			'total_rows' => $report_total,
-			'per_page' => $this->per_page
-		))->create_links());
-
-		TPL::output('admin/question/report_list');
-	}
 }
