@@ -42,11 +42,6 @@ class main extends AWS_CONTROLLER
 			$this->model('notify')->read_notification($_GET['notification_id'], $this->user_id);
 		}
 
-		/*if ($_GET['column'] == 'log' AND !$this->user_id)
-		{
-			HTTP::redirect('/question/' . $_GET['id']);
-		}*/
-
 		if (! $question_info = $this->model('question')->get_question_info_by_id($_GET['id']))
 		{
 			HTTP::error_404();
@@ -118,145 +113,144 @@ class main extends AWS_CONTROLLER
 
 		$question_info['user_info'] = $this->model('account')->get_user_info_by_uid($question_info['published_uid'], true);
 
-		if ($_GET['column'] != 'log')
+
+		$this->model('content')->update_view_count('question', $question_info['question_id'], session_id());
+
+		if (is_digits($_GET['uid']))
 		{
-			$this->model('content')->update_view_count('question', $question_info['question_id'], session_id());
-
-			if (is_digits($_GET['uid']))
+			$answer_list_where[] = 'uid = ' . intval($_GET['uid']);
+			$answer_count_where = 'uid = ' . intval($_GET['uid']);
+		}
+		else if ($_GET['uid'] == 'focus' and $this->user_id)
+		{
+			if ($friends = $this->model('follow')->get_user_friends($this->user_id, false))
 			{
-				$answer_list_where[] = 'uid = ' . intval($_GET['uid']);
-				$answer_count_where = 'uid = ' . intval($_GET['uid']);
-			}
-			else if ($_GET['uid'] == 'focus' and $this->user_id)
-			{
-				if ($friends = $this->model('follow')->get_user_friends($this->user_id, false))
+				foreach ($friends as $key => $val)
 				{
-					foreach ($friends as $key => $val)
-					{
-						$follow_uids[] = $val['uid'];
-					}
-				}
-				else
-				{
-					$follow_uids[] = 0;
-				}
-
-				$answer_list_where[] = 'uid IN(' . implode($follow_uids, ',') . ')';
-				$answer_count_where = 'uid IN(' . implode($follow_uids, ',') . ')';
-				//$answer_order_by = 'add_time ASC';
-				$answer_order_by = 'answer_id ASC';
-			}
-			else if ($_GET['sort_key'] == 'add_time')
-			{
-				//$answer_order_by = "add_time " . $sort;
-				$answer_order_by = "answer_id " . $sort;
-			}
-			else
-			{
-				//$answer_order_by = "agree_count " . $sort . ", add_time ASC";
-				$answer_order_by = "agree_count " . $sort . ", answer_id ASC";
-			}
-
-			if ($answer_count_where)
-			{
-				$answer_count = $this->model('answer')->get_answer_count_by_question_id($question_info['question_id'], $answer_count_where);
-			}
-			else
-			{
-				$answer_count = $question_info['answer_count'];
-			}
-
-			if (isset($_GET['answer_id']) and (! $this->user_id OR $_GET['single']))
-			{
-				$answer_list = $this->model('answer')->get_answer_list_by_question_id($question_info['question_id'], 1, 'answer_id = ' . intval($_GET['answer_id']));
-			}
-			else if (! $this->user_id AND !$this->user_info['permission']['answer_show'])
-			{
-				if ($question_info['best_answer'])
-				{
-					$answer_list = $this->model('answer')->get_answer_list_by_question_id($question_info['question_id'], 1, 'answer_id = ' . intval($question_info['best_answer']));
-				}
-				else
-				{
-					$answer_list = $this->model('answer')->get_answer_list_by_question_id($question_info['question_id'], 1, null, 'agree_count DESC');
+					$follow_uids[] = $val['uid'];
 				}
 			}
 			else
 			{
-				if ($answer_list_where)
-				{
-					$answer_list_where = implode(' AND ', $answer_list_where);
-				}
-
-				$answer_list = $this->model('answer')->get_answer_list_by_question_id($question_info['question_id'], calc_page_limit($_GET['page'], 100), $answer_list_where, $answer_order_by);
+				$follow_uids[] = 0;
 			}
 
-			// 最佳回复预留
-			$answers[0] = '';
+			$answer_list_where[] = 'uid IN(' . implode($follow_uids, ',') . ')';
+			$answer_count_where = 'uid IN(' . implode($follow_uids, ',') . ')';
+			//$answer_order_by = 'add_time ASC';
+			$answer_order_by = 'answer_id ASC';
+		}
+		else if ($_GET['sort_key'] == 'add_time')
+		{
+			//$answer_order_by = "add_time " . $sort;
+			$answer_order_by = "answer_id " . $sort;
+		}
+		else
+		{
+			//$answer_order_by = "agree_count " . $sort . ", add_time ASC";
+			$answer_order_by = "agree_count " . $sort . ", answer_id ASC";
+		}
 
-			if (! is_array($answer_list))
+		if ($answer_count_where)
+		{
+			$answer_count = $this->model('answer')->get_answer_count_by_question_id($question_info['question_id'], $answer_count_where);
+		}
+		else
+		{
+			$answer_count = $question_info['answer_count'];
+		}
+
+		if (isset($_GET['answer_id']) and (! $this->user_id OR $_GET['single']))
+		{
+			$answer_list = $this->model('answer')->get_answer_list_by_question_id($question_info['question_id'], 1, 'answer_id = ' . intval($_GET['answer_id']));
+		}
+		else if (! $this->user_id AND !$this->user_info['permission']['answer_show'])
+		{
+			if ($question_info['best_answer'])
 			{
-				$answer_list = array();
+				$answer_list = $this->model('answer')->get_answer_list_by_question_id($question_info['question_id'], 1, 'answer_id = ' . intval($question_info['best_answer']));
 			}
-
-			$answer_ids = array();
-			$answer_uids = array();
-
-			foreach ($answer_list as $answer)
+			else
 			{
-				$answer_ids[] = $answer['answer_id'];
-				$answer_uids[] = $answer['uid'];
+				$answer_list = $this->model('answer')->get_answer_list_by_question_id($question_info['question_id'], 1, null, 'agree_count DESC');
+			}
+		}
+		else
+		{
+			if ($answer_list_where)
+			{
+				$answer_list_where = implode(' AND ', $answer_list_where);
 			}
 
-			if (!in_array($question_info['best_answer'], $answer_ids) AND intval($_GET['page']) < 2)
-			{
-				$answer_list = array_merge($this->model('answer')->get_answer_list_by_question_id($question_info['question_id'], 1, 'answer_id = ' . $question_info['best_answer']), $answer_list);
-			}
+			$answer_list = $this->model('answer')->get_answer_list_by_question_id($question_info['question_id'], calc_page_limit($_GET['page'], 100), $answer_list_where, $answer_order_by);
+		}
+
+		// 最佳回复预留
+		$answers[0] = '';
+
+		if (! is_array($answer_list))
+		{
+			$answer_list = array();
+		}
+
+		$answer_ids = array();
+		$answer_uids = array();
+
+		foreach ($answer_list as $answer)
+		{
+			$answer_ids[] = $answer['answer_id'];
+			$answer_uids[] = $answer['uid'];
+		}
+
+		if (!in_array($question_info['best_answer'], $answer_ids) AND intval($_GET['page']) < 2)
+		{
+			$answer_list = array_merge($this->model('answer')->get_answer_list_by_question_id($question_info['question_id'], 1, 'answer_id = ' . $question_info['best_answer']), $answer_list);
+		}
+
+		if ($this->user_id)
+		{
+			$answer_vote_values = $this->model('vote')->get_user_vote_values_by_ids('answer', $answer_ids, $this->user_id);
+		}
+
+		foreach ($answer_list as $answer)
+		{
+			$answer['answer_content'] = $this->model('question')->parse_at_user($answer['answer_content']);
 
 			if ($this->user_id)
 			{
-				$answer_vote_values = $this->model('vote')->get_user_vote_values_by_ids('answer', $answer_ids, $this->user_id);
+				$answer['vote_value'] = $answer_vote_values[$answer['answer_id']];
 			}
 
-			foreach ($answer_list as $answer)
+			if ($question_info['best_answer'] == $answer['answer_id'] AND intval($_GET['page']) < 2)
 			{
-				$answer['answer_content'] = $this->model('question')->parse_at_user($answer['answer_content']);
-
-				if ($this->user_id)
-				{
-					$answer['vote_value'] = $answer_vote_values[$answer['answer_id']];
-				}
-
-				if ($question_info['best_answer'] == $answer['answer_id'] AND intval($_GET['page']) < 2)
-				{
-					$answers[0] = $answer;
-				}
-				else
-				{
-					$answers[] = $answer;
-				}
+				$answers[0] = $answer;
 			}
-
-			if (! $answers[0])
+			else
 			{
-				unset($answers[0]);
+				$answers[] = $answer;
 			}
-
-			if (get_setting('answer_unique') == 'Y')
-			{
-				if ($this->model('answer')->has_answer_by_uid($question_info['question_id'], $this->user_id))
-				{
-					TPL::assign('user_answered', 1);
-				}
-				else
-				{
-					TPL::assign('user_answered', 0);
-				}
-			}
-
-			TPL::assign('answers', $answers);
-			TPL::assign('answer_count', $answer_count);
 		}
+
+		if (! $answers[0])
+		{
+			unset($answers[0]);
+		}
+
+		if (get_setting('answer_unique') == 'Y')
+		{
+			if ($this->model('answer')->has_answer_by_uid($question_info['question_id'], $this->user_id))
+			{
+				TPL::assign('user_answered', 1);
+			}
+			else
+			{
+				TPL::assign('user_answered', 0);
+			}
+		}
+
+		TPL::assign('answers', $answers);
+		TPL::assign('answer_count', $answer_count);
+
 
 		if ($this->user_id)
 		{
@@ -315,20 +309,14 @@ class main extends AWS_CONTROLLER
 
 		$this->crumb($question_info['question_content'], '/question/' . $question_info['question_id']);
 
-		if ($_GET['column'] == 'log')
+		// TODO: 未登录也显示分页链接
+		if ($this->user_id)
 		{
-			$this->crumb(AWS_APP::lang()->_t('日志'), '/question/id-' . $question_info['question_id'] . '__column-log');
-		}
-		else
-		{
-			if ($this->user_id)
-			{
-				TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-					'base_url' => get_js_url('/question/id-' . $question_info['question_id'] . '__sort_key-' . $_GET['sort_key'] . '__sort-' . $_GET['sort'] . '__uid-' . $_GET['uid']),
-					'total_rows' => $answer_count,
-					'per_page' => 100
-				))->create_links());
-			}
+			TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
+				'base_url' => get_js_url('/question/id-' . $question_info['question_id'] . '__sort_key-' . $_GET['sort_key'] . '__sort-' . $_GET['sort'] . '__uid-' . $_GET['uid']),
+				'total_rows' => $answer_count,
+				'per_page' => 100
+			))->create_links());
 		}
 
 		TPL::set_meta('keywords', implode(',', $this->model('system')->analysis_keyword($question_info['question_content'])));
