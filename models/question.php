@@ -1258,4 +1258,23 @@ class question_class extends AWS_MODEL
 		return $this->fetch_row('question_vote', "question_id = " . intval($question_id) . " AND vote_uid = " . intval($uid));
 	}
 
+	public function delete_expired_votes()
+	{
+		$days = intval(get_setting('expiration_votes'));
+		if (!$days)
+		{
+			return;
+		}
+		$seconds = $days * 24 * 3600;
+		$time_before = real_time() - $seconds;
+		if ($time_before < 0)
+		{
+			$time_before = 0;
+		}
+		$this->delete('question_vote', 'add_time < ' . $time_before);
+		$this->delete('answer_vote', 'add_time < ' . $time_before);
+		$this->delete('question_thanks', 'time < ' . $time_before);
+		$this->delete('answer_thanks', 'time < ' . $time_before);
+	}
+
 }

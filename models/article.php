@@ -649,4 +649,21 @@ class article_class extends AWS_MODEL
 		}
 	}
 
+	public function delete_expired_votes()
+	{
+		$days = intval(get_setting('expiration_votes'));
+		if (!$days)
+		{
+			return;
+		}
+		$seconds = $days * 24 * 3600;
+		$time_before = real_time() - $seconds;
+		if ($time_before < 0)
+		{
+			$time_before = 0;
+		}
+		$this->delete('article_vote', 'time < ' . $time_before);
+		$this->delete('article_thanks', 'time < ' . $time_before);
+	}
+
 }

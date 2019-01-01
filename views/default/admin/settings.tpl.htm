@@ -560,6 +560,18 @@
                         </div>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('删除过期投票和感谢记录'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="expiration_votes" type="text" class="form-control" value="<?php echo $this->setting['expiration_votes']; ?>"/>
+
+                                <div class="help-block"><?php _e('单位'); ?>: 天, <?php _e('填写 0 则不启用'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
 
                 <tr>
                     <td>

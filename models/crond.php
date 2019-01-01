@@ -116,6 +116,8 @@ class crond_class extends AWS_MODEL
         $this->model('currency')->delete_expired_logs();
         ACTION_LOG::delete_expired_data();
         $this->model('notify')->delete_expired_data();
+		$this->model('article')->delete_expired_votes();
+		$this->model('question')->delete_expired_votes();
     }
 
     // 每日时执行
