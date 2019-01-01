@@ -167,7 +167,7 @@ class reputation_class extends AWS_MODEL
 
 		$time_after = real_time() - 24 * 3600; // 1天内的活跃用户
 
-		if ($active_users = $this->query_all("SELECT uid FROM " . $this->get_table('users') . " WHERE last_login > " . $time_after . " AND forbidden = 0 AND reputation > " . $reputation_above))
+		if ($active_users = $this->query_all("SELECT uid FROM " . $this->get_table('users') . " WHERE last_login >= " . $time_after . " AND forbidden = 0 AND reputation > " . $reputation_above))
 		{
 			foreach ($active_users AS $key => $val)
 			{

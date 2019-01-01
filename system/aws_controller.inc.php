@@ -45,10 +45,9 @@ class AWS_CONTROLLER
 				date_default_timezone_set($this->user_info['default_timezone']);
 			}
 
-			// 如果上次登录时间早于12小时, 则更新登录时间
+			// 如果上次登录时间早于24小时, 则更新登录时间
 			// TODO: 在管理后台添加选项
-			$seconds = 12 * 3600;
-			$time_before = real_time() - (12 * 3600);
+			$time_before = real_time() - (24 * 3600);
 			if ($this->user_info['last_login'] < $time_before)
 			{
 				$this->model('account')->update_user_last_login($this->user_info['uid']);
