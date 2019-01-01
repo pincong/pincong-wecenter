@@ -111,7 +111,7 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		if ($question_info['category_id'] AND get_setting('category_enable') == 'Y')
+		if ($question_info['category_id'] AND get_setting('category_enable') != 'N')
 		{
 			$question_info['category_info'] = $this->model('category')->get_category_info($question_info['category_id']);
 		}

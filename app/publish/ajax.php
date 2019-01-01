@@ -152,6 +152,11 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择分类')));
 		}
 
+		if (!$this->model('category')->check_user_permission($_POST['category_id'], $this->user_info['permission']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限在这个分类下面发言')));
+		}
+
 		if (!$this->model('category')->category_exists($_POST['category_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('分类不存在')));
@@ -682,6 +687,11 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的问题不能回复')));
 		}
 
+		if (!$this->model('category')->check_user_permission($question_info['category_id'], $this->user_info['permission']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限在这个分类下面发言')));
+		}
+
 		// 判断是否是问题发起者
 		if (get_setting('answer_self_question') == 'N' AND $question_info['published_uid'] == $this->user_id)
 		{
@@ -776,6 +786,11 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的文章不能回复')));
 		}
 
+		if (!$this->model('category')->check_user_permission($article_info['category_id'], $this->user_info['permission']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限在这个分类下面发言')));
+		}
+
 		if ($_POST['anonymous'])
 		{
 			$publish_uid = $this->get_anonymous_uid('question');
@@ -845,6 +860,11 @@ class ajax extends AWS_CONTROLLER
 		if ($video_info['lock'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的影片不能回复')));
+		}
+
+		if (!$this->model('category')->check_user_permission($video_info['category_id'], $this->user_info['permission']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限在这个分类下面发言')));
 		}
 
 		if ($_POST['anonymous'])

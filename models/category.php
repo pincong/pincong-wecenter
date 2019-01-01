@@ -68,6 +68,63 @@ class category_class extends AWS_MODEL
 		return $category_list[$category_id];
 	}
 
+	public function check_user_permission($category_id, &$user_permission)
+	{
+		$restricted_ids = $user_permission['restricted_categories'];
+		if (!$restricted_ids)
+		{
+			return true;
+		}
+
+		$category_id = intval($category_id);
+
+		$restricted_ids = explode(',', $restricted_ids);
+		foreach ($restricted_ids AS $id)
+		{
+			$id = intval($id);
+			if (!$id)
+			{
+				continue;
+			}
+			if ($category_id == $id)
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public function get_category_list_by_user_permission(&$user_permission)
+	{
+		$category_list = $this->get_category_list();
+
+		$restricted_ids = $user_permission['restricted_categories'];
+		if (!$restricted_ids)
+		{
+			return $category_list;
+		}
+
+		$restricted_ids = explode(',', $restricted_ids);
+		foreach ($restricted_ids AS $id)
+		{
+			$id = intval($id);
+			if (!$id)
+			{
+				continue;
+			}
+			foreach ($category_list AS $key => $val)
+			{
+				if ($key == $id)
+				{
+					unset($category_list[$key]);
+				}
+			}
+		}
+
+		return $category_list;
+	}
+
 	public function update_category_info($category_id, $title, $group_id, $description = null)
 	{
 		AWS_APP::cache()->cleanGroup('category');

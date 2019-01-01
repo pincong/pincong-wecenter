@@ -880,7 +880,6 @@ var AWS =
 								'agree_count': result.agree_count,
 								'signature': result.signature,
 								'url' : result.url,
-								'category_enable' : result.category_enable,
 								'focus': focus,
 								'focusTxt': focusTxt,
 								'ask_name': "'" + result.user_name + "'",

@@ -85,10 +85,10 @@ class main extends AWS_CONTROLLER
 			$question_info['category_id'] = ($_GET['category_id']) ? intval($_GET['category_id']) : 0;
 		}
 
-		if (get_setting('category_enable') == 'Y')
+		if (get_setting('category_enable') != 'N')
 		{
 			TPL::assign('category_current_id', $question_info['category_id']);
-			TPL::assign('category_list', $this->model('category')->get_category_list());
+			TPL::assign('category_list', $this->model('category')->get_category_list_by_user_permission($this->user_info['permission']));
 		}
 
 		TPL::import_js('js/app/publish.js');
@@ -158,10 +158,10 @@ class main extends AWS_CONTROLLER
 			$article_info['category_id'] = ($_GET['category_id']) ? intval($_GET['category_id']) : 0;
 		}
 
-		if (get_setting('category_enable') == 'Y')
+		if (get_setting('category_enable') != 'N')
 		{
 			TPL::assign('category_current_id', $article_info['category_id']);
-			TPL::assign('category_list', $this->model('category')->get_category_list());
+			TPL::assign('category_list', $this->model('category')->get_category_list_by_user_permission($this->user_info['permission']));
 		}
 
 		TPL::import_js('js/app/publish.js');
@@ -231,10 +231,10 @@ class main extends AWS_CONTROLLER
 			$video_info['category_id'] = ($_GET['category_id']) ? intval($_GET['category_id']) : 0;
 		}
 
-		if (get_setting('category_enable') == 'Y')
+		if (get_setting('category_enable') != 'N')
 		{
 			TPL::assign('category_current_id', $video_info['category_id']);
-			TPL::assign('category_list', $this->model('category')->get_category_list());
+			TPL::assign('category_list', $this->model('category')->get_category_list_by_user_permission($this->user_info['permission']));
 		}
 
 		TPL::import_js('js/app/publish.js');
