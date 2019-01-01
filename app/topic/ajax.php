@@ -130,9 +130,9 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题标题不能包含 / - &')));
 		}
 
-		if (get_setting('topic_title_limit') AND cjk_strlen($topic_title) > get_setting('topic_title_limit'))
+		if (get_setting('topic_title_limit') AND strlen($topic_title) > get_setting('topic_title_limit'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题标题字数不得超过 %s 字', get_setting('topic_title_limit'))));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题标题字数超出限制')));
 		}
 
 		if (! $related_id = $this->model('topic')->save_topic($topic_title, $this->user_id, $this->user_info['permission']['create_topic']))
@@ -493,9 +493,9 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题标题不能包含 / - &')));
 		}
 
-		if (get_setting('topic_title_limit') AND cjk_strlen($topic_title) > get_setting('topic_title_limit') AND !$this->model('topic')->get_topic_id_by_title($topic_title))
+		if (get_setting('topic_title_limit') AND strlen($topic_title) > get_setting('topic_title_limit') AND !$this->model('topic')->get_topic_id_by_title($topic_title))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题标题字数不得超过 %s 字', get_setting('topic_title_limit'))));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题标题字数超出限制')));
 		}
 
 		switch ($_POST['type'])
