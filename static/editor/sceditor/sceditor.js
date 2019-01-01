@@ -5452,10 +5452,10 @@
 
 				for (var i = 0; i < types.length; i++) {
 					// Normalise image pasting to paste as a data-uri
-					if (globalWin.FileReader && items &&
-						IMAGE_MIME_REGEX.test(items[i].type)) {
-						return loadImage(clipboard.items[i].getAsFile());
-					}
+					//if (globalWin.FileReader && items &&
+					//	IMAGE_MIME_REGEX.test(items[i].type)) {
+					//	return loadImage(clipboard.items[i].getAsFile());
+					//}
 
 					data$$1[types[i]] = clipboard.getData(types[i]);
 				}
