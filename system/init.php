@@ -38,22 +38,10 @@ if (! defined('AWS_PATH'))
 	define('AWS_PATH', dirname(__FILE__) . '/');
 }
 
-if (defined('SAE_TMP_PATH'))
-{
-	define('IN_SAE', true);
-}
-
 define('ROOT_PATH', dirname(dirname(__FILE__)) . '/');
 
 @ini_set('display_errors', '0');
 
-if (defined('IN_SAE'))
-{
-	error_reporting(0);
-
-	define('TEMP_PATH', rtrim(SAE_TMP_PATH, '/') . '/');
-}
-else
 {
 	if (version_compare(PHP_VERSION, '5.4', '>='))
 	{

@@ -18,32 +18,6 @@ class core_config
 
 	function get($config_id)
 	{
-		if (defined('IN_SAE'))
-		{
-			switch ($config_id)
-			{
-				case 'database':
-					return (object)array(
-						'charset' => 'utf8',
-						'prefix' => 'aws_',
-						'driver' => 'PDO_MYSQL',
-						'master' => array(
-							'host' => SAE_MYSQL_HOST_M . ':' . SAE_MYSQL_PORT,
-							'username' =>  SAE_MYSQL_USER,
-							'password' => SAE_MYSQL_PASS,
-							'dbname' => SAE_MYSQL_DB
-						),
-						'slave' => array(
-							'host' => SAE_MYSQL_HOST_S . ':' . SAE_MYSQL_PORT,
-							'username' =>  SAE_MYSQL_USER,
-							'password' => SAE_MYSQL_PASS,
-							'dbname' => SAE_MYSQL_DB
-						)
-					);
-				break;
-			}
-		}
-
 		if (isset($this->config[$config_id]))
 		{
 			return $this->config[$config_id];

@@ -24,7 +24,6 @@ class main extends AWS_ADMIN_CONTROLLER
     {
         $this->crumb(AWS_APP::lang()->_t('概述'), 'admin/main/');
 
-        if (!defined('IN_SAE'))
         {
             $writable_check = array(
                 'cache' => is_really_writable(ROOT_PATH . 'cache/'),

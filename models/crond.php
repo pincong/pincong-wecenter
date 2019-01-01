@@ -131,7 +131,7 @@ class crond_class extends AWS_MODEL
 		$this->model('user')->auto_delete_users();
 		$this->model('user')->auto_unforbid_users();
 
-        if ((!get_setting('db_engine') OR get_setting('db_engine') == 'MyISAM') AND !defined('IN_SAE'))
+        if (!get_setting('db_engine') OR get_setting('db_engine') == 'MyISAM')
         {
             $this->query('OPTIMIZE TABLE `' . get_table('sessions') . '`');
             $this->query('OPTIMIZE TABLE `' . get_table('search_cache') . '`');
