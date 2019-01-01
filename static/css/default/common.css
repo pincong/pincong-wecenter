@@ -439,8 +439,6 @@ a.aw-load-more-content{display: block;}
 .aw-editor-box .mod-head{border:1px solid #e6e6e6;border-radius: 4px;}
 .aw-editor-box textarea{border: none;}
 .aw-editor-box .mod-body{position:relative;margin-top: 15px;line-height: 28px;}
-.aw-editor-box .mod-body #question_detail_message{line-height: 34px;}
-.aw-editor-box .mod-body #answer_content_message{margin-right: 10px;}
 .aw-editor-box .aw-upload-tips, .aw-replay-box .aw-upload-tips{position: absolute;left: 100px;top: 3px;}
 .markitup-box{position:relative;z-index:1;line-height: 1.6;word-wrap: break-word !important;}
 .markitup-box .aw-user-name{font-size: 14px;}

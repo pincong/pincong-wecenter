@@ -1,28 +1,8 @@
 $(function()
 {
-	if ($('#question_id').length)
-	{
-		ITEM_ID = $('#question_id').val();
-	}
-	else if ($('#article_id').length)
-	{
-		ITEM_ID = $('#article_id').val();
-	}
-    else
-    {
-        ITEM_ID = '';
-    }
+	AWS.Dropdown.bind_dropdown_list($('.aw-mod-publish #question_contents'), 'publish');
 
-    // 判断是否开启高级编辑器
-	if (G_ADVANCED_EDITOR_ENABLE == 'Y')
-	{
-		// 初始化编辑器
-		AWS.create_editor('wmd-input', true);
-	}
-
-    AWS.Dropdown.bind_dropdown_list($('.aw-mod-publish #question_contents'), 'publish');
-
-    //初始化分类
+	//初始化分类
 	if ($('#category_id').length)
 	{
 		var category_data = '', category_id;

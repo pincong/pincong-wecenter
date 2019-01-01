@@ -71,6 +71,21 @@ class publish_class extends AWS_MODEL
 					$item['extra_data']['permission_bring_thread_to_top']
 				);
 				break;
+
+			case 'video':
+				$this->publish_article(
+					$item['title'],
+					$item['message'],
+					$item['uid'],
+					$item['extra_data']['source_type'],
+					$item['extra_data']['source'],
+					$item['extra_data']['duration'],
+					$item['extra_data']['topics'],
+					$item['parent_id'], // category_id
+					$item['extra_data']['permission_create_topic'],
+					$item['anonymous']
+				);
+				break;
 		}
 	}
 
@@ -253,7 +268,7 @@ class publish_class extends AWS_MODEL
 			// 记录日志
 			ACTION_LOG::save_action($uid, $article_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_ARTICLE, $title, $message, null, intval($anonymous));
 
-            $this->model('currency')->process($uid, 'NEW_ARTICLE', get_setting('currency_system_config_new_article'), '发起文章 #' . $article_id, $article_id);
+			$this->model('currency')->process($uid, 'NEW_ARTICLE', get_setting('currency_system_config_new_article'), '发起文章 #' . $article_id, $article_id);
 
 			$this->model('posts')->set_posts_index($article_id, 'article');
 
@@ -272,7 +287,7 @@ class publish_class extends AWS_MODEL
 			return false;
 		}
 		$article_id = $article_info['id'];
-        $now = fake_time();
+		$now = fake_time();
 
 		$comment_id = $this->insert('article_comments', array(
 			'uid' => intval($uid),
@@ -336,6 +351,61 @@ class publish_class extends AWS_MODEL
 		$this->model('posts')->set_posts_index($article_id, 'article', null, $bring_to_top);
 
 		return $comment_id;
+	}
+
+
+	public function publish_video($title, $message, $uid, $source_type, $source, $duration, $topics = null, $category_id = null, $create_topic = true, $anonymous = null)
+	{
+		$now = fake_time();
+
+		if ($video_id = $this->insert('video', array(
+			'uid' => intval($uid),
+			'title' => htmlspecialchars($title),
+			'message' => htmlspecialchars($message),
+			'source_type' => $source_type,
+			'source' => $source,
+			'duration' => $duration,
+			'category_id' => intval($category_id),
+			'add_time' => $now,
+			'update_time' => $now,
+			'anonymous' => intval($anonymous)
+		)))
+		{
+
+			if (is_array($topics))
+			{
+				foreach ($topics as $key => $topic_title)
+				{
+					$topic_id = $this->model('topic')->save_topic($topic_title, $uid, $create_topic);
+
+					$this->model('topic')->save_topic_relation($uid, $topic_id, $video_id, 'video');
+				}
+			}
+
+			/*
+			// 搜索相关 暂不实现
+			$this->model('search_fulltext')->push_index('video', $title, $video_id);
+			*/
+
+			/*
+			// 记录日志 暂不实现
+			//ACTION_LOG::save_action($uid, $video_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_VIDEO, $title, $message, null, intval($anonymous));
+			*/
+
+			$this->model('currency')->process($uid, 'NEW_ARTICLE', get_setting('currency_system_config_new_video'), '发起投稿 #' . $video_id, $video_id);
+
+			$this->model('posts')->set_posts_index($video_id, 'video');
+
+			/*
+			// 不实现
+			// TODO: 砍掉 article_count
+			$this->shutdown_update('users', array(
+				'video_count' => $this->count('video', 'uid = ' . intval($uid))
+			), 'uid = ' . intval($uid));
+			*/
+		}
+
+		return $video_id;
 	}
 
 
@@ -442,6 +512,62 @@ class publish_class extends AWS_MODEL
 		}
 
 		$where = "type = 'article_comment' AND time > " . $time_after . " AND uid =" . $uid;
+		$count += $this->count('scheduled_posts', $where);
+		if ($count >= $limit)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	public function check_video_limit_rate($uid, $user_permission)
+	{
+		$limit = intval($user_permission['thread_limit_per_day']);
+		if (!$limit)
+		{
+			return true;
+		}
+
+		$uid = intval($uid);
+		$time_after = real_time() - 24 * 3600;
+
+		$where = "add_time > " . $time_after . " AND uid =" . $uid;
+		$count = $this->count('video', $where);
+		if ($count >= $limit)
+		{
+			return false;
+		}
+
+		$where = "type = 'video' AND time > " . $time_after . " AND uid =" . $uid;
+		$count += $this->count('scheduled_posts', $where);
+		if ($count >= $limit)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	public function check_video_comment_limit_rate($uid, $user_permission)
+	{
+		$limit = intval($user_permission['reply_limit_per_day']);
+		if (!$limit)
+		{
+			return true;
+		}
+
+		$uid = intval($uid);
+		$time_after = real_time() - 24 * 3600;
+
+		$where = "add_time > " . $time_after . " AND uid =" . $uid;
+		$count = $this->count('video_comments', $where);
+		if ($count >= $limit)
+		{
+			return false;
+		}
+
+		$where = "type = 'video_comment' AND time > " . $time_after . " AND uid =" . $uid;
 		$count += $this->count('scheduled_posts', $where);
 		if ($count >= $limit)
 		{

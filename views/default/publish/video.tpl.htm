@@ -7,32 +7,32 @@
 				<div class="col-sm-12 col-md-9 aw-main-content">
 					<!-- tab 切换 -->
 					<ul class="nav nav-tabs aw-nav-tabs active">
-						<?php if ($this->user_info['permission']['publish_video']) { ?>
-						<li><a href="publish/video/"><?php _e('投稿'); ?></a></li>
+						<li class="active"><a href="publish/video/"><?php _e('投稿'); ?></a></li>
+						<?php if ($this->user_info['permission']['publish_article']) { ?>
+						<li><a href="publish/article/"><?php _e('文章'); ?></a></li>
 						<?php } ?>
-						<li class="active"><a href="publish/article/"><?php _e('文章'); ?></a></li>
 						<?php if ($this->user_info['permission']['publish_question']) { ?>
 						<li><a href="publish/"><?php _e('问题'); ?></a></li>
 						<?php } ?>
 						<h2 class="hidden-xs"><i class="icon icon-ask"></i> <?php _e('发起'); ?></h2>
 					</ul>
 					<!-- end tab 切换 -->
-					<form action="publish/ajax/<?php if ($this->article_info['id']) { ?>modify<?php } else { ?>publish<?php } ?>_article/" method="post" id="question_form" onsubmit="return false;">
+					<form action="publish/ajax/<?php if ($this->video_info['id']) { ?>modify<?php } else { ?>publish<?php } ?>_video/" method="post" id="question_form" onsubmit="return false;">
 						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
-						<input type="hidden" name="article_id" id="article_id" value="<?php echo $this->article_info['id']; ?>" />
-						<?php if ($this->article_category_list) { ?>
+						<input type="hidden" name="article_id" id="article_id" value="<?php echo $this->video_info['id']; ?>" />
+						<?php if ($this->video_category_list) { ?>
 							<select name="category_id" class="collapse" id="category_id">
 								<option value="0">- <?php _e('请选择分类'); ?> -</option>
-								<?php echo $this->article_category_list; ?>
+								<?php echo $this->video_category_list; ?>
 							</select>
 							<?php } ?>
 						<div class="aw-mod aw-mod-publish">
 							<div class="mod-body">
-								<h3><?php _e('文章标题'); ?>:</h3>
-								<!-- 文章标题 -->
-								<div class="aw-publish-title<?php if (!$this->article_category_list) { ?> active<?php } ?>">
-									<input type="text" name="title" value="<?php echo $this->article_info['title']; ?>" class="form-control" />
-									<?php if ($this->article_category_list) { ?>
+								<h3><?php _e('标题'); ?>:</h3>
+								<!-- 标题 -->
+								<div class="aw-publish-title<?php if (!$this->video_category_list) { ?> active<?php } ?>">
+									<input type="text" name="title" value="<?php echo $this->video_info['title']; ?>" class="form-control" />
+									<?php if ($this->video_category_list) { ?>
 									<div class="aw-dropdown aw-question-dropdown">
 										<i class="aw-icon i-dropdown-triangle active"></i>
 										<p class="title"><?php _e('没有找到相关结果'); ?></p>
@@ -46,21 +46,32 @@
 									</div>
 									<?php } ?>
 								</div>
-								<!-- end 文章标题 -->
+								<!-- end 标题 -->
 
-								<h3><?php _e('文章内容'); ?>:</h3>
+								<h3><?php _e('详细'); ?>:</h3>
 								<div class="aw-mod aw-editor-box">
 									<div class="mod-head">
 										<div class="wmd-panel">
-											<textarea class="wmd-input form-control autosize editor" id="wmd-input" rows="15" name="message"><?php echo $this->article_info['message']; ?></textarea>
-								        </div>
+											<textarea class="wmd-input form-control autosize editor" id="wmd-input" rows="4" name="message"><?php echo $this->video_info['message']; ?></textarea>
+										</div>
 									</div>
 									<div class="mod-body">
-										<?php if (get_setting('image_upload_link')) { ?><a class="pull-right" href="<?php echo get_setting('image_upload_link'); ?>" rel="nofollow noreferrer noopener" target="_blank"><?php _e('上传图片'); ?></a><?php } ?>
 									</div>
 								</div>
 
-								<?php if (!$this->article_info['id']) { ?>
+								<h3><?php _e('视频来源'); ?>:</h3>
+								<div class="aw-mod">
+									<div class="mod-head">
+										<div class="">
+											<input type="text" name="video_webpage_url" placeholder="e.g. https://www.youtube.com/watch?v=abcdefghijk" value="" class="form-control" />
+										</div>
+									</div>
+									<div class="mod-body">
+										<span id="aw-topic-tags-select"><?php _e('目前仅支持 YouTube'); ?></span>
+									</div>
+								</div>
+
+								<?php if (!$this->video_info['id']) { ?>
 								<h3><?php _e('添加话题'); ?>:</h3>
 								<div class="aw-topic-bar" data-type="publish">
 									<div class="tag-bar clearfix">
@@ -103,7 +114,7 @@
 								</div>
 								<?php } ?>
 
-								<?php if (!$this->article_info['id']) { ?>
+								<?php if (!$this->video_info['id']) { ?>
 								<div class="aw-auth-img clearfix">
 									<input name="later" class="form-control pull-right" type="text" placeholder="<?php _e('分钟'); ?>" />
 									<label class="pull-right"><?php _e('延迟显示'); ?></label>
@@ -114,12 +125,12 @@
 							<div class="mod-footer clearfix">
 								<a href="currency/rule/" target="_blank">[<?php _e(get_setting('currency_rule_name')); ?>]</a>
 								<span class="aw-anonymity">
-									<?php if ($this->article_info['id']) { ?>
+									<?php if ($this->video_info['id']) { ?>
 									<label><input type="checkbox" class="pull-left" value="1" name="do_delete" />
-										<?php _e('删除文章'); ?>&nbsp;</label>
+										<?php _e('删除'); ?>&nbsp;</label>
 									<?php } ?>
 
-									<?php if (!$this->article_info['id']) { ?>
+									<?php if (!$this->video_info['id']) { ?>
 									<label><input type="checkbox" class="pull-left" value="1" name="anonymous" />
 										<?php _e('匿名'); ?></label>
 									<?php } ?>
@@ -131,18 +142,18 @@
 				</div>
 				<!-- 侧边栏 -->
 				<div class="col-sm-12 col-md-3 aw-side-bar">
-					<!-- 文章发起指南 -->
+					<!-- 发起指南 -->
 					<div class="aw-mod publish-help">
 						<div class="mod-head">
-							<h3><?php _e('文章发起指南'); ?></h3>
+							<h3><?php _e('发起指南'); ?></h3>
 						</div>
 						<div class="mod-body">
-							<p><b>• <?php _e('文章标题'); ?>:</b> <?php _e('请用准确的语言描述您发布的文章思想'); ?></p>
-							<p><b>• <?php _e('文章补充'); ?>:</b> <?php _e('详细补充您的文章内容, 并提供一些相关的素材以供参与者更多的了解您所要文章的主题思想'); ?></p>
-							<p><b>• <?php _e('选择话题'); ?>:</b> <?php _e('选择一个或者多个合适的话题, 让您发布的文章得到更多有相同兴趣的人参与. 所有人可以在您发布文章之后添加和编辑该文章所属的话题'); ?></p>
+							<p><b>• <?php _e('标题'); ?>:</b> <?php _e('请用准确的语言描述您发布的内容'); ?></p>
+							<p><b>• <?php _e('补充'); ?>:</b> <?php _e('详细补充您的内容'); ?></p>
+							<p><b>• <?php _e('选择话题'); ?>:</b> <?php _e('选择一个或者多个合适的话题, 让您发布的内容得到更多有相同兴趣的人参与. 所有人可以在您发布内容之后添加和编辑该内容所属的话题'); ?></p>
 						</div>
 					</div>
-					<!-- end 文章发起指南 -->
+					<!-- end 发起指南 -->
 				</div>
 				<!-- end 侧边栏 -->
 			</div>
@@ -151,13 +162,7 @@
 </div>
 
 <script type="text/javascript">
-	var CATEGORY_ID = <?php echo $this->article_info['category_id']; ?>;
-
-	if (G_ADVANCED_EDITOR_ENABLE == 'Y')
-	{
-		// 初始化编辑器
-		AWS.create_editor('wmd-input', true);
-	}
+	var CATEGORY_ID = <?php echo $this->video_info['category_id']; ?>;
 </script>
 
 <?php TPL::output('global/footer.tpl.htm'); ?>

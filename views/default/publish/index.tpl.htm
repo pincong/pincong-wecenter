@@ -55,14 +55,11 @@
 								<div class="aw-mod aw-editor-box">
 									<div class="mod-head">
 										<div class="wmd-panel">
-								            <textarea class="wmd-input form-control autosize editor" id="wmd-input" rows="15" name="question_detail"><?php echo $this->question_info['question_detail']; ?></textarea>
-								        </div>
+											<textarea class="wmd-input form-control autosize editor" id="wmd-input" rows="15" name="question_detail"><?php echo $this->question_info['question_detail']; ?></textarea>
+										</div>
 									</div>
 									<div class="mod-body">
-										<span class="pull-right text-color-999" id="question_detail_message">&nbsp;</span>
-
 										<?php if (get_setting('image_upload_link')) { ?><a class="pull-right" href="<?php echo get_setting('image_upload_link'); ?>" rel="nofollow noreferrer noopener" target="_blank"><?php _e('上传图片'); ?></a><?php } ?>
-
 									</div>
 								</div>
 								<?php if (!$this->question_info['question_id']) { ?>
@@ -157,7 +154,12 @@
 
 <script type="text/javascript">
 	var CATEGORY_ID = <?php echo $this->question_info['category_id']; ?>;
-	var PUBLISH_TYPE = 'question';
+
+	if (G_ADVANCED_EDITOR_ENABLE == 'Y')
+	{
+		// 初始化编辑器
+		AWS.create_editor('wmd-input', true);
+	}
 </script>
 
 <?php TPL::output('global/footer.tpl.htm'); ?>

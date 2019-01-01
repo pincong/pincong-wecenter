@@ -180,6 +180,75 @@ class main extends AWS_CONTROLLER
 		TPL::output('publish/article');
 	}
 
+	public function video_action()
+	{
+		$id = intval($_GET['id']);
+		if ($id)
+		{
+			if (!$video_info = $this->model('video')->get_video_info_by_id($id))
+			{
+				H::redirect_msg(AWS_APP::lang()->_t('指定投稿不存在'));
+			}
+
+			if (!$this->user_info['permission']['edit_video'] AND $video_info['uid'] != $this->user_id)
+			{
+				H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑这个投稿'), '/video/' . $video_info['id']);
+			}
+		}
+		else if (!$this->user_info['permission']['publish_video'])
+		{
+			H::redirect_msg(AWS_APP::lang()->_t('你的等级还不够'));
+		}
+		else if ($this->is_post() AND $_POST['message'])
+		{
+			$video_info = array(
+				'title' => htmlspecialchars($_POST['title']),
+				'message' => htmlspecialchars($_POST['message']),
+				'category_id' => intval($_POST['category_id'])
+			);
+		}
+		else
+		{
+			$video_info =  array(
+				'title' => htmlspecialchars($_POST['title']),
+				'message' => ''
+			);
+		}
+
+		if (!$id)
+		{
+			if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_new_video'))
+			{
+				H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name')), '/currency/rule/');
+			}
+
+			if (!$this->model('publish')->check_video_limit_rate($this->user_id, $this->user_info['permission']))
+			{
+				H::redirect_msg(AWS_APP::lang()->_t('你今天发布的投稿已经达到上限'));
+			}
+		}
+
+		if (!$video_info['category_id'])
+		{
+			$video_info['category_id'] = ($_GET['category_id']) ? intval($_GET['category_id']) : 0;
+		}
+
+		if (get_setting('category_enable') == 'Y')
+		{
+			TPL::assign('video_category_list', $this->model('system')->build_category_html('question', 0, $video_info['category_id']));
+		}
+
+		TPL::assign('human_valid', human_valid('question_valid_hour'));
+
+		TPL::import_js('js/app/publish.js');
+
+		TPL::assign('recent_topics', @unserialize($this->user_info['recent_topics']));
+
+		TPL::assign('video_info', $video_info);
+
+		TPL::output('publish/video');
+	}
+
 	public function delay_display_action()
 	{
 		$url = '/';
