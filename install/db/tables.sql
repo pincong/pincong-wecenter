@@ -181,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `aws_feature` (
   `sort` smallint(6) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `enabled` (`enabled`),
-  KEY `enabled` (`sort`)
+  KEY `sort` (`sort`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
