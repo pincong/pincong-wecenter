@@ -100,7 +100,7 @@ class main extends AWS_CONTROLLER
 		// 边栏专题
 		if (TPL::is_output('block/sidebar_feature.tpl.htm', 'explore/index'))
 		{
-			TPL::assign('feature_list', $this->model('module')->feature_list());
+			TPL::assign('feature_list', $this->model('feature')->get_enabled_feature_list());
 		}
 
 		if (! $_GET['sort_type'] AND !$_GET['is_recommend'])

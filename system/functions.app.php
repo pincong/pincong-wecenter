@@ -142,29 +142,6 @@ function get_topic_pic_url($size = null, $pic_file = null)
 	return G_STATIC_URL . '/common/topic-' . $size . '-img.png';
 }
 
-/**
- * 获取专题图片指定尺寸的完整url地址
- * @param  string $size     三种图片尺寸 max(100px)|mid(50px)|min(32px)
- * @param  string $pic_file 某一尺寸的图片文件名
- * @return string           取出专题图片的完整url地址
- */
-function get_feature_pic_url($size = null, $pic_file = null)
-{
-	if (! $pic_file)
-	{
-		return false;
-	}
-	else
-	{
-		if ($size)
-		{
-			$pic_file = str_replace(AWS_APP::config()->get('image')->feature_thumbnail['min']['w'] . '_' . AWS_APP::config()->get('image')->feature_thumbnail['min']['h'], AWS_APP::config()->get('image')->feature_thumbnail[$size]['w'] . '_' . AWS_APP::config()->get('image')->feature_thumbnail[$size]['h'], $pic_file);
-		}
-	}
-
-	return get_setting('upload_url') . '/feature/' . $pic_file;
-}
-
 function is_inside_url($url)
 {
 	if (!$url)

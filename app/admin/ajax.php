@@ -299,98 +299,16 @@ class ajax extends AWS_ADMIN_CONTROLLER
             $feature_id = $feature['id'];
         }
 
-        if ($_POST['url_token'])
-        {
-            if (!preg_match("/^(?!__)[a-zA-Z0-9_]+$/i", $_POST['url_token']))
-            {
-                H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('专题别名只允许输入英文或数字')));
-            }
-
-            if (preg_match("/^[\d]+$/i", $_POST['url_token']) AND ($_GET['feature_id'] != $_POST['url_token']))
-            {
-                H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('专题别名不可以全为数字')));
-            }
-
-            if ($this->model('feature')->check_url_token($_POST['url_token'], $_GET['feature_id']))
-            {
-                H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('专题别名已经被占用请更换一个')));
-            }
-        }
-
         if (!$_GET['feature_id'])
         {
             $feature_id = $this->model('feature')->add_feature($_POST['title']);
         }
 
-        if ($_POST['topics'])
-        {
-            if ($topics = explode("\n", $_POST['topics']))
-            {
-                $this->model('feature')->empty_topics($feature_id);
-            }
-
-            foreach ($topics AS $key => $topic_title)
-            {
-                if ($topic_info = $this->model('topic')->get_topic_by_title(trim($topic_title)))
-                {
-                    $this->model('feature')->add_topic($feature_id, $topic_info['topic_id']);
-                }
-            }
-        }
-
         $update_data = array(
             'title' => $_POST['title'],
-            'description' => htmlspecialchars($_POST['description']),
-            'css' => htmlspecialchars($_POST['css']),
-            'url_token' => $_POST['url_token'],
-            'seo_title' => htmlspecialchars($_POST['seo_title'])
+            'link' => $_POST['link'],
+            'sort' => intval($_POST['sort'])
         );
-
-        if ($_FILES['icon']['name'])
-        {
-            AWS_APP::upload()->initialize(array(
-                'allowed_types' => 'jpg,jpeg,png,gif',
-                'upload_path' => get_setting('upload_dir') . '/feature',
-                'is_image' => TRUE
-            ))->do_upload('icon');
-
-
-            if (AWS_APP::upload()->get_error())
-            {
-                switch (AWS_APP::upload()->get_error())
-                {
-                    default:
-                        H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('错误代码') . ': ' . AWS_APP::upload()->get_error()));
-                    break;
-
-                    case 'upload_invalid_filetype':
-                        H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('文件类型无效')));
-                    break;
-                }
-            }
-
-            if (! $upload_data = AWS_APP::upload()->data())
-            {
-                H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('上传失败, 请与管理员联系')));
-            }
-
-            foreach (AWS_APP::config()->get('image')->feature_thumbnail as $key => $val)
-            {
-                $thumb_file[$key] = $upload_data['file_path'] . $feature_id . "_" . $val['w'] . "_" . $val['h'] . '.jpg';
-
-                AWS_APP::image()->initialize(array(
-                    'quality' => 90,
-                    'source_image' => $upload_data['full_path'],
-                    'new_image' => $thumb_file[$key],
-                    'width' => $val['w'],
-                    'height' => $val['h']
-                ))->resize();
-            }
-
-            unlink($upload_data['full_path']);
-
-            $update_data['icon'] = basename($thumb_file['min']);
-        }
 
         $this->model('feature')->update_feature($feature_id, $update_data);
 
@@ -925,7 +843,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
             'search_avail',
             'visit_question',
             'visit_topic',
-            'visit_feature',
             'visit_people',
             'visit_chapter',
             'answer_show',

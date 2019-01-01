@@ -398,7 +398,7 @@ class main extends AWS_CONTROLLER
 		//边栏专题
 		if (TPL::is_output('block/sidebar_feature.tpl.htm', 'question/square'))
 		{
-			TPL::assign('feature_list', $this->model('module')->feature_list());
+			TPL::assign('feature_list', $this->model('feature')->get_enabled_feature_list());
 		}
 
 		if ($_GET['category'])
@@ -429,17 +429,7 @@ class main extends AWS_CONTROLLER
 			TPL::set_meta('description', $meta_description);
 		}
 
-		if ($_GET['feature_id'])
-		{
-			$feature_info = $this->model('feature')->get_feature_by_id($_GET['feature_id']);
-
-			TPL::assign('feature_info', $feature_info);
-		}
-
-		if ($feature_info['id'])
-		{
-			$topic_ids = $this->model('feature')->get_topics_by_feature_id($feature_info['id']);
-		}
+		$topic_ids = null;
 
 		if (! $_GET['sort_type'])
 		{
@@ -467,7 +457,7 @@ class main extends AWS_CONTROLLER
 		}
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-			'base_url' => get_js_url('/question/sort_type-' . preg_replace("/[\(\)\.;']/", '', $_GET['sort_type']) . '__category-' . $category_info['id'] . '__day-' . intval($_GET['day']) . '__is_recommend-' . $_GET['is_recommend']) . '__feature_id-' . $feature_info['id'],
+			'base_url' => get_js_url('/question/sort_type-' . preg_replace("/[\(\)\.;']/", '', $_GET['sort_type']) . '__category-' . $category_info['id'] . '__day-' . intval($_GET['day']) . '__is_recommend-' . $_GET['is_recommend']),
 			'total_rows' => $this->model('posts')->get_posts_list_total(),
 			'per_page' => get_setting('contents_per_page')
 		))->create_links());

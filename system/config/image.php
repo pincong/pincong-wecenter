@@ -30,32 +30,6 @@ $config['topic_thumbnail'] = array(
 	)
 );
 
-$config['attachment_thumbnail'] = array(
-	'min' => array(
-		"w" => 170,
-		"h" => 110
-	),
-	'square' => array(
-		"w" => 90,
-		"h" => 90
-	)
-);
-
-$config['feature_thumbnail'] = array(
-	'min' => array(
-		"w" => 32,
-		"h" => 32
-	),
-	'mid' => array(
-		"w" => 540,
-		"h" => 240
-	),
-	'max' => array(
-		"w" => 990,
-		"h" => 240
-	)
-);
-
 $config['chapter_thumbnail'] = array(
 	'min' => array(
 		"w" => 32,
@@ -64,20 +38,5 @@ $config['chapter_thumbnail'] = array(
 	'max' => array(
 		"w" => 50,
 		"h" => 50
-	)
-);
-
-$config['uc_avatar_thumbnail'] = array(
-	'big' => array(
-		'w' => 200,
-		'h' => 250
-	),
-	'middle' => array(
-		'w' => 120,
-		'h' => 120
-	),
-	'small' => array(
-		'w' => 48,
-		'h' => 48
 	)
 );

@@ -448,7 +448,6 @@ class topic_class extends AWS_MODEL
 
 			$this->delete('topic_focus', 'topic_id = ' . intval($topic_id));
 			$this->delete('topic_relation', 'topic_id = ' . intval($topic_id));
-			$this->delete('feature_topic', 'topic_id = ' . intval($topic_id));
 			$this->delete('related_topic', 'topic_id = ' . intval($topic_id) . ' OR related_id = ' . intval($topic_id));
 			$this->delete('topic', 'topic_id = ' . intval($topic_id));
 

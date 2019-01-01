@@ -152,25 +152,8 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		if ($_GET['feature_id'])
-		{
-			$article_list = $this->model('article')->get_articles_list_by_topic_ids($_GET['page'], get_setting('contents_per_page'), 'add_time DESC', $this->model('feature')->get_topics_by_feature_id($_GET['feature_id']));
-
-			$article_list_total = $this->model('article')->article_list_total;
-
-			if ($feature_info = $this->model('feature')->get_feature_by_id($_GET['feature_id']))
-			{
-				$this->crumb($feature_info['title'], '/article/feature_id-' . $feature_info['id']);
-
-				TPL::assign('feature_info', $feature_info);
-			}
-		}
-		else
-		{
-			$article_list = $this->model('article')->get_articles_list($category_info['id'], $_GET['page'], get_setting('contents_per_page'), 'add_time DESC');
-
-			$article_list_total = $this->model('article')->found_rows();
-		}
+		$article_list = $this->model('article')->get_articles_list($category_info['id'], $_GET['page'], get_setting('contents_per_page'), 'add_time DESC');
+		$article_list_total = $this->model('article')->found_rows();
 
 		if ($article_list)
 		{
@@ -224,7 +207,7 @@ class main extends AWS_CONTROLLER
 		TPL::assign('hot_articles', $this->model('article')->get_articles_list(null, 1, 10, 'votes DESC', 30));
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-			'base_url' => get_js_url('/article/category_id-' . $_GET['category_id'] . '__feature_id-' . $_GET['feature_id']),
+			'base_url' => get_js_url('/article/category_id-' . $_GET['category_id']),
 			'total_rows' => $article_list_total,
 			'per_page' => get_setting('contents_per_page')
 		))->create_links());

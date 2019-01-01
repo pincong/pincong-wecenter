@@ -743,14 +743,6 @@ blockquote {margin: 0 40px;padding: 0 15px;font-size: 14px;color: #777;border-le
 .aw-people-list .aw-item .aw-topic-bar{margin:5px 0 0;}
 .aw-people-list .aw-item .aw-topic-bar .topic-tag{margin:0 0 10px 10px;}
 
-/* 专题页面 */
-.aw-feature-title{width: 930px;margin-bottom: 20px;}
-.aw-feature-title .img{width:960px;height:240px;}
-.aw-feature-title h2{padding-bottom: 10px;border-bottom: 1px solid #e2e2e2;font-size: 20px;}
-.aw-feature-content h2{font-size: 20px;}
-.aw-feature-content .aw-common-list{padding:0 20px;}
-.aw-feature-content .aw-mod{margin-bottom: 30px;}
-
 /* 底部版权 */
 .aw-footer{padding:30px 0 10px;font-size: 12px;text-align: center;}
 

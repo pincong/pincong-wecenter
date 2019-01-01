@@ -47,14 +47,6 @@ class ajax extends AWS_CONTROLLER
 
 	public function question_list_action()
 	{
-		if ($_GET['feature_id'])
-		{
-			if ($topic_ids = $this->model('feature')->get_topics_by_feature_id($_GET['feature_id']))
-			{
-				$_GET['topic_id'] = implode(',', $topic_ids);
-			}
-		}
-
 		switch ($_GET['type'])
 		{
 			case 'best':
@@ -438,38 +430,6 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		$this->model('topic')->remove_merge_topic($_POST['source_id'], $_POST['target_id']);
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
-
-	public function feature_topic_action()
-	{
-		if (!$this->user_info['permission']['manage_topic'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
-		}
-
-		$topic_in_features = $this->model('feature')->get_topic_in_feature_ids($_POST['topic_id']);
-
-		if ($_POST['feature_ids'])
-		{
-			foreach ($_POST['feature_ids'] AS $key => $feature_id)
-			{
-				if (in_array($feature_id, $topic_in_features))
-				{
-					unset($topic_in_features[$key]);
-				}
-				else
-				{
-					$this->model('feature')->add_topic($feature_id, $_POST['topic_id']);
-				}
-			}
-		}
-
-		foreach ($topic_in_features AS $key => $feature_id)
-		{
-			$this->model('feature')->delete_topic($feature_id, $_POST['topic_id']);
-		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}

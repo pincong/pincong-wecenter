@@ -34,14 +34,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function list_action()
 	{
-		if ($_GET['feature_id'])
-		{
-			$topic_ids = $this->model('feature')->get_topics_by_feature_id($_GET['feature_id']);
-		}
-		else
-		{
-			$topic_ids = explode(',', $_GET['topic_id']);
-		}
+		$topic_ids = explode(',', $_GET['topic_id']);
 
 		if ($_GET['per_page'])
 		{

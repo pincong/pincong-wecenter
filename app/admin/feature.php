@@ -34,7 +34,7 @@ class feature extends AWS_ADMIN_CONTROLLER
     {
         $this->crumb(AWS_APP::lang()->_t('专题管理'), 'admin/feature/list/');
 
-        $feature_list = $this->model('feature')->get_feature_list('id DESC', $_GET['page'], $this->per_page);
+        $feature_list = $this->model('feature')->get_feature_list('sort ASC', $_GET['page'], $this->per_page);
 
         TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
             'base_url' => get_js_url('/admin/feature/list/'),
@@ -57,19 +57,6 @@ class feature extends AWS_ADMIN_CONTROLLER
     public function edit_action()
     {
         $this->crumb(AWS_APP::lang()->_t('编辑专题'), "admin/feature/list/");
-
-        if ($topics_list = $this->model('topic')->get_topics_by_ids($this->model('feature')->get_topics_by_feature_id($_GET['feature_id'])))
-        {
-            foreach ($topics_list AS $key => $val)
-            {
-                $feature_topics[] = $val['topic_title'];
-            }
-
-            if ($feature_topics)
-            {
-                TPL::assign('feature_topics', implode("\n", $feature_topics));
-            }
-        }
 
         TPL::assign('feature', $this->model('feature')->get_feature_by_id($_GET['feature_id']));
 

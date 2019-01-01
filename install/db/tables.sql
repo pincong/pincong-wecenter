@@ -176,18 +176,12 @@ CREATE TABLE IF NOT EXISTS `aws_favorite` (
 CREATE TABLE IF NOT EXISTS `aws_feature` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(200) DEFAULT NULL COMMENT '专题标题',
-  `description` varchar(240) DEFAULT NULL COMMENT '专题描述',
-  `icon` varchar(240) DEFAULT NULL COMMENT '专题图标',
-  `topic_count` int(11) DEFAULT '0' COMMENT '话题计数',
-  `css` text COMMENT '自定义CSS',
-  `url_token` varchar(32) DEFAULT NULL,
-  `seo_title` varchar(240) DEFAULT NULL,
+  `link` text COMMENT '自定义链接',
   `enabled` tinyint(1) DEFAULT '0',
   `sort` smallint(6) DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `url_token` (`url_token`),
-  KEY `title` (`title`),
-  KEY `enabled` (`enabled`)
+  KEY `enabled` (`enabled`),
+  KEY `enabled` (`sort`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.

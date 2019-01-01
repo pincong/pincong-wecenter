@@ -77,8 +77,4 @@ class module_class extends AWS_MODEL
 		return array_slice($users_list, 0, $limit);
 	}
 
-	public function feature_list()
-	{
-		return $this->model('feature')->get_enabled_feature_list('id DESC', 1, 5);
-	}
 }
