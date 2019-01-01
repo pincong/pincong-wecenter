@@ -698,7 +698,7 @@ class answer_class extends AWS_MODEL
 		//return $this->delete('answer_comments', "id = " . intval($comment_id));
 	}*/
 
-	public function set_best_answer($answer_id, $uid)
+	public function set_best_answer($answer_id, $uid = null)
 	{
 		if (!$answer_info = $this->get_answer_by_id($answer_id))
 		{
@@ -711,12 +711,15 @@ class answer_class extends AWS_MODEL
 			'best_answer' => $answer_info['answer_id']
 		), 'question_id = ' . $answer_info['question_id']);
 
-		$this->model('question')->log($answer_info['question_id'], 'ANSWER', '设置最佳回复', $uid, 0, $answer_info['answer_id']);
+		if ($uid)
+		{
+			$this->model('question')->log($answer_info['question_id'], 'ANSWER', '设置最佳回复', $uid, 0, $answer_info['answer_id']);
+		}
 
 		return true;
 	}
 
-	public function unset_best_answer($answer_id, $uid)
+	public function unset_best_answer($answer_id, $uid = null)
 	{
 		if (!$answer_info = $this->get_answer_by_id($answer_id))
 		{
@@ -727,7 +730,10 @@ class answer_class extends AWS_MODEL
 			'best_answer' => 0
 		), 'question_id = ' . $answer_info['question_id']);
 
-		$this->model('question')->log($answer_info['question_id'], 'ANSWER', '取消最佳回复', $uid, 0, $answer_info['answer_id']);
+		if ($uid)
+		{
+			$this->model('question')->log($answer_info['question_id'], 'ANSWER', '取消最佳回复', $uid, 0, $answer_info['answer_id']);
+		}
 
 		return true;
 	}
