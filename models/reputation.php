@@ -158,9 +158,14 @@ class reputation_class extends AWS_MODEL
 	public function reward_daily_active_users()
 	{
 		$reputation_above = get_setting('reward_daily_active_users_reputation');
-		$bonus = intval(get_setting('reward_daily_active_users_currency'));
+		if (!is_numeric($reputation_above))
+		{
+			return false;
+		}
 
-		if (!is_numeric($reputation_above) || !$bonus)
+		$bonus_min = intval(get_setting('reward_daily_active_users_currency_min'));
+		$bonus_max = intval(get_setting('reward_daily_active_users_currency_max'));
+		if (!$bonus_min AND !$bonus_max)
 		{
 			return false;
 		}
@@ -171,7 +176,7 @@ class reputation_class extends AWS_MODEL
 		{
 			foreach ($active_users AS $key => $val)
 			{
-				$this->model('currency')->process($val['uid'], 'DAILY_BONUS', $bonus, '签到奖励');
+				$this->model('currency')->process($val['uid'], 'DAILY_BONUS', rand($bonus_min, $bonus_max), '签到奖励');
 			}
 		}
 
