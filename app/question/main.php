@@ -172,7 +172,7 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
 			'base_url' => get_js_url('/question/id-' . $question_info['question_id'] . '__sort_key-' . $_GET['sort_key'] . '__sort-' . $_GET['sort']),
-			'total_rows' => $answer_count,
+			'total_rows' => $question_info['answer_count'],
 			'per_page' => $replies_per_page
 		))->create_links());
 
