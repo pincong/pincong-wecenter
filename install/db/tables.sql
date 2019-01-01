@@ -376,7 +376,6 @@ CREATE TABLE IF NOT EXISTS `aws_question_invite` (
   `sender_uid` int(11) DEFAULT '0',
   `recipients_uid` int(11) DEFAULT '0',
   `add_time` int(10) DEFAULT '0' COMMENT '添加时间',
-  `available_time` int(10) DEFAULT '0' COMMENT '生效时间',
   PRIMARY KEY (`question_invite_id`),
   KEY `question_id` (`question_id`),
   KEY `sender_uid` (`sender_uid`),

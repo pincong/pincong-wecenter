@@ -900,4 +900,21 @@ class question_class extends AWS_MODEL
 		return $result;
 	}
 
+
+	public function delete_expired_invites()
+	{
+		$days = intval(get_setting('expiration_invites'));
+		if (!$days)
+		{
+			return;
+		}
+		$seconds = $days * 24 * 3600;
+		$time_before = real_time() - $seconds;
+		if ($time_before < 0)
+		{
+			$time_before = 0;
+		}
+		$this->delete('question_invite', 'add_time < ' . $time_before);
+	}
+
 }
