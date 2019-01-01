@@ -20,30 +20,6 @@ if (!defined('IN_ANWSION'))
 
 class system_class extends AWS_MODEL
 {
-	/* 获取分类 HTML 数据 */
-	public function build_category_html($selected_id = 0)
-	{
-		if (!$category_list = $this->model('category')->get_category_list())
-		{
-			return false;
-		}
-
-		foreach ($category_list AS $category_id => $val)
-		{
-			if ($selected_id == $val['id'])
-			{
-				$html .= '<option value="' . $category_id . '" selected="selected">' . $_prefix . $val['title'] . '</option>';
-			}
-			else
-			{
-				$html .= '<option value="' . $category_id . '">' . $_prefix . $val['title'] . '</option>';
-			}
-		}
-
-		return $html;
-	}
-
-
 	public function check_stop_keyword($keyword)
 	{
 		$keyword = trim($keyword);

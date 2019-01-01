@@ -77,7 +77,7 @@
                             <input type="hidden" name="type" value="category">
                             <select name="type_id" class="form-control pull-left input-small">
                                 <option value="0"><?php _e('无'); ?></option>
-                                <?php echo $this->category_list; ?>
+								<?php TPL::output('block/category_options.tpl.htm'); ?>
                             </select>
                             <a onclick="AWS.ajax_post($(this).parents('form'));" class="btn btn-primary"><?php _e('添加至导航菜单'); ?></a>
                         </form>

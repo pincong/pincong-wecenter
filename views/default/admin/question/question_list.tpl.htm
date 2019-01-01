@@ -84,7 +84,7 @@
 						<div class="col-sm-5 col-xs-8">
 							<select name="category_id" class="form-control">
 								<option value="0"></option>
-								<?php echo $this->category_list; ?>
+								<?php TPL::output('block/category_options.tpl.htm'); ?>
 							</select>
 						</div>
 					</div>

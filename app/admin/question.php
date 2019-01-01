@@ -131,7 +131,7 @@ class question extends AWS_ADMIN_CONTROLLER
 		$this->crumb(AWS_APP::lang()->_t('问题管理'), 'admin/question/question_list/');
 
 		TPL::assign('question_count', $total_rows);
-		TPL::assign('category_list', $this->model('system')->build_category_html());
+		TPL::assign('category_list', $this->model('category')->get_category_list());
 		TPL::assign('keyword', $_GET['keyword']);
 		TPL::assign('list', $question_list);
 

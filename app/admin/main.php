@@ -123,7 +123,7 @@ class main extends AWS_ADMIN_CONTROLLER
 
         TPL::assign('nav_menu_list', $this->model('menu')->get_nav_menu_list());
 
-        TPL::assign('category_list', $this->model('system')->build_category_html());
+        TPL::assign('category_list', $this->model('category')->get_category_list());
 
         TPL::assign('setting', get_setting());
 

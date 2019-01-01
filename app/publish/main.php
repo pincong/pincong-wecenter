@@ -87,7 +87,8 @@ class main extends AWS_CONTROLLER
 
 		if (get_setting('category_enable') == 'Y')
 		{
-			TPL::assign('question_category_list', $this->model('system')->build_category_html($question_info['category_id']));
+			TPL::assign('category_current_id', $question_info['category_id']);
+			TPL::assign('category_list', $this->model('category')->get_category_list());
 		}
 
 		TPL::import_js('js/app/publish.js');
@@ -159,7 +160,8 @@ class main extends AWS_CONTROLLER
 
 		if (get_setting('category_enable') == 'Y')
 		{
-			TPL::assign('article_category_list', $this->model('system')->build_category_html($article_info['category_id']));
+			TPL::assign('category_current_id', $article_info['category_id']);
+			TPL::assign('category_list', $this->model('category')->get_category_list());
 		}
 
 		TPL::import_js('js/app/publish.js');
@@ -231,7 +233,8 @@ class main extends AWS_CONTROLLER
 
 		if (get_setting('category_enable') == 'Y')
 		{
-			TPL::assign('video_category_list', $this->model('system')->build_category_html($video_info['category_id']));
+			TPL::assign('category_current_id', $video_info['category_id']);
+			TPL::assign('category_list', $this->model('category')->get_category_list());
 		}
 
 		TPL::import_js('js/app/publish.js');

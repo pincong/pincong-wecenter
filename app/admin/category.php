@@ -34,11 +34,9 @@ class category extends AWS_ADMIN_CONTROLLER
 
     public function list_action()
     {
-        TPL::assign('list', $this->model('category')->get_category_list());
+        TPL::assign('category_list', $this->model('category')->get_category_list());
 
 		// TODO: category_option 改为 category_group
-
-        TPL::assign('target_category', $this->model('system')->build_category_html());
 
         TPL::output('admin/category/list');
     }
