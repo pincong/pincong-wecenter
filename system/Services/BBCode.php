@@ -4,6 +4,11 @@ class Services_BBCode
 {
 	protected $bbcode_table = array();
 
+	private function _code_callback($match)
+	{
+		return "<pre>" . str_replace('[', '<span>[</span>', $match[1]) . "</pre>";
+	}
+
 	private function _plain_text_callback($match)
 	{
 		return $match[1];
@@ -12,11 +17,6 @@ class Services_BBCode
 	private function _plain_text_2_callback($match)
 	{
 		return $match[2];
-	}
-
-	private function _code_callback($match)
-	{
-		return "<pre>" . str_replace('[', '<span>[</span>', $match[1]) . "</pre>";
 	}
 
 	private function _b_callback($match)
@@ -134,6 +134,10 @@ class Services_BBCode
 
     public function __construct()
     {
+		// 最先解析 [code]
+        // Replace [code]...[/code] with <pre><code>...</code></pre>
+        $this->bbcode_table["/\[code\](.*?)\[\/code\]/is"] = '_code_callback';
+
         $this->bbcode_table["/\[left\](.*?)\[\/left\]/is"] = '_plain_text_callback';
         $this->bbcode_table["/\[center\](.*?)\[\/center\]/is"] = '_plain_text_callback';
         $this->bbcode_table["/\[right\](.*?)\[\/right\]/is"] = '_plain_text_callback';
@@ -145,8 +149,6 @@ class Services_BBCode
         $this->bbcode_table["/\[font=(.*?)\](.*?)\[\/font\]/is"] = '_plain_text_2_callback';
         $this->bbcode_table["/\[color=(.*?)\](.*?)\[\/color\]/is"] = '_plain_text_2_callback';
 
-	    // Replace [code]...[/code] with <pre><code>...</code></pre>
-        $this->bbcode_table["/\[code\](.*?)\[\/code\]/is"] = '_code_callback';
 
         // Replace [b]...[/b] with <strong>...</strong>
         $this->bbcode_table["/\[b\](.*?)\[\/b\]/is"] = '_b_callback';
