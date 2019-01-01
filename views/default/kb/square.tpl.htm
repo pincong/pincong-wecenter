@@ -91,7 +91,7 @@
 									</div>
 								</div>
 								<div class="mod-body clearfix">
-									<a href="javascript:;" onclick="AWS.submit($('#publish_form'));" class="btn btn-normal btn-success pull-right btn-reply"><?php _e('添加'); ?></a>
+									<a href="javascript:;" onclick="AWS.submit($('#publish_form'), $(this));" class="btn btn-normal btn-success pull-right btn-reply"><?php _e('添加'); ?></a>
 									<span class="pull-right">&nbsp;</span>
 
 									<?php if (get_setting('image_upload_link')) { ?><a class="pull-right" href="<?php echo get_setting('image_upload_link'); ?>" rel="nofollow noreferrer noopener" target="_blank"><?php _e('上传图片'); ?></a><?php } ?>

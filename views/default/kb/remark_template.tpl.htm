@@ -11,7 +11,7 @@
 				<textarea name="remarks" id="editor_reply" class="form-control" rows="10"><?php echo $this->item_info['remarks']; ?></textarea>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-large btn-success" onclick="AWS.submit_form($('#edit_form'), null, $('.error_message'));return false;"><?php _e('确定'); ?></button>
+				<button class="btn btn-large btn-success" onclick="AWS.submit_form($('#edit_form'), $(this), $('.error_message'));return false;"><?php _e('确定'); ?></button>
 			</div>
 			</form>
 		</div>

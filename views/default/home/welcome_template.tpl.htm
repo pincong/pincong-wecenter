@@ -51,7 +51,7 @@
 					</div>
 					<div class="mod-footer">
 						<a class="pull-left" onclick="welcome_step('finish');"><?php _e('跳过资料填写'); ?></a>
-						<a class="btn btn-large btn-success pull-right" onclick="AWS.submit($('#welcome_step_1_form'), null, function(err){if(!err)welcome_step('finish')});"><?php _e('完成'); ?></a>
+						<a class="btn btn-large btn-success pull-right" onclick="AWS.submit($('#welcome_step_1_form'), $(this), function(err){if(!err)welcome_step('finish')});"><?php _e('完成'); ?></a>
 					</div>
 
 				</div>

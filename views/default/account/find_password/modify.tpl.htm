@@ -27,7 +27,7 @@
 					<input class="form-control" type="text" name="seccode_verify" placeholder="<?php _e('验证码'); ?>" />
 				</li>
 				<li class="clearfix">
-					<button class="btn btn-large btn-blue btn-block" onclick="AWS.submit_form($('#fpw_form'), null, $('.error_message')); return false;"><?php _e('重置密码'); ?></button>
+					<button class="btn btn-large btn-blue btn-block" onclick="AWS.submit_form($('#fpw_form'), $(this), $('.error_message')); return false;"><?php _e('重置密码'); ?></button>
 				</li>
 			</ul>
 		</form>

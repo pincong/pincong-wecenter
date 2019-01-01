@@ -329,22 +329,25 @@ function show_user_reply_box(reply_btn) {
 			reply_box.fadeIn();
 		}
 	} else {
-		var reply_box_tpl = $('#user_replay_box');
-		if (!reply_box_tpl.length) return;
+		reply_box = $('#user_replay_box');
+		if (!reply_box.length) return;
 		var at_uid_input = $('#user_replay_box_at_uid');
 		if (at_uid_input.length) {
 			at_uid_input.val(reply_btn.attr('data-id'));
 		}
-		reply_btn.parents('.mod-footer').append(reply_box_tpl);
+		reply_btn.parents('.mod-footer').append(reply_box);
+		reply_box.fadeIn();
 	}
 }
 
 function reply_callback(err) {
 	if (err) return;
+	$('.aw-mod.aw-article-replay-box textarea').css('height', '91px');
 }
 
 function reply_callback_2(err) {
 	if (err) return;
+	$('#user_replay_box textarea').css('height', '34px');
 }
 
 $(document).ready(function () {

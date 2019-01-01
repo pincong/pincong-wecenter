@@ -257,37 +257,6 @@ var AWS =
 
 					$('.aw-comment-box-btn .btn-success, .btn-reply').removeClass('disabled');
 				break;
-
-				case 'ajax_post_alert':
-				case 'ajax_post_modal':
-				case 'error_message':
-					if (!$('.error_message').length)
-					{
-						alert(result.err);
-					}
-					else if ($('.error_message em').length)
-					{
-						$('.error_message em').html(result.err);
-					}
-					else
-					{
-						 $('.error_message').html(result.err);
-					}
-
-					if ($('.error_message').css('display') != 'none')
-					{
-						AWS.shake($('.error_message'));
-					}
-					else
-					{
-						$('.error_message').fadeIn();
-					}
-
-					if ($('#captcha').length)
-					{
-						$('#captcha').click();
-					}
-				break;
 			}
 		}
 		else
@@ -297,34 +266,6 @@ var AWS =
 				AWS.reload_comments_list(result.rsm.item_id, result.rsm.item_id, result.rsm.type_name);
 				$('#aw-comment-box-' + result.rsm.type_name + '-' + result.rsm.item_id + ' form textarea').val('');
 				$('.aw-comment-box-btn .btn-success').removeClass('disabled');
-			}
-
-			if (result.rsm && result.rsm.url)
-			{
-				// 判断返回url跟当前url是否相同
-				if (window.location.href == result.rsm.url)
-				{
-					window.location.reload();
-				}
-				else
-				{
-					window.location = decodeURIComponent(result.rsm.url);
-				}
-			}
-			else
-			{
-				switch (type)
-				{
-					case 'default':
-					case 'ajax_post_alert':
-					case 'error_message':
-						window.location.reload();
-					break;
-
-					case 'ajax_post_modal':
-						$('#aw-ajax-box div.modal').modal('hide');
-					break;
-				}
 			}
 		}
 	},

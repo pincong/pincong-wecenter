@@ -80,7 +80,7 @@ var AW_TEMPLATE = {
 						'</div>'+
 						'<div class="modal-footer">'+
 							'<a data-dismiss="modal" aria-hidden="true" class="aw-small-text">' + _t('取消') + '</a>'+
-							'<button class="btn btn-large btn-success" onclick="AWS.submit_form($(\'#quick_publish\'), null, $(\'.error_message\'));">' + _t('发送') + '</button>'+
+							'<button class="btn btn-large btn-success" onclick="AWS.submit_form($(\'#quick_publish\'), $(this), $(\'.error_message\'));">' + _t('发送') + '</button>'+
 						'</div>'+
 					'</div>'+
 				'</div>'+
