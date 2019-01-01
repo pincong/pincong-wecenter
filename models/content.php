@@ -32,6 +32,20 @@ class content_class extends AWS_MODEL
 		return false;
 	}
 
+
+	public function check_reply_type($type)
+	{
+		switch ($type)
+		{
+			case 'answer':
+			case 'article_comment':
+			case 'video_comment':
+				return true;
+		}
+		return false;
+	}
+
+
 	public function check_item_type($type)
 	{
 		switch ($type)
@@ -46,6 +60,7 @@ class content_class extends AWS_MODEL
 		}
 		return false;
 	}
+
 
 	public function get_thread_info_by_id($type, $item_id)
 	{
@@ -69,6 +84,35 @@ class content_class extends AWS_MODEL
 			if ($type == 'question')
 			{
 				$item_info['id'] = $item_info['question_id'];
+			}
+		}
+
+		return $item_info;
+	}
+
+
+	public function get_reply_info_by_id($type, $item_id)
+	{
+		$item_id = intval($item_id);
+		if (!$item_id OR !$this->check_reply_type($type))
+		{
+			return false;
+		}
+
+		$where = 'id = ' . ($item_id);
+		// TODO: answer_id 字段改为 id 以避免特殊处理
+		if ($type == 'answer')
+		{
+			$where = 'answer_id = ' . ($item_id);
+		}
+
+		$item_info = $this->fetch_row($type, $where);
+		// TODO: id
+		if ($item_info)
+		{
+			if ($type == 'answer')
+			{
+				$item_info['id'] = $item_info['answer_id'];
 			}
 		}
 
@@ -196,6 +240,39 @@ class content_class extends AWS_MODEL
 			$time_before = 0;
 		}
 		$this->delete('content_log', 'time < ' . $time_before);
+	}
+
+	public function update_view_count($item_type, $item_id, $session_id)
+	{
+		if (!$this->check_thread_type($item_type))
+		{
+			return false;
+		}
+
+		$key = 'update_view_count_' . $item_type . '_' . intval($item_id) . '_' . md5($session_id);
+		if (AWS_APP::cache()->get($key))
+		{
+			return false;
+		}
+
+		AWS_APP::cache()->set($key, time(), 60);
+
+		// TODO: 统一字段名称避免特殊处理
+		//$this->shutdown_query("UPDATE " . $this->get_table($item_type) . " SET view_count = view_count + 1 WHERE id = " . intval($item_id));
+		if ($item_type == 'question')
+		{
+			$this->shutdown_query("UPDATE " . $this->get_table('question') . " SET view_count = view_count + 1 WHERE question_id = " . intval($item_id));
+		}
+		elseif ($item_type == 'article')
+		{
+			$this->shutdown_query("UPDATE " . $this->get_table('article') . " SET views = views + 1 WHERE id = " . intval($item_id));
+		}
+		elseif ($item_type == 'video')
+		{
+			$this->shutdown_query("UPDATE " . $this->get_table('video') . " SET view_count = view_count + 1 WHERE id = " . intval($item_id));
+		}
+
+		return true;
 	}
 
 
@@ -386,37 +463,41 @@ class content_class extends AWS_MODEL
 	}
 
 
-	public function update_view_count($item_type, $item_id, $session_id)
+	public function fold_reply($item_type, $item_id, $parent_type, $parent_id, $uid)
 	{
-		if (!$this->check_thread_type($item_type))
+		if (!$this->check_reply_type($item_type))
 		{
 			return false;
 		}
 
-		$key = 'update_view_count_' . $item_type . '_' . intval($item_id) . '_' . md5($session_id);
-		if (AWS_APP::cache()->get($key))
+		$where = 'id = ' . intval($item_id);
+		// TODO
+		if ($item_type == 'answer')
 		{
-			return false;
+			$where = 'answer_id = ' . intval($item_id);
 		}
+		$this->update($item_type, array('fold' => 1), $where);
 
-		AWS_APP::cache()->set($key, time(), 60);
-
-		// TODO: 统一字段名称避免特殊处理
-		//$this->shutdown_query("UPDATE " . $this->get_table($item_type) . " SET view_count = view_count + 1 WHERE id = " . intval($item_id));
-		if ($item_type == 'question')
-		{
-			$this->shutdown_query("UPDATE " . $this->get_table('question') . " SET view_count = view_count + 1 WHERE question_id = " . intval($item_id));
-		}
-		elseif ($item_type == 'article')
-		{
-			$this->shutdown_query("UPDATE " . $this->get_table('article') . " SET views = views + 1 WHERE id = " . intval($item_id));
-		}
-		elseif ($item_type == 'video')
-		{
-			$this->shutdown_query("UPDATE " . $this->get_table('video') . " SET view_count = view_count + 1 WHERE id = " . intval($item_id));
-		}
-
-		return true;
+		$this->model('content')->log($parent_type, $parent_id, '折叠回应', $uid, $item_type, $item_id);
 	}
+
+	public function unfold_reply($item_type, $item_id, $parent_type, $parent_id, $uid)
+	{
+		if (!$this->check_reply_type($item_type))
+		{
+			return false;
+		}
+
+		$where = 'id = ' . intval($item_id);
+		// TODO
+		if ($item_type == 'answer')
+		{
+			$where = 'answer_id = ' . intval($item_id);
+		}
+		$this->update($item_type, array('fold' => 0), $where);
+
+		$this->model('content')->log($parent_type, $parent_id, '取消折叠回应', $uid, $item_type, $item_id);
+	}
+
 
 }

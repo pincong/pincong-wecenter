@@ -302,4 +302,89 @@ class ajax extends AWS_CONTROLLER
 	}
 
 
+	public function fold_reply_action()
+	{
+		if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有折叠的权限')));
+		}
+
+		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
+		$item_info = $this->model('content')->get_reply_info_by_id($_POST['item_type'], $_POST['item_id']);
+		if (!$item_info)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
+		}
+
+		if (!$item_info['fold'])
+		{
+			set_user_operation_last_time_by_uid('modify', $this->user_id);
+			switch ($_POST['item_type'])
+			{
+				case 'answer':
+					$parent_type = 'question';
+					$parent_id = $item_info['question_id'];
+					break;
+				case 'article_comment':
+					$parent_type = 'article';
+					$parent_id = $item_info['article_id'];
+					break;
+				case 'video_comment':
+					$parent_type = 'video';
+					$parent_id = $item_info['video_id'];
+					break;
+			}
+			$this->model('content')->fold_reply($_POST['item_type'], $_POST['item_id'], $parent_type, $parent_id, $this->user_id);
+		}
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
+	public function unfold_reply_action()
+	{
+		if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有折叠的权限')));
+		}
+
+		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
+		$item_info = $this->model('content')->get_reply_info_by_id($_POST['item_type'], $_POST['item_id']);
+		if (!$item_info)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
+		}
+
+		if ($item_info['fold'])
+		{
+			set_user_operation_last_time_by_uid('modify', $this->user_id);
+			switch ($_POST['item_type'])
+			{
+				case 'answer':
+					$parent_type = 'question';
+					$parent_id = $item_info['question_id'];
+					break;
+				case 'article_comment':
+					$parent_type = 'article';
+					$parent_id = $item_info['article_id'];
+					break;
+				case 'video_comment':
+					$parent_type = 'video';
+					$parent_id = $item_info['video_id'];
+					break;
+			}
+			$this->model('content')->unfold_reply($_POST['item_type'], $_POST['item_id'], $parent_type, $parent_id, $this->user_id);
+		}
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
+
 }
