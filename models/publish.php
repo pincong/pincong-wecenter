@@ -128,10 +128,6 @@ class publish_class extends AWS_MODEL
 			}
 		}
 
-        set_repeat_submission_digest($answer_content);
-
-		set_human_valid('answer_valid_hour');
-
 		if ($auto_focus)
 		{
 			if (! $this->model('question')->has_focus_question($question_id, $uid))
@@ -181,11 +177,6 @@ class publish_class extends AWS_MODEL
 	{
 		if ($question_id = $this->model('question')->save_question($question_content, $question_detail, $uid, $anonymous))
 		{
-
-            set_repeat_submission_digest($question_content);
-
-			set_human_valid('question_valid_hour');
-
 			if ($category_id)
 			{
 				$this->update('question', array(
@@ -244,10 +235,6 @@ class publish_class extends AWS_MODEL
 			'anonymous' => intval($anonymous)
 		)))
 		{
-
-            set_repeat_submission_digest($title);
-
-			set_human_valid('question_valid_hour');
 
 			if (is_array($topics))
 			{
@@ -324,10 +311,6 @@ class publish_class extends AWS_MODEL
 				}
 			}
 		}
-
-        set_repeat_submission_digest($message);
-
-		set_human_valid('answer_valid_hour');
 
 		if ($article_info['uid'] != $uid)
 		{

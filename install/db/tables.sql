@@ -926,6 +926,28 @@ CREATE TABLE IF NOT EXISTS `aws_question_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
+
+
+-- Dumping structure for table panic.aws_scheduled_posts
+CREATE TABLE IF NOT EXISTS `aws_scheduled_posts` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `type` varchar(32) DEFAULT NULL,
+  `uid` int(11) NOT NULL DEFAULT '0',
+  `anonymous` int(11) NULL DEFAULT '0',
+  `parent_id` int(11) NOT NULL DEFAULT '0',
+  `time` int(10) NOT NULL DEFAULT '0',
+  `title` varchar(240) DEFAULT NULL,
+  `message` text,
+  `extra_data` text,
+  PRIMARY KEY (`id`),
+  KEY `type` (`type`),
+  KEY `uid` (`uid`),
+  KEY `anonymous` (`anonymous`),
+  KEY `parent_id` (`parent_id`),
+  KEY `time` (`time`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+-- Data exporting was unselected.
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

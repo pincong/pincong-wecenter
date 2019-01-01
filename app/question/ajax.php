@@ -527,7 +527,15 @@ class ajax extends AWS_CONTROLLER
 		$later = intval($_POST['later']);
 		if ($later)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
+			/*if (!$this->user_info['permission']['reply_later'])
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能延迟回复')));
+			}*/
+
+			if ($later < 10 OR $later > 1440)
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('延迟时间只能在 10 ~ 1400 分钟之间')));
+			}
 		}
 
 		if (human_valid('answer_valid_hour') and ! AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
@@ -594,26 +602,46 @@ class ajax extends AWS_CONTROLLER
 
 		if ($later)
 		{
-			//TODO: 延迟显示
-			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/publish/delay_display/')
-			), 1, null));
+			// 延迟显示
+			$this->model('publish')->schedule(
+				'answer',
+				real_time() + $later * 60 + rand(-30, 30),
+				null,
+				$answer_content,
+				$this->user_id,
+				$_POST['anonymous'],
+				$question_info['question_id'],
+				array(
+					'auto_focus' => $_POST['auto_focus']
+				)
+			);
+
+			$url = get_js_url('/publish/delay_display/');
 		}
 		else
 		{
-			$answer_id = $this->model('publish')->publish_answer($question_info['question_id'], $answer_content, $this->user_id, $_POST['anonymous'], $_POST['auto_focus']);
+			$answer_id = $this->model('publish')->publish_answer(
+				$question_info['question_id'],
+				$answer_content,
+				$this->user_id,
+				$_POST['anonymous'],
+				$_POST['auto_focus']
+			);
+		}
 
-			{
-				//$url = get_js_url('/question/' . $question_info['question_id'] . '?item_id=' . $answer_id . '&rf=false');
-			}
+		set_repeat_submission_digest($answer_content);
+		set_human_valid('answer_valid_hour');
 
+		if ($url)
+		{
+			H::ajax_json_output(AWS_APP::RSM(array('url' => $url), 1, null));
+		}
+		else
+		{
 			$answer_info = $this->model('answer')->get_answer_by_id($answer_id);
-
 			$answer_info['user_info'] = $this->user_info;
 			$answer_info['answer_content'] = $this->model('question')->parse_at_user($answer_info['answer_content']);
-
 			TPL::assign('answer_info', $answer_info);
-
 			H::ajax_json_output(AWS_APP::RSM(array(
 				'ajax_html' => TPL::output('question/ajax/answer', false)
 			), 1, null));

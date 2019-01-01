@@ -140,7 +140,15 @@ class ajax extends AWS_CONTROLLER
 		$later = intval($_POST['later']);
 		if ($later)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
+			/*if (!$this->user_info['permission']['post_later'])
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能延迟发布')));
+			}*/
+
+			if ($later < 10 OR $later > 1440)
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('延迟时间只能在 10 ~ 1400 分钟之间')));
+			}
 		}
 
         if (human_valid('question_valid_hour') AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
@@ -169,6 +177,7 @@ class ajax extends AWS_CONTROLLER
             $_POST['category_id'] = 1;
         }
 
+		// TODO: 检查 $_POST['category_id']
         if (!$_POST['category_id'])
         {
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择问题分类')));
@@ -234,7 +243,22 @@ class ajax extends AWS_CONTROLLER
 
 		if ($later)
 		{
-			//TODO: 延迟显示
+			// 延迟显示
+			$this->model('publish')->schedule(
+				'question',
+				real_time() + $later * 60 + rand(-30, 30),
+				$question_content,
+				$question_detail,
+				$this->user_id,
+				$_POST['anonymous'],
+				$_POST['category_id'],
+				array(
+					'topics' => $_POST['topics'],
+					'ask_user_id' => $_POST['ask_user_id'],
+					'permission_create_topic' => $this->user_info['permission']['create_topic']
+				)
+			);
+
 			$url = get_js_url('/publish/delay_display/');
 		}
 		else
@@ -252,6 +276,9 @@ class ajax extends AWS_CONTROLLER
 
 			$url = get_js_url('/question/' . $question_id);
         }
+
+		set_repeat_submission_digest($question_content);
+		set_human_valid('question_valid_hour');
 
 		H::ajax_json_output(AWS_APP::RSM(array('url' => $url), 1, null));
     }
@@ -271,7 +298,15 @@ class ajax extends AWS_CONTROLLER
 		$later = intval($_POST['later']);
 		if ($later)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
+			/*if (!$this->user_info['permission']['post_later'])
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能延迟发布')));
+			}*/
+
+			if ($later < 10 OR $later > 1440)
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('延迟时间只能在 10 ~ 1400 分钟之间')));
+			}
 		}
 
         if (human_valid('question_valid_hour') AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
@@ -300,6 +335,7 @@ class ajax extends AWS_CONTROLLER
             $_POST['category_id'] = 1;
         }
 
+		// TODO: 检查 $_POST['category_id']
         if (!$_POST['category_id'])
         {
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择文章分类')));
@@ -358,7 +394,21 @@ class ajax extends AWS_CONTROLLER
 
 		if ($later)
 		{
-			//TODO: 延迟显示
+			// 延迟显示
+			$this->model('publish')->schedule(
+				'article',
+				real_time() + $later * 60 + rand(-30, 30),
+				$article_title,
+				$article_content,
+				$this->user_id,
+				$_POST['anonymous'],
+				$_POST['category_id'],
+				array(
+					'topics' => $_POST['topics'],
+					'permission_create_topic' => $this->user_info['permission']['create_topic']
+				)
+			);
+
 			$url = get_js_url('/publish/delay_display/');
 		}
 		else
@@ -375,6 +425,9 @@ class ajax extends AWS_CONTROLLER
 
 			$url = get_js_url('/article/' . $article_id);
         }
+
+		set_repeat_submission_digest($article_title);
+		set_human_valid('question_valid_hour');
 
 		H::ajax_json_output(AWS_APP::RSM(array('url' => $url), 1, null));
     }

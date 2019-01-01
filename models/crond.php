@@ -93,12 +93,14 @@ class crond_class extends AWS_MODEL
     // 每五分钟执行
     public function five_minutes()
     {
-        $this->model('admin')->notifications_crond();
+		$this->model('publish')->publish_scheduled_posts();
     }
 
     // 每十分钟执行
     public function ten_minutes()
     {
+		// TODO: code review
+		// $this->model('admin')->notifications_crond();
     }
 
     // 每半小时执行
