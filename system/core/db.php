@@ -42,7 +42,7 @@ class core_db
 		}
 		catch (Exception $e)
 		{
-			throw new Zend_Exception('Can\'t connect master database: ' . $e->getMessage());
+			throw new Zend_Exception('Can\'t connect to master database.');
 		}
 
 		if (load_class('core_config')->get('system')->debug AND class_exists('AWS_APP', false))
@@ -65,7 +65,7 @@ class core_db
 			}
 			catch (Exception $e)
 			{
-				throw new Zend_Exception('Can\'t connect slave database: ' . $e->getMessage());
+				throw new Zend_Exception('Can\'t connect to slave database.');
 			}
 
 			if (load_class('core_config')->get('system')->debug AND class_exists('AWS_APP', false))
