@@ -39,6 +39,37 @@ function set_repeat_submission_digest($text)
 }
 
 
+// 检查用户操作频率
+// 返回 true    正常
+// 返回 false   过于频繁
+function check_user_operation_interval($op_name, $uid, &$user_permission)
+{
+	$interval = intval($user_permission['operation_interval']);
+	if (!$interval)
+	{
+		return true;
+	}
+	$key = 'user_operation_last_time_' + intval($uid) + '_' + $op_name;
+	$last_time = intval(AWS_APP::cache()->get($key));
+	if ($last_time + $interval > time())
+	{
+		return false;
+	}
+	return true;
+}
+
+function set_user_operation_last_time($op_name, $uid, &$user_permission)
+{
+	$interval = intval($user_permission['operation_interval']);
+	if (!$interval)
+	{
+		return;
+	}
+	$key = 'user_operation_last_time_' + intval($uid) + '_' + $op_name;
+	AWS_APP::cache()->set($key, time(), 86400);
+}
+
+
 /**
  * 获取主题图片指定尺寸的完整url地址
  * @param  string $size
