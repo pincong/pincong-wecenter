@@ -138,55 +138,6 @@ var AW_TEMPLATE = {
 			'</div>'+
 		'</div>',
 
-	'publishBox' :
-			'<div class="modal fade alert-box aw-publish-box">'+
-				'<div class="modal-dialog">'+
-					'<div class="modal-content">'+
-						'<div class="modal-header">'+
-							'<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>'+
-							'<h3 class="modal-title" id="myModalLabel">' + _t('发起问题') + '</h3>'+
-						'</div>'+
-						'<div class="modal-body">'+
-							'<div class="alert alert-danger collapse error_message"><i class="icon icon-delete"></i> <em></em></div>'+
-							'<form action="' + G_BASE_URL + '/publish/ajax/publish_question/" method="post" id="quick_publish" onsubmit="return false">'+
-								'<input type="hidden" id="quick_publish_category_id" name="category_id" value="{{category_id}}" />'+
-								'<input type="hidden" name="post_hash" value="' + G_POST_HASH + '" />'+
-								'<input type="hidden" name="ask_user_id" value="{{ask_user_id}}" />'+
-								'<div>'+
-									'<textarea class="form-control" placeholder="' + _t('写下你的问题') + '..." rows="1" name="title" id="quick_publish_question_content" onkeydown="if (event.keyCode == 13) { return false; }"></textarea>'+
-									'<div class="aw-publish-suggest-question collapse">'+
-										'<p class="text-color-999">你的问题可能已经有答案</p>'+
-										'<ul class="aw-dropdown-list">'+
-										'</ul>'+
-									'</div>'+
-								'</div>'+
-								'<textarea name="message" class="form-control" rows="4" placeholder="' + _t('问题背景、条件等详细信息') + '..."></textarea>'+
-								'<div class="aw-publish-title">'+
-									'<div class="dropdown" id="quick_publish_category_chooser">'+
-										'<div class="dropdown-toggle" data-toggle="dropdown">'+
-											'<span id="aw-topic-tags-select" class="aw-hide-txt">' + _t('选择分类') + '</span>'+
-											'<a><i class="icon icon-down"></i></a>'+
-										'</div>'+
-									'</div>'+
-								'</div>'+
-								'<div class="aw-topic-bar" data-type="publish">'+
-									'<div class="tag-bar clearfix">'+
-										'<span class="aw-edit-topic"><i class="icon icon-edit"></i>' + _t('编辑话题') + '</span>'+
-									'</div>'+
-								'</div>'+
-							'</form>'+
-						'</div>'+
-						'<div class="modal-footer">'+
-							'<span class="pull-right">'+
-								'<a data-dismiss="modal" aria-hidden="true" class="text-color-999">' + _t('取消') + '</a>'+
-								'<button class="btn btn-large btn-success" onclick="AWS.ajax_post($(\'#quick_publish\'), AWS.ajax_processer, \'error_message\');">' + _t('发起') + '</button>'+
-							'</span>'+
-							'<a href="javascript:;" tabindex="-1" onclick="$(\'form#quick_publish\').attr(\'action\', \'' + G_BASE_URL + '/publish/\');$.each($(\'#quick_publish textarea\'), function (i, e){if ($(this).val() == $(this).attr(\'placeholder\')){$(this).val(\'\');}});document.getElementById(\'quick_publish\').submit();" class="pull-left">' + _t('高级模式') + '</a>'+
-						'</div>'+
-					'</div>'+
-				'</div>'+
-			'</div>',
-
 	'inbox' :
 			'<div class="modal fade alert-box aw-inbox">'+
 				'<div class="modal-dialog">'+

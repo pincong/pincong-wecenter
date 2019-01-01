@@ -21,7 +21,7 @@
 								<?php } ?>
 
 								<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('inbox', '<?php echo UF::name($this->user); ?>');"><i class="icon icon-inbox"></i> 私信</a>
-								<a href="javascript:;" class="text-color-999 hidden-xs" onclick="AWS.dialog('publish', {category_enable:<?php echo (get_setting('category_enable') == 'Y') ? '1' : '0'; ?>, ask_user_id:<?php echo $this->user['uid']; ?>, ask_user_name:'<?php echo UF::name($this->user); ?>'});"><i class="icon icon-at"></i> <?php _e('问Ta'); ?></a>
+								<a href="javascript:;" class="text-color-999 hidden-xs" onclick="AWS.User.ask_user(<?php echo $this->user['uid']; ?>, '<?php echo UF::name($this->user); ?>');"><i class="icon icon-at"></i> <?php _e('问Ta'); ?></a>
 								<a href="javascript:;" class="follow btn btn-normal btn-success<?php if ($this->user_follow_check) { ?> active<?php } ?>" onclick="AWS.User.follow($(this), 'user', <?php echo $this->user['uid']; ?>);"><span><?php if ($this->user_follow_check) { ?><?php _e('取消关注'); ?><?php } else { ?><?php _e('关注'); ?><?php } ?></span> <em>|</em> <b><?php echo $this->user['fans_count']; ?></b></a>
 							<?php } else if ($this->user_id == $this->user['uid']) { ?>
 								<a href="account/setting/profile/" class="btn btn-mini btn-success"><?php _e('编辑'); ?></a>

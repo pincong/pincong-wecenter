@@ -546,11 +546,7 @@ var AWS =
 
 	/**
 	 *	公共弹窗
-	 *	publish     : 发起
 	 *	redirect    : 问题重定向
-	 *	imageBox    : 插入图片
-	 *	videoBox    : 插入视频
-	 *  linkbox     : 插入链接
 	 *  favorite    : 评论添加收藏
 	 *	inbox       : 私信
 	 */
@@ -564,14 +560,6 @@ var AWS =
 					'hide': data.hide,
 					'url': data.url,
 					'message': data.message
-				});
-			break;
-
-			case 'publish':
-				var template = Hogan.compile(AW_TEMPLATE.publishBox).render(
-				{
-					'category_id': data.category_id,
-					'ask_user_id': data.ask_user_id
 				});
 			break;
 
@@ -649,51 +637,6 @@ var AWS =
 						$('.alert-box #quick_publish input.form-control').val($(this).text());
 						$(this).parents('.aw-dropdown').hide();
 					});
-				break;
-
-				case 'publish':
-					AWS.Dropdown.bind_dropdown_list($('.aw-publish-box #quick_publish_question_content'), 'publish');
-					AWS.Dropdown.bind_dropdown_list($('.aw-publish-box #aw_edit_topic_title'), 'topic');
-					if (parseInt(data.category_enable) == 1)
-					{
-						$.get(G_BASE_URL + '/publish/ajax/fetch_question_category/', function (result)
-						{
-							AWS.Dropdown.set_dropdown_list('.aw-publish-box .dropdown', eval(result), data.category_id);
-
-							$('.aw-publish-title .dropdown li a').click(function ()
-							{
-								$('.aw-publish-box #quick_publish_category_id').val($(this).attr('data-value'));
-								$('.aw-publish-box #aw-topic-tags-select').html($(this).text());
-							});
-						});
-					}
-					else
-					{
-						$('.aw-publish-box .aw-publish-title').hide();
-					}
-
-					if (data.ask_user_id != '' && data.ask_user_id != undefined)
-					{
-						$('.aw-publish-box .modal-title').html('向 ' + data.ask_user_name + ' 提问');
-					}
-
-					// TODO: remove #aw-search-query
-					//if ($('#aw-search-query').val() && $('#aw-search-query').val() != $('#aw-search-query').attr('placeholder'))
-					//{
-					//	$('#quick_publish_question_content').val($('#aw-search-query').val());
-					//}
-
-					AWS.Init.init_topic_edit_box('#quick_publish .aw-edit-topic');
-
-					$('#quick_publish .aw-edit-topic').click();
-
-					$('#quick_publish .close-edit').hide();
-
-					if (data.topic_title)
-					{
-						$('#quick_publish .aw-edit-topic').parents('.aw-topic-bar').prepend('<span class="topic-tag"><a class="text">' + data.topic_title + '</a><a class="close" onclick="$(this).parents(\'.topic-tag\').detach();"><i class="icon icon-delete"></i></a><input type="hidden" value="' + data.topic_title + '" name="topics[]" /></span>')
-					}
-
 				break;
 
 				case 'favorite':

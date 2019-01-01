@@ -35,17 +35,6 @@ class ajax extends AWS_CONTROLLER
 		HTTP::no_cache_header();
 	}
 
-	// TODO: 删除
-	public function fetch_question_category_action()
-	{
-		if (get_setting('category_enable') != 'Y')
-		{
-			exit(json_encode(array()));
-		}
-
-		exit($this->model('system')->build_category_json());
-	}
-
 	private function get_anonymous_uid($type)
 	{
 		if (!$anonymous_uid = $this->model('anonymous')->get_anonymous_uid())
