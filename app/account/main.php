@@ -23,10 +23,6 @@ class main extends AWS_CONTROLLER
 	{
 		$rule_action['rule_type'] = 'black';
 
-		$rule_action['actions'] = array(
-
-		);
-
 		return $rule_action;
 	}
 

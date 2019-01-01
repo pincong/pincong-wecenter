@@ -24,7 +24,7 @@ class info extends AWS_CONTROLLER
 	public function get_access_rule()
 	{
 		$rule_action['rule_type'] = 'white';
-		$rule_action['actions'] = array();
+
 		$rule_action['redirect'] = false;
 		return $rule_action;
 	}

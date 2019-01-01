@@ -71,22 +71,27 @@ class AWS_APP
 			$access_rule = $handle_controller->get_access_rule();
 		}
 
-		// 判断访问规则使用白名单还是黑名单, 默认使用黑名单
+		// 判断访问规则使用白名单还是黑名单, 默认使用白名单
+		// 白名单: $access_rule['actions'] 以外的都不允许
+		// 黑名单: $access_rule['actions'] 以外的都允许
 		if ($access_rule)
 		{
-			// 黑名单, 黑名单中的检查 'white' 白名单,白名单以外的检查 (默认是黑名单检查)
-			if (isset($access_rule['rule_type']) AND $access_rule['rule_type'] == 'white')
+			if (isset($access_rule['rule_type']) AND $access_rule['rule_type'] == 'black')
 			{
-				if ((! $access_rule['actions']) OR (! in_array(load_class('core_uri')->action, $access_rule['actions'])))
+				if (isset($access_rule['actions']) AND in_array(load_class('core_uri')->action, $access_rule['actions']))
 				{
+					// action 在黑名单中, 不允许
 					self::login($access_rule['redirect']);
 				}
 			}
-			else if (isset($access_rule['actions']) AND in_array(load_class('core_uri')->action, $access_rule['actions']))	// 非白就是黑名单
+			else // 默认使用白名单
 			{
-				self::login($access_rule['redirect']);
+				if (!isset($access_rule['actions']) OR !in_array(load_class('core_uri')->action, $access_rule['actions']))
+				{
+					// action 不在白名单中, 不允许
+					self::login($access_rule['redirect']);
+				}
 			}
-
 		}
 		else
 		{
@@ -263,7 +268,7 @@ class AWS_APP
 			{
 				HTTP::error_403();
 			}
-			elseif ($_POST['_post_type'] == 'ajax')
+			elseif (defined('IN_AJAX') OR $_POST['_post_type'] == 'ajax')
 			{
 				H::ajax_json_output(self::RSM(null, -1, AWS_APP::lang()->_t('会话超时, 请重新登录')));
 			}

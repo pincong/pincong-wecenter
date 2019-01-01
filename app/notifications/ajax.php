@@ -21,22 +21,16 @@ if (!defined('IN_ANWSION'))
 
 class ajax extends AWS_CONTROLLER
 {
-	var $per_page;
+	private $per_page;
 
-	public function get_access_rule()
-	{
-		$rule_action['rule_type'] = "white"; //黑名单,黑名单中的检查  'white'白名单,白名单以外的检查
-		$rule_action['actions'] = array();
-		return $rule_action;
-	}
-
-	function setup()
+	public function setup()
 	{
 		HTTP::no_cache_header();
 
 		$this->per_page = get_setting('notifications_per_page');
 	}
 
+	// TODO: json?
 	public function list_action()
 	{
 		if ($_GET['limit'])

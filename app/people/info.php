@@ -23,9 +23,9 @@ class info extends AWS_CONTROLLER
 
 	public function get_access_rule()
 	{
-		$rule_action['rule_type'] = 'white'; //黑名单,黑名单中的检查  'white'白名单,白名单以外的检查
+		$rule_action['rule_type'] = 'white';
 
-		if ($this->user_info['permission']['visit_people'])
+		if ($this->user_info['permission']['visit_people'] AND $this->user_info['permission']['visit_site'])
 		{
 			$rule_action['actions'][] = 'questions';
 			$rule_action['actions'][] = 'answers';

@@ -24,7 +24,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		$rule_action['rule_type'] = 'white';
 
-		if ($this->user_info['permission']['visit_explore'])
+		if ($this->user_info['permission']['visit_site'])
 		{
 			$rule_action['actions'][] = 'list';
 		}
@@ -32,6 +32,7 @@ class ajax extends AWS_CONTROLLER
 		return $rule_action;
 	}
 
+	// TODO: json?
 	public function list_action()
 	{
 		$topic_ids = explode(',', $_GET['topic_id']);

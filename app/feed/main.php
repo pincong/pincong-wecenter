@@ -21,10 +21,16 @@ if (!defined('IN_ANWSION'))
 class main extends AWS_CONTROLLER
 {
 
-	function get_access_rule()
+	public function get_access_rule()
 	{
-		$rule_action['rule_type'] = 'black';
-		$rule_action['actions'] = array();
+		$rule_action['rule_type'] = 'white';
+
+		if ($this->user_info['permission']['visit_site'])
+		{
+			$rule_action['actions'] = array(
+				'index'
+			);
+		}
 
 		return $rule_action;
 	}

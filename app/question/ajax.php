@@ -25,12 +25,13 @@ class ajax extends AWS_CONTROLLER
 	{
 		$rule_action['rule_type'] = 'white';
 
-		$rule_action['actions'] = array(
-			'get_question_discussions',
-			'get_answer_discussions',
-			'get_focus_users',
-			'get_answer_users'
-		);
+		if ($this->user_info['permission']['visit_site'])
+		{
+			$rule_action['actions'] = array(
+				'get_question_discussions',
+				'get_answer_discussions'
+			);
+		}
 
 		return $rule_action;
 	}
