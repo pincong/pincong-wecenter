@@ -50,7 +50,7 @@
 	<div class="mod-footer">
 		<!-- 社交操作 -->
 		<div class="meta clearfix">
-			<span class="text-color-999 pull-right"><?php echo date_friendly($this->answer_info['add_time'], 604800, 'Y-m-d'); ?></span>
+			<span class="text-color-999 pull-right"><?php echo date_friendly($this->answer_info['add_time']); ?></span>
 			<!-- 投票栏 -->
 			<span class="operate">
 			<?php if ($this->user_id AND $this->user_id != $this->answer_info['user_info']['uid']) { ?>

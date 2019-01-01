@@ -117,7 +117,7 @@
 							</div>
 
 							<div class="meta">
-								<span class="text-color-999"><?php echo date_friendly($this->question_info['add_time'], 604800, 'Y-m-d'); ?></span>
+								<span class="text-color-999"><?php echo date_friendly($this->question_info['add_time']); ?></span>
 								<a data-id="<?php echo $this->question_info['question_id']; ?>" data-type="question" class="aw-add-comment text-color-999 <?php if ($this->question_info['comment_count'] > 0) {?>active<?php }?>" data-comment-count="<?php echo $this->question_info['comment_count']; ?>" data-first-click="<?php if ($this->question_info['comment_count'] == 0) {?>hide<?php }?>"><i class="icon icon-comment"></i><?php if ($this->question_info['comment_count']) { ?><?php _e('%s 条评论', $this->question_info['comment_count']); ?><?php } else { ?><?php _e('添加评论'); ?><?php } ?></a>
 
 								<?php if ($this->user_id) { ?>
@@ -291,7 +291,7 @@
 									<div class="mod-footer">
 										<!-- 社交操作 -->
 										<div class="meta clearfix">
-											<span class="text-color-999 pull-right"><?php echo date_friendly($val['add_time'], 604800, 'Y-m-d'); ?></span>
+											<span class="text-color-999 pull-right"><?php echo date_friendly($val['add_time']); ?></span>
 											<!-- 投票栏 -->
 											<span class="operate">
 											<?php if ($this->user_id AND $this->user_id != $val['user_info']['uid']) { ?>

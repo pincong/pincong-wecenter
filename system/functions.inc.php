@@ -319,109 +319,15 @@ function jsonp_encode($json = array(), $callback = 'jsoncallback')
 	return json_encode($json);
 }
 
-/**
- * 时间友好型提示风格化（即微博中的XXX小时前、昨天等等）
- *
- * 即微博中的 XXX 小时前、昨天等等, 时间超过 $time_limit 后返回按 out_format 的设定风格化时间戳
- *
- * @param  int
- * @param  int
- * @param  string
- * @param  array
- * @param  int
- * @return string
- */
-function date_friendly($timestamp, $time_limit = 604800, $out_format = 'Y-m-d', $formats = null, $time_now = null)
+
+function date_friendly($timestamp)
 {
 	if (get_setting('time_style') == 'N')
 	{
-		return date($out_format, $timestamp);
+		return date('Y-m-d', $timestamp);
 	}
 
-	if (!$timestamp)
-	{
-		return false;
-	}
-
-	if ($formats == null)
-	{
-		$formats = array('YEAR' => AWS_APP::lang()->_t('%s 年前'), 'MONTH' => AWS_APP::lang()->_t('%s 月前'), 'DAY' => AWS_APP::lang()->_t('%s 天前'), 'HOUR' => AWS_APP::lang()->_t('%s 小时前'), 'MINUTE' => AWS_APP::lang()->_t('%s 分钟前'), 'SECOND' => AWS_APP::lang()->_t('%s 秒前'));
-	}
-
-	$time_now = $time_now == null ? time() : $time_now;
-	$seconds = $time_now - $timestamp;
-
-	if ($seconds == 0)
-	{
-		$seconds = 1;
-	}
-
-	if (!$time_limit OR $seconds > $time_limit)
-	{
-		return date($out_format, $timestamp);
-	}
-
-	$minutes = floor($seconds / 60);
-	$hours = floor($minutes / 60);
-	$days = floor($hours / 24);
-	$months = floor($days / 30);
-	$years = floor($months / 12);
-
-	if ($years > 0)
-	{
-		$diffFormat = 'YEAR';
-	}
-	else
-	{
-		if ($months > 0)
-		{
-			$diffFormat = 'MONTH';
-		}
-		else
-		{
-			if ($days > 0)
-			{
-				$diffFormat = 'DAY';
-			}
-			else
-			{
-				if ($hours > 0)
-				{
-					$diffFormat = 'HOUR';
-				}
-				else
-				{
-					$diffFormat = ($minutes > 0) ? 'MINUTE' : 'SECOND';
-				}
-			}
-		}
-	}
-
-	$dateDiff = null;
-
-	switch ($diffFormat)
-	{
-		case 'YEAR' :
-			$dateDiff = sprintf($formats[$diffFormat], $years);
-			break;
-		case 'MONTH' :
-			$dateDiff = sprintf($formats[$diffFormat], $months);
-			break;
-		case 'DAY' :
-			$dateDiff = sprintf($formats[$diffFormat], $days);
-			break;
-		case 'HOUR' :
-			$dateDiff = sprintf($formats[$diffFormat], $hours);
-			break;
-		case 'MINUTE' :
-			$dateDiff = sprintf($formats[$diffFormat], $minutes);
-			break;
-		case 'SECOND' :
-			$dateDiff = sprintf($formats[$diffFormat], $seconds);
-			break;
-	}
-
-	return $dateDiff;
+	return date('Y-m-d H:i:s', $timestamp);
 }
 
 /**

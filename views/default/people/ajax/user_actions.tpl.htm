@@ -10,14 +10,14 @@
 		</div>
 		<div class="mod-body">
 			<span class="aw-border-radius-5 count pull-left"><i class="icon icon-agree"></i><?php echo $val['article_info']['votes']; ?></span>
-			<p class="text-color-999"><?php _e('%s 个评论', $val['article_info']['comments']); ?> • <?php _e('%s 次浏览', $val['article_info']['views']); ?> • <?php echo date_friendly($val['add_time'], 604800, 'Y-m-d'); ?></p>
+			<p class="text-color-999"><?php _e('%s 个评论', $val['article_info']['comments']); ?> • <?php _e('%s 次浏览', $val['article_info']['views']); ?> • <?php echo date_friendly($val['add_time']); ?></p>
 		</div>
 	</div>
 </div>
 <?php } else { ?>
 <div class="aw-item">
 	<p>
-		<span class="pull-right text-color-999"><?php echo date_friendly($val['add_time'], 604800, 'Y-m-d'); ?></span>
+		<span class="pull-right text-color-999"><?php echo date_friendly($val['add_time']); ?></span>
 		<em class="pull-left"><?php echo $val['last_action_str']; ?>:</em>
 		
 		<a class="aw-hide-txt" href="<?php echo $val['link']; ?>"><?php echo cjk_substr($val['title'], 0, 40, 'UTF-8', '...'); ?></a>

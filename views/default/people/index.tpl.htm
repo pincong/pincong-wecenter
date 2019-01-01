@@ -104,7 +104,7 @@
                                                     </div>
                                                     <div class="mod-body">
                                                         <span class="aw-border-radius-5 count pull-left"><i class="icon icon-reply"></i><?php echo $val['question_info']['answer_count']; ?></span>
-                                                        <p class="aw-hide-txt"><?php _e('%s 次浏览', $val['question_info']['view_count']); ?> &nbsp;• <?php _e('%s 个关注', $val['question_info']['focus_count']); ?> &nbsp; • <?php echo date_friendly($val['add_time'], 604800, 'Y-m-d'); ?></p>
+                                                        <p class="aw-hide-txt"><?php _e('%s 次浏览', $val['question_info']['view_count']); ?> &nbsp;• <?php _e('%s 个关注', $val['question_info']['focus_count']); ?> &nbsp; • <?php echo date_friendly($val['add_time']); ?></p>
                                                     </div>
                                                 </div>
                                                 <?php } ?>
@@ -127,7 +127,7 @@
                                                 <?php foreach ($this->user_actions_answers AS $key => $val) { ?>
                                                 <li>
                                                     <p>
-                                                        <span class="pull-right text-color-999"><?php echo date_friendly($val['add_time'], 604800, 'Y-m-d'); ?></span>
+                                                        <span class="pull-right text-color-999"><?php echo date_friendly($val['add_time']); ?></span>
                                                         <em class="pull-left"><?php echo $val['last_action_str']; ?>,</em>
                                                         <a class="aw-hide-txt" href="question/<?php echo $val['question_info']['question_id']; ?>"><?php if (!$val['question_info']['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['question_info']['question_content']; ?><?php } ?></a>
                                                     </p>
