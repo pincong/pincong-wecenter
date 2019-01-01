@@ -2,8 +2,8 @@
 
 
 TRUNCATE `aws_category`;
-INSERT INTO `aws_category` (`id`, `title`, `type`, `icon`, `parent_id`, `sort`, `url_token`) VALUES
-	(1, '默认分类', 'question', NULL, 0, 0, NULL);
+INSERT INTO `aws_category` (`id`, `title`) VALUES
+	(1, '默认分类');
 
 
 TRUNCATE `aws_system_setting`;

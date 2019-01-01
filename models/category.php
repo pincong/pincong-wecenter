@@ -20,11 +20,11 @@ if (!defined('IN_ANWSION'))
 
 class category_class extends AWS_MODEL
 {
-	public function update_category_info($category_id, $title, $parent_id, $url_token)
+	public function update_category_info($category_id, $title, $group_id, $url_token)
 	{
 		return $this->update('category', array(
 			'title' => htmlspecialchars($title),
-			'parent_id' => intval($parent_id),
+			//'group_id' => intval($group_id),
 			'url_token' => $url_token
 		), 'id = ' . intval($category_id));
 	}
@@ -36,16 +36,15 @@ class category_class extends AWS_MODEL
 		), 'id = ' . intval($category_id));
 	}
 
-	public function add_category($type, $title, $parent_id)
+	public function add_category($title, $group_id)
 	{
 		return $this->insert('category', array(
-			'type' => $type,
 			'title' => $title,
-			'parent_id' => intval($parent_id),
+			//'group_id' => intval($group_id),
 		));
 	}
 
-	public function delete_category($type, $category_id)
+	public function delete_category($category_id)
 	{
 		$this->delete('nav_menu', "type = 'category' AND type_id = " . intval($category_id));
 
@@ -77,6 +76,10 @@ class category_class extends AWS_MODEL
 		), 'category_id = ' . intval($from_id));
 
 		$this->update('article', array(
+			'category_id' => intval($target_id)
+		), 'category_id = ' . intval($from_id));
+
+		$this->update('video', array(
 			'category_id' => intval($target_id)
 		), 'category_id = ' . intval($from_id));
 

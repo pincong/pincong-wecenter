@@ -214,12 +214,12 @@ class ajax extends AWS_ADMIN_CONTROLLER
         }
         else
         {
-            $category_id = $this->model('category')->add_category('question', $_POST['title'], 0);
+            $category_id = $this->model('category')->add_category($_POST['title'], $_POST['group_id']);
         }
 
         $category = $this->model('system')->get_category_info($category_id);
 
-        $this->model('category')->update_category_info($category_id, $_POST['title'], 0, $_POST['url_token']);
+        $this->model('category')->update_category_info($category_id, $_POST['title'], $_POST['group_id'], $_POST['url_token']);
 
         H::ajax_json_output(AWS_APP::RSM(array(
             'url' => get_js_url('/admin/category/list/')
@@ -243,7 +243,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('分类下存在内容, 请先批量移动问题到其它分类, 再删除当前分类')));
         }
 
-        $this->model('category')->delete_category('question', $_POST['category_id']);
+        $this->model('category')->delete_category($_POST['category_id']);
 
         H::ajax_json_output(AWS_APP::RSM(null, 1, null));
     }

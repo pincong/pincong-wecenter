@@ -46,7 +46,7 @@ class menu_class extends AWS_MODEL
 
 		if ($nav_menu_data)
 		{
-			$category_info = $this->model('system')->get_category_list('question');
+			$category_info = $this->model('system')->get_category_list();
 
 			switch ($app)
 			{

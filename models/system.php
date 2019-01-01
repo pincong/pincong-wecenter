@@ -48,21 +48,11 @@ class system_class extends AWS_MODEL
 
 		foreach ($category_all AS $key => $val)
 		{
-			if (!$val['icon'])
-			{
-				$val['icon'] = G_STATIC_URL . '/css/default/img/default_class_imgs.png';
-			}
-			else
-			{
-				$val['icon'] = get_setting('upload_url') . '/category/' . $val['icon'];
-			}
-
 			$category_list[$val['id']] = array(
 				'id' => $val['id'],
 				'title' => $val['title'],
-				'icon' => $val['icon'],
-				'description' => $val['description'],
-				'parent_id' => $val['parent_id'],
+				//'description' => $val['description'],
+				//'group_id' => $val['group_id'],
 				'sort' => $val['sort'],
 				'url_token' => $val['url_token']
 			);
@@ -107,9 +97,9 @@ class system_class extends AWS_MODEL
 			$data[] = array(
 				'id' => $category_id,
 				'title' => $val['title'],
-				'description' => $val['description'],
+				//'description' => $val['description'],
+				//'group_id' => $val['group_id'],
 				'sort' => $val['sort'],
-				'parent_id' => $val['parent_id'],
 				'url_token' => $val['url_token']
 			);
 		}
@@ -165,11 +155,11 @@ class system_class extends AWS_MODEL
 		return $all_category[$url_token];
 	}
 
-	public function get_category_list($type)
+	public function get_category_list()
 	{
 		$category_list = array();
 
-		$category_all = $this->fetch_all('category', '`type` = \'' . $this->quote($type) . '\'', 'id ASC');
+		$category_all = $this->fetch_all('category', '', 'id ASC');
 
 		foreach($category_all as $key => $val)
 		{

@@ -141,15 +141,11 @@ CREATE TABLE IF NOT EXISTS `aws_article_vote` (
 CREATE TABLE IF NOT EXISTS `aws_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(128) DEFAULT NULL,
-  `type` varchar(16) DEFAULT NULL,
-  `icon` varchar(240) DEFAULT NULL,
-  `parent_id` int(11) DEFAULT '0',
+  `description` varchar(240) DEFAULT NULL,
+  `group_id` int(11) DEFAULT '0',
   `sort` smallint(6) DEFAULT '0',
   `url_token` varchar(32) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `parent_id` (`parent_id`),
-  KEY `url_token` (`url_token`),
-  KEY `title` (`title`)
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
