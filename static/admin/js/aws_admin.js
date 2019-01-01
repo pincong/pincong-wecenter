@@ -267,6 +267,30 @@ var AWS =
 	    $(".alert-box").modal('show');
 	},
 
+	// 确认弹窗
+	confirm: function (text, callback)
+	{
+		$('.alert-box').remove();
+		$('.modal-backdrop').remove();
+
+		$('#aw-ajax-box').append(Hogan.compile(AW_TEMPLATE.confirmBox).render(
+		{
+			message: text
+		}));
+
+		$('.aw-confirm-box .yes').click(function()
+		{
+			$(".alert-box").modal('hide');
+			if (callback)
+			{
+				callback();
+			}
+			return false;
+		});
+
+		$(".alert-box").modal('show');
+	},
+
 	/**
 	 *	公共弹窗
 	 *	inbox       : 私信
