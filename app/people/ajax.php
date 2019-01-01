@@ -31,50 +31,12 @@ class ajax extends AWS_CONTROLLER
 			'user_info'
 		);
 
-		if ($this->user_info['permission']['visit_people'])
-		{
-			$rule_action['actions'][] = 'user_actions';
-			$rule_action['actions'][] = 'follows';
-			$rule_action['actions'][] = 'topics';
-		}
-
 		return $rule_action;
 	}
 
 	public function setup()
 	{
-		$this->per_page = get_setting('contents_per_page');
-
 		HTTP::no_cache_header();
-	}
-
-	public function user_actions_action()
-	{
-		if ((isset($_GET['perpage']) AND intval($_GET['perpage']) > 0))
-		{
-			$this->per_page = intval($_GET['perpage']);
-		}
-
-		$data = $this->model('actions')->get_user_actions($_GET['uid'], (intval($_GET['page']) * $this->per_page) . ", {$this->per_page}", $_GET['actions'], $this->user_id);
-
-		TPL::assign('list', $data);
-
-		{
-			$template_dir = 'people';
-		}
-
-		if ($_GET['actions'] == '201')
-		{
-			TPL::output($template_dir . '/ajax/user_actions_questions_201');
-		}
-		else if ($_GET['actions'] == '101')
-		{
-			TPL::output($template_dir . '/ajax/user_actions_questions_101');
-		}
-		else
-		{
-			TPL::output($template_dir . '/ajax/user_actions');
-		}
 	}
 
 	public function user_info_action()
@@ -111,66 +73,4 @@ class ajax extends AWS_CONTROLLER
 		));
 	}
 
-	public function follows_action()
-	{
-		switch ($_GET['type'])
-		{
-			case 'follows':
-				$users_list = $this->model('follow')->get_user_friends($_GET['uid'], (intval($_GET['page']) * $this->per_page) . ", {$this->per_page}");
-			break;
-
-			case 'fans':
-				$users_list = $this->model('follow')->get_user_fans($_GET['uid'], (intval($_GET['page']) * $this->per_page) . ", {$this->per_page}");
-			break;
-		}
-
-		if ($users_list AND $this->user_id)
-		{
-			foreach ($users_list as $key => $val)
-			{
-				$users_ids[] = $val['uid'];
-			}
-
-			if ($users_ids)
-			{
-				$follow_checks = $this->model('follow')->users_follow_check($this->user_id, $users_ids);
-
-				foreach ($users_list as $key => $val)
-				{
-					$users_list[$key]['follow_check'] = $follow_checks[$val['uid']];
-				}
-			}
-		}
-
-		TPL::assign('users_list', $users_list);
-
-		TPL::output('people/ajax/follows');
-	}
-
-	public function topics_action()
-	{
-		if ($topic_list = $this->model('topic')->get_focus_topic_list($_GET['uid'], (intval($_GET['page']) * $this->per_page) . ", {$this->per_page}") AND $this->user_id)
-		{
-			$topic_ids = array();
-
-			foreach ($topic_list as $key => $val)
-			{
-				$topic_ids[] = $val['topic_id'];
-			}
-
-			if ($topic_ids)
-			{
-				$topic_focus = $this->model('topic')->has_focus_topics($this->user_id, $topic_ids);
-
-				foreach ($topic_list as $key => $val)
-				{
-					$topic_list[$key]['has_focus'] = $topic_focus[$val['topic_id']];
-				}
-			}
-		}
-
-		TPL::assign('topic_list', $topic_list);
-
-		TPL::output('people/ajax/topics');
-	}
 }

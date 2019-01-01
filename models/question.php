@@ -20,6 +20,53 @@ if (!defined('IN_ANWSION'))
 
 class question_class extends AWS_MODEL
 {
+	public function get_questions_by_uid($uid, $page, $per_page)
+	{
+		$cache_key = 'user_questions_' . intval($uid) . '_page_' . intval($page);
+		if ($list = AWS_APP::cache()->get($cache_key))
+		{
+			return $list;
+		}
+
+		$list = $this->fetch_page('question', 'uid = ' . intval($uid), 'question_id DESC', $page, $per_page);
+		if (count($list) > 0)
+		{
+			AWS_APP::cache()->set($cache_key, $list, get_setting('cache_level_normal'));
+		}
+
+		return $list;
+	}
+
+	public function get_answers_by_uid($uid, $page, $per_page)
+	{
+		$cache_key = 'user_answers_' . intval($uid) . '_page_' . intval($page);
+		if ($list = AWS_APP::cache()->get($cache_key))
+		{
+			return $list;
+		}
+
+		$list = $this->fetch_page('answer', 'uid = ' . intval($uid), 'answer_id DESC', $page, $per_page);
+		foreach ($list AS $key => $val)
+		{
+			$parent_ids[] = $val['question_id'];
+		}
+
+		if ($parent_ids)
+		{
+			$parents = $this->get_question_info_by_ids($parent_ids);
+			foreach ($list AS $key => $val)
+			{
+				$list[$key]['question_info'] = $parents[$val['question_id']];
+			}
+		}
+
+		if (count($list) > 0)
+		{
+			AWS_APP::cache()->set($cache_key, $list, get_setting('cache_level_normal'));
+		}
+
+		return $list;
+	}
 
 	public function modify_question($id, $uid, $title, $message)
 	{

@@ -1,0 +1,17 @@
+<?php if (is_array($this->list)) { ?>
+<?php foreach ($this->list AS $key => $val) { ?>
+<div class="aw-item">
+	<div class="aw-mod">
+		<div class="mod-head">
+			<h4 class="aw-hide-txt">
+				<a href="question/<?php echo $val['question_id']; ?>"><?php if (!$val['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['question_content']; ?><?php } ?></a>
+			</h4>
+		</div>
+		<div class="mod-body">
+			<span class="aw-border-radius-5 count pull-left"><i class="icon icon-agree"></i> <?php echo $val['agree_count']; ?></span>
+			<p class="text-color-999"><?php _e('%s 次浏览', $val['view_count']); ?> • <?php _e('%s 个回复', $val['answer_count']); ?> • <?php echo date_friendly($val['add_time']); ?></p>
+		</div>
+	</div>
+</div>
+<?php } ?>
+<?php } ?>

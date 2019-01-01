@@ -106,11 +106,11 @@
 										<h3><?php _e('发问'); ?></h3>
 									</div>
 									<div class="mod-body">
-										<div class="aw-profile-publish-list" id="contents_user_actions_questions"></div>
+										<div class="aw-profile-publish-list" id="contents_user_questions"></div>
 									</div>
 									<div class="mod-footer">
 										<!-- 加载更多内容 -->
-										<a class="aw-load-more-content" id="bp_user_actions_questions_more">
+										<a class="aw-load-more-content" id="bp_user_questions_more">
 											<span><?php _e('更多'); ?></span>
 										</a>
 										<!-- end 加载更多内容 -->
@@ -124,11 +124,11 @@
 										<h3><?php _e('回答'); ?></h3>
 									</div>
 									<div class="mod-body">
-										<div class="aw-profile-answer-list" id="contents_user_actions_answers"></div>
+										<div class="aw-profile-answer-list" id="contents_user_answers"></div>
 									</div>
 									<div class="mod-footer">
 										<!-- 加载更多内容 -->
-										<a class="aw-load-more-content" id="bp_user_actions_answers_more">
+										<a class="aw-load-more-content" id="bp_user_answers_more">
 											<span><?php _e('更多'); ?></span>
 										</a>
 										<!-- end 加载更多内容 -->
@@ -142,11 +142,11 @@
 										<h3><?php _e('文章'); ?></h3>
 									</div>
 									<div class="mod-body">
-										<div class="aw-profile-publish-list" id="contents_user_actions_articles"></div>
+										<div class="aw-profile-publish-list" id="contents_user_articles"></div>
 									</div>
 									<div class="mod-footer">
 										<!-- 加载更多内容 -->
-										<a class="aw-load-more-content" id="bp_user_actions_articles_more">
+										<a class="aw-load-more-content" id="bp_user_articles_more">
 											<span><?php _e('更多'); ?></span>
 										</a>
 										<!-- end 加载更多内容 -->
@@ -160,10 +160,14 @@
 										<h3><?php _e('文章评论'); ?></h3>
 									</div>
 									<div class="mod-body">
-										<!-- TODO -->
+										<div class="aw-profile-answer-list" id="contents_user_article_comments"></div>
 									</div>
 									<div class="mod-footer">
-										<!-- TODO -->
+										<!-- 加载更多内容 -->
+										<a class="aw-load-more-content" id="bp_user_article_comments_more">
+											<span><?php _e('更多'); ?></span>
+										</a>
+										<!-- end 加载更多内容 -->
 									</div>
 								</div>
 							</div>
@@ -174,10 +178,14 @@
 										<h3><?php _e('影片'); ?></h3>
 									</div>
 									<div class="mod-body">
-										<!-- TODO -->
+										<div class="aw-profile-publish-list" id="contents_user_videos"></div>
 									</div>
 									<div class="mod-footer">
-										<!-- TODO -->
+										<!-- 加载更多内容 -->
+										<a class="aw-load-more-content" id="bp_user_videos_more">
+											<span><?php _e('更多'); ?></span>
+										</a>
+										<!-- end 加载更多内容 -->
 									</div>
 								</div>
 							</div>
@@ -188,10 +196,14 @@
 										<h3><?php _e('影片评论'); ?></h3>
 									</div>
 									<div class="mod-body">
-										<!-- TODO -->
+										<div class="aw-profile-answer-list" id="contents_user_video_comments"></div>
 									</div>
 									<div class="mod-footer">
-										<!-- TODO -->
+										<!-- 加载更多内容 -->
+										<a class="aw-load-more-content" id="bp_user_video_comments_more">
+											<span><?php _e('更多'); ?></span>
+										</a>
+										<!-- end 加载更多内容 -->
 									</div>
 								</div>
 							</div>
@@ -353,18 +365,23 @@
 	</div>
 </div>
 
-<script type="text/javascript">
-var PEOPLE_USER_ID = '<?php echo $this->user['uid']; ?>';
+<!-- "TODO FIXME WhyDoesThisTextDisappear-" -->
 
+<script type="text/javascript">
 $(document).ready(function () {
-	AWS.load_list_view(G_BASE_URL + '/people/ajax/user_actions/uid-' + PEOPLE_USER_ID + '__actions-201', $('#bp_user_actions_answers_more'), $('#contents_user_actions_answers'));
-	AWS.load_list_view(G_BASE_URL + '/people/ajax/user_actions/uid-' + PEOPLE_USER_ID + '__actions-101', $('#bp_user_actions_questions_more'), $('#contents_user_actions_questions'));
-	AWS.load_list_view(G_BASE_URL + '/people/ajax/user_actions/uid-' + PEOPLE_USER_ID + '__actions-501', $('#bp_user_actions_articles_more'), $('#contents_user_actions_articles'));
-	AWS.load_list_view(G_BASE_URL + '/people/ajax/follows/type-follows__uid-' + PEOPLE_USER_ID, $('#bp_user_follows_more'), $('#contents_user_follows'));
-	AWS.load_list_view(G_BASE_URL + '/people/ajax/follows/type-fans__uid-' + PEOPLE_USER_ID, $('#bp_user_fans_more'), $('#contents_user_fans'));
-	AWS.load_list_view(G_BASE_URL + '/people/ajax/topics/uid-' + PEOPLE_USER_ID, $('#bp_user_topics_more'), $('#contents_user_topics'));
+	// TODO 懒加载
+	AWS.load_list_view(G_BASE_URL + '/people/info/questions/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_questions_more'), $('#contents_user_questions'), 1);
+	AWS.load_list_view(G_BASE_URL + '/people/info/answers/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_answers_more'), $('#contents_user_answers'), 1);
+	AWS.load_list_view(G_BASE_URL + '/people/info/articles/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_articles_more'), $('#contents_user_articles'), 1);
+	AWS.load_list_view(G_BASE_URL + '/people/info/article_comments/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_article_comments_more'), $('#contents_user_article_comments'), 1);
+	AWS.load_list_view(G_BASE_URL + '/people/info/videos/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_videos_more'), $('#contents_user_videos'), 1);
+	AWS.load_list_view(G_BASE_URL + '/people/info/video_comments/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_video_comments_more'), $('#contents_user_video_comments'), 1);
+
+	AWS.load_list_view(G_BASE_URL + '/people/info/followers/type-following__uid-<?php echo $this->user['uid']; ?>', $('#bp_user_follows_more'), $('#contents_user_follows'));
+	AWS.load_list_view(G_BASE_URL + '/people/info/followers/type-followers__uid-<?php echo $this->user['uid']; ?>', $('#bp_user_fans_more'), $('#contents_user_fans'));
+	AWS.load_list_view(G_BASE_URL + '/people/info/topics/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_topics_more'), $('#contents_user_topics'));
 	<?php if ($this->user_id == $this->user['uid']) { ?>
-	AWS.load_list_view(G_BASE_URL + '/account/ajax/currency_log/', $('#bp_user_currency'), $('#contents_user_currency'));
+	AWS.load_list_view(G_BASE_URL + '/currency/list_logs/', $('#bp_user_currency'), $('#contents_user_currency'));
 	<?php } ?>
 
 	if (window.location.hash)

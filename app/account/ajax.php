@@ -520,25 +520,6 @@ class ajax extends AWS_CONTROLLER
 		}
 	}
 
-	public function currency_log_action()
-	{
-		if ($log = $this->model('currency')->fetch_all('currency_log', 'uid = ' . $this->user_id, 'id DESC', (intval($_GET['page']) * 10) . ', 10'))
-		{
-			foreach ($log AS $key => $val)
-			{
-				$parse_items[$val['id']] = array(
-					'item_id' => $val['item_id'],
-					'item_type' => $val['item_type']
-				);
-			}
-
-			TPL::assign('log', $log);
-			TPL::assign('log_detail', $this->model('currency')->parse_log_items($parse_items));
-		}
-
-		TPL::output('account/ajax/currency_log');
-	}
-
 	public function verify_action()
 	{
 		if (get_setting('id_verification_disabled') == 'Y')

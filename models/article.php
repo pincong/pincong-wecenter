@@ -20,6 +20,53 @@ if (!defined('IN_ANWSION'))
 
 class article_class extends AWS_MODEL
 {
+	public function get_articles_by_uid($uid, $page, $per_page)
+	{
+		$cache_key = 'user_articles_' . intval($uid) . '_page_' . intval($page);
+		if ($list = AWS_APP::cache()->get($cache_key))
+		{
+			return $list;
+		}
+
+		$list = $this->fetch_page('article', 'uid = ' . intval($uid), 'id DESC', $page, $per_page);
+		if (count($list) > 0)
+		{
+			AWS_APP::cache()->set($cache_key, $list, get_setting('cache_level_normal'));
+		}
+
+		return $list;
+	}
+
+	public function get_article_comments_by_uid($uid, $page, $per_page)
+	{
+		$cache_key = 'user_article_comments_' . intval($uid) . '_page_' . intval($page);
+		if ($list = AWS_APP::cache()->get($cache_key))
+		{
+			return $list;
+		}
+
+		$list = $this->fetch_page('article_comment', 'uid = ' . intval($uid), 'id DESC', $page, $per_page);
+		foreach ($list AS $key => $val)
+		{
+			$parent_ids[] = $val['article_id'];
+		}
+
+		if ($parent_ids)
+		{
+			$parents = $this->get_article_info_by_ids($parent_ids);
+			foreach ($list AS $key => $val)
+			{
+				$list[$key]['article_info'] = $parents[$val['article_id']];
+			}
+		}
+
+		if (count($list) > 0)
+		{
+			AWS_APP::cache()->set($cache_key, $list, get_setting('cache_level_normal'));
+		}
+
+		return $list;
+	}
 
 	public function modify_article($id, $uid, $title, $message)
 	{

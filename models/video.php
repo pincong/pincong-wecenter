@@ -20,6 +20,53 @@ if (!defined('IN_ANWSION'))
 
 class video_class extends AWS_MODEL
 {
+	public function get_videos_by_uid($uid, $page, $per_page)
+	{
+		$cache_key = 'user_videos_' . intval($uid) . '_page_' . intval($page);
+		if ($list = AWS_APP::cache()->get($cache_key))
+		{
+			return $list;
+		}
+
+		$list = $this->fetch_page('video', 'uid = ' . intval($uid), 'id DESC', $page, $per_page);
+		if (count($list) > 0)
+		{
+			AWS_APP::cache()->set($cache_key, $list, get_setting('cache_level_normal'));
+		}
+
+		return $list;
+	}
+
+	public function get_video_comments_by_uid($uid, $page, $per_page)
+	{
+		$cache_key = 'user_video_comments_' . intval($uid) . '_page_' . intval($page);
+		if ($list = AWS_APP::cache()->get($cache_key))
+		{
+			return $list;
+		}
+
+		$list = $this->fetch_page('video_comment', 'uid = ' . intval($uid), 'id DESC', $page, $per_page);
+		foreach ($list AS $key => $val)
+		{
+			$parent_ids[] = $val['video_id'];
+		}
+
+		if ($parent_ids)
+		{
+			$parents = $this->get_video_info_by_ids($parent_ids);
+			foreach ($list AS $key => $val)
+			{
+				$list[$key]['video_info'] = $parents[$val['video_id']];
+			}
+		}
+
+		if (count($list) > 0)
+		{
+			AWS_APP::cache()->set($cache_key, $list, get_setting('cache_level_normal'));
+		}
+
+		return $list;
+	}
 
 	public function modify_video($id, $uid, $title, $message)
 	{
