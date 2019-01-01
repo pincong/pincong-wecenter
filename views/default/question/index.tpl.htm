@@ -227,7 +227,9 @@
 							</ul>
 						</div>
 						<div class="mod-body aw-feed-list">
-							<?php if ($this->answers) { foreach ($this->answers AS $key => $val) { ?>
+							<?php if ($this->answers) { ?>
+								<?php foreach ($this->answers AS $key => $val) { ?>
+								<?php if ($val['user_info']['forbidden']) continue; ?>
 								<div class="aw-item" id="answer_list_<?php echo $val['answer_id']; ?>">
 									<div class="mod-head">
 										<?php if ($this->question_info['best_answer'] == $val['answer_id']) { ?>

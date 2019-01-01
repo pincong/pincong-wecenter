@@ -27,7 +27,7 @@
 			<?php } ?>
 
 		<?php if ($val['question_id']) { ?>
-			<?php if ($val['answer_count'] > 0) { ?>
+			<?php if ($val['answer_count'] > 0 AND !$val['answer_info']['user_info']['forbidden']) { ?>
 				<?php if ($val['answer_info']['anonymous']) { ?>
 				<a href="javascript:;" class="aw-user-name"><?php _e('匿名用户'); ?></a>
 				<?php } else { ?>
