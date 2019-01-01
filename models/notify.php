@@ -803,12 +803,6 @@ class notify_class extends AWS_MODEL
 
 							break;
 
-						case self::TYPE_ANSWER_AGREE:
-							$data[$key]['extend_message'][] = AWS_APP::lang()->_t('%s 个新赞同, 按赞同者查看', $extend['count']) . ': ' . $users_list;
-
-							break;
-
-
 
 
 						case self::TYPE_INVITE_QUESTION:
@@ -878,12 +872,6 @@ class notify_class extends AWS_MODEL
 						$data[$key]['message'] .= ' ' . AWS_APP::lang()->_t('评论了你发起的问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a>';
 
 						break;
-
-					case self::TYPE_ANSWER_AGREE:
-						$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a> ' . AWS_APP::lang()->_t('赞同了你在问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a> ' . AWS_APP::lang()->_t('中的回复');
-
-						break;
-
 
 
 
