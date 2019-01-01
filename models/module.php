@@ -229,7 +229,8 @@ class module_class extends AWS_MODEL
 
 	public function sidebar_hot_users($uid = 0, $limit = 5)
 	{
-		if ($users_list = $this->fetch_all('users', 'uid <> ' . intval($uid) . ' AND last_login > ' . (time() - (60 * 60 * 24 * 7)), 'RAND()', ($limit * 4)))
+		//if ($users_list = $this->fetch_all('users', 'uid <> ' . intval($uid) . ' AND last_login > ' . (time() - (60 * 60 * 24 * 7)), 'RAND()', ($limit * 4)))
+		if ($users_list = $this->fetch_all('users', 'uid <> ' . intval($uid) . ' AND reputation > 5 AND forbidden = 0', 'RAND()', ($limit * 4)))
 		{
 			foreach($users_list as $key => $val)
 			{

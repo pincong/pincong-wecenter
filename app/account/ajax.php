@@ -202,7 +202,7 @@ class ajax extends AWS_CONTROLLER
 				$expire = 60 * 60 * 24 * 360;
 			}
 
-			$this->model('account')->update_user_last_login($user_info['uid']);
+			//$this->model('account')->update_user_last_login($user_info['uid']);
 			$this->model('account')->setcookie_logout();
 
 			$this->model('account')->setcookie_login($user_info['uid'], $_POST['user_name'], $_POST['password'], $user_info['salt'], $expire);

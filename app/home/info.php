@@ -143,7 +143,8 @@ class info extends AWS_CONTROLLER
 
 		if (!$users_list)
 		{
-			$users_list = $this->model('account')->get_users_list("reputation > 5 AND last_login > " . (time() - (60 * 60 * 24 * 7)), 6, true, true, 'RAND()');
+			//$users_list = $this->model('account')->get_users_list("reputation > 5 AND last_login > " . (time() - (60 * 60 * 24 * 7)), 6, true, true, 'RAND()');
+			$users_list = $this->model('account')->get_users_list("reputation > 5 AND forbidden = 0", 6, true, true, 'RAND()');
 		}
 
 		if ($users_list)

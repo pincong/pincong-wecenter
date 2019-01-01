@@ -63,7 +63,7 @@ class search_class extends AWS_MODEL
 			$where[] = "user_name LIKE '" . $this->quote($q) . "%'";
 		}
 
-		return $this->query_all('SELECT uid, last_login FROM ' . get_table('users') . ' WHERE ' . implode(' OR ', $where), calc_page_limit($page, $limit));
+		return $this->query_all('SELECT uid, user_name FROM ' . get_table('users') . ' WHERE ' . implode(' OR ', $where), calc_page_limit($page, $limit));
 	}
 
 	public function search_topics($q, $page, $limit = 20)
@@ -144,7 +144,7 @@ class search_class extends AWS_MODEL
 
 	public function prase_result_info($result_info)
 	{
-		if (isset($result_info['last_login']))
+		if (isset($result_info['user_name']))
 		{
 			$result_type = 'users';
 
