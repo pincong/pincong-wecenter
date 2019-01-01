@@ -169,45 +169,58 @@
 					</div>
 					<!-- end 文章评论 -->
 
-					<!-- 评论编辑器 -->
-					<div class="aw-mod aw-article-replay-box">
+					<!-- 回应编辑器 -->
+					<div class="aw-mod aw-replay-box">
 						<a name="answer_form"></a>
 						<?php if ($this->article_info['lock']) { ?>
-						<p align="center"><?php _e('该文章目前已经被锁定, 无法添加新评论'); ?></p>
+						<p align="center"><?php _e('该影片目前已经被锁定, 无法添加新评论'); ?></p>
 						<?php } else if (!$this->user_id) { ?>
-						<p align="center"><?php _e('要回复文章请先<a href="account/login/">登录</a>或<a href="account/register/">注册</a>'); ?></p>
+						<p align="center"><?php _e('要回复影片请先<a href="account/login/">登录</a>或<a href="account/register/">注册</a>'); ?></p>
 						<?php } else { ?>
-						<form action="publish/ajax/publish_article_comment/" onsubmit="return false;" method="post" id="answer_form">
+						<form action="publish/ajax/publish_article_comment/" onsubmit="return false;" method="post" id="answer_form" class="question_answer_form">
 						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
 						<input type="hidden" name="article_id" value="<?php echo $this->article_info['id']; ?>" />
 						<div class="mod-head">
 							<a href="<?php echo UF::url($this->user_info); ?>" class="aw-user-name"><img alt="" src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" /></a>
+							<p>
+								<?php if ($this->user_info['permission']['reply_anonymously']) { ?>
+								<label class="pull-right">
+									<input type="checkbox" value="1" name="anonymous" /> <?php _e(get_setting('anonymous_option_name')); ?>
+								</label>
+								<?php } ?>
+								<label class="pull-right">
+									<a href="currency/rule/" target="_blank"><?php _e(get_setting('currency_rule_name')); ?></a>
+								</label>
+								<?php echo UF::name($this->user_info); ?>
+							</p>
 						</div>
 						<div class="mod-body">
-							<textarea rows="3" name="message" id="comment_editor" class="form-control autosize" placeholder="写下你的评论..."  /></textarea>
-						</div>
-						<div class="mod-footer clearfix">
+							<div class="aw-mod aw-editor-box">
+								<div class="mod-head">
+									<div class="wmd-panel">
+										<textarea class="wmd-input form-control autosize editor" id="wmd-input" rows="15" name="message"></textarea>
+									</div>
+								</div>
+								<div class="mod-body clearfix">
+									<div class="aw-auth-img clearfix">
+										<input id="later_time_input" name="later" class="form-control pull-right" type="text" placeholder="<?php _e('分钟'); ?>" />
+										<label class="pull-right">&nbsp;<?php _e('延迟显示'); ?></label>
+										<label id="later_time_label" class="pull-right"></label>
+									</div>
 
-							<label class="pull-right">
-								<?php if ($this->user_info['permission']['reply_anonymously']) { ?>
-								&nbsp;<input type="checkbox" value="1" name="anonymous" /> <?php _e(get_setting('anonymous_option_name')); ?>
-								<?php } ?>
-								&nbsp;<a href="javascript:;" onclick="AWS.submit_append($('#answer_form'), $(this), $('.aw-replies'), reply_callback);" class="btn btn-normal btn-success btn-submit btn-reply"><?php _e('回复'); ?></a>
-							</label>
+									<a href="javascript:;" onclick="AWS.submit_append($('#answer_form'), $(this), $('.aw-replies'), reply_callback);" class="btn btn-normal btn-success pull-right btn-reply"><?php _e('回复'); ?></a>
+									<span class="pull-right">&nbsp;</span>
 
-							<label class="pull-right">
-								<input id="later_time_input" class="pull-right form-control" type="text" name="later" placeholder="<?php _e('分钟'); ?>" />
-							</label>
+									<?php if (get_setting('image_upload_link')) { ?><a class="pull-right" href="<?php echo get_setting('image_upload_link'); ?>" rel="nofollow noreferrer noopener" target="_blank"><?php _e('上传图片'); ?></a><?php } ?>
 
-							<label class="pull-right">&nbsp;<?php _e('延迟显示'); ?>&nbsp;</label>
-
-							<label id="later_time_label" class="pull-right"></label>
+								</div>
+							</div>
 
 						</div>
 						</form>
 						<?php } ?>
 					</div>
-					<!-- end 评论编辑器 -->
+					<!-- end 回应编辑器 -->
 
 				<div style="display:none">
 					<!-- 回复编辑器 -->
@@ -346,7 +359,7 @@ function show_user_reply_box(reply_btn) {
 
 function reply_callback(err) {
 	if (err) return;
-	$('.aw-mod.aw-article-replay-box textarea').css('height', '91px');
+	$('.aw-mod.aw-replay-box textarea').css('height', '329px');
 }
 
 function reply_callback_2(err) {
@@ -366,6 +379,8 @@ $(document).ready(function () {
 
 	AWS.init_later_time_helper($('#later_time_input'), $('#later_time_label'));
 	AWS.init_later_time_helper($('#later_time_input_2'), $('#later_time_label_2'));
+	// 初始化编辑器
+	AWS.create_editor(document.getElementById('wmd-input'), true);
 });
 </script>
 

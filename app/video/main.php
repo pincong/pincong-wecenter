@@ -125,6 +125,11 @@ class main extends AWS_CONTROLLER
 
 		TPL::set_meta('description', $video_info['title'] . ' - ' . cjk_substr(str_replace("\r\n", ' ', strip_tags($video_info['message'])), 0, 128, 'UTF-8', '...'));
 
+		if (get_setting('advanced_editor_enable') == 'Y')
+		{
+			import_editor_static_files();
+		}
+
 		/*
 		// 推荐相关 暂不实现
 		$recommend_posts = $this->model('posts')->get_recommend_posts_by_topic_ids($video_topic_ids);

@@ -123,6 +123,11 @@ class main extends AWS_CONTROLLER
 
 		TPL::set_meta('description', $article_info['title'] . ' - ' . cjk_substr(str_replace("\r\n", ' ', strip_tags($article_info['message'])), 0, 128, 'UTF-8', '...'));
 
+		if (get_setting('advanced_editor_enable') == 'Y')
+		{
+			import_editor_static_files();
+		}
+
 		$recommend_posts = $this->model('posts')->get_recommend_posts_by_topic_ids($article_topic_ids);
 
 		if ($recommend_posts)
