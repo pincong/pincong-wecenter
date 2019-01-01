@@ -147,33 +147,31 @@ class question_class extends AWS_MODEL
 		return $question_id;
 	}
 
-	public function update_question($question_id, $question_content, $question_detail, $uid, $verified = true, $modify_reason = null, $anonymous = null, $category_id = null)
+	public function update_question($question_id, $question_content, $question_detail, $uid, $anonymous = null, $category_id = null)
 	{
 		if (!$question_info = $this->get_question_info_by_id($question_id) OR !$uid)
 		{
 			return false;
 		}
 
-		if ($verified)
+		if ($question_content)
 		{
-			$data['question_detail'] = htmlspecialchars($question_detail);
-
-			if ($question_content)
-			{
-				$data['question_content'] = htmlspecialchars($question_content);
-			}
-
-			$this->model('search_fulltext')->push_index('question', $question_content, $question_id);
-
-			$this->update('question', $data, 'question_id = ' . intval($question_id));
+			$question_content = htmlspecialchars($question_content);
 		}
 
-		if ($category_id)
+		if ($question_detail)
 		{
-			$this->update('question', array(
-				'category_id' => intval($category_id)
-			), 'question_id = ' . intval($question_id));
+			$question_detail = htmlspecialchars($question_detail);
 		}
+
+		$data = array(
+			'question_content' => $question_content,
+			'question_detail' => $question_detail
+		);
+
+		$this->model('search_fulltext')->push_index('question', $question_content, $question_id);
+
+		$this->update('question', $data, 'question_id = ' . intval($question_id));
 
 		$addon_data = null;
 

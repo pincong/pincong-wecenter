@@ -224,32 +224,31 @@ class article_class extends AWS_MODEL
 		return true;
 	}
 
-	public function update_article($article_id, $uid, $title, $message, $topics, $category_id, $create_topic)
+	public function update_article($article_id, $uid, $title, $message, $anonymous = null, $category_id = null)
 	{
 		if (!$article_info = $this->model('article')->get_article_info_by_id($article_id))
 		{
 			return false;
 		}
 
-		$this->delete('topic_relation', 'item_id = ' . intval($article_id) . " AND `type` = 'article'");
-
-		if (is_array($topics))
+		if ($title)
 		{
-			foreach ($topics as $key => $topic_title)
-			{
-				$topic_id = $this->model('topic')->save_topic($topic_title, $uid, $create_topic);
-
-				$this->model('topic')->save_topic_relation($uid, $topic_id, $article_id, 'article');
-			}
+			$title = htmlspecialchars($title);
 		}
 
-		$this->model('search_fulltext')->push_index('article', htmlspecialchars($title), $article_info['id']);
+		if ($message)
+		{
+			$message = htmlspecialchars($message);
+		}
 
-		$this->update('article', array(
-			'title' => htmlspecialchars($title),
-			'message' => htmlspecialchars($message),
-			'category_id' => intval($category_id)
-		), 'id = ' . intval($article_id));
+		$data = array(
+			'title' => $title,
+			'message' => $message
+		);
+
+		$this->model('search_fulltext')->push_index('article', $title, $article_info['id']);
+
+		$this->update('article', $data, 'id = ' . intval($article_id));
 
 		$this->model('posts')->set_posts_index($article_id, 'article');
 
