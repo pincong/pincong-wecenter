@@ -30,7 +30,6 @@ class ajax extends AWS_CONTROLLER
 			'check_username',
 			'register_process',
 			'login_process',
-			'register_agreement',
 			'request_find_password',
 			'find_password_modify'
 		);
@@ -241,11 +240,6 @@ class ajax extends AWS_CONTROLLER
 				'url' => $url
 			), 1, null));
 		}
-	}
-
-	public function register_agreement_action()
-	{
-		H::ajax_json_output(AWS_APP::RSM(null, 1, nl2br(get_setting('register_agreement'))));
 	}
 
 	public function welcome_message_template_action()

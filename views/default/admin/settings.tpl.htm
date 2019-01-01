@@ -256,9 +256,19 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('用户注册协议'); ?>:</span>
-                            <div class="col-sm-7 col-xs-8">
-                                <textarea class="form-control textarea" rows="8" name="register_agreement"  ><?php echo $this->setting['register_agreement']; ?></textarea>
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('用户协议名称'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="user_agreement_name" class="form-control" type="text" value="<?php echo $this->setting['user_agreement_name']; ?>"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('用户协议链接'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="user_agreement_link" class="form-control" type="text" value="<?php echo $this->setting['user_agreement_link']; ?>"/>
                             </div>
                         </div>
                     </td>

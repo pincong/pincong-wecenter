@@ -54,12 +54,8 @@
                 </li>
                 <?php } ?>
                 <li class="last">
-                    <label><input type="checkbox" value="agree" name="agreement_chk" /> <?php _e('我同意'); ?></label> <a href="javascript:;" class="aw-agreement-btn"><?php _e('用户协议'); ?></a>
+                    <label><input type="checkbox" value="agree" name="agreement_chk" /> <?php _e('我同意'); ?></label> <a <?php if (get_setting('user_agreement_link')) { ?>href="<?php echo get_setting('user_agreement_link'); ?>" target="_blank" <?php } ?>class="aw-agreement-btn"><?php echo get_setting('user_agreement_name'); ?></a>
                     <a href="account/login/" class="pull-right">已有账号?</a>
-                    <div class="aw-register-agreement collapse">
-                        <div class="aw-register-agreement-txt" id="register_agreement"></div>
-                    </div>
-
                 </li>
                 <li class="clearfix">
                     <button class="btn btn-large btn-blue btn-block" onclick="AWS.ajax_post($('#register_form'), AWS.ajax_processer, 'error_message'); return false;"><?php _e('注册'); ?></button>
@@ -73,20 +69,6 @@
 <script type="text/javascript">
 $(document).ready(function ()
 {
-    $.get(G_BASE_URL + '/account/ajax/register_agreement/', function (result) { $('#register_agreement').html(result.err); }, 'json');
-
-    $('.aw-agreement-btn').click(function()
-    {
-        if ($('.aw-register-agreement').is(':visible'))
-        {
-            $('.aw-register-agreement').hide();
-        }
-        else
-        {
-            $('.aw-register-agreement').show();
-        }
-    });
-
     $('.more-information-btn').click(function()
     {
         $('.more-information').fadeIn();
