@@ -63,16 +63,27 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		if ($recipient_user['inbox_recv'] == 1)
+		if (!$this->user_info['permission']['is_administrator'])
 		{
-			if (! $this->model('message')->check_permission($recipient_user['uid'], $this->user_id))
+			$inbox_recv = $recipient_user['inbox_recv'];
+			if ($inbox_recv != 1 AND $inbox_recv != 2 AND $inbox_recv != 3)
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对方设置了只有 Ta 关注的人才能给 Ta 发送私信')));
+				$inbox_recv = intval(get_setting('default_inbox_recv'));
 			}
-		}
-		else if ($recipient_user['inbox_recv'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对方设置了拒绝任何人给 Ta 发送私信')));
+
+			if ($inbox_recv == 2) // 2为拒绝任何人
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对方设置了拒绝任何人给 Ta 发送私信')));
+			}
+
+			else if ($inbox_recv != 3) // 3为任何人
+			{
+				if (! $this->model('message')->check_permission($recipient_user['uid'], $this->user_id))
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对方设置了只有 Ta 关注的人才能给 Ta 发送私信')));
+				}
+			}
+
 		}
 
 		// !注: 来路检测后面不能再放报错提示
