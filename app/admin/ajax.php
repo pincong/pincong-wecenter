@@ -1069,6 +1069,10 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
             $update_data['sex'] = intval($_POST['sex']);
 
+            $update_data['reputation'] = intval($_POST['reputation']);
+            $update_data['agree_count'] = intval($_POST['agree_count']);
+            $update_data['currency'] = intval($_POST['currency']);
+
             $this->model('account')->update_users_fields($update_data, $user_info['uid']);
 
             if ($_POST['delete_avatar'])
@@ -1085,7 +1089,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
                 'signature' => htmlspecialchars($_POST['signature'])
             ), $user_info['uid']);
 
-            if ($_POST['user_name'] != $user_info['user_name'])
+            if ($_POST['user_name'] AND $_POST['user_name'] != $user_info['user_name'])
             {
                 $this->model('account')->update_user_name($_POST['user_name'], $user_info['uid']);
             }
