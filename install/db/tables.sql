@@ -761,7 +761,7 @@ CREATE TABLE IF NOT EXISTS `aws_users` (
 -- Dumping structure for table panic.aws_users_attrib
 CREATE TABLE IF NOT EXISTS `aws_users_attrib` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
-  `uid` int(11) DEFAULT NULL COMMENT '用户UID',
+  `uid` int(11) NOT NULL COMMENT '用户UID',
   `signature` varchar(240) DEFAULT NULL COMMENT '个人签名',
   `extra_data` TEXT COMMENT '不是特别重要的额外数据',
   PRIMARY KEY (`id`),

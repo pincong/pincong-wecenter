@@ -1,45 +1,12 @@
 -- --------------------------------------------------------
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8mb4 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
--- Dumping structure for table panic.aws_category
-DROP TABLE IF EXISTS `aws_category`;
-CREATE TABLE IF NOT EXISTS `aws_category` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(128) DEFAULT NULL,
-  `type` varchar(16) DEFAULT NULL,
-  `icon` varchar(240) DEFAULT NULL,
-  `parent_id` int(11) DEFAULT '0',
-  `sort` smallint(6) DEFAULT '0',
-  `url_token` varchar(32) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `parent_id` (`parent_id`),
-  KEY `url_token` (`url_token`),
-  KEY `title` (`title`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
-
--- Dumping data for table panic.aws_category: 7 rows
-/*!40000 ALTER TABLE `aws_category` DISABLE KEYS */;
+TRUNCATE `aws_category`;
 INSERT INTO `aws_category` (`id`, `title`, `type`, `icon`, `parent_id`, `sort`, `url_token`) VALUES
 	(1, '默认分类', 'question', NULL, 0, 0, NULL);
-/*!40000 ALTER TABLE `aws_category` ENABLE KEYS */;
 
 
--- Dumping structure for table panic.aws_system_setting
-DROP TABLE IF EXISTS `aws_system_setting`;
-CREATE TABLE IF NOT EXISTS `aws_system_setting` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `varname` varchar(240) NOT NULL COMMENT '字段名',
-  `value` text COMMENT '变量值',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `varname` (`varname`)
-) ENGINE=MyISAM AUTO_INCREMENT=232 DEFAULT CHARSET=utf8mb4 COMMENT='系统设置';
-
--- Dumping data for table panic.aws_system_setting: 165 rows
-/*!40000 ALTER TABLE `aws_system_setting` DISABLE KEYS */;
+TRUNCATE `aws_system_setting`;
 INSERT INTO `aws_system_setting` (`id`, `varname`, `value`) VALUES
 	(1, 'db_engine', 's:6:"MyISAM";'),
 	(2, 'site_name', 's:11:"新·品葱";'),
@@ -159,27 +126,9 @@ INSERT INTO `aws_system_setting` (`id`, `varname`, `value`) VALUES
 	(202, 'expiration_currency_logs', 's:0:"";'),
 	(203, 'expiration_votes', 's:2:"30";'),
 	(204, 'time_blurring', 's:1:"Y";');
-/*!40000 ALTER TABLE `aws_system_setting` ENABLE KEYS */;
 
 
--- Dumping structure for table panic.aws_users_group
-DROP TABLE IF EXISTS `aws_users_group`;
-CREATE TABLE IF NOT EXISTS `aws_users_group` (
-  `group_id` int(11) NOT NULL AUTO_INCREMENT,
-  `type` tinyint(3) DEFAULT '0' COMMENT '0-会员组 1-系统组',
-  `custom` tinyint(1) DEFAULT '0' COMMENT '是否自定义',
-  `group_name` varchar(50) NOT NULL,
-  `reputation_lower` int(11) DEFAULT '0',
-  `reputation_higer` int(11) DEFAULT '0',
-  `reputation_factor` float DEFAULT '0' COMMENT '威望系数',
-  `permission` text COMMENT '权限设置',
-  PRIMARY KEY (`group_id`),
-  KEY `type` (`type`),
-  KEY `custom` (`custom`)
-) ENGINE=MyISAM AUTO_INCREMENT=105 DEFAULT CHARSET=utf8mb4 COMMENT='用户组';
-
--- Dumping data for table panic.aws_users_group: 10 rows
-/*!40000 ALTER TABLE `aws_users_group` DISABLE KEYS */;
+TRUNCATE `aws_users_group`;
 INSERT INTO `aws_users_group` (`group_id`, `type`, `custom`, `group_name`, `reputation_lower`, `reputation_higer`, `reputation_factor`, `permission`) VALUES
 	(1, 0, 0, '超级管理员', 0, 0, 0, 'a:17:{s:16:"is_administrator";s:1:"1";s:12:"is_moderator";s:1:"1";s:16:"publish_question";s:1:"1";s:15:"answer_question";s:1:"1";s:15:"publish_article";s:1:"1";s:15:"comment_article";s:1:"1";s:15:"publish_comment";s:1:"1";s:13:"edit_question";s:1:"1";s:10:"edit_topic";s:1:"1";s:12:"create_topic";s:1:"1";s:12:"edit_article";s:1:"1";s:19:"edit_question_topic";s:1:"1";s:9:"bump_sink";s:1:"1";s:10:"vote_agree";s:1:"1";s:13:"vote_disagree";s:1:"1";s:10:"thank_user";s:1:"1";s:15:"allow_anonymous";s:1:"1";}'),
 	(2, 0, 0, '前台管理员', 0, 0, 0, 'a:20:{s:12:"is_moderator";s:1:"1";s:16:"publish_question";s:1:"1";s:15:"answer_question";s:1:"1";s:15:"publish_article";s:1:"1";s:15:"comment_article";s:1:"1";s:15:"publish_comment";s:1:"1";s:21:"publish_approval_time";a:2:{s:5:"start";s:0:"";s:3:"end";s:0:"";}s:13:"edit_question";s:1:"1";s:10:"edit_topic";s:1:"1";s:12:"manage_topic";s:1:"1";s:12:"create_topic";s:1:"1";s:17:"redirect_question";s:1:"1";s:11:"publish_url";s:1:"1";s:12:"edit_article";s:1:"1";s:19:"edit_question_topic";s:1:"1";s:9:"bump_sink";s:1:"1";s:14:"agree_disagree";s:1:"1";s:10:"vote_agree";s:1:"1";s:13:"vote_disagree";s:1:"1";s:10:"thank_user";s:1:"1";}'),
@@ -191,63 +140,14 @@ INSERT INTO `aws_users_group` (`group_id`, `type`, `custom`, `group_name`, `repu
 	(102, 1, 0, 'lv2', 5, 10, 0, 'a:16:{s:16:"publish_question";s:1:"1";s:15:"answer_question";s:1:"1";s:15:"publish_article";s:1:"1";s:15:"comment_article";s:1:"1";s:15:"publish_comment";s:1:"1";s:21:"publish_approval_time";a:2:{s:5:"start";s:0:"";s:3:"end";s:0:"";}s:10:"edit_topic";s:1:"1";s:12:"create_topic";s:1:"1";s:17:"redirect_question";s:1:"1";s:11:"publish_url";s:1:"1";s:11:"human_valid";s:1:"1";s:19:"edit_question_topic";s:1:"1";s:9:"bump_sink";s:1:"1";s:14:"agree_disagree";s:1:"1";s:10:"vote_agree";s:1:"1";s:10:"thank_user";s:1:"1";}'),
 	(103, 1, 0, 'lv3', 10, 30, 0, 'a:17:{s:16:"publish_question";s:1:"1";s:15:"answer_question";s:1:"1";s:15:"publish_article";s:1:"1";s:15:"comment_article";s:1:"1";s:15:"publish_comment";s:1:"1";s:21:"publish_approval_time";a:2:{s:5:"start";s:0:"";s:3:"end";s:0:"";}s:10:"edit_topic";s:1:"1";s:12:"create_topic";s:1:"1";s:17:"redirect_question";s:1:"1";s:11:"publish_url";s:1:"1";s:11:"human_valid";s:1:"1";s:19:"edit_question_topic";s:1:"1";s:9:"bump_sink";s:1:"1";s:14:"agree_disagree";s:1:"1";s:10:"vote_agree";s:1:"1";s:13:"vote_disagree";s:1:"1";s:10:"thank_user";s:1:"1";}'),
 	(104, 1, 0, 'lv4', 30, 2147483647, 1, 'a:13:{s:16:"publish_question";s:1:"1";s:15:"answer_question";s:1:"1";s:15:"publish_article";s:1:"1";s:15:"comment_article";s:1:"1";s:15:"publish_comment";s:1:"1";s:10:"edit_topic";s:1:"1";s:12:"create_topic";s:1:"1";s:19:"edit_question_topic";s:1:"1";s:9:"bump_sink";s:1:"1";s:10:"vote_agree";s:1:"1";s:13:"vote_disagree";s:1:"1";s:10:"thank_user";s:1:"1";s:15:"allow_anonymous";s:1:"1";}');
-/*!40000 ALTER TABLE `aws_users_group` ENABLE KEYS */;
 
 
--- Dumping structure for table panic.aws_users
-DROP TABLE IF EXISTS `aws_users`;
-CREATE TABLE IF NOT EXISTS `aws_users` (
-  `uid` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户的 UID',
-  `user_name` varchar(240) DEFAULT NULL COMMENT '用户名',
-  `password` varchar(60) DEFAULT NULL COMMENT '用户密码',
-  `salt` varchar(16) DEFAULT NULL COMMENT '用户附加混淆码',
-  `avatar_file` varchar(128) DEFAULT NULL COMMENT '头像文件',
-  `sex` tinyint(1) DEFAULT NULL COMMENT '性别',
-  `reg_time` int(10) DEFAULT '0' COMMENT '注册时间',
-  `last_login` int(10) DEFAULT '0' COMMENT '最后登录时间',
-  `notification_unread` int(11) NOT NULL DEFAULT '0' COMMENT '未读系统通知',
-  `inbox_unread` int(11) NOT NULL DEFAULT '0' COMMENT '未读短信息',
-  `inbox_recv` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0-所有人可以发给我,1-我关注的人',
-  `fans_count` int(10) NOT NULL DEFAULT '0' COMMENT '粉丝数',
-  `friend_count` int(10) NOT NULL DEFAULT '0' COMMENT '观众数',
-  `invite_count` int(10) NOT NULL DEFAULT '0' COMMENT '邀请我回答数量',
-  `article_count` int(10) NOT NULL DEFAULT '0' COMMENT '文章数量',
-  `question_count` int(10) NOT NULL DEFAULT '0' COMMENT '问题数量',
-  `answer_count` int(10) NOT NULL DEFAULT '0' COMMENT '回答数量',
-  `topic_focus_count` int(10) NOT NULL DEFAULT '0' COMMENT '关注话题数量',
-  `group_id` int(10) DEFAULT '0' COMMENT '用户组',
-  `reputation_group` int(10) DEFAULT '0' COMMENT '威望对应组',
-  `forbidden` tinyint(1) DEFAULT '0' COMMENT '是否禁止用户',
-  `is_first_login` tinyint(1) DEFAULT '1' COMMENT '首次登录标记',
-  `agree_count` int(10) DEFAULT '0' COMMENT '赞同数量',
-  `thanks_count` int(10) DEFAULT '0' COMMENT '感谢数量',
-  `views_count` int(10) DEFAULT '0' COMMENT '个人主页查看数量',
-  `reputation` int(10) DEFAULT '0' COMMENT '威望',
-  `reputation_update_time` int(10) DEFAULT '0' COMMENT '威望更新',
-  `currency` int(10) DEFAULT '0',
-  `user_name_update_time` int(10) DEFAULT '0',
-  `verified` varchar(32) DEFAULT NULL,
-  `default_timezone` varchar(32) DEFAULT NULL,
-  `recent_topics` text,
-  PRIMARY KEY (`uid`),
-  UNIQUE KEY `user_name` (`user_name`) USING BTREE,
-  KEY `reputation` (`reputation`),
-  KEY `reputation_update_time` (`reputation_update_time`),
-  KEY `group_id` (`group_id`),
-  KEY `agree_count` (`agree_count`),
-  KEY `thanks_count` (`thanks_count`),
-  KEY `forbidden` (`forbidden`),
-  KEY `currency` (`currency`),
-  KEY `verified` (`verified`),
-  KEY `answer_count` (`answer_count`),
-  KEY `last_login` (`last_login`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+TRUNCATE `aws_users`;
+INSERT INTO `aws_users` (`uid`, `user_name`, `password`, `salt`, `avatar_file`, `sex`) VALUES
+	(1, 'admin', '$2y$10$TaEOhERXEB51Ds8i/iBbq.Qy2v82s3yidCLGz/iv25PJ7hxXnq7r.', 'gzeu', NULL, 3);
 
--- Dumping data for table panic.aws_users: 0 rows
-/*!40000 ALTER TABLE `aws_users` DISABLE KEYS */;
-INSERT INTO `aws_users` (`uid`, `user_name`, `password`, `salt`, `avatar_file`, `sex`, `reg_time`, `last_login`, `notification_unread`, `inbox_unread`, `inbox_recv`, `fans_count`, `friend_count`, `invite_count`, `article_count`, `question_count`, `answer_count`, `topic_focus_count`, `group_id`, `reputation_group`, `forbidden`, `is_first_login`, `agree_count`, `thanks_count`, `views_count`, `reputation`, `reputation_update_time`, `currency`, `user_name_update_time`, `verified`, `default_timezone`, `recent_topics`) VALUES
-	(1, 'admin', '$2y$10$TaEOhERXEB51Ds8i/iBbq.Qy2v82s3yidCLGz/iv25PJ7hxXnq7r.', 'gzeu', '', 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
-/*!40000 ALTER TABLE `aws_users` ENABLE KEYS */;
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+
+TRUNCATE `aws_users_attrib`;
+INSERT INTO `aws_users_attrib` (`id`, `uid`, `signature`) VALUES
+	(1, 1, NULL);
+
