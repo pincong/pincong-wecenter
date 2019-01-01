@@ -14,15 +14,15 @@
 							<?php if ($this->user['uid'] != $this->user_id AND $this->user_id) { ?>
 
 								<?php if ($this->user_info['permission']['edit_user']) { ?>
-									<a href="javascript:;" class="aw-small-text" onclick="AWS.User.edit_verified_title('<?php echo $this->user['uid']; ?>', decodeURIComponent('<?php echo urlencode($this->user['verified']); ?>'));"><i class="icon icon-edit"></i> 头衔</a>
-									<a href="javascript:;" class="aw-small-text" onclick="AWS.User.edit_signature('<?php echo $this->user['uid']; ?>', decodeURIComponent('<?php echo urlencode($this->user['signature']); ?>'));"><i class="icon icon-edit"></i> 签名</a>
+									<a href="javascript:;" class="aw-small-text" onclick="AWS.User.edit_verified_title('<?php echo $this->user['uid']; ?>', decodeURIComponent('<?php echo urlencode($this->user['verified']); ?>'));"><i class="icon icon-edit"></i> <?php _e('头衔'); ?></a>
+									<a href="javascript:;" class="aw-small-text" onclick="AWS.User.edit_signature('<?php echo $this->user['uid']; ?>', decodeURIComponent('<?php echo urlencode($this->user['signature']); ?>'));"><i class="icon icon-edit"></i> <?php _e('签名'); ?></a>
 								<?php } ?>
 
 								<?php if ($this->user_info['permission']['forbid_user']) { ?>
 									<?php if ($this->user['forbidden']) { ?>
-									<a href="javascript:;" class="aw-small-text" onclick="AWS.User.unforbid_user(<?php echo $this->user['uid']; ?>);"><i class="icon icon-forbid"></i> 解封</a>
+									<a href="javascript:;" class="aw-small-text" onclick="AWS.User.unforbid_user(<?php echo $this->user['uid']; ?>);"><i class="icon icon-forbid"></i> <?php _e('解封'); ?></a>
 									<?php } else { ?>
-									<a href="javascript:;" class="aw-small-text" onclick="AWS.User.forbid_user(<?php echo $this->user['uid']; ?>);"><i class="icon icon-forbid"></i> 封禁</a>
+									<a href="javascript:;" class="aw-small-text" onclick="AWS.User.forbid_user(<?php echo $this->user['uid']; ?>);"><i class="icon icon-forbid"></i> <?php _e('封禁'); ?></a>
 									<?php } ?>
 								<?php } ?>
 
@@ -30,7 +30,7 @@
 									<a href="javascript:;" class="aw-small-text" onclick="AWS.popup(G_BASE_URL + '/user/edit/flag_user/uid-<?php echo $this->user['uid']; ?>');"><i class="icon icon-forbid"></i> <?php _e('标记'); ?></a>
 								<?php } ?>
 
-								<a href="javascript:;" class="aw-small-text" onclick="AWS.dialog('inbox', '<?php echo UF::name($this->user); ?>');"><i class="icon icon-inbox"></i> 私信</a>
+								<a href="javascript:;" class="aw-small-text" onclick="AWS.dialog('inbox', '<?php echo UF::name($this->user); ?>');"><i class="icon icon-inbox"></i> <?php _e('私信'); ?></a>
 								<a href="javascript:;" class="aw-small-text hidden-xs" onclick="AWS.User.ask_user(<?php echo $this->user['uid']; ?>, '<?php echo UF::name($this->user); ?>');"><i class="icon icon-at"></i> <?php _e('问Ta'); ?></a>
 								<a href="javascript:;" class="follow btn btn-normal btn-success<?php if ($this->user_follow_check) { ?> active<?php } ?>" onclick="AWS.User.follow($(this), 'user', <?php echo $this->user['uid']; ?>);"><span><?php if ($this->user_follow_check) { ?><?php _e('取消关注'); ?><?php } else { ?><?php _e('关注'); ?><?php } ?></span> <em>|</em> <b><?php echo $this->user['fans_count']; ?></b></a>
 							<?php } else if ($this->user_id == $this->user['uid']) { ?>
