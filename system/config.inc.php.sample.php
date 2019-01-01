@@ -43,8 +43,8 @@ define('G_CACHE_TYPE_MEMCACHED_PORT', 11211);
 // 是否开启远程存储 (头像 话题图片)
 define('G_REMOTE_STORAGE', FALSE);
 
-// 远程存储配置 (详见 system/Services/RemoteStorage.php)
-define('G_REMOTE_STORAGE_REQUEST_URL', 'http://192.168.1.100/?{$filename}');
+// 远程存储配置 (详见 /system/Services/RemoteStorage.php)
+define('G_REMOTE_STORAGE_REQUEST_URL', 'http://192.168.1.100/storage.php?path={$filename}');
 define('G_REMOTE_STORAGE_REQUEST_HEADERS', array(
 	"Authorization: abcdefghijklmnopqrstuvwxyz"
 ));

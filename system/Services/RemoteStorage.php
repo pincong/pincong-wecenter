@@ -35,10 +35,10 @@ class Services_RemoteStorage
 
 		// array
 		$headers = self::get_request_headers();
-		if (!is_null($content))
+		/*if (!is_null($content))
 		{
 			$headers[] = 'Content-Length: ' . strlen($content);
-		}
+		}*/
 
 		// 发起请求
 		$body = @file_get_contents($url, false, stream_context_create(array(
@@ -68,7 +68,7 @@ class Services_RemoteStorage
 
 	private static function get_request_url(&$filename)
 	{
-		return str_replace('{$filename}', G_REMOTE_STORAGE_REQUEST_URL, urlencode($filename));
+		return str_replace('{$filename}', urlencode($filename), G_REMOTE_STORAGE_REQUEST_URL);
 	}
 
 	private static function get_request_headers()
