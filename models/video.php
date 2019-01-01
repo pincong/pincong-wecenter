@@ -241,7 +241,7 @@ class video_class extends AWS_MODEL
 
 		$this->delete('video_log', 'item_id = ' . intval($video_id));
 
-		//$this->delete('video_comments', "video_id = " . intval($video_id)); // 删除关联的回复内容
+		$this->delete('video_comments', "video_id = " . intval($video_id)); // 删除关联的回复内容
 
 		//$this->delete('video_danmaku', 'video_id = ' . intval($video_id));
 
@@ -251,7 +251,7 @@ class video_class extends AWS_MODEL
 
 		//$this->model('notify')->delete_notify('model_type = 8 AND source_id = ' . intval($video_id));	// 删除相关的通知
 
-		//$this->model('posts')->remove_posts_index($video_id, 'video');
+		$this->model('posts')->remove_posts_index($video_id, 'video');
 
 		/*
 		// 没有 video_count 字段 不实现

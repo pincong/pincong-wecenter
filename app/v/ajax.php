@@ -186,7 +186,7 @@ class ajax extends AWS_CONTROLLER
 	}
 
 	// 彻底删除不留痕迹
-	public function remove_video_action()
+	/*public function remove_video_action()
 	{
 		if (!$this->user_info['permission']['is_administrator'])
 		{
@@ -197,7 +197,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			if ($this->user_id != $video_info['uid'])
 			{
-				$this->model('account')->send_delete_message($video_info['uid'], $video_info['title'], $video_info['message']);
+				//$this->model('account')->send_delete_message($video_info['uid'], $video_info['title'], $video_info['message']);
 			}
 
 			$this->model('video')->remove_video($video_info['id']);
@@ -206,7 +206,7 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'url' => get_js_url('/')
 		), 1, null));
-	}
+	}*/
 
 	public function remove_comment_action()
 	{
