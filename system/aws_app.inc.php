@@ -42,7 +42,6 @@ class AWS_APP
 	public static $session_type = 'file';
 
 	private static $models = array();
-	private static $plugins = array();
 
 	public static $settings = array();
 	public static $_debug = array();
@@ -112,8 +111,6 @@ class AWS_APP
 
 		self::$config = load_class('core_config');
 		self::$db = load_class('core_db');
-
-		self::$plugins = load_class('core_plugins');
 
 		self::$settings = self::model('setting')->get_settings();
 
@@ -414,24 +411,6 @@ class AWS_APP
 		}
 
 		return self::$form;
-	}
-
-	/**
-	 * 获取系统插件处理类
-	 *
-	 * 调用 core/plugins.php
-	 *
-	 * @access	public
-	 * @return	object
-	 */
-	public static function plugins()
-	{
-		if (!self::$plugins)
-		{
-			self::$plugins = load_class('core_plugins');
-		}
-
-		return self::$plugins;
 	}
 
 	/**

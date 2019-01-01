@@ -131,15 +131,6 @@ class AWS_CONTROLLER
 		// 产生面包屑导航数据
 		$this->crumb(get_setting('site_name'), base_url());
 
-		// 载入插件
-		if ($plugins = AWS_APP::plugins()->parse($_GET['app'], $_GET['c'], 'setup'))
-		{
-			foreach ($plugins as $plugin_file)
-			{
-				include $plugin_file;
-			}
-		}
-
 		if (get_setting('site_close') == 'Y' AND $this->user_info['group_id'] != 1 AND !in_array($_GET['app'], array('admin', 'account', 'upgrade')))
 		{
 			$this->model('account')->logout();

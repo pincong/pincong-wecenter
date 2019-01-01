@@ -44,14 +44,6 @@ class main extends AWS_CONTROLLER
 		{
 			foreach ($call_actions AS $call_action)
 			{
-				if ($plugins = AWS_APP::plugins()->parse('crond', 'main', $call_action))
-				{
-					foreach ($plugins AS $plugin_file)
-					{
-						include($plugin_file);
-					}
-				}
-
 				$call_function = $call_action;
 
 				$this->model('crond')->$call_function();

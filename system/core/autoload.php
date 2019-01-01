@@ -51,14 +51,6 @@ class core_autoload
 		}
 		else
 		{
-			if (class_exists('AWS_APP', false))
-			{
-				if (AWS_APP::plugins()->model())
-				{
-					self::$aliases = array_merge(self::$aliases, AWS_APP::plugins()->model());
-				}
-			}
-
 			if (isset(self::$aliases[$class_name]))
 			{
 				$class_file_location = self::$aliases[$class_name];

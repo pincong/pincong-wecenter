@@ -1,0 +1,15 @@
+.htaccess
+.tags
+.tags_sorted_by_file
+.DS_Store
+
+/system/config.inc.php
+/system/config/database.php
+
+/cache/*
+!/cache/index.html
+/tmp/*
+!/tmp/index.html
+
+/plugins/
+/uploads/

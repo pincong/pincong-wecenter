@@ -84,17 +84,6 @@ class TPL
 			self::assign('template_name', 'default');
 		}
 
-		if (self::$in_app AND $display)
-		{
-			if ($plugins = AWS_APP::plugins()->parse($_GET['app'], $_GET['c'], $_GET['act'], str_replace(self::$template_ext, '', $template_filename)))
-			{
-				foreach ($plugins AS $plugin_file)
-				{
-					include_once $plugin_file;
-				}
-			}
-		}
-
 		$output = self::$view->getOutput($display_template_filename);
 
 		if (self::$in_app AND basename($template_filename) != 'debuger.tpl.htm')

@@ -87,8 +87,7 @@ class crond_class extends AWS_MODEL
     // 每分钟执行
     public function minute()
     {
-        @unlink(TEMP_PATH . 'plugins_table.php');
-        @unlink(TEMP_PATH . 'plugins_model.php');
+
     }
 
     // 每五分钟执行
