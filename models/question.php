@@ -564,12 +564,8 @@ class question_class extends AWS_MODEL
 			return false;
 		}
 
-		if ($question_invites = $this->fetch_row('question_invite', 'question_id = ' . intval($question_id) . ' AND sender_uid = ' . $question_info['published_uid'] . ' AND recipients_uid = ' . intval($recipients_uid)))
-		{
-			$this->model('currency')->process($question_info['published_uid'], 'INVITE_ANSWER', get_setting('currency_system_config_invite_answer'), '邀请回答成功 #' . $question_id, $question_id);
-
-			$this->model('currency')->process($recipients_uid, 'ANSWER_INVITE', -get_setting('currency_system_config_invite_answer'), '回复邀请回答 #' . $question_id, $question_id);
-		}
+		// TODO: 如何处理重复邀请?
+		$this->delete('question_invite', 'question_id = ' . intval($question_id) . ' AND recipients_uid = ' . intval($recipients_uid));
 
 		$this->model('account')->update_question_invite_count($recipients_uid);
 	}

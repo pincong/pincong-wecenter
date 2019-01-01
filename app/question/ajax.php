@@ -105,11 +105,6 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能邀请自己回复问题')));
 		}
 
-		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_invite_answer'))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
-		}
-
 		if ($this->model('question')->has_question_invite($_POST['question_id'], $invite_user_info['uid']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已邀请过该用户')));
