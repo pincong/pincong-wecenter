@@ -142,15 +142,4 @@ class main extends AWS_CONTROLLER
 		TPL::output('account/register');
 	}
 
-	public function valid_approval_action()
-	{
-		if ($this->user_id AND $this->user_info['group_id'] != 3)
-		{
-			HTTP::redirect('/');
-		}
-
-		TPL::import_css('css/register.css');
-
-		TPL::output('account/valid_approval');
-	}
 }

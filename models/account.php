@@ -433,6 +433,7 @@ class account_class extends AWS_MODEL
             'password' => bcrypt_password_hash(compile_password($password, $salt)),
             'salt' => $salt,
             'sex' => 0,
+            'group_id' => 4,
             'reg_time' => fake_time()
         )))
         {
@@ -469,10 +470,6 @@ class account_class extends AWS_MODEL
                     $this->model('follow')->user_follow_add($uid, $val);
                 }
             }
-
-            $this->update('users', array(
-                'group_id' => 3
-            ), 'uid = ' . intval($uid));
 
             $this->model('currency')->process($uid, 'REGISTER', get_setting('currency_system_config_register'), '初始资本');
         }
@@ -1213,18 +1210,6 @@ class account_class extends AWS_MODEL
 			return false;
 		}
 		return ($code == $recovery_code);
-	}
-
-	public function active_user_by_uid($uid)
-	{
-		if (!$uid)
-		{
-			return false;
-		}
-
-		return $this->update('users', array(
-			'group_id' => 4,
-		), 'uid = ' . intval($uid));
 	}
 
 }

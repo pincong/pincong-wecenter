@@ -193,18 +193,6 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('新用户注册验证类型'); ?>:</span>
-                            <div class="col-sm-8 col-xs-8">
-                                <label class="checkbox-inline"><input type="radio" name="register_valid_type" value="approval"<?php if ($this->setting['register_valid_type'] == 'approval') { ?> checked="checked"<?php } ?> /> <?php _e('后台审核'); ?></label>
-
-                                <label class="checkbox-inline"><input type="radio" name="register_valid_type" value="N"<?php if ($this->setting['register_valid_type'] == 'N') { ?> checked="checked"<?php } ?> /> <?php _e('不验证'); ?></label>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
                             <span class="col-sm-3 col-xs-3 control-label"><?php _e('注册类型'); ?>:</span>
                             <div class="col-sm-8 col-xs-8">
                                 <label class="checkbox-inline"><input type="radio" name="register_type" value="open"<?php if ($this->setting['register_type'] == 'open') { ?> checked="checked"<?php } ?> /> <?php _e('开放注册'); ?></label>

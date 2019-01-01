@@ -152,32 +152,13 @@ class ajax extends AWS_CONTROLLER
 			// 邀请注册
 		}
 
-		if (get_setting('register_valid_type') == 'N')
-		{
-			$this->model('account')->active_user_by_uid($uid);
-		}
-
 		$user_info = $this->model('account')->get_user_info_by_uid($uid);
 
-		if (get_setting('register_valid_type') == 'N' OR $user_info['group_id'] != 3)
-		{
-			$this->model('account')->setcookie_login($user_info['uid'], $user_info['user_name'], $_POST['password'], $user_info['salt']);
+		$this->model('account')->setcookie_login($user_info['uid'], $user_info['user_name'], $_POST['password'], $user_info['salt']);
 
-			{
-				H::ajax_json_output(AWS_APP::RSM(array(
-					'url' => get_js_url('/home/first_login-TRUE')
-				), 1, null));
-			}
-		}
-		else
-		{
-
-			{
-				H::ajax_json_output(AWS_APP::RSM(array(
-					'url' => get_js_url('/account/valid_approval/')
-				), 1, null));
-			}
-		}
+		H::ajax_json_output(AWS_APP::RSM(array(
+			'url' => get_js_url('/home/first_login-TRUE')
+		), 1, null));
 
 	}
 
@@ -215,28 +196,29 @@ class ajax extends AWS_CONTROLLER
 				H::ajax_json_output(AWS_APP::RSM(null, -1, get_setting('close_notice')));
 			}
 
-			if (get_setting('register_valid_type') == 'approval' AND $user_info['group_id'] == 3)
+			if ($user_info['group_id'] == 3)
 			{
-				$url = get_js_url('/account/valid_approval/');
+				// 未验证用户
+				H::ajax_json_output(AWS_APP::RSM(array(
+					'url' => get_js_url('/people/') . $user_info['url_token']
+				), 1, null));
 			}
-			else
+
+			// 记住我
+			if ($_POST['net_auto_login'])
 			{
-				if ($_POST['net_auto_login'])
-				{
-					$expire = 60 * 60 * 24 * 360;
-				}
+				$expire = 60 * 60 * 24 * 360;
+			}
 
-				$this->model('account')->update_user_last_login($user_info['uid']);
-				$this->model('account')->setcookie_logout();
+			$this->model('account')->update_user_last_login($user_info['uid']);
+			$this->model('account')->setcookie_logout();
 
-				$this->model('account')->setcookie_login($user_info['uid'], $_POST['user_name'], $_POST['password'], $user_info['salt'], $expire);
+			$this->model('account')->setcookie_login($user_info['uid'], $_POST['user_name'], $_POST['password'], $user_info['salt'], $expire);
 
-				if ($_POST['return_url'] AND !strstr($_POST['return_url'], '/logout') AND
-					(strstr($_POST['return_url'], '://') AND strstr($_POST['return_url'], base_url())))
-				{
-					$url = get_js_url($_POST['return_url']);
-				}
-
+			if ($_POST['return_url'] AND !strstr($_POST['return_url'], '/logout') AND
+				(strstr($_POST['return_url'], '://') AND strstr($_POST['return_url'], base_url())))
+			{
+				$url = get_js_url($_POST['return_url']);
 			}
 
 			H::ajax_json_output(AWS_APP::RSM(array(

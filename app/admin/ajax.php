@@ -1001,8 +1001,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
                 H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('注册失败')));
             }
 
-            $this->model('account')->active_user_by_uid($uid);
-
             if ($_POST['group_id'] == 1 AND !$this->user_info['permission']['is_administrator'])
             {
                 $_POST['group_id'] = 4;
@@ -1045,36 +1043,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
         H::ajax_json_output(AWS_APP::RSM(array(
             'url' => get_js_url('/admin/user/currency_log/uid-' . $_POST['uid'])
         ), 1, null));
-    }
-
-    public function register_approval_manage_action()
-    {
-        if (!is_array($_POST['approval_uids']))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择条目进行操作')));
-        }
-
-        switch ($_POST['batch_type'])
-        {
-            case 'approval':
-                foreach ($_POST['approval_uids'] AS $approval_uid)
-                {
-                    $this->model('account')->active_user_by_uid($approval_uid);;
-                }
-            break;
-
-            case 'decline':
-                foreach ($_POST['approval_uids'] AS $approval_uid)
-                {
-                    if ($user_info = $this->model('account')->get_user_info_by_uid($approval_uid))
-                    {
-                        $this->model('user')->delete_user_by_uid($approval_uid);
-                    }
-                }
-            break;
-        }
-
-        H::ajax_json_output(AWS_APP::RSM(null, 1, null));
     }
 
     public function remove_user_action()

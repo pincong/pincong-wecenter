@@ -187,31 +187,6 @@ class user extends AWS_ADMIN_CONTROLLER
     }
 
 
-    public function register_approval_list_action()
-    {
-        if (get_setting('register_valid_type') != 'approval')
-        {
-            H::redirect_msg(AWS_APP::lang()->_t('未启用新用户注册审核'), '/admin/');
-        }
-
-        $user_list = $this->model('people')->fetch_page('users', 'group_id = 3', 'uid ASC', $_GET['page'], $this->per_page);
-
-        $total_rows = $this->model('people')->found_rows();
-
-        TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-            'base_url' => get_js_url('/admin/user/register_approval_list/'),
-            'total_rows' => $total_rows,
-            'per_page' => $this->per_page
-        ))->create_links());
-
-        $this->crumb(AWS_APP::lang()->_t('注册审核'), 'admin/user/register_approval_list/');
-
-        TPL::assign('list', $user_list);
-        TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(408));
-
-        TPL::output('admin/user/register_approval_list');
-    }
-
     public function currency_log_action()
     {
         if ($log = $this->model('currency')->fetch_page('currency_log', 'uid = ' . intval($_GET['uid']), 'id DESC', $_GET['page'], 50))
