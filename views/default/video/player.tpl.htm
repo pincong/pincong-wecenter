@@ -224,16 +224,94 @@
 
 .ab-player {
 	position: relative;
-	background: #000;
+	min-width: 200px;
 }
 
-.ab-video .c-cell {
+/* 保持 16:9 纵横比 */
+.ab-video {
 	position: relative;
-	vertical-align: middle;
+	width: 100%;
+	padding-top: 56.25%;
+	height: 0px;
 }
 
 .ab-video video {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
 	background: #000;
+}
+
+.ab-danmaku-layer {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
+}
+
+.ab-loader {
+	box-sizing: border-box;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 80px;
+	height: 80px;
+	margin-left: -40px;
+	margin-top: -40px;
+	z-index: 1;
+	display: none;
+}
+
+.ab-circle-play-btn {
+	cursor: pointer;
+	box-sizing: border-box;
+	position: absolute;
+	border-radius: 50%;
+	border-style: solid;
+	border-color: rgba(255,255,255,.5);
+	border-width: 8px;
+	left: 50%;
+	top: 50%;
+	width: 80px;
+	height: 80px;
+	margin-left: -40px;
+	margin-top: -40px;
+	z-index: 1;
+}
+
+.ab-circle-play-btn-inner {
+	box-sizing: content-box;
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-color: rgba(255,255,255,.5);
+	border-top-color: transparent;
+	border-bottom-color: transparent;
+	border-right: 0;
+	border-left-width: 34px;
+	border-top-width: 20px;
+	border-bottom-width: 20px;
+	top: 50%;
+	left: 50%;
+	margin-top: -20px;
+	margin-left: -12px;
+}
+
+.ab-poster {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	z-index: 1;
 }
 
 .ab-control {
@@ -307,42 +385,6 @@
 	font-size: 12px;
 }
 
-.ab-player {
-	height: 420px;
-}
-
-@media (max-width: 640px) {
-	.ab-control-bar .ab-volume-bar {
-		display: none !important;
-	}
-	.ab-control-bar .ab-send-btn {
-		width: 40px;
-	}
-
-	.ab-player {
-		height: 360px;
-	}
-}
-
-@media (max-width: 480px) {
-	.ab-control-bar .ab-time-label-separator,
-	.ab-control-bar .ab-time-label-total {
-		display: none !important;
-	}
-	.ab-control-bar .ab-volume-btn {
-		display: none !important;
-	}
-
-	.ab-player {
-		height: 240px;
-	}
-}
-
-
-
-
-
-
 .ab-font-dlg {
 	width: 220px;
 	height: 160px;
@@ -374,67 +416,6 @@
 	height: 100%;
 	border: 0;
 	background: transparent;
-}
-
-.ab-loader {
-	box-sizing: border-box;
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	width: 80px;
-	height: 80px;
-	margin-left: -40px;
-	margin-top: -40px;
-	z-index: 1;
-	display: none;
-}
-
-.ab-circle-play-btn {
-	cursor: pointer;
-	box-sizing: border-box;
-	position: absolute;
-	border-radius: 50%;
-	border-style: solid;
-	border-color: rgba(255,255,255,.5);
-	border-width: 8px;
-	left: 50%;
-	top: 50%;
-	width: 80px;
-	height: 80px;
-	margin-left: -40px;
-	margin-top: -40px;
-	z-index: 1;
-}
-
-.ab-circle-play-btn-inner {
-	box-sizing: content-box;
-	position: absolute;
-	width: 0;
-	height: 0;
-	border-style: solid;
-	border-color: rgba(255,255,255,.5);
-	border-top-color: transparent;
-	border-bottom-color: transparent;
-	border-right: 0;
-	border-left-width: 34px;
-	border-top-width: 20px;
-	border-bottom-width: 20px;
-	top: 50%;
-	left: 50%;
-	margin-top: -20px;
-	margin-left: -12px;
-}
-
-.ab-poster {
-	position: absolute;
-	left: 0;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: contain;
-	z-index: 1;
 }
 
 .ab-font-dlg .c-dlg-btn-group .c-dlg-btn {
@@ -479,7 +460,7 @@
 .ab-settings-dlg {
 	max-width: 230px;
 	right: 1px;
-	bottom: 52px;
+	bottom: 50px;
 	visibility: hidden;
 }
 
@@ -501,6 +482,26 @@
 
 .ab-speed-option-group-1 {
 	margin-bottom: 3px;
+}
+
+
+@media (max-width: 640px) {
+	.ab-control-bar .ab-volume-bar {
+		display: none !important;
+	}
+	.ab-control-bar .ab-send-btn {
+		width: 40px;
+	}
+}
+
+@media (max-width: 480px) {
+	.ab-control-bar .ab-time-label-separator,
+	.ab-control-bar .ab-time-label-total {
+		display: none !important;
+	}
+	.ab-control-bar .ab-volume-btn {
+		display: none !important;
+	}
 }
 </style>
 
@@ -656,7 +657,7 @@ var ABP = {};
 		this.video = this.$$('.ab-video video')[0];
 
 		// 弹幕管理器初始化
-		this.cm = new CommentManager(this.$$('.ccl .ccl-container')[0]);
+		this.cm = new CommentManager(this.$$('.ab-danmaku-layer')[0]);
 		this.cm.init();
 		// end 弹幕管理器初始化
 
@@ -1175,20 +1176,18 @@ var ABP = {};
 </script>
 
 
-<div class="c-table ab-player">
-	<div class="c-row ab-video">
-		<div class="c-cell ccl">
-			<video width="100%" autobuffer="true" webkit-playsinline>Your browser does not support HTML5 video.</video>
-			<div class="ccl-container"></div>
-			<div class="ab-poster"></div>
-			<div class="c-loader ab-loader"></div>
-			<div class="ab-circle-play-btn">
-				<div class="ab-circle-play-btn-inner"></div>
-			</div>
+<div class="ab-player">
+	<div class="ab-video">
+		<video autobuffer="true" webkit-playsinline>Your browser does not support HTML5 video.</video>
+		<div class="ab-danmaku-layer ccl-container"></div>
+		<div class="ab-poster"></div>
+		<div class="c-loader ab-loader"></div>
+		<div class="ab-circle-play-btn">
+			<div class="ab-circle-play-btn-inner"></div>
 		</div>
 	</div>
 
-	<div class="c-row c-content-height ab-control">
+	<div class="ab-control">
 		<!-- 控制条第一行 -->
 		<div class="c-table ab-control-bar">
 			<div class="c-cell c-content-width"><!-- 播放按钮
@@ -1220,7 +1219,7 @@ var ABP = {};
 				--><span class="c-btn c-btn-on ab-danmaku-btn"><i class="c-icon-comment"></i></span><!--
 				--><span class="c-btn ab-loop-btn"><i class="c-icon-loop"></i></span><!--
 				--><span class="c-btn ab-settings-btn"><i class="c-icon-gear"></i></span><!--
-				--><span class="c-btn ab-fullscreen-btn"><i class="c-icon-screen-full"></i></span><!--
+				--><!--span class="c-btn ab-fullscreen-btn"><i class="c-icon-screen-full"></i></span--><!--
 			--></div>
 		</div>
 		<!-- end 控制条第一行 -->

@@ -1,17 +1,5 @@
-.ccl {
-  position: relative;
-}
-
-.ccl .ccl-container {
-  border: 0;
-  bottom: 0;
-  display: block;
-  left: 0;
-  margin: 0;
+.ccl-container {
   overflow: hidden;
-  position: absolute;
-  right: 0;
-  top: 0;
   touch-callout: none;
   -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
           transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
@@ -19,10 +7,9 @@
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  z-index: 1;
 }
 
-.ccl .ccl-container .cmt {
+.ccl-container .cmt {
   color: #fff;
   font-family: SimHei, SimSun, Heiti, "MS Mincho", "Meiryo", "Microsoft YaHei", monospace;
   font-size: 25px;
@@ -45,11 +32,11 @@
   word-break: keep-all;
 }
 
-.ccl .ccl-container .cmt.noshadow {
+.ccl-container .cmt.noshadow {
   text-shadow: none;
 }
 
-.ccl .ccl-container .cmt.rshadow {
+.ccl-container .cmt.rshadow {
   text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 
