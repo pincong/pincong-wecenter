@@ -213,19 +213,19 @@ class main extends AWS_CONTROLLER
 				$answer_list = array_merge($this->model('answer')->get_answer_list_by_question_id($question_info['question_id'], 1, 'answer_id = ' . $question_info['best_answer']), $answer_list);
 			}
 
-			if ($answer_ids)
+			if ($this->user_id)
 			{
-				//$answer_agree_users = $this->model('answer')->get_vote_user_by_answer_ids($answer_ids);
-
-				$answer_vote_status = $this->model('answer')->get_answer_vote_status($answer_ids, $this->user_id);
+				$answer_vote_values = $this->model('vote')->get_user_vote_values_by_ids('answer', $answer_ids, $this->user_id);
 			}
 
 			foreach ($answer_list as $answer)
 			{
 				$answer['answer_content'] = $this->model('question')->parse_at_user($answer['answer_content']);
 
-				//$answer['agree_users'] = $answer_agree_users[$answer['answer_id']];
-				$answer['agree_status'] = $answer_vote_status[$answer['answer_id']];
+				if ($this->user_id)
+				{
+					$answer['vote_value'] = $answer_vote_values[$answer['answer_id']];
+				}
 
 				if ($question_info['best_answer'] == $answer['answer_id'] AND intval($_GET['page']) < 2)
 				{
@@ -264,10 +264,7 @@ class main extends AWS_CONTROLLER
 
 			TPL::assign('user_follow_check', $this->model('follow')->user_follow_check($this->user_id, $question_info['published_uid']));
 
-			if ($question_vote_status = $this->model('question')->get_question_vote_status($question_info['question_id'], $this->user_id))
-			{
-				$question_info['agree_status'] = $question_vote_status['vote_value'];
-			}
+			$question_info['vote_value'] = $this->model('vote')->get_user_vote_value_by_id('question', $question_info['question_id'], $this->user_id);
 		}
 
 		TPL::assign('question_info', $question_info);

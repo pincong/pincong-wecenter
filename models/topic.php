@@ -963,8 +963,6 @@ class topic_class extends AWS_MODEL
 				$action_list_users_info = $this->model('account')->get_user_info_by_uids($action_list_uids);
 			}
 
-			$answers_info_vote_user = $this->model('answer')->get_vote_user_by_answer_ids($answer_ids);
-
 			foreach ($questions_info AS $key => $val)
 			{
 				$result[$key]['question_info'] = $val;
@@ -990,13 +988,13 @@ class topic_class extends AWS_MODEL
 			}
 
 			$questions_focus = $this->model('question')->has_focus_questions($question_ids, $uid);
-			$answers_info_vote_status = $this->model('answer')->get_answer_vote_status($answer_ids, $uid);
+			$answers_info_vote_values = $this->model('vote')->get_user_vote_values_by_ids('answer', $answer_ids, $uid);
 		}
 
 		foreach ($result AS $key => $val)
 		{
 			$result[$key]['question_info']['has_focus'] = $questions_focus[$val['question_info']['question_id']];
-			$result[$key]['answer_info']['agree_status'] = intval($answers_info_vote_status[$val['question_info']['best_answer']]);
+			$result[$key]['answer_info']['vote_value'] = $answers_info_vote_values[$val['question_info']['best_answer']];
 
 			$result[$key]['title'] = $val['question_info']['question_content'];
 			$result[$key]['link'] = get_js_url('/question/' . $val['question_info']['question_id']);

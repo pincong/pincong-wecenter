@@ -20,7 +20,7 @@ if (!defined('IN_ANWSION'))
 
 class vote_class extends AWS_MODEL
 {
-	private function function process_currency_agree(&$type, $item_id, $uid, $item_uid)
+	private function process_currency_agree(&$type, $item_id, $uid, $item_uid)
 	{
 		switch ($type)
 		{
@@ -74,7 +74,7 @@ class vote_class extends AWS_MODEL
 		}
 	}
 
-	private function function process_currency_disagree(&$type, $item_id, $uid, $item_uid)
+	private function process_currency_disagree(&$type, $item_id, $uid, $item_uid)
 	{
 		switch ($type)
 		{
@@ -129,29 +129,51 @@ class vote_class extends AWS_MODEL
 	}
 
 
-	private function function increase_count_and_reputation(&$type, $item_id, $uid, $item_uid, $factor)
+	private function increase_count_and_reputation(&$type, $item_id, $uid, $item_uid, $factor)
 	{
-		$this->query('UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + 1 WHERE id = ' . ($item_id));
+		$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + 1 WHERE id = ' . ($item_id);
+		// TODO: question_id 字段改名
+		if ($type == 'question')
+		{
+			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + 1 WHERE question_id = ' . ($item_id);
+		}
+		// TODO: answer_id 字段改名
+		elseif ($type == 'answer')
+		{
+			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + 1 WHERE answer_id = ' . ($item_id);
+		}
+		$this->query($sql);
 		$this->model('reputation')->increase_agree_count_and_reputation($item_uid, 1, $factor);
 	}
 
-	private function function decrease_count_and_reputation(&$type, $item_id, $uid, $item_uid, $factor)
+	private function decrease_count_and_reputation(&$type, $item_id, $uid, $item_uid, $factor)
 	{
-		$this->query('UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count - 1 WHERE id = ' . ($item_id));
+		$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count - 1 WHERE id = ' . ($item_id);
+		// TODO: question_id 字段改名
+		if ($type == 'question')
+		{
+			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count - 1 WHERE question_id = ' . ($item_id);
+		}
+		// TODO: answer_id 字段改名
+		elseif ($type == 'answer')
+		{
+			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count - 1 WHERE answer_id = ' . ($item_id);
+		}
+		$this->query($sql);
 		$this->model('reputation')->increase_agree_count_and_reputation($item_uid, -1, $factor);
 	}
 
-	private function function increase_vote_value($id)
+	private function increase_vote_value($id)
 	{
 		$this->query('UPDATE ' . $this->get_table('vote') . ' SET value = value + 1 WHERE id = ' . intval($id));
 	}
 
-	private function function decrease_vote_value($id)
+	private function decrease_vote_value($id)
 	{
 		$this->query('UPDATE ' . $this->get_table('vote') . ' SET value = value - 1 WHERE id = ' . intval($id));
 	}
 
-	private function function clear_vote_value($id)
+	private function clear_vote_value($id)
 	{
 		$this->update('vote', array(
 			'value' => 0,
@@ -159,10 +181,6 @@ class vote_class extends AWS_MODEL
 		), 'id = ' . $id);
 	}
 
-	public function function check_vote_type(&$type)
-	{
-
-	}
 
 	/**
 	 *
@@ -177,7 +195,7 @@ class vote_class extends AWS_MODEL
 	 */
 	public function agree($type, $item_id, $uid, $item_uid, $factor)
 	{
-		if (!$this->check_vote_type($type))
+		if (!$this->model('content')->check_item_type($type))
 		{
 			return false;
 		}
@@ -226,7 +244,6 @@ class vote_class extends AWS_MODEL
 		else // 数据错误
 		{
 			$this->clear_vote_value($vote_info['id']);
-			break;
 		}
 
 		return true;
@@ -246,7 +263,7 @@ class vote_class extends AWS_MODEL
 	 */
 	public function disagree($type, $item_id, $uid, $item_uid, $factor)
 	{
-		if (!$this->check_vote_type($type))
+		if (!$this->model('content')->check_item_type($type))
 		{
 			return false;
 		}
@@ -295,12 +312,76 @@ class vote_class extends AWS_MODEL
 		else // 数据错误
 		{
 			$this->clear_vote_value($vote_info['id']);
-			break;
 		}
 
 		return true;
 	}
 
+
+	public function check_user_vote_limit_rate($uid, $user_permission)
+	{
+		$limit = intval($user_permission['user_vote_limit_per_day']);
+		if (!$limit)
+		{
+			return true;
+		}
+
+		$uid = intval($uid);
+		$time_after = real_time() - 24 * 3600;
+
+		$where = "add_time > " . $time_after . " AND uid =" . $uid;
+		$count = $this->count('vote', $where);
+		if ($count >= $limit)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+
+	public function get_user_vote_value_by_id($type, $item_id, $uid)
+	{
+		if (!$this->model('content')->check_item_type($type))
+		{
+			return false;
+		}
+
+		$item_id = intval($item_id);
+		$uid = intval($uid);
+
+		$where = "`type` = '" . ($type) . "' AND item_id = " . ($item_id) . " AND uid = " . ($uid);
+		return $this->fetch_one('vote', 'value', $where);
+	}
+
+	public function get_user_vote_values_by_ids($type, $item_ids, $uid)
+	{
+		if (!$this->model('content')->check_item_type($type))
+		{
+			return false;
+		}
+
+		if (!is_array($item_ids))
+		{
+			return false;
+		}
+
+		$where = "`type` = '" . ($type) . "' AND uid = " . ($uid) . " AND item_id IN(" . implode(',', $item_ids) . ")";
+		$sql = "SELECT item_id, value FROM " . get_table('vote') . " WHERE " . $where;
+		$rows = $this->query_all($sql);
+		$vote_values = array();
+		if (!$rows)
+		{
+			return $vote_values;
+		}
+
+		foreach ($rows AS $key => $val)
+		{
+			$vote_values[$val['item_id']] = $val['value'];
+		}
+
+		return $vote_values;
+	}
 
 	public function delete_expired_votes()
 	{
@@ -317,5 +398,4 @@ class vote_class extends AWS_MODEL
 		}
 		$this->delete('vote', 'add_time < ' . $time_before);
 	}
-
 }

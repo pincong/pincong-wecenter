@@ -532,18 +532,6 @@ class system_class extends AWS_MODEL
 			), 'uid = ' . intval($uid));
 		}
 
-		$this->update('article_vote', array(
-			'uid' => '-1'
-		), 'uid = ' . intval($uid));
-
-		$this->update('question_vote', array(
-			'vote_uid' => '-1'
-		), 'vote_uid = ' . intval($uid));
-
-		$this->update('answer_vote', array(
-			'vote_uid' => '-1'
-		), 'vote_uid = ' . intval($uid));
-
 		$this->model('verify')->remove_apply($uid);
 		$this->model('notify')->delete_notify('sender_uid = ' . intval($uid) . ' OR recipient_uid = ' . intval($uid));
 
@@ -589,7 +577,7 @@ class system_class extends AWS_MODEL
 			break;
 
 			case 'new_answer_vote':
-				$query = "SELECT COUNT(voter_id) AS count, FROM_UNIXTIME(add_time, '%y-%m') AS statistic_date FROM " . get_table('answer_vote') . " WHERE add_time BETWEEN " . intval($start_time) . " AND " . intval($end_time) . " GROUP BY statistic_date ASC";
+				$query = "SELECT COUNT(id) AS count, FROM_UNIXTIME(add_time, '%y-%m') AS statistic_date FROM " . get_table('vote') . " WHERE add_time BETWEEN " . intval($start_time) . " AND " . intval($end_time) . " GROUP BY statistic_date ASC";
 			break;
 
 			case 'new_favorite_item':

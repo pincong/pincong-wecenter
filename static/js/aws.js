@@ -1453,82 +1453,6 @@ AWS.User =
 		});
 	},
 
-	// 赞成投票
-	agree_vote: function(selector, user_name, answer_id)
-	{
-		var update_ui = function() {
-			// 判断是否投票过
-			if ($(selector).hasClass('active'))
-			{
-				$(selector).removeClass('active');
-
-				$(selector).parents('.operate').find('.agree').find('.count').html(parseInt($(selector).parents('.operate').find('.agree').find('.count').html()) - 1);
-			}
-			else
-			{
-				// 判断是否有反对过
-				if ($(selector).parents('.operate').find('.disagree').hasClass('active'))
-				{
-					$(selector).parents('.operate').find('.agree').find('.count').html(parseInt($(selector).parents('.operate').find('.agree').find('.count').html()) + 1);
-
-					$(selector).parents('.operate').find('.disagree').removeClass('active');
-				}
-
-				$(selector).parents('.operate').find('.agree').find('.count').html(parseInt($(selector).parents('.operate').find('.agree').find('.count').html()) + 1);
-
-				$(selector).addClass('active');
-			}
-		};
-
-		update_ui();
-		$.post(G_BASE_URL + '/question/ajax/answer_vote/', 'answer_id=' + answer_id + '&value=1', function (result)
-		{
-			if (result.errno != '1')
-			{
-				AWS.alert(result.err);
-				update_ui();
-			}
-		}, 'json');
-	},
-
-	// 反对投票
-	disagree_vote: function(selector, user_name, answer_id)
-	{
-		var update_ui = function() {
-			// 判断是否投票过
-			if ($(selector).hasClass('active'))
-			{
-				$(selector).removeClass('active');
-
-				$(selector).parents('.operate').find('.agree').find('.count').html(parseInt($(selector).parents('.operate').find('.agree').find('.count').html()) + 1);
-			}
-			else
-			{
-				// 判断是否有赞同过
-				if ($(selector).parents('.operate').find('.agree').hasClass('active'))
-				{
-					$(selector).parents('.operate').find('.agree').find('.count').html(parseInt($(selector).parents('.operate').find('.agree').find('.count').html()) - 1);
-
-					$(selector).parents('.operate').find('.agree').removeClass('active');
-				}
-
-				$(selector).parents('.operate').find('.agree').find('.count').html(parseInt($(selector).parents('.operate').find('.agree').find('.count').html()) - 1);
-
-				$(selector).addClass('active');
-			}
-		};
-
-		update_ui();
-		$.post(G_BASE_URL + '/question/ajax/answer_vote/', 'answer_id=' + answer_id + '&value=-1', function (result)
-		{
-			if (result.errno != '1')
-			{
-				AWS.alert(result.err);
-				update_ui();
-			}
-		}, 'json');
-	},
-
 	// 删除别人邀请我回复的问题
 	question_invite_delete: function(selector, question_invite_id)
 	{
@@ -1611,235 +1535,6 @@ AWS.User =
 		selector.parents('.aw-comment-box li').fadeOut();
 	},
 
-	// 问题赞同
-	question_vote_agree: function(selector, question_id)
-	{
-		var update_ui = function() {
-			// 判断是否投票过
-			if ($(selector).hasClass('active'))
-			{
-				$(selector).removeClass('active');
-
-				$(selector).parents('.aw-article-vote').find('.agree').find('b').html(parseInt($(selector).parents('.aw-article-vote').find('.agree').find('b').html()) - 1);
-			}
-			else
-			{
-				// 判断是否有反对过
-				if ($(selector).parents('.aw-article-vote').find('.disagree').hasClass('active'))
-				{
-					//$(selector).parents('.aw-article-vote').find('.disagree').find('b').html(parseInt($(selector).parents('.aw-article-vote').find('.disagree').find('b').html()) - 1);
-					$(selector).parents('.aw-article-vote').find('.agree').find('b').html(parseInt($(selector).parents('.aw-article-vote').find('.agree').find('b').html()) + 1);
-
-					$(selector).parents('.aw-article-vote').find('.disagree').removeClass('active');
-				}
-
-				$(selector).parents('.aw-article-vote').find('.agree').find('b').html(parseInt($(selector).parents('.aw-article-vote').find('.agree').find('b').html()) + 1);
-
-				$(selector).addClass('active');
-			}
-		};
-
-		update_ui();
-		$.post(G_BASE_URL + '/question/ajax/question_vote/', 'question_id=' + question_id + '&value=1', function (result)
-		{
-			if (result.errno != '1')
-			{
-				AWS.alert(result.err);
-				update_ui();
-			}
-		}, 'json');
-	},
-
-	// 问题反对
-	question_vote_disagree: function(selector, question_id)
-	{
-		var update_ui = function() {
-			// 判断是否投票过
-			if ($(selector).hasClass('active'))
-			{
-				$(selector).removeClass('active');
-
-				$(selector).parents('.aw-article-vote').find('.agree').find('b').html(parseInt($(selector).parents('.aw-article-vote').find('.agree').find('b').html()) + 1);
-			}
-			else
-			{
-				// 判断是否有赞同过
-				if ($(selector).parents('.aw-article-vote').find('.agree').hasClass('active'))
-				{
-					$(selector).parents('.aw-article-vote').find('.agree').find('b').html(parseInt($(selector).parents('.aw-article-vote').find('.agree').find('b').html()) - 1);
-
-					$(selector).parents('.aw-article-vote').find('.agree').removeClass('active');
-				}
-
-				$(selector).parents('.aw-article-vote').find('.agree').find('b').html(parseInt($(selector).parents('.aw-article-vote').find('.agree').find('b').html()) - 1);
-
-				$(selector).addClass('active');
-			}
-		};
-
-		update_ui();
-		$.post(G_BASE_URL + '/question/ajax/question_vote/', 'question_id=' + question_id + '&value=-1', function (result)
-		{
-			if (result.errno != '1')
-			{
-				AWS.alert(result.err);
-				update_ui();
-			}
-		}, 'json');
-	},
-
-	// 文章赞同
-	article_vote_agree: function(selector, article_id)
-	{
-		var update_ui = function() {
-			// 判断是否投票过
-			if ($(selector).hasClass('active'))
-			{
-				$(selector).removeClass('active');
-
-				$(selector).parents('.aw-article-vote').find('.agree').find('b').html(parseInt($(selector).parents('.aw-article-vote').find('.agree').find('b').html()) - 1);
-			}
-			else
-			{
-				// 判断是否有反对过
-				if ($(selector).parents('.aw-article-vote').find('.disagree').hasClass('active'))
-				{
-					$(selector).parents('.aw-article-vote').find('.agree').find('b').html(parseInt($(selector).parents('.aw-article-vote').find('.agree').find('b').html()) + 1);
-
-					$(selector).parents('.aw-article-vote').find('.disagree').removeClass('active');
-				}
-
-				$(selector).parents('.aw-article-vote').find('.agree').find('b').html(parseInt($(selector).parents('.aw-article-vote').find('.agree').find('b').html()) + 1);
-
-				$(selector).addClass('active');
-			}
-		};
-
-		update_ui();
-		$.post(G_BASE_URL + '/article/ajax/article_vote/', 'type=article&item_id=' + article_id + '&rating=1', function (result)
-		{
-			if (result.errno != '1')
-			{
-				AWS.alert(result.err);
-				update_ui();
-			}
-		}, 'json');
-	},
-
-	// 文章反对
-	article_vote_disagree: function(selector, article_id)
-	{
-		var update_ui = function() {
-			// 判断是否投票过
-			if ($(selector).hasClass('active'))
-			{
-				$(selector).removeClass('active');
-
-				$(selector).parents('.aw-article-vote').find('.agree').find('b').html(parseInt($(selector).parents('.aw-article-vote').find('.agree').find('b').html()) + 1);
-			}
-			else
-			{
-				// 判断是否有赞同过
-				if ($(selector).parents('.aw-article-vote').find('.agree').hasClass('active'))
-				{
-					$(selector).parents('.aw-article-vote').find('.agree').find('b').html(parseInt($(selector).parents('.aw-article-vote').find('.agree').find('b').html()) - 1);
-
-					$(selector).parents('.aw-article-vote').find('.agree').removeClass('active');
-				}
-
-				$(selector).parents('.aw-article-vote').find('.agree').find('b').html(parseInt($(selector).parents('.aw-article-vote').find('.agree').find('b').html()) - 1);
-
-				$(selector).addClass('active');
-			}
-		};
-
-		update_ui();
-		$.post(G_BASE_URL + '/article/ajax/article_vote/', 'type=article&item_id=' + article_id + '&rating=-1', function (result)
-		{
-			if (result.errno != '1')
-			{
-				AWS.alert(result.err);
-				update_ui();
-			}
-		}, 'json');
-	},
-
-	// 文章评论赞同
-	article_comment_vote_agree: function(selector, comment_id)
-	{
-		var update_ui = function() {
-			// 判断是否投票过
-			if ($(selector).hasClass('active'))
-			{
-				$(selector).removeClass('active');
-
-				$(selector).parents('.operate').find('.agree').find('.count').html(parseInt($(selector).parents('.operate').find('.agree').find('.count').html()) - 1);
-			}
-			else
-			{
-				// 判断是否有反对过
-				if ($(selector).parents('.operate').find('.disagree').hasClass('active'))
-				{
-					$(selector).parents('.operate').find('.agree').find('.count').html(parseInt($(selector).parents('.operate').find('.agree').find('.count').html()) + 1);
-
-					$(selector).parents('.operate').find('.disagree').removeClass('active');
-				}
-
-				$(selector).parents('.operate').find('.agree').find('.count').html(parseInt($(selector).parents('.operate').find('.agree').find('.count').html()) + 1);
-
-				$(selector).addClass('active');
-			}
-		};
-
-		update_ui();
-		$.post(G_BASE_URL + '/article/ajax/article_vote/', 'type=comment&item_id=' + comment_id + '&rating=1', function (result)
-		{
-			if (result.errno != '1')
-			{
-				AWS.alert(result.err);
-				update_ui();
-			}
-		}, 'json');
-	},
-
-	// 文章评论反对
-	article_comment_vote_disagree: function(selector, comment_id)
-	{
-		var update_ui = function() {
-			// 判断是否投票过
-			if ($(selector).hasClass('active'))
-			{
-				$(selector).removeClass('active');
-
-				$(selector).parents('.operate').find('.agree').find('.count').html(parseInt($(selector).parents('.operate').find('.agree').find('.count').html()) + 1);
-			}
-			else
-			{
-				// 判断是否有赞同过
-				if ($(selector).parents('.operate').find('.agree').hasClass('active'))
-				{
-					$(selector).parents('.operate').find('.agree').find('.count').html(parseInt($(selector).parents('.operate').find('.agree').find('.count').html()) - 1);
-
-					$(selector).parents('.operate').find('.agree').removeClass('active');
-				}
-
-				$(selector).parents('.operate').find('.agree').find('.count').html(parseInt($(selector).parents('.operate').find('.agree').find('.count').html()) - 1);
-
-				$(selector).addClass('active');
-			}
-		};
-
-		update_ui();
-		$.post(G_BASE_URL + '/article/ajax/article_vote/', 'type=comment&item_id=' + comment_id + '&rating=-1', function (result)
-		{
-			if (result.errno != '1')
-			{
-				AWS.alert(result.err);
-				update_ui();
-			}
-		}, 'json');
-	},
-
 	why_fold: function()
 	{
 		AWS.alert(_t('被折叠的内容是被你或者被大多数用户认为没有帮助的内容'));
@@ -1859,6 +1554,88 @@ AWS.User =
 	unforbid_user: function(uid)
 	{
 		AWS.ajax_request(G_BASE_URL + '/account/ajax/forbid_user/' , 'uid=' + uid + '&status=0');
+	},
+
+	toggle_vote: function(selector, type, operation, item_id)
+	{
+		var $ui = $(selector).parents('.aw-vote-ui');
+		var $agree_btn = $ui.find('.agree');
+		var $disagree_btn = $ui.find('.disagree');
+		var $count = $ui.find('.count');
+		// 初始状态
+		var initial_count = parseInt($count.html());
+		var initial_status = 0;
+		if ($agree_btn.hasClass('active')) initial_status = 1;
+		if ($disagree_btn.hasClass('active')) initial_status = -1;
+		// 当前状态
+		var status = initial_status;
+
+		var set_btns = function(status) {
+			if (status == 1) {
+				$agree_btn.addClass('active');
+				$disagree_btn.removeClass('active');
+				return;
+			}
+			if (status == -1) {
+				$agree_btn.removeClass('active');
+				$disagree_btn.addClass('active');
+				return;
+			}
+			$agree_btn.removeClass('active');
+			$disagree_btn.removeClass('active');
+		};
+
+		var toggle_ui = function() {
+			// 还原
+			if (status != initial_status) {
+				set_btns(initial_status);
+				$count.html(initial_count);
+				status = initial_status;
+				return;
+			}
+
+			// 取消赞同
+			if (initial_status == 1) {
+				set_btns(0);
+				$count.html(initial_count - 1);
+				status = 0;
+				return;
+			}
+
+			// 取消反对
+			if (initial_status == -1) {
+				set_btns(0);
+				$count.html(initial_count + 1);
+				status = 0;
+				return;
+			}
+
+			// 赞同/反对
+			if (initial_status == 0) {
+				if (operation == 'agree') {
+					set_btns(1);
+					$count.html(initial_count + 1);
+					status = 1;
+					return;
+				}
+				if (operation == 'disagree') {
+					set_btns(-1);
+					$count.html(initial_count - 1);
+					status = -1;
+					return;
+				}
+			}
+		};
+
+		toggle_ui();
+		$.post(G_BASE_URL + '/vote/ajax/' + operation + '/', 'type=' + type + '&item_id=' + item_id, function (result)
+		{
+			if (result.errno != '1')
+			{
+				AWS.alert(result.err);
+				toggle_ui();
+			}
+		}, 'json');
 	},
 
 }

@@ -30,13 +30,13 @@
 		<div class="meta">
 			<span class="pull-right text-color-999"><?php echo date_friendly($this->comment_info['add_time']); ?></span>
 
-			<span class="operate">
+			<span class="operate aw-vote-ui">
 			<?php if ($this->user_id AND $this->user_id != $this->comment_info['uid']) { ?>
-				<a href="javascript:;" class="agree<?php if ($this->comment_info['vote_info']['rating'] == 1) { ?> active<?php } ?>" onclick="AWS.User.video_comment_vote_agree($(this), <?php echo $this->comment_info['id']; ?>)">
+				<a href="javascript:;" class="agree<?php if ($this->comment_info['vote_value'] > 0) { ?> active<?php } ?>" onclick="AWS.User.toggle_vote(this, 'video_comment', 'agree', <?php echo $this->comment_info['id']; ?>)">
 					<i class="icon icon-agree"></i> <b class="count"><?php echo $this->comment_info['agree_count']; ?></b>
 				</a>
 
-				<a href="javascript:;" class="disagree<?php if ($this->comment_info['vote_info']['rating'] == -1) { ?> active<?php } ?>" onclick="AWS.User.video_comment_vote_disagree($(this), <?php echo $this->comment_info['id']; ?>)">
+				<a href="javascript:;" class="disagree<?php if ($this->comment_info['vote_value'] < 0) { ?> active<?php } ?>" onclick="AWS.User.toggle_vote(this, 'video_comment', 'disagree', <?php echo $this->comment_info['id']; ?>)">
 					<i class="icon icon-disagree"></i>
 				</a>
 			<?php } else { ?>

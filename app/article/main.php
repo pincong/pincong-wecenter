@@ -49,10 +49,8 @@ class main extends AWS_CONTROLLER
 
 		if ($this->user_id)
 		{
-			$article_info['vote_info'] = $this->model('article')->get_article_vote_by_id('article', $article_info['id'], null, $this->user_id);
+			$article_info['vote_value'] = $this->model('vote')->get_user_vote_value_by_id('article', $article_info['id'], $this->user_id);
 		}
-
-		//$article_info['vote_users'] = $this->model('article')->get_article_vote_users_by_id('article', $article_info['id'], 1, 10);
 
 		TPL::assign('article_info', $article_info);
 
@@ -83,9 +81,19 @@ class main extends AWS_CONTROLLER
 
 		if ($comments AND $this->user_id)
 		{
+			$comment_ids = array();
+			foreach ($comments as $comment)
+			{
+				$comment_ids[] = $comment['id'];
+			}
+
+			$comment_vote_values = $this->model('vote')->get_user_vote_values_by_ids('article_comment', $comment_ids, $this->user_id);
+
 			foreach ($comments AS $key => $val)
 			{
-				$comments[$key]['vote_info'] = $this->model('article')->get_article_vote_by_id('comment', $val['id'], null, $this->user_id);
+				// 当前用户评论点赞状态
+				$comments[$key]['vote_value'] = $comment_vote_values[$val['id']];
+
 				$comments[$key]['message'] = $this->model('question')->parse_at_user($val['message']);
 
 			}

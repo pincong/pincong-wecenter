@@ -57,12 +57,12 @@
 		<!-- 社交操作 -->
 		<div class="meta clearfix">
 			<!-- 投票栏 -->
-			<span class="operate">
+			<span class="operate aw-vote-ui">
 			<?php if ($this->user_id AND $this->user_id != $val['answer_info']['uid']) { ?>
-				<a href="javascript:;" class="agree<?php if ($val['answer_info']['agree_status'] == 1) { ?> active<?php } ?>" onclick="AWS.User.agree_vote(this, '<?php echo UF::name($this->user_info); ?>', <?php echo $val['answer_info']['answer_id']; ?>);">
+				<a href="javascript:;" class="agree<?php if ($val['answer_info']['vote_value'] > 0) { ?> active<?php } ?>" onclick="AWS.User.toggle_vote(this, 'answer', 'agree', <?php echo $val['answer_info']['answer_id']; ?>);">
 					<i class="icon icon-agree"></i> <b class="count"><?php echo $val['answer_info']['agree_count']; ?></b>
 				</a>
-				<a href="javascript:;" class="disagree<?php if ($val['answer_info']['agree_status'] == -1) { ?> active<?php } ?>" onclick="AWS.User.disagree_vote(this, '<?php echo UF::name($this->user_info); ?>', <?php echo $val['answer_info']['answer_id']; ?>);">
+				<a href="javascript:;" class="disagree<?php if ($val['answer_info']['vote_value'] < 0) { ?> active<?php } ?>" onclick="AWS.User.toggle_vote(this, 'answer', 'disagree', <?php echo $val['answer_info']['answer_id']; ?>);">
 					<i class="icon icon-disagree"></i>
 				</a>
 			<?php } else { ?>
