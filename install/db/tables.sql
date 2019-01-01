@@ -439,7 +439,6 @@ CREATE TABLE IF NOT EXISTS `aws_question` (
   `update_time` int(11) DEFAULT '0',
   `published_uid` int(11) DEFAULT NULL COMMENT '发布用户UID',
   `answer_count` int(11) NOT NULL DEFAULT '0' COMMENT '回答计数',
-  `answer_users` int(11) NOT NULL DEFAULT '0' COMMENT '回答人数',
   `view_count` int(11) NOT NULL DEFAULT '0' COMMENT '浏览次数',
   `focus_count` int(11) NOT NULL DEFAULT '0' COMMENT '关注数',
   `comment_count` int(11) NOT NULL DEFAULT '0' COMMENT '评论数',

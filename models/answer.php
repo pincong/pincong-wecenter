@@ -300,7 +300,6 @@ class answer_class extends AWS_MODEL
 		), 'question_id = ' . intval($question_id));
 
 		$this->model('question')->update_answer_count($question_id);
-		$this->model('question')->update_answer_users_count($question_id);
 
 		$this->shutdown_update('users', array(
 			'answer_count' => $this->count('answer', 'uid = ' . intval($uid))

@@ -456,18 +456,6 @@ class question_class extends AWS_MODEL
 		), 'question_id = ' . intval($question_id));
 	}
 
-	public function update_answer_users_count($question_id)
-	{
-		if (!$question_id)
-		{
-			return false;
-		}
-
-		return $this->update('question', array(
-			'answer_users' => $this->count('answer', 'question_id = ' . intval($question_id))
-		), 'question_id = ' . intval($question_id));
-	}
-
 	public function update_focus_count($question_id)
 	{
 		if (!$question_id)
