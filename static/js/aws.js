@@ -1474,9 +1474,16 @@ AWS.User =
 		selector.parents('.aw-comment-box li').fadeOut();
 	},
 
-	why_fold: function()
+	why_fold: function(reason)
 	{
-		AWS.alert(_t('被折叠的内容是被你或者被大多数用户认为没有帮助的内容'));
+		if (reason == -1)
+			reason = _t('用户被封禁');
+		else if (reason == -2)
+			reason = _t('收到太多反对');
+		else
+			reason = _t('管理员折叠');
+
+		AWS.alert(reason);
 	},
 
 	forbid_user: function(uid)
