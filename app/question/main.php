@@ -56,50 +56,6 @@ class main extends AWS_CONTROLLER
 			$sort = 'ASC';
 		}
 
-		$question_info['redirect'] = $this->model('question')->get_redirect($question_info['question_id']);
-
-		if ($question_info['redirect']['target_id'])
-		{
-			$target_question = $this->model('question')->get_question_info_by_id($question_info['redirect']['target_id']);
-		}
-
-		if (is_digits($_GET['rf']) and $_GET['rf'])
-		{
-			if ($from_question = $this->model('question')->get_question_info_by_id($_GET['rf']))
-			{
-				$redirect_message[] = AWS_APP::lang()->_t('从问题 %s 跳转而来', '<a href="' . get_js_url('/question/' . $_GET['rf'] . '?rf=false') . '">' . $from_question['question_content'] . '</a>');
-			}
-		}
-
-		if ($question_info['redirect'] and ! $_GET['rf'])
-		{
-			if ($target_question)
-			{
-				HTTP::redirect('/question/' . $question_info['redirect']['target_id'] . '?rf=' . $question_info['question_id']);
-			}
-			else
-			{
-				$redirect_message[] = AWS_APP::lang()->_t('重定向目标问题已被删除, 将不再重定向问题');
-			}
-		}
-		else if ($question_info['redirect'])
-		{
-			if ($target_question)
-			{
-				$message = AWS_APP::lang()->_t('此问题将跳转至') . ' <a href="' . get_js_url('/question/' . $question_info['redirect']['target_id'] . '?rf=' . $question_info['question_id']) . '">' . $target_question['question_content'] . '</a>';
-
-				if ($this->user_id AND ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
-				{
-					$message .= "&nbsp; (<a href=\"javascript:;\" onclick=\"AWS.ajax_request(G_BASE_URL + '/question/ajax/unredirect/', 'item_id=" . $question_info['question_id'] . "&target_id=" . $question_info['redirect']['target_id'] . "');\">" . AWS_APP::lang()->_t('撤消重定向') . "</a>)";
-				}
-
-				$redirect_message[] = $message;
-			}
-			else
-			{
-				$redirect_message[] = AWS_APP::lang()->_t('重定向目标问题已被删除, 将不再重定向问题');
-			}
-		}
 
 		if ($question_info['category_id'] AND get_setting('category_enable') != 'N')
 		{
@@ -272,8 +228,6 @@ class main extends AWS_CONTROLLER
 		{
 			import_editor_static_files();
 		}
-
-		TPL::assign('redirect_message', $redirect_message);
 
 		$recommend_posts = $this->model('posts')->get_recommend_posts_by_topic_ids($question_topic_ids);
 

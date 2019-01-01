@@ -1071,7 +1071,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
                 case 'new_topic':   // 新增话题
                 case 'new_answer_vote': // 新增答案投票
                 case 'new_favorite_item': // 新增收藏条目
-                case 'new_question_redirect': // 新增问题重定向
                     $statistic[] = $this->model('system')->statistic($val, $start_time, $end_time);
                 break;
             }

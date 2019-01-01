@@ -386,21 +386,6 @@ CREATE TABLE IF NOT EXISTS `aws_question_invite` (
 
 
 --
-CREATE TABLE IF NOT EXISTS `aws_redirect` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `item_id` int(11) DEFAULT '0',
-  `target_id` int(11) DEFAULT '0',
-  `time` int(10) DEFAULT '0',
-  `uid` int(11) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `item_id` (`item_id`),
-  KEY `uid` (`uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
---
-
-
---
 CREATE TABLE IF NOT EXISTS `aws_related_topic` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `topic_id` int(11) DEFAULT '0' COMMENT '话题 ID',

@@ -100,26 +100,6 @@ var AW_TEMPLATE = {
 			'</form>'+
 		'</div>',
 
-	'questionRedirect' :
-		'<div class="modal fade alert-box aw-question-redirect-box">'+
-			'<div class="modal-dialog">'+
-				'<div class="modal-content">'+
-					'<div class="modal-header">'+
-						'<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>'+
-						'<h3 class="modal-title" id="myModalLabel">' + _t('问题重定向至') + '</h3>'+
-					'</div>'+
-					'<div class="modal-body">'+
-						'<p>' + _t('将问题重定向至') + '</p>'+
-						'<div class="aw-question-drodpwon">'+
-							'<input id="question-input" class="form-control" type="text" data-id="{{data_id}}" placeholder="' + _t('搜索问题或问题 ID') + '" />'+
-							'<div class="aw-dropdown"><p class="title">' + _t('没有找到相关结果') + '</p><ul class="aw-dropdown-list"></ul></div>'+
-						'</div>'+
-						'<p class="clearfix"><a href="javascript:;" class="btn btn-large btn-success pull-right" onclick="$(\'.alert-box\').modal(\'hide\');">' + _t('放弃操作') + '</a></p>'+
-					'</div>'+
-				'</div>'+
-			'</div>'+
-		'</div>',
-
 	'inbox' :
 			'<div class="modal fade alert-box aw-inbox">'+
 				'<div class="modal-dialog">'+
@@ -218,8 +198,7 @@ var AW_TEMPLATE = {
 		'<li class="user"><a data-url="{{url}}" data-id="{{uid}}" data-actions="{{action}}" data-value="{{name}}"><img class="img" src="{{img}}" />{{name}}</a></li>',
 	'editTopicDorpdownList' :
 		'<li class="question"><a>{{name}}</a></li>',
-	'questionRedirectList' :
-		'<li class="question"><a class="aw-hide-txt" onclick="AWS.ajax_request({{url}})">{{name}}</a></li>',
+
 	'questionDropdownList' :
 		'<li class="question" data-id="{{id}}"><a class="aw-hide-txt" href="{{url}}">{{name}}</a></li>',
 

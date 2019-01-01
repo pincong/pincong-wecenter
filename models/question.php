@@ -248,8 +248,6 @@ class question_class extends AWS_MODEL
 
 		$this->model('notify')->delete_notify('model_type = 1 AND source_id = ' . intval($question_id));	// 删除相关的通知
 
-		$this->delete('redirect', "item_id = " . intval($question_id) . " OR target_id = " . intval($question_id));
-
 		$this->model('posts')->remove_posts_index($question_id, 'question');
 
 		$this->delete('question', 'question_id = ' . intval($question_id));
@@ -742,45 +740,6 @@ class question_class extends AWS_MODEL
 		}
 
 		return true;
-	}
-
-	public function redirect($uid, $item_id, $target_id)
-	{
-		if ($item_id == $target_id)
-		{
-			return false;
-		}
-
-		if (! $this->fetch_row('redirect', 'item_id = ' . intval($item_id) . ' AND target_id = ' . intval($target_id)))
-		{
-			$redirect_id = $this->insert('redirect', array(
-				'item_id' => intval($item_id),
-				'target_id' => intval($target_id),
-				'time' => fake_time(),
-				'uid' => intval($uid)
-			));
-
-			$this->model('content')->log('question', $item_id, '重定向', $uid, 'question', $target_id);
-			return $redirect_id;
-		}
-	}
-
-	public function unredirect($uid, $item_id, $target_id)
-	{
-		if ($item_id == $target_id)
-		{
-			return false;
-		}
-
-		if ($this->delete('redirect', 'item_id = ' . intval($item_id) . ' AND target_id = ' . intval($target_id)))
-		{
-			$this->model('content')->log('question', $item_id, '取消重定向', $uid, 'question', $target_id);
-		}
-	}
-
-	public function get_redirect($item_id)
-	{
-		return $this->fetch_row('redirect', 'item_id = ' . intval($item_id));
 	}
 
 	public function save_last_answer($question_id, $answer_id = null)

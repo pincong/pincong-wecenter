@@ -547,8 +547,6 @@ var AWS =
 
 	/**
 	 *	公共弹窗
-	 *	redirect    : 问题重定向
-	 *  favorite    : 评论添加收藏
 	 *	inbox       : 私信
 	 */
 	dialog: function (type, data, callback)
@@ -564,12 +562,6 @@ var AWS =
 				});
 			break;
 
-			case 'redirect':
-				var template = Hogan.compile(AW_TEMPLATE.questionRedirect).render(
-				{
-					'data_id': data
-				});
-			break;
 
 			case 'inbox':
 				var template = Hogan.compile(AW_TEMPLATE.inbox).render(
@@ -578,9 +570,6 @@ var AWS =
 				});
 			break;
 
-			case 'topicEditHistory':
-				var template = AW_TEMPLATE.ajaxData.replace('{{title}}', _t('编辑记录')).replace('{{data}}', data);
-			break;
 
 			case 'ajaxData':
 				var template = AW_TEMPLATE.ajaxData.replace('{{title}}', data.title).replace('{{data}}', '<div id="aw_dialog_ajax_data"></div>');
@@ -618,10 +607,6 @@ var AWS =
 
 			switch (type)
 			{
-				case 'redirect' :
-					AWS.Dropdown.bind_dropdown_list($('.aw-question-redirect-box #question-input'), 'redirect');
-				break;
-
 				case 'inbox' :
 					AWS.Dropdown.bind_dropdown_list($('.aw-inbox #invite-input'), 'inbox');
 					//私信用户下拉点击事件
@@ -1766,7 +1751,7 @@ AWS.Dropdown =
 
 	/* 下拉菜单数据获取 */
 	/*
-	*    type : search, publish, redirect, invite, inbox, topic_question, topic
+	*    type : search, publish, invite, inbox, topic_question, topic
 	*/
 	get_dropdown_list: function(selector, type, data)
 	{
@@ -1783,10 +1768,6 @@ AWS.Dropdown =
 
 			case 'publish' :
 				url = G_BASE_URL + '/search/ajax/search/?type=questions&q=' + encodeURIComponent(data) + '&limit=5';
-			break;
-
-			case 'redirect' :
-				url = G_BASE_URL + '/search/ajax/search/?q=' + encodeURIComponent(data) + '&type=questions&limit=30&is_question_id=1';
 			break;
 
 			case 'invite' :
@@ -1901,17 +1882,6 @@ AWS.Dropdown =
 						{
 							$(selector).parent().find('.aw-dropdown-list').append(Hogan.compile(AW_TEMPLATE.editTopicDorpdownList).render(
 							{
-								'name': a['name']
-							}));
-						});
-						break;
-
-					case 'redirect' :
-						$.each(result, function (i, a)
-						{
-							$(selector).parent().find('.aw-dropdown-list').append(Hogan.compile(AW_TEMPLATE.questionRedirectList).render(
-							{
-								'url': "'" + G_BASE_URL + "/question/ajax/redirect/', 'item_id=" + $(selector).attr('data-id') + "&target_id=" + a['search_id'] + "'",
 								'name': a['name']
 							}));
 						});

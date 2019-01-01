@@ -26,7 +26,7 @@
 										<?php if ($val['type'] == 'answer') { ?>
 										<!-- 回答 -->
 										<h4>
-											<a href="question/<?php echo $val['item']['question_info']['question_id']; ?>?rf=false&single=1&answer_id=<?php echo $val['item']['answer_id']; ?>"><?php if (!$val['item']['question_info']['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['item']['question_info']['question_content']; ?><?php } ?></a>
+											<a href="question/<?php echo $val['item']['question_info']['question_id']; ?>?single=1&answer_id=<?php echo $val['item']['answer_id']; ?>"><?php if (!$val['item']['question_info']['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['item']['question_info']['question_content']; ?><?php } ?></a>
 										</h4>
 										<div class="content">
 											<div id="detail_<?php echo $val['item_id']; ?>">
@@ -43,19 +43,19 @@
 										<?php } else if ($val['type'] == 'question') { ?>
 										<!-- 问题 -->
 										<h4>
-											<a href="question/<?php echo $val['item']['question_id']; ?>?rf=false"><?php if (!$val['item']['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['item']['question_content']; ?><?php } ?></a>
+											<a href="question/<?php echo $val['item']['question_id']; ?>"><?php if (!$val['item']['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['item']['question_content']; ?><?php } ?></a>
 										</h4>
 										<!-- end 问题 -->
 										<?php } else if ($val['type'] == 'article') { ?>
 										<!-- 文章 -->
 										<h4>
-											<a href="article/<?php echo $val['item']['id']; ?>?rf=false"><?php if (!$val['item']['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['item']['title']; ?><?php } ?></a>
+											<a href="article/<?php echo $val['item']['id']; ?>"><?php if (!$val['item']['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['item']['title']; ?><?php } ?></a>
 										</h4>
 										<!-- end 文章 -->
 										<?php } else if ($val['type'] == 'video') { ?>
 										<!-- 影片 -->
 										<h4>
-											<a href="video/<?php echo $val['item']['id']; ?>?rf=false"><?php if (!$val['item']['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['item']['title']; ?><?php } ?></a>
+											<a href="video/<?php echo $val['item']['id']; ?>"><?php if (!$val['item']['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['item']['title']; ?><?php } ?></a>
 										</h4>
 										<!-- end 影片 -->
 										<?php } ?>

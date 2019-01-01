@@ -237,7 +237,6 @@ class user_class extends AWS_MODEL
 		$this->delete('question_invite', 'sender_uid = ' . ($uid) . ' OR recipients_uid = ' . ($uid));
 		$this->delete('user_follow', 'fans_uid = ' . ($uid) . ' OR friend_uid = ' . ($uid));
 
-		$this->update('redirect', array('uid' => '-1'), 'uid = ' . ($uid));
 		$this->update('topic_merge', array('uid' => '-1'), 'uid = ' . ($uid));
 		$this->update('topic_relation', array('uid' => '-1'), 'uid = ' . ($uid));
 

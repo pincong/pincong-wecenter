@@ -19,51 +19,6 @@ var AW_TEMPLATE = {
 				'</div>'+
 			'</div>',
 
-	'imagevideoBox' : 
-			'<div id="aw-image-box" class="modal fade alert-box aw-image-box">'+
-				'<div class="modal-dialog">'+
-					'<div class="modal-content">'+
-						'<div class="modal-header">'+
-							'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>'+
-							'<h3 class="modal-title" id="myModalLabel">{{title}}</h3>'+
-						'</div>'+
-						'<div class="modal-body">'+
-							'<form id="addTxtForms">'+
-								'<p>' + _t('文字说明') + ':</p>'+
-								'<input class="form-control" type="text" name="{{tips}}"/>'+
-								'<p>' + _t('链接地址') + '</p>'+
-								'<input class="form-control" type="text" value="http://" name="{{url}}" />'+
-							'</form>'+
-							'<p class="text-color-999">{{type_tips}}</p>'+
-						'</div>'+
-						'<div class="modal-footer">'+
-							'<a data-dismiss="modal" aria-hidden="true" class="btn">' + _t('取消') + '</a>'+
-							'<button class="btn btn-large btn-success" data-dismiss="modal" aria-hidden="true" onclick="AWS.Editor.add_multimedia({{type}});">' + _t('确定') + '</button>'+
-						'</div>'+
-					'</div>'+
-				'</div>'+
-			'</div>',
-
-	'questionRedirect' : 
-		'<div class="modal fade alert-box aw-question-redirect-box">'+
-			'<div class="modal-dialog">'+
-				'<div class="modal-content">'+
-					'<div class="modal-header">'+
-						'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>'+
-						'<h3 class="modal-title" id="myModalLabel">' + _t('问题重定向至') + '</h3>'+
-					'</div>'+
-					'<div class="modal-body">'+
-						'<p>' + _t('将问题重定向至') + '</p>'+
-						'<div class="aw-question-drodpwon">'+
-							'<input id="question-input" class="form-control" type="text" data-id="{{data_id}}" placeholder="' + _t('搜索问题') + '" />'+
-							'<div class="aw-dropdown"><i class="aw-icon i-dropdown-triangle active"></i><p class="title">' + _t('没有找到相关结果') + '</p><ul class="aw-dropdown-list"></ul></div>'+
-						'</div>'+
-						'<p class="clearfix"><a href="javascript:;" class="btn btn-large btn-success pull-right" onclick="$(\'.alert-box\').modal(\'hide\');">' + _t('放弃操作') + '</a></p>'+
-					'</div>'+
-				'</div>'+
-			'</div>'+
-		'</div>',
-
 	'inbox' :
 			'<div class="modal fade alert-box aw-inbox">'+
 				'<div class="modal-dialog">'+
@@ -167,8 +122,7 @@ var AW_TEMPLATE = {
 		'<li class="user"><a data-url="{{url}}" data-id="{{uid}}" data-actions="{{action}}" data-value="{{name}}"><img class="img" src="{{img}}" />{{name}}</a></li>',
 	'editTopicDorpdownList' : 
 		'<li class="question"><a>{{name}}</a></li>',
-	'questionRedirectList' : 
-		'<li class="question"><a class="aw-hide-txt" onclick="AWS.ajax_request({{url}})">{{name}}</a></li>',
+
 	'questionDropdownList' : 
 		'<li class="question" data-id="{{id}}"><a class="aw-hide-txt" target="_blank" _href="{{url}}">{{name}}</a></li>',
 
@@ -181,42 +135,7 @@ var AW_TEMPLATE = {
 			'<span class="aw-text-color-666">{{name}}</span>'+
 		'</li>',
 
-	'workEidt' : 
-			'<td><input type="text" value="{{company}}" class="company form-control"></td>'+
-			'<td>'+
-				'<select class="work editwork">'+
-				'</select>'+
-			'</td>'+
-			'<td><select class="syear editsyear">'+
-				'</select>&nbsp;&nbsp;' + _t('年') + ' &nbsp;&nbsp; ' + _t('至') + '&nbsp;&nbsp;&nbsp;&nbsp;'+
-				'<select class="eyear editeyear">'+
-				'</select> ' + _t('年') +
-			'</td>'+
-			'<td><a class="delete-work">' + _t('删除') + '</a>&nbsp;&nbsp;<a class="add-work">' + _t('保存') + '</a></td>',
 
-	'linkBox' : 
-			'<div id="aw-link-box" class="modal alert-box aw-link-box fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">'+
-				'<div class="modal-dialog">'+
-					'<div class="modal-content">'+
-						'<div class="modal-header">'+
-							'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>'+
-							'<h3 id="myModalLabel">{{title}}</h3>'+
-						'</div>'+
-						'<div class="modal-body">'+
-							'<form id="addTxtForms">'+
-								'<p>' + _t('链接文字') + '</p>'+
-								'<input type="text" value="" name="{{text}}" class="link-title form-control" placeholder="'+ _t('链接文字') +'" />'+
-								'<p>' + _t('链接地址') + ':</p>'+
-								'<input type="text" name="{{url}}" class="link-url form-control" value="http://" />'+
-							'</form>'+
-						'</div>'+
-						'<div class="modal-footer">'+
-							'<a data-dismiss="modal" aria-hidden="true">' + _t('取消') + '</a>'+
-							'<button class="btn btn-large btn-success" data-dismiss="modal" aria-hidden="true" onclick="AWS.Editor.add_multimedia({{type}});">' + _t('确定') + '</button>'+
-						'</div>'+
-					'</div>'+
-				'</div>'+
-			'</div>',
 	'alertImg' :
 		'<div class="modal fade alert-box aw-tips-box aw-alert-img-box">'+
 			'<div class="modal-dialog">'+

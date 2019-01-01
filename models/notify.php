@@ -28,8 +28,6 @@ class notify_class extends AWS_MODEL
 
 	const CATEGORY_ARTICLE	= 8;	// 文章
 
-	const CATEGORY_TICKET	= 9;	// 工单
-
 	//=========操作标示:action_type==================================================
 
 	const TYPE_PEOPLE_FOCUS	= 101;	// 被人关注
@@ -38,13 +36,7 @@ class notify_class extends AWS_MODEL
 	const TYPE_INVITE_QUESTION	= 104;	// 被人邀请问题问题
 	const TYPE_ANSWER_COMMENT	= 105;	// 我的回复被评论
 	const TYPE_QUESTION_COMMENT	= 106;	// 我的问题被评论
-	const TYPE_ANSWER_AGREE	= 107;	// 我的回复收到赞同
-	const TYPE_ANSWER_THANK	= 108;	// 我的回复收到感谢
-	const TYPE_MOD_QUESTION	= 110;	// 我发布的问题被编辑
-	const TYPE_REMOVE_ANSWER	= 111;	// 我发表的回复被删除
 
-	const TYPE_REDIRECT_QUESTION	= 113;	// 我发布的问题被重定向
-	const TYPE_QUESTION_THANK	= 114;	// 我发布的问题收到感谢
 	const TYPE_CONTEXT	= 100;	// 纯文本通知
 
 	const TYPE_ANSWER_AT_ME	= 115;	// 有回答 @ 提到我
@@ -53,13 +45,7 @@ class notify_class extends AWS_MODEL
 	const TYPE_ARTICLE_NEW_COMMENT	= 117; // 文章有新评论
 	const TYPE_ARTICLE_COMMENT_AT_ME	= 118; // 文章评论提到我
 
-	const TYPE_ARTICLE_APPROVED = 131; // 文章通过审核
-	const TYPE_ARTICLE_REFUSED = 132; // 文章未通过审核
-	const TYPE_QUESTION_APPROVED = 133; // 问题通过审核
-	const TYPE_QUESTION_REFUSED = 134; // 问题未通过审核
 
-	const TYPE_TICKET_REPLIED = 141; // 工单被回复
-	const TYPE_TICKET_CLOSED = 142; // 工单被关闭
 
 	public $notify_actions = array();
 	public $notify_action_details;
@@ -284,8 +270,6 @@ class notify_class extends AWS_MODEL
 
 							$tmp_data['title'] = $question_list[$data['question_id']]['question_content'];
 
-							$rf = false;
-
 							$querys = array();
 
 							$querys[] = $token;
@@ -315,15 +299,6 @@ class notify_class extends AWS_MODEL
 										$answer_ids[] = $ex_notify['data']['item_id'];
 									}
 
-									if ($ex_notify['action_type'] == self::TYPE_REDIRECT_QUESTION)
-									{
-										$rf = true;
-									}
-								}
-
-								if (! $rf)
-								{
-									$querys[] = 'rf=false';
 								}
 
 								if ($from_uid)
@@ -358,19 +333,14 @@ class notify_class extends AWS_MODEL
 							{
 								switch ($notify['action_type'])
 								{
-									case self::TYPE_REDIRECT_QUESTION:
-										break;
 
-									case self::TYPE_MOD_QUESTION:
-										$querys[] = 'column=log';
-
-										break;
 
 									case self::TYPE_INVITE_QUESTION:
 										$querys[] = 'source=' . base64_encode($data['from_uid']);
 
 										break;
 
+									// TODO: comment_unfold 无效
 									case self::TYPE_QUESTION_COMMENT:
 									case self::TYPE_QUESTION_COMMENT_AT_ME:
 										$querys[] = 'comment_unfold=question';
@@ -460,10 +430,6 @@ class notify_class extends AWS_MODEL
 			{
 				$querys = array();
 
-				$rf = false;
-
-				$column_log = false;
-
 				$notification_ids = array();
 
 				foreach ($action as $ex_notify)
@@ -485,28 +451,9 @@ class notify_class extends AWS_MODEL
 						$answer_ids[] = $ex_notify['data']['item_id'];
 					}
 
-					if ($ex_notify['action_type'] == self::TYPE_REDIRECT_QUESTION)
-					{
-						$rf = true;
-					}
-
-					if ($ex_notify['action_type'] == self::TYPE_MOD_QUESTION)
-					{
-						$column_log = true;
-					}
-				}
-
-				if (! $rf)
-				{
-					$querys[] = 'rf=false';
 				}
 
 				$querys[] = 'notification_id=' . implode(',', $notification_ids);
-
-				if ($column_log)
-				{
-					$querys[] = 'column=log';
-				}
 
 				if (!($ex_notify['action_type'] == self::TYPE_ARTICLE_NEW_COMMENT OR $ex_notify['action_type'] == self::TYPE_ARTICLE_COMMENT_AT_ME) AND $comment_type)
 				{
@@ -861,20 +808,8 @@ class notify_class extends AWS_MODEL
 
 							break;
 
-						case self::TYPE_MOD_QUESTION:
-							$data[$key]['extend_message'][] = AWS_APP::lang()->_t('%s 次编辑问题, 按编辑者查看', $extend['count']) . ': ' . $users_list;
 
-							break;
 
-						case self::TYPE_REDIRECT_QUESTION:
-							$data[$key]['extend_message'][] = $users_list . ' ' . AWS_APP::lang()->_t('重定向了你发布的问题');
-
-							break;
-
-						case self::TYPE_REMOVE_ANSWER:
-							$data[$key]['extend_message'][] = AWS_APP::lang()->_t('%s 个回复被删除', $extend['count']);
-
-							break;
 
 						case self::TYPE_INVITE_QUESTION:
 							$data[$key]['extend_message'][] = $users_list . ' ' . AWS_APP::lang()->_t('邀请你参与问题');
@@ -949,20 +884,8 @@ class notify_class extends AWS_MODEL
 
 						break;
 
-					case self::TYPE_MOD_QUESTION:
-						$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a> ' . AWS_APP::lang()->_t('编辑了你发布的问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a>';
 
-						break;
 
-					case self::TYPE_REMOVE_ANSWER:
-						$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a> ' . AWS_APP::lang()->_t('删除了你在问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a> ' . AWS_APP::lang()->_t('中的回复');
-
-						break;
-
-					case self::TYPE_REDIRECT_QUESTION:
-						$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a> ' . AWS_APP::lang()->_t('重定向了你发起的问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a>';
-
-						break;
 
 					case self::TYPE_CONTEXT:
 						$data[$key]['message'] = $val['content'];
