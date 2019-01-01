@@ -471,8 +471,7 @@ class account_class extends AWS_MODEL
             }
 
             $this->update('users', array(
-                'group_id' => 3,
-                'is_first_login' => 1
+                'group_id' => 3
             ), 'uid = ' . intval($uid));
 
             $this->model('currency')->process($uid, 'REGISTER', get_setting('currency_system_config_register'), '初始资本');
@@ -691,26 +690,6 @@ class account_class extends AWS_MODEL
         ), 'uid = ' . intval($uid));
 
         return true;
-    }
-
-    /**
-     * 去除首次登录标记
-     *
-     * @param  int
-     * @return  boolean
-     */
-    public function clean_first_login($uid)
-    {
-        if (! $this->shutdown_update('users', array(
-            'is_first_login' => 0
-        ), 'uid = ' . intval($uid)))
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
     }
 
     /**
@@ -945,99 +924,6 @@ class account_class extends AWS_MODEL
     {
         return $this->count('users', $where);
     }
-
-    public function get_user_recommend_v2($uid, $limit = 10)
-    {
-        if ($users_list = AWS_APP::cache()->get('user_recommend_' . $uid))
-        {
-            return $users_list;
-        }
-
-        if (!$friends = $this->model('follow')->get_user_friends($uid, 100))
-        {
-            return $this->get_users_list(null, $limit, true);
-        }
-
-        foreach ($friends as $key => $val)
-        {
-            $follow_uids[] = $val['uid'];
-            $follow_users_info[$val['uid']] = $val;
-        }
-
-        if ($users_focus = $this->query_all("SELECT DISTINCT friend_uid, fans_uid FROM " . $this->get_table('user_follow') . " WHERE fans_uid IN (" . implode(',', $follow_uids) . ") ORDER BY follow_id DESC", $limit))
-        {
-            foreach ($users_focus as $key => $val)
-            {
-                $friend_uids[$val['friend_uid']] = $val['friend_uid'];
-
-                $users_ids_recommend[$val['friend_uid']] = array(
-                    'type' => 'friend',
-                    'fans_uid' => $val['fans_uid']
-                );
-            }
-        }
-
-        // 取我关注的话题
-        if ($my_focus_topics = $this->model('topic')->get_focus_topic_list($uid, null))
-        {
-            foreach ($my_focus_topics as $key => $val)
-            {
-                $my_focus_topics_ids[] = $val['topic_id'];
-                $my_focus_topics_info[$val['topic_id']] = $val;
-            }
-
-            if (sizeof($my_focus_topics_ids) > 0)
-            {
-                array_walk_recursive($my_focus_topics_ids, 'intval_string');
-
-                if ($topic_focus_uids = $this->query_all("SELECT DISTINCT uid, topic_id FROM " . $this->get_table('topic_focus') . " WHERE topic_id IN(" . implode(',', $my_focus_topics_ids) . ")"))
-                {
-                    foreach ($topic_focus_uids as $key => $val)
-                    {
-                        if ($friend_uids[$val['uid']])
-                        {
-                            continue;
-                        }
-
-                        $friend_uids[$val['uid']] = $val['uid'];
-
-                        $users_ids_recommend[$val['uid']] = array(
-                            'type' => 'topic',
-                            'topic_id' => $val['topic_id']
-                        );
-                    }
-                }
-            }
-        }
-
-        if (! $friend_uids)
-        {
-            return $this->get_users_list('uid NOT IN (' . implode($follow_uids, ',') . ')', $limit, true);
-        }
-
-        if ($users_list = $this->get_users_list('uid IN(' . implode($friend_uids, ',') . ') AND uid NOT IN (' . implode($follow_uids, ',') . ')', $limit, true, true))
-        {
-            foreach ($users_list as $key => $val)
-            {
-                $users_list[$key]['type'] = $users_ids_recommend[$val['uid']]['type'];
-
-                if ($users_ids_recommend[$val['uid']]['type'] == 'friend')
-                {
-					// TODO: 何处用到?
-                    $users_list[$key]['friend_users'] = $follow_users_info[$users_ids_recommend[$val['uid']]['fans_uid']];
-                }
-                else if ($users_ids_recommend[$val['uid']]['type'] == 'topic')
-                {
-                    $users_list[$key]['topic_info'] = $my_focus_topics_info[$users_ids_recommend[$val['uid']]['topic_id']];
-                }
-            }
-
-            AWS_APP::cache()->set('user_recommend_' . $uid, $users_list, get_setting('cache_level_normal'));
-        }
-
-        return $users_list;
-    }
-
 
     /**
      * 获取头像地址
@@ -1276,16 +1162,6 @@ class account_class extends AWS_MODEL
         ), 'uid = ' . intval($uid));
     }
 
-    public function send_delete_message($uid, $title, $message)
-    {
-        $delete_message = AWS_APP::lang()->_t('你发表的内容 %s 已被管理员删除', $title);
-        $delete_message .= "\r\n----- " . AWS_APP::lang()->_t('内容') . " -----\r\n" . $message;
-        $delete_message .= "\r\n-----------------------------\r\n";
-        $delete_message .= AWS_APP::lang()->_t('如有疑问, 请联系管理员');
-
-        return true;
-    }
-
     public function save_recent_topics($uid, $topic_title)
     {
         if (!$user_info = $this->get_user_info_by_uid($uid))
@@ -1319,60 +1195,6 @@ class account_class extends AWS_MODEL
         return $this->update('users', array(
             'recent_topics' => serialize($new_recent_topics)
         ), 'uid = ' . intval($uid));
-    }
-
-    public function associate_remote_avatar($uid, $headimgurl)
-    {
-        if (!$headimgurl)
-        {
-            return false;
-        }
-
-        if (!$user_info = $this->get_user_info_by_uid($uid))
-        {
-            return false;
-        }
-
-        if ($user_info['avatar_file'])
-        {
-            return false;
-        }
-
-        if (!$avatar_stream = file_get_contents($headimgurl))
-        {
-            return false;
-        }
-
-        $avatar_location = get_setting('upload_dir') . '/avatar/' . $this->get_avatar($uid, '');
-
-        $avatar_dir = dirname($avatar_location) . '/';
-
-        if (!file_exists($avatar_dir))
-        {
-            make_dir($avatar_dir);
-        }
-
-        if (!@file_put_contents($avatar_location, $avatar_stream))
-        {
-            return false;
-        }
-
-        foreach(AWS_APP::config()->get('image')->avatar_thumbnail AS $key => $val)
-        {
-            AWS_APP::image()->initialize(array(
-                'quality' => 90,
-                'source_image' => $avatar_location,
-                'new_image' => $avatar_dir . $this->get_avatar($uid, $key, 2),
-                'width' => $val['w'],
-                'height' => $val['h']
-            ))->resize();
-        }
-
-        $this->update('users', array(
-            'avatar_file' => $this->get_avatar($uid)
-        ), 'uid = ' . intval($uid));
-
-        return true;
     }
 
 	public function calc_user_recovery_code($uid)

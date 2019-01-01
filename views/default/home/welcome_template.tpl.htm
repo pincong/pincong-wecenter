@@ -64,7 +64,7 @@
 					</div>
 					<div class="mod-footer">
 						<a class="pull-left" onclick="welcome_step('finish');">跳过资料填写</a>
-						<a class="btn btn-large btn-success pull-right" onclick="AWS.ajax_post($('#welcome_step_1_form'), _welcome_step_1_form_processer);"><?php _e('下一步'); ?></a>
+						<a class="btn btn-large btn-success pull-right" onclick="AWS.ajax_post($('#welcome_step_1_form'), function(){welcome_step('2')});"><?php _e('下一步'); ?></a>
 					</div>
 
 				</div>

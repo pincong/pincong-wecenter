@@ -37,10 +37,59 @@
 	</div>
 </div>
 
+<?php if ($_GET['first_login']) { ?>
+<script type="text/javascript" src="<?php echo G_STATIC_URL; ?>/js/fileupload.js"></script>
+<script type="text/javascript">
+function welcome_step(step)
+{
+	switch (step)
+	{
+		case '1':
+			var fileupload = new FileUpload('avatar', $('#welcome_avatar_uploader'), $("#aw-upload-img"), G_BASE_URL + '/account/ajax/avatar_upload/', {'loading_status' : '#aw-img-uploading'});
+		break;
+
+		case '2':
+			$('#welcome_topics_list').html('<p style="padding: 15px 0" align="center"><img src="' + G_STATIC_URL + '/common/loading_b.gif" alt="" /></p>');
+
+			$('.aw-first-login').hide().siblings().eq(1).show();
+
+			$.get(G_BASE_URL + '/home/info/welcome_get_topics/', function (result) {
+				$('#welcome_topics_list').html(result);
+			});
+		break;
+
+		case '3':
+			$('#welcome_users_list').html('<p style="padding: 15px 0" align="center"><img src="' + G_STATIC_URL + '/common/loading_b.gif" alt="" /></p>');
+
+			$('.aw-first-login').hide().siblings().eq(2).show();
+
+			$.get(G_BASE_URL + '/home/info/welcome_get_users/', function (result) {
+				$('#welcome_users_list').html(result);
+			});
+		break;
+
+		case 'finish':
+			$('#aw-ajax-box').html('');
+			$('.modal-backdrop').detach();
+			$('body').removeClass('modal-open');
+		break;
+	}
+}
+
+$(document).ready(function () {
+	$.get(G_BASE_URL+'/home/info/welcome/', function (template) {
+		$('#aw-ajax-box').html(template);
+		$('body').addClass('modal-open');
+		welcome_step('1');
+	});
+});
+</script>
+<?php } else { ?>
 <script type="text/javascript">
 $(document).ready(function () {
 	AWS.load_list_view(G_BASE_URL + '/home/info/activities/', $('#bp_more'), $('#main_contents'), 1);
 });
 </script>
+<?php } ?>
 
 <?php TPL::output('global/footer.tpl.htm'); ?>

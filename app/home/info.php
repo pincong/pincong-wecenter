@@ -81,4 +81,51 @@ class info extends AWS_CONTROLLER
 		TPL::output('home/invites_template');
 	}
 
+
+	public function welcome_action()
+	{
+		TPL::output('home/welcome_template');
+	}
+
+	public function welcome_get_topics_action()
+	{
+		if ($topics_list = $this->model('topic')->get_topic_list("discuss_count > 5", 'RAND()', 8))
+		{
+			foreach ($topics_list as $key => $topic)
+			{
+				$topics_list[$key]['has_focus'] = $this->model('topic')->has_focus_topic($this->user_id, $topic['topic_id']);
+			}
+		}
+		TPL::assign('topics_list', $topics_list);
+
+		TPL::output('home/welcome_get_topics_template');
+	}
+
+	public function welcome_get_users_action()
+	{
+		if ($welcome_recommend_users = trim(rtrim(get_setting('welcome_recommend_users'), ',')))
+		{
+			$welcome_recommend_users = explode(',', $welcome_recommend_users);
+
+			$users_list = $this->model('account')->get_users_list("user_name IN('" . implode("','", $welcome_recommend_users) . "')", 6, true, true, 'RAND()');
+		}
+
+		if (!$users_list)
+		{
+			$users_list = $this->model('account')->get_users_list("reputation > 5 AND last_login > " . (time() - (60 * 60 * 24 * 7)), 6, true, true, 'RAND()');
+		}
+
+		if ($users_list)
+		{
+			foreach ($users_list as $key => $val)
+			{
+				$users_list[$key]['follow_check'] = $this->model('follow')->user_follow_check($this->user_id, $val['uid']);
+			}
+		}
+
+		TPL::assign('users_list', $users_list);
+
+		TPL::output('home/welcome_get_users_template');
+	}
+
 }

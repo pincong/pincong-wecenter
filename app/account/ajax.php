@@ -231,11 +231,7 @@ class ajax extends AWS_CONTROLLER
 
 				$this->model('account')->setcookie_login($user_info['uid'], $_POST['user_name'], $_POST['password'], $user_info['salt'], $expire);
 
-				if ($user_info['is_first_login'])
-				{
-					$url = get_js_url('/home/first_login-TRUE');
-				}
-				else if ($_POST['return_url'] AND !strstr($_POST['return_url'], '/logout') AND
+				if ($_POST['return_url'] AND !strstr($_POST['return_url'], '/logout') AND
 					(strstr($_POST['return_url'], '://') AND strstr($_POST['return_url'], base_url())))
 				{
 					$url = get_js_url($_POST['return_url']);
@@ -249,59 +245,6 @@ class ajax extends AWS_CONTROLLER
 		}
 	}
 
-	public function welcome_message_template_action()
-	{
-
-		TPL::output('account/ajax/welcome_message_template');
-	}
-
-	public function welcome_get_topics_action()
-	{
-		if ($topics_list = $this->model('topic')->get_topic_list("discuss_count > 5", 'RAND()', 8))
-		{
-			foreach ($topics_list as $key => $topic)
-			{
-				$topics_list[$key]['has_focus'] = $this->model('topic')->has_focus_topic($this->user_id, $topic['topic_id']);
-			}
-		}
-		TPL::assign('topics_list', $topics_list);
-
-		TPL::output('account/ajax/welcome_get_topics');
-	}
-
-	public function welcome_get_users_action()
-	{
-		if ($welcome_recommend_users = trim(rtrim(get_setting('welcome_recommend_users'), ',')))
-		{
-			$welcome_recommend_users = explode(',', $welcome_recommend_users);
-
-			$users_list = $this->model('account')->get_users_list("user_name IN('" . implode("','", $welcome_recommend_users) . "')", 6, true, true, 'RAND()');
-		}
-
-		if (!$users_list)
-		{
-			$users_list = $this->model('account')->get_users_list("reputation > 5 AND last_login > " . (time() - (60 * 60 * 24 * 7)), 6, true, true, 'RAND()');
-		}
-
-		if ($users_list)
-		{
-			foreach ($users_list as $key => $val)
-			{
-				$users_list[$key]['follow_check'] = $this->model('follow')->user_follow_check($this->user_id, $val['uid']);
-			}
-		}
-
-		TPL::assign('users_list', $users_list);
-
-		TPL::output('account/ajax/welcome_get_users');
-	}
-
-	public function clean_first_login_action()
-	{
-		$this->model('account')->clean_first_login($this->user_id);
-
-		die('success');
-	}
 
 	public function request_find_password_action()
 	{

@@ -559,7 +559,6 @@ CREATE TABLE IF NOT EXISTS `aws_users` (
   `topic_focus_count` int(10) DEFAULT '0' COMMENT '关注话题数量',
   `group_id` int(10) DEFAULT '4' COMMENT '用户组',
   `forbidden` tinyint(1) DEFAULT '0' COMMENT '是否禁止用户',
-  `is_first_login` tinyint(1) DEFAULT '1' COMMENT '首次登录标记',
   `agree_count` int(10) DEFAULT '0' COMMENT '赞同数量',
   `views_count` int(10) DEFAULT '0' COMMENT '个人主页查看数量',
   `reputation` int(10) DEFAULT '0' COMMENT '威望',
