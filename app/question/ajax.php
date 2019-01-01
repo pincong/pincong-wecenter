@@ -184,6 +184,8 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能评论锁定的问题')));
 		}
 
+        set_repeat_submission_digest($message);
+
 		$this->model('answer')->insert_answer_comment($_GET['answer_id'], $this->user_id, $message, $_POST['anonymous']);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
@@ -262,6 +264,8 @@ class ajax extends AWS_CONTROLLER
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得超过 %s 字', $comment_length_max)));
 		}
+
+        set_repeat_submission_digest($message);
 
 		$this->model('question')->insert_question_comment($_GET['question_id'], $this->user_id, $message, $_POST['anonymous']);
 
@@ -608,6 +612,9 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
 		}
 
+		set_repeat_submission_digest($answer_content);
+		set_human_valid('answer_valid_hour');
+
 		if ($later)
 		{
 			// 延迟显示
@@ -636,9 +643,6 @@ class ajax extends AWS_CONTROLLER
 				$_POST['auto_focus']
 			);
 		}
-
-		set_repeat_submission_digest($answer_content);
-		set_human_valid('answer_valid_hour');
 
 		if ($url)
 		{

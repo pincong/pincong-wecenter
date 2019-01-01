@@ -241,6 +241,9 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
         }
 
+		set_repeat_submission_digest($question_content);
+		set_human_valid('question_valid_hour');
+
 		if ($later)
 		{
 			// 延迟显示
@@ -276,9 +279,6 @@ class ajax extends AWS_CONTROLLER
 
 			$url = get_js_url('/question/' . $question_id);
         }
-
-		set_repeat_submission_digest($question_content);
-		set_human_valid('question_valid_hour');
 
 		H::ajax_json_output(AWS_APP::RSM(array('url' => $url), 1, null));
     }
@@ -392,6 +392,9 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
         }
 
+		set_repeat_submission_digest($article_title);
+		set_human_valid('question_valid_hour');
+
 		if ($later)
 		{
 			// 延迟显示
@@ -425,9 +428,6 @@ class ajax extends AWS_CONTROLLER
 
 			$url = get_js_url('/article/' . $article_id);
         }
-
-		set_repeat_submission_digest($article_title);
-		set_human_valid('question_valid_hour');
 
 		H::ajax_json_output(AWS_APP::RSM(array('url' => $url), 1, null));
     }

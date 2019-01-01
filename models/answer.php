@@ -650,8 +650,6 @@ class answer_class extends AWS_MODEL
 			'time' => fake_time()
 		));
 
-        set_repeat_submission_digest($message);
-
 		if ($answer_info['uid'] != $uid)
 		{
 			$this->model('notify')->send($uid, $answer_info['uid'], notify_class::TYPE_ANSWER_COMMENT, notify_class::CATEGORY_QUESTION, $answer_info['question_id'], array(
