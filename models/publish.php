@@ -337,9 +337,9 @@ class publish_class extends AWS_MODEL
 	}
 
 
-	public function check_answer_limit_rate($uid)
+	public function check_answer_limit_rate($uid, $user_permission)
 	{
-		$limit = intval(get_setting('answer_limit_per_day'));
+		$limit = intval($user_permission['reply_limit_per_day']);
 		if (!$limit)
 		{
 			return true;
@@ -365,9 +365,9 @@ class publish_class extends AWS_MODEL
 		return true;
 	}
 
-	public function check_question_limit_rate($uid)
+	public function check_question_limit_rate($uid, $user_permission)
 	{
-		$limit = intval(get_setting('question_limit_per_day'));
+		$limit = intval($user_permission['thread_limit_per_day']);
 		if (!$limit)
 		{
 			return true;
@@ -393,9 +393,9 @@ class publish_class extends AWS_MODEL
 		return true;
 	}
 
-	public function check_article_limit_rate($uid)
+	public function check_article_limit_rate($uid, $user_permission)
 	{
-		$limit = intval(get_setting('article_limit_per_day'));
+		$limit = intval($user_permission['thread_limit_per_day']);
 		if (!$limit)
 		{
 			return true;
@@ -421,9 +421,9 @@ class publish_class extends AWS_MODEL
 		return true;
 	}
 
-	public function check_article_comment_limit_rate($uid)
+	public function check_article_comment_limit_rate($uid, $user_permission)
 	{
-		$limit = intval(get_setting('article_comment_limit_per_day'));
+		$limit = intval($user_permission['reply_limit_per_day']);
 		if (!$limit)
 		{
 			return true;
