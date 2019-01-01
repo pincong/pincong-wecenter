@@ -26,6 +26,30 @@ class ajax extends AWS_CONTROLLER
 		HTTP::no_cache_header();
 	}
 
+	public function change_uid_action()
+	{
+		if (!$this->user_info['permission']['is_administrator'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
+		}
+
+		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
+		if (!$item_info = $this->model('content')->get_thread_info_by_id($_POST['item_type'], $_POST['item_id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
+		}
+
+		set_user_operation_last_time('manage', $this->user_id);
+
+		$this->model('content')->change_uid($_POST['item_type'], $_POST['item_id'], $_POST['uid'], $item_info['uid'], $this->user_id);
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
 	public function change_category_action()
 	{
 		if (!$category_id = intval($_POST['category_id']))
@@ -56,11 +80,6 @@ class ajax extends AWS_CONTROLLER
 		if (!$item_info = $this->model('content')->get_thread_info_by_id($_POST['item_type'], $_POST['item_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
-		}
-
-		if ($item_info['uid'] != $this->user_id AND !$this->user_info['permission']['is_moderator'] AND !$this->user_info['permission']['is_administrator'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
 		if ($item_info['category_id'] != $category_id)

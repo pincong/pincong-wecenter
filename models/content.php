@@ -275,6 +275,35 @@ class content_class extends AWS_MODEL
 		return true;
 	}
 
+	public function change_uid($item_type, $item_id, $new_uid, $old_uid, $uid)
+	{
+		$new_uid = intval($new_uid);
+		if (!$new_uid OR $new_uid == $old_uid)
+		{
+			return false;
+		}
+
+		if (!$this->check_thread_type($item_type))
+		{
+			return false;
+		}
+
+		$where = 'id = ' . intval($item_id);
+		// TODO
+		if ($item_type == 'question')
+		{
+			$where = 'question_id = ' . intval($item_id);
+		}
+		$this->update($item_type, array('uid' => ($new_uid)), $where);
+
+		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
+		$this->update('posts_index', array('uid' => ($new_uid)), $where);
+
+		// 暂时不记录日志
+		//$this->model('content')->log($item_type, $item_id, '变更作者', $uid, 'uid', $old_uid);
+
+		return true;
+	}
 
 	public function change_category($item_type, $item_id, $category_id, $old_category_id, $uid)
 	{

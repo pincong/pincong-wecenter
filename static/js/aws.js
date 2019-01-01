@@ -565,7 +565,7 @@ var AWS =
 			$(".alert-box").modal('hide');
 			if (callback)
 			{
-				callback($('.aw-prompt-box textarea').val());
+				callback($('.aw-prompt-box input').val());
 			}
 			return false;
 		});
@@ -1451,7 +1451,7 @@ AWS.User =
 	{
 		var title = $('title').text();
 		var url = window.location.href;
-		AWS.textBox(_t('分享'), title + '\r\n' + url, function(text)
+		AWS.textBox(_t('分享'), title + '\r\n' + url);
 	},
 
 	// 删除别人邀请我回复的问题

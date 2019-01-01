@@ -62,7 +62,10 @@
 										<?php } ?>
 										<?php if ($this->user_info['permission']['is_administrator']) { ?>
 											<li>
-												<a href="javascript:;" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认删除?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/question/ajax/remove_question/', 'question_id=<?php echo $this->question_info['question_id']; ?>');});"><?php _e('删除问题'); ?></a>
+												<a href="javascript:;" onclick="AWS.confirm('<?php _e('确认删除?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/question/ajax/remove_question/', 'question_id=<?php echo $this->question_info['question_id']; ?>');});"><?php _e('删除问题'); ?></a>
+											</li>
+											<li>
+												<a href="javascript:;" onclick="AWS.prompt('<?php _e('请输入新的 UID'); ?>', '<?php echo $this->question_info['uid']; ?>', function(text){AWS.ajax_request(G_BASE_URL + '/content/ajax/change_uid/', 'uid=' + encodeURIComponent(text) + '&item_type=question&item_id=<?php echo $this->question_info['id']; ?>');});"><?php _e('变更作者'); ?></a>
 											</li>
 										<?php } ?>
 
