@@ -185,6 +185,10 @@
 
 					<!-- 问题回复 -->
 					<div class="aw-mod">
+						<?php if ($this->pagination) { ?>
+							<div class="clearfix"><?php echo $this->pagination; ?></div>
+						<?php } ?>
+
 						<div class="mod-head">
 							<ul class="nav nav-tabs aw-nav-tabs active">
 							<?php if (!$_GET['item_id'] AND $this->answer_count) { ?>

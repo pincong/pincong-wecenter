@@ -145,6 +145,10 @@
 
 					<!-- 影片评论 -->
 					<div class="aw-mod">
+						<?php if ($this->pagination) { ?>
+							<div class="clearfix"><?php echo $this->pagination; ?></div>
+						<?php } ?>
+
 						<div class="mod-head common-head">
 							<h2><?php _e('%s 个评论', $this->comment_count); ?></h2>
 						</div>
