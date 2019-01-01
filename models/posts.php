@@ -44,12 +44,14 @@ class posts_class extends AWS_MODEL
 			{
 				case 'question':
 					$result = $this->fetch_row('question', 'question_id = ' . intval($post_id));
-
 					break;
 
 				case 'article':
 					$result = $this->fetch_row('article', 'id = ' . intval($post_id));
+					break;
 
+				case 'video':
+					$result = $this->fetch_row('video', 'id = ' . intval($post_id));
 					break;
 			}
 
@@ -61,20 +63,20 @@ class posts_class extends AWS_MODEL
 
 		switch ($post_type)
 		{
+			// TODO: 统一字段名称
 			case 'question':
 				$data = array(
 					'add_time' => $result['add_time'],
 					'update_time' => $result['update_time'],
 					'category_id' => $result['category_id'],
-					'is_recommend' => $result['is_recommend'],
 					'view_count' => $result['view_count'],
 					'anonymous' => $result['anonymous'],
 					'uid' => $result['published_uid'],
-					'lock' => $result['lock'],
 					'agree_count' => $result['agree_count'],
-					'answer_count' => $result['answer_count']
+					'answer_count' => $result['answer_count'],
+					'lock' => $result['lock'],
+					'is_recommend' => $result['is_recommend'],
 				);
-
 				break;
 
 			case 'article':
@@ -90,7 +92,21 @@ class posts_class extends AWS_MODEL
 					'lock' => $result['lock'],
 					'is_recommend' => $result['is_recommend'],
 				);
+				break;
 
+			case 'video':
+				$data = array(
+					'add_time' => $result['add_time'],
+					'update_time' => $result['update_time'],
+					'category_id' => $result['category_id'],
+					'view_count' => $result['view_count'],
+					'anonymous' => $result['anonymous'],
+					'uid' => $result['uid'],
+					'agree_count' => $result['agree_count'],
+					'answer_count' => $result['comment_count'],
+					'lock' => $result['lock'],
+					'is_recommend' => $result['is_recommend'],
+				);
 				break;
 
 			default:
@@ -144,7 +160,7 @@ class posts_class extends AWS_MODEL
 
 	public function get_posts_list($post_type, $page = 1, $per_page = 10, $sort = null, $topic_ids = null, $category_id = null, $answer_count = null, $day = 30, $is_recommend = false)
 	{
-		$order_key = 'add_time DESC, id DESC';
+		$order_key = 'add_time DESC';
 
 		switch ($sort)
 		{
@@ -159,7 +175,7 @@ class posts_class extends AWS_MODEL
 				break;
 
 			case 'new' :
-				$order_key = 'update_time DESC, id DESC';
+				$order_key = 'update_time DESC';
 
 				break;
 		}
@@ -313,12 +329,14 @@ class posts_class extends AWS_MODEL
 			{
 				case 'question':
 					$question_ids[] = $data['post_id'];
-
 					break;
 
 				case 'article':
 					$article_ids[] = $data['post_id'];
+					break;
 
+				case 'video':
+					$video_ids[] = $data['post_id'];
 					break;
 
 			}
@@ -348,6 +366,13 @@ class posts_class extends AWS_MODEL
 			$article_infos = $this->model('article')->get_article_info_by_ids($article_ids);
 		}
 
+		if ($video_ids)
+		{
+			$topic_infos['video'] = $this->model('topic')->get_topics_by_item_ids($video_ids, 'video');
+
+			$video_infos = $this->model('video')->get_video_info_by_ids($video_ids);
+		}
+
 		$users_info = $this->model('account')->get_user_info_by_uids($data_list_uids);
 
 		foreach ($posts_index as $key => $data)
@@ -368,6 +393,11 @@ class posts_class extends AWS_MODEL
 
 				case 'article':
 					$explore_list_data[$key] = $article_infos[$data['post_id']];
+
+					break;
+
+				case 'video':
+					$explore_list_data[$key] = $video_infos[$data['post_id']];
 
 					break;
 

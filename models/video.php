@@ -122,10 +122,10 @@ class video_class extends AWS_MODEL
 
 		array_walk_recursive($video_ids, 'intval_string');
 
-		if ($videos_list = $this->fetch_all('video', 'id IN(' . implode(',', $video_ids) . ')'))
+		if ($video_list = $this->fetch_all('video', 'id IN(' . implode(',', $video_ids) . ')'))
 		{
 			//$video_downvote_fold = get_setting('video_downvote_fold');
-			foreach ($videos_list AS $key => $val)
+			foreach ($video_list AS $key => $val)
 			{
 				/*
 				// 自动折叠 赞不实现

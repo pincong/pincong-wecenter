@@ -82,19 +82,8 @@ class Services_VideoParser
      * @param string        $source
      * @return mixed        例: array('duration' => 12345, ...)
      */
-	public static function fetch_video_metadata($source_type, $source)
+	private static function real_fetch_video_metadata($source_type, $source)
 	{
-		$source = trim($source);
-		if (!$source)
-		{
-			return false;
-		}
-
-		if ($source_type !== 'youtube')
-		{
-			return false;
-		}
-
 		$url = 'https://www.youtube.com/get_video_info?video_id=' . $source;
 
 		$header = 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/600.7.12 (KHTML, like Gecko) Version/8.0.7 Safari/600.7.12';
@@ -146,6 +135,40 @@ class Services_VideoParser
 			'duration' => intval($body['videoDetails']['lengthSeconds']),
 			'formats' => $body['streamingData']['formats']
 		);
+	}
+
+
+	public static function fetch_video_metadata($source_type, $source, $cache = true)
+	{
+		if ($source_type !== 'youtube')
+		{
+			return false;
+		}
+
+		$source = trim($source);
+		if (!$source)
+		{
+			return false;
+		}
+
+		if (!$cache)
+		{
+			return self::real_fetch_video_metadata($source_type, $source);
+		}
+
+		$cache_key = 'fetch_video_metadata_' . $source_type . '_' . md5($source);
+
+		$result = AWS_APP::cache()->get($cache_key);
+		if (!$result)
+		{
+			$result = self::real_fetch_video_metadata($source_type, $source);
+			if (!$result)
+			{
+				return false;
+			}
+			AWS_APP::cache()->set($cache_key, $result, 60);
+		}
+		return $result;
 	}
 
 }
