@@ -98,7 +98,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('标题字数不得大于 150 字节', get_setting('question_title_limit'))));
 		}
 
-		if ($act == 'new' AND !check_repeat_submission($_POST['title']))
+		if ($act == 'new' AND !check_repeat_submission($this->user_id, $_POST['title']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请不要重复提交')));
 		}
@@ -212,7 +212,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容字数不得多于 20000 字')));
 		}
 
-		if ($act == 'new' AND !check_repeat_submission($_POST['message']))
+		if ($act == 'new' AND !check_repeat_submission($this->user_id, $_POST['message']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请不要重复提交')));
 		}
@@ -282,7 +282,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
 		}
 
-		set_repeat_submission_digest($_POST['title']);
+		set_repeat_submission_digest($this->user_id, $_POST['title']);
 		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
 
 		$question_id = $this->model('publish')->publish_question(array(
@@ -344,7 +344,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
 		}
 
-		set_repeat_submission_digest($_POST['title']);
+		set_repeat_submission_digest($this->user_id, $_POST['title']);
 		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
 
 		$article_id = $this->model('publish')->publish_article(array(
@@ -419,7 +419,7 @@ class ajax extends AWS_CONTROLLER
 		$metadata = Services_VideoParser::fetch_metadata_by_url($web_url);
 		$this->validate_video_metadata($metadata);
 
-		set_repeat_submission_digest($_POST['title']);
+		set_repeat_submission_digest($this->user_id, $_POST['title']);
 		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
 
 		$video_id = $this->model('publish')->publish_video(array(
@@ -731,7 +731,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
 		}
 
-		set_repeat_submission_digest($_POST['message']);
+		set_repeat_submission_digest($this->user_id, $_POST['message']);
 		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
 
 		$answer_id = $this->model('publish')->publish_answer(array(
@@ -808,7 +808,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
 		}
 
-		set_repeat_submission_digest($_POST['message']);
+		set_repeat_submission_digest($this->user_id, $_POST['message']);
 		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
 
 		$comment_id = $this->model('publish')->publish_article_comment(array(
@@ -884,7 +884,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
 		}
 
-		set_repeat_submission_digest($_POST['message']);
+		set_repeat_submission_digest($this->user_id, $_POST['message']);
 		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
 
 		$comment_id = $this->model('publish')->publish_video_comment(array(

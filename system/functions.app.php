@@ -23,19 +23,23 @@
  */
 
 // 防止重复提交
-function check_repeat_submission(&$text)
+function check_repeat_submission($uid, &$text)
 {
-    if (isset(AWS_APP::session()->repeat_submission_digest))
-    {
-        if (md5($text) === AWS_APP::session()->repeat_submission_digest)
-            return FALSE;
-    }
-    return TRUE;
+	$key = 'repeat_submission_digest_' . intval($uid);
+	if ($digest = AWS_APP::cache()->get($key))
+	{
+		if (md5($text) == $digest)
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
-function set_repeat_submission_digest(&$text)
+function set_repeat_submission_digest($uid, &$text)
 {
-    AWS_APP::session()->repeat_submission_digest = md5($text);
+	$key = 'repeat_submission_digest_' . intval($uid);
+	AWS_APP::cache()->set($key, md5($text), 86400);
 }
 
 

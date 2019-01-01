@@ -96,7 +96,7 @@ class api extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('字数不得多于 %s 字', $length_limit)));
 		}
 
-		if (!check_repeat_submission($text))
+		if (!check_repeat_submission($this->user_id, $text))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请不要重复提交')));
 		}
@@ -121,7 +121,7 @@ class api extends AWS_CONTROLLER
 			$color = 0xffffff;
 		}
 
-		set_repeat_submission_digest($text);
+		set_repeat_submission_digest($this->user_id, $text);
 		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
 
 		$this->model('danmaku')->save_danmaku(

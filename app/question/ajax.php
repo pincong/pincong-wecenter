@@ -80,7 +80,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请输入评论内容')));
 		}
 
-        if (!check_repeat_submission($message))
+        if (!check_repeat_submission($this->user_id, $message))
         {
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请不要重复提交')));
         }
@@ -118,7 +118,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能评论锁定的问题')));
 		}
 
-        set_repeat_submission_digest($message);
+        set_repeat_submission_digest($this->user_id, $message);
 		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
 
 		$this->model('answer')->insert_answer_discussion($_GET['answer_id'], $this->user_id, $message);
@@ -157,7 +157,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入评论内容')));
 		}
 
-        if (!check_repeat_submission($message))
+        if (!check_repeat_submission($this->user_id, $message))
         {
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请不要重复提交')));
         }
@@ -190,7 +190,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能评论锁定的问题')));
 		}
 
-        set_repeat_submission_digest($message);
+        set_repeat_submission_digest($this->user_id, $message);
 		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
 
 		$this->model('question')->insert_question_discussion($_GET['question_id'], $this->user_id, $message);
