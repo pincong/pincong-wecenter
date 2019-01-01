@@ -713,7 +713,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
             {
                 if (trim($group_new['group_name'][$key]))
                 {
-                    $this->model('account')->add_user_group($group_new['group_name'][$key], 1, $group_new['reputation_lower'][$key], $group_new['reputation_higer'][$key], $group_new['reputation_factor'][$key]);
+                    $this->model('account')->add_user_group($group_new['group_name'][$key], 'member', $group_new['reputation_lower'][$key], $group_new['reputation_higer'][$key], $group_new['reputation_factor'][$key]);
                 }
             }
         }
@@ -766,7 +766,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
             {
                 if (trim($group_new['group_name'][$key]))
                 {
-                    $this->model('account')->add_user_group($group_new['group_name'][$key], 0);
+                    $this->model('account')->add_user_group($group_new['group_name'][$key], 'custom');
                 }
             }
         }

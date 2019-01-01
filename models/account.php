@@ -1129,11 +1129,25 @@ class account_class extends AWS_MODEL
         return $this->update_users_fields(array('avatar_file' => ''), $uid);
     }
 
-    public function add_user_group($group_name, $type, $reputation_lower = 0, $reputation_higer = 0, $reputation_factor = 0)
+    public function add_user_group($group_name, $group_type, $reputation_lower = 0, $reputation_higer = 0, $reputation_factor = 0)
     {
+		if ($group_type == 'member')
+		{
+			$type = 1;
+			$custom = 0;
+		}
+		elseif ($group_type == 'custom')
+		{
+			$type = 0;
+			$custom = 1;
+		}
+		else
+		{
+			return false;
+		}
         return $this->insert('users_group', array(
-            'type' => intval($type),
-            'custom' => 1,
+            'type' => $type,
+            'custom' => $custom,
             'group_name' => $group_name,
             'reputation_lower' => $reputation_lower,
             'reputation_higer' => $reputation_higer,
@@ -1212,7 +1226,7 @@ class account_class extends AWS_MODEL
             $where[] = 'custom = ' . intval($custom);
         }
 
-        if ($users_groups = $this->fetch_all('users_group', implode(' AND ', $where)))
+        if ($users_groups = $this->fetch_all('users_group', implode(' AND ', $where), 'reputation_lower ASC'))
         {
             foreach ($users_groups as $key => $val)
             {
