@@ -31,6 +31,12 @@ class register_class extends AWS_MODEL
             return AWS_APP::lang()->_t('用户名不能包含 - / . % 与连续的下划线');
         }
 
+        $char = substr($user_name, 0, 1);
+        if (strstr('0123456789_', $char))
+        {
+            return AWS_APP::lang()->_t('用户名不能以数字或下划线开头');
+        }
+
         $length_min = intval(get_setting('username_length_min'));
         $length_max = intval(get_setting('username_length_max'));
         $length = cjk_strlen($user_name);

@@ -43,6 +43,7 @@ class core_user
 			}
 		}
 
+		$this->clear_session_info();
 		return false; // 未登录状态
 	}
 
