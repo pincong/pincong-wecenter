@@ -1522,14 +1522,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
                 break;
         }
 
-        if ($approval_item['type'] != 'article_comment' AND $_POST['remove_attachs'])
-        {
-            foreach ($_POST['remove_attachs'] AS $attach_id)
-            {
-                $this->model('publish')->remove_attach($attach_id, $approval_item['data']['attach_access_key']);
-            }
-        }
-
         switch ($approval_item['type'])
         {
             default:

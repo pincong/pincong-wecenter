@@ -577,9 +577,8 @@ class ajax extends AWS_CONTROLLER
 				'question_id' => $question_info['question_id'],
 				'answer_content' => $answer_content,
 				'anonymous' => $_POST['anonymous'],
-				'attach_access_key' => $_POST['attach_access_key'],
 				'auto_focus' => $_POST['auto_focus']
-			), $this->user_id, $_POST['attach_access_key']);
+			), $this->user_id);
 
 			H::ajax_json_output(AWS_APP::RSM(array(
 				'url' => get_js_url('/publish/wait_approval/question_id-' . $question_info['question_id'] )
@@ -587,7 +586,7 @@ class ajax extends AWS_CONTROLLER
 		}
 		else
 		{
-			$answer_id = $this->model('publish')->publish_answer($question_info['question_id'], $answer_content, $this->user_id, $_POST['anonymous'], $_POST['attach_access_key'], $_POST['auto_focus']);
+			$answer_id = $this->model('publish')->publish_answer($question_info['question_id'], $answer_content, $this->user_id, $_POST['anonymous'], null, $_POST['auto_focus']);
 
 			{
 				//$url = get_js_url('/question/' . $question_info['question_id'] . '?item_id=' . $answer_id . '&rf=false');
@@ -595,16 +594,8 @@ class ajax extends AWS_CONTROLLER
 
 			$answer_info = $this->model('answer')->get_answer_by_id($answer_id);
 
-
-			if ($answer_info['has_attach'])
-			{
-				$answer_info['attachs'] = $this->model('publish')->get_attach('answer', $answer_id, 'min');
-
-				$answer_info['insert_attach_ids'] = FORMAT::parse_attachs($answer_info['answer_content'], true);
-			}
-
 			$answer_info['user_info'] = $this->user_info;
-			$answer_info['answer_content'] = $this->model('question')->parse_at_user(FORMAT::parse_attachs(nl2br(FORMAT::parse_bbcode($answer_info['answer_content']))));
+			$answer_info['answer_content'] = $this->model('question')->parse_at_user(nl2br(FORMAT::parse_bbcode($answer_info['answer_content'])));
 
 			TPL::assign('answer_info', $answer_info);
 
@@ -682,7 +673,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经超过允许编辑的时限')));
 		}
 
-		$this->model('answer')->update_answer($_GET['answer_id'], $answer_info['question_id'], $answer_content, $_POST['attach_access_key']);
+		$this->model('answer')->update_answer($_GET['answer_id'], $answer_info['question_id'], $answer_content);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'target_id' => $_GET['target_id'],

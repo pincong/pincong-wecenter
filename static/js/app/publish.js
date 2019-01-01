@@ -20,39 +20,6 @@ $(function()
 		var editor = CKEDITOR.replace( 'wmd-input' );
 	}
 
-    if (ATTACH_ACCESS_KEY != '' && $('.aw-upload-box').length)
-    {
-    	if (G_ADVANCED_EDITOR_ENABLE == 'Y')
-		{
-	    	var fileupload = new FileUpload('file', '.aw-editor-box .aw-upload-box .btn', '.aw-editor-box .aw-upload-box .upload-container', G_BASE_URL + '/publish/ajax/attach_upload/id-' + PUBLISH_TYPE + '__attach_access_key-' + ATTACH_ACCESS_KEY, {
-					'editor' : editor
-				});
-	    }
-	    else {
-	    	var fileupload = new FileUpload('file', '.aw-editor-box .aw-upload-box .btn', '.aw-editor-box .aw-upload-box .upload-container', G_BASE_URL + '/publish/ajax/attach_upload/id-' + PUBLISH_TYPE + '__attach_access_key-' + ATTACH_ACCESS_KEY, {
-					'editor' : $('.wmd-input')
-				});
-	    }
-    }
-
-    if (ITEM_ID && G_UPLOAD_ENABLE == 'Y' && ATTACH_ACCESS_KEY != '')
-    {
-        if ($(".aw-upload-box .upload-list").length) {
-            $.post(G_BASE_URL + '/publish/ajax/' + PUBLISH_TYPE + '_attach_edit_list/', PUBLISH_TYPE + '_id=' + ITEM_ID, function (data) {
-                if (data['err']) {
-                    return false;
-                } else {
-                	if (data['rsm']['attachs'])
-                	{
-                		$.each(data['rsm']['attachs'], function (i, v) {
-	                        fileupload.setFileList(v);
-	                    });
-                	}
-                }
-            }, 'json');
-        }
-    }
-
     AWS.Dropdown.bind_dropdown_list($('.aw-mod-publish #question_contents'), 'publish');
 
     //初始化分类

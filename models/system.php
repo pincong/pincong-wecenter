@@ -245,19 +245,6 @@ class system_class extends AWS_MODEL
 		return $category_ids;
 	}
 
-	public function clean_break_attach()
-	{
-		if ($attachs = $this->query_all("SELECT `id`, `access_key` FROM " . get_table('attach') . " WHERE item_id = 0 AND wait_approval = 0 AND add_time < " . (time() - 3600 * 24)))
-		{
-			foreach ($attachs AS $key => $val)
-			{
-				$this->model('publish')->remove_attach($val['id'], $val['access_key']);
-			}
-		}
-
-		return true;
-	}
-
 	public function check_stop_keyword($keyword)
 	{
 		$keyword = trim($keyword);

@@ -101,8 +101,6 @@ class favorite_class extends AWS_MODEL
 					$favorite_uids[$data['uid']] = $data['uid'];
 				}
 
-				$answer_attachs = $this->model('publish')->get_attachs('answer', $answer_ids, 'min');
-
 				$question_infos = $this->model('question')->get_question_info_by_ids($question_ids);
 			}
 		}
@@ -130,11 +128,6 @@ class favorite_class extends AWS_MODEL
 					$favorite_list_data[$key]['add_time'] = $question_infos[$answer_infos[$data['item_id']]['question_id']]['add_time'];
 
 					$favorite_list_data[$key]['answer_info'] = $answer_infos[$data['item_id']];
-
-					if ($favorite_list_data[$key]['answer_info']['has_attach'])
-					{
-						$favorite_list_data[$key]['answer_info']['attachs'] = $answer_attachs[$data['item_id']];
-					}
 
 					$favorite_list_data[$key]['question_info'] = $question_infos[$answer_infos[$data['item_id']]['question_id']];
 					$favorite_list_data[$key]['user_info'] = $users_info[$answer_infos[$data['item_id']]['uid']];

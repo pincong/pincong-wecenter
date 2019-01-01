@@ -37,7 +37,7 @@ class publish_class extends AWS_MODEL
                     $approval_item['uid'],
                     $approval_item['data']['topics'],
                     $approval_item['data']['anonymous'],
-                    $approval_item['data']['attach_access_key'],
+                    null,
                     $approval_item['data']['ask_user_id'],
                     $approval_item['data']['permission_create_topic'],
                     null,
@@ -49,7 +49,14 @@ class publish_class extends AWS_MODEL
 				break;
 
 			case 'answer':
-				$answer_id = $this->publish_answer($approval_item['data']['question_id'], $approval_item['data']['answer_content'], $approval_item['uid'], $approval_item['data']['anonymous'], $approval_item['data']['attach_access_key'], $approval_item['data']['auto_focus']);
+				$answer_id = $this->publish_answer(
+					$approval_item['data']['question_id'],
+					$approval_item['data']['answer_content'],
+					$approval_item['uid'],
+					$approval_item['data']['anonymous'],
+					null,
+					$approval_item['data']['auto_focus']
+				);
 
 				break;
 
@@ -60,7 +67,7 @@ class publish_class extends AWS_MODEL
                     $approval_item['uid'],
                     $approval_item['data']['topics'],
                     $approval_item['data']['category_id'],
-                    $approval_item['data']['attach_access_key'],
+                    null,
                     $approval_item['data']['permission_create_topic'],
                     $approval_item['data']['anonymous'],
                     $approval_item['data']['later']
@@ -102,17 +109,6 @@ class publish_class extends AWS_MODEL
 			case 'answer':
 			case 'article':
 				$this->delete('approval', 'id = ' . $approval_item['id']);
-
-				if ($approval_item['data']['attach_access_key'])
-				{
-					if ($attachs = $this->get_attach_by_access_key($approval_item['type'], $approval_item['data']['attach_access_key']))
-					{
-						foreach ($attachs AS $key => $val)
-						{
-							$this->remove_attach($val['id'], $val['access_key']);
-						}
-					}
-				}
 
 				break;
 
@@ -210,11 +206,6 @@ class publish_class extends AWS_MODEL
 		// 删除回复邀请
 		$this->model('question')->answer_question_invite($question_id, $uid);
 
-		if ($attach_access_key)
-		{
-			$this->model('publish')->update_attach('answer', $answer_id, $attach_access_key);
-		}
-
 		$this->model('posts')->set_posts_index($question_id, 'question');
 
 		return $answer_id;
@@ -222,13 +213,6 @@ class publish_class extends AWS_MODEL
 
 	public function publish_approval($type, $data, $uid, $attach_access_key = null)
 	{
-		if ($attach_access_key)
-		{
-			$this->update('attach', array(
-				'wait_approval' => 1
-			), "access_key = '" . $this->quote($attach_access_key) . "'");
-		}
-
 		return $this->insert('approval', array(
 			'type' => $type,
 			'data' => serialize($data),
@@ -260,13 +244,6 @@ class publish_class extends AWS_MODEL
 					$topic_id = $this->model('topic')->save_topic($topic_title, $uid, $create_topic);
 
 					$this->model('topic')->save_topic_relation($uid, $topic_id, $question_id, 'question');
-				}
-			}
-
-			if ($attach_access_key)
-			{
-				{
-					$this->model('publish')->update_attach('question', $question_id, $attach_access_key);
 				}
 			}
 
@@ -341,11 +318,6 @@ class publish_class extends AWS_MODEL
 
 					$this->model('topic')->save_topic_relation($uid, $topic_id, $article_id, 'article');
 				}
-			}
-
-			if ($attach_access_key)
-			{
-				$this->model('publish')->update_attach('article', $article_id, $attach_access_key);
 			}
 
 			$this->model('search_fulltext')->push_index('article', $title, $article_id);
@@ -445,262 +417,6 @@ class publish_class extends AWS_MODEL
 		return $comment_id;
 	}
 
-	public function update_attach($item_type, $item_id, $attach_access_key)
-	{
-		if (!is_digits($item_id) OR !$attach_access_key)
-		{
-			return false;
-		}
-
-		$update_result = $this->update('attach', array(
-			'item_id' => $item_id
-		), "item_type = '" . $this->quote($item_type) . "' AND item_id = 0 AND access_key = '" . $this->quote($attach_access_key) . "'");
-
-		if ($update_result)
-		{
-			switch ($item_type)
-			{
-				default:
-					$update_key = 'id';
-
-					break;
-
-				case 'question':
-				case 'answer':
-					$update_key = $item_type . '_id';
-
-					break;
-
-				// Modify by wecenter
-				case 'support':
-					return true;
-
-					break;
-			}
-
-			$this->update($item_type, array(
-				'has_attach' => 1
-			), $update_key . ' = ' . $item_id);
-		}
-
-		return $update_result;
-	}
-
-	public function add_attach($item_type, $file_name, $attach_access_key, $add_time, $file_location, $is_image = false)
-	{
-		if ($is_image)
-		{
-			$is_image = 1;
-		}
-
-		return $this->insert('attach', array(
-			'file_name' => htmlspecialchars($file_name),
-			'access_key' => $attach_access_key,
-			'add_time' => $add_time,
-			'file_location' => htmlspecialchars($file_location),
-			'is_image' => $is_image,
-			'item_type' => $item_type
-		));
-	}
-
-	public function remove_attach($id, $access_key, $update_associate_table = true)
-	{
-		if (! $attach = $this->fetch_row('attach', "id = " . intval($id) . " AND access_key = '" . $this->quote($access_key) . "'"))
-		{
-			return false;
-		}
-
-		$this->delete('attach', "id = " . intval($id) . " AND access_key = '" . $this->quote($access_key) . "'");
-
-		if (!$this->fetch_row('attach', 'item_id = ' . $attach['item_id']) AND $update_associate_table)
-		{
-			switch ($attach['item_type'])
-			{
-				default:
-					$update_key = $attach['item_type'] . '_id';
-
-					break;
-
-				case 'article':
-					$update_key = 'id';
-
-					break;
-			}
-
-			$this->update($attach['item_type'], array(
-				'has_attach' => 0
-			), $update_key . ' = ' . $attach['item_id']);
-		}
-
-		if (in_array($attach['item_type'], array(
-			'question'
-		)))
-		{
-			$attach['item_type'] = 'questions';
-		}
-
-		$attach_dir = get_setting('upload_dir') . '/' . $attach['item_type'] . '/' . gmdate('Ymd/', $attach['add_time']);
-
-		foreach(AWS_APP::config()->get('image')->attachment_thumbnail AS $key => $val)
-		{
-			@unlink($attach_dir . $val['w'] . 'x' . $val['h'] . '_' . $attach['file_location']);
-		}
-
-		@unlink($attach_dir . $attach['file_location']);
-
-		return true;
-	}
-
-	public function get_attach_by_id($id)
-	{
-		if ($attach = $this->fetch_row('attach', 'id = ' . intval($id)))
-		{
-			$data = $this->parse_attach_data(array($attach), $attach['item_type'], 'square');
-
-			return $data[$id];
-		}
-
-		return false;
-	}
-
-	public function parse_attach_data($attach, $item_type, $size = null)
-	{
-		if (!$attach OR !$item_type)
-		{
-			return false;
-		}
-
-		foreach ($attach as $key => $data)
-		{
-			if (in_array($item_type, array(
-				'question'
-			)))
-			{
-				$item_type = 'questions';
-			}
-
-			// Fix 2.0 attach time zone bug
-			$date_dir = gmdate('Ymd', $data['add_time']);
-
-			if (! file_exists(get_setting('upload_dir') . '/' . $item_type . '/' . $date_dir . '/' . $data['file_location']))
-			{
-				$date_dir = gmdate('Ymd', ($data['add_time'] + 86400));
-			}
-
-			if (! file_exists(get_setting('upload_dir') . '/' . $item_type . '/' . $date_dir . '/' . $data['file_location']))
-			{
-				$date_dir = gmdate('Ymd', ($data['add_time'] - 86400));
-			}
-
-			$attach_url = get_setting('upload_url') . '/' . $item_type . '/' . $date_dir . '/';
-
-			$attach_path = get_setting('upload_dir') . '/' . $item_type . '/' . $date_dir . '/';
-
-			$attach_list[$data['id']] = array(
-				'id' => $data['id'],
-				'is_image' => $data['is_image'],
-				'file_name' => $data['file_name'],
-				'access_key' => $data['access_key'],
-				'file_location' => $data['file_location'],
-				'attachment' => $attach_url . $data['file_location'],
-				'path' => $attach_path . $data['file_location']
-			);
-
-			if ($data['is_image'] == 1 AND $size)
-			{
-				$attach_list[$data['id']]['thumb'] = $attach_url . AWS_APP::config()->get('image')->attachment_thumbnail[$size]['w'] . 'x' . AWS_APP::config()->get('image')->attachment_thumbnail[$size]['h'] . '_' . $data['file_location'];
-			}
-		}
-
-		return $attach_list;
-	}
-
-	public function get_attach($item_type, $item_id, $size = 'square')
-	{
-		if (!is_digits($item_id))
-		{
-			return false;
-		}
-
-		$attach = $this->fetch_all('attach', "item_type = '" .  $this->quote($item_type). "' AND item_id = " . $item_id, "is_image DESC, id ASC");
-
-		return $this->parse_attach_data($attach, $item_type, $size);
-	}
-
-	public function get_attachs($item_type, $item_ids, $size = 'square')
-	{
-		if (!is_array($item_ids))
-		{
-			return false;
-		}
-
-		$attach_list = array();
-
-		array_walk_recursive($item_ids, 'intval_string');
-
-		if (!$attachs = $this->fetch_all('attach', "item_type = '" .  $this->quote($item_type). "' AND item_id IN (" . implode(',', $item_ids) . ")", "is_image DESC, id ASC"))
-		{
-			return false;
-		}
-
-		foreach ($attachs AS $key => $val)
-		{
-			$result[$val['item_id']][] = $val;
-		}
-
-		foreach ($result AS $key => $val)
-		{
-			$result[$key] = $this->parse_attach_data($val, $item_type, $size);
-		}
-
-		return $result;
-	}
-
-	public function get_attach_by_access_key($item_type, $access_key, $size = 'square')
-	{
-		$attach = $this->fetch_all('attach', "item_type = '" .  $this->quote($item_type). "' AND access_key = '" . $this->quote($access_key) . "'", "is_image DESC, id ASC");
-
-		return $this->parse_attach_data($attach, $item_type, $size);
-	}
-
-	public function get_file_class($file_name)
-	{
-		switch (strtolower(H::get_file_ext($file_name)))
-		{
-			case 'jpg':
-			case 'jpeg':
-			case 'gif':
-			case 'bmp':
-			case 'png':
-				return 'image';
-				break;
-
-			case '3ds' :
-				return '3ds';
-				break;
-
-			case 'ace' :
-			case 'zip' :
-			case 'rar' :
-			case 'gz' :
-			case 'tar' :
-			case 'cab' :
-			case '7z' :
-				return 'zip';
-				break;
-
-			case 'ai' :
-			case 'psd' :
-			case 'cdr' :
-				return 'gif';
-				break;
-
-			default :
-				return 'txt';
-				break;
-		}
-	}
-
 	public function get_approval_list($type, $page, $per_page)
 	{
 		if ($approval_list = $this->fetch_page('approval', "`type` = '" . $this->quote($type) . "'", 'time ASC', $page, $per_page))
@@ -724,29 +440,4 @@ class publish_class extends AWS_MODEL
 		return $approval_item;
 	}
 
-	public function insert_attach_is_self_upload($message, $attach_ids = null)
-	{
-		if (!$message)
-		{
-			return true;
-		}
-
-		if (!$attach_ids)
-		{
-			$attach_ids = array();
-		}
-
-		if ($question_attachs_ids = FORMAT::parse_attachs($message, true))
-		{
-			foreach ($question_attachs_ids AS $attach_id)
-			{
-				if (!in_array($attach_id, $attach_ids))
-				{
-					return false;
-				}
-			}
-		}
-
-		return true;
-	}
 }

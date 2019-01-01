@@ -102,33 +102,8 @@
 						<div class="mod-body">
 							<div class="content markitup-box">
 								<?php echo $this->question_info['question_detail']; ?>
+							</div>
 
-								<?php if ($this->question_info['attachs']) {  ?>
-								<div class="aw-upload-img-list">
-								<?php foreach ($this->question_info['attachs'] AS $attach) { ?>
-								<?php if ($attach['is_image'] AND (!$this->question_info['attachs_ids'] OR !in_array($attach['id'], $this->question_info['attachs_ids']))) { ?>
-									<a href="<?php echo $attach['attachment']; ?>" target="_blank" data-fancybox-group="thumb" rel="lightbox"><img src="<?php echo $attach['attachment']; ?>" class="img-thumbnail" alt="<?php echo $attach['file_name']; ?>" /></a>
-								<?php } ?>
-								<?php } ?>
-								</div>
-								<?php } ?>
-							</div>
-							<?php if ($this->question_info['attachs']) {  ?>
-							<div class="aw-mod aw-upload-file-list">
-								<!-- <div class="mod-head">
-									<h3><i class="icon icon-attach"></i> <?php _e('附件'); ?> :</h3>
-								</div> -->
-								<div class="mod-body">
-									<ul>
-										<?php foreach ($this->question_info['attachs'] AS $attach) { ?>
-										<?php if (!$attach['is_image'] AND (!$this->question_info['attachs_ids'] OR !in_array($attach['id'], $this->question_info['attachs_ids']))) { ?>
-											<li><a href="<?php echo download_url($attach['file_name'], $attach['attachment']); ?>"><i class="icon icon-attach"></i> <?php echo $attach['file_name']; ?></a></li>
-										<?php } ?>
-										<?php } ?>
-									</ul>
-								</div>
-							</div>
-							<?php } ?>
 							<?php if ($this->question_related_links) { ?>
 							<div class="aw-mod aw-question-related-list">
 								<div class="mod-head">
@@ -334,26 +309,6 @@
 											<?php echo $val['answer_content']; ?>
 										</div>
 									<?php } ?>
-
-										<?php if ($val['attachs']) {  ?>
-										<div class="aw-upload-img-list">
-										<?php foreach ($val['attachs'] AS $attach) { ?>
-										<?php if ($attach['is_image'] AND (!$val['insert_attach_ids'] OR !in_array($attach['id'], $val['insert_attach_ids']))) { ?>
-											<a href="<?php echo $attach['attachment']; ?>" target="_blank" data-fancybox-group="thumb" rel="lightbox"><img src="<?php echo $attach['attachment']; ?>" class="img-thumbnail" alt="<?php echo $attach['attach_name']; ?>" /></a>
-										<?php } ?>
-										<?php } ?>
-										</div>
-										<?php } ?>
-
-										<?php if ($val['attachs']) {  ?>
-										<ul class="aw-upload-file-list">
-											<?php foreach ($val['attachs'] AS $attach) { ?>
-											<?php if (!$attach['is_image'] AND (!$val['insert_attach_ids'] OR !in_array($attach['id'], $val['insert_attach_ids']))) { ?>
-												<li><a href="<?php echo download_url($attach['file_name'], $attach['attachment']); ?>"><i class="icon icon-attach"></i><?php echo $attach['file_name']; ?></a></li>
-											<?php } ?>
-											<?php } ?>
-										</ul>
-										<?php } ?>
 									<!-- end 评论内容 -->
 									</div>
 									<div class="mod-footer">
@@ -388,7 +343,7 @@
 													<?php } ?>
 
 													<?php if (($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) OR ($val['uid'] == $this->user_id AND ((TIMESTAMP - $val['add_time']) < (get_setting('answer_edit_time') * 60) OR (!get_setting('answer_edit_time'))))) { ?>
-													<a class="text-color-999" href="javascript:;" onclick="AWS.dialog('commentEdit', {answer_id:<?php echo $val['answer_id']; ?>,attach_access_key:'<?php echo $this->attach_access_key; ?>'});"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
+													<a class="text-color-999" href="javascript:;" onclick="AWS.dialog('commentEdit', {answer_id:<?php echo $val['answer_id']; ?>});"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
 													<?php } ?>
 
 													<a href="javascript:;" onclick="AWS.dialog('favorite', {item_id:<?php echo $val['answer_id']; ?>, item_type:'answer'});" class="text-color-999"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>
@@ -439,9 +394,8 @@
 						<p align="center"><?php _e('不能回复自己发布的问题, 你可以修改问题内容'); ?></p>
 						<?php } else { ?>
 						<form action="question/ajax/save_answer/" onsubmit="return false;" method="post" id="answer_form" class="question_answer_form">
-			        	<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
-			        	<input type="hidden" name="question_id" value="<?php echo $this->question_info['question_id']; ?>" />
-			        	<input type="hidden" name="attach_access_key" value="<?php echo $this->attach_access_key; ?>" />
+						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
+						<input type="hidden" name="question_id" value="<?php echo $this->question_info['question_id']; ?>" />
 						<div class="mod-head">
 							<a href="people/" class="aw-user-name"><img alt="<?php echo $this->user_info['user_name']; ?>" src="<?php echo get_avatar_url($this->user_info['uid'], 'mid'); ?>" /></a>
 							<p>
@@ -583,13 +537,11 @@
 </div>
 
 <script type="text/javascript">
-	var ATTACH_ACCESS_KEY = '<?php echo $this->attach_access_key; ?>';
 	var ITEM_IDS = '<?php echo addslashes($_GET['item_id']); ?>';
 	var COMMENT_UNFOLD = '<?php echo addslashes($_GET['comment_unfold']); ?>';
 	var QUESTION_ID = <?php echo $this->question_info['question_id'];?>;
 	var ANSWER_EDIT_TIME = <?php echo get_setting('answer_edit_time'); ?>;
 	var USER_ANSWERED = '<?php echo $this->user_answered; ?>';
-	var UPLOAD_ENABLE = '<?php echo get_setting('upload_enable') ?>';
 	var ANSWER_TYPE = 'answer';
 </script>
 

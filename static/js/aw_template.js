@@ -82,14 +82,7 @@ var AW_TEMPLATE = {
 						'<form action="' + G_BASE_URL + '/question/ajax/update_answer/answer_id-{{answer_id}}" method="post" onsubmit="return false" id="answer_edit">'+
 						'<div class="modal-body">'+
 							'<div class="alert alert-danger collapse error_message"><i class="icon icon-delete"></i> <em></em></div>'+
-							'<input type="hidden" name="attach_access_key" value="{{attach_access_key}}" />'+
 							'<textarea name="answer_content" id="editor_reply" class="form-control" rows="10"></textarea>'+
-							'<div class="aw-file-upload-box">'+
-								'<div class="aw-upload-box">'+
-									'<a class="btn btn-default">上传附件</a>'+
-									'<div class="upload-container"></div>'+
-								'</div>'+
-							'</div>'+
 						'</div>'+
 						'<div class="modal-footer">'+
 							'<span><input id="aw-do-delete" type="checkbox" value="1" name="do_delete" /><label for="aw-do-delete">' + _t('删除回复') + '</label></span>'+

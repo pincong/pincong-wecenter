@@ -53,46 +53,6 @@
                         </td>
                     </tr>
                     <?php } ?>
-
-                    <?php if ($this->approval_item['attachs']) { ?>
-                    <tr>
-                        <td>
-                            <p><strong><?php _e('附件'); ?></strong></p>
-
-                            <blockquote>
-                                <ul class="aw-upload-img-list">
-                                    <?php foreach ($this->approval_item['attachs'] AS $attach) { ?>
-                                        <?php if ($attach['is_image']) { ?>
-                                        <li>
-                                            <input name="attachs[]" type="hidden" value="<?php echo $attach['id']; ?>" />
-
-                                            <a href="<?php echo $attach['attachment']; ?>" target="_blank" data-fancybox-group="thumb" rel="lightbox"><img src="<?php echo $attach['attachment']; ?>" class="img-polaroid" alt="<?php echo $attach['attach_name']; ?>" /></a>
-
-                                            <a href="javascript:;" class="btn btn-danger" ><?php _e('删除'); ?></a>
-                                        </li>
-                                        <?php } ?>
-                                    <?php } ?>
-                                </ul>
-                            </blockquote>
-
-                            <blockquote>
-                                <ul class="aw-upload-file-list">
-                                    <?php foreach ($this->approval_item['attachs'] AS $attach) { ?>
-                                        <?php if (!$attach['is_image']) { ?>
-                                        <li>
-                                            <input name="attachs[]" type="hidden" value="<?php echo $attach['id']; ?>" />
-
-                                            <a href="<?php echo download_url($attach['file_name'], $attach['attachment']); ?>"><em class="aw-icon i-upload-file"></em><?php echo $attach['file_name']; ?></a>
-
-                                            <a class="btn btn-danger btn-sm" href="javascript:;" ><?php _e('删除'); ?></a>
-                                        </li>
-                                        <?php } ?>
-                                    <?php } ?>
-                                </ul>
-                            </blockquote>
-                        </td>
-                    </tr>
-                    <?php } ?>
                 </table>
             </form>
         </div>

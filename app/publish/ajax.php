@@ -45,119 +45,6 @@ class ajax extends AWS_CONTROLLER
         exit($this->model('system')->build_category_json('question', 0));
     }
 
-    public function attach_upload_action()
-    {
-        if (get_setting('upload_enable') != 'Y' OR !$_GET['id'])
-        {
-            die;
-        }
-
-        switch ($_GET['id'])
-        {
-            case 'article':
-                $item_type = $_GET['id'];
-
-                break;
-
-            case 'question':
-                $item_type = 'questions';
-
-                break;
-
-            default:
-                $_GET['id'] = 'answer';
-
-                $item_type = 'answer';
-
-                break;
-        }
-
-        AWS_APP::upload()->initialize(array(
-            'allowed_types' => get_setting('allowed_upload_types'),
-            'upload_path' => get_setting('upload_dir') . '/' . $item_type . '/' . gmdate('Ymd'),
-            'is_image' => FALSE,
-            'max_size' => get_setting('upload_size_limit')
-        ));
-
-        if (isset($_GET['aws_upload_file']))
-        {
-            AWS_APP::upload()->do_upload($_GET['aws_upload_file'], file_get_contents('php://input'));
-        }
-        else if (isset($_FILES['aws_upload_file']))
-        {
-            AWS_APP::upload()->do_upload('aws_upload_file');
-        }
-        else
-        {
-            return false;
-        }
-
-        if (AWS_APP::upload()->get_error())
-        {
-            switch (AWS_APP::upload()->get_error())
-            {
-                default:
-                    die("{'error':'错误代码: " . AWS_APP::upload()->get_error() . "'}");
-                break;
-
-                case 'upload_invalid_filetype':
-                    die("{'error':'文件类型无效'}");
-                break;
-
-                case 'upload_invalid_filesize':
-                    die("{'error':'文件尺寸过大, 最大允许尺寸为 " . get_setting('upload_size_limit') .  " KB'}");
-                break;
-            }
-        }
-
-        if (! $upload_data = AWS_APP::upload()->data())
-        {
-            die("{'error':'上传失败, 请与管理员联系'}");
-        }
-
-        if ($upload_data['is_image'] == 1)
-        {
-            foreach (AWS_APP::config()->get('image')->attachment_thumbnail AS $key => $val)
-            {
-                $thumb_file[$key] = $upload_data['file_path'] . $val['w'] . 'x' . $val['h'] . '_' . basename($upload_data['full_path']);
-
-                AWS_APP::image()->initialize(array(
-                    'quality' => 90,
-                    'source_image' => $upload_data['full_path'],
-                    'new_image' => $thumb_file[$key],
-                    'width' => $val['w'],
-                    'height' => $val['h']
-                ))->resize();
-            }
-        }
-
-        $attach_id = $this->model('publish')->add_attach($_GET['id'], $upload_data['orig_name'], $_GET['attach_access_key'], time(), basename($upload_data['full_path']), $upload_data['is_image']);
-
-        $output = array(
-            'success' => true,
-            'delete_url' => get_js_url('/publish/ajax/remove_attach/attach_id-' . AWS_APP::crypt()->encode(json_encode(array(
-                'attach_id' => $attach_id,
-                'access_key' => $_GET['attach_access_key']
-            )))),
-            'attach_id' => $attach_id,
-            'attach_tag' => 'attach'
-
-        );
-
-        $attach_info = $this->model('publish')->get_attach_by_id($attach_id);
-
-        if ($attach_info['thumb'])
-        {
-            $output['thumb'] = $attach_info['thumb'];
-        }
-        else
-        {
-            $output['class_name'] = $this->model('publish')->get_file_class(basename($upload_data['full_path']));
-        }
-
-        exit(htmlspecialchars(json_encode($output), ENT_NOQUOTES));
-    }
-
     public function modify_question_action()
     {
         if (!$question_info = $this->model('question')->get_question_info_by_id($_POST['question_id']))
@@ -256,11 +143,6 @@ class ajax extends AWS_CONTROLLER
             $category_info = $this->model('system')->get_category_info($_POST['category_id']);
 
             ACTION_LOG::save_action($this->user_id, $question_info['question_id'], ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::MOD_QUESTION_CATEGORY, $category_info['title'], $category_info['id']);
-        }
-
-        if ($_POST['attach_access_key'] AND $IS_MODIFY_VERIFIED)
-        {
-            $this->model('publish')->update_attach('question', $question_info['question_id'], $_POST['attach_access_key']);
         }
 
         H::ajax_json_output(AWS_APP::RSM(array(
@@ -373,11 +255,10 @@ class ajax extends AWS_CONTROLLER
                 'category_id' => $_POST['category_id'],
                 'topics' => $_POST['topics'],
                 'anonymous' => $_POST['anonymous'],
-                'attach_access_key' => $_POST['attach_access_key'],
                 'ask_user_id' => $_POST['ask_user_id'],
                 'permission_create_topic' => $this->user_info['permission']['create_topic'],
                 'later' => $_POST['later']
-            ), $this->user_id, $_POST['attach_access_key']);
+            ), $this->user_id);
 
             H::ajax_json_output(AWS_APP::RSM(array(
                 'url' => get_js_url('/publish/wait_approval/')
@@ -392,7 +273,7 @@ class ajax extends AWS_CONTROLLER
                 $this->user_id,
                 $_POST['topics'],
                 $_POST['anonymous'],
-                $_POST['attach_access_key'],
+                null,
                 $_POST['ask_user_id'],
                 $this->user_info['permission']['create_topic'],
                 null,
@@ -511,11 +392,10 @@ class ajax extends AWS_CONTROLLER
                 'message' => $article_content,
                 'category_id' => $_POST['category_id'],
                 'topics' => $_POST['topics'],
-                'attach_access_key' => $_POST['attach_access_key'],
                 'permission_create_topic' => $this->user_info['permission']['create_topic'],
                 'anonymous' => $_POST['anonymous'],
                 'later' => $_POST['later']
-            ), $this->user_id, $_POST['attach_access_key']);
+            ), $this->user_id);
 
             H::ajax_json_output(AWS_APP::RSM(array(
                 'url' => get_js_url('/publish/wait_approval/')
@@ -529,7 +409,7 @@ class ajax extends AWS_CONTROLLER
                 $this->user_id,
                 $_POST['topics'],
                 $_POST['category_id'],
-                $_POST['attach_access_key'],
+                null,
                 $this->user_info['permission']['create_topic'],
                 $_POST['anonymous'],
                 $_POST['later']
@@ -630,11 +510,6 @@ class ajax extends AWS_CONTROLLER
         }
 
         $this->model('article')->update_article($article_info['id'], $this->user_id, $article_title, $article_content, $_POST['topics'], $_POST['category_id'], $this->user_info['permission']['create_topic']);
-
-        if ($_POST['attach_access_key'])
-        {
-            $this->model('publish')->update_attach('article', $article_info['id'], $_POST['attach_access_key']);
-        }
 
         H::ajax_json_output(AWS_APP::RSM(array(
             'url' => get_js_url('/article/' . $article_info['id'])

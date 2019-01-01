@@ -496,8 +496,7 @@ var AWS =
 			case 'commentEdit':
 				var template = Hogan.compile(AW_TEMPLATE.editCommentBox).render(
 				{
-					'answer_id': data.answer_id,
-					'attach_access_key': data.attach_access_key
+					'answer_id': data.answer_id
 				});
 			break;
 
@@ -654,24 +653,6 @@ var AWS =
 
 						var editor = CKEDITOR.replace( 'editor_reply' );
 
-						if (UPLOAD_ENABLE == 'Y')
-						{
-							var fileupload = new FileUpload('file', '.aw-edit-comment-box .aw-upload-box .btn', '.aw-edit-comment-box .aw-upload-box .upload-container', G_BASE_URL + '/publish/ajax/attach_upload/id-answer__attach_access_key-' + ATTACH_ACCESS_KEY, {'insertTextarea': '.aw-edit-comment-box #editor_reply', 'editor' : editor});
-
-							$.post(G_BASE_URL + '/publish/ajax/answer_attach_edit_list/', 'answer_id=' + data.answer_id, function (data) {
-								if (data['err']) {
-									return false;
-								} else {
-									$.each(data['rsm']['attachs'], function (i, v) {
-										fileupload.setFileList(v);
-									});
-								}
-							}, 'json');
-						}
-						else
-						{
-							$('.aw-edit-comment-box .aw-file-upload-box').hide();
-						}
 					}, 'json');
 				break;
 

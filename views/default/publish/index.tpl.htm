@@ -16,7 +16,6 @@
 					<!-- end tab 切换 -->
 					<form action="publish/ajax/<?php if ($this->question_info['question_id']) { ?>modify<?php } else { ?>publish<?php } ?>_question/" method="post" id="question_form" onsubmit="return false;">
 						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
-						<input type="hidden" name="attach_access_key" value="<?php echo $this->attach_access_key; ?>" />
 						<input type="hidden" name="question_id" id="question_id" value="<?php echo $this->question_info['question_id']; ?>" />
 						<input type="hidden" name="ask_user_id" value="<?php echo $_POST['ask_user_id']; ?>" />
 						<?php if ($this->question_category_list) { ?>
@@ -154,7 +153,6 @@
 </div>
 
 <script type="text/javascript">
-	var ATTACH_ACCESS_KEY = '<?php echo $this->attach_access_key; ?>';
 	var CATEGORY_ID = <?php echo $this->question_info['category_id']; ?>;
 	var PUBLISH_TYPE = 'question';
 </script>

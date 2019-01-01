@@ -218,15 +218,6 @@ class question_class extends AWS_MODEL
 
 		ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION .  ' AND associate_action = ' . ACTION_LOG::ANSWER_QUESTION . ' AND associate_attached = ' . intval($question_id));	// 删除动作
 
-		// 删除附件
-		if ($attachs = $this->model('publish')->get_attach('question', $question_id))
-		{
-			foreach ($attachs as $key => $val)
-			{
-				$this->model('publish')->remove_attach($val['id'], $val['access_key']);
-			}
-		}
-
 		$this->model('notify')->delete_notify('model_type = 1 AND source_id = ' . intval($question_id));	// 删除相关的通知
 
 		$this->shutdown_update('users', array(

@@ -172,15 +172,6 @@ class article_class extends AWS_MODEL
 
 		ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action IN(' . ACTION_LOG::ADD_ARTICLE . ', ' . ACTION_LOG::ADD_AGREE_ARTICLE . ', ' . ACTION_LOG::ADD_COMMENT_ARTICLE . ') AND associate_id = ' . intval($article_id));	// 删除动作
 
-		// 删除附件
-		if ($attachs = $this->model('publish')->get_attach('article', $article_id))
-		{
-			foreach ($attachs as $key => $val)
-			{
-				$this->model('publish')->remove_attach($val['id'], $val['access_key']);
-			}
-		}
-
 		$this->model('notify')->delete_notify('model_type = 8 AND source_id = ' . intval($article_id));	// 删除相关的通知
 
 		$this->model('posts')->remove_posts_index($article_id, 'article');

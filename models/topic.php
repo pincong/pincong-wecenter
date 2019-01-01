@@ -964,25 +964,13 @@ class topic_class extends AWS_MODEL
 
 			$answers_info_vote_user = $this->model('answer')->get_vote_user_by_answer_ids($answer_ids);
 
-			$answer_attachs = $this->model('publish')->get_attachs('answer', $answer_ids, 'min');
-
-
 			foreach ($questions_info AS $key => $val)
 			{
 				$result[$key]['question_info'] = $val;
 				$result[$key]['user_info'] = $action_list_users_info[$answers_info[$val['best_answer']]['uid']];
 
-				if ($val['has_attach'])
-				{
-					$result[$key]['question_info']['attachs'] = $question_attachs[$val['question_id']];
-				}
-
 				$result[$key]['answer_info'] = $answers_info[$val['best_answer']];
 
-				if ($val['answer_info']['has_attach'])
-				{
-					$result[$key]['answer_info']['attachs'] = $answer_attachs[$val['best_answer']];
-				}
 			}
 
 			AWS_APP::cache()->set($cache_key, $result, get_setting('cache_level_low'));

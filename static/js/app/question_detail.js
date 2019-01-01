@@ -1,4 +1,3 @@
-var ATTACH_ACCESS_KEY;
 var COMMENT_UNFOLD;
 var QUESTION_ID;
 var EDITOR;
@@ -23,24 +22,8 @@ $(function()
 			{
 				EDITOR = CKEDITOR.replace( 'wmd-input');
 			}
-
 		}
 
-		if ($('.aw-upload-box').length)
-		{
-			if (G_ADVANCED_EDITOR_ENABLE == 'Y')
-			{
-				var fileupload = new FileUpload('file', '.aw-upload-box .btn', '.aw-upload-box .upload-container', G_BASE_URL + '/publish/ajax/attach_upload/id-' + ANSWER_TYPE + '__attach_access_key-' + ATTACH_ACCESS_KEY, {
-					'editor' : EDITOR
-				});
-			}
-			else
-			{
-				var fileupload = new FileUpload('file', '.aw-upload-box .btn', '.aw-upload-box .upload-container', G_BASE_URL + '/publish/ajax/attach_upload/id-' + ANSWER_TYPE + '__attach_access_key-' + ATTACH_ACCESS_KEY, {
-					'editor' : $('.wmd-input')
-				});
-			}
-		}
 
 		//自动展开评论
 		if (COMMENT_UNFOLD == 'all')

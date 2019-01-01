@@ -45,16 +45,9 @@ class main extends AWS_CONTROLLER
 			HTTP::error_404();
 		}
 
-		if ($article_info['has_attach'])
-		{
-			$article_info['attachs'] = $this->model('publish')->get_attach('article', $article_info['id'], 'min');
-
-			$article_info['attachs_ids'] = FORMAT::parse_attachs($article_info['message'], true);
-		}
-
 		$article_info['user_info'] = $this->model('account')->get_user_info_by_uid($article_info['uid'], true);
 
-		$article_info['message'] = FORMAT::parse_attachs(nl2br(FORMAT::parse_bbcode($article_info['message'])));
+		$article_info['message'] = nl2br(FORMAT::parse_bbcode($article_info['message']));
 
 		if ($this->user_id)
 		{
@@ -125,8 +118,6 @@ class main extends AWS_CONTROLLER
 		TPL::set_meta('keywords', implode(',', $this->model('system')->analysis_keyword($article_info['title'])));
 
 		TPL::set_meta('description', $article_info['title'] . ' - ' . cjk_substr(str_replace("\r\n", ' ', strip_tags($article_info['message'])), 0, 128, 'UTF-8', '...'));
-
-		TPL::assign('attach_access_key', md5($this->user_id . time()));
 
 		$recommend_posts = $this->model('posts')->get_recommend_posts_by_topic_ids($article_topic_ids);
 

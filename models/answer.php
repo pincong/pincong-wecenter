@@ -313,7 +313,7 @@ class answer_class extends AWS_MODEL
 	 *
 	 * 更新问题回复内容
 	 */
-	public function update_answer($answer_id, $question_id, $answer_content, $attach_access_key)
+	public function update_answer($answer_id, $question_id, $answer_content, $attach_access_key = null)
 	{
 		$answer_id = intval($answer_id);
 		$question_id = intval($question_id);
@@ -331,11 +331,6 @@ class answer_class extends AWS_MODEL
 		$this->shutdown_update('question', array(
 			'update_time' => fake_time(),
 		), 'question_id = ' . intval($question_id));
-
-		if ($attach_access_key)
-		{
-			$this->model('publish')->update_attach('answer', $answer_id, $attach_access_key);
-		}
 
 		return $this->update('answer', $data, 'answer_id = ' . intval($answer_id));
 	}
@@ -532,14 +527,6 @@ class answer_class extends AWS_MODEL
 
 			ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_ANSWER . ' AND associate_id = ' . intval($answer_id));
 			ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action = ' . ACTION_LOG::ANSWER_QUESTION . ' AND associate_attached = ' . intval($answer_id));
-
-			if ($attachs = $this->model('publish')->get_attach('answer', $answer_id))
-			{
-				foreach ($attachs as $key => $val)
-				{
-					$this->model('publish')->remove_attach($val['id'], $val['access_key']);
-				}
-			}
 
 			$this->delete('answer', "answer_id = " . intval($answer_id));
 

@@ -159,8 +159,6 @@ class actions_class extends AWS_MODEL
 			foreach ($answer_infos as $key => $val) {
 				$answer_infos[$key]['answer_content'] = strip_ubb($val['answer_content']);
 			}
-
-			$answer_attachs = $this->model('publish')->get_attachs('answer', $action_list_answer_ids, 'min');
 		}
 
 		if ($action_list_uids)
@@ -252,11 +250,6 @@ class actions_class extends AWS_MODEL
 						}
 
 						$final_list_answer_ids[] = $action_list[$key]['answer_info']['answer_id'];
-
-						if ($action_list[$key]['answer_info']['has_attach'])
-						{
-							$action_list[$key]['answer_info']['attachs'] = $answer_attachs[$action_list[$key]['answer_info']['answer_id']];
-						}
 					}
 
 					break;
@@ -414,13 +407,6 @@ class actions_class extends AWS_MODEL
 
 							$action_list[$key]['title'] = $question_info['question_content'];
 							$action_list[$key]['link'] = get_js_url('/question/' . $question_info['question_id']);
-
-							if (in_array($val['associate_action'], array(
-								ACTION_LOG::ADD_QUESTION
-							)) AND $question_info['has_attach'])
-							{
-								$question_info['attachs'] = $question_attachs[$question_info['question_id']];
-							}
 
 							if ($val['uid'])
 							{

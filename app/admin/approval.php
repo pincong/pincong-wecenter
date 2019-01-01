@@ -125,10 +125,6 @@ class approval extends AWS_ADMIN_CONTROLLER
 
 		}
 
-		if ($approval_item['data']['attach_access_key'])
-		{
-			$approval_item['attachs'] = $this->model('publish')->get_attach_by_access_key($approval_item['type'], $approval_item['data']['attach_access_key']);
-		}
 
 		if ($_GET['action'] != 'edit')
 		{

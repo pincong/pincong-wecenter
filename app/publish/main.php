@@ -71,11 +71,6 @@ class main extends AWS_CONTROLLER
 			H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_name')), '/integral/rule/');
 		}
 
-		if (($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'] OR $question_info['published_uid'] == $this->user_id AND $_GET['id']) OR !$_GET['id'])
-		{
-			TPL::assign('attach_access_key', md5($this->user_id . time()));
-		}
-
 		if (!$question_info['category_id'])
 		{
 			$question_info['category_id'] = ($_GET['category_id']) ? intval($_GET['category_id']) : 0;
@@ -93,12 +88,6 @@ class main extends AWS_CONTROLLER
 		if (get_setting('advanced_editor_enable') == 'Y')
 		{
 			import_editor_static_files();
-		}
-
-		if (get_setting('upload_enable') == 'Y')
-		{
-			// fileupload
-			TPL::import_js('js/fileupload.js');
 		}
 
 		TPL::assign('question_info', $question_info);
@@ -149,11 +138,6 @@ class main extends AWS_CONTROLLER
 			H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_name')), '/integral/rule/');
 		}
 
-		if (($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'] OR $article_info['uid'] == $this->user_id AND $_GET['id']) OR !$_GET['id'])
-		{
-			TPL::assign('attach_access_key', md5($this->user_id . time()));
-		}
-
 		if (!$article_info['category_id'])
 		{
 			$article_info['category_id'] = ($_GET['category_id']) ? intval($_GET['category_id']) : 0;
@@ -171,12 +155,6 @@ class main extends AWS_CONTROLLER
 		if (get_setting('advanced_editor_enable') == 'Y')
 		{
 			import_editor_static_files();
-		}
-
-		if (get_setting('upload_enable') == 'Y')
-		{
-			// fileupload
-			TPL::import_js('js/fileupload.js');
 		}
 
 		TPL::assign('recent_topics', @unserialize($this->user_info['recent_topics']));
