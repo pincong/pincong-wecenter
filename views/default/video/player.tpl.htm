@@ -386,7 +386,7 @@
 	margin-left: -40px;
 	margin-top: -40px;
 	z-index: 1;
-	visibility: hidden;
+	display: none;
 }
 
 .ab-circle-play-btn {
@@ -750,11 +750,11 @@ var ABP = {};
 	};
 
 	Player.prototype.showLoader = function() {
-		this.$loader.css('visibility', 'visible');
+		this.$loader.show();
 	};
 
 	Player.prototype.hideLoader = function() {
-		this.$loader.css('visibility', 'hidden');
+		this.$loader.hide();
 	};
 
 
