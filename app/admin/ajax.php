@@ -768,6 +768,9 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			'edit_user',
 			'forbid_user',
 			'flag_user',
+			'kb_explore',
+			'kb_add',
+			'kb_manage',
 			'debug'
         );
 

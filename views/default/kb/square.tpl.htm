@@ -1,0 +1,120 @@
+<?php TPL::include('global/header.tpl.htm'); ?>
+
+<div class="aw-container-wrap">
+	<?php TPL::include('block/content_nav_menu.tpl.htm'); ?>
+
+	<div class="container">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="aw-padding-y-30">
+					<div class="aw-mod">
+						<?php if ($this->item_list) { ?>
+						<?php foreach ($this->item_list AS $key => $val) { ?>
+						<div class="aw-item aw-padding-x-20">
+							<div class="mod-head">
+								<a class="aw-size-20 aw-color-333" href="kb/<?php echo $val['id']; ?>"><?php echo $val['id']; ?>. <?php echo $val['title']; ?></a>
+							</div>
+							<div class="mod-body aw-padding-x-20">
+								<div class="aw-size-16 aw-color-000">
+									<?php echo FORMAT::text($val['message']); ?>
+								</div>
+							</div>
+							<div class="mod-footer clearfix">
+								<div class="aw-color-666">
+									<i><?php echo FORMAT::text(FORMAT::parse_links($val['remarks'])); ?></i>
+								</div>
+								<span class="aw-size-12 aw-color-999">
+									<a href="<?php echo UF::url($val['user_info']); ?>" class="aw-color-999"><?php echo UF::name($val['user_info']); ?></a>
+									<?php _e('发表于'); ?>: <?php echo date_friendly($val['add_time']); ?>
+
+								<?php if ($this->user_id) { ?>
+									<?php if ($val['uid'] == $this->user_id OR $val['last_uid'] == $this->user_id OR $this->user_info['permission']['kb_manage']) { ?>
+										<a href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/kb/edit/remark/id-<?php echo $val['id']; ?>');"><?php _e('备注'); ?> </a>
+									<?php } ?>
+								<?php } ?>
+								</span>
+
+								<span class="aw-size-12 aw-color-999 pull-right">
+								<?php if ($this->user_id) { ?>
+									<?php if ($val['uid'] == $this->user_id) { ?>
+										<a href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/kb/edit/modify/id-<?php echo $val['id']; ?>', AWS.init_answer_editor);"><?php _e('编辑'); ?> </a>
+									<?php } elseif ($val['last_uid'] == $this->user_id OR $this->user_info['permission']['kb_manage']) { ?>
+										<a href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/kb/edit/modify/id-<?php echo $val['id']; ?>');"><?php _e('编辑'); ?> </a>
+									<?php } ?>
+
+									<?php if ($val['last_uid'] == $this->user_id OR $this->user_info['permission']['kb_manage']) { ?>
+										<a href="<?php echo UF::url($val['last_user_info']); ?>" class="aw-color-999">
+											<?php echo UF::name($val['last_user_info']); ?>
+										</a>
+									<?php } ?>
+								<?php } ?>
+
+									<?php _e('最后编辑于'); ?>: <?php echo date_friendly($val['update_time']); ?>
+								</span>
+							</div>
+						</div>
+						<hr />
+						<?php } ?>
+
+						<?php echo $this->pagination; ?>
+
+						<?php } ?>
+					</div>
+
+					<div class="aw-mod aw-replay-box">
+						<p>&nbsp;</p>
+						<a name="publish_form"></a>
+						<?php if (!$this->user_id) { ?>
+						<p align="center"><?php _e('要添加内容请先<a href="account/login/">登录</a>或<a href="account/register/">注册</a>'); ?></p>
+						<?php } else if (!$this->user_info['permission']['kb_add']) { ?>
+						<p align="center"><?php _e('你的等级无法添加内容'); ?></p>
+						<?php } else { ?>
+						<form action="kb/ajax/publish/" onsubmit="return false;" method="post" id="publish_form">
+						<div class="mod-head">
+							<a href="<?php echo UF::url($this->user_info); ?>" class="aw-user-name"><img alt="" src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" /></a>
+							<p>
+								<label class="pull-right">
+									<input type="checkbox" value="1" name="anonymous" /> <?php _e('匿名'); ?>
+								</label>
+								<label class="pull-right">
+									<a href="currency/rule/" target="_blank"><?php _e(get_setting('currency_rule_name')); ?></a>
+								</label>
+								<?php echo UF::name($this->user_info); ?>
+							</p>
+						</div>
+						<div class="mod-body">
+							<div class="aw-mod aw-editor-box">
+								<div class="mod-head">
+									<input class="form-control" type="text" name="title" placeholder="<?php _e('请输入标题'); ?>" value="" />
+								</div>
+								<div class="mod-head">
+									<div class="wmd-panel">
+										<textarea class="wmd-input form-control autosize editor" id="wmd-input" rows="15" name="message"></textarea>
+									</div>
+								</div>
+								<div class="mod-body clearfix">
+									<a href="javascript:;" onclick="AWS.ajax_post($('#publish_form'));" class="btn btn-normal btn-success pull-right btn-reply"><?php _e('添加'); ?></a>
+									<span class="pull-right">&nbsp;</span>
+
+									<?php if (get_setting('image_upload_link')) { ?><a class="pull-right" href="<?php echo get_setting('image_upload_link'); ?>" rel="nofollow noreferrer noopener" target="_blank"><?php _e('上传图片'); ?></a><?php } ?>
+								</div>
+							</div>
+						</div>
+						</form>
+						<?php } ?>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+	// 初始化编辑器
+	AWS.create_editor(document.getElementById('wmd-input'), true);
+});
+</script>
+
+<?php TPL::include('global/footer.tpl.htm'); ?>

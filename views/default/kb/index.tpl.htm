@@ -1,0 +1,30 @@
+<?php TPL::include('global/header.tpl.htm'); ?>
+
+<div class="aw-container-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="aw-main-content aw-article-content">
+
+					<div class="aw-mod aw-question-detail">
+						<div class="mod-head">
+							<h1><?php echo $this->item_info['id']; ?>. <?php echo $this->item_info['title']; ?></h1>
+						</div>
+						<div class="mod-body">
+							<div class="content markitup-box">
+								<?php echo FORMAT::html($this->item_info['message']); ?>
+							</div>
+							<div class="meta clearfix">
+							</div>
+						</div>
+						<div class="mod-footer">
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<?php TPL::include('global/footer.tpl.htm'); ?>

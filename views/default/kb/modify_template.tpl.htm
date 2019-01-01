@@ -1,0 +1,21 @@
+<div class="modal fade alert-box aw-edit-comment-box">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>
+				<h3 class="modal-title"><?php _e('编辑'); ?></h3>
+			</div>
+			<form action="kb/ajax/modify/id-<?php echo $this->item_info['id']; ?>" method="post" onsubmit="return false" id="edit_form">
+			<div class="modal-body">
+				<div class="alert alert-danger collapse error_message"><i class="icon icon-delete"></i> <em></em></div>
+				<input class="form-control" type="text" name="title" value="<?php echo $this->item_info['title']; ?>" />
+				<textarea name="message" id="editor_reply" class="form-control" rows="10"><?php echo $this->item_info['message']; ?></textarea>
+			</div>
+			<div class="modal-footer">
+				<span><input id="anonymous_checkbox" type="checkbox" value="1" name="anonymous" /><label for="anonymous_checkbox"><?php _e('匿名'); ?></label></span>
+				<button class="btn btn-large btn-success" onclick="AWS.ajax_post($('#edit_form'), AWS.ajax_processer, 'ajax_post_alert');return false;"><?php _e('确定'); ?></button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>

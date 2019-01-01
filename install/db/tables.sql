@@ -771,6 +771,26 @@ CREATE TABLE IF NOT EXISTS `aws_failed_login` (
 --
 
 
+--
+CREATE TABLE IF NOT EXISTS `aws_knowledge` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(240) DEFAULT NULL,
+  `message` text,
+  `remarks` text,
+  `uid` int(11) DEFAULT '0',
+  `last_uid` int(11) DEFAULT '0',
+  `add_time` int(10) DEFAULT '0',
+  `update_time` int(10) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `last_uid` (`last_uid`),
+  KEY `add_time` (`add_time`),
+  KEY `update_time` (`update_time`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+--
+
+
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
