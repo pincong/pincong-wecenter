@@ -256,25 +256,6 @@ CREATE TABLE IF NOT EXISTS `aws_users` (
 INSERT INTO `aws_users` (`uid`, `user_name`, `password`, `salt`, `avatar_file`, `sex`, `reg_time`, `last_login`, `notification_unread`, `inbox_unread`, `inbox_recv`, `fans_count`, `friend_count`, `invite_count`, `article_count`, `question_count`, `answer_count`, `topic_focus_count`, `group_id`, `reputation_group`, `forbidden`, `is_first_login`, `agree_count`, `thanks_count`, `views_count`, `reputation`, `reputation_update_time`, `currency`, `user_name_update_time`, `verified`, `default_timezone`, `recent_topics`) VALUES
 	(1, 'admin', '$2y$10$TaEOhERXEB51Ds8i/iBbq.Qy2v82s3yidCLGz/iv25PJ7hxXnq7r.', 'gzeu', '', 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `aws_users` ENABLE KEYS */;
-
-
--- Dumping structure for table panic.aws_users_attrib
-DROP TABLE IF EXISTS `aws_users_attrib`;
-CREATE TABLE IF NOT EXISTS `aws_users_attrib` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
-  `uid` int(11) DEFAULT NULL COMMENT '用户UID',
-  `introduction` varchar(240) DEFAULT NULL COMMENT '个人简介',
-  `signature` varchar(240) DEFAULT NULL COMMENT '个人签名',
-  `extra_data` TEXT COMMENT '不是特别重要的额外数据',
-  PRIMARY KEY (`id`),
-  KEY `uid` (`uid`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='用户附加属性表';
-
--- Dumping data for table panic.aws_users_attrib: 0 rows
-/*!40000 ALTER TABLE `aws_users_attrib` DISABLE KEYS */;
-INSERT INTO `aws_users_attrib` (`id`, `uid`, `introduction`, `signature`) VALUES
-	(1, 1, NULL, '', NULL);
-/*!40000 ALTER TABLE `aws_users_attrib` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
