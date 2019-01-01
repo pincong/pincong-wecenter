@@ -84,6 +84,11 @@ class ajax extends AWS_CONTROLLER
 
 	public function save_invite_action()
 	{
+		if (!$this->user_info['permission']['invite_answer'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
+		}
+
 		if (!$question_info = $this->model('question')->get_question_info_by_id($_POST['question_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在或已被删除')));
