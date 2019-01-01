@@ -27,6 +27,26 @@
                 <tr>
                     <td>
                         <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('网站 Logo'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="logo_url" class="form-control" type="text" placeholder="/static/logo/logo.png" value="<?php echo $this->setting['logo_url']; ?>"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('注册/登录 Logo'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="login_logo_url" class="form-control" type="text" placeholder="/static/logo/login_logo.png" value="<?php echo $this->setting['login_logo_url']; ?>"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('网站名称'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <input type="text" class="form-control" name="site_name" value="<?php echo $this->setting['site_name']; ?>">
