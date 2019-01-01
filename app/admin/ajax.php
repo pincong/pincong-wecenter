@@ -653,7 +653,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
             {
                 if (trim($group_new['group_name'][$key]))
                 {
-                    $this->model('account')->add_user_group($group_new['group_name'][$key], 'custom');
+                    $this->model('account')->add_user_group($group_new['group_name'][$key], 'custom', 0, 0, $group_new['reputation_factor'][$key]);
                 }
             }
         }
@@ -686,6 +686,33 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
         H::ajax_json_output(AWS_APP::RSM($rsm, 1, null));
     }
+
+
+    public function save_internal_user_group_action()
+    {
+        if (!$this->user_info['permission']['is_administrator'])
+        {
+            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有访问权限, 请重新登录')));
+        }
+
+        if ($group_data = $_POST['group'])
+        {
+            foreach ($group_data as $key => $val)
+            {
+                if (!$val['group_name'])
+                {
+                    H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入用户组名称')));
+                }
+
+                $this->model('account')->update_user_group_data($key, $val);
+            }
+        }
+
+        AWS_APP::cache()->cleanGroup('users_group');
+
+        H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+    }
+
 
     public function edit_user_group_permission_action()
     {
