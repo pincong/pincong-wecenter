@@ -1304,6 +1304,8 @@ AWS.create_editor = function(element_id, max_btn)
 	sceditor.formats.bbcode.set('color', empty_handler);
 
 	return sceditor.create(document.getElementById(element_id), {
+		width: '100%',
+		resizeEnabled: false,
 		emoticonsEnabled: false,
 		format: 'bbcode',
 		icons: 'material',
