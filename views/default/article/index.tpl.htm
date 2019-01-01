@@ -165,7 +165,7 @@
 					</div>
 					<!-- end 文章评论 -->
 
-					<!-- 回复编辑器 -->
+					<!-- 评论编辑器 -->
 					<div class="aw-mod aw-article-replay-box">
 						<a name="answer_form"></a>
 						<?php if ($this->article_info['lock']) { ?>
@@ -203,7 +203,47 @@
 						</form>
 						<?php } ?>
 					</div>
+					<!-- end 评论编辑器 -->
+
+				<div style="display:none">
+					<!-- 回复编辑器 -->
+					<div id="user_replay_box" class="aw-article-replay-box clearfix">
+						<?php if ($this->article_info['lock']) { ?>
+						<p align="center"><?php _e('该文章目前已经被锁定, 无法添加新评论'); ?></p>
+						<?php } else if (!$this->user_id) { ?>
+						<p align="center"><?php _e('要回复文章请先<a href="account/login/">登录</a>或<a href="account/register/">注册</a>'); ?></p>
+						<?php } else { ?>
+						<form action="publish/ajax/publish_article_comment/" onsubmit="return false;" method="post" id="answer_form_2">
+						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
+						<input type="hidden" name="article_id" value="<?php echo $this->article_info['id']; ?>" />
+						<input type="hidden" id="user_replay_box_at_uid" name="at_uid" value="" />
+						<div class="mod-body">
+							<textarea style="min-height:54px" rows="3" name="message" class="form-control autosize" placeholder="写下你的评论..."  /></textarea>
+						</div>
+						<div class="mod-footer">
+
+							<label class="pull-right">
+								<?php if ($this->user_info['permission']['reply_anonymously']) { ?>
+								&nbsp;<input type="checkbox" value="1" name="anonymous" /> <?php _e('匿名'); ?>
+								<?php } ?>
+								&nbsp;<a href="javascript:;" onclick="AWS.submit_append($('#answer_form_2'), $(this), $('.aw-replies'), reply_callback_2);" class="btn btn-normal btn-success btn-submit btn-reply"><?php _e('回复'); ?></a>
+							</label>
+
+							<label class="pull-right">
+								<input id="later_time_input_2" class="pull-right form-control" type="text" name="later" placeholder="<?php _e('分钟'); ?>" />
+							</label>
+
+							<label class="pull-right">&nbsp;<?php _e('延迟显示'); ?>&nbsp;</label>
+
+							<label id="later_time_label_2" class="pull-right"></label>
+
+						</div>
+						</form>
+						<?php } ?>
+					</div>
 					<!-- end 回复编辑器 -->
+				</div>
+
 				</div>
 				<!-- 侧边栏 -->
 				<div class="col-sm-12 col-md-3 aw-side-bar">
@@ -280,7 +320,30 @@
 </div>
 
 <script type="text/javascript">
+function show_user_reply_box(reply_btn) {
+	var reply_box = reply_btn.parents('.aw-item').find('.aw-article-replay-box');
+	if (reply_box.length) {
+		if (reply_box.css('display') == 'block') {
+			reply_box.fadeOut();
+		} else {
+			reply_box.fadeIn();
+		}
+	} else {
+		var reply_box_tpl = $('#user_replay_box');
+		if (!reply_box_tpl.length) return;
+		var at_uid_input = $('#user_replay_box_at_uid');
+		if (at_uid_input.length) {
+			at_uid_input.val(reply_btn.attr('data-id'));
+		}
+		reply_btn.parents('.mod-footer').append(reply_box_tpl);
+	}
+}
+
 function reply_callback(err) {
+	if (err) return;
+}
+
+function reply_callback_2(err) {
 	if (err) return;
 }
 
@@ -293,9 +356,9 @@ $(document).ready(function () {
 	});
 
 	AWS.at_user_lists('#wmd-input');
-	AWS.Init.init_article_comment_box($('.aw-article-comment'));
 
 	AWS.init_later_time_helper($('#later_time_input'), $('#later_time_label'));
+	AWS.init_later_time_helper($('#later_time_input_2'), $('#later_time_label_2'));
 });
 </script>
 

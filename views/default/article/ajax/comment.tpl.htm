@@ -36,7 +36,7 @@
 			&nbsp;&nbsp;
 
 			<?php if ($this->user_id) { ?>
-				<a class="aw-article-comment aw-small-text" data-id="<?php echo $this->comment_info['user_info']['uid']; ?>"><i class="icon icon-comment"></i> <?php _e('回复'); ?></a>
+				<a class="aw-article-comment aw-small-text" href="javascript:;" onclick="show_user_reply_box($(this))" data-id="<?php echo $this->comment_info['user_info']['uid']; ?>"><i class="icon icon-comment"></i> <?php _e('回复'); ?></a>
 				<?php if ($this->user_id == $this->comment_info['user_info']['uid'] OR $this->user_info['permission']['edit_any_post']) { ?>
 				<a class="aw-small-text" href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/publish/edit/article_comment/id-<?php echo $this->comment_info['id']; ?>');"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
 				<?php } ?>

@@ -57,34 +57,6 @@ var AW_TEMPLATE = {
 				'</div>'+
 			'</div>',
 
-	'articleCommentBox' :
-		'<div class="aw-article-replay-box clearfix">'+
-			'<form action="'+ G_BASE_URL +'/publish/ajax/publish_article_comment/" onsubmit="return false;" method="post">'+
-				'<div class="mod-body">'+
-					'<input type="hidden" name="at_uid" value="{{at_uid}}">'+
-					'<input type="hidden" name="post_hash" value="' + G_POST_HASH + '" />'+
-					'<input type="hidden" name="article_id" value="{{article_id}}" />'+
-					'<textarea placeholder="' + _t('写下你的评论...') + '" class="form-control" id="comment_editor" name="message" rows="2"></textarea>'+
-				'</div>'+
-				'<div class="mod-footer">'+
-					'<label class="pull-right">'+
-						'&nbsp;'+
-						'<input type="checkbox" value="1" name="anonymous" />' +
-						'&nbsp;'+
-						_t('匿名') +
-						'&nbsp;'+
-						'<a href="javascript:;" onclick="AWS.ajax_post($(this).parents(\'form\'), AWS.ajax_processer, \'reply\');" class="btn btn-normal btn-success btn-submit">' + _t('回复') + '</a>'+
-					'</label>'+
-					'<label class="pull-right">'+
-						'<input class="pull-right form-control" type="text" name="later" placeholder="' + _t('分钟') + '" /> ' +
-						'&nbsp;'+
-						_t('延迟显示') +
-						'&nbsp;'+
-					'</label>'+
-				'</div>'+
-			'</form>'+
-		'</div>',
-
 	'inbox' :
 			'<div class="modal fade alert-box aw-inbox">'+
 				'<div class="modal-dialog">'+

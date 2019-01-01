@@ -9,9 +9,6 @@ $(function()
 		AWS.load_list_view(G_BASE_URL + '/explore/ajax/list/post_type-article__sort_type-new__topic_id-' + CONTENTS_TOPIC_ID, $('#bp_articles_more'), $('#c_article_list'), 2);
 	}
 
-	//问题添加评论
-    AWS.Init.init_comment_box('.aw-add-comment');
-
 	//侧边栏话题编辑记录收缩
 	$('.topic-edit-notes .icon-down').click(function() {
 		if (!$(this).parents('.topic-edit-notes').find('.mod-body').is(':visible'))
@@ -21,13 +18,13 @@ $(function()
 		}
 		else
 		{
-			$(this).parents('.topic-edit-notes').find('.mod-body').fadeOut();	
+			$(this).parents('.topic-edit-notes').find('.mod-body').fadeOut();
 			$(this).removeClass('active');
 		}
 	});
 
 	//话题问题搜索下拉绑定
-	AWS.Dropdown.bind_dropdown_list($('.aw-search-bar #question-input'), 'topic_question');
+	//AWS.Dropdown.bind_dropdown_list($('.aw-search-bar #question-input'), 'topic_question');
 
 	check_related_topic($('#c_all_list .aw-item'));
 	check_related_topic($('#c_recommend_list .aw-item'));

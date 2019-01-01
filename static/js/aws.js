@@ -253,7 +253,6 @@ var AWS =
 			{
 				case 'default':
 				case 'comments_form':
-				case 'reply':
 					AWS.alert(result.err);
 
 					$('.aw-comment-box-btn .btn-success, .btn-reply').removeClass('disabled');
@@ -324,31 +323,6 @@ var AWS =
 
 					case 'ajax_post_modal':
 						$('#aw-ajax-box div.modal').modal('hide');
-					break;
-
-					// 文章回复
-					case 'reply':
-						AWS.loading('hide');
-
-						if (result.rsm.ajax_html)
-						{
-							$('.aw-replies').append(result.rsm.ajax_html);
-
-							$('.aw-comment-box-btn .btn-success, .btn-reply').removeClass('disabled');
-
-							$.scrollTo($('#' + $(result.rsm.ajax_html).attr('id')), 600, {queue:true});
-
-							// 文章
-							$('#comment_editor').val('');
-						}
-						else if(result.rsm.url)
-						{
-							window.location = decodeURIComponent(result.rsm.url);
-						}
-						else
-						{
-							window.location.reload();
-						}
 					break;
 				}
 			}
@@ -2355,34 +2329,6 @@ AWS.Init =
 				$(this).addClass('active');
 
 				AWS.at_user_lists(comment_box_id + ' .aw-comment-txt', 5);
-			}
-		});
-	},
-
-	// 初始化文章评论框
-	init_article_comment_box: function(selector)
-	{
-		$(document).on('click', selector, function ()
-		{
-			var _editor_box = $(this).parents('.aw-item').find('.aw-article-replay-box');
-			if (_editor_box.length)
-			{
-				if (_editor_box.css('display') == 'block')
-				{
-				   _editor_box.fadeOut();
-				}
-				else
-				{
-					_editor_box.fadeIn();
-				}
-			}
-			else
-			{
-				$(this).parents('.mod-footer').append(Hogan.compile(AW_TEMPLATE.articleCommentBox).render(
-				{
-					'at_uid' : $(this).attr('data-id'),
-					'article_id' : $('.aw-topic-bar').attr('data-id')
-				}));
 			}
 		});
 	},
