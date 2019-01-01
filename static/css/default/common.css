@@ -764,7 +764,6 @@ blockquote {margin: 0;padding: 0 10px;font-size: 15px;color: #777;border-left: 4
 .aw-recommend-box ul li.active i {display: block;}
 /* 警告提示box */
 .aw-tips-box .modal-dialog, .aw-confirm-box .modal-dialog{width: 370px;}
-.aw-tips-box .modal-body{background: url(img/warmming.png) no-repeat right 5px;}
 .aw-tips-box .modal-body p{margin: 10px 0;}
 /* 微信绑定弹窗box */
 .aw-alert-img-box .modal-body{background:none;text-align: center;}

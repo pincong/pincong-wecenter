@@ -27,7 +27,6 @@ ul,ol{padding:0;list-style:none;}
 .aw-content-wrap .icon.disabled{background-color: #c5c5c5;}
 /* 警告提示box */
 .aw-tips-box .modal-dialog, .aw-image-box .modal-dialog, .aw-link-box .modal-dialog, .aw-confirm-box .modal-dialog{width: 370px;}
-.aw-tips-box .modal-body{background: url(../img/warmming.png) no-repeat right 5px;}
 .aw-tips-box .modal-body p{margin: 10px 0;}
 /* 全局loading样式 */
 #aw-loading{position:fixed;top:50%;left:50%;z-index: 10001;margin: 0 0 0 -20px;width: 40px;height: 40px;border-radius: 5px;background:#000;opacity: 0.75;filter: alpha(opacity=75);}
