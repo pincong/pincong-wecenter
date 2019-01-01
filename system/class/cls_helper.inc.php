@@ -102,7 +102,7 @@ class H
 
 		foreach($sensitive_words AS $word => $replacement)
 		{
-			if (!$replacement)
+			if (!isset($replacement))
 			{
 				$replacement = $sensitive_words_replacement;
 			}
