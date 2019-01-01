@@ -220,7 +220,7 @@ a.aw-load-more-content{display: block;}
 .aw-user-nav:hover .dropdown-list{display: block;}
 .aw-user-nav img{width: 32px;height: 32px;}
 .aw-user-nav .login{margin-right: 10px;}
-.aw-user-nav .aw-user-nav-dropdown{display:block;height: 42px;}
+.aw-user-nav .aw-user-nav-dropdown{display:block;height: 42px;width: 32px;}
 .aw-user-nav .aw-user-nav-dropdown .badge{position: absolute;top: -8px;right: -8px;}
 .aw-user-nav .dropdown-list{top:100%;width:122px;border-top:none;border-radius: 0 0 4px 4px;}
 .aw-user-nav .dropdown-list ul li a i{vertical-align:-2px;margin-right: 5px;font-size: 16px;}
