@@ -153,6 +153,9 @@ class core_uri
 			}
 		}
 
+		// 如果 $uri['last'] 里有 'app' key 则为插件
+		$is_plugin = isset($_GET['app']);
+
 		$request = explode($this->params['sep_act'], $uri['first']);
 
 		$uri['first'] = array(
@@ -204,7 +207,18 @@ class core_uri
 				
 				$__app_dir = $uri['first']['args'][0] ? $uri['first']['args'][0] : $this->default_vars['app_dir'];	// 应用目录
 
-				if (file_exists(ROOT_PATH . 'app/' . $__app_dir . '/' . $uri['first']['args'][1] . '.php'))
+				if ($is_plugin)
+				{
+					// 插件 controller
+					$app_root_path = ROOT_PATH . 'plugins/' . $__app_dir . '/controller/';
+				}
+				else
+				{
+					// 普通 controller
+					$app_root_path = ROOT_PATH . 'app/' . $__app_dir . '/';
+				}
+
+				if (file_exists($app_root_path . $uri['first']['args'][1] . '.php'))
 				{
 					$this->controller = $uri['first']['args'][1];	// 控制器
 				}
@@ -232,11 +246,10 @@ class core_uri
 			break;
 		}
 
-		$is_plugin = isset($_GET['app']);
 		if ($is_plugin)
 		{
 			 // 插件 controller
-			$this->app_dir = ROOT_PATH . 'plugins/' . $__app_dir . '/app/';
+			$this->app_dir = ROOT_PATH . 'plugins/' . $__app_dir . '/controller/';
 		}
 		else
 		{
