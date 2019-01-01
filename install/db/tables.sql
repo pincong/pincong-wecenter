@@ -975,6 +975,25 @@ CREATE TABLE IF NOT EXISTS `aws_video_danmaku` (
 -- Data exporting was unselected.
 
 
+-- Dumping structure for table panic.aws_vote
+CREATE TABLE IF NOT EXISTS `aws_vote` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `uid` int(10) DEFAULT '0',
+  `type` varchar(32) DEFAULT NULL,
+  `item_id` int(10) DEFAULT '0',
+  `value` tinyint(1) DEFAULT '0',
+  `add_time` int(10) DEFAULT '0',
+  `extra_data` text COMMENT '预留',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `type` (`type`),
+  KEY `item_id` (`item_id`),
+  KEY `add_time` (`add_time`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+-- Data exporting was unselected.
+
+
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
