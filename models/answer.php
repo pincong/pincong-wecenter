@@ -757,7 +757,7 @@ class answer_class extends AWS_MODEL
 	}
 
 
-	public function set_best_answer($answer_id)
+	public function set_best_answer($answer_id, $uid)
 	{
 		if (!$answer_info = $this->get_answer_by_id($answer_id))
 		{
@@ -769,9 +769,13 @@ class answer_class extends AWS_MODEL
 		$this->shutdown_update('question', array(
 			'best_answer' => $answer_info['answer_id']
 		), 'question_id = ' . $answer_info['question_id']);
+
+		$this->model('question')->log($answer_info['question_id'], 'ANSWER', '设置最佳回复', $uid, 0, $answer_info['answer_id']);
+
+		return true;
 	}
 
-	public function unset_best_answer($answer_id)
+	public function unset_best_answer($answer_id, $uid)
 	{
 		if (!$answer_info = $this->get_answer_by_id($answer_id))
 		{
@@ -781,6 +785,10 @@ class answer_class extends AWS_MODEL
 		$this->shutdown_update('question', array(
 			'best_answer' => 0
 		), 'question_id = ' . $answer_info['question_id']);
+
+		$this->model('question')->log($answer_info['question_id'], 'ANSWER', '取消最佳回复', $uid, 0, $answer_info['answer_id']);
+
+		return true;
 	}
 
 	public function calc_best_answer()

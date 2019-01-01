@@ -880,11 +880,11 @@ class ajax extends AWS_CONTROLLER
 
 		if ($question_info['best_answer'])
 		{
-			$this->model('answer')->unset_best_answer($_POST['answer_id']);
+			$this->model('answer')->unset_best_answer($_POST['answer_id'], $this->user_id);
 		}
 		else
 		{
-			$this->model('answer')->set_best_answer($_POST['answer_id']);
+			$this->model('answer')->set_best_answer($_POST['answer_id'], $this->user_id);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
