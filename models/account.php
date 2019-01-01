@@ -452,7 +452,6 @@ class account_class extends AWS_MODEL
 
             $this->update('users', array(
                 'group_id' => 3,
-                'reputation_group' => 5,
                 'is_first_login' => 1
             ), 'uid = ' . intval($uid));
 

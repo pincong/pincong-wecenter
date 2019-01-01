@@ -254,7 +254,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能对自己发表的内容进行投票')));
 		}
 
-		$reputation_factor = $this->model('account')->get_user_group_by_id($this->user_info['reputation_group'], 'reputation_factor');
+		$reputation_factor = $this->model('reputation')->get_reputation_factor_by_reputation($this->user_info['reputation']);
 
 		$this->model('article')->article_vote($_POST['type'], $_POST['item_id'], $rating, $this->user_id, $reputation_factor, $item_info['uid']);
 

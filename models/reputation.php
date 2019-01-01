@@ -20,19 +20,53 @@ if (!defined('IN_ANWSION'))
 
 class reputation_class extends AWS_MODEL
 {
+	public function get_reputation_group_list()
+	{
+		static $reputation_groups;
+
+		if (!$reputation_groups)
+		{
+			if ($groups = $this->fetch_all('users_group', 'type = 1'))
+			{
+				foreach ($groups as $key => $val)
+				{
+					$reputation_groups[$val['group_id']] = $val;
+				}
+			}
+		}
+
+		return $reputation_groups;
+	}
+
 	// 通过威望值得到威望组ID
 	public function get_reputation_group_id_by_reputation($reputation)
 	{
-        if ($reputation_groups = $this->model('account')->get_user_group_list(1))
-        {
-            foreach ($reputation_groups as $key => $val)
-            {
-                if ((intval($reputation) >= intval($val['reputation_lower'])) AND (intval($reputation) < intval($val['reputation_higer'])))
-                {
-                    return intval($val['group_id']);
-                }
-            }
-        }
+		if ($reputation_groups = $this->get_reputation_group_list())
+		{
+			foreach ($reputation_groups as $key => $val)
+			{
+				if ((intval($reputation) >= intval($val['reputation_lower'])) AND (intval($reputation) < intval($val['reputation_higer'])))
+				{
+					return intval($val['group_id']);
+				}
+			}
+		}
+		return 0;
+	}
+
+	// 通过威望值得到威望系数
+	public function get_reputation_factor_by_reputation($reputation)
+	{
+		if ($reputation_groups = $this->get_reputation_group_list())
+		{
+			foreach ($reputation_groups as $key => $val)
+			{
+				if ((intval($reputation) >= intval($val['reputation_lower'])) AND (intval($reputation) < intval($val['reputation_higer'])))
+				{
+					return intval($val['reputation_factor']);
+				}
+			}
+		}
 		return 0;
 	}
 
@@ -54,12 +88,6 @@ class reputation_class extends AWS_MODEL
 			'reputation' => $reputation,
 			'reputation_update_time' => fake_time()
 		);
-
-		$reputation_group = $this->get_reputation_group_id_by_reputation($reputation);
-		if ($reputation_group AND $reputation_group != $user_info['reputation_group'])
-		{
-			$fields['reputation_group'] = $reputation_group;
-		}
 
 		// 自动封禁/解封, $user_info['forbidden'] == 2 表示被系统自动封禁
 		if ((!$user_info['forbidden'] OR $user_info['forbidden'] == 2) AND $user_info['group_id'] == 4)
@@ -110,25 +138,7 @@ class reputation_class extends AWS_MODEL
 
 	public function calculate_by_uid($uid)
 	{
-		$user_info = $this->model('account')->get_user_info_by_uid($uid);
-		if (!$user_info)
-		{
-			return false;
-		}
-
-
 		// TODO 根据每个问题/回答/文章/评论的赞同数计算威望
-		$reputation = intval($user_info['reputation']);
-		$reputation_group = $this->get_reputation_group_id_by_reputation($reputation);
-
-		$fields = array(
-			//'agree_count' => $agree_count,
-			'reputation' => $reputation,
-			'reputation_group' => $reputation_group,
-			'reputation_update_time' => fake_time()
-		);
-
-		$this->update('users', $fields, 'uid = ' . intval($uid));
 	}
 
 	// 重新计算用户威望

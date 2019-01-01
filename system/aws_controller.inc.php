@@ -33,7 +33,10 @@ class AWS_CONTROLLER
 
 		if ($this->user_info = $this->model('account')->get_user_info_by_uid($this->user_id, TRUE))
 		{
-			$user_group = $this->model('account')->get_user_group($this->user_info['group_id'], $this->user_info['reputation_group']);
+			$user_group = $this->model('account')->get_user_group(
+				$this->user_info['group_id'],
+				$this->model('reputation')->get_reputation_group_id_by_reputation($user['reputation'])
+			);
 
 			if ($this->user_info['default_timezone'])
 			{
