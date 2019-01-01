@@ -102,6 +102,11 @@
 									<div class="mod-body">
 										<span><?php echo $this->user['reputation_group_name']; ?></span>
 										<p></p>
+
+									<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
+										<span><?php _e('UID'); ?> : <?php echo $this->user['uid']; ?></span>
+										<p></p>
+									<?php } ?>
 									</div>
 								</div>
 
