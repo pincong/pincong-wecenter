@@ -98,7 +98,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定文章不存在')));
 		}
 
-		if ($article_info['lock'] AND !($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
+		if ($article_info['lock'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的文章不能回复')));
 		}

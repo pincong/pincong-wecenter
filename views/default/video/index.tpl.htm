@@ -38,19 +38,19 @@
 
 											<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
 											<li>
-												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/v/ajax/lock/', 'video_id=<?php echo $this->video_info['id']; ?>');"><?php if ($this->video_info['lock']) { ?><?php _e('解除锁定'); ?><?php } else { ?><?php _e('锁定文章'); ?><?php } ?></a>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/v/ajax/lock/', 'video_id=<?php echo $this->video_info['id']; ?>');"><?php if ($this->video_info['lock']) { ?><?php _e('解除锁定'); ?><?php } else { ?><?php _e('锁定投稿'); ?><?php } ?></a>
 											</li>
 											<?php } ?>
 
 											<?php if ($this->user_info['permission']['is_administrator']) { ?>
 											<li>
-												<a href="javascript:;" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认删除?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/v/ajax/remove_video/', 'video_id=<?php echo $this->video_info['id']; ?>');});"><?php _e('删除文章'); ?></a>
+												<a href="javascript:;" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认删除?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/v/ajax/remove_video/', 'video_id=<?php echo $this->video_info['id']; ?>');});"><?php _e('删除投稿'); ?></a>
 											</li>
 											<?php } ?>
 
 											<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
 											<li>
-												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/v/ajax/set_recommend/', 'action=<?php if ($this->video_info['is_recommend']) { ?>un<?php } ?>set&video_id=<?php echo $this->video_info['id']; ?>');"><?php if ($this->video_info['is_recommend']) { ?><?php _e('取消推荐'); ?><?php } else { ?><?php _e('推荐文章'); ?><?php } ?></a>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/v/ajax/set_recommend/', 'action=<?php if ($this->video_info['is_recommend']) { ?>un<?php } ?>set&video_id=<?php echo $this->video_info['id']; ?>');"><?php if ($this->video_info['is_recommend']) { ?><?php _e('取消推荐'); ?><?php } else { ?><?php _e('推荐投稿'); ?><?php } ?></a>
 											</li>
 											<li>
 												<a href="javascript:;" onclick="AWS.dialog('recommend', {'type': 'video', 'item_id': <?php echo $this->video_info['id']; ?>, 'focus_id': <?php if ($this->video_info['chapter_id']) { echo $this->video_info['chapter_id']; } else { ?>''<?php } ?>});"><?php _e('添加到帮助中心'); ?></a>
@@ -98,7 +98,7 @@
 									<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认下沉?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/v/ajax/sink/', 'video_id=<?php echo $this->video_info['id']; ?>');});"><i class="icon icon-down"></i><?php _e('下沉'); ?></a>
 									<?php } ?>
 
-									<?php if ((!$this->video_info['lock'] OR $this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) AND ($this->video_info['uid'] == $this->user_id OR $this->user_info['permission']['edit_article'])) { ?>
+									<?php if ($this->video_info['uid'] == $this->user_id OR $this->user_info['permission']['edit_video']) { ?>
 									<a class="text-color-999" href="publish/video/<?php echo $this->video_info['id']; ?>"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
 									<?php } ?>
 
@@ -133,7 +133,7 @@
 						</div>
 					</div>
 					<?php } else { ?>
-					<!-- 文章评论 -->
+					<!-- 投稿评论 -->
 					<div class="aw-mod">
 						<div class="mod-head common-head">
 							<h2><?php _e('%s 个评论', $this->comment_count); ?></h2>
@@ -213,7 +213,7 @@
 												<?php if ($val['anonymous'] == 0) { ?>
 												<!--<a class="aw-article-comment text-color-999" data-id="<?php echo $val['user_info']['uid']; ?>"><i class="icon icon-comment"></i> <?php _e('回复'); ?></a>-->
 												<?php } ?>
-												<?php if ($this->user_id == $val['uid'] OR $this->user_info['permission']['edit_article']) { ?>
+												<?php if ($this->user_id == $val['uid'] OR $this->user_info['permission']['edit_video']) { ?>
 												<a class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认删除?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/v/ajax/remove_comment/', 'comment_id=<?php echo $val['id']; ?>');});"><i class="icon icon-trash"></i> <?php _e('删除'); ?></a>
 												<?php } ?>
 											<?php } ?>
@@ -236,7 +236,7 @@
 							<div class="clearfix"><?php echo $this->pagination; ?></div>
 						<?php } ?>
 					</div>
-					<!-- end 文章评论 -->
+					<!-- end 投稿评论 -->
 					<?php } ?>
 
 					<?php if ($_GET['column'] != 'log') { ?>
@@ -244,9 +244,9 @@
 					<div class="aw-mod aw-article-replay-box">
 						<a name="answer_form"></a>
 						<?php if ($this->video_info['lock']) { ?>
-						<p align="center"><?php _e('该文章目前已经被锁定, 无法添加新评论'); ?></p>
+						<p align="center"><?php _e('该投稿目前已经被锁定, 无法添加新评论'); ?></p>
 						<?php } else if (!$this->user_id) { ?>
-						<p align="center"><?php _e('要回复文章请先<a href="account/login/">登录</a>或<a href="account/register/">注册</a>'); ?></p>
+						<p align="center"><?php _e('要回复投稿请先<a href="account/login/">登录</a>或<a href="account/register/">注册</a>'); ?></p>
 						<?php } else { ?>
 						<form action="v/ajax/save_comment/" onsubmit="return false;" method="post" id="answer_form">
 						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />

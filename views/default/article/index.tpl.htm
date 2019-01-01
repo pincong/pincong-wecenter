@@ -89,7 +89,7 @@
 									<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认下沉?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/article/ajax/sink/', 'article_id=<?php echo $this->article_info['id']; ?>');});"><i class="icon icon-down"></i><?php _e('下沉'); ?></a>
 									<?php } ?>
 
-									<?php if ((!$this->article_info['lock'] OR $this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) AND ($this->article_info['uid'] == $this->user_id OR $this->user_info['permission']['edit_article'])) { ?>
+									<?php if ($this->article_info['uid'] == $this->user_id OR $this->user_info['permission']['edit_article']) { ?>
 									<a class="text-color-999" href="publish/article/<?php echo $this->article_info['id']; ?>"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
 									<?php } ?>
 

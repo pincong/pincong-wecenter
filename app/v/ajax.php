@@ -96,7 +96,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定投稿不存在')));
 		}
 
-		if ($video_info['lock'] AND !($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
+		if ($video_info['lock'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的投稿不能回复')));
 		}

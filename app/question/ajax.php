@@ -165,7 +165,7 @@ class ajax extends AWS_CONTROLLER
 		$answer_info = $this->model('answer')->get_answer_by_id($_GET['answer_id']);
 		$question_info = $this->model('question')->get_question_info_by_id($answer_info['question_id']);
 
-		if ($question_info['lock'] AND ! ($this->user_info['permission']['is_administrator'] or $this->user_info['permission']['is_moderator']))
+		if ($question_info['lock'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能评论锁定的问题')));
 		}
@@ -234,7 +234,7 @@ class ajax extends AWS_CONTROLLER
 
 		$question_info = $this->model('question')->get_question_info_by_id($_GET['question_id']);
 
-		if ($question_info['lock'] AND ! ($this->user_info['permission']['is_administrator'] or $this->user_info['permission']['is_moderator']))
+		if ($question_info['lock'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能评论锁定的问题')));
 		}
@@ -478,7 +478,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
 		}
 
-		if ($question_info['lock'] AND ! ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
+		if ($question_info['lock'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的问题不能回复')));
 		}
@@ -661,7 +661,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		$question_info = $this->model('question')->get_question_info_by_id($_POST['item_id']);
 
-		if ($question_info['lock'] AND ! ($this->user_info['permission']['is_administrator'] or $this->user_info['permission']['is_moderator']))
+		if ($question_info['lock'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定的问题不能设置重定向')));
 		}

@@ -573,21 +573,21 @@ class ajax extends AWS_CONTROLLER
 		switch ($_POST['type'])
 		{
 			case 'question':
-				if ($question_info['lock'] AND ! ($this->user_info['permission']['is_administrator'] or $this->user_info['permission']['is_moderator']))
+				if ($question_info['lock'])
 				{
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定内容不能添加话题')));
 				}
 			break;
 
 			case 'article':
-				if ($article_info['lock'] AND ! ($this->user_info['permission']['is_administrator'] or $this->user_info['permission']['is_moderator']))
+				if ($article_info['lock'])
 				{
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定内容不能添加话题')));
 				}
 			break;
 
 			case 'video':
-				if ($video_info['lock'] AND ! ($this->user_info['permission']['is_administrator'] or $this->user_info['permission']['is_moderator']))
+				if ($video_info['lock'])
 				{
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定内容不能添加话题')));
 				}
