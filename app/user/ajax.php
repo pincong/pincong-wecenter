@@ -231,4 +231,71 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
+	public function change_group_action()
+	{
+		if (!$this->user_info['permission']['edit_user'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+		}
+
+		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
+		set_user_operation_last_time('manage', $this->user_id);
+
+		$uid = intval($_POST['uid']);
+		$user_info = $this->model('account')->get_user_info_by_uid($uid);
+
+		if (!$user_info)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('用户不存在')));
+		}
+
+		if ($this->user_info['group_id'] != 1 AND $this->user_info['group_id'] != 2 AND $this->user_info['group_id'] != 3)
+		{
+			// 普通用户不能处理系统组以及比自己声望高的用户
+			if ($user_info['group_id'] < 4 OR intval($this->user_info['reputation']) <= intval($user_info['reputation']))
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+			}
+		}
+
+		$input_group_id = intval($_POST['group_id']);
+		$group_id = null;
+
+		if ($this->user_info['permission']['is_administrator'])
+		{
+			$user_group_list = $this->model('account')->get_user_group_list(0);
+		}
+		else
+		{
+			$user_group_list = $this->model('account')->get_user_group_list(0, 1);
+		}
+
+		foreach ($user_group_list as $key => $val)
+		{
+			if ($input_group_id == $val['group_id'])
+			{
+				$group_id = $input_group_id;
+				break;
+			}
+		}
+
+		if (!isset($group_id))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('用户组不存在')));
+		}
+
+		if ($group_id != $user_info['group_id'])
+		{
+			$this->model('account')->update_user_fields(array(
+				'group_id' => ($group_id),
+				'user_update_time' => fake_time()
+			), $uid);
+		}
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
 }

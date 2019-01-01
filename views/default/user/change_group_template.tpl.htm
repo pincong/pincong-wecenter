@@ -1,0 +1,25 @@
+<div class="modal fade alert-box aw-tips-box">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>
+				<h3 class="modal-title"><?php _e('变更用户组'); ?></h3>
+			</div>
+			<form action="user/ajax/change_group/" method="post" onsubmit="return false" id="edit_form">
+			<input type="hidden" name="uid" value="<?php echo $this->user['uid']; ?>" />
+			<div class="modal-body">
+				<div class="alert alert-danger collapse error_message"><i class="icon icon-delete"></i> <em></em></div>
+				<select class="form-control" name="group_id">
+				<?php foreach ($this->user_group_list as $key => $val) { ?>
+					<option value="<?php echo $val['group_id']; ?>" <?php if ($this->user['group_id'] == $val['group_id']) { ?>selected="selected"<?php } ?>><?php echo $val['group_name']; ?></option>
+				<?php } ?>
+				</select>
+			</div>
+			<div class="modal-footer">
+				<a data-dismiss="modal" aria-hidden="true" class="aw-small-text"><?php _e('取消'); ?></a>
+				<button class="btn btn-large btn-success" onclick="AWS.submit_form($('#edit_form'), $(this), $('.error_message'));return false;"><?php _e('确定'); ?></button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
