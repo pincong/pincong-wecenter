@@ -1,5 +1,5 @@
 /* 注册页面 */
-body{background:url('img/login_bg.jpg') no-repeat #e9f0f4;}
+body{background: #e9f0f4;}
 .btn-blue{height:40px;line-height:40px;padding:0;border:none;background-color: #66b7ff;color: #fff !important;}
 .btn-blue:hover{background-color: #4daaff;}
 .btn-blue:active{background-color: #339dff;}
