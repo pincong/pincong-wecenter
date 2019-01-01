@@ -175,7 +175,7 @@ class vote_class extends AWS_MODEL
 	}
 
 
-	private function get_bonus_factor(&$type, $item_id, $factor, &$item_info)
+	private function get_bonus_reputation(&$type, $item_id, $factor, &$item_info)
 	{
 		$bonus_factor = get_setting('bonus_factor');
 		if (!is_numeric($bonus_factor))
@@ -255,85 +255,104 @@ class vote_class extends AWS_MODEL
 	}
 
 
-	private function increase_count_and_reputation(&$type, $item_id, $uid, $item_uid, $factor)
+	private function update_item_agree_count_and_reputation(&$type, $item_id, $agree_count, $reputation)
 	{
-		$item_info = $this->model('content')->get_item_info_by_id($type, $item_id);
-		$factor = floatval($this->get_bonus_factor($type, $item_id, $factor, $item_info));
-
 		// TODO: question_id 字段改名
 		if ($type == 'question')
 		{
-			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + 1, reputation = reputation + ' . ($factor) . ' WHERE question_id = ' . ($item_id);
+			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + ' . ($agree_count) . ', reputation = reputation + ' . ($reputation) . ' WHERE question_id = ' . ($item_id);
 		}
 		// TODO: answer_id 字段改名
 		elseif ($type == 'answer')
 		{
-			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + 1, reputation = reputation + ' . ($factor) . ' WHERE answer_id = ' . ($item_id);
+			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + ' . ($agree_count) . ', reputation = reputation + ' . ($reputation) . ' WHERE answer_id = ' . ($item_id);
 		}
 		else
 		{
-			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + 1, reputation = reputation + ' . ($factor) . ' WHERE id = ' . ($item_id);
+			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + ' . ($agree_count) . ', reputation = reputation + ' . ($reputation) . ' WHERE id = ' . ($item_id);
 		}
 		$this->query($sql);
+	}
 
-		$this->update_parent_reputation($type, $item_id, $factor, $item_info);
-		$factor = $this->calc_upvote_reputation_factor($uid, $factor);
-		$this->model('reputation')->increase_agree_count_and_reputation($item_uid, 1, $factor);
+	private function increase_count_and_reputation(&$type, $item_id, $uid, $item_uid, $factor)
+	{
+		if (!$factor)
+		{
+			$reputation = 0;
+		}
+		else
+		{
+			$item_info = $this->model('content')->get_item_info_by_id($type, $item_id);
+			$reputation = floatval($this->get_bonus_reputation($type, $item_id, $factor, $item_info));
+		}
+
+		// 更新被赞post赞数和声望(热度)
+		$this->update_item_agree_count_and_reputation($type, $item_id, 1, $reputation);
+
+		if ($reputation)
+		{
+			// 更新帖子声望(热度)
+			$this->update_parent_reputation($type, $item_id, $reputation, $item_info);
+			// 计算被赞用户所获声望
+			$reputation = $this->calc_upvote_reputation($uid, $reputation);
+		}
+		// 更新被赞用户赞数和声望
+		$this->model('reputation')->update_user_agree_count_and_reputation($item_uid, 1, $reputation);
 	}
 
 	private function decrease_count_and_reputation(&$type, $item_id, $uid, $item_uid, $factor)
 	{
-		$item_info = $this->model('content')->get_item_info_by_id($type, $item_id);
-		$factor = floatval($this->get_bonus_factor($type, $item_id, $factor, $item_info));
-
-		// TODO: question_id 字段改名
-		if ($type == 'question')
+		if (!$factor)
 		{
-			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count - 1, reputation = reputation - ' . ($factor) . ' WHERE question_id = ' . ($item_id);
-		}
-		// TODO: answer_id 字段改名
-		elseif ($type == 'answer')
-		{
-			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count - 1, reputation = reputation - ' . ($factor) . ' WHERE answer_id = ' . ($item_id);
+			$reputation = 0;
 		}
 		else
 		{
-			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count - 1, reputation = reputation - ' . ($factor) . ' WHERE id = ' . ($item_id);
+			$item_info = $this->model('content')->get_item_info_by_id($type, $item_id);
+			$reputation = floatval($this->get_bonus_reputation($type, $item_id, $factor, $item_info));
 		}
-		$this->query($sql);
 
-		$this->update_parent_reputation($type, $item_id, -$factor, $item_info);
-		$factor = $this->calc_downvote_reputation_factor($uid, $factor);
-		$this->model('reputation')->increase_agree_count_and_reputation($item_uid, -1, $factor);
+		// 更新被赞post赞数和声望(热度)
+		$this->update_item_agree_count_and_reputation($type, $item_id, -1, -$reputation);
+
+		if ($reputation)
+		{
+			// 更新帖子声望(热度)
+			$this->update_parent_reputation($type, $item_id, -$reputation, $item_info);
+			// 计算被赞用户所获声望
+			$reputation = $this->calc_downvote_reputation($uid, $reputation);
+		}
+		// 更新被赞用户赞数和声望
+		$this->model('reputation')->update_user_agree_count_and_reputation($item_uid, -1, -$reputation);
 	}
 
-	private function calc_upvote_reputation_factor($uid, $factor)
+	private function calc_upvote_reputation($uid, $reputation)
 	{
 		$arg = get_setting('reputation_dynamic_weight_agree');
 		if (is_numeric($arg))
 		{
-			$factor = $this->calc_dynamic_reputation_factor($factor, $arg, $this->get_user_upvotes_last_week($uid));
+			$reputation = $this->calc_dynamic_reputation($reputation, $arg, $this->get_user_upvotes_last_week($uid));
 		}
-		return $factor;
+		return $reputation;
 	}
 
-	private function calc_downvote_reputation_factor($uid, $factor)
+	private function calc_downvote_reputation($uid, $reputation)
 	{
 		$arg = get_setting('reputation_dynamic_weight_disagree');
 		if (is_numeric($arg))
 		{
-			$factor = $this->calc_dynamic_reputation_factor($factor, $arg, $this->get_user_downvotes_last_week($uid));
+			$reputation = $this->calc_dynamic_reputation($reputation, $arg, $this->get_user_downvotes_last_week($uid));
 		}
-		return $factor;
+		return $reputation;
 	}
 
-	private function calc_dynamic_reputation_factor($factor, $arg, $total)
+	private function calc_dynamic_reputation($reputation, $arg, $total)
 	{
 		if ($total > 0)
 		{
-			$factor = $factor * round(exp(-floatval($arg) * $total), 6);
+			$reputation = $reputation * round(exp(-floatval($arg) * $total), 6);
 		}
-		return $factor;
+		return $reputation;
 	}
 
 	private function get_user_upvotes_last_week($uid)

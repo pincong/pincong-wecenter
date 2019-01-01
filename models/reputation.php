@@ -69,7 +69,7 @@ class reputation_class extends AWS_MODEL
 	}
 
 	// 增加用户赞同数和声望
-	public function increase_agree_count_and_reputation($uid, $vote, $reputation_factor)
+	public function update_user_agree_count_and_reputation($uid, $agree_count_delta, $reputation_delta)
 	{
 		$uid = intval($uid);
 		if (!$uid OR $uid == -1)
@@ -83,12 +83,12 @@ class reputation_class extends AWS_MODEL
 			return false;
 		}
 
-		$agree_count_delta = intval($vote);
+		$agree_count_delta = intval($agree_count_delta);
 		if ($agree_count_delta > 0 AND $user_info['flagged'])
 		{
 			return false;
 		}
-		$reputation_delta = $agree_count_delta * floatval($reputation_factor);
+		$reputation_delta = floatval($reputation_delta);
 		if (is_infinite($reputation_delta))
 		{
 			$reputation_delta = 0;
