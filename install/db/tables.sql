@@ -443,7 +443,6 @@ CREATE TABLE IF NOT EXISTS `aws_question` (
   `view_count` int(11) NOT NULL DEFAULT '0' COMMENT '浏览次数',
   `focus_count` int(11) NOT NULL DEFAULT '0' COMMENT '关注数',
   `comment_count` int(11) NOT NULL DEFAULT '0' COMMENT '评论数',
-  `action_history_id` int(11) NOT NULL DEFAULT '0' COMMENT '动作的记录表的关连id',
   `category_id` int(11) NOT NULL DEFAULT '0' COMMENT '分类 ID',
   `agree_count` int(11) NOT NULL DEFAULT '0' COMMENT '回复赞同数总和',
   `best_answer` int(11) NOT NULL DEFAULT '0' COMMENT '最佳回复 ID',
