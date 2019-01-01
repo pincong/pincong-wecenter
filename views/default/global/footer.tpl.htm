@@ -14,6 +14,7 @@
 <!-- DO NOT REMOVE -->
 <div id="aw-ajax-box" class="aw-ajax-box"></div>
 
+<?php if ($this->user_id) { ?>
 <div style="display:none;" id="__crond">
 	<script type="text/javascript">
 		$(document).ready(function () {
@@ -21,6 +22,7 @@
 		});
 	</script>
 </div>
+<?php } ?>
 
 <?php TPL::include('global/debuger.tpl.htm'); ?>
 <!-- / DO NOT REMOVE -->

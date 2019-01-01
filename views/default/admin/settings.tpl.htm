@@ -104,6 +104,16 @@
                         </div>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('自定义 &lt;head&gt;'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <textarea class="form-control textarea" name="custom_head" rows="4"><?php echo $this->setting['custom_head']; ?></textarea>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
             </table>
         </div>
 
@@ -358,11 +368,11 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('用户注册后默认关注的用户 ID'); ?>:</span>
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('用户注册后默认关注的用户 UID'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <input name="def_focus_uids" class="form-control" type="text" value="<?php echo $this->setting['def_focus_uids']; ?>"/>
 
-                                <span class="help-block"><?php _e('多个用户 ID 请用 , 隔开'); ?></span>
+                                <span class="help-block"><?php _e('多个用户 UID 请用 , 隔开'); ?></span>
                             </div>
                         </div>
                     </td>
@@ -509,7 +519,7 @@
                                 </label>
 
                                 <label class="checkbox-inline">
-                                    <input type="radio" name="default_inbox_recv" value="2"<?php if ($this->setting['default_inbox_recv'] == '2') { ?> checked="checked"<?php } ?> /> <?php _e('拒绝任何人人'); ?>
+                                    <input type="radio" name="default_inbox_recv" value="2"<?php if ($this->setting['default_inbox_recv'] == '2') { ?> checked="checked"<?php } ?> /> <?php _e('拒绝任何人'); ?>
                                 </label>
                             </div>
                         </div>
