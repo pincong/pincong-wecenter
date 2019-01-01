@@ -14,9 +14,9 @@
 
                                 <?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
 									<?php if ($this->user['forbidden']) { ?>
-									<a href="javascript:;" class="text-color-999" onclick="AWS.ajax_request(G_BASE_URL + '/account/ajax/forbid_user/' , 'uid=<?php echo $this->user['uid']; ?>&status=0');"><i class="icon icon-forbid"></i> 解封</a>
+									<a href="javascript:;" class="text-color-999" onclick="AWS.User.unforbid_user(<?php echo $this->user['uid']; ?>);"><i class="icon icon-forbid"></i> 解封</a>
 									<?php } else { ?>
-									<a href="javascript:;" class="text-color-999" onclick="AWS.ajax_request(G_BASE_URL + '/account/ajax/forbid_user/' , 'uid=<?php echo $this->user['uid']; ?>&status=1');"><i class="icon icon-forbid"></i> 封禁</a>
+									<a href="javascript:;" class="text-color-999" onclick="AWS.User.forbid_user(<?php echo $this->user['uid']; ?>);"><i class="icon icon-forbid"></i> 封禁</a>
 									<?php } ?>
 								<?php } ?>
 

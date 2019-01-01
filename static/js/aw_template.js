@@ -421,7 +421,7 @@ var AW_TEMPLATE = {
 		'</div>',
 
 	'textBox' :
-			'<div class="modal fade alert-box aw-share-box aw-share-box-message" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'+
+			'<div class="modal fade alert-box aw-share-box aw-share-box-message aw-text-box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'+
 				'<div class="modal-dialog">'+
 					'<div class="modal-content">'+
 						'<div class="modal-header">'+
@@ -433,7 +433,8 @@ var AW_TEMPLATE = {
 								'<textarea class="form-control" rows="5">{{message}}</textarea>'+
 							'</div>'+
 							'<div class="modal-footer">'+
-								'<a data-dismiss="modal" aria-hidden="true" class="btn btn-large btn-success">' + _t('确定') + '</a>'+
+								'<a data-dismiss="modal" aria-hidden="true" class="btn btn-large btn-gray">' + _t('取消') + '</a>'+
+								'<a data-dismiss="modal" aria-hidden="true" class="btn btn-large btn-success yes">' + _t('确定') + '</a>'+
 							'</div>'+
 					'</div>'+
 				'</div>'+

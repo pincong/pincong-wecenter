@@ -1243,6 +1243,10 @@ class account_class extends AWS_MODEL
 		}
 		else
 		{
+			if ($reason)
+			{
+				$reason = htmlspecialchars($reason);
+			}
 			$extra_data = array(
 				'banned_by' => $admin_uid,
 				'banned_reason' => $reason

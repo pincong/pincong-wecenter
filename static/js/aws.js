@@ -734,6 +734,19 @@ var AWS =
 						}
 					}, 'json');
 				break;
+
+				case 'textBox':
+					$('.aw-text-box .yes').click(function()
+					{
+						if (callback)
+						{
+							$(".alert-box").modal('hide');
+							callback($('.aw-text-box textarea').val());
+							return false;
+						}
+
+					});
+				break;
 			}
 
 			$(".alert-box").modal('show');
@@ -1896,6 +1909,22 @@ AWS.User =
 	why_fold: function()
 	{
 		AWS.alert(_t('被折叠的内容是被你或者被大多数用户认为没有帮助的内容'));
+	},
+
+	forbid_user: function(uid)
+	{
+		AWS.dialog('textBox', {
+			title: _t('请填写封禁理由')
+		}, function(text)
+		{
+			text = text.trim().substr(0, 50);
+			AWS.ajax_request(G_BASE_URL + '/account/ajax/forbid_user/' , 'uid=' + uid + '&status=1&reason=' + text);
+		});
+	},
+
+	unforbid_user: function(uid)
+	{
+		AWS.ajax_request(G_BASE_URL + '/account/ajax/forbid_user/' , 'uid=' + uid + '&status=0');
 	},
 
 }

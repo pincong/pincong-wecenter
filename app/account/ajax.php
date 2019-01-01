@@ -553,6 +553,20 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
+		$status = intval($_POST['status']);
+		if ($status)
+		{
+			$reason = my_trim($_POST['reason']);
+			if (!$reason)
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写理由')));
+			}
+			if (cjk_strlen($reason) > 30)
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('理由太长')));
+			}
+		}
+
 		$uid = intval($_POST['uid']);
 		$user_info = $this->model('account')->get_user_info_by_uid($uid);
 
@@ -566,7 +580,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
-		$this->model('account')->forbid_user_by_uid($uid, $_POST['status'], $this->user_id);
+		$this->model('account')->forbid_user_by_uid($uid, $status, $this->user_id, $reason);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
