@@ -516,8 +516,8 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		$video_url_info = Services_VideoParser::parse_video_url($_POST['video_webpage_url']);
-		if (!$video_url_info)
+		$web_url = my_trim($_POST['video_webpage_url']);
+		if (!Services_VideoParser::check_url($web_url))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('无法识别视频来源')));
 		}
@@ -609,9 +609,9 @@ class ajax extends AWS_CONTROLLER
 		// 开销大的操作放在最后
 		// 从视频网站取得元数据, 如时长
 		// 以 'https://www.youtube.com/watch?v=abcdefghijk' 为例
-		// source_type 指视频网站, 如 'youtube'
-		// source 指该视频在所在网站上的 id, 如 'abcdefghijk'
-		$parser_result = Services_VideoParser::fetch_video_metadata($video_url_info['source_type'], $video_url_info['source']);
+		// $parser_result['source_type'] 指视频网站, 如 'youtube'
+		// $parser_result['source'] 指该视频在所在网站上的 id, 如 'abcdefghijk'
+		$parser_result = Services_VideoParser::fetch_metadata_by_url($web_url);
 		if (!$parser_result)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('无法解析视频')));

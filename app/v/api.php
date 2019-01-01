@@ -44,7 +44,7 @@ class api extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('投稿不存在')));
 		}
 
-		$metadata = Services_VideoParser::fetch_video_metadata($video_info['source_type'], $video_info['source']);
+		$metadata = Services_VideoParser::fetch_metadata($video_info['source_type'], $video_info['source']);
 		if (!$metadata)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('无法解析视频')));
