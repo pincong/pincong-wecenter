@@ -24,12 +24,12 @@
 /**
  * @see Zend_Cache_Backend_Interface
  */
-//require_once 'Zend/Cache/Backend/ExtendedInterface.php';
+require_once 'Zend/Cache/Backend/ExtendedInterface.php';
 
 /**
  * @see Zend_Cache_Backend
  */
-//require_once 'Zend/Cache/Backend.php';
+require_once 'Zend/Cache/Backend.php';
 
 
 /**
@@ -131,46 +131,41 @@ class Zend_Cache_Backend_Memcached extends Zend_Cache_Backend implements Zend_Ca
             }
             $this->setOption('servers', $value);
         }
-        // Modify by WeCenter
-        //if (defined('IN_SAE')){
-        //    $this->_memcache = memcache_init();
-        //} else {
-			$this->_memcache = new Memcache;
-			foreach ($this->_options['servers'] as $server) {
-				if (!array_key_exists('port', $server)) {
-					$server['port'] = self::DEFAULT_PORT;
-				}
-				if (!array_key_exists('persistent', $server)) {
-					$server['persistent'] = self::DEFAULT_PERSISTENT;
-				}
-				if (!array_key_exists('weight', $server)) {
-					$server['weight'] = self::DEFAULT_WEIGHT;
-				}
-				if (!array_key_exists('timeout', $server)) {
-					$server['timeout'] = self::DEFAULT_TIMEOUT;
-				}
-				if (!array_key_exists('retry_interval', $server)) {
-					$server['retry_interval'] = self::DEFAULT_RETRY_INTERVAL;
-				}
-				if (!array_key_exists('status', $server)) {
-					$server['status'] = self::DEFAULT_STATUS;
-				}
-				if (!array_key_exists('failure_callback', $server)) {
-					$server['failure_callback'] = self::DEFAULT_FAILURE_CALLBACK;
-				}
-				if ($this->_options['compatibility']) {
-					// No status for compatibility mode (#ZF-5887)
-					$this->_memcache->addServer($server['host'], $server['port'], $server['persistent'],
-											$server['weight'], $server['timeout'],
-											$server['retry_interval']);
-				} else {
-					$this->_memcache->addServer($server['host'], $server['port'], $server['persistent'],
-											$server['weight'], $server['timeout'],
-											$server['retry_interval'],
-											$server['status'], $server['failure_callback']);
-				}
-			}
-        //}
+        $this->_memcache = new Memcache;
+        foreach ($this->_options['servers'] as $server) {
+            if (!array_key_exists('port', $server)) {
+                $server['port'] = self::DEFAULT_PORT;
+            }
+            if (!array_key_exists('persistent', $server)) {
+                $server['persistent'] = self::DEFAULT_PERSISTENT;
+            }
+            if (!array_key_exists('weight', $server)) {
+                $server['weight'] = self::DEFAULT_WEIGHT;
+            }
+            if (!array_key_exists('timeout', $server)) {
+                $server['timeout'] = self::DEFAULT_TIMEOUT;
+            }
+            if (!array_key_exists('retry_interval', $server)) {
+                $server['retry_interval'] = self::DEFAULT_RETRY_INTERVAL;
+            }
+            if (!array_key_exists('status', $server)) {
+                $server['status'] = self::DEFAULT_STATUS;
+            }
+            if (!array_key_exists('failure_callback', $server)) {
+                $server['failure_callback'] = self::DEFAULT_FAILURE_CALLBACK;
+            }
+            if ($this->_options['compatibility']) {
+                // No status for compatibility mode (#ZF-5887)
+                $this->_memcache->addServer($server['host'], $server['port'], $server['persistent'],
+                                        $server['weight'], $server['timeout'],
+                                        $server['retry_interval']);
+            } else {
+                $this->_memcache->addServer($server['host'], $server['port'], $server['persistent'],
+                                        $server['weight'], $server['timeout'],
+                                        $server['retry_interval'],
+                                        $server['status'], $server['failure_callback']);
+            }
+        }
     }
 
     /**
