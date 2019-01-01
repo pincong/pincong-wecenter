@@ -76,6 +76,11 @@ class CF
 	// 标题 (raw text)
 	public static function &page_title(&$user_info, $key, &$string)
 	{
+		if ($user_info['flagged'] == 2)
+		{
+			return '';
+		}
+
 		if ($kb = self::get_kb($user_info, $key))
 		{
 			return $kb['title'];
@@ -86,6 +91,11 @@ class CF
 	// 标题
 	public static function &title(&$user_info, $key, &$string)
 	{
+		if ($user_info['flagged'] == 2)
+		{
+			return self::deleted();
+		}
+
 		if ($kb = self::get_kb($user_info, $key))
 		{
 			return $kb['title'];
@@ -100,6 +110,11 @@ class CF
 	// 正文 (不显示已删除) (解析bbcode)
 	public static function &body(&$user_info, $key, &$string)
 	{
+		if ($user_info['flagged'] == 2)
+		{
+			return '';
+		}
+
 		if ($kb = self::get_kb($user_info, $key))
 		{
 			return nl2br(FORMAT::parse_bbcode($kb['message']));
@@ -110,6 +125,11 @@ class CF
 	// 正文 (不显示已删除) (解析链接)
 	public static function &body_simple(&$user_info, $key, &$string)
 	{
+		if ($user_info['flagged'] == 2)
+		{
+			return '';
+		}
+
 		if ($kb = self::get_kb($user_info, $key))
 		{
 			return nl2br(FORMAT::parse_bbcode($kb['message']));
