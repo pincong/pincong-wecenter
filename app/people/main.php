@@ -58,13 +58,6 @@ class main extends AWS_CONTROLLER
 			HTTP::error_404();
 		}
 
-		/*if ($user['forbidden'] AND !$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
-		{
-			header('HTTP/1.1 404 Not Found');
-
-			H::redirect_msg(AWS_APP::lang()->_t('该用户已被封禁'), '/');
-		}*/
-
 		if (urldecode($user['url_token']) != $_GET['id'])
 		{
 			HTTP::redirect('/people/' . $user['url_token']);
@@ -99,60 +92,58 @@ class main extends AWS_CONTROLLER
 
 		$this->crumb(AWS_APP::lang()->_t('用户列表'), '/people/');
 
-		if ($_GET['topic_id'])
-		{
+		$base_url = '';
 
-		}
-		else
+		$group_id = intval($_GET['group_id']);
+		if ($group_id > 99)
 		{
-			$where = array();
-
-			$group_id = intval($_GET['group_id']);
-			if ($group_id > 99)
+			$where[] = 'group_id = ' . $group_id;
+			if ($base_url)
 			{
-				$where[] = 'group_id = ' . $group_id;
+				$base_url .= '__';
 			}
-
-			$users_list = $this->model('account')->get_users_list(implode('', $where), calc_page_limit($_GET['page'], get_setting('contents_per_page')), true, false, 'forbidden ASC, reputation DESC');
-
-			$where[] = 'group_id <> 3';
-
-			TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-				'base_url' => get_js_url('/people/group_id-' . $_GET['group_id']),
-				'total_rows' => $this->model('account')->get_user_count(implode(' AND ', $where)),
-				'per_page' => get_setting('contents_per_page')
-			))->create_links());
+			$base_url .= 'group_id-' . $group_id;
 		}
+
+		$forbidden = intval($_GET['forbidden']);
+		if ($forbidden)
+		{
+			$where[] = 'forbidden <> 0';
+			if ($base_url)
+			{
+				$base_url .= '__';
+			}
+			$base_url .= 'forbidden-1';
+		}
+
+		$users_list = $this->model('account')->get_users_list(implode('', $where), calc_page_limit($_GET['page'], get_setting('contents_per_page')), true, false, 'forbidden ASC, reputation DESC');
+
+		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
+			'base_url' => get_js_url('/people/' . $base_url),
+			'total_rows' => $this->model('account')->get_user_count(implode(' AND ', $where)),
+			'per_page' => get_setting('contents_per_page')
+		))->create_links());
 
 		if ($users_list)
 		{
-			foreach ($users_list as $key => $val)
+			if ($this->user_id)
 			{
-				if ($val['reputation'])
+				foreach ($users_list as $key => $val)
 				{
-					$reputation_users_ids[] = $val['uid'];
-					$users_reputations[$val['uid']] = $val['reputation'];
+					$uids[] = $val['uid'];
 				}
 
-				$uids[] = $val['uid'];
-			}
-
-			if ($uids AND $this->user_id)
-			{
-				$users_follow_check = $this->model('follow')->users_follow_check($this->user_id, $uids);
-			}
-
-			foreach ($users_list as $key => $val)
-			{
-				$users_list[$key]['focus'] = $users_follow_check[$val['uid']];
+				if ($uids)
+				{
+					$users_follow_check = $this->model('follow')->users_follow_check($this->user_id, $uids);
+					foreach ($users_list as $key => $val)
+					{
+						$users_list[$key]['focus'] = $users_follow_check[$val['uid']];
+					}
+				}
 			}
 
 			TPL::assign('users_list', array_values($users_list));
-		}
-
-		if (!$_GET['group_id'])
-		{
-			TPL::assign('parent_topics', $this->model('topic')->get_parent_topics());
 		}
 
 		TPL::assign('custom_group', $this->model('account')->get_user_group_list(0, 1));

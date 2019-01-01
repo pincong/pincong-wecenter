@@ -7,7 +7,7 @@
 				<div class="col-sm-12 col-md-9 aw-main-content">
 					<div class="aw-mod">
 						<div class="mod-head common-head">
-							<h2><i class="icon icon-users"></i> <?php _e('用户推荐'); ?></h2>
+							<h2><i class="icon icon-users"></i> <?php _e('用户列表'); ?></h2>
 						</div>
 						<div class="mod-body aw-people-list">
 							<?php if ($this->users_list) { ?>
@@ -30,8 +30,8 @@
 									<span><i class="icon"></i> <?php _e(get_setting('currency_name')); ?> : <b><?php echo $val['currency']; ?></b> <?php _e(get_setting('currency_unit')); ?></span>
 									<?php } ?>
 								</div>
-								
-								<?php if ($val['uid'] != $this->user_id AND $this->user_id) { ?>
+
+								<?php if ($this->user_id AND $val['uid'] != $this->user_id) { ?>
 								<div class="operate hidden-xs">
 									<a href="javascript:;" onclick="AWS.User.follow($(this), 'user', <?php echo $val['uid'];?>);" class="follow btn btn-normal btn-success<?php if ($val['focus']) { ?> active<?php } ?>"><span><?php if ($val['focus']) { ?><?php _e('取消关注'); ?><?php } else { ?><?php _e('关注'); ?><?php } ?></span> <em>|</em> <b><?php echo $val['fans_count']; ?></b></a>
 									<a onclick="AWS.User.ask_user(<?php echo $val['uid']; ?>, '<?php echo UF::name($val); ?>');" class="text-color-999"><?php _e('问Ta'); ?></a>
@@ -40,14 +40,6 @@
 								</div>
 								<?php } ?>
 
-								<?php if ($val['experience']) { ?>
-								<!-- <p class="text-color-999">
-									<?php foreach($val['experience'] as $t_key => $t_val) { ?>
-										<a href="topic/<?php echo $t_val['topic_info']['url_token']; ?>" class="aw-topic-name" data-id="<?php echo $t_val['topic_id']; ?>"><span><?php echo $t_val['topic_info']['topic_title']; ?></span></a>
-									<?php } ?>
-									<?php _e('等话题下共获得 %s 个赞同', $val['total_agree_count']); ?>
-								</p> -->
-								<?php } ?>
 							</div>
 							<?php } ?>
 							<?php } ?>
@@ -56,12 +48,12 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-12 col-md-3 aw-side-bar <?php if (!$this->feature_list) { ?>active<?php } ?>">
+				<div class="col-sm-12 col-md-3 aw-side-bar">
 					<div class="aw-mod side-nav">
 						<div class="mod-body">
 							<ul>
 								<?php if ($this->custom_group) { ?>
-								<li><a <?php if (!$_GET['group_id'] AND !$_GET['topic_id']) { ?> class="active"<?php } ?> href="people/"><?php _e('全部'); ?></a></li>
+								<li><a <?php if (!$_GET['group_id']) { ?> class="active"<?php } ?> href="people/"><?php _e('全部'); ?></a></li>
 								<?php foreach ($this->custom_group AS $key => $val) { ?>
 								<li><a <?php if ($_GET['group_id'] == $val['group_id']) { ?> class="active"<?php } ?> href="people/group_id-<?php echo $val['group_id']; ?>"><?php echo $val['group_name']; ?></a></li>
 								<?php } ?>
@@ -69,28 +61,6 @@
 							</ul>
 						</div>
 					</div>
-					
-					<div class="aw-mod side-nav">
-						<div class="mod-body">
-							<ul>
-								<?php if ($this->parent_topics) { ?>
-								<?php foreach ($this->parent_topics AS $key => $val) { ?>
-								<li>
-									<a href="people/topic_id-<?php echo $val['topic_id']; ?>"<?php if ($_GET['topic_id'] == $val['topic_id']) { ?> class="active"<?php } ?>><?php echo $val['topic_title']; ?></a>
-								</li>
-								<?php } ?>
-								<?php } ?>
-							</ul>
-						</div>
-					</div>
-
-					<!-- <div class="aw-mod people-sort">
-						<div class="mod-body">
-							<input type="text" name="" placeholder="按擅长话题搜索..." class="form-control" />
-							<i class="icon icon-down"></i>
-						</div>
-					</div> -->
-					
 				</div>
 			</div>
 		</div>
