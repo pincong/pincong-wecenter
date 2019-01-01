@@ -479,6 +479,151 @@
                 <tr>
                     <td>
                         <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码字体最小值'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="captcha_fontsize_min" type="text" class="form-control" value="<?php echo $this->setting['captcha_fontsize_min']; ?>"/>
+
+                                <div class="help-block"><?php _e('默认 20'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码字体最大值'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="captcha_fontsize_max" type="text" class="form-control" value="<?php echo $this->setting['captcha_fontsize_max']; ?>"/>
+
+                                <div class="help-block"><?php _e('默认 22'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码字符数最小值'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="captcha_wordlen_min" type="text" class="form-control" value="<?php echo $this->setting['captcha_wordlen_min']; ?>"/>
+
+                                <div class="help-block"><?php _e('默认 4'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码字符数最大值'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="captcha_wordlen_max" type="text" class="form-control" value="<?php echo $this->setting['captcha_wordlen_max']; ?>"/>
+
+                                <div class="help-block"><?php _e('默认 4'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码宽度最小值'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="captcha_width_min" type="text" class="form-control" value="<?php echo $this->setting['captcha_width_min']; ?>"/>
+
+                                <div class="help-block"><?php _e('默认 100'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码宽度最大值'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="captcha_width_max" type="text" class="form-control" value="<?php echo $this->setting['captcha_width_max']; ?>"/>
+
+                                <div class="help-block"><?php _e('默认 100'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码高度最小值'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="captcha_height_min" type="text" class="form-control" value="<?php echo $this->setting['captcha_height_min']; ?>"/>
+
+                                <div class="help-block"><?php _e('默认 40'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码高度最大值'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="captcha_height_max" type="text" class="form-control" value="<?php echo $this->setting['captcha_height_max']; ?>"/>
+
+                                <div class="help-block"><?php _e('默认 40'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码噪点最小值'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="captcha_dot_noise_min" type="text" class="form-control" value="<?php echo $this->setting['captcha_dot_noise_min']; ?>"/>
+
+                                <div class="help-block"><?php _e('默认 3'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码噪点最大值'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="captcha_dot_noise_max" type="text" class="form-control" value="<?php echo $this->setting['captcha_dot_noise_max']; ?>"/>
+
+                                <div class="help-block"><?php _e('默认 6'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码噪线最小值'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="captcha_line_noise_min" type="text" class="form-control" value="<?php echo $this->setting['captcha_line_noise_min']; ?>"/>
+
+                                <div class="help-block"><?php _e('默认 1'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码噪线最大值'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="captcha_line_noise_max" type="text" class="form-control" value="<?php echo $this->setting['captcha_line_noise_max']; ?>"/>
+
+                                <div class="help-block"><?php _e('默认 2'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('管理员后台登录是否需要验证码'); ?>:</span>
                             <div class="col-sm-6 col-xs-8">
                                 <div class="btn-group mod-btn">

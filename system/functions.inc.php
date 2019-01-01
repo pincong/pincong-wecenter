@@ -1137,3 +1137,16 @@ function my_trim($str)
 
 	return trim($str, "\x00..\x20");
 }
+
+
+function rand_minmax($min, $max, $default = 0, $undefined = 0)
+{
+	$min = intval($min);
+	$max = intval($max);
+	if ($min == $undefined AND $max == $undefined)
+	{
+		return $default;
+	}
+
+	return rand($min, $max);
+}

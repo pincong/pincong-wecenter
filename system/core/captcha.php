@@ -32,19 +32,28 @@ class core_captcha
 			}
 		}
 
+		$fontsize = rand_minmax(get_setting('captcha_fontsize_min'), get_setting('captcha_fontsize_max'), rand(20, 22));
+		$wordlen = rand_minmax(get_setting('captcha_wordlen_min'), get_setting('captcha_wordlen_max'), 4);
+
+		$width = rand_minmax(get_setting('captcha_width_min'), get_setting('captcha_width_max'), 100);
+		$height = rand_minmax(get_setting('captcha_height_min'), get_setting('captcha_height_max'), 40);
+
 		$this->captcha = new Zend_Captcha_Image(array(
 			'font' => $this->get_font(),
 			'imgdir' => $img_dir,
-			'fontsize' => rand(20, 22),
-			'width' => 100,
-			'height' => 40,
-			'wordlen' => 4,
+			'fontsize' => $fontsize,
+			'width' => $width,
+			'height' => $height,
+			'wordlen' => $wordlen,
 			'session' => new Zend_Session_Namespace(G_COOKIE_PREFIX . '_Captcha'),
 			'timeout' => 600
 		));
 
-		$this->captcha->setDotNoiseLevel(rand(3, 6));
-		$this->captcha->setLineNoiseLevel(rand(1, 2));
+		$dot_noise = rand_minmax(get_setting('captcha_dot_noise_min'), get_setting('captcha_dot_noise_max'), rand(3, 6));
+		$line_noise = rand_minmax(get_setting('captcha_line_noise_min'), get_setting('captcha_line_noise_max'), rand(1, 2));
+
+		$this->captcha->setDotNoiseLevel($dot_noise);
+		$this->captcha->setLineNoiseLevel($line_noise);
 	}
 
 	public function get_font()
