@@ -49,7 +49,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->model('vote')->check_user_vote_limit_rate($this->user_id, $this->user_info['permission']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今赞同/反对已经达到上限')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日赞同/反对已经达到上限')));
 		}
 
 		$item_info = $this->model('content')->get_item_info_by_id($_POST['type'], $_POST['item_id']);
@@ -84,7 +84,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->model('vote')->check_user_vote_limit_rate($this->user_id, $this->user_info['permission']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今赞同/反对已经达到上限')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日赞同/反对已经达到上限')));
 		}
 
 		$item_info = $this->model('content')->get_item_info_by_id($_POST['type'], $_POST['item_id']);
