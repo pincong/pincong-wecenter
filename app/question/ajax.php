@@ -30,8 +30,7 @@ class ajax extends AWS_CONTROLLER
 			'get_answer_comments',
 			'log',
 			'get_focus_users',
-			'get_answer_users',
-			'fetch_share_data'
+			'get_answer_users'
 		);
 
 		return $rule_action;
@@ -135,95 +134,6 @@ class ajax extends AWS_CONTROLLER
 		));
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
-
-	public function agree_answer_action()
-	{
-		$answer_info = $this->model('answer')->get_answer_by_id($_POST['answer_id']);
-
-		if (! $answer_info)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('回复不存在')));
-		}
-
-		if ($this->model('answer')->agree_answer($this->user_id, $_POST['answer_id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(array(
-				'action' => 'agree'
-			)), 1, null);
-		}
-		else
-		{
-			H::ajax_json_output(AWS_APP::RSM(array(
-				'action' => 'disagree'
-			)), 1, null);
-		}
-	}
-
-	public function fetch_share_data_action()
-	{
-		switch ($_GET['type'])
-		{
-			case 'question':
-				$question_info = $this->model('question')->get_question_info_by_id($_GET['item_id']);
-
-				$question_info['question_content'] = trim(cjk_substr($question_info['question_content'], 0, 100, 'UTF-8', '...'));
-
-				$url = get_js_url('/question/' . $question_info['question_id'] . '?fromuid=' . $this->user_id);
-
-				$message = AWS_APP::lang()->_t('我看到一个不错的问题, 想和你分享:') . ' ' . $question_info['question_content'] . ' ' . $url;
-			break;
-
-			case 'answer':
-				$answer_info = $this->model('answer')->get_answer_by_id($_GET['item_id']);
-
-				$user_info = $this->model('account')->get_user_info_by_uid($answer_info['uid']);
-
-				$question_info = $this->model('question')->get_question_info_by_id($answer_info['question_id']);
-
-				$answer_info['answer_content'] = trim(cjk_substr($answer_info['answer_content'], 0, 100, 'UTF-8', '...'));
-
-				$answer_info['answer_content'] = str_replace(array(
-					"\r",
-					"\n",
-					"\t"
-				), ' ', $answer_info['answer_content']);
-
-				$url = get_js_url('/question/' . $answer_info['question_id'] . '?fromuid=' . $this->user_id . '&answer_id=' . $answer_info['answer_id'] . '&single=true');
-
-				if ($answer_info['anonymous'])
-				{
-					$user_info['user_name'] = AWS_APP::lang()->_t('匿名用户');
-				}
-
-				$message = AWS_APP::lang()->_t('我看到一个不错的问题, 想和你分享:') . ' ' . $question_info['question_content'] . ' - ' . $user_info['user_name'] . ": " . $answer_info['answer_content'] . ' ' . $url;
-			break;
-
-			case 'article':
-				$article_info = $this->model('article')->get_article_info_by_id($_GET['item_id']);
-
-				$article_info['message'] = trim(cjk_substr($article_info['message'], 0, 100, 'UTF-8', '...'));
-
-				$article_info['message'] = str_replace(array(
-					"\r",
-					"\n",
-					"\t"
-				), ' ', $article_info['message']);
-
-				$url = get_js_url('/article/' . $article_info['id'] . '?fromuid=' . $this->user_id);
-
-				$message = AWS_APP::lang()->_t('我看到一个不错的文章, 想和你分享:') . ' ' . $article_info['title'] . ": " . $article_info['message'] . ' ' . $url;
-			break;
-		}
-
-		$data = array(
-			'message' => $message,
-			'url' => $url
-		);
-
-		H::ajax_json_output(AWS_APP::RSM(array(
-			'share_txt' => $data
-		), 1, null));
 	}
 
 	public function save_answer_comment_action()
