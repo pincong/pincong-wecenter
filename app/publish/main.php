@@ -34,9 +34,10 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		if ($_GET['id'])
+		$id = intval($_GET['id']);
+		if ($id)
 		{
-			if (!$question_info = $this->model('question')->get_question_info_by_id($_GET['id']))
+			if (!$question_info = $this->model('question')->get_question_info_by_id($id))
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('指定问题不存在'));
 			}
@@ -66,9 +67,17 @@ class main extends AWS_CONTROLLER
 			);
 		}
 
-		if (!$_GET['id'] AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_new_question'))
+		if (!$id)
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name')), '/currency/rule/');
+			if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_new_question'))
+			{
+				H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name')), '/currency/rule/');
+			}
+
+			if (!$this->model('publish')->check_question_limit_rate())
+			{
+				H::redirect_msg(AWS_APP::lang()->_t('你今天发布的问题已经达到上限'));
+			}
 		}
 
 		if (!$question_info['category_id'])
@@ -99,9 +108,10 @@ class main extends AWS_CONTROLLER
 
 	public function article_action()
 	{
-		if ($_GET['id'])
+		$id = intval($_GET['id']);
+		if ($id)
 		{
-			if (!$article_info = $this->model('article')->get_article_info_by_id($_GET['id']))
+			if (!$article_info = $this->model('article')->get_article_info_by_id($id))
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('指定文章不存在'));
 			}
@@ -133,9 +143,17 @@ class main extends AWS_CONTROLLER
 			);
 		}
 
-		if (!$_GET['id'] AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_new_article'))
+		if (!$id)
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name')), '/currency/rule/');
+			if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_new_article'))
+			{
+				H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name')), '/currency/rule/');
+			}
+
+			if (!$this->model('publish')->check_article_limit_rate())
+			{
+				H::redirect_msg(AWS_APP::lang()->_t('你今天发布的文章已经达到上限'));
+			}
 		}
 
 		if (!$article_info['category_id'])

@@ -336,4 +336,49 @@ class publish_class extends AWS_MODEL
 		return $comment_id;
 	}
 
+
+	public function check_answer_limit_rate($uid)
+	{
+		$limit = intval(get_setting('answer_limit_per_day'));
+		if (!$limit)
+		{
+			return true;
+		}
+
+		return true;
+	}
+
+	public function check_question_limit_rate($uid)
+	{
+		$limit = intval(get_setting('question_limit_per_day'));
+		if (!$limit)
+		{
+			return true;
+		}
+
+		return true;
+	}
+
+	public function check_article_limit_rate($uid)
+	{
+		$limit = intval(get_setting('article_limit_per_day'));
+		if (!$limit)
+		{
+			return true;
+		}
+
+		return true;
+	}
+
+	public function check_article_comment_limit_rate($uid)
+	{
+		$limit = intval(get_setting('article_comment_limit_per_day'));
+		if (!$limit)
+		{
+			return true;
+		}
+
+		return true;
+	}
+
 }

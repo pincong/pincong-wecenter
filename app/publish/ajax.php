@@ -172,6 +172,11 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
         }
 
+		if (!$this->model('publish')->check_question_limit_rate())
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天发布的问题已经达到上限')));
+		}
+
         if (get_setting('category_enable') == 'N')
         {
             $_POST['category_id'] = 1;
@@ -329,6 +334,11 @@ class ajax extends AWS_CONTROLLER
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
         }
+
+		if (!$this->model('publish')->check_article_limit_rate())
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天发布的文章达到上限')));
+		}
 
         if (get_setting('category_enable') == 'N')
         {
