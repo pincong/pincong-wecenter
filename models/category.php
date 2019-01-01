@@ -51,6 +51,11 @@ class category_class extends AWS_MODEL
 		return $this->delete('category', 'id = ' . intval($category_id));
 	}
 
+	public function category_exists($category_id)
+	{
+		return $this->count('category', "id = " . intval($category_id));
+	}
+
 	public function contents_exists($category_id)
 	{
 		if ($this->fetch_one('question', 'question_id', 'category_id = ' . intval($category_id)) OR $this->fetch_one('article', 'id', 'category_id = ' . intval($category_id)))

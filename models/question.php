@@ -85,6 +85,62 @@ class question_class extends AWS_MODEL
 		return $log_list;
 	}
 
+
+	public function modify_question($id, $uid, $title, $message, $category_id)
+	{
+		if (!$item_info = $this->model('question')->get_question_info_by_id($id))
+		{
+			return false;
+		}
+
+		$title = htmlspecialchars($title);
+		$category_id = intval($category_id);
+
+		$this->model('search_fulltext')->push_index('question', $title, $item_info['id']);
+
+		$this->update('question', array(
+			'question_content' => $title,
+			'question_detail' => htmlspecialchars($message),
+			'category_id' => $category_id,
+		), 'question_id = ' . intval($id));
+
+		$this->update('posts_index', array(
+			'category_id' => $category_id
+		), "post_id = " . intval($id) . " AND post_type = 'question'" );
+
+		if ($uid == $item_info['published_uid'])
+		{
+			$is_anonymous =  $item_info['anonymous'];
+		}
+		$this->model('question')->log($id, 'QUESTION', '编辑问题', $uid, $is_anonymous);
+
+		return true;
+	}
+
+
+	public function clear_question($id, $uid)
+	{
+		if (!$item_info = $this->model('question')->get_question_info_by_id($id))
+		{
+			return false;
+		}
+
+		$this->update('question', array(
+			'question_content' => null,
+			'question_detail' => null,
+			'question_content_fulltext' => null,
+		), 'question_id = ' . intval($id));
+
+		if ($uid == $item_info['published_uid'])
+		{
+			$is_anonymous =  $item_info['anonymous'];
+		}
+		$this->model('question')->log($id, 'QUESTION', '删除问题', $uid, $is_anonymous);
+
+		return true;
+	}
+
+
 	public function get_focus_uid_by_question_id($question_id)
 	{
 		return $this->query_all('SELECT uid FROM ' . $this->get_table('question_focus') . ' WHERE question_id = ' . intval($question_id));
@@ -179,43 +235,6 @@ class question_class extends AWS_MODEL
 		}
 
 		return $question_id;
-	}
-
-	public function update_question($question_id, $question_content, $question_detail, $uid, $anonymous = null, $category_id = null)
-	{
-		if (!$question_info = $this->get_question_info_by_id($question_id) OR !$uid)
-		{
-			return false;
-		}
-
-		if ($question_content)
-		{
-			$question_content = htmlspecialchars($question_content);
-		}
-
-		if ($question_detail)
-		{
-			$question_detail = htmlspecialchars($question_detail);
-		}
-
-		$data = array(
-			'question_content' => $question_content,
-			'question_detail' => $question_detail
-		);
-
-		$this->model('search_fulltext')->push_index('question', $question_content, $question_id);
-
-		$this->update('question', $data, 'question_id = ' . intval($question_id));
-
-		if ($uid == $question_info['published_uid'])
-		{
-			$is_anonymous =  $question_info['anonymous'];
-		}
-		$this->model('question')->log($question_id, 'QUESTION', '编辑问题', $uid, $is_anonymous);
-
-		// TODO: 修改分类
-
-		return true;
 	}
 
 	public function remove_question($question_id)

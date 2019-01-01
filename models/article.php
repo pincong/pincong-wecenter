@@ -85,6 +85,61 @@ class article_class extends AWS_MODEL
 		return $log_list;
 	}
 
+
+	public function modify_article($id, $uid, $title, $message, $category_id)
+	{
+		if (!$item_info = $this->model('article')->get_article_info_by_id($id))
+		{
+			return false;
+		}
+
+		$title = htmlspecialchars($title);
+		$category_id = intval($category_id);
+
+		$this->model('search_fulltext')->push_index('article', $title, $item_info['id']);
+
+		$this->update('article', array(
+			'title' => $title,
+			'message' => htmlspecialchars($message),
+			'category_id' => $category_id,
+		), 'id = ' . intval($id));
+
+		$this->update('posts_index', array(
+			'category_id' => $category_id
+		), "post_id = " . intval($id) . " AND post_type = 'article'" );
+
+		if ($uid == $item_info['uid'])
+		{
+			$is_anonymous =  $item_info['anonymous'];
+		}
+		$this->model('article')->log($id, 'ARTICLE', '编辑文章', $uid, $is_anonymous);
+
+		return true;
+	}
+
+	public function clear_article($id, $uid)
+	{
+		if (!$item_info = $this->model('article')->get_article_info_by_id($id))
+		{
+			return false;
+		}
+
+		$this->update('article', array(
+			'title' => null,
+			'message' => null,
+			'title_fulltext' => null,
+		), 'id = ' . intval($id));
+
+		if ($uid == $item_info['uid'])
+		{
+			$is_anonymous =  $item_info['anonymous'];
+		}
+		$this->model('article')->log($id, 'ARTICLE', '删除文章', $uid, $is_anonymous);
+
+		return true;
+	}
+
+
 	public function get_article_info_by_id($article_id)
 	{
 		if (!is_digits($article_id))
@@ -257,43 +312,6 @@ class article_class extends AWS_MODEL
 			$is_anonymous =  $comment['anonymous'];
 		}
 		$this->model('article')->log($comment['article_id'], 'ARTICLE_COMMENT', '删除评论', $uid, $is_anonymous, $comment['id']);
-
-		return true;
-	}
-
-	public function update_article($article_id, $uid, $title, $message, $anonymous = null, $category_id = null)
-	{
-		if (!$article_info = $this->model('article')->get_article_info_by_id($article_id))
-		{
-			return false;
-		}
-
-		if ($title)
-		{
-			$title = htmlspecialchars($title);
-		}
-
-		if ($message)
-		{
-			$message = htmlspecialchars($message);
-		}
-
-		$data = array(
-			'title' => $title,
-			'message' => $message
-		);
-
-		$this->model('search_fulltext')->push_index('article', $title, $article_info['id']);
-
-		$this->update('article', $data, 'id = ' . intval($article_id));
-
-		if ($uid == $article_info['uid'])
-		{
-			$is_anonymous =  $article_info['anonymous'];
-		}
-		$this->model('article')->log($article_id, 'ARTICLE', '编辑文章', $uid, $is_anonymous);
-
-		// TODO: 修改分类
 
 		return true;
 	}

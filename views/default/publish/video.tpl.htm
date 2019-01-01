@@ -63,7 +63,7 @@
 								<div class="aw-mod">
 									<div class="mod-head">
 										<div class="">
-											<input type="text" name="web_url" placeholder="https://" value="" class="form-control" />
+											<input type="text" name="web_url" placeholder="<?php if ($this->video_info['id']) { ?><?php _e('不更改请留空'); ?><?php } else { ?>https://<?php } ?>" value="" class="form-control" />
 										</div>
 									</div>
 									<div class="mod-body">

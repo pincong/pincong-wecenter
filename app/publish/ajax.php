@@ -95,18 +95,6 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容字数不得多于 50000 字')));
 		}
 
-		$_POST['category_id'] = intval($_POST['category_id']);
-		if (get_setting('category_enable') == 'N')
-		{
-			$_POST['category_id'] = 1;
-		}
-
-		// TODO: 检查 $_POST['category_id']
-		if (!$_POST['category_id'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择分类')));
-		}
-
 		if ($_POST['topics'])
 		{
 			$topic_title_limit = intval(get_setting('topic_title_limit'));
@@ -135,6 +123,21 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
+		$_POST['category_id'] = intval($_POST['category_id']);
+		if (!$_POST['category_id'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择分类')));
+		}
+
+		if (get_setting('category_enable') == 'N')
+		{
+			$_POST['category_id'] = 1;
+		}
+
+		if (!$this->model('category')->category_exists($_POST['category_id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('分类不存在')));
+		}
 	}
 
 
@@ -379,27 +382,9 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		if ($_POST['do_delete'])
+		if (!$_POST['do_delete'])
 		{
-			// 只清空不删除
-			$question_content = null;
-			$question_detail = null;
-		}
-		else
-		{
-			$question_content = my_trim($_POST['title']);
-
-			if (cjk_strlen($question_content) < 5)
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题标题字数不得少于 5 个字')));
-			}
-
-			if (get_setting('question_title_limit') > 0 AND cjk_strlen($question_content) > get_setting('question_title_limit'))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题标题字数不得大于') . ' ' . get_setting('question_title_limit') . ' ' . AWS_APP::lang()->_t('字节')));
-			}
-
-			$question_detail = my_trim($_POST['message']);
+			$this->do_validate();
 		}
 
 		// !注: 来路检测后面不能再放报错提示
@@ -408,24 +393,22 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
 		}
 
-		// TODO: 处理 $_POST['anonymous'] 和 $_POST['category_id']
-		$this->model('question')->update_question($question_info['question_id'], $question_content, $question_detail, $this->user_id, null, null);
-
-		if ($this->user_id != $question_info['published_uid'])
-		{
-			$this->model('question')->add_focus_question($question_info['question_id'], $this->user_id);
-
-			$this->model('notify')->send($this->user_id, $question_info['published_uid'], notify_class::TYPE_MOD_QUESTION, notify_class::CATEGORY_QUESTION, $question_info['question_id'], array(
-				'from_uid' => $this->user_id,
-				'question_id' => $question_info['question_id']
-			));
-		}
-
 		if ($_POST['do_delete'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/home/explore/')
-			), 1, null));
+			$this->model('question')->clear_question(
+				$question_info['question_id'],
+				$this->user_id
+			);
+		}
+		else
+		{
+			$this->model('question')->modify_question(
+				$question_info['question_id'],
+				$this->user_id,
+				$_POST['title'],
+				$_POST['message'],
+				$_POST['category_id']
+			);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
@@ -455,27 +438,9 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		if ($_POST['do_delete'])
+		if (!$_POST['do_delete'])
 		{
-			// 只清空不删除
-			$article_title = null;
-			$article_content = null;
-		}
-		else
-		{
-			$article_title = my_trim($_POST['title']);
-
-			if (!$article_title)
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请输入文章标题')));
-			}
-
-			if (get_setting('question_title_limit') > 0 AND cjk_strlen($article_title) > get_setting('question_title_limit'))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文章标题字数不得大于') . ' ' . get_setting('question_title_limit') . ' ' . AWS_APP::lang()->_t('字节')));
-			}
-
-			$article_content = my_trim($_POST['message']);
+			$this->do_validate();
 		}
 
 		// !注: 来路检测后面不能再放报错提示
@@ -484,14 +449,22 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
 		}
 
-		// TODO: 处理 $_POST['anonymous'] 和 $_POST['category_id']
-		$this->model('article')->update_article($article_info['id'], $this->user_id, $article_title, $article_content, null, null);
-
 		if ($_POST['do_delete'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/home/explore/')
-			), 1, null));
+			$this->model('article')->clear_article(
+				$article_info['id'],
+				$this->user_id
+			);
+		}
+		else
+		{
+			$this->model('article')->modify_article(
+				$article_info['id'],
+				$this->user_id,
+				$_POST['title'],
+				$_POST['message'],
+				$_POST['category_id']
+			);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
@@ -499,5 +472,83 @@ class ajax extends AWS_CONTROLLER
 		), 1, null));
 	}
 
+
+	public function modify_video_action()
+	{
+		if (!$video_info = $this->model('video')->get_video_info_by_id($_POST['video_id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('投稿不存在')));
+		}
+
+		if ($video_info['lock'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('投稿已锁定, 不能编辑')));
+		}
+
+		if (!$this->user_info['permission']['edit_video'])
+		{
+			if ($video_info['uid'] != $this->user_id)
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个投稿')));
+			}
+		}
+
+		if (!$_POST['do_delete'])
+		{
+			$web_url = my_trim($_POST['web_url']);
+			$modify_source = !!$web_url;
+			if ($modify_source AND !Services_VideoParser::check_url($web_url))
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('无法识别视频来源')));
+			}
+
+			$this->do_validate();
+		}
+
+		// !注: 来路检测后面不能再放报错提示
+		if (!valid_post_hash($_POST['post_hash']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
+		}
+
+		if ($_POST['do_delete'])
+		{
+			$this->model('video')->clear_video(
+				$video_info['id'],
+				$this->user_id
+			);
+		}
+		else
+		{
+			if ($modify_source)
+			{
+				$parser_result = Services_VideoParser::fetch_metadata_by_url($web_url);
+				if (!$parser_result)
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('无法解析视频')));
+				}
+
+				$this->model('video')->modify_video_source(
+					$video_info['id'],
+					$parser_result['source_type'],
+					$parser_result['source'],
+					$parser_result['duration']
+				);
+			}
+
+			$this->model('video')->modify_video(
+				$video_info['id'],
+				$this->user_id,
+				$_POST['title'],
+				$_POST['message'],
+				$_POST['category_id']
+			);
+		}
+
+		H::ajax_json_output(AWS_APP::RSM(array(
+			'url' => get_js_url('/v/' . $video_info['id'])
+		), 1, null));
+
+	}
 
 }

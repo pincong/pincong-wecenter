@@ -85,6 +85,74 @@ class video_class extends AWS_MODEL
 		return $log_list;
 	}
 
+
+	public function modify_video($id, $uid, $title, $message, $category_id)
+	{
+		if (!$item_info = $this->model('video')->get_video_info_by_id($id))
+		{
+			return false;
+		}
+
+		$title = htmlspecialchars($title);
+		$category_id = intval($category_id);
+
+		//$this->model('search_fulltext')->push_index('video', $title, $item_info['id']);
+
+		$this->update('video', array(
+			'title' => $title,
+			'message' => htmlspecialchars($message),
+			'category_id' => $category_id,
+		), 'id = ' . intval($id));
+
+		$this->update('posts_index', array(
+			'category_id' => $category_id
+		), "post_id = " . intval($id) . " AND post_type = 'video'" );
+
+		if ($uid == $item_info['uid'])
+		{
+			$is_anonymous =  $item_info['anonymous'];
+		}
+		$this->model('video')->log($id, 'VIDEO', '编辑投稿', $uid, $is_anonymous);
+
+		return true;
+	}
+
+
+	public function clear_video($id, $uid)
+	{
+		if (!$item_info = $this->model('video')->get_video_info_by_id($id))
+		{
+			return false;
+		}
+
+		$this->update('video', array(
+			'title' => null,
+			'message' => null,
+			'title_fulltext' => null,
+		), 'id = ' . intval($id));
+
+		if ($uid == $item_info['uid'])
+		{
+			$is_anonymous =  $item_info['anonymous'];
+		}
+		$this->model('video')->log($id, 'VIDEO', '删除投稿', $uid, $is_anonymous);
+
+		return true;
+	}
+
+
+	public function update_video_source($id, $source_type, $source, $duration)
+	{
+		$this->update('video', array(
+			'source_type' => $source_type,
+			'source' => $source,
+			'duration' => $duration,
+		), 'id = ' . intval($id));
+
+		return true;
+	}
+
+
 	public function get_video_info_by_id($video_id)
 	{
 		if (!is_digits($video_id))
@@ -242,44 +310,6 @@ class video_class extends AWS_MODEL
 			$is_anonymous =  $comment['anonymous'];
 		}
 		$this->model('video')->log($comment['video_id'], 'VIDEO_COMMENT', '删除评论', $uid, $is_anonymous, $comment['id']);
-
-		return true;
-	}
-
-	public function update_video($video_id, $uid, $title, $message, $anonymous = null, $category_id = null)
-	{
-		if (!$video_info = $this->model('video')->get_video_info_by_id($video_id))
-		{
-			return false;
-		}
-
-		if ($title)
-		{
-			$title = htmlspecialchars($title);
-		}
-
-		if ($message)
-		{
-			$message = htmlspecialchars($message);
-		}
-
-		$data = array(
-			'title' => $title,
-			'message' => $message
-		);
-
-		$this->model('search_fulltext')->push_index('video', $title, $video_info['id']);
-
-		$this->update('video', $data, 'id = ' . intval($video_id));
-
-		if ($uid == $video_info['uid'])
-		{
-			$is_anonymous =  $video_info['anonymous'];
-		}
-		$this->model('video')->log($video_id, 'VIDEO', '编辑投稿', $uid, $is_anonymous);
-
-		// TODO: 修改分类
-		// TODO: $source_type, $source, $duration
 
 		return true;
 	}
