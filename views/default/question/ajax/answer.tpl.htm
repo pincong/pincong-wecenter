@@ -26,18 +26,9 @@
 			<span class="aw-small-text pull-right"><?php echo date_friendly($this->answer_info['add_time']); ?></span>
 			<!-- 投票栏 -->
 			<span class="operate aw-vote-ui">
-			<?php if ($this->user_id AND $this->user_id != $this->answer_info['user_info']['uid']) { ?>
-				<a href="javascript:;" class="agree<?php if ($this->answer_info['vote_value'] > 0) { ?> active<?php } ?>" onclick="AWS.User.toggle_vote(this, 'answer', 'agree', <?php echo $this->answer_info['answer_id']; ?>);">
-					<i class="icon icon-agree"></i> <b class="count"><?php echo $this->answer_info['agree_count']; ?></b>
-				</a>
-				<a href="javascript:;" class="disagree<?php if ($this->answer_info['vote_value'] < 0) { ?>active<?php } ?>" onclick="AWS.User.toggle_vote(this, 'answer', 'disagree', <?php echo $this->answer_info['answer_id']; ?>);">
-					<i class="icon icon-disagree"></i>
-				</a>
-			<?php } else { ?>
 				<a href="javascript:;" class="agree disabled">
 					<i class="icon icon-agree"></i> <b class="count"><?php echo $this->answer_info['agree_count']; ?></b>
 				</a>
-			<?php } ?>
 			</span>
 			<!-- end 投票栏 -->
 			<span class="operate">

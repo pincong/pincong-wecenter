@@ -46,9 +46,11 @@
 												<a href="javascript:;" class="agree<?php if ($val['vote_value'] > 0) { ?> active<?php } ?>" onclick="AWS.User.toggle_vote(this, 'video_comment', 'agree', <?php echo $val['id']; ?>)">
 													<i class="icon icon-agree"></i> <b class="count"><?php echo $val['agree_count']; ?></b>
 												</a>
+												<?php if ($this->user_info['permission']['vote_disagree']) { ?>
 												<a href="javascript:;" class="disagree<?php if ($val['vote_value'] < 0) { ?> active<?php } ?>" onclick="AWS.User.toggle_vote(this, 'video_comment', 'disagree', <?php echo $val['id']; ?>)">
 													<i class="icon icon-disagree"></i>
 												</a>
+												<?php } ?>
 											<?php } else { ?>
 												<a href="javascript:;" class="agree disabled">
 													<i class="icon icon-agree"></i> <b class="count"><?php echo $val['agree_count']; ?></b>
