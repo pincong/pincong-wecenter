@@ -68,13 +68,59 @@ var AWS =
 		}
 	},
 
+	// TODO: what does rsm stand for?
+	ajax_rsm: function(url, params, callback)
+	{
+		$.post(url, params, function (result)
+		{
+			_callback(result);
+		}, 'json').error(function (error)
+		{
+			_error(error);
+		});
+
+		function _callback (result)
+		{
+			if (!result)
+			{
+				alert(_t('未知错误'));
+				callback('error');
+				return;
+			}
+
+			if (result.err)
+			{
+				AWS.alert(result.err);
+				callback('error');
+				return;
+			}
+
+			callback(null, result.rsm);
+		}
+
+		function _error (error)
+		{
+			alert(_t('接口错误') + ' ' + error.responseText);
+			callback('error');
+			return;
+		}
+	},
+
 	ajax_request: function(url, params, no_reload)
 	{
 		AWS.loading('show');
 
 		if (params)
 		{
-			$.post(url, params + '&_post_type=ajax', function (result)
+			if (typeof params == 'object')
+			{
+				params['_post_type'] = 'ajax';
+			}
+			else
+			{
+				params += '&_post_type=ajax';
+			}
+			$.post(url, params, function (result)
 			{
 				_callback(result);
 			}, 'json').error(function (error)

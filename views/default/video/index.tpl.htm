@@ -320,7 +320,6 @@
 <script type="text/javascript">
 var VIDEO_ID = <?php echo $this->video_info['id']; ?>;
 var DANMAKU_LIST = <?php echo $this->danmaku_json; ?>;
-var video_player;
 
 var busy_while_getting_metadata;
 
@@ -330,30 +329,25 @@ function get_video_metadata(callback) {
 
 	var url = G_BASE_URL + '/v/api/get_video_metadata/';
 	var params = 'video_id=' + VIDEO_ID;
-	$.post(url, params + '&_post_type=ajax', function(result) {
+	AWS.ajax_rsm(url, params, function(error, result) {
 		busy_while_getting_metadata = false;
 
-		if (!result['rsm'] || !result['rsm']['formats'] || !result['rsm']['formats'][0]) {
+		if (error || !result || !result['formats'] || !result['formats'][0]) {
 			callback('error');
 			return;
 		}
-		callback(null, result['rsm']);
-	}, 'json').error(function(error) {
-		busy_while_getting_metadata = false;
-
-		callback('error');
+		callback(null, result['formats']);
 	});
 }
 
 var busy_while_sending_danmaku;
 
-function send_danmaku(danmaku, callback) {
-	if (busy_while_sending_danmaku) return true;
+function send_danmaku(danmaku, next) {
+	if (busy_while_sending_danmaku) return true; // cancle
 	busy_while_sending_danmaku = true;
 
 	var url = G_BASE_URL + '/v/api/save_danmaku/';
 	var params = {
-		_post_type: 'ajax',
 		video_id: VIDEO_ID,
 		stime: danmaku.stime,
 		text: danmaku.text,
@@ -361,13 +355,10 @@ function send_danmaku(danmaku, callback) {
 		size: danmaku.size,
 		color: danmaku.color
 	};
-
-	$.post(url, params, function(result) {
+	AWS.ajax_rsm(url, params, function(error, result) {
 		busy_while_sending_danmaku = false;
-		callback(null, result);
-	}, 'json').error(function(error) {
-		busy_while_sending_danmaku = false;
-		callback('error');
+		if (error) return;
+		next();
 	});
 }
 
@@ -385,13 +376,10 @@ $(document).ready(function () {
 			return;
 		}
 		video_player.showLoader();
-		get_video_metadata(function(error, data) {
+		get_video_metadata(function(error, formats) {
 			video_player.hideLoader();
-			if (error) {
-				alert('解析视频失败');
-				return;
-			}
-			video_url = data['formats'][0]['url'];
+			if (error) return;
+			video_url = formats[0]['url'];
 			video_player.setSource(video_url);
 			next();
 		});
@@ -399,9 +387,12 @@ $(document).ready(function () {
 
 	// 发送弹幕按钮被点击
 	video_player.on('sendDanmaku', function(danmaku, next) {
-		return send_danmaku(danmaku, function(error, result) {
-			next();
-		});
+	<?php if (!$this->user_id) { ?>
+		AWS.alert('登录后才能发送弹幕');
+		return true; // cancle
+	<?php } else { ?>
+		return send_danmaku(danmaku, next);
+	<?php } ?>
 	});
 
 

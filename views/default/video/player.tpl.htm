@@ -819,11 +819,10 @@ var ABP = {};
 
 		// 如果 emit 'sendDanmaku' 返回 true 则直接取消, 不显示也不插入
 		var cancelled = this.emitter.emit('sendDanmaku', danmaku, function() {
-			if (cancelled) return;
 			this._insertDanmaku(danmaku); // 回调之后才真正插入到时间轴
 		}.bind(this));
 
-		if (cancelled) return;
+		if (cancelled) return true;
 		this._presentDanmaku(danmaku); // 立刻显示刚才的弹幕, 此时还不会插入到时间轴
 	};
 
@@ -845,8 +844,7 @@ var ABP = {};
 			this.$$('input[name="abp-danmaku-mode"]:checked').val(),
 			this.$$('input[name="abp-danmaku-size"]:checked').val(),
 			this.danmakuColor
-		);
-		this.$danmakuInput.val('');
+		) || this.$danmakuInput.val('');
 	};
 
 	Player.prototype._toggleFontDialog = function() {

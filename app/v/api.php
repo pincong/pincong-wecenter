@@ -139,7 +139,7 @@ class api extends AWS_CONTROLLER
 			$this->model('posts')->bring_to_top($this->user_id, $video_info['id'], 'video');
 		}
 
-		H::ajax_json_output(AWS_APP::RSM($metadata, 1, null));
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
 	public function remove_danmaku_action()
