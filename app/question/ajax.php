@@ -189,8 +189,7 @@ class ajax extends AWS_CONTROLLER
 		foreach ($comments as $key => $val)
 		{
 			$comments[$key]['message'] = FORMAT::parse_links($this->model('question')->parse_at_user($comments[$key]['message']));
-			$comments[$key]['user_name'] = $user_infos[$val['uid']]['user_name'];
-			$comments[$key]['url_token'] = $user_infos[$val['uid']]['url_token'];
+			$comments[$key]['user_info'] = $user_infos[$val['uid']];
 		}
 
 		$answer_info = $this->model('answer')->get_answer_by_id($_GET['answer_id']);
@@ -270,8 +269,7 @@ class ajax extends AWS_CONTROLLER
 		foreach ($comments as $key => $val)
 		{
 			$comments[$key]['message'] = FORMAT::parse_links($this->model('question')->parse_at_user($comments[$key]['message']));
-			$comments[$key]['user_name'] = $user_infos[$val['uid']]['user_name'];
-			$comments[$key]['url_token'] = $user_infos[$val['uid']]['url_token'];
+			$comments[$key]['user_info'] = $user_infos[$val['uid']];
 		}
 
 		TPL::assign('question', $this->model('question')->get_question_info_by_id($_GET['question_id']));
