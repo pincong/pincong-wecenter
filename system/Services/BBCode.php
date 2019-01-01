@@ -136,11 +136,12 @@ class Services_BBCode
     {
 		// 最先解析 [code]
 		// Replace [code]...[/code] with <pre><code>...</code></pre>
-		//$this->bbcode_table["/\[code\](.*?)\[\/code\]/is"] = '_code_callback';
+		$this->bbcode_table["/\[code\](.*?)\[\/code\]/is"] = '_code_callback';
 		// (.*?) 改为 (((?![\[code\]]).*?)+)
 		// 意味 [code]...[/code] 中间不能包含 [code]
 		// 像这样 [code].[code]..[/code]
-		$this->bbcode_table["/\[code\](((?![\[code\]]).*?)+)\[\/code\]/is"] = '_code_callback';
+		// 更新：当内容过长时会出现 bug 已弃用
+		//$this->bbcode_table["/\[code\](((?![\[code\]]).*?)+)\[\/code\]/is"] = '_code_callback';
 
         $this->bbcode_table["/\[left\](.*?)\[\/left\]/is"] = '_plain_text_callback';
         $this->bbcode_table["/\[center\](.*?)\[\/center\]/is"] = '_plain_text_callback';
@@ -155,23 +156,24 @@ class Services_BBCode
 
 
         // Replace [b]...[/b] with <strong>...</strong>
-        //$this->bbcode_table["/\[b\](.*?)\[\/b\]/is"] = '_b_callback';
-        $this->bbcode_table["/\[b\](((?![\[b\]]).*?)+)\[\/b\]/is"] = '_b_callback';
+        $this->bbcode_table["/\[b\](.*?)\[\/b\]/is"] = '_b_callback';
+        //$this->bbcode_table["/\[b\](((?![\[b\]]).*?)+)\[\/b\]/is"] = '_b_callback';
 
         // Replace [i]...[/i] with <em>...</em>
-        //$this->bbcode_table["/\[i\](.*?)\[\/i\]/is"] = '_i_callback';
-        $this->bbcode_table["/\[i\](((?![\[i\]]).*?)+)\[\/i\]/is"] = '_i_callback';
+        $this->bbcode_table["/\[i\](.*?)\[\/i\]/is"] = '_i_callback';
+        //$this->bbcode_table["/\[i\](((?![\[i\]]).*?)+)\[\/i\]/is"] = '_i_callback';
 
         // Replace [quote]...[/quote] with <blockquote><p>...</p></blockquote>
-        $this->bbcode_table["/\[quote\](((?![\[quote\]]).*?)+)\[\/quote\]/is"] = '_quote_callback';
+        $this->bbcode_table["/\[quote\](.*?)\[\/quote\]/is"] = '_quote_callback';
+        //$this->bbcode_table["/\[quote\](((?![\[quote\]]).*?)+)\[\/quote\]/is"] = '_quote_callback';
 
         // Replace [s] with <del>
-        //$this->bbcode_table["/\[s\](.*?)\[\/s\]/is"] = '_s_callback';
-        $this->bbcode_table["/\[s\](((?![\[s\]]).*?)+)\[\/s\]/is"] = '_s_callback';
+        $this->bbcode_table["/\[s\](.*?)\[\/s\]/is"] = '_s_callback';
+        //$this->bbcode_table["/\[s\](((?![\[s\]]).*?)+)\[\/s\]/is"] = '_s_callback';
 
         // Replace [u]...[/u] with <span style="text-decoration:underline;">...</span>
-        //$this->bbcode_table["/\[u\](.*?)\[\/u\]/is"] = '_u_callback';
-        $this->bbcode_table["/\[u\](((?![\[s\]]).*?)+)\[\/u\]/is"] = '_u_callback';
+        $this->bbcode_table["/\[u\](.*?)\[\/u\]/is"] = '_u_callback';
+        //$this->bbcode_table["/\[u\](((?![\[s\]]).*?)+)\[\/u\]/is"] = '_u_callback';
 
         // Replace [url]...[/url] with <a href="...">...</a>
         $this->bbcode_table["/\[url\](.*?)\[\/url\]/is"] = '_url_callback';
