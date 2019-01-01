@@ -334,6 +334,9 @@ a.aw-load-more-content{display: block;}
 .aw-side-bar .aw-mod p{margin-bottom:0;}
 .aw-side-bar .aw-mod p.signature{color: #999; font-size: 12px;word-break: break-word;}
 .aw-side-bar .aw-mod ul li{padding:3px 0;}
+.aw-side-bar .aw-mod dl{height:auto;overflow:hidden;margin:10px 0;}
+.aw-side-bar .aw-mod dt, .aw-side-bar .aw-mod dt img{width:32px;height:32px;}
+.aw-side-bar .aw-mod dd{font-size:12px;}
 .aw-mod.new-announce{margin-bottom:20px;padding:10px;background: #FCFDDB;border: 1px solid #F9F2A7 !important;border-radius: 10px;word-break: break-word;}
 .aw-mod.new-announce .mod-head h3{margin:0;}
 
