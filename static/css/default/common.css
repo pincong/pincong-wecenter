@@ -444,7 +444,7 @@ a.aw-load-more-content{display: block;}
 .markitup-box em{font-style: italic;}
 .markitup-box img{max-width: 540px;margin:10px 0;}
 .markitup-box pre {margin:10px 0;padding: 16px;line-height: 20px;overflow: hidden; border: none; border-radius: 3px; background-color: #f7f7f7;font-size: 14px;font-family: monospace; white-space: pre-wrap;}
-blockquote {margin: 0 40px;padding: 0 15px;font-size: 14px;color: #777;border-left: 4px solid #ddd;}
+blockquote {margin: 0;padding: 0 10px;font-size: 15px;color: #777;border-left: 4px solid #ddd;}
 .markitup-box pre br, .markitup-box ul + br, .markitup-box ol + br {display: none;}
 .markitup-box b, .markitup-box strong {color: #333;}
 .markitup-box ol, .markitup-box ul, .markitup-box dl{padding: 0 40px;}
