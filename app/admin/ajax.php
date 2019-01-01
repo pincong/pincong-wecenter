@@ -703,7 +703,9 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			'comment_article',
 			'publish_video',
 			'comment_video',
-			'publish_comment',
+			'publish_comment', // TODO: 删
+			'publish_discussion',
+			'publish_danmaku',
             'edit_any_post',
             'delete_any_post',
             'edit_topic',
@@ -717,7 +719,9 @@ class ajax extends AWS_ADMIN_CONTROLLER
             'operation_interval',
 			'thread_limit_per_day',
 			'reply_limit_per_day',
-			'comment_limit_per_day',
+			'comment_limit_per_day', // TODO: 删
+			'discussion_limit_per_day',
+			'danmaku_limit_per_day',
 			'user_vote_limit_per_day',
 			'publish_article',
             'edit_question_topic',

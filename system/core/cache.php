@@ -33,7 +33,7 @@ class core_cache
 
 	public function __construct()
 	{
-		$file_name_prefix = substr(md5(G_COOKIE_HASH_KEY), 0, 6);
+		$file_name_prefix = G_CACHE_NAMESPACE;
 
 		$this->groupPrefix = $file_name_prefix . $this->groupPrefix;
 		$this->cachePrefix = $file_name_prefix . $this->cachePrefix;

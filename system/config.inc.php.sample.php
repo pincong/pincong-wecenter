@@ -18,11 +18,11 @@ define('G_DEBUG', FALSE);
 define('G_COOKIE_DOMAIN','');
 
 // 定义 Cookies 前缀
-define('G_COOKIE_PREFIX','aws_');
+define('G_COOKIE_PREFIX','aws_');		// 建议修改此处
 
 // 定义应用加密 KEY
-define('G_SECUKEY','请修改此处');
-define('G_COOKIE_HASH_KEY', '请修改此处');
+define('G_SECUKEY','ABCDEFGHIJKLMNOP');				// 请修改此处
+define('G_COOKIE_HASH_KEY', 'abcdefghijklmnop');	// 请修改此处
 
 define('G_INDEX_SCRIPT', '?/');
 
@@ -34,6 +34,9 @@ define('G_SESSION_SAVE', 'db');
 
 // Session 文件存储路径
 define('G_SESSION_SAVE_PATH', '');
+
+// Cache 命名空间
+define('G_CACHE_NAMESPACE', 'aws');		// 建议修改此处
 
 // Cache 类型 (File, Memcache, Memcached)
 define('G_CACHE_TYPE', 'File');

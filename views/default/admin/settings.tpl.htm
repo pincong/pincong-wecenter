@@ -1467,7 +1467,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('楼中楼评论最小字数限制'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="comment_length_min" class="form-control" type="text" value="<?php echo $this->setting['comment_length_min']; ?>"/>
+                                <input name="discussion_length_min" class="form-control" type="text" value="<?php echo $this->setting['discussion_length_min']; ?>"/>
 
                                 <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
                             </div>
@@ -1479,9 +1479,28 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('楼中楼评论最大字数限制'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="comment_length_max" class="form-control" type="text" value="<?php echo $this->setting['comment_length_max']; ?>"/>
+                                <input name="discussion_length_max" class="form-control" type="text" value="<?php echo $this->setting['discussion_length_max']; ?>"/>
 
                                 <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('楼中楼评论自动顶起帖子'); ?>:</span>
+                            <div class="col-sm-6 col-xs-8">
+                                <div class="btn-group mod-btn">
+                                    <label type="button" class="btn mod-btn-color">
+                                        <input type="radio" name="discussion_bring_top" value="Y"<?php if ($this->setting['discussion_bring_top'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+                                    </label>
+
+                                    <label type="button" class="btn mod-btn-color">
+                                        <input type="radio" name="discussion_bring_top" value="N"<?php if ($this->setting['discussion_bring_top'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </td>

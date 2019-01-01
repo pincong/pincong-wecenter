@@ -60,7 +60,7 @@ class api extends AWS_CONTROLLER
 
 	public function save_danmaku_action()
 	{
-		if (!$this->user_info['permission']['publish_comment'])
+		if (!$this->user_info['permission']['publish_comment']) // TODO: 改名
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
