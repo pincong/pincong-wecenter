@@ -158,11 +158,11 @@
                                 <div class="col-sm-6 col-xs-8">
                                     <div class="btn-group mod-btn">
                                         <label type="button" class="btn mod-btn-color">
-                                            <input type="radio" name="forbidden" value="1"<?php if ($this->user['forbidden'] == 1) { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+                                            <input type="radio" name="forbidden" value="1"<?php if ($this->user['forbidden']) { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
                                         </label>
 
                                         <label type="button" class="btn mod-btn-color">
-                                            <input type="radio" name="forbidden" value="0"<?php if ($this->user['forbidden'] == 0) { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+                                            <input type="radio" name="forbidden" value="0"<?php if (!$this->user['forbidden']) { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
                                         </label>
                                     </div>
                                 </div>

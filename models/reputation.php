@@ -61,8 +61,8 @@ class reputation_class extends AWS_MODEL
 			$fields['reputation_group'] = $reputation_group;
 		}
 
-		// 自动封禁
-		if (!$user_info['forbidden'] AND $user_info['group_id'] == 4)
+		// 自动封禁/解封, $user_info['forbidden'] == 2 表示被系统自动封禁
+		if ((!$user_info['forbidden'] OR $user_info['forbidden'] == 2) AND $user_info['group_id'] == 4)
 		{
 			$auto_banning_agree_count = get_setting('auto_banning_agree_count');
 			$auto_banning_reputation = get_setting('auto_banning_reputation');
@@ -72,7 +72,17 @@ class reputation_class extends AWS_MODEL
 				if ( (is_numeric($auto_banning_agree_count) AND $auto_banning_agree_count >= $agree_count)
 					AND (is_numeric($auto_banning_reputation) AND $auto_banning_reputation >= $reputation) )
 				{
-					$fields['forbidden'] = 1;
+					if (!$user_info['forbidden']) // 满足封禁条件且未被封禁的用户
+					{
+						$fields['forbidden'] = 2;
+					}
+				}
+				else
+				{
+					if ($user_info['forbidden'] == 2) // 不满足封禁条件已被封禁的用户
+					{
+						$fields['forbidden'] = 0;
+					}
 				}
 			}
 			else
@@ -80,7 +90,17 @@ class reputation_class extends AWS_MODEL
 				if ( (is_numeric($auto_banning_agree_count) AND $auto_banning_agree_count >= $agree_count)
 					OR (is_numeric($auto_banning_reputation) AND $auto_banning_reputation >= $reputation) )
 				{
-					$fields['forbidden'] = 1;
+					if (!$user_info['forbidden']) // 满足封禁条件且未被封禁的用户
+					{
+						$fields['forbidden'] = 2;
+					}
+				}
+				else
+				{
+					if ($user_info['forbidden'] == 2) // 不满足封禁条件已被封禁的用户
+					{
+						$fields['forbidden'] = 0;
+					}
 				}
 			}
 		}

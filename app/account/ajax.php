@@ -187,7 +187,7 @@ class ajax extends AWS_CONTROLLER
 		}
 		else
 		{
-			if ($user_info['forbidden'] == 1)
+			if ($user_info['forbidden'])
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('抱歉, 你的账号已经被禁止登录')));
 			}

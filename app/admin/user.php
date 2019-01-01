@@ -43,7 +43,7 @@ class user extends AWS_ADMIN_CONTROLLER
 
         if ($_GET['type'] == 'forbidden')
         {
-            $where[] = 'forbidden = 1';
+            $where[] = 'forbidden <> 0';
         }
 
         if ($_GET['user_name'])
