@@ -109,8 +109,6 @@ INSERT INTO `aws_system_setting` (`id`, `varname`, `value`) VALUES
 	(87, 'advanced_editor_enable', 's:1:"Y";'),
 	(88, 'auto_question_lock_day', 's:1:"0";'),
 	(89, 'default_timezone', 's:9:"Etc/GMT-8";'),
-	(90, 'reader_questions_last_days', 's:1:"5";'),
-	(91, 'reader_questions_agree_count', 's:1:"3";'),
 	(94, 'new_user_notification_setting', 'a:0:{}'),
 	(95, 'user_action_history_fresh_upgrade', 's:1:"Y";'),
 	(98, 'question_topics_limit', 's:1:"3";'),
