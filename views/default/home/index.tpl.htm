@@ -40,33 +40,15 @@
 <?php if ($_GET['first_login']) { ?>
 <script type="text/javascript" src="<?php echo G_STATIC_URL; ?>/js/imageuploader.js"></script>
 <script type="text/javascript">
-function welcome_step(step)
-{
-	switch (step)
-	{
-		case '1':
-			new ImageUploader({
-				url: G_BASE_URL + '/account/ajax/avatar_upload/',
-				field_name: 'aws_upload_file',
-				upload_button: $('#welcome_avatar_uploader'),
-				image_container: $('#aw-upload-img'),
-				loading_status: $('#aw-img-uploading')
-			});
-		break;
-
-		case 'finish':
-			$('#aw-ajax-box').html('');
-			$('.modal-backdrop').detach();
-			$('body').removeClass('modal-open');
-		break;
-	}
-}
-
 $(document).ready(function () {
-	$.get(G_BASE_URL+'/home/info/welcome/', function (template) {
-		$('#aw-ajax-box').html(template);
-		$('body').addClass('modal-open');
-		welcome_step('1');
+	AWS.popup(G_BASE_URL + '/home/info/welcome/', function(){
+		new ImageUploader({
+			url: G_BASE_URL + '/account/ajax/avatar_upload/',
+			field_name: 'aws_upload_file',
+			upload_button: $('#welcome_avatar_uploader'),
+			image_container: $('#aw-upload-img'),
+			loading_status: $('#aw-img-uploading')
+		});
 	});
 });
 </script>
