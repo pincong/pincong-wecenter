@@ -130,6 +130,9 @@
 
 							<div class="meta">
 								<span class="text-color-999"><?php echo date_friendly($this->question_info['add_time']); ?></span>
+
+								<a href="vote/log/item_type-question__item_id-<?php echo $this->question_info['question_id']; ?>" class="text-color-999" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
+
 								<a data-id="<?php echo $this->question_info['question_id']; ?>" data-type="question" class="aw-add-comment text-color-999 <?php if ($this->question_info['comment_count'] > 0) {?>active<?php }?>" data-comment-count="<?php echo $this->question_info['comment_count']; ?>" data-first-click="<?php if ($this->question_info['comment_count'] == 0) {?>hide<?php }?>"><i class="icon icon-comment"></i> <?php if ($this->question_info['comment_count']) { ?><?php _e('%s 条评论', $this->question_info['comment_count']); ?><?php } else { ?><?php _e('添加评论'); ?><?php } ?></a>
 
 								<?php if ($this->user_id) { ?>
@@ -290,12 +293,16 @@
 											<?php } ?>
 											</span>
 											<!-- end 投票栏 -->
+
 											<span class="operate">
 												<a class="aw-add-comment" data-id="<?php echo $val['answer_id']; ?>" data-type="answer" data-comment-count="<?php echo $val['comment_count']; ?>" data-first-click="<?php if ($val['comment_count'] == 0) {?>collapse<?php }?>" href="javascript:;"><i class="icon icon-comment"></i> <?php if ($val['comment_count']) { ?><?php echo $val['comment_count']; ?><?php } else { ?>0<?php } ?></a>
 											</span>
 
 											<!-- 可显示/隐藏的操作box -->
 											<div class="more-operate">
+
+												<a href="vote/log/item_type-answer__item_id-<?php echo $val['answer_id']; ?>" class="text-color-999" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
+
 												<?php if ($this->user_id) { ?>
 													<?php if ($this->user_info['permission']['edit_question'] OR $val['uid'] == $this->user_id) { ?>
 													<a class="text-color-999" href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/publish/edit/answer/id-<?php echo $val['answer_id']; ?>', AWS.init_answer_editor);"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>

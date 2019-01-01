@@ -403,4 +403,53 @@ class vote_class extends AWS_MODEL
 		}
 		$this->delete('vote', 'add_time < ' . $time_before);
 	}
+
+	/**
+	 *
+	 * 根据 item_id, 得到投票记录
+	 *
+	 * @param string  $type
+	 * @param int     $item_id
+	 * @param int     $page
+	 * @param int     $per_page
+	 *
+	 * @return array
+	 */
+	public function list_logs($type, $item_id, $page, $per_page)
+	{
+		if (!$this->model('content')->check_item_type($type))
+		{
+			return false;
+		}
+
+		$where = "`type` = '" . ($type) . "' AND item_id = " . intval($item_id);
+
+		$log_list = $this->fetch_page('vote', $where, 'id DESC', $page, $per_page);
+		if (!$log_list)
+		{
+			return false;
+		}
+
+		foreach ($log_list AS $key => $log)
+		{
+			$user_ids[] = $log['uid'];
+		}
+
+		if ($user_ids)
+		{
+			$users = $this->model('account')->get_user_info_by_uids($user_ids);
+		}
+		else
+		{
+			$users = array();
+		}
+
+		foreach ($log_list as $key => $log)
+		{
+			$log_list[$key]['user_info'] = $users[$log['uid']];
+		}
+
+		return $log_list;
+	}
+
 }

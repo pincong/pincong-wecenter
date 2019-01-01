@@ -92,6 +92,8 @@
 								<?php } ?>
 								</div>
 
+								<a href="vote/log/item_type-article__item_id-<?php echo $this->article_info['id']; ?>" class="text-color-999" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
+
 								<span class="pull-right  more-operate">
 									<?php if ($this->user_id) { ?>
 									<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认提升?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/content/ajax/bump/', 'item_type=article&item_id=<?php echo $this->article_info['id']; ?>', true);});"><i class="icon icon-up"></i> <?php _e('提升'); ?></a>
@@ -179,6 +181,10 @@
 												</a>
 											<?php } ?>
 											</span>
+
+											&nbsp;&nbsp;
+
+											<a href="vote/log/item_type-article_comment__item_id-<?php echo $val['id']; ?>" class="text-color-999" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
 
 											&nbsp;&nbsp;
 

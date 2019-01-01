@@ -82,7 +82,6 @@
 						</div>
 						<div class="mod-body">
 							<div>
-								<!--<img src="<?php echo $this->video_info['thumb_url']; ?>" alt="" style="max-width:100%">-->
 								<?php TPL::output('video/player.tpl.htm'); ?>
 							</div>
 							<div class="content markitup-box">
@@ -101,6 +100,8 @@
 									<a href="javascript:;" class="disagree<?php if ($this->video_info['vote_value'] < 0) { ?> active<?php } ?>" onclick="AWS.User.toggle_vote(this, 'video', 'disagree', <?php echo $this->video_info['id']; ?>);"><i class="icon icon-disagree"></i></a>
 								<?php } ?>
 								</div>
+
+								<a href="vote/log/item_type-video__item_id-<?php echo $this->video_info['id']; ?>" class="text-color-999" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
 
 								<span class="pull-right  more-operate">
 									<?php if ($this->user_id) { ?>
@@ -189,6 +190,10 @@
 												</a>
 											<?php } ?>
 											</span>
+
+											&nbsp;&nbsp;
+
+											<a href="vote/log/item_type-video_comment__item_id-<?php echo $val['id']; ?>" class="text-color-999" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
 
 											&nbsp;&nbsp;
 
