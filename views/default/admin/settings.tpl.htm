@@ -521,6 +521,25 @@
                 <tr>
                     <td>
                         <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('普通用户登录是否需要验证码'); ?>:</span>
+                            <div class="col-sm-6 col-xs-8">
+                                <div class="btn-group mod-btn">
+                                    <label type="button" class="btn mod-btn-color">
+                                        <input type="radio" name="login_seccode" value="Y"<?php if ($this->setting['login_seccode'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+                                    </label>
+
+                                    <label type="button" class="btn mod-btn-color">
+                                        <input type="radio" name="login_seccode" value="N"<?php if ($this->setting['login_seccode'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('删除过期私信'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <input name="expiration_private_messages" type="text" class="form-control" value="<?php echo $this->setting['expiration_private_messages']; ?>"/>

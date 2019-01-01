@@ -18,6 +18,13 @@
 				<li>
 					<input type="password" id="aw-login-user-password" class="form-control" placeholder="<?php _e('密码'); ?>" name="password" />
 				</li>
+				<?php if (get_setting('login_seccode') == 'Y') { ?>
+				<li class="aw-register-verify">
+					<img class="pull-right" id="captcha" onclick="this.src = G_BASE_URL + '/account/captcha/' + Math.floor(Math.random() * 10000);" src="">
+
+					<input type="text" class="form-control" name="seccode_verify" placeholder="<?php _e('验证码'); ?>" />
+				</li>
+				<?php } ?>
 				<li class="last">
 					<label><input type="checkbox" value="1" name="net_auto_login" /> <?php _e('记住我'); ?></label>
 					<a href="account/find_password/" class="pull-right">忘记密码</a>
@@ -35,12 +42,12 @@
 
 <script type="text/javascript">
 $(document).ready(function () {
-    $('#login_form input').keydown(function (e) {
-        if (e.keyCode == 13)
-        {
-            $('#login_submit').click();
-        }
-    });
+	$('#login_form input').keydown(function (e) {
+		if (e.keyCode == 13)
+		{
+			$('#login_submit').click();
+		}
+	});
 });
 </script>
 

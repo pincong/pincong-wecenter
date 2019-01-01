@@ -344,12 +344,13 @@ $(document).ready(function () {
 			return;
 		get_video_metadata(function(error, data) {
 			if (error) {
-				alert('解析视频失败');
-				return;
+				//alert('解析视频失败');
+				//return;
 			}
 			var video = $html5_video[0];
 			var source = document.createElement('source');
-			source.src = data['formats'][0]['url'];
+			//source.src = data['formats'][0]['url'];
+			source.src = '/cache/test.mp4';
 			video.appendChild(source);
 			video_player = new ABP.Player();
 			video_player.togglePlay();
