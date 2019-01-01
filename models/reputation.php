@@ -98,63 +98,10 @@ class reputation_class extends AWS_MODEL
 		{
 			$agree_count = $user_info['agree_count'] + $agree_count_delta;
 			$reputation = $user_info['reputation'] + $reputation_delta;
-			$this->auto_forbid_user($uid, $user_info['forbidden'], $agree_count, $reputation);
+			$this->model('user')->auto_forbid_user($uid, $user_info['forbidden'], $agree_count, $reputation);
 		}
 
 		return true;
-	}
-
-	// 如果满足封禁条件则自动封禁
-	public function auto_forbid_user($uid, $forbidden, $agree_count, $reputation)
-	{
-		// 自动封禁/解封, $forbidden == 2 表示已被系统自动封禁
-		if (!$forbidden OR $forbidden == 2)
-		{
-			$auto_banning_agree_count = get_setting('auto_banning_agree_count');
-			$auto_banning_reputation = get_setting('auto_banning_reputation');
-
-			if (get_setting('auto_banning_type') == 'AND')
-			{
-				if ( (is_numeric($auto_banning_agree_count) AND $auto_banning_agree_count >= $agree_count)
-					AND (is_numeric($auto_banning_reputation) AND $auto_banning_reputation >= $reputation) )
-				{
-					if (!$forbidden) // 满足封禁条件且未被封禁的用户
-					{
-						$fields = array('forbidden' => 2);
-					}
-				}
-				else
-				{
-					if ($forbidden == 2) // 不满足封禁条件已被封禁的用户
-					{
-						$fields = array('forbidden' => 0);
-					}
-				}
-			}
-			else
-			{
-				if ( (is_numeric($auto_banning_agree_count) AND $auto_banning_agree_count >= $agree_count)
-					OR (is_numeric($auto_banning_reputation) AND $auto_banning_reputation >= $reputation) )
-				{
-					if (!$forbidden) // 满足封禁条件且未被封禁的用户
-					{
-						$fields = array('forbidden' => 2);
-					}
-				}
-				else
-				{
-					if ($forbidden == 2) // 不满足封禁条件已被封禁的用户
-					{
-						$fields = array('forbidden' => 0);
-					}
-				}
-			}
-		}
-
-		if ($fields)
-		{
-			$this->update('users', $fields, 'uid = ' . intval($uid));
-		}
 	}
 
 }

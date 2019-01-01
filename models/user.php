@@ -320,7 +320,141 @@ class user_class extends AWS_MODEL
 
 		foreach ($users AS $key => $val)
 		{
-			$this->model('account')->forbid_user_by_uid($val['uid'], 0);
+			$this->forbid_user_by_uid($val['uid'], 0);
 		}
 	}
+
+
+
+	// ===== 封禁/标记相关 =====
+
+	public function auto_forbid_user($uid, $forbidden, $agree_count, $reputation)
+	{
+		// 自动封禁/解封, $forbidden == 2 表示已被系统自动封禁
+		if (!$forbidden OR $forbidden == 2)
+		{
+			$auto_banning_agree_count = get_setting('auto_banning_agree_count');
+			$auto_banning_reputation = get_setting('auto_banning_reputation');
+
+			if (get_setting('auto_banning_type') == 'AND')
+			{
+				if ( (is_numeric($auto_banning_agree_count) AND $auto_banning_agree_count >= $agree_count)
+					AND (is_numeric($auto_banning_reputation) AND $auto_banning_reputation >= $reputation) )
+				{
+					if (!$forbidden) // 满足封禁条件且未被封禁的用户
+					{
+						$fields = array('forbidden' => 2);
+					}
+				}
+				else
+				{
+					if ($forbidden == 2) // 不满足封禁条件已被封禁的用户
+					{
+						$fields = array('forbidden' => 0);
+					}
+				}
+			}
+			else
+			{
+				if ( (is_numeric($auto_banning_agree_count) AND $auto_banning_agree_count >= $agree_count)
+					OR (is_numeric($auto_banning_reputation) AND $auto_banning_reputation >= $reputation) )
+				{
+					if (!$forbidden) // 满足封禁条件且未被封禁的用户
+					{
+						$fields = array('forbidden' => 2);
+					}
+				}
+				else
+				{
+					if ($forbidden == 2) // 不满足封禁条件已被封禁的用户
+					{
+						$fields = array('forbidden' => 0);
+					}
+				}
+			}
+		}
+
+		if ($fields)
+		{
+			$this->update('users', $fields, 'uid = ' . intval($uid));
+		}
+	}
+
+
+
+	public function forbid_user_by_uid($uid, $status, $admin_uid = null, $reason = null)
+	{
+		if (!$uid)
+		{
+			return false;
+		}
+
+		$status = intval($status);
+		if (!$this->model('account')->update_user_fields(array(
+			'forbidden' => ($status),
+			'user_update_time' => fake_time()
+		), $uid))
+		{
+			return false;
+		}
+
+		if (!$status)
+		{
+			$extra_data = array(
+				'banned_by' => null,
+				'banned_reason' => null
+			);
+		}
+		else
+		{
+			if ($reason)
+			{
+				$reason = htmlspecialchars($reason);
+			}
+			$extra_data = array(
+				'banned_by' => $admin_uid,
+				'banned_reason' => $reason
+			);
+		}
+
+		$this->model('account')->update_user_extra_data($extra_data, $uid);
+	}
+
+	public function flag_user_by_uid($uid, $status, $admin_uid = null, $reason = null)
+	{
+		if (!$uid)
+		{
+			return false;
+		}
+
+		$status = intval($status);
+		if (!$this->model('account')->update_user_fields(array(
+			'flagged' => ($status),
+		), $uid))
+		{
+			return false;
+		}
+
+		if (!$status)
+		{
+			$extra_data = array(
+				'flagged_by' => null,
+				'flagged_reason' => null
+			);
+		}
+		else
+		{
+			if ($reason)
+			{
+				$reason = htmlspecialchars($reason);
+			}
+			$extra_data = array(
+				'flagged_by' => $admin_uid,
+				'flagged_reason' => $reason
+			);
+		}
+
+		$this->model('account')->update_user_extra_data($extra_data, $uid);
+	}
+
 }
