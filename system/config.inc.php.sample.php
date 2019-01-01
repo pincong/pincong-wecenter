@@ -32,3 +32,10 @@ define('G_SESSION_SAVE', 'db');
 
 // Session 文件存储路径
 define('G_SESSION_SAVE_PATH', '');
+
+// Cache 类型 (File, Memcached)
+define('G_CACHE_TYPE', 'File');
+
+// Cache options
+define('G_CACHE_TYPE_MEMCACHED_HOST', '127.0.0.1');
+define('G_CACHE_TYPE_MEMCACHED_PORT', 11211);
