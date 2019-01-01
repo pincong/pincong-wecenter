@@ -196,14 +196,6 @@ class ajax extends AWS_CONTROLLER
 				H::ajax_json_output(AWS_APP::RSM(null, -1, get_setting('close_notice')));
 			}
 
-			if ($user_info['group_id'] == 3)
-			{
-				// 未验证用户
-				H::ajax_json_output(AWS_APP::RSM(array(
-					'url' => get_js_url('/people/') . $user_info['url_token']
-				), 1, null));
-			}
-
 			// 记住我
 			if ($_POST['net_auto_login'])
 			{
@@ -488,7 +480,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('用户不存在')));
 		}
 
-		if ($this->user_info['group_id'] != 1 AND $this->user_info['group_id'] != 2)
+		if ($this->user_info['group_id'] != 1 AND $this->user_info['group_id'] != 2 AND $this->user_info['group_id'] != 3)
 		{
 			if ($user_info['group_id'] != 4 OR intval($this->user_info['reputation']) <= intval($user_info['reputation']))
 			{

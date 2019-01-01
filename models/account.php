@@ -850,17 +850,8 @@ class account_class extends AWS_MODEL
         return false;
     }
 
-    public function get_users_list($where, $limit = 10, $attrib = false, $exclude_self = true, $orderby = 'uid DESC')
+    public function get_users_list($where = null, $limit = 10, $attrib = false, $exclude_self = true, $orderby = 'uid DESC')
     {
-        if ($where)
-        {
-            $where = '(' . $where . ') AND group_id <> 3';
-        }
-        else
-        {
-            $where = 'group_id <> 3';
-        }
-
         if ($exclude_self)
         {
             if ($where)
