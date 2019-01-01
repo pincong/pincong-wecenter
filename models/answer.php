@@ -768,6 +768,18 @@ class answer_class extends AWS_MODEL
 		), 'question_id = ' . $answer_info['question_id']);
 	}
 
+	public function unset_best_answer($answer_id)
+	{
+		if (!$answer_info = $this->get_answer_by_id($answer_id))
+		{
+			return false;
+		}
+
+		$this->shutdown_update('question', array(
+			'best_answer' => 0
+		), 'question_id = ' . $answer_info['question_id']);
+	}
+
 	public function calc_best_answer()
 	{
 		if (!$best_answer_day = intval(get_setting('best_answer_day')))

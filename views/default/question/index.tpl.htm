@@ -323,8 +323,8 @@
 												<?php if ($this->user_id != $val['uid'] AND $this->user_id) { ?>
 												<a href="javascript:;"<?php if (!$val['answer_thanks']) { ?> onclick="AWS.User.answer_thanks($(this), <?php echo $val['answer_id']; ?>);"<?php } ?> class="aw-icon-thank-tips text-color-999" data-original-title="<?php _e('感谢热心的回复者'); ?>" data-toggle="tooltip" title="" data-placement="bottom"><i class="icon icon-thank"></i> <?php if ($val['answer_thanks']) { ?><?php _e('已感谢'); ?><?php } else { ?><?php _e('感谢'); ?><?php } ?></a>
 												<?php } ?>
-												<?php if (($this->user_info['permission']['is_moderator'] OR $this->user_info['permission']['is_administrator']) AND !$this->question_info['best_answer']) { ?>
-												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/question/ajax/set_best_answer/', 'answer_id=<?php echo $val['answer_id']; ?>');" class="text-color-999"><i class="icon icon-best"></i><?php _e('最佳回复'); ?></a>
+												<?php if ($this->user_info['permission']['is_moderator'] OR $this->user_info['permission']['is_administrator']) { ?>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/question/ajax/set_best_answer/', 'answer_id=<?php echo $val['answer_id']; ?>');" class="text-color-999"><i class="icon icon-best"></i><?php if (!$this->question_info['best_answer']) { ?><?php _e('设为最佳回复'); ?><?php } else { ?><?php _e('撤消最佳回复'); ?><?php } ?></a>
 												<?php } ?>
 											</div>
 											<!-- end 可显示/隐藏的操作box -->
