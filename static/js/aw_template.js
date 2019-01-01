@@ -88,7 +88,7 @@ var AW_TEMPLATE = {
 						'&nbsp;'+
 						_t('匿名') +
 						'&nbsp;'+
-						'<a href="javascript:;" onclick="AWS.ajax_post($(this).parents(\'form\'));" class="btn btn-normal btn-success btn-submit">' + _t('回复') + '</a>'+
+						'<a href="javascript:;" onclick="AWS.ajax_post($(this).parents(\'form\'), AWS.ajax_processer, \'reply\');" class="btn btn-normal btn-success btn-submit">' + _t('回复') + '</a>'+
 					'</label>'+
 					'<label class="pull-right">'+
 						'<input class="pull-right form-control" type="text" name="later" placeholder="' + _t('分钟') + '" /> ' +
