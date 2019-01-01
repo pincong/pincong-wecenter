@@ -731,7 +731,7 @@ class account_class extends AWS_MODEL
         return $user_group;
     }
 
-	// $type 0:系统组|1:会员组(威望组)
+	// $type 0:系统组|1:会员组(声望组)
     public function get_user_group_list($type = 0, $custom = null)
     {
         $type = intval($type);
@@ -761,7 +761,7 @@ class account_class extends AWS_MODEL
 			return $this->model('account')->get_user_group_by_id($group_id);
 		}
 
-		// 普通会员 威望组
+		// 普通会员 声望组
 		if ($group_id == 4)
 		{
 			return $this->model('account')->get_user_group_by_id($reputation_group_id);
@@ -779,7 +779,7 @@ class account_class extends AWS_MODEL
 			return $user_group;
 		}
 
-		// 特殊组不存在则按威望组处理
+		// 特殊组不存在则按声望组处理
 		return $this->model('account')->get_user_group_by_id($reputation_group_id);
 	}
 

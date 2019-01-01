@@ -31,7 +31,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['send_pm'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能发送私信')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不能发送私信')));
 		}
 
 		$message = $_POST['message'];
@@ -66,7 +66,7 @@ class ajax extends AWS_CONTROLLER
 			$recipient_user_group = $this->model('account')->get_user_group_by_user_info($recipient_user);
 			if (!$recipient_user_group['permission']['receive_pm'])
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对方的等级还不能接收私信')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对方的声望还不能接收私信')));
 			}
 		}
 

@@ -24,7 +24,7 @@ class main extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['kb_explore'])
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('你的等级还不够'));
+			H::redirect_msg(AWS_APP::lang()->_t('你的声望还不够'));
 		}
 
 		if (! $item_info = $this->model('kb')->get($_GET['id']))
@@ -50,7 +50,7 @@ class main extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['kb_explore'])
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('你的等级还不够'));
+			H::redirect_msg(AWS_APP::lang()->_t('你的声望还不够'));
 		}
 
 		$this->crumb(AWS_APP::lang()->_t('知识库'), '/kb/');

@@ -38,7 +38,7 @@ class reputation_class extends AWS_MODEL
 		return $reputation_groups;
 	}
 
-	// 通过威望值得到威望组ID
+	// 通过声望值得到声望组ID
 	public function get_reputation_group_id_by_reputation($reputation)
 	{
 		if ($reputation_groups = $this->get_reputation_group_list())
@@ -68,7 +68,7 @@ class reputation_class extends AWS_MODEL
 		}
 	}
 
-	// 增加用户赞同数和威望
+	// 增加用户赞同数和声望
 	public function increase_agree_count_and_reputation($uid, $vote, $reputation_factor)
 	{
 		$uid = intval($uid);

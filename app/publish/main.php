@@ -42,7 +42,7 @@ class main extends AWS_CONTROLLER
 		}
 		else if (!$this->user_info['permission']['publish_question'])
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('你的等级还不够'));
+			H::redirect_msg(AWS_APP::lang()->_t('你的声望还不够'));
 		}
 		else if ($this->is_post() AND $_POST['question_detail'])
 		{
@@ -115,7 +115,7 @@ class main extends AWS_CONTROLLER
 		}
 		else if (!$this->user_info['permission']['publish_article'])
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('你的等级还不够'));
+			H::redirect_msg(AWS_APP::lang()->_t('你的声望还不够'));
 		}
 		else if ($this->is_post() AND $_POST['message'])
 		{
@@ -188,7 +188,7 @@ class main extends AWS_CONTROLLER
 		}
 		else if (!$this->user_info['permission']['publish_video'])
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('你的等级还不够'));
+			H::redirect_msg(AWS_APP::lang()->_t('你的声望还不够'));
 		}
 		else if ($this->is_post() AND $_POST['message'])
 		{

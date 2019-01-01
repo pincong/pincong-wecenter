@@ -1173,7 +1173,7 @@
         <?php } else if ($_GET['category'] == 'currency') { ?>
         <div class="mod-head">
             <h3>
-                <span class="pull-left"><?php _e('积分与威望'); ?></span>
+                <span class="pull-left"><?php _e('积分与声望'); ?></span>
 
                 <span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php _e('快速保存'); ?></a></span>
             </h3>
@@ -1183,7 +1183,7 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('威望名称'); ?>:</span>
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('声望名称'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <input name="reputation_name" type="text" class="form-control" value="<?php echo $this->setting['reputation_name']; ?>"/>
                             </div>
@@ -1755,7 +1755,7 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('用户威望小于等于多少时自动封禁'); ?>:</span>
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('用户声望小于等于多少时自动封禁'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <input name="auto_banning_reputation" type="text" class="form-control" value="<?php echo $this->setting['auto_banning_reputation']; ?>"/>
                                 <div class="help-block"><?php _e('应填写负数'); ?></div>

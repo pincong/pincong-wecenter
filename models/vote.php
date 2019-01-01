@@ -195,7 +195,7 @@ class vote_class extends AWS_MODEL
 	 * @param int $item_id     //被投票内容ID
 	 * @param int $uid         //投票用户ID
 	 * @param int $item_uid    //被投票用户ID
-	 * @param int $factor      //威望系数
+	 * @param int $factor      //声望系数
 	 * @param boolean $affect_currency //是否影响被投票用户游戏币
 	 *
 	 * @return boolean true|false
@@ -264,7 +264,7 @@ class vote_class extends AWS_MODEL
 	 * @param int $item_id     //被投票内容ID
 	 * @param int $uid         //投票用户ID
 	 * @param int $item_uid    //被投票用户ID
-	 * @param int $factor      //威望系数
+	 * @param int $factor      //声望系数
 	 * @param boolean $affect_currency //是否影响被投票用户游戏币
 	 *
 	 * @return boolean true|false

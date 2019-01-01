@@ -62,12 +62,12 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['publish_discussion'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
 		}
 
 		if ($_POST['anonymous'])// AND !$this->user_info['permission']['reply_anonymously'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能匿名')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不能匿名')));
 		}
 
 		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_post']))
@@ -139,12 +139,12 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['publish_discussion'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
 		}
 
 		if ($_POST['anonymous'])// AND !$this->user_info['permission']['reply_anonymously'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能匿名')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不能匿名')));
 		}
 
 		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_post']))
@@ -212,7 +212,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['invite_answer'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
 		}
 
 		if (!$question_info = $this->model('question')->get_question_info_by_id($_POST['question_id']))

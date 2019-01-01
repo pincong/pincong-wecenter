@@ -64,7 +64,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->model('category')->check_user_permission($category_id, $this->user_info['permission']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你的等级还不能在这个分类发言')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你的声望还不能在这个分类发言')));
 		}
 
 		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
@@ -206,7 +206,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['bump_sink'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
 		}
 
 		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
@@ -231,7 +231,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['bump_sink'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
 		}
 
 		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
