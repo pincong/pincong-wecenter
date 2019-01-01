@@ -94,13 +94,15 @@ class ajax extends AWS_CONTROLLER
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 			}
-			else if ($this->model('topic')->has_lock_topic($_POST['topic_id']))
+
+			if ($this->model('topic')->has_lock_topic($_POST['topic_id']))
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定的话题不能编辑')));
 			}
-			else if ($this->user_info['permission']['function_interval'] AND ((time() - AWS_APP::cache()->get('function_interval_timer_topic_' . $this->user_id)) < $this->user_info['permission']['function_interval']))
+
+			if (!check_user_operation_interval('edit_topic', $this->user_id, $this->user_info['permission']))
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('灌水预防机制已经打开, 在 %s 秒内不能操作', $this->user_info['permission']['function_interval'])));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 			}
 		}
 
@@ -116,7 +118,7 @@ class ajax extends AWS_CONTROLLER
 
 		$this->model('topic')->update_topic($this->user_id, $_POST['topic_id'], null, $_POST['topic_description']);
 
-		AWS_APP::cache()->set('function_interval_timer_topic_' . $this->user_id, time(), 86400);
+		set_user_operation_last_time('edit_topic', $this->user_id, $this->user_info['permission']);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'url' => get_js_url('/topic/' . $_POST['topic_id'])
@@ -543,16 +545,9 @@ class ajax extends AWS_CONTROLLER
 			break;
 		}
 
-		if (!($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
+		if (!check_user_operation_interval('edit_topic', $this->user_id, $this->user_info['permission']))
 		{
-			if ($this->user_info['permission']['function_interval'] AND AWS_APP::cache()->get('function_interval_timer_question_topic_last_edit_' . $this->user_id) == $_POST['item_id'])
-			{
-				AWS_APP::cache()->set('function_interval_timer_question_topic_' . $this->user_id, time(), 86400);
-			}
-			else if ($this->user_info['permission']['function_interval'] AND ((time() - AWS_APP::cache()->get('function_interval_timer_question_topic_' . $this->user_id)) < $this->user_info['permission']['function_interval']))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('灌水预防机制已经打开, 在 %s 秒内不能操作', $this->user_info['permission']['function_interval'])));
-			}
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 
 		if (!$topic_title = my_trim($_POST['topic_title']))
@@ -606,11 +601,7 @@ class ajax extends AWS_CONTROLLER
 
 		$this->model('topic')->save_topic_relation($this->user_id, $topic_id, $_POST['item_id'], $_POST['type']);
 
-		if (!($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
-		{
-			AWS_APP::cache()->set('function_interval_timer_question_topic_' . $this->user_id, time(), 86400);
-			AWS_APP::cache()->set('function_interval_timer_question_topic_last_edit_' . $this->user_id, intval($_POST['item_id']), 86400);
-		}
+		set_user_operation_last_time('edit_topic', $this->user_id, $this->user_info['permission']);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'topic_id' => $topic_id,
