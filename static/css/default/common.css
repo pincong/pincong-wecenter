@@ -858,8 +858,6 @@ blockquote {margin: 0;padding: 0 10px;font-size: 15px;color: #777;border-left: 4
 .aw-point-rule .green{color: #388202;}
 .aw-point-rule .red{color: #ff5d61;}
 
-#browser-not-support{position:fixed;bottom:0;z-index:9999;width:100%;padding:5px;background-color: #f2dede;}
-
 /* 帮助中心 */
 .aw-help-center .mod-head {padding: 40px 0;}
 .aw-help-center .mod-head h2 {font-size: 32px; text-align: center;color: #666;}

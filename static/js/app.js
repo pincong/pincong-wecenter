@@ -31,38 +31,6 @@ $(document).ready(function ()
         AWS.G.notification_timer = setInterval('AWS.Message.check_notifications()', G_NOTIFICATION_INTERVAL);
     }
 
-    //文章列表样式调整
-    if ($('.aw-common-list').length)
-    {
-        $.each($('.aw-common-list .aw-item.article'), function (i, e)
-        {
-            if ($(this).find('.all-content img').length >= 1)
-            {
-                $(this).find('.markitup-box').prepend($(this).find('.all-content img').eq(0).addClass('pull-left inline-img'))
-            }
-        });
-    }
-
-    $('a[rel=lightbox]:visible').fancybox(
-    {
-        openEffect: 'none',
-        closeEffect: 'none',
-        prevEffect: 'none',
-        nextEffect: 'none',
-        centerOnScroll : true,
-        closeBtn: false,
-        helpers:
-        {
-            buttons:
-            {
-                position: 'bottom'
-            }
-        },
-        afterLoad: function ()
-        {
-            this.title = '第 ' + (this.index + 1) + ' 张, 共 ' + this.group.length + ' 张' + (this.title ? ' - ' + this.title : '');
-        }
-    });
 
     if (window.location.hash.indexOf('#!') != -1)
     {

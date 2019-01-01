@@ -90,9 +90,6 @@ class main extends AWS_CONTROLLER
 
 		TPL::import_css('css/register.css');
 
-		// md5 password...
-		//TPL::import_js('js/md5.js');
-
 		if ($_GET['url'])
 		{
 			$return_url = htmlspecialchars(base64_decode($_GET['url']));

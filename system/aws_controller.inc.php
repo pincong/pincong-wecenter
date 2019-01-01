@@ -100,7 +100,6 @@ class AWS_CONTROLLER
 		TPL::import_css(array(
 			'css/common.css',
 			'css/link.css',
-			'js/plug_module/style.css',
 		));
 
 		if (defined('SYSTEM_LANG'))
@@ -123,7 +122,7 @@ class AWS_CONTROLLER
 		// 引入系统 JS 文件
 		TPL::import_js(array(
 			'js/jquery.form.js',
-			'js/plug_module/plug-in_module.js',
+			'js/framework.js',
 			'js/aws.js',
 			'js/aw_template.js',
 			'js/app.js',
