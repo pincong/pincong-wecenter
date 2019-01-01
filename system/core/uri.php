@@ -121,12 +121,12 @@ class core_uri
 			return $this;
 		}
 
-  		$request = explode('?', $this->request_main, 2);
+		$request = explode('?', $this->request_main, 2);
 
-  		if (count($request) == 1)
-  		{
-  			$request = explode('&', $this->request_main, 2);
-  		}
+		if (count($request) == 1)
+		{
+			$request = explode('&', $this->request_main, 2);
+		}
 
 		$uri = array(
 			'first' => array_shift($request),
@@ -231,8 +231,18 @@ class core_uri
 				$this->action = $uri['first']['args'][3] ? $uri['first']['args'][3] : $this->default_vars['action'];	// 动作
 			break;
 		}
-		
-		$this->app_dir = ROOT_PATH . 'app/' . $__app_dir . '/';
+
+		$is_plugin = isset($_GET['app']);
+		if ($is_plugin)
+		{
+			 // 插件 controller
+			$this->app_dir = ROOT_PATH . 'plugins/' . $__app_dir . '/app/';
+		}
+		else
+		{
+			// 普通 controller
+			$this->app_dir = ROOT_PATH . 'app/' . $__app_dir . '/';
+		}
 
 		$_GET['c'] = $this->controller;
 		$_GET['act'] = $this->action;
