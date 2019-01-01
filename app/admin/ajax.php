@@ -823,7 +823,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
                     }
                 }
 
-                $update_data['avatar_file'] = $this->model('account')->get_avatar($user_info['uid'], null, 1) . basename($thumb_file['min']);
+                $update_data['avatar_file'] = fetch_salt(8); // 生成随机字符串
             }
 
             if ($_POST['verified'])

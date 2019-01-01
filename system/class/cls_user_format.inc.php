@@ -14,8 +14,8 @@
 
 class UF
 {
-	// 获取头像地址
-	// 举个例子：$uid=12345，那么头像路径很可能(根据您部署的上传文件夹而定)会被存储为/uploads/000/01/23/45_avatar_min.jpg
+	// 获取头像网址
+	// 举个例子：$uid=12345，那么头像网址很可能(根据您部署的上传文件夹而定)为 /uploads/000/01/23/45_avatar_min.jpg?random_string
 	public static function avatar(&$user_info, $size = 'min', $show_forbidden = true)
 	{
 		$all_size = array('min', 'mid', 'max');
@@ -33,11 +33,12 @@ class UF
 		$dir2 = substr($uid, 3, 2);
 		$dir3 = substr($uid, 5, 2);
 
-		$path = get_setting('upload_dir') . '/avatar/' . $dir1 . '/' . $dir2 . '/' . $dir3 . '/' . substr($uid, - 2) . '_avatar_' . $size . '.jpg';
+		$filename = '/avatar/' . $dir1 . '/' . $dir2 . '/' . $dir3 . '/' . substr($uid, - 2) . '_avatar_' . $size . '.jpg';
+		$path = get_setting('upload_dir') . $filename;
 
 		if (file_exists($path))
 		{
-			return $path;
+			return get_setting('upload_url') . $filename . '?' . $user_info['avatar_file']; // $user_info['avatar_file'] 随机字符串用于避免 CDN 缓存
 		}
 		else
 		{
