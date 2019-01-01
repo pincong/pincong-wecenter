@@ -1104,13 +1104,10 @@ function checksum($string) {
 	return $i;
 }
 
-function safe_urlencode($string) {
-	return strtr(rawurlencode($string), array(
-		'-' => '%2D',
-		'_' => '%5F'
-	));
+function safe_base64_encode($string) {
+	return strtr(rtrim(base64_encode($string), '='), '+/', '._');
 }
 
-function safe_urldecode($string) {
-	return rawurldecode($string);
+function safe_base64_decode($string) {
+	return base64_decode(strtr($string, '._', '+/'));
 }

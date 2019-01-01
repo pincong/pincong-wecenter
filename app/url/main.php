@@ -30,21 +30,31 @@ class main extends AWS_CONTROLLER
 
 	public function img_action()
 	{
-		if (!$_GET['id'] OR !H::content_url_whitelist_check($_GET['id']))
+		if (!$_GET['id'])
 		{
 			die;
 		}
-		TPL::assign('url', htmlspecialchars($_GET['id']));
+		$url = safe_base64_decode($_GET['id']);
+		if (!$url OR !H::content_url_whitelist_check($url))
+		{
+			die;
+		}
+		TPL::assign('url', htmlspecialchars($url));
 		TPL::output('url/img');
 	}
 
 	public function link_action()
 	{
-		if (!$_GET['id'] OR is_inside_url($_GET['id']))
+		if (!$_GET['id'])
 		{
 			die;
 		}
-		TPL::assign('url', htmlspecialchars($_GET['id']));
+		$url = safe_base64_decode($_GET['id']);
+		if (!$url OR is_inside_url($url))
+		{
+			die;
+		}
+		TPL::assign('url', htmlspecialchars($url));
 		TPL::output('url/link');
 	}
 }
