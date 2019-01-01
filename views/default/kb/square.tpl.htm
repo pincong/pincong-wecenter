@@ -72,7 +72,7 @@
 							<a href="<?php echo UF::url($this->user_info); ?>" class="aw-user-name"><img alt="" src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" /></a>
 							<p>
 								<label class="pull-right">
-									<input type="checkbox" value="1" name="anonymous" /> <?php _e('匿名'); ?>
+									<input type="checkbox" value="1" name="anonymous" /> <?php _e(get_setting('anonymous_option_name')); ?>
 								</label>
 								<label class="pull-right">
 									<a href="currency/rule/" target="_blank"><?php _e(get_setting('currency_rule_name')); ?></a>

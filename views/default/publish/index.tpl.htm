@@ -119,7 +119,7 @@
 
 									<?php if (!$this->question_info['question_id'] AND $this->user_info['permission']['post_anonymously']) { ?>
 									<label><input type="checkbox" class="pull-left" value="1" name="anonymous" />
-										<?php _e('匿名'); ?></label>
+										<?php _e(get_setting('anonymous_option_name')); ?></label>
 									<?php } ?>
 
 								</span>

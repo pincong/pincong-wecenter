@@ -115,7 +115,7 @@
 
 									<?php if (!$this->article_info['id'] AND $this->user_info['permission']['post_anonymously']) { ?>
 									<label><input type="checkbox" class="pull-left" value="1" name="anonymous" />
-										<?php _e('匿名'); ?></label>
+										<?php _e(get_setting('anonymous_option_name')); ?></label>
 									<?php } ?>
 								</span>
 								<a class="btn btn-large btn-success btn-publish-submit" id="publish_submit" onclick="AWS.submit($('#question_form'), $(this)); return false;"><?php _e('确认发起'); ?></a>
