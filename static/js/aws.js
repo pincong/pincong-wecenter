@@ -1442,12 +1442,13 @@ AWS.User =
 			$disagree_btn.removeClass('active');
 		};
 
-		var toggle_ui = function() {
+		var toggle_ui = function(callback) {
 			// 还原
 			if (status != initial_status) {
 				set_btns(initial_status);
 				$count.html(initial_count);
 				status = initial_status;
+				callback && callback();
 				return;
 			}
 
@@ -1456,6 +1457,7 @@ AWS.User =
 				set_btns(0);
 				$count.html(initial_count - 1);
 				status = 0;
+				callback && callback();
 				return;
 			}
 
@@ -1464,6 +1466,7 @@ AWS.User =
 				set_btns(0);
 				$count.html(initial_count + 1);
 				status = 0;
+				callback && callback();
 				return;
 			}
 
@@ -1473,26 +1476,29 @@ AWS.User =
 					set_btns(1);
 					$count.html(initial_count + 1);
 					status = 1;
+					callback && callback();
 					return;
 				}
 				if (operation == 'disagree') {
-					set_btns(-1);
-					$count.html(initial_count - 1);
-					status = -1;
-					return;
+					AWS.confirm(_t('确认反对?'), function() {
+						set_btns(-1);
+						$count.html(initial_count - 1);
+						status = -1;
+						callback && callback();
+						return;
+					});
 				}
 			}
 		};
 
-		toggle_ui();
-		$.post(G_BASE_URL + '/vote/ajax/' + operation + '/', 'type=' + type + '&item_id=' + item_id, function (result)
-		{
-			if (result.errno != '1')
-			{
-				AWS.alert(result.err);
-				toggle_ui();
-			}
-		}, 'json');
+		toggle_ui(function() {
+			$.post(G_BASE_URL + '/vote/ajax/' + operation + '/', 'type=' + type + '&item_id=' + item_id, function(result) {
+				if (result.errno != '1') {
+					AWS.alert(result.err);
+					toggle_ui();
+				}
+			}, 'json');
+		});
 	},
 
 	ask_user: function(ask_user_id, ask_user_name)
