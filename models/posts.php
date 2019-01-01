@@ -74,7 +74,7 @@ class posts_class extends AWS_MODEL
 					'agree_count' => $result['agree_count'],
 					'answer_count' => $result['answer_count'],
 					'lock' => $result['lock'],
-					'is_recommend' => $result['is_recommend'],
+					'recommend' => $result['recommend'],
 				);
 				break;
 
@@ -88,7 +88,7 @@ class posts_class extends AWS_MODEL
 					'agree_count' => $result['agree_count'],
 					'answer_count' => $result['comments'],
 					'lock' => $result['lock'],
-					'is_recommend' => $result['is_recommend'],
+					'recommend' => $result['recommend'],
 				);
 				break;
 
@@ -102,7 +102,7 @@ class posts_class extends AWS_MODEL
 					'agree_count' => $result['agree_count'],
 					'answer_count' => $result['comment_count'],
 					'lock' => $result['lock'],
-					'is_recommend' => $result['is_recommend'],
+					'recommend' => $result['recommend'],
 				);
 				break;
 
@@ -232,7 +232,7 @@ class posts_class extends AWS_MODEL
 
 			if ($recommend)
 			{
-				$where[] = 'is_recommend = 1';
+				$where[] = 'recommend = 1';
 			}
 
 			if ($category_id)
@@ -496,7 +496,7 @@ class posts_class extends AWS_MODEL
 
 		if ($recommend)
 		{
-			$where[] = 'is_recommend = 1';
+			$where[] = 'recommend = 1';
 		}
 
 		if ($post_type)

@@ -85,7 +85,7 @@
 											<?php } ?>
 											<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
 											<li>
-												<?php if ($this->question_info['is_recommend']) { ?>
+												<?php if ($this->question_info['recommend']) { ?>
 												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unrecommend/', 'item_type=question&item_id=<?php echo $this->question_info['question_id']; ?>');"><?php _e('取消推荐'); ?></a>
 												<?php } else { ?>
 												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/recommend/', 'item_type=question&item_id=<?php echo $this->question_info['question_id']; ?>');"><?php _e('推荐'); ?></a>

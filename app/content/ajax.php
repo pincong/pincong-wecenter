@@ -104,7 +104,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
 		}
 
-		if (!$item_info['is_recommend'])
+		if (!$item_info['recommend'])
 		{
 			$this->model('content')->recommend($_POST['item_type'], $_POST['item_id'], $this->user_id);
 		}
@@ -125,7 +125,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
 		}
 
-		if ($item_info['is_recommend'])
+		if ($item_info['recommend'])
 		{
 			$this->model('content')->unrecommend($_POST['item_type'], $_POST['item_id'], $this->user_id);
 		}

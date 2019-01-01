@@ -291,10 +291,10 @@ class content_class extends AWS_MODEL
 		{
 			$where = 'question_id = ' . intval($item_id);
 		}
-		$this->update($item_type, array('is_recommend' => 1), $where);
+		$this->update($item_type, array('recommend' => 1), $where);
 
 		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
-		$this->update('posts_index', array('is_recommend' => 1), $where);
+		$this->update('posts_index', array('recommend' => 1), $where);
 
 		$this->model('content')->log($item_type, $item_id, '推荐', $uid);
 	}
@@ -312,10 +312,10 @@ class content_class extends AWS_MODEL
 		{
 			$where = 'question_id = ' . intval($item_id);
 		}
-		$this->update($item_type, array('is_recommend' => 0), $where);
+		$this->update($item_type, array('recommend' => 0), $where);
 
 		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
-		$this->update('posts_index', array('is_recommend' => 0), $where);
+		$this->update('posts_index', array('recommend' => 0), $where);
 
 		$this->model('content')->log($item_type, $item_id, '取消推荐', $uid);
 	}

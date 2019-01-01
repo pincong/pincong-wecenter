@@ -49,7 +49,7 @@
 
 											<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
 											<li>
-												<?php if ($this->article_info['is_recommend']) { ?>
+												<?php if ($this->article_info['recommend']) { ?>
 												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unrecommend/', 'item_type=article&item_id=<?php echo $this->article_info['id']; ?>');"><?php _e('取消推荐'); ?></a>
 												<?php } else { ?>
 												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/recommend/', 'item_type=article&item_id=<?php echo $this->article_info['id']; ?>');"><?php _e('推荐'); ?></a>
