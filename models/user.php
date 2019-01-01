@@ -427,6 +427,7 @@ class user_class extends AWS_MODEL
 		$status = intval($status);
 		$this->model('account')->update_user_fields(array(
 			'flagged' => ($status),
+			'user_update_time' => fake_time()
 		), $uid);
 
 		if (!$status)

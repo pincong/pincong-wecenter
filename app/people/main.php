@@ -113,7 +113,7 @@ class main extends AWS_CONTROLLER
 		if (intval($_GET['forbidden']))
 		{
 			$where[] = 'forbidden <> 0';
-			$order = 'uid ASC';
+			$order = 'user_update_time ASC, uid ASC';
 			if ($base_url)
 			{
 				$base_url .= '__';
@@ -128,7 +128,7 @@ class main extends AWS_CONTROLLER
 		if (intval($_GET['flagged']))
 		{
 			$where[] = 'flagged <> 0';
-			$order = 'uid ASC';
+			$order = 'user_update_time ASC, uid ASC';
 			if ($base_url)
 			{
 				$base_url .= '__';
