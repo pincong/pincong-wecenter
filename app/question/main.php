@@ -105,7 +105,7 @@ class main extends AWS_CONTROLLER
 
 		foreach ($answer_list as $answer)
 		{
-			$answer['answer_content'] = $this->model('question')->parse_at_user($answer['answer_content']);
+			$answer['answer_content'] = $this->model('mention')->parse_at_user($answer['answer_content']);
 
 			if ($this->user_id)
 			{

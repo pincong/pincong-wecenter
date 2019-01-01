@@ -255,7 +255,7 @@ class ajax extends AWS_CONTROLLER
 
 		foreach ($comments as $key => $val)
 		{
-			$comments[$key]['message'] = $this->model('question')->parse_at_user($comments[$key]['message']);
+			$comments[$key]['message'] = $this->model('mention')->parse_at_user($comments[$key]['message']);
 			$comments[$key]['user_info'] = $user_infos[$val['uid']];
 		}
 
@@ -276,7 +276,7 @@ class ajax extends AWS_CONTROLLER
 
 		foreach ($comments as $key => $val)
 		{
-			$comments[$key]['message'] = $this->model('question')->parse_at_user($comments[$key]['message']);
+			$comments[$key]['message'] = $this->model('mention')->parse_at_user($comments[$key]['message']);
 			$comments[$key]['user_info'] = $user_infos[$val['uid']];
 		}
 

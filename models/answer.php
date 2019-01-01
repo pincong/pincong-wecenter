@@ -231,7 +231,7 @@ class answer_class extends AWS_MODEL
 			return false;
 		}
 
-		$message = $this->model('question')->parse_at_user($message, false, false, true);
+		$message = $this->model('mention')->parse_at_user($message, false, false, true);
 
 		$comment_id = $this->insert('answer_discussion', array(
 			'uid' => intval($uid),
@@ -251,7 +251,7 @@ class answer_class extends AWS_MODEL
 
 		}
 
-		if ($at_users = $this->model('question')->parse_at_user($message, false, true))
+		if ($at_users = $this->model('mention')->parse_at_user($message, false, true))
 		{
 			foreach ($at_users as $user_id)
 			{

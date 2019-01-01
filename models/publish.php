@@ -253,7 +253,7 @@ class publish_class extends AWS_MODEL
 		$this->model('posts')->set_posts_index($data['parent_id'], 'question');
 
 
-		if ($at_users = $this->model('question')->parse_at_user($data['message'], false, true))
+		if ($at_users = $this->model('mention')->parse_at_user($data['message'], false, true))
 		{
 			foreach ($at_users as $user_id)
 			{
@@ -341,7 +341,7 @@ class publish_class extends AWS_MODEL
 			));
 		}
 
-		if ($at_users = $this->model('question')->parse_at_user($data['message'], false, true))
+		if ($at_users = $this->model('mention')->parse_at_user($data['message'], false, true))
 		{
 			foreach ($at_users as $user_id)
 			{
@@ -414,7 +414,7 @@ class publish_class extends AWS_MODEL
 			*/
 		}
 
-		if ($at_users = $this->model('question')->parse_at_user($data['message'], false, true))
+		if ($at_users = $this->model('mention')->parse_at_user($data['message'], false, true))
 		{
 			foreach ($at_users as $user_id)
 			{
