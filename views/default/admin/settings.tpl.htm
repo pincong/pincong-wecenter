@@ -1026,7 +1026,7 @@
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('搜索引擎 URL'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <textarea class="form-control textarea" rows="5" name="search_engine_list"><?php echo $this->setting['search_engine_list']; ?></textarea>
-                                <span class="help-block"><?php _e('以 %s 取代查询，每行一个。e.g. Google https://www.google.com/search?q=%s%20site:mydomain.com'); ?></span>
+                                <span class="help-block"><?php _e('以 %s 取代查询，每行一个。e.g. Google, https://www.google.com/search?q=%s%20site:mydomain.com'); ?></span>
                             </div>
                         </div>
                     </td>
@@ -1422,7 +1422,7 @@
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('缩略图 URL 规则'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <textarea class="form-control textarea" rows="5" name="video_config_thumb_url_rules"><?php echo $this->setting['video_config_thumb_url_rules']; ?></textarea>
-                                <span class="help-block"><?php _e('根据视频 source 和 source_type 生成缩略图 URL, 详见 system/Services/VideoParser.php, e.g. youtube@s https://i.ytimg.com/vi/{$source}/default.jpg'); ?></span>
+                                <span class="help-block"><?php _e('根据视频 source 和 source_type 生成缩略图 URL, 详见 system/Services/VideoParser.php, e.g. youtube@s, https://i.ytimg.com/vi/{$source}/default.jpg'); ?></span>
                             </div>
                         </div>
                     </td>

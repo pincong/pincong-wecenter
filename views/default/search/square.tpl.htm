@@ -20,7 +20,7 @@
 							<div style="text-align:center">
 							<?php $search_engine_index = 0; ?>
 							<?php foreach ($this->search_engine_list AS $key => $val) { ?>
-								<label><input type="radio" value="<?php echo $val; ?>" name="search_engine_url" <?php if ($search_engine_index == 0) { ?>checked="checked" <?php } ?>/>&nbsp;<?php echo $key; ?>&nbsp;</label>
+								<label><input type="radio" value="<?php echo $val; ?>" name="search_engine_url" <?php if ($search_engine_index == 0) { ?>checked="checked" <?php } ?>/>&nbsp;<?php echo $key; ?>&nbsp;&nbsp;&nbsp;</label>
 								<?php $search_engine_index++; ?>
 							<?php } ?>
 							</div>

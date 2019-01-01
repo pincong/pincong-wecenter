@@ -452,7 +452,7 @@ function get_setting($varname = null)
  * @param  string
  * @return mixed
  */
-function get_key_value_pairs($varname, $separator = ' ')
+function get_key_value_pairs($varname, $separator = ',')
 {
 	$result = array();
 
@@ -472,7 +472,7 @@ function get_key_value_pairs($varname, $separator = ' ')
 			continue;
 		}
 
-		$result[$array[0]] = $array[$count - 1];
+		$result[trim($array[0])] = trim($array[$count - 1]);
 	}
 
 	return $result;
