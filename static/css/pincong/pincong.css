@@ -41,8 +41,6 @@ a:hover{text-decoration: none;color: #404451;}
 .aw-topic-category ul li a:hover, .aw-topic-category ul li a.active{background-color: #697287;color: #fff;border-color: #697287;}
 .aw-mod.topic-nav ul li a:hover, .aw-mod.topic-nav ul li a.active{background: #2b77a8;color: #fff;}
 .aw-mod-search-result .aw-item .icon-bestbg{margin-right: 5px;font-size: 15px;color: #666c82;}
-.aw-recommend-box ul li i {display: none;position: absolute;right: 0;top: 7px;width: 24px;height: 24px;color: #404451;;text-align: center;line-height: 24px;border-radius: 12px;font-size: 20px;}
-.aw-favorite-tag-list ul li i{display:none;position: absolute;right: 10px;top: 14px;width:24px;height:24px;background-color: #404451;color: #fff;text-align: center;line-height: 24px;border-radius: 12px;font-size: 20px;}
 .aw-first-login .mod-head ul{background: #697287;color: #fff;}
 .navbar-collapse {background: #404451;}
 .aw-common-list .aw-question-content h4{font-size: 15px;font-weight: bold;}

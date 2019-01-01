@@ -524,6 +524,80 @@ var AWS =
 		$(".alert-box").modal('show');
 	},
 
+	// 确认弹窗
+	confirm: function (text, callback)
+	{
+		$('.alert-box').remove();
+		$('.modal-backdrop').remove();
+
+		$('#aw-ajax-box').append(Hogan.compile(AW_TEMPLATE.confirmBox).render(
+		{
+			message: text
+		}));
+
+		$('.aw-confirm-box .yes').click(function()
+		{
+			$(".alert-box").modal('hide');
+			if (callback)
+			{
+				callback();
+			}
+			return false;
+		});
+
+		$(".alert-box").modal('show');
+	},
+
+	// 单行输入框弹窗
+	prompt: function (title, message, callback)
+	{
+		$('.alert-box').remove();
+		$('.modal-backdrop').remove();
+
+		$('#aw-ajax-box').append(Hogan.compile(AW_TEMPLATE.promptBox).render(
+		{
+			title: title,
+			message: message
+		}));
+
+		$('.aw-prompt-box .yes').click(function()
+		{
+			$(".alert-box").modal('hide');
+			if (callback)
+			{
+				callback($('.aw-prompt-box textarea').val());
+			}
+			return false;
+		});
+
+		$(".alert-box").modal('show');
+	},
+
+	// 多行输入框弹窗
+	textBox: function (title, message, callback)
+	{
+		$('.alert-box').remove();
+		$('.modal-backdrop').remove();
+
+		$('#aw-ajax-box').append(Hogan.compile(AW_TEMPLATE.textBox).render(
+		{
+			title: title,
+			message: message
+		}));
+
+		$('.aw-text-box .yes').click(function()
+		{
+			$(".alert-box").modal('hide');
+			if (callback)
+			{
+				callback($('.aw-text-box textarea').val());
+			}
+			return false;
+		});
+
+		$(".alert-box").modal('show');
+	},
+
 	popup: function (url, callback)
 	{
 		$.get(url, function (template) {
@@ -619,13 +693,11 @@ var AWS =
 				case 'confirm':
 					$('.aw-confirm-box .yes').click(function()
 					{
+						$(".alert-box").modal('hide');
 						if (callback)
 						{
 							callback();
 						}
-
-						$(".alert-box").modal('hide');
-
 						return false;
 					});
 				break;
@@ -633,13 +705,12 @@ var AWS =
 				case 'textBox':
 					$('.aw-text-box .yes').click(function()
 					{
+						$(".alert-box").modal('hide');
 						if (callback)
 						{
-							$(".alert-box").modal('hide');
 							callback($('.aw-text-box textarea').val());
-							return false;
 						}
-
+						return false;
 					});
 				break;
 			}
@@ -1380,10 +1451,7 @@ AWS.User =
 	{
 		var title = $('title').text();
 		var url = window.location.href;
-		AWS.dialog('textBox', {
-			title: _t('分享'),
-			message: title + '\r\n' + url
-		});
+		AWS.textBox(_t('分享'), title + '\r\n' + url, function(text)
 	},
 
 	// 删除别人邀请我回复的问题
@@ -1482,9 +1550,7 @@ AWS.User =
 
 	forbid_user: function(uid)
 	{
-		AWS.dialog('textBox', {
-			title: _t('请填写封禁理由')
-		}, function(text)
+		AWS.textBox(_t('请填写封禁理由'), '', function(text)
 		{
 			text = encodeURIComponent(text.trim());
 			AWS.ajax_request(G_BASE_URL + '/account/ajax/forbid_user/' , 'uid=' + uid + '&status=1&reason=' + text);
@@ -1498,9 +1564,7 @@ AWS.User =
 
 	flag_user: function(uid)
 	{
-		AWS.dialog('textBox', {
-			title: _t('标记')
-		}, function(text)
+		AWS.textBox(_t('标记'), '', function(text)
 		{
 			text = encodeURIComponent(text.trim());
 			AWS.ajax_request(G_BASE_URL + '/account/ajax/flag_user/' , 'uid=' + uid + '&status=1&reason=' + text);
@@ -1514,10 +1578,7 @@ AWS.User =
 
 	edit_verified_title: function(uid, text)
 	{
-		AWS.dialog('textBox', {
-			title: _t('头衔'),
-			message: text
-		}, function(text)
+		AWS.textBox(_t('头衔'), text, function(text)
 		{
 			text = encodeURIComponent(text.trim());
 			AWS.ajax_request(G_BASE_URL + '/account/ajax/edit_verified_title/' , 'uid=' + uid + '&text=' + text);
@@ -1526,10 +1587,7 @@ AWS.User =
 
 	edit_signature: function(uid, text)
 	{
-		AWS.dialog('textBox', {
-			title: _t('签名'),
-			message: text
-		}, function(text)
+		AWS.textBox(_t('签名'), text, function(text)
 		{
 			text = encodeURIComponent(text.trim());
 			AWS.ajax_request(G_BASE_URL + '/account/ajax/edit_signature/' , 'uid=' + uid + '&text=' + text);

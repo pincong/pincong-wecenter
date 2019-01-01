@@ -182,7 +182,7 @@ a.aw-load-more-content{display: block;}
 .aw-dropdown .aw-dropdown-list li.question.active .icon-bestbg{display: inline-block;}
 .aw-dropdown .aw-dropdown-list li.user a img{width: 24px;height: 24px;margin-right: 5px;}
 .aw-dropdown .aw-dropdown-list li.user a span{display:inline-block;max-width:180px;margin-left:10px;color: #999;vertical-align: top;}
-.aw-question-redirect-box .aw-dropdown .aw-dropdown-list{max-height: 336px;overflow-y:auto;}
+
 .aw-publish-title .aw-dropdown .aw-dropdown-list{max-height: 210px;overflow-y:auto;}
 .aw-edit-topic-box .aw-dropdown .aw-dropdown-list{max-height: 296px;overflow-y: auto;}
 /* 分享下拉 */
@@ -783,18 +783,9 @@ blockquote {margin: 0;padding: 0 10px;font-size: 15px;color: #777;border-left: 4
 .alert-box .modal-footer{padding-top:0;line-height: 34px;border-top: none;}
 .alert-box .modal-footer button{margin:0 0 0 20px;}
 .modal-dialog textarea, .modal-dialog input{margin-bottom: 10px;} /*overflow: hidden;*/
-.aw-share-box .modal-dialog, .aw-question-redirect-box .modal-dialog, .aw-inbox .modal-dialog, .aw-topic-edit-note-box .modal-dialog, .aw-favorite-box .modal-dialog{width: 470px;}
+.aw-share-box .modal-dialog, .aw-inbox .modal-dialog, .aw-topic-edit-note-box .modal-dialog{width: 470px;}
 .aw-publish-box .modal-dialog{width: 540px;}
 .aw-publish-box .aw-publish-title{margin-bottom: 10px;}
-.aw-recommend-box .modal-dialog {width: 524px;}
-.aw-recommend-box ul li {position: relative;float: left;width: 47%;height: 40px;margin: 0 10px 10px 0;background: #f0f0f0;border-radius: 4px;}
-.aw-recommend-box ul li:hover{background-color: #e6e6e6;}
-.aw-recommend-box h4 {color: #999;font-size: 14px;}
-.aw-recommend-box ul {width: 505px;}
-.aw-recommend-box ul li img {position: absolute; width: 32px;height: 32px;left: 4px;top: 4px;}
-.aw-recommend-box ul li a {display:block;padding-left: 46px;cursor: pointer; line-height: 40px;font-size: 12px; color: #333;}
-.aw-recommend-box ul li i {display: none;position: absolute;right: 0;top: 7px;width: 24px;height: 24px;color: #499ef3;;text-align: center;line-height: 24px;border-radius: 12px;font-size: 20px;}
-.aw-recommend-box ul li.active i {display: block;}
 /* 警告提示box */
 .aw-tips-box .modal-dialog, .aw-confirm-box .modal-dialog{width: 370px;}
 .aw-tips-box .modal-body p{margin: 10px 0;}
@@ -816,14 +807,6 @@ blockquote {margin: 0;padding: 0 10px;font-size: 15px;color: #777;border-left: 4
 .aw-edit-comment-box .modal-dialog{width:745px;}
 .aw-edit-comment-box .modal-body textarea{margin:0;}
 .aw-edit-comment-box .modal-footer label{margin-left:5px;}
-/* 回复收藏box */
-.aw-favorite-tag-list ul{width: 452px;height: auto;overflow: hidden;}
-.aw-favorite-tag-list ul li{position:relative;float:left;width:47%;margin:0 10px 10px 0;}
-.aw-favorite-tag-list ul li a{display: block;padding:15px;border:1px solid #ddd;border-radius: 4px;color: #666;background-color: #fff;}
-.aw-favorite-tag-list ul li a:hover{background-color: #f5f5f5;}
-.aw-favorite-tag-list ul li span{display:block;}
-.aw-favorite-tag-list ul li i{display:none;position: absolute;right: 10px;top: 14px;width:24px;height:24px;background-color: #499ef3;color: #fff;text-align: center;line-height: 24px;border-radius: 12px;font-size: 20px;}
-.aw-favorite-tag-list ul li.active i{display: block;}
 
 /* 用户初次登陆提示box */
 .aw-first-login .modal-body{padding:0;}
@@ -950,7 +933,7 @@ blockquote {margin: 0;padding: 0 10px;font-size: 15px;color: #777;border-left: 4
 	.category dl dd {width: 115px;}
 	.category dl dt, .category dl dt img {width: 32px;height: 32px;}
 	/*弹窗*/
-	.aw-publish-box .modal-dialog, .aw-question-redirect-box .modal-dialog, .aw-inbox .modal-dialog, .aw-topic-edit-note-box .modal-dialog, .aw-tips-box .modal-dialog, .aw-image-box .modal-dialog, .aw-link-box .modal-dialog, .aw-edit-comment-box .modal-dialog, .aw-publish-box .modal-content {width: auto;}
+	.aw-inbox .modal-dialog, .aw-topic-edit-note-box .modal-dialog, .aw-tips-box .modal-dialog, .aw-image-box .modal-dialog, .aw-link-box .modal-dialog, .aw-edit-comment-box .modal-dialog{width: auto;}
 	/*发起问题页面*/
 	.aw-publish-title input, .aw-publish-article .aw-publish-title input {width: 68%;}
 	.aw-publish-title .dropdown {width: 30%;}
@@ -959,7 +942,7 @@ blockquote {margin: 0;padding: 0 10px;font-size: 15px;color: #777;border-left: 4
 	.aw-user-detail-box .mod-head img {width: 50px;left: 10px !important;top: 10px !important;}
 	.aw-user-detail-box .mod-body .meta span {float: left;width: 25%;margin:0 !important;}
 	.aw-user-center-tab .tab-pane > .aw-mod a.aw-hide-txt {max-width: auto;}
-	.aw-share-box .modal-dialog, .aw-question-redirect-box .modal-dialog, .aw-inbox .modal-dialog, .aw-topic-edit-note-box .modal-dialog, .aw-favorite-box .modal-dialog{width: 100%;}
+	.aw-share-box .modal-dialog, .aw-inbox .modal-dialog, .aw-topic-edit-note-box .modal-dialog{width: 100%;}
 }
 /* iphone竖屏幕 */
 @media (max-width:414px) {

@@ -239,15 +239,15 @@ var AW_TEMPLATE = {
 						'{{message}}'+
 					'</div>'+
 					'<div class="modal-footer">'+
-						'<a class="btn btn-gray" data-dismiss="modal" aria-hidden="true">取消</a>'+
-						'<a class="btn btn-success yes">确定</a>'+
+						'<a class="btn btn-gray" data-dismiss="modal" aria-hidden="true">' + _t('取消') + '</a>'+
+						'<a class="btn btn-success yes">' + _t('确定') + '</a>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+
 		'</div>',
 
 	'textBox' :
-			'<div class="modal fade alert-box aw-share-box aw-share-box-message aw-text-box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'+
+			'<div class="modal fade alert-box aw-share-box aw-text-box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'+
 				'<div class="modal-dialog">'+
 					'<div class="modal-content">'+
 						'<div class="modal-header">'+
@@ -255,12 +255,30 @@ var AW_TEMPLATE = {
 							'<h3 class="modal-title" id="myModalLabel">{{title}}</h3>'+
 						'</div>'+
 							'<div class="modal-body">'+
-								'<div class="alert alert-danger collapse error_message"><i class="icon icon-delete"></i> <em></em></div>'+
 								'<textarea class="form-control" rows="5">{{message}}</textarea>'+
 							'</div>'+
 							'<div class="modal-footer">'+
-								'<a data-dismiss="modal" aria-hidden="true" class="btn btn-large btn-gray">' + _t('取消') + '</a>'+
-								'<a data-dismiss="modal" aria-hidden="true" class="btn btn-large btn-success yes">' + _t('确定') + '</a>'+
+								'<a class="btn btn-large btn-gray" data-dismiss="modal" aria-hidden="true">' + _t('取消') + '</a>'+
+								'<a class="btn btn-large btn-success yes">' + _t('确定') + '</a>'+
+							'</div>'+
+					'</div>'+
+				'</div>'+
+			'</div>',
+
+	'promptBox' :
+			'<div class="modal fade alert-box aw-share-box aw-prompt-box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'+
+				'<div class="modal-dialog">'+
+					'<div class="modal-content">'+
+						'<div class="modal-header">'+
+							'<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>'+
+							'<h3 class="modal-title" id="myModalLabel">{{title}}</h3>'+
+						'</div>'+
+							'<div class="modal-body">'+
+								'<input class="form-control" type="text" value="{{message}}" />'+
+							'</div>'+
+							'<div class="modal-footer">'+
+								'<a class="btn btn-large btn-gray" data-dismiss="modal" aria-hidden="true">' + _t('取消') + '</a>'+
+								'<a class="btn btn-large btn-success yes">' + _t('确定') + '</a>'+
 							'</div>'+
 					'</div>'+
 				'</div>'+
