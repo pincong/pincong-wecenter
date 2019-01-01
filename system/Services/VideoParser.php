@@ -86,8 +86,8 @@ class Services_VideoParser
 	{
 		$url = 'https://www.youtube.com/get_video_info?video_id=' . $source . '&asv=3&el=detailpage&hl=en_US';
 
-		//$header = 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/600.7.12 (KHTML, like Gecko) Version/8.0.7 Safari/600.7.12';
-		$header = 'User-Agent: ' . $_SERVER['HTTP_USER_AGENT'];
+		$header = 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/600.7.12 (KHTML, like Gecko) Version/8.0.7 Safari/600.7.12';
+		//$header = 'User-Agent: ' . $_SERVER['HTTP_USER_AGENT'];
 		$header .= "\r\n"; // 双引号内的字符串才会转义
 
 		$opts = array(
@@ -126,6 +126,11 @@ class Services_VideoParser
 		foreach ($formats AS $key => $val)
 		{
 			parse_str($val, $formats[$key]);
+			if ($formats[$key]['sp'] == 'signature')
+			{
+				// TODO: decrypt signature
+				return false;
+			}
 		}
 
 		// TODO: 整理 $formats
@@ -152,7 +157,6 @@ class Services_VideoParser
 			return false;
 		}
 
-/*
 		if (!$cache)
 		{
 			return self::real_fetch_video_metadata($source_type, $source);
@@ -171,8 +175,6 @@ class Services_VideoParser
 			AWS_APP::cache()->set($cache_key, $result, 60);
 		}
 		return $result;
-*/
-		return self::real_fetch_video_metadata($source_type, $source);
 
 	}
 
