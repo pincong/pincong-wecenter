@@ -50,7 +50,7 @@ select{width: auto;}
 html{height: 100%;}
 body{margin: 0;height: 100%;font-size:14px; line-height:160%;color: #666;background:url('img/bg.gif') repeat;}
 /*body, input, button, select, textarea, h1, h2, h3, h4, h5, h6{font-family:'Helvetica Neue', 'STHeiti', '微软雅黑', 'Microsoft YaHei', Helvetica,Arial,sans-serif;}*/
-body{font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;}
+body{font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;word-wrap:break-word;}
 ul, ol{margin:0;padding:0;list-style:none;}
 h1, h2, h3, h4, h5, h6{margin-top:0;font-size:100%;line-height: 1.4;}
 dd{margin-left: 10px;}
@@ -289,7 +289,7 @@ a.aw-load-more-content{display: block;}
 .category dl dt, .category dl dt img{width: 50px;height: 50px;}
 .category dl dd{width:130px;overflow: hidden;}
 .category dl dd a{display: block;max-height: 20px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;}
-.category dl dd span{display:block;height:36px;font-size: 12px;word-wrap:break-word;}
+.category dl dd span{display:block;height:36px;font-size: 12px;}
 .category dl .aw-dropdown span, .category ul li .aw-dropdown span{position:absolute;top:-10px;left:0;display: inline-block;width: 100%;height:10px;}
 .category .list > li{float: left;position:relative;height: 30px;line-height: 30px;margin:0 10px 10px 0;font-size:14px;text-align: center;cursor: pointer;border-radius: 5px;}
 .category .list > li > a{display:block;padding:0 10px;color:#17344A;}
@@ -363,12 +363,12 @@ a.aw-load-more-content{display: block;}
 .aw-side-bar .user-detail .aw-user-img{position: absolute;left: 20px;}
 .aw-side-bar .user-detail .aw-user-img img{width:32px;height:32px;}
 .aw-side-bar .aw-mod p{margin-bottom:0;}
-.aw-side-bar .aw-mod p.signature{color: #999; font-size: 12px;word-break: break-word;}
+.aw-side-bar .aw-mod p.signature{color: #999; font-size: 12px;}
 .aw-side-bar .aw-mod ul li{padding:3px 0;}
 .aw-side-bar .aw-mod dl{height:auto;overflow:hidden;margin:10px 0;}
 .aw-side-bar .aw-mod dt, .aw-side-bar .aw-mod dt img{width:32px;height:32px;}
 .aw-side-bar .aw-mod dd{width:160px;font-size:12px;}
-.aw-mod.new-announce{margin-bottom:20px;padding:10px;background: #FCFDDB;border: 1px solid #F9F2A7 !important;border-radius: 10px;word-break: break-word;}
+.aw-mod.new-announce{margin-bottom:20px;padding:10px;background: #FCFDDB;border: 1px solid #F9F2A7 !important;border-radius: 10px;}
 .aw-mod.new-announce .mod-head h3{margin:0;}
 
 /* 导航条 */
@@ -450,7 +450,7 @@ a.aw-load-more-content{display: block;}
 .aw-editor-box .mod-head{border:1px solid #e6e6e6;border-radius: 4px;}
 .aw-editor-box textarea{border: none;}
 .aw-editor-box .mod-body{position:relative;margin-top: 15px;line-height: 28px;}
-.markitup-box{position:relative;z-index:1;line-height: 1.6;word-wrap: break-word !important;}
+.markitup-box{position:relative;z-index:1;line-height: 1.6;}
 .markitup-box .aw-user-name{font-size: 14px;}
 .markitup-box p{padding: 5px;}
 .markitup-box em{font-style: italic;}
@@ -469,7 +469,7 @@ blockquote {margin: 0;padding: 0 10px;font-size: 15px;color: #777;border-left: 4
 .aw-question-edit .mod-body{padding:0 20px;}
 .aw-question-edit .mod-body li{padding:15px 0;border-bottom: 1px dotted #e2e2e2;}
 .aw-question-edit .mod-body .operate .btn{margin-left: 10px;}
-.aw-question-edit ins{background: #edfce5;text-decoration: none;word-wrap:break-word;}
+.aw-question-edit ins{background: #edfce5;text-decoration: none;}
 .aw-question-edit del{background: #f7d3d3;}
 /* 评论box */
 .aw-question-detail .aw-comment-box, .aw-question-detail .aw-invite-box, .aw-question-detail .aw-question-related-box{margin:10px 0;}
@@ -486,7 +486,7 @@ blockquote {margin: 0;padding: 0 10px;font-size: 15px;color: #777;border-left: 4
 .aw-comment-list li:first-child{padding-top: 0;}
 .aw-comment-list li > .aw-user-name{position: absolute;left: 0;}
 .aw-comment-list li > .aw-user-name img{width: 32px;height: 32px;}
-.aw-comment-list li p{margin:0;word-break:break-all;}
+.aw-comment-list li p{margin:0;}
 
 /* 邀请box */
 .aw-invite-box{position:relative;width:100%;margin:10px auto;border:1px solid #e6e6e6;border-radius: 4px;}
@@ -530,7 +530,7 @@ blockquote {margin: 0;padding: 0 10px;font-size: 15px;color: #777;border-left: 4
 .aw-common-list .aw-item.article .inline-img{max-width:160px;max-height:80px;margin:5px 10px 0 0;}
 .aw-common-list .aw-item .aw-question-content .aw-user-name{color: #666;}
 /* 问题列表回复统计 */
-.aw-common-list .aw-question-content h4{margin-bottom:0px;padding-right:20px;font-size:14px;word-wrap:break-word;}
+.aw-common-list .aw-question-content h4{margin-bottom:0px;padding-right:20px;font-size:14px;}
 .aw-common-list .aw-question-content > span, .aw-common-list .aw-question-content p span{font-size: 12px;font-weight: normal;color: #999;}
 .aw-common-list .aw-question-content .aw-user-name img{max-width: 24px;}
 .aw-common-list .aw-question-content p{margin:0;color: #999;}
@@ -691,7 +691,6 @@ blockquote {margin: 0;padding: 0 10px;font-size: 15px;color: #777;border-left: 4
 .aw-inbox-read .mod-footer li{position: relative;padding:15px 60px;}
 .aw-inbox-read .mod-footer li .aw-item{position:relative;padding:12px 15px;background: #fafafa;border:1px solid #e6e6e6;}
 .aw-inbox-read .mod-footer li .aw-item p:first-child{margin-bottom: 10px;}
-.aw-inbox-read .mod-footer li .aw-item p {word-wrap: break-word;}
 .aw-inbox-read .mod-footer li .i-private-replay-triangle{position: absolute;right: -8px;top: 10px;border-left:1px solid #fafafa;}
 .aw-inbox-read .mod-footer li .aw-user-img{position:absolute;top:15px;right: 18px;}
 .aw-inbox-read .mod-footer li .aw-user-img img{width: 32px;height: 32px;}
@@ -770,7 +769,7 @@ blockquote {margin: 0;padding: 0 10px;font-size: 15px;color: #777;border-left: 4
 .aw-card-tips .mod-footer i{font-size: 16px;vertical-align: -2px;}
 
 /* @用户下拉 */
-.content_cursor{position: absolute;z-index:-1;max-width:600px;font-size: 14px;word-wrap: break-word;opacity: 0;}
+.content_cursor{position: absolute;z-index:-1;max-width:600px;font-size: 14px;opacity: 0;}
 .aw-invite-dropdown{position:absolute;left:0;top:0;z-index:1010;min-width:160px;background: #fff;border:1px solid #e6e6e6;border-radius:2px;}
 .aw-invite-dropdown li{padding:5px 10px;cursor: pointer;}
 .aw-invite-dropdown li:hover, .aw-invite-dropdown li.active{background: #f0f0f0;}
