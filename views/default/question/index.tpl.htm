@@ -382,21 +382,17 @@
 							<h3><?php _e('发起人'); ?></h3>
 						</div>
 						<div class="mod-body">
-							<dl>
-								<dt class="pull-left aw-border-radius-5">
-									<a href="<?php echo UF::url($this->question_info['user_info']); ?>"><img alt="" src="<?php echo UF::avatar($this->question_info['user_info'], 'mid', $this->user_info['permission']['is_administrator']); ?>" /></a>
-								</dt>
-								<dd class="pull-left">
-									<a class="aw-user-name" href="<?php echo UF::url($this->question_info['user_info']); ?>" data-id="<?php echo $this->question_info['user_info']['uid']; ?>"><?php echo UF::name($this->question_info['user_info']);?></a>
-									<?php if ($this->question_info['user_info']['verified']) { ?>
-										<em class="aw-verified"><?php echo $this->question_info['user_info']['verified']; ?></em>
-									<?php } ?>
-									<?php if ($this->question_info['user_info']['uid'] != $this->user_id AND $this->user_id) { ?>
+							<div class="user-detail">
+								<a class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($this->question_info['user_info']); ?>"><img alt="" src="<?php echo UF::avatar($this->question_info['user_info'], 'mid', $this->user_info['permission']['is_administrator']); ?>" /></a>
+								<a class="aw-user-name" href="<?php echo UF::url($this->question_info['user_info']); ?>" data-id="<?php echo $this->question_info['user_info']['uid']; ?>"><?php echo UF::name($this->question_info['user_info']);?></a>
+								<?php if ($this->question_info['user_info']['verified']) { ?>
+									<em class="aw-verified"><?php echo $this->question_info['user_info']['verified']; ?></em>
+								<?php } ?>
+								<?php if ($this->question_info['user_info']['uid'] != $this->user_id AND $this->user_id) { ?>
 									<a class="icon-inverse follow tooltips icon icon-plus <?php if ($this->user_follow_check) { ?> active<?php } ?>" onclick="AWS.User.follow($(this), 'user', <?php echo $this->question_info['user_info']['uid']; ?>);" data-original-title="<?php if ($this->user_follow_check) { ?><?php _e('取消关注'); ?><?php } else { ?><?php _e('关注'); ?><?php } ?>"></a>
-									<?php } ?>
-									<p><?php echo UF::signature($this->question_info['user_info'], $this->user_info['permission']['is_administrator']); ?></p>
-								</dd>
-							</dl>
+								<?php } ?>
+							</div>
+							<p class="signature"><?php echo UF::signature($this->question_info['user_info'], $this->user_info['permission']['is_administrator']); ?></p>
 						</div>
 					</div>
 					<!-- end 发起人 -->
