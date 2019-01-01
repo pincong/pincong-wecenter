@@ -109,10 +109,18 @@
 
 								<?php if ($this->human_valid) { ?>
 								<div class="aw-auth-img clearfix">
-									<input class="form-control pull-right" type="text" name="seccode_verify" placeholder="验证码" />
+									<input class="form-control pull-right" type="text" name="seccode_verify" placeholder="<?php _e('验证码'); ?>" />
 									<em class="auth-img pull-right"><img src="" onclick="this.src = G_BASE_URL + '/account/captcha/' + Math.floor(Math.random() * 10000);" id="captcha"  /></em>
 								</div>
 								<?php } ?>
+
+								<?php if (!$this->question_info['question_id']) { ?>
+								<div class="aw-auth-img clearfix">
+									<input name="later" class="form-control pull-right" type="text" placeholder="<?php _e('分钟'); ?>" />
+									<label class="pull-right"><?php _e('延迟显示'); ?></label>
+								</div>
+								<?php } ?>
+
 							</div>
 							<div class="mod-footer clearfix">
 								<a href="currency/rule/" target="_blank">[<?php _e(get_setting('currency_rule_name')); ?>]</a>
@@ -120,15 +128,6 @@
 									<?php if ($this->question_info['question_id']) { ?>
 									<label><input type="checkbox" class="pull-left" value="1" name="do_delete" />
 										<?php _e('删除问题'); ?>&nbsp;</label>
-									<?php } ?>
-
-									<?php 
-									//TODO: 延迟显示
-									//if (!$this->question_info['question_id']) { 
-									if (0) { 
-									?>
-									<label><input type="checkbox" class="pull-left" value="1" name="later" />
-										<?php _e('延迟显示'); ?>&nbsp;</label>
 									<?php } ?>
 
 									<?php if (!$this->question_info['question_id']) { ?>

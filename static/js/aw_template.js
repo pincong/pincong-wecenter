@@ -103,9 +103,18 @@ var AW_TEMPLATE = {
 					'<textarea placeholder="' + _t('写下你的评论...') + '" class="form-control" id="comment_editor" name="message" rows="2"></textarea>'+
 				'</div>'+
 				'<div class="mod-footer">'+
-					'<a href="javascript:;" onclick="AWS.ajax_post($(this).parents(\'form\'));" class="btn btn-normal btn-success pull-right btn-submit">' + _t('回复') + '</a>'+
 					'<label class="pull-right">'+
-						'<input type="checkbox" value="1" name="anonymous" />' + _t('匿名回复') +
+						'&nbsp;'+
+						'<input type="checkbox" value="1" name="anonymous" />' +
+						'&nbsp;'+
+						_t('匿名') +
+						'&nbsp;'+
+						'<a href="javascript:;" onclick="AWS.ajax_post($(this).parents(\'form\'));" class="btn btn-normal btn-success btn-submit">' + _t('回复') + '</a>'+
+					'</label>'+
+					'<label class="pull-right">'+
+						'<input class="pull-right form-control" type="text" name="later" placeholder="' + _t('分钟') + '" /> ' +
+						'&nbsp;'+
+						_t('延迟显示') +
 						'&nbsp;'+
 					'</label>'+
 				'</div>'+

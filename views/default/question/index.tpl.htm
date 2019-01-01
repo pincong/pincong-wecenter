@@ -402,6 +402,12 @@
 											<em class="auth-img pull-right"><img src="" onclick="this.src = G_BASE_URL + '/account/captcha/' + Math.floor(Math.random() * 10000);" id="captcha" /></em>
 									</div>
 									<?php } ?>
+
+									<div class="aw-auth-img clearfix">
+										<input name="later" class="form-control pull-right" type="text" placeholder="<?php _e('分钟'); ?>" />
+										<label class="pull-right"><?php _e('延迟显示'); ?></label>
+									</div>
+
 									<a href="javascript:;" onclick="AWS.ajax_post($('#answer_form'), AWS.ajax_processer, 'reply_question');" class="btn btn-normal btn-success pull-right btn-reply"><?php _e('回复'); ?></a>
 									<span class="pull-right text-color-999" id="answer_content_message">&nbsp;</span>
 
