@@ -20,7 +20,7 @@
 					<form action="publish/ajax/<?php if ($this->question_info['question_id']) { ?>modify<?php } else { ?>publish<?php } ?>_question/" method="post" id="question_form" onsubmit="return false;">
 						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
 						<input type="hidden" name="question_id" id="question_id" value="<?php echo $this->question_info['question_id']; ?>" />
-						<input type="hidden" name="ask_user_id" value="<?php echo $_POST['ask_user_id']; ?>" />
+						<input type="hidden" name="ask_user_id" value="<?php echo intval($_POST['ask_user_id']); ?>" />
 						<?php if (get_setting('category_enable') != 'N') { ?>
 						<select name="category_id" class="collapse" id="category_id">
 							<option value="0">- <?php _e('请选择分类'); ?> -</option>
@@ -30,7 +30,7 @@
 						<div class="aw-mod aw-mod-publish">
 							<div class="mod-body">
 								<?php if (isset($_POST['ask_user_name'])) { ?>
-								<h3><?php _e('向 %s 提问', $_POST['ask_user_name']); ?></h3>
+								<h3><?php _e('向 %s 提问', htmlspecialchars($_POST['ask_user_name'])); ?></h3>
 								<?php } ?>
 								<h3><?php _e('问题标题'); ?>:</h3>
 								<!-- 问题标题 -->
