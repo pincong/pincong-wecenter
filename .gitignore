@@ -5,6 +5,9 @@
 
 favicon.ico
 
+/static/logo/logo.png
+/static/logo/login_logo.png
+
 /system/config.inc.php
 /system/config/database.php
 
