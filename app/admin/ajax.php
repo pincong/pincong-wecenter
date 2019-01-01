@@ -1043,12 +1043,4 @@ class ajax extends AWS_ADMIN_CONTROLLER
         ));
     }
 
-    public function save_today_topics_action()
-    {
-        $today_topics = trim($_POST['today_topics']);
-
-        $this->model('setting')->set_vars(array('today_topics' => $today_topics));
-
-        H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('设置已保存')));
-    }
 }

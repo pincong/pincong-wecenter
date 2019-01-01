@@ -76,31 +76,6 @@
                 </div>
                 <!-- 侧边栏 -->
                 <div class="col-sm-12 col-md-3 aw-side-bar">
-                    <!-- 今日话题 -->
-                    <div class="aw-mod topic-daily hidden-xs">
-                        <div class="mod-head">
-                            <h3><?php _e('今日话题'); ?></h3>
-                        </div>
-                        <div class="mod-body">
-                            <dl>
-                                <dt class="pull-left">
-                                    <!-- 话题图片 -->
-                                    <a data-id="<?php echo $this->today_topic['topic_id']; ?>" class="img aw-border-radius-5" href="topic/<?php echo $this->today_topic['url_token']; ?>">
-                                        <img src="<?php echo get_topic_pic_url($this->today_topic, 'mid'); ?>" alt="<?php echo $this->today_topic['topic_title']; ?>" />
-                                    </a>
-                                    <!-- end 话题图片 -->
-                                </dt>
-                                <dd class="pull-left">
-                                    <?php echo $this->today_topic['topic_title']; ?>
-                                </dd>
-                            </dl>
-                            <!-- 话题描述 -->
-                            <p>
-                                <span><?php echo nl2br($this->today_topic['topic_description']); ?></span>...<a href="topic/<?php echo $this->today_topic['url_token']; ?>"><?php _e('进入话题'); ?> »</a></p>
-                            <!-- end 话题描述 -->
-                        </div>
-                    </div>
-                    <!-- end 今日话题 -->
                     <!-- 新增话题 -->
                     <div class="aw-mod new-topic">
                         <div class="mod-head">

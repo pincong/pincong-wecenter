@@ -164,21 +164,6 @@ class main extends AWS_CONTROLLER
 
 	public function index_square_action()
 	{
-		if ($today_topics = rtrim(get_setting('today_topics'), ','))
-		{
-			if (!$today_topic = AWS_APP::cache()->get('square_today_topic_' . md5($today_topics)))
-			{
-				if ($today_topic = $this->model('topic')->get_topic_by_title(array_random(explode(',', $today_topics))))
-				{
-					$today_topic['questions_list'] = $this->model('posts')->get_posts_list_by_topic_ids('question', explode(',', $today_topic['topic_id']));
-
-					AWS_APP::cache()->set('square_today_topic_' . md5($today_topics), $today_topic, (strtotime('Tomorrow') - time()));
-				}
-			}
-
-			TPL::assign('today_topic', $today_topic);
-		}
-
 		switch ($_GET['channel'])
 		{
 			case 'focus':
