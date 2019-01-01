@@ -1089,6 +1089,14 @@ class account_class extends AWS_MODEL
         return $this->model('account')->get_user_group_by_id($group_id);
     }
 
+	public function get_user_group_by_user_info($user_info)
+	{
+		return $this->model('account')->get_user_group(
+			$user_info['group_id'],
+			$this->model('reputation')->get_reputation_group_id_by_reputation($user_info['reputation'])
+		);
+	}
+
     public function forbid_user_by_uid($uid, $status, $admin_uid = null)
     {
         if (!$uid)

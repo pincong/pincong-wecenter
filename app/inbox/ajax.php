@@ -29,10 +29,10 @@ class ajax extends AWS_CONTROLLER
 
 	public function send_action()
 	{
-        if (get_setting('pm_enabled') != 'Y')
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('本站未启用私信功能')));
-        }
+		if (!$this->user_info['permission']['send_pm'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能发送私信')));
+		}
 
 		if (my_trim($_POST['message']) == '')
 		{
@@ -47,6 +47,20 @@ class ajax extends AWS_CONTROLLER
 		if ($recipient_user['uid'] == $this->user_id)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能给自己发私信')));
+		}
+
+		if ($recipient_user['forbidden'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对方的账号已经被禁止登录')));
+		}
+
+		if (!$this->user_info['permission']['is_administrator'])
+		{
+			$recipient_user_group = $this->model('account')->get_user_group_by_user_info($recipient_user);
+			if (!$recipient_user_group['permission']['receive_pm'])
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对方的等级还不能接收私信')));
+			}
 		}
 
 		if ($recipient_user['inbox_recv'])
