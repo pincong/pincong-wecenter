@@ -1,18 +1,18 @@
 <?php TPL::output('global/header.tpl.htm'); ?>
 
 <div class="aw-container-wrap">
-    <div class="container">
-        <div class="row">
-            <div class="aw-content-wrap clearfix">
-                <div class="col-sm-12 col-md-9 aw-main-content">
-                    <!-- 用户数据内容 -->
-                    <div class="aw-mod aw-user-detail-box">
-                        <div class="mod-head">
-                            <img src="<?php echo UF::avatar($this->user, 'max', $this->user_info['permission']['is_administrator']); ?>" alt="<?php echo UF::name($this->user); ?>" />
-                            <span class="pull-right operate">
-                            <?php if ($this->user['uid'] != $this->user_id AND $this->user_id) { ?>
+	<div class="container">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="col-sm-12 col-md-9 aw-main-content">
+					<!-- 用户数据内容 -->
+					<div class="aw-mod aw-user-detail-box">
+						<div class="mod-head">
+							<img src="<?php echo UF::avatar($this->user, 'max', $this->user_info['permission']['is_administrator']); ?>" alt="<?php echo UF::name($this->user); ?>" />
+							<span class="pull-right operate">
+							<?php if ($this->user['uid'] != $this->user_id AND $this->user_id) { ?>
 
-                                <?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
+								<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
 									<?php if ($this->user['forbidden']) { ?>
 									<a href="javascript:;" class="text-color-999" onclick="AWS.User.unforbid_user(<?php echo $this->user['uid']; ?>);"><i class="icon icon-forbid"></i> 解封</a>
 									<?php } else { ?>
@@ -20,13 +20,13 @@
 									<?php } ?>
 								<?php } ?>
 
-                                <a href="javascript:;" class="text-color-999" onclick="AWS.dialog('inbox', '<?php echo UF::name($this->user); ?>');"><i class="icon icon-inbox"></i> 私信</a>
-                                <a href="javascript:;" class="text-color-999 hidden-xs" onclick="AWS.dialog('publish', {category_enable:<?php echo (get_setting('category_enable') == 'Y') ? '1' : '0'; ?>, ask_user_id:<?php echo $this->user['uid']; ?>, ask_user_name:'<?php echo UF::name($this->user); ?>'});"><i class="icon icon-at"></i> <?php _e('问Ta'); ?></a>
-                                <a href="javascript:;" class="follow btn btn-normal btn-success<?php if ($this->user_follow_check) { ?> active<?php } ?>" onclick="AWS.User.follow($(this), 'user', <?php echo $this->user['uid']; ?>);"><span><?php if ($this->user_follow_check) { ?><?php _e('取消关注'); ?><?php } else { ?><?php _e('关注'); ?><?php } ?></span> <em>|</em> <b><?php echo $this->user['fans_count']; ?></b></a>
-                            <?php } else if ($this->user_id == $this->user['uid']) { ?>
-                                <a href="account/setting/profile/" class="btn btn-mini btn-success"><?php _e('编辑'); ?></a>
-                            <?php } ?>
-                            </span>
+								<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('inbox', '<?php echo UF::name($this->user); ?>');"><i class="icon icon-inbox"></i> 私信</a>
+								<a href="javascript:;" class="text-color-999 hidden-xs" onclick="AWS.dialog('publish', {category_enable:<?php echo (get_setting('category_enable') == 'Y') ? '1' : '0'; ?>, ask_user_id:<?php echo $this->user['uid']; ?>, ask_user_name:'<?php echo UF::name($this->user); ?>'});"><i class="icon icon-at"></i> <?php _e('问Ta'); ?></a>
+								<a href="javascript:;" class="follow btn btn-normal btn-success<?php if ($this->user_follow_check) { ?> active<?php } ?>" onclick="AWS.User.follow($(this), 'user', <?php echo $this->user['uid']; ?>);"><span><?php if ($this->user_follow_check) { ?><?php _e('取消关注'); ?><?php } else { ?><?php _e('关注'); ?><?php } ?></span> <em>|</em> <b><?php echo $this->user['fans_count']; ?></b></a>
+							<?php } else if ($this->user_id == $this->user['uid']) { ?>
+								<a href="account/setting/profile/" class="btn btn-mini btn-success"><?php _e('编辑'); ?></a>
+							<?php } ?>
+							</span>
 							<h1>
 								<?php echo UF::name($this->user); ?>
 								<?php if ($this->user['verified']) { ?><i class="icon-v <?php if ($this->user['verified'] == 'enterprise') { ?> i-ve<?php } ?>" title="<?php if ($this->user['verified'] == 'enterprise') { ?>企业认证<?php } else { ?>个人认证<?php } ?>"></i><?php } ?>
@@ -40,367 +40,368 @@
 									<span class="text-color-999"><?php _e('封禁理由'); ?> : <?php _e('累计收到反对票的数量过多'); ?></span>
 								<?php } ?>
 							</h1>
-                            <p class="text-color-999"><?php echo UF::signature($this->user, $this->user_info['permission']['is_administrator']); ?></p>
-                            <p class="aw-user-flag">
-                            </p>
-                        </div>
-                        <div class="mod-body">
-                            <div class="meta">
-                                <span><i class="icon icon-prestige"></i> <?php _e(get_setting('reputation_name')); ?> : <em class="aw-text-color-green"><?php echo $this->user['reputation']; ?></em></span>
-                                <span><i class="icon icon-agree"></i> <?php _e('赞同'); ?> : <em class="aw-text-color-orange"><?php echo $this->user['agree_count']; ?></em></span>
-                                <span><i class="icon"></i> <?php _e(get_setting('currency_name')); ?> : <em class="aw-text-color-orange"><?php echo $this->user['currency']; ?></em> <?php _e(get_setting('currency_unit')); ?></span>
-                            </div>
+							<p class="text-color-999"><?php echo UF::signature($this->user, $this->user_info['permission']['is_administrator']); ?></p>
+							<p class="aw-user-flag">
+							</p>
+						</div>
+						<div class="mod-body">
+							<div class="meta">
+								<span><i class="icon icon-prestige"></i> <?php _e(get_setting('reputation_name')); ?> : <em class="aw-text-color-green"><?php echo $this->user['reputation']; ?></em></span>
+								<span><i class="icon icon-agree"></i> <?php _e('赞同'); ?> : <em class="aw-text-color-orange"><?php echo $this->user['agree_count']; ?></em></span>
+								<span><i class="icon"></i> <?php _e(get_setting('currency_name')); ?> : <em class="aw-text-color-orange"><?php echo $this->user['currency']; ?></em> <?php _e(get_setting('currency_unit')); ?></span>
+							</div>
 
-                        </div>
-                        <div class="mod-footer">
-                            <ul class="nav nav-tabs aw-nav-tabs">
-                                <li class="active"><a href="#overview" id="page_overview" data-toggle="tab"><?php _e('概述'); ?></a></li>
-                                <li><a href="#questions" id="page_questions" data-toggle="tab"><?php _e('发问'); ?></a></li>
-                                <li><a href="#answers" id="page_answers" data-toggle="tab"><?php _e('回复'); ?></a></li>
-                                <li><a href="#articles" id="page_articles" data-toggle="tab"><?php _e('文章'); ?></a></li>
-                                <li><a href="#focus" id="page_focus" data-toggle="tab"><?php _e('关注'); ?></a></li>
-                                <li><a href="#actions" id="page_actions" data-toggle="tab"><?php _e('动态'); ?></a></li>
-                                <li><a href="#detail" id="page_detail" data-toggle="tab"><?php _e('详细资料'); ?></a></li>
-                                <?php if ($this->user_id == $this->user['uid']) { ?>
-                                <li><a href="#currency" id="page_currency" data-toggle="tab"><?php _e('我的%s', get_setting('currency_name')); ?></a></li>
-                                <?php } ?>
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- end 用户数据内容 -->
+						</div>
+						<div class="mod-footer">
+							<ul class="nav nav-tabs aw-nav-tabs">
+								<li class="active"><a href="#overview" id="page_overview" data-toggle="tab"><?php _e('概述'); ?></a></li>
+								<li><a href="#questions" id="page_questions" data-toggle="tab"><?php _e('发问'); ?></a></li>
+								<li><a href="#answers" id="page_answers" data-toggle="tab"><?php _e('回复'); ?></a></li>
+								<li><a href="#articles" id="page_articles" data-toggle="tab"><?php _e('文章'); ?></a></li>
+								<li><a href="#focus" id="page_focus" data-toggle="tab"><?php _e('关注'); ?></a></li>
+								<li><a href="#actions" id="page_actions" data-toggle="tab"><?php _e('动态'); ?></a></li>
+								<li><a href="#detail" id="page_detail" data-toggle="tab"><?php _e('详细资料'); ?></a></li>
+								<?php if ($this->user_id == $this->user['uid']) { ?>
+								<li><a href="#currency" id="page_currency" data-toggle="tab"><?php _e('我的%s', get_setting('currency_name')); ?></a></li>
+								<?php } ?>
+							</ul>
+						</div>
+					</div>
+					<!-- end 用户数据内容 -->
 
-                    <div class="aw-user-center-tab">
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="overview">
-                                <!-- 回复 -->
-                                <div class="aw-mod">
-                                    <div class="mod-head">
-                                        <h3><a class="pull-right aw-more-content" href="javascript:;" onclick="$('#page_answers').click();"><?php _e('更多'); ?> »</a><?php _e('回复'); ?></h3>
-                                    </div>
-                                    <div class="mod-body">
-                                        <div class="aw-profile-answer-list">
-                                            <?php if ($this->user_actions_answers) { ?>
-                                                <?php foreach ($this->user_actions_answers AS $key => $val) { ?>
-                                                <div class="aw-item">
-                                                    <div class="mod-head">
-                                                        <h4><a href="<?php echo $val['link']; ?>"><?php echo $val['title']; ?></a></h4>
-                                                    </div>
-                                                    <div class="mod-body">
-                                                        <span class="aw-border-radius-5 count pull-left"><i class="icon icon-agree"></i> <?php echo $val['answer_info']['agree_count']; ?></span>
-                                                        <p class="aw-hide-txt"><?php echo cjk_substr($val['answer_info']['answer_content'], 0, 130, 'UTF-8', '...'); ?></p>
-                                                    </div>
-                                                </div>
-                                                <?php } ?>
-                                            <?php } else { ?>
-                                            <p class="padding10 text-center"><?php _e('没有内容'); ?></p>
-                                            <?php } ?>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- end 回复 -->
+					<div class="aw-user-center-tab">
+						<div class="tab-content">
+							<div class="tab-pane active" id="overview">
+								<!-- 回复 -->
+								<div class="aw-mod">
+									<div class="mod-head">
+										<h3><a class="pull-right aw-more-content" href="javascript:;" onclick="$('#page_answers').click();"><?php _e('更多'); ?> »</a><?php _e('回复'); ?></h3>
+									</div>
+									<div class="mod-body">
+										<div class="aw-profile-answer-list">
+											<?php if ($this->user_actions_answers) { ?>
+												<?php foreach ($this->user_actions_answers AS $key => $val) { ?>
+												<div class="aw-item">
+													<div class="mod-head">
+														<h4><a href="<?php echo $val['link']; ?>"><?php echo $val['title']; ?></a></h4>
+													</div>
+													<div class="mod-body">
+														<span class="aw-border-radius-5 count pull-left"><i class="icon icon-agree"></i> <?php echo $val['answer_info']['agree_count']; ?></span>
+														<p class="aw-hide-txt"><?php echo cjk_substr($val['answer_info']['answer_content'], 0, 130, 'UTF-8', '...'); ?></p>
+													</div>
+												</div>
+												<?php } ?>
+											<?php } else { ?>
+											<p class="padding10 text-center"><?php _e('没有内容'); ?></p>
+											<?php } ?>
+										</div>
+									</div>
+								</div>
+								<!-- end 回复 -->
 
-                                <!-- 发问 -->
-                                <div class="aw-mod">
-                                    <div class="mod-head">
-                                        <h3><a class="pull-right aw-more-content" href="javascript:;" onclick="$('#page_questions').click();"><?php _e('更多'); ?> »</a><?php _e('发问'); ?></h3>
-                                    </div>
-                                    <div class="mod-body">
-                                        <div class="aw-profile-publish-list">
-                                            <?php if ($this->user_actions_questions) { ?>
-                                                <?php foreach ($this->user_actions_questions AS $key => $val) { ?>
-                                                <div class="aw-item">
-                                                    <div class="mod-head">
-                                                        <h4><a href="question/<?php echo $val['question_info']['question_id']; ?>"><?php if (!$val['question_info']['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['question_info']['question_content']; ?><?php } ?></a></h4>
-                                                    </div>
-                                                    <div class="mod-body">
-                                                        <span class="aw-border-radius-5 count pull-left"><i class="icon icon-reply"></i> <?php echo $val['question_info']['answer_count']; ?></span>
-                                                        <p class="aw-hide-txt"><?php _e('%s 次浏览', $val['question_info']['view_count']); ?> • <?php _e('%s 个关注', $val['question_info']['focus_count']); ?> &nbsp; • <?php echo date_friendly($val['add_time']); ?></p>
-                                                    </div>
-                                                </div>
-                                                <?php } ?>
-                                            <?php } else { ?>
-                                            <p class="padding10 text-center"><?php _e('没有内容'); ?></p>
-                                            <?php } ?>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- end 发问 -->
+								<!-- 发问 -->
+								<div class="aw-mod">
+									<div class="mod-head">
+										<h3><a class="pull-right aw-more-content" href="javascript:;" onclick="$('#page_questions').click();"><?php _e('更多'); ?> »</a><?php _e('发问'); ?></h3>
+									</div>
+									<div class="mod-body">
+										<div class="aw-profile-publish-list">
+											<?php if ($this->user_actions_questions) { ?>
+												<?php foreach ($this->user_actions_questions AS $key => $val) { ?>
+												<div class="aw-item">
+													<div class="mod-head">
+														<h4><a href="question/<?php echo $val['question_info']['question_id']; ?>"><?php if (!$val['question_info']['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['question_info']['question_content']; ?><?php } ?></a></h4>
+													</div>
+													<div class="mod-body">
+														<span class="aw-border-radius-5 count pull-left"><i class="icon icon-reply"></i> <?php echo $val['question_info']['answer_count']; ?></span>
+														<p class="aw-hide-txt"><?php _e('%s 次浏览', $val['question_info']['view_count']); ?> • <?php _e('%s 个关注', $val['question_info']['focus_count']); ?> &nbsp; • <?php echo date_friendly($val['add_time']); ?></p>
+													</div>
+												</div>
+												<?php } ?>
+											<?php } else { ?>
+											<p class="padding10 text-center"><?php _e('没有内容'); ?></p>
+											<?php } ?>
+										</div>
+									</div>
+								</div>
+								<!-- end 发问 -->
 
-                                <!-- 最新动态 -->
-                                <div class="aw-mod">
-                                    <div class="mod-head">
-                                        <h3><a class="pull-right aw-more-content" href="javascript:;" onclick="$('#page_actions').click();"><?php _e('更多'); ?> »</a><?php _e('动态'); ?></h3>
-                                    </div>
-                                    <div class="mod-body">
-                                        <ul>
-                                            <?php if ($this->user_actions_answers) { ?>
-                                                <?php foreach ($this->user_actions_answers AS $key => $val) { ?>
-                                                <li>
-                                                    <p>
-                                                        <span class="pull-right text-color-999"><?php echo date_friendly($val['add_time']); ?></span>
-                                                        <em class="pull-left"><?php echo $val['last_action_str']; ?>,</em>
-                                                        <a class="aw-hide-txt" href="question/<?php echo $val['question_info']['question_id']; ?>"><?php if (!$val['question_info']['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['question_info']['question_content']; ?><?php } ?></a>
-                                                    </p>
-                                                </li>
-                                                <?php } ?>
-                                            <?php } else { ?>
-                                            <p class="padding10 text-center"><?php _e('没有内容'); ?></p>
-                                            <?php } ?>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane" id="questions">
-                                <div class="aw-mod">
-                                    <div class="mod-head">
-                                        <h3><?php _e('发问'); ?></h3>
-                                    </div>
-                                    <div class="mod-body">
-                                        <div class="aw-profile-publish-list" id="contents_user_actions_questions"></div>
-                                    </div>
-                                    <div class="mod-footer">
-                                        <!-- 加载更多内容 -->
-                                        <a class="aw-load-more-content" id="bp_user_actions_questions_more">
-                                            <span><?php _e('更多'); ?></span>
-                                        </a>
-                                        <!-- end 加载更多内容 -->
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane" id="answers">
-                                <div class="aw-mod">
-                                    <div class="mod-head">
-                                        <h3><?php _e('回复'); ?></h3>
-                                    </div>
-                                    <div class="mod-body">
-                                        <div class="aw-profile-answer-list" id="contents_user_actions_answers"></div>
-                                    </div>
-                                    <div class="mod-footer">
-                                        <!-- 加载更多内容 -->
-                                        <a class="aw-load-more-content" id="bp_user_actions_answers_more">
-                                            <span><?php _e('更多'); ?></span>
-                                        </a>
-                                        <!-- end 加载更多内容 -->
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane" id="articles">
-                                <div class="aw-mod">
-                                    <div class="mod-head">
-                                        <h3><?php _e('文章'); ?></h3>
-                                    </div>
-                                    <div class="mod-body">
-                                        <div class="aw-profile-publish-list" id="contents_user_actions_articles"></div>
-                                    </div>
-                                    <div class="mod-footer">
-                                        <!-- 加载更多内容 -->
-                                        <a class="aw-load-more-content" id="bp_user_actions_articles_more">
-                                            <span><?php _e('更多'); ?></span>
-                                        </a>
-                                        <!-- end 加载更多内容 -->
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane" id="focus">
-                                <!-- 自定义切换 -->
-                                <div class="aw-mod">
-                                    <div class="aw-tabs text-center">
-                                        <ul>
-                                            <li class="active"><a><?php _e('关注的人'); ?></a></li>
-                                            <li><a><?php _e('关注者'); ?></a></li>
-                                            <li><a><?php _e('关注的话题'); ?></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="mod-body">
-                                        <div class="aw-tab-content">
-                                            <div class="aw-mod aw-user-center-follow-mod">
-                                                <div class="mod-body">
-                                                    <ul id="contents_user_follows" class="clearfix"></ul>
-                                                </div>
-                                                <div class="mod-footer">
-                                                    <!-- 加载更多内容 -->
-                                                    <a class="aw-load-more-content" id="bp_user_follows_more">
-                                                        <span><?php _e('更多'); ?></span>
-                                                    </a>
-                                                    <!-- end 加载更多内容 -->
-                                                </div>
-                                            </div>
-                                            <div class="aw-mod aw-user-center-follow-mod collapse">
-                                                <div class="mod-body">
-                                                    <ul class="clearfix" id="contents_user_fans"></ul>
-                                                </div>
-                                                <div class="mod-footer">
-                                                    <!-- 加载更多内容 -->
-                                                    <a class="aw-load-more-content" id="bp_user_fans_more">
-                                                        <span><?php _e('更多'); ?></span>
-                                                    </a>
-                                                    <!-- end 加载更多内容 -->
-                                                </div>
-                                            </div>
-                                            <div class="aw-mod aw-user-center-follow-mod collapse">
-                                                <div class="mod-body">
-                                                    <ul id="contents_user_topics" class="clearfix"></ul>
-                                                </div>
-                                                <div class="mod-footer">
-                                                    <!-- 加载更多内容 -->
-                                                    <a class="aw-load-more-content" id="bp_user_topics_more">
-                                                        <span><?php _e('更多'); ?></span>
-                                                    </a>
-                                                    <!-- end 加载更多内容 -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- end 自定义切换 -->
-                            </div>
-                            <div class="tab-pane" id="actions">
-                                <div class="aw-mod">
-                                    <div class="mod-head">
-                                        <h3><?php _e('最新动态'); ?></h3>
-                                    </div>
-                                    <div class="mod-body">
-                                        <div id="contents_user_actions"></div>
-                                    </div>
-                                    <div class="mod-footer">
-                                        <!-- 加载更多内容 -->
-                                        <a class="aw-load-more-content" id="bp_user_actions_more">
-                                            <span><?php _e('更多'); ?></span>
-                                        </a>
-                                        <!-- end 加载更多内容 -->
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane" id="detail">
-                                <div class="aw-mod">
-                                    <div class="mod-head">
-                                        <h3><?php _e('详细资料'); ?></h3>
-                                    </div>
-                                    <div class="mod-body aw-user-center-details">
-                                    <dl>
-                                        <dt><span><?php _e('个人成就'); ?>:</span></dt>
-                                        <dd>
-                                            <p class="meta">
-                                                <span><i class="icon icon-prestige"></i> <?php _e(get_setting('reputation_name')); ?>: <em class="aw-text-color-green"><?php echo $this->user['reputation']; ?></em></span>
-                                                <span><i class="icon icon-agree"></i> <?php _e('赞同'); ?>: <em class="aw-text-color-orange"><?php echo $this->user['agree_count']; ?></em></span>
-                                            </p>
-                                        </dd>
-                                    </dl>
+								<!-- 最新动态 -->
+								<div class="aw-mod">
+									<div class="mod-head">
+										<h3><a class="pull-right aw-more-content" href="javascript:;" onclick="$('#page_actions').click();"><?php _e('更多'); ?> »</a><?php _e('动态'); ?></h3>
+									</div>
+									<div class="mod-body">
+										<ul>
+											<?php if ($this->user_actions_answers) { ?>
+												<?php foreach ($this->user_actions_answers AS $key => $val) { ?>
+												<li>
+													<p>
+														<span class="pull-right text-color-999"><?php echo date_friendly($val['add_time']); ?></span>
+														<em class="pull-left"><?php echo $val['last_action_str']; ?>,</em>
+														<a class="aw-hide-txt" href="question/<?php echo $val['question_info']['question_id']; ?>"><?php if (!$val['question_info']['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['question_info']['question_content']; ?><?php } ?></a>
+													</p>
+												</li>
+												<?php } ?>
+											<?php } else { ?>
+											<p class="padding10 text-center"><?php _e('没有内容'); ?></p>
+											<?php } ?>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" id="questions">
+								<div class="aw-mod">
+									<div class="mod-head">
+										<h3><?php _e('发问'); ?></h3>
+									</div>
+									<div class="mod-body">
+										<div class="aw-profile-publish-list" id="contents_user_actions_questions"></div>
+									</div>
+									<div class="mod-footer">
+										<!-- 加载更多内容 -->
+										<a class="aw-load-more-content" id="bp_user_actions_questions_more">
+											<span><?php _e('更多'); ?></span>
+										</a>
+										<!-- end 加载更多内容 -->
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" id="answers">
+								<div class="aw-mod">
+									<div class="mod-head">
+										<h3><?php _e('回复'); ?></h3>
+									</div>
+									<div class="mod-body">
+										<div class="aw-profile-answer-list" id="contents_user_actions_answers"></div>
+									</div>
+									<div class="mod-footer">
+										<!-- 加载更多内容 -->
+										<a class="aw-load-more-content" id="bp_user_actions_answers_more">
+											<span><?php _e('更多'); ?></span>
+										</a>
+										<!-- end 加载更多内容 -->
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" id="articles">
+								<div class="aw-mod">
+									<div class="mod-head">
+										<h3><?php _e('文章'); ?></h3>
+									</div>
+									<div class="mod-body">
+										<div class="aw-profile-publish-list" id="contents_user_actions_articles"></div>
+									</div>
+									<div class="mod-footer">
+										<!-- 加载更多内容 -->
+										<a class="aw-load-more-content" id="bp_user_actions_articles_more">
+											<span><?php _e('更多'); ?></span>
+										</a>
+										<!-- end 加载更多内容 -->
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" id="focus">
+								<!-- 自定义切换 -->
+								<div class="aw-mod">
+									<div class="aw-tabs text-center">
+										<ul>
+											<li class="active"><a><?php _e('关注的人'); ?></a></li>
+											<li><a><?php _e('关注者'); ?></a></li>
+											<li><a><?php _e('关注的话题'); ?></a></li>
+										</ul>
+									</div>
+									<div class="mod-body">
+										<div class="aw-tab-content">
+											<div class="aw-mod aw-user-center-follow-mod">
+												<div class="mod-body">
+													<ul id="contents_user_follows" class="clearfix"></ul>
+												</div>
+												<div class="mod-footer">
+													<!-- 加载更多内容 -->
+													<a class="aw-load-more-content" id="bp_user_follows_more">
+														<span><?php _e('更多'); ?></span>
+													</a>
+													<!-- end 加载更多内容 -->
+												</div>
+											</div>
+											<div class="aw-mod aw-user-center-follow-mod collapse">
+												<div class="mod-body">
+													<ul class="clearfix" id="contents_user_fans"></ul>
+												</div>
+												<div class="mod-footer">
+													<!-- 加载更多内容 -->
+													<a class="aw-load-more-content" id="bp_user_fans_more">
+														<span><?php _e('更多'); ?></span>
+													</a>
+													<!-- end 加载更多内容 -->
+												</div>
+											</div>
+											<div class="aw-mod aw-user-center-follow-mod collapse">
+												<div class="mod-body">
+													<ul id="contents_user_topics" class="clearfix"></ul>
+												</div>
+												<div class="mod-footer">
+													<!-- 加载更多内容 -->
+													<a class="aw-load-more-content" id="bp_user_topics_more">
+														<span><?php _e('更多'); ?></span>
+													</a>
+													<!-- end 加载更多内容 -->
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- end 自定义切换 -->
+							</div>
+							<div class="tab-pane" id="actions">
+								<div class="aw-mod">
+									<div class="mod-head">
+										<h3><?php _e('最新动态'); ?></h3>
+									</div>
+									<div class="mod-body">
+										<div id="contents_user_actions"></div>
+									</div>
+									<div class="mod-footer">
+										<!-- 加载更多内容 -->
+										<a class="aw-load-more-content" id="bp_user_actions_more">
+											<span><?php _e('更多'); ?></span>
+										</a>
+										<!-- end 加载更多内容 -->
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" id="detail">
+								<div class="aw-mod">
+									<div class="mod-head">
+										<h3><?php _e('详细资料'); ?></h3>
+									</div>
+									<div class="mod-body aw-user-center-details">
+									<dl>
+										<dt><span><?php _e('个人成就'); ?>:</span></dt>
+										<dd>
+											<p class="meta">
+												<span><i class="icon icon-prestige"></i> <?php _e(get_setting('reputation_name')); ?>: <em class="aw-text-color-green"><?php echo $this->user['reputation']; ?></em></span>
+												<span><i class="icon icon-agree"></i> <?php _e('赞同'); ?>: <em class="aw-text-color-orange"><?php echo $this->user['agree_count']; ?></em></span>
+											</p>
+										</dd>
+									</dl>
 
-                                    </div>
-                                </div>
-                            </div>
-                            <?php if ($this->user_id == $this->user['uid']) { ?>
-                            <div class="tab-pane" id="currency">
-                                <div class="aw-mod">
-                                    <div class="mod-head">
-                                        <h3><i class="icon icon-point"></i> <?php _e('我的%s', get_setting('currency_name')); ?></h3>
-                                    </div>
-                                    <div class="mod-body">
-                                        <table class="table table-hover aw-table">
-                                            <thead>
-                                                <tr class="info">
-                                                    <th width="14%"><?php _e('时间'); ?></th>
-                                                    <th width="8%"><?php _e('数额'); ?></th>
-                                                    <th width="8%"><?php _e('余额'); ?></th>
-                                                    <th width="17%"><?php _e('描述'); ?></th>
-                                                    <th width="40%"><?php _e('相关信息'); ?></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="contents_user_currency">
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="mod-footer">
-                                        <!-- 加载更多内容 -->
-                                        <a class="aw-load-more-content" id="bp_user_currency">
-                                            <span><?php _e('更多'); ?></span>
-                                        </a>
-                                        <!-- end 加载更多内容 -->
-                                    </div>
-                                </div>
-                            </div>
-                            <?php } ?>
-                        </div>
-                    </div>
-                </div>
+									</div>
+								</div>
+							</div>
+							<?php if ($this->user_id == $this->user['uid']) { ?>
+							<div class="tab-pane" id="currency">
+								<div class="aw-mod">
+									<div class="mod-head">
+										<h3><i class="icon icon-point"></i> <?php _e('我的%s', get_setting('currency_name')); ?></h3>
+									</div>
+									<div class="mod-body">
+										<table class="table table-hover aw-table">
+											<thead>
+												<tr class="info">
+													<th width="14%"><?php _e('时间'); ?></th>
+													<th width="8%"><?php _e('数额'); ?></th>
+													<th width="8%"><?php _e('余额'); ?></th>
+													<th width="17%"><?php _e('描述'); ?></th>
+													<th width="40%"><?php _e('相关信息'); ?></th>
+												</tr>
+											</thead>
+											<tbody id="contents_user_currency">
+											</tbody>
+										</table>
+									</div>
+									<div class="mod-footer">
+										<!-- 加载更多内容 -->
+										<a class="aw-load-more-content" id="bp_user_currency">
+											<span><?php _e('更多'); ?></span>
+										</a>
+										<!-- end 加载更多内容 -->
+									</div>
+								</div>
+							</div>
+							<?php } ?>
+						</div>
+					</div>
+				</div>
 
-                <!-- 侧边栏 -->
-                <div class="col-sm-12 col-md-3 aw-side-bar">
-                    <div class="aw-mod people-following">
-                        <div class="mod-body">
-                            <a onclick="$('#page_focus').click();$('#focus .aw-tabs ul li').eq(0).click();$.scrollTo($('#focus').offset()['top'], 600, {queue:true})" class="pull-right font-size-12"><?php _e('更多'); ?> »</a>
-                            <span>
-                                <?php _e('关注 %s 人', '<em class="aw-text-color-blue">' . $this->user['friend_count'] . '</em>'); ?>
-                            </span>
-                            <?php if ($this->friends_list) { ?>
-                            <p>
-                                <?php foreach ($this->friends_list AS $key => $val) { ?>
-                                    <a class="aw-user-name" data-id="<?php echo $val['uid']; ?>" href="<?php echo UF::url($val); ?>"><img src="<?php echo UF::avatar($val, 'mid', $this->user_info['permission']['is_administrator']); ?>" alt="" /></a>
-                                <?php } ?>
-                            </p>
-                            <?php } ?>
-                        </div>
-                    </div>
-                    <div class="aw-mod people-following">
-                        <div class="mod-body">
-                            <a onclick="$('#page_focus').click();$('#focus .aw-tabs ul li').eq(1).click();$.scrollTo($('#focus').offset()['top'], 600, {queue:true})" class="pull-right font-size-12"><?php _e('更多'); ?> »</a>
-                            <span>
-                                <?php _e('被 %s 人关注', '<em class="aw-text-color-blue">' . $this->user['fans_count'] . '</em>'); ?>
-                            </span>
+				<!-- 侧边栏 -->
+				<div class="col-sm-12 col-md-3 aw-side-bar">
+					<div class="aw-mod people-following">
+						<div class="mod-body">
+							<a onclick="$('#page_focus').click();$('#focus .aw-tabs ul li').eq(0).click();$.scrollTo($('#focus').offset()['top'], 600, {queue:true})" class="pull-right font-size-12"><?php _e('更多'); ?> »</a>
+							<span>
+								<?php _e('关注 %s 人', '<em class="aw-text-color-blue">' . $this->user['friend_count'] . '</em>'); ?>
+							</span>
+							<?php if ($this->friends_list) { ?>
+							<p>
+								<?php foreach ($this->friends_list AS $key => $val) { ?>
+									<a class="aw-user-name" data-id="<?php echo $val['uid']; ?>" href="<?php echo UF::url($val); ?>"><img src="<?php echo UF::avatar($val, 'mid', $this->user_info['permission']['is_administrator']); ?>" alt="" /></a>
+								<?php } ?>
+							</p>
+							<?php } ?>
+						</div>
+					</div>
+					<div class="aw-mod people-following">
+						<div class="mod-body">
+							<a onclick="$('#page_focus').click();$('#focus .aw-tabs ul li').eq(1).click();$.scrollTo($('#focus').offset()['top'], 600, {queue:true})" class="pull-right font-size-12"><?php _e('更多'); ?> »</a>
+							<span>
+								<?php _e('被 %s 人关注', '<em class="aw-text-color-blue">' . $this->user['fans_count'] . '</em>'); ?>
+							</span>
 
-                            <?php if ($this->fans_list) { ?>
-                            <p>
-                                <?php foreach ($this->fans_list AS $key => $val) { ?>
-                                    <a class="aw-user-name" data-id="<?php echo $val['uid']; ?>" href="<?php echo UF::url($val); ?>"><img src="<?php echo UF::avatar($val, 'mid', $this->user_info['permission']['is_administrator']); ?>" alt=""></a>
-                                <?php } ?>
-                            </p>
-                            <?php } ?>
-                        </div>
+							<?php if ($this->fans_list) { ?>
+							<p>
+								<?php foreach ($this->fans_list AS $key => $val) { ?>
+								<?php if ($val['forbidden'] AND !$this->user_info['permission']['is_administrator']) continue; ?>
+									<a class="aw-user-name" data-id="<?php echo $val['uid']; ?>" href="<?php echo UF::url($val); ?>"><img src="<?php echo UF::avatar($val, 'mid'); ?>" alt=""></a>
+								<?php } ?>
+							</p>
+							<?php } ?>
+						</div>
 
-                    </div>
-                    <div class="aw-mod people-following">
-                        <div class="mod-body">
-                            <?php _e('关注 %s 话题', '<em class="aw-text-color-blue">' . $this->user['topic_focus_count'] . '</em>'); ?>
-                            <?php if ($this->focus_topics) { ?>
-                            <div class="aw-topic-bar">
-                                <div class="tag-bar clearfix">
-                                    <?php foreach ($this->focus_topics AS $key => $val) { ?>
-                                        <span class="topic-tag">
-                                            <a href="topic/<?php echo $val['url_token']; ?>" class="text" data-id="<?php echo $val['topic_id']; ?>"><?php echo $val['topic_title']; ?></a>
-                                        </span>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                            <?php } ?>
-                        </div>
-                    </div>
-                    <div class="aw-mod">
-                        <div class="mod-body">
-                            <span class="aw-text-color-666">
-                                <?php _e('主页访问量'); ?> : <?php _e('%s 次访问', $this->user['views_count']); ?>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <!-- end 侧边栏 -->
-            </div>
-        </div>
-    </div>
+					</div>
+					<div class="aw-mod people-following">
+						<div class="mod-body">
+							<?php _e('关注 %s 话题', '<em class="aw-text-color-blue">' . $this->user['topic_focus_count'] . '</em>'); ?>
+							<?php if ($this->focus_topics) { ?>
+							<div class="aw-topic-bar">
+								<div class="tag-bar clearfix">
+									<?php foreach ($this->focus_topics AS $key => $val) { ?>
+										<span class="topic-tag">
+											<a href="topic/<?php echo $val['url_token']; ?>" class="text" data-id="<?php echo $val['topic_id']; ?>"><?php echo $val['topic_title']; ?></a>
+										</span>
+									<?php } ?>
+								</div>
+							</div>
+							<?php } ?>
+						</div>
+					</div>
+					<div class="aw-mod">
+						<div class="mod-body">
+							<span class="aw-text-color-666">
+								<?php _e('主页访问量'); ?> : <?php _e('%s 次访问', $this->user['views_count']); ?>
+							</span>
+						</div>
+					</div>
+				</div>
+				<!-- end 侧边栏 -->
+			</div>
+		</div>
+	</div>
 </div>
 
 <script type="text/javascript">
-    var PEOPLE_USER_ID = '<?php echo $this->user['uid']; ?>';
+	var PEOPLE_USER_ID = '<?php echo $this->user['uid']; ?>';
 
-    var ACTIVITY_ACTIONS = '<?php echo implode(',', array(
-        ACTION_LOG::ADD_QUESTION,
-        ACTION_LOG::ANSWER_QUESTION,
-        ACTION_LOG::ADD_REQUESTION_FOCUS,
-        ACTION_LOG::ADD_AGREE,
-        ACTION_LOG::ADD_ARTICLE,
-        ACTION_LOG::ADD_AGREE_ARTICLE,
-        ACTION_LOG::ADD_COMMENT_ARTICLE
-    )); ?>';
+	var ACTIVITY_ACTIONS = '<?php echo implode(',', array(
+		ACTION_LOG::ADD_QUESTION,
+		ACTION_LOG::ANSWER_QUESTION,
+		ACTION_LOG::ADD_REQUESTION_FOCUS,
+		ACTION_LOG::ADD_AGREE,
+		ACTION_LOG::ADD_ARTICLE,
+		ACTION_LOG::ADD_AGREE_ARTICLE,
+		ACTION_LOG::ADD_COMMENT_ARTICLE
+	)); ?>';
 </script>
 
 <script type="text/javascript" src="<?php echo G_STATIC_URL; ?>/js/app/people.js"></script>
