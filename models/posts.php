@@ -175,114 +175,6 @@ class posts_class extends AWS_MODEL
 		return $ids;
 	}
 
-	public function get_posts_list($post_type, $page = 1, $per_page = 10, $sort = null, $topic_ids = null, $category_id = null, $answer_count = null, $day = 30, $recommend = false)
-	{
-		$order_key = 'sort DESC, add_time DESC';
-
-		switch ($sort)
-		{
-			case 'responsed':
-				$answer_count = 1;
-
-				break;
-
-			case 'unresponsive':
-				$answer_count = 0;
-
-				break;
-
-			case 'new' :
-				$order_key = 'sort DESC, update_time DESC';
-
-				break;
-		}
-
-		if (is_array($topic_ids))
-		{
-			foreach ($topic_ids AS $key => $val)
-			{
-				if (!$val)
-				{
-					unset($topic_ids[$key]);
-				}
-			}
-		}
-
-		if ($topic_ids)
-		{
-			$posts_index = $this->get_posts_list_by_topic_ids($post_type, $topic_ids, $page, $per_page);
-		}
-		else
-		{
-			$where = array();
-
-			if (isset($answer_count))
-			{
-				$answer_count = intval($answer_count);
-
-				if ($answer_count == 0)
-				{
-					$where[] = "answer_count = " . $answer_count;
-				}
-				else if ($answer_count > 0)
-				{
-					$where[] = "answer_count >= " . $answer_count;
-				}
-			}
-
-			if ($recommend)
-			{
-				$where[] = 'recommend = 1';
-			}
-
-			if ($category_id)
-			{
-				$where[] = 'category_id=' . intval($category_id);
-			}
-			else
-			{
-				$where[] = '`category_id` IN(' . implode(',', $this->get_default_category_ids()) . ')';
-			}
-
-			if ($post_type)
-			{
-				$where[] = "post_type = '" . $this->quote($post_type) . "'";
-			}
-
-			$posts_index = $this->fetch_page('posts_index', implode(' AND ', $where), $order_key, $page, $per_page);
-
-			$this->posts_list_total = $this->found_rows();
-		}
-
-		return $this->process_explore_list_data($posts_index);
-	}
-
-	public function get_hot_posts($post_type, $category_id = 0, $topic_ids = null, $day = 30, $page = 1, $per_page = 10)
-	{
-		if ($day)
-		{
-			$add_time = strtotime('-' . $day . ' Day');
-		}
-
-		$where[] = 'add_time > ' . intval($add_time);
-
-		if ($post_type)
-		{
-			$where[] = "post_type = '" . $this->quote($post_type) . "'";
-		}
-
-		if ($category_id)
-		{
-			$where[] = 'category_id=' . intval($category_id);
-		}
-
-		$posts_index = $this->fetch_page('posts_index', implode(' AND ', $where), 'reputation DESC', $page, $per_page);
-
-		$this->posts_list_total = $this->found_rows();
-
-		return $this->process_explore_list_data($posts_index);
-	}
-
 	public function get_posts_list_total()
 	{
 		return $this->posts_list_total;
@@ -384,6 +276,96 @@ class posts_class extends AWS_MODEL
 		return $explore_list_data;
 	}
 
+	public function get_posts_list($post_type, $page = 1, $per_page = 10, $sort = null, $category_id = null, $answer_count = null, $day = 30, $recommend = false)
+	{
+		$order_key = 'sort DESC, add_time DESC';
+
+		switch ($sort)
+		{
+			case 'responsed':
+				$answer_count = 1;
+
+				break;
+
+			case 'unresponsive':
+				$answer_count = 0;
+
+				break;
+
+			case 'new' :
+				$order_key = 'sort DESC, update_time DESC';
+
+				break;
+		}
+
+		$where = array();
+
+		if (isset($answer_count))
+		{
+			$answer_count = intval($answer_count);
+
+			if ($answer_count == 0)
+			{
+				$where[] = "answer_count = " . $answer_count;
+			}
+			else if ($answer_count > 0)
+			{
+				$where[] = "answer_count >= " . $answer_count;
+			}
+		}
+
+		if ($recommend)
+		{
+			$where[] = 'recommend = 1';
+		}
+
+		if ($category_id)
+		{
+			$where[] = 'category_id=' . intval($category_id);
+		}
+		else
+		{
+			$where[] = '`category_id` IN(' . implode(',', $this->get_default_category_ids()) . ')';
+		}
+
+		if ($post_type)
+		{
+			$where[] = "post_type = '" . $this->quote($post_type) . "'";
+		}
+
+		$posts_index = $this->fetch_page('posts_index', implode(' AND ', $where), $order_key, $page, $per_page);
+
+		$this->posts_list_total = $this->found_rows();
+
+		return $this->process_explore_list_data($posts_index);
+	}
+
+	public function get_hot_posts($post_type, $category_id = 0, $day = 30, $page = 1, $per_page = 10)
+	{
+		if ($day)
+		{
+			$add_time = strtotime('-' . $day . ' Day');
+		}
+
+		$where[] = 'add_time > ' . intval($add_time);
+
+		if ($post_type)
+		{
+			$where[] = "post_type = '" . $this->quote($post_type) . "'";
+		}
+
+		if ($category_id)
+		{
+			$where[] = 'category_id=' . intval($category_id);
+		}
+
+		$posts_index = $this->fetch_page('posts_index', implode(' AND ', $where), 'reputation DESC', $page, $per_page);
+
+		$this->posts_list_total = $this->found_rows();
+
+		return $this->process_explore_list_data($posts_index);
+	}
+
 	public function get_posts_list_by_topic_ids($post_type, $topic_ids, $page = 1, $per_page = 10)
 	{
 		if (!is_array($topic_ids) OR count($topic_ids) < 1)
@@ -429,7 +411,7 @@ class posts_class extends AWS_MODEL
 		$where = implode(' OR ', $post_id_where);
 		$result = $this->query_all("SELECT * FROM " . get_table('posts_index') . " WHERE " . $where . " ORDER BY update_time DESC");
 
-		return $result;
+		return $this->process_explore_list_data($result);
 	}
 
 	public function get_recommend_posts_by_topic_ids($topic_ids)
@@ -448,7 +430,7 @@ class posts_class extends AWS_MODEL
 
 		if ($related_topic_ids)
 		{
-			$recommend_posts = $this->model('posts')->get_posts_list(null, 1, 10, null, $related_topic_ids, null, null, 30, true);
+			$recommend_posts = $this->model('posts')->get_posts_list_by_topic_ids(null, $related_topic_ids);
 		}
 
 		return $recommend_posts;

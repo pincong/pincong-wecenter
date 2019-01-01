@@ -44,7 +44,7 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		TPL::assign('list', $this->model('posts')->get_posts_list('question', 1, 20, 'new', explode(',', $_GET['topic']), $_GET['category']));
+		TPL::assign('list', $this->model('posts')->get_posts_list('question', 1, 20, 'new', $_GET['category']));
 
 		TPL::output('global/feed');
 	}

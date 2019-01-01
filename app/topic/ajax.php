@@ -548,7 +548,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			foreach ($topics_list AS $key => $val)
 			{
-				$topics_list[$key]['action_list'] = $this->model('posts')->get_posts_list('question', 1, 3, 'new', explode(',', $val['topic_id']));
+				$topics_list[$key]['action_list'] = $this->model('posts')->get_posts_list_by_topic_ids('question', explode(',', $val['topic_id']));
 			}
 		}
 

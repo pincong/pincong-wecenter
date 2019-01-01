@@ -80,11 +80,11 @@ class main extends AWS_CONTROLLER
 
 		if ($_GET['sort_type'] == 'hot')
 		{
-			$posts_list = $this->model('posts')->get_hot_posts(null, $category_info['id'], null, $_GET['day'], $_GET['page'], get_setting('contents_per_page'));
+			$posts_list = $this->model('posts')->get_hot_posts(null, $category_info['id'], $_GET['day'], $_GET['page'], get_setting('contents_per_page'));
 		}
 		else
 		{
-			$posts_list = $this->model('posts')->get_posts_list(null, $_GET['page'], get_setting('contents_per_page'), $_GET['sort_type'], null, $category_info['id'], $_GET['answer_count'], $_GET['day'], $_GET['recommend']);
+			$posts_list = $this->model('posts')->get_posts_list(null, $_GET['page'], get_setting('contents_per_page'), $_GET['sort_type'], $category_info['id'], $_GET['answer_count'], $_GET['day'], $_GET['recommend']);
 		}
 
 		if ($posts_list)

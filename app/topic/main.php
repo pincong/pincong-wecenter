@@ -135,7 +135,7 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		if ($posts_list = $this->model('posts')->get_posts_list(null, 1, get_setting('contents_per_page'), 'new', $topic_ids))
+		if ($posts_list = $this->model('posts')->get_posts_list_by_topic_ids(null, $topic_ids, 1, get_setting('contents_per_page')))
 		{
 			foreach ($posts_list AS $key => $val)
 			{
@@ -170,7 +170,7 @@ class main extends AWS_CONTROLLER
 			{
 				if ($today_topic = $this->model('topic')->get_topic_by_title(array_random(explode(',', $today_topics))))
 				{
-					$today_topic['questions_list'] = $this->model('posts')->get_posts_list('question', 1, 3, 'new', explode(',', $today_topic['topic_id']));
+					$today_topic['questions_list'] = $this->model('posts')->get_posts_list_by_topic_ids('question', explode(',', $today_topic['topic_id']));
 
 					AWS_APP::cache()->set('square_today_topic_' . md5($today_topics), $today_topic, (strtotime('Tomorrow') - time()));
 				}
