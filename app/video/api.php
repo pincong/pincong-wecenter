@@ -60,7 +60,7 @@ class api extends AWS_CONTROLLER
 
 	public function save_danmaku_action()
 	{
-		if (!$this->user_info['permission']['publish_comment']) // TODO: 改名
+		if (!$this->user_info['permission']['publish_danmaku'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
@@ -99,6 +99,11 @@ class api extends AWS_CONTROLLER
 		if (!check_repeat_submission($this->user_id, $text))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请不要重复提交')));
+		}
+
+		if (!$this->model('ratelimit')->check_video_danmaku($this->user_id, $this->user_info['permission']['danmaku_limit_per_day']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日发布的弹幕已经达到上限')));
 		}
 
 		// 1:滚动字幕 4:底端渐隐 5:顶端渐隐

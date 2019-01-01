@@ -165,27 +165,6 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许发布短评'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="publish_comment"<?php if ($this->group_pms['publish_comment']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="publish_comment"<?php if (!$this->group_pms['publish_comment']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-
-								<span class="help-block"><?php _e('楼中楼'); ?>, <?php _e('弹幕'); ?></span>
-							</div>
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td>
-						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许发布楼中楼评论'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
@@ -413,18 +392,6 @@
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('每日回帖上限'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="reply_limit_per_day" class="form-control" value="<?php echo intval($this->group_pms['reply_limit_per_day']); ?>" />
-
-								<span class="help-block"><?php _e('设置 0 为不限制'); ?></span>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('每日评论上限'); ?>:</span>
-							<div class="col-sm-5 col-xs-8">
-								<input type="text" name="comment_limit_per_day" class="form-control" value="<?php echo intval($this->group_pms['comment_limit_per_day']); ?>" />
 
 								<span class="help-block"><?php _e('设置 0 为不限制'); ?></span>
 							</div>

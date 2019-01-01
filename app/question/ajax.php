@@ -59,7 +59,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function save_answer_discussion_action()
 	{
-		if (!$this->user_info['permission']['publish_comment']) // TODO: 改名
+		if (!$this->user_info['permission']['publish_discussion'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
@@ -97,7 +97,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得超过 %s 字', $discussion_length_max)));
 		}
 
-		if (!$this->model('ratelimit')->check_answer_discussion($this->user_id, $this->user_info['permission']['comment_limit_per_day']))
+		if (!$this->model('ratelimit')->check_answer_discussion($this->user_id, $this->user_info['permission']['discussion_limit_per_day']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日评论回复已经达到上限')));
 		}
@@ -136,7 +136,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function save_question_discussion_action()
 	{
-		if (!$this->user_info['permission']['publish_comment']) // TODO: 改名
+		if (!$this->user_info['permission']['publish_discussion'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
@@ -174,7 +174,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得超过 %s 字', $discussion_length_max)));
 		}
 
-		if (!$this->model('ratelimit')->check_question_discussion($this->user_id, $this->user_info['permission']['comment_limit_per_day']))
+		if (!$this->model('ratelimit')->check_question_discussion($this->user_id, $this->user_info['permission']['discussion_limit_per_day']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日评论问题已经达到上限')));
 		}
