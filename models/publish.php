@@ -150,8 +150,8 @@ class publish_class extends AWS_MODEL
 			$this->model('question')->add_focus_question($item_id, $data['uid']);
 		}
 
-		// 记录日志
-		ACTION_LOG::save_action($data['uid'], $item_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_QUESTION);
+		// 记录用户动态
+		$this->model('activity')->log('question', $item_id, '发起了问题', $data['uid']);
 
 		return $item_id;
 	}
@@ -181,8 +181,8 @@ class publish_class extends AWS_MODEL
 
 		$this->save_topics('article', $data['uid'], $item_id, $data['topics'], $data['permission_create_topic']);
 
-		// 记录日志
-		ACTION_LOG::save_action($data['uid'], $item_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_ARTICLE);
+		// 记录用户动态
+		$this->model('activity')->log('article', $item_id, '发表了文章', $data['uid']);
 
 		return $item_id;
 	}
@@ -216,8 +216,8 @@ class publish_class extends AWS_MODEL
 
 		$this->save_topics('video', $data['uid'], $item_id, $data['topics'], $data['permission_create_topic']);
 
-		// 记录日志 暂不实现
-		//ACTION_LOG::save_action($data['uid'], $item_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_VIDEO);
+		// 记录用户动态
+		$this->model('activity')->log('video', $item_id, '投稿了影片', $data['uid']);
 
 		return $item_id;
 	}
@@ -276,9 +276,6 @@ class publish_class extends AWS_MODEL
 			}
 		}
 
-		ACTION_LOG::save_action($data['uid'], $item_id, ACTION_LOG::CATEGORY_ANSWER, ACTION_LOG::ANSWER_QUESTION, null, $data['parent_id']);
-		ACTION_LOG::save_action($data['uid'], $data['parent_id'], ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ANSWER_QUESTION, null, $item_id);
-
 		if ($focus_uids = $this->model('question')->get_focus_uid_by_question_id($data['parent_id']))
 		{
 			foreach ($focus_uids as $focus_user)
@@ -296,6 +293,9 @@ class publish_class extends AWS_MODEL
 
 		// 删除邀请
 		$this->model('question')->answer_question_invite($data['parent_id'], $data['uid']);
+
+		// 记录用户动态
+		$this->model('activity')->log('answer', $item_id, '回答了问题', $data['uid']);
 
 		$this->model('currency')->process($parent_info['uid'], 'QUESTION_REPLIED', get_setting('currency_system_config_question_replied'), '问题收到回应', $data['parent_id'], 'question');
 		return $item_id;
@@ -365,7 +365,8 @@ class publish_class extends AWS_MODEL
 			));
 		}
 
-		ACTION_LOG::save_action($data['uid'], $data['parent_id'], ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_COMMENT_ARTICLE, null, $item_id);
+		// 记录用户动态
+		$this->model('activity')->log('article_comment', $item_id, '评论了文章', $data['uid']);
 
 		$this->model('currency')->process($parent_info['uid'], 'ARTICLE_REPLIED', get_setting('currency_system_config_article_replied'), '文章收到回应', $data['parent_id'], 'article');
 		return $item_id;
@@ -443,10 +444,8 @@ class publish_class extends AWS_MODEL
 			*/
 		}
 
-		/*
-		// 记录日志 暂不实现
-		ACTION_LOG::save_action($data['uid'], $data['parent_id'], ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_COMMENT_VIDEO, null, $item_id);
-		*/
+		// 记录用户动态
+		$this->model('activity')->log('video_comment', $item_id, '评论了影片', $data['uid']);
 
 		$this->model('currency')->process($parent_info['uid'], 'VIDEO_REPLIED', get_setting('currency_system_config_video_replied'), '影片收到回应', $data['parent_id'], 'video');
 		return $item_id;

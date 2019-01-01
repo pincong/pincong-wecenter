@@ -845,6 +845,22 @@ CREATE TABLE IF NOT EXISTS `aws_vote` (
 --
 
 
+--
+CREATE TABLE IF NOT EXISTS `aws_activity` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) DEFAULT '0',
+  `note` varchar(128) DEFAULT NULL,
+  `item_id` int(11) DEFAULT '0',
+  `item_type` varchar(32) DEFAULT NULL,
+  `time` int(10) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `time` (`time`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+--
+
+
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

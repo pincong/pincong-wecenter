@@ -112,7 +112,7 @@ class content_class extends AWS_MODEL
 		return $item_info;
 	}
 
-		/**
+	/**
 	 * 记录日志
 	 * @param string $item_type question|article|video
 	 * @param int $item_id
