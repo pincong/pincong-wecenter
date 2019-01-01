@@ -375,7 +375,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
             }
         }
 
-        $settings_var['category_display_mode'] = $_POST['category_display_mode'];
         $settings_var['nav_menu_show_child'] = isset($_POST['nav_menu_show_child']) ? 'Y' : 'N';
 
         $this->model('setting')->set_vars($settings_var);

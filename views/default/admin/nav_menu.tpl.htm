@@ -18,14 +18,6 @@
                     <div class="mod-set-body">
                     <input type="hidden" name="nav_sort" id="nav_sort">
 
-                    <p>
-                        <select name="category_display_mode" class="pull-left form-control">
-                            <option value="list"<?php if ($this->setting['category_display_mode'] == 'list') { ?> selected="selected"<?php } ?>><?php _e('文字列表模式'); ?></option>
-                            <option value="icon"<?php if ($this->setting['category_display_mode'] == 'icon') { ?> selected="selected"<?php } ?>><?php _e('图标模式'); ?></option>
-                        </select>
-
-                        <label class="pull-right"><input type="checkbox" value="Y" name="nav_menu_show_child"<?php if ($this->setting['nav_menu_show_child'] == 'Y') { ?> checked="checked"<?php } ?>> <?php _e('显示分类下的子分类'); ?></label>
-                    </p>
                     <div class="aw-nav-menu">
                     <ul data-listidx="0">
                         <?php if ($this->nav_menu_list) { ?>
