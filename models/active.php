@@ -26,7 +26,7 @@ class active_class extends AWS_MODEL
 		{
 			return false;
 		}
-		return md5(G_SECUKEY . md5($user_info['password'] . $user_info['salt']) . G_COOKIE_HASH_KEY);
+		return md5($user_info['user_name'] . G_SECUKEY . $user_info['uid'] . md5($user_info['password'] . $user_info['salt']) . G_COOKIE_HASH_KEY);
 	}
 
 	public function verify_user_recovery_code($uid, $recovery_code)
