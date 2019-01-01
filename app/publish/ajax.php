@@ -62,7 +62,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题已锁定, 不能编辑')));
 		}
 
-		if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'] AND !$this->user_info['permission']['edit_question'])
+		if (!$this->user_info['permission']['edit_question'])
 		{
 			if ($question_info['published_uid'] != $this->user_id)
 			{
@@ -459,7 +459,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文章已锁定, 不能编辑')));
 		}
 
-		if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'] AND !$this->user_info['permission']['edit_article'])
+		if (!$this->user_info['permission']['edit_article'])
 		{
 			if ($article_info['uid'] != $this->user_id)
 			{

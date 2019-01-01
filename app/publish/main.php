@@ -42,7 +42,7 @@ class main extends AWS_CONTROLLER
 				H::redirect_msg(AWS_APP::lang()->_t('指定问题不存在'));
 			}
 
-			if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'] AND !$this->user_info['permission']['edit_question'] AND $question_info['published_uid'] != $this->user_id)
+			if (!$this->user_info['permission']['edit_question'] AND $question_info['published_uid'] != $this->user_id)
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑这个问题'), '/question/' . $question_info['question_id']);
 			}
@@ -116,7 +116,7 @@ class main extends AWS_CONTROLLER
 				H::redirect_msg(AWS_APP::lang()->_t('指定文章不存在'));
 			}
 
-			if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'] AND !$this->user_info['permission']['edit_article'] AND $article_info['uid'] != $this->user_id)
+			if (!$this->user_info['permission']['edit_article'] AND $article_info['uid'] != $this->user_id)
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑这个文章'), '/article/' . $article_info['id']);
 			}

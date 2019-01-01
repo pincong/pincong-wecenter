@@ -41,6 +41,7 @@ class ajax extends AWS_CONTROLLER
 		HTTP::no_cache_header();
 	}
 
+	// TODO: 何处用到?
 	public function fetch_answer_data_action()
 	{
 		$answer_info = $this->model('answer')->get_answer_by_id($_GET['id']);
@@ -666,7 +667,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($_POST['do_delete'])
 		{
-			if ($answer_info['uid'] != $this->user_id and ! $this->user_info['permission']['is_administrator'] and ! $this->user_info['permission']['is_moderator'])
+			if ($answer_info['uid'] != $this->user_id and ! $this->user_info['permission']['edit_question'])
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 			}
@@ -711,12 +712,12 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('回复内容字数不得多于 %s 字', $answer_length_max)));
 		}
 
-		if ($answer_info['uid'] != $this->user_id and ! $this->user_info['permission']['is_administrator'] and ! $this->user_info['permission']['is_moderator'])
+		if ($answer_info['uid'] != $this->user_id and ! $this->user_info['permission']['edit_question'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个回复')));
 		}
 
-		if ($answer_info['uid'] == $this->user_id and (time() - $answer_info['add_time'] > get_setting('answer_edit_time') * 60) and get_setting('answer_edit_time') and ! $this->user_info['permission']['is_administrator'] and ! $this->user_info['permission']['is_moderator'])
+		if ($answer_info['uid'] == $this->user_id and (time() - $answer_info['add_time'] > get_setting('answer_edit_time') * 60) and get_setting('answer_edit_time') and ! $this->user_info['permission']['edit_question'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经超过允许编辑的时限')));
 		}
@@ -832,7 +833,7 @@ class ajax extends AWS_CONTROLLER
 
 		$comment = $this->model($_GET['type'])->get_comment_by_id($_GET['comment_id']);
 
-		if (! $this->user_info['permission']['is_moderator'] AND ! $this->user_info['permission']['is_administrator'] AND $this->user_id != $comment['uid'])
+		if (! $this->user_info['permission']['edit_question'] AND $this->user_id != $comment['uid'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('你没有权限删除该评论')));
 		}
@@ -874,7 +875,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论不存在')));
 		}
 
-		if (! $this->user_info['permission']['is_moderator'] AND ! $this->user_info['permission']['is_administrator'] AND $this->user_id != $comment['uid'])
+		if (! $this->user_info['permission']['edit_question'] AND $this->user_id != $comment['uid'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('你没有权限删除该评论')));
 		}

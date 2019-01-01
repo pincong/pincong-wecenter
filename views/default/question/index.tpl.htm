@@ -127,7 +127,7 @@
 								<a class="text-color-999 aw-invite-replay"><i class="icon icon-invite"></i><?php _e('邀请'); ?> <?php if (sizeof($this->invite_users) > 0){ ?><em class="badge badge-info"><?php echo count($this->invite_users); ?></em><?php } ?></a>
 								<?php } ?>
 
-								<?php if ((!$this->question_info['lock'] AND ($this->question_info['published_uid'] == $this->user_id OR $this->user_info['permission']['edit_question'])) OR $this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?><a class="text-color-999" href="publish/<?php echo $this->question_info['question_id']; ?>"><i class="icon icon-edit"></i><?php _e('编辑'); ?></a><?php } ?>
+								<?php if ((!$this->question_info['lock'] OR $this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) AND ($this->question_info['published_uid'] == $this->user_id OR $this->user_info['permission']['edit_question'])) { ?><a class="text-color-999" href="publish/<?php echo $this->question_info['question_id']; ?>"><i class="icon icon-edit"></i><?php _e('编辑'); ?></a><?php } ?>
 
 								<div class="pull-right more-operate">
 									<?php if ($this->user_id) { ?>
@@ -318,7 +318,7 @@
 											<!-- 可显示/隐藏的操作box -->
 											<div class="more-operate">
 												<?php if ($this->user_id) { ?>
-													<?php if (($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) OR ($val['uid'] == $this->user_id AND ((TIMESTAMP - $val['add_time']) < (get_setting('answer_edit_time') * 60) OR (!get_setting('answer_edit_time'))))) { ?>
+													<?php if (($this->user_info['permission']['edit_question']) OR ($val['uid'] == $this->user_id AND ((TIMESTAMP - $val['add_time']) < (get_setting('answer_edit_time') * 60) OR (!get_setting('answer_edit_time'))))) { ?>
 													<a class="text-color-999" href="javascript:;" onclick="AWS.dialog('commentEdit', {answer_id:<?php echo $val['answer_id']; ?>});"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
 													<?php } ?>
 

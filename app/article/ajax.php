@@ -217,7 +217,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('评论不存在')));
 		}
 		
-		if ($this->user_id != $comment_info['uid'] AND!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
+		if ($this->user_id != $comment_info['uid'] AND!$this->user_info['permission']['edit_article'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有删除评论的权限')));
 		}
