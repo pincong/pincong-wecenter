@@ -586,6 +586,14 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
 		}
 
+		if ($_POST['later'])
+		{
+			//TODO: 延迟显示
+			H::ajax_json_output(AWS_APP::RSM(array(
+				'url' => get_js_url('/publish/delay_display/')
+			), 1, null));
+		}
+		else
 		{
 			$answer_id = $this->model('publish')->publish_answer($question_info['question_id'], $answer_content, $this->user_id, $_POST['anonymous'], null, $_POST['auto_focus']);
 
@@ -600,13 +608,9 @@ class ajax extends AWS_CONTROLLER
 
 			TPL::assign('answer_info', $answer_info);
 
-			{
-				H::ajax_json_output(AWS_APP::RSM(array(
-					'ajax_html' => TPL::output('question/ajax/answer', false)
-				), 1, null));
-			}
-
-
+			H::ajax_json_output(AWS_APP::RSM(array(
+				'ajax_html' => TPL::output('question/ajax/answer', false)
+			), 1, null));
 		}
 	}
 

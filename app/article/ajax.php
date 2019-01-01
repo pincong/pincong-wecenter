@@ -100,6 +100,14 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
 		}
 
+		if ($_POST['later'])
+		{
+			//TODO: 延迟显示
+			H::ajax_json_output(AWS_APP::RSM(array(
+				'url' => get_js_url('/publish/delay_display/')
+			), 1, null));
+		}
+		else
 		{
 			$comment_id = $this->model('publish')->publish_article_comment(
                 $_POST['article_id'],
@@ -117,11 +125,9 @@ class ajax extends AWS_CONTROLLER
 
 			TPL::assign('comment_info', $comment_info);
 
-			{
-				H::ajax_json_output(AWS_APP::RSM(array(
-					'ajax_html' => TPL::output('article/ajax/comment', false)
-				), 1, null));
-			}
+			H::ajax_json_output(AWS_APP::RSM(array(
+				'ajax_html' => TPL::output('article/ajax/comment', false)
+			), 1, null));
 		}
 	}
 
