@@ -62,14 +62,7 @@ ImageUploader.prototype.createForm = function() {
 
 	this.form = form;
 }
-				if ($(this.container).attr('src'))
-				{
-					$(this.container).attr('src', response.thumb + '?' + Math.round(Math.random() * 10000));
-				}
-				else
-				{
-					$(this.container)
-				}
+
 
 ImageUploader.prototype.handleResponse = function(element) {
 	if (this.loading_status) this.loading_status.hide();
