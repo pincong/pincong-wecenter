@@ -119,6 +119,11 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能评论锁定的问题')));
 		}
 
+		if (!$question_info['question_content'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能评论已删除的问题')));
+		}
+
         set_repeat_submission_digest($this->user_id, $message);
 		set_user_operation_last_time('publish', $this->user_id);
 
@@ -189,6 +194,11 @@ class ajax extends AWS_CONTROLLER
 		if ($question_info['lock'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能评论锁定的问题')));
+		}
+
+		if (!$question_info['question_content'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能评论已删除的问题')));
 		}
 
         set_repeat_submission_digest($this->user_id, $message);
