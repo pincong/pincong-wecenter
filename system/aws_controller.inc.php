@@ -240,7 +240,7 @@ class AWS_CONTROLLER
  */
 class AWS_ADMIN_CONTROLLER extends AWS_CONTROLLER
 {
-	public $per_page = 20;
+	public $per_page;
 
 	public function __construct()
 	{
@@ -250,6 +250,8 @@ class AWS_ADMIN_CONTROLLER extends AWS_CONTROLLER
 		{
 			return false;
 		}
+
+		$this->per_page = get_setting('contents_per_page');
 
 		TPL::import_clean();
 
