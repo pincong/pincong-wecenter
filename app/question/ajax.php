@@ -130,6 +130,11 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能匿名')));
 		}
 
+		if (!check_user_operation_interval('save_answer_comment', $this->user_id, $this->user_info['permission']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
 		$message = my_trim($_POST['message']);
 		if (!$message)
 		{
@@ -175,6 +180,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
         set_repeat_submission_digest($message);
+		set_user_operation_last_time('save_answer_comment', $this->user_id, $this->user_info['permission']);
 
 		$this->model('answer')->insert_answer_comment($_GET['answer_id'], $this->user_id, $message, $_POST['anonymous']);
 
@@ -219,6 +225,11 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能匿名')));
 		}
 
+		if (!check_user_operation_interval('save_question_comment', $this->user_id, $this->user_info['permission']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
 		$message = my_trim($_POST['message']);
 		if (!$message)
 		{
@@ -259,6 +270,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
         set_repeat_submission_digest($message);
+		set_user_operation_last_time('save_question_comment', $this->user_id, $this->user_info['permission']);
 
 		$this->model('question')->insert_question_comment($_GET['question_id'], $this->user_id, $message, $_POST['anonymous']);
 

@@ -60,6 +60,11 @@ class api extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
 
+		if (!check_user_operation_interval('save_danmaku', $this->user_id, $this->user_info['permission']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
 		if (!$video_info = $this->model('video')->get_video_info_by_id($_POST['video_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('投稿不存在')));
@@ -112,6 +117,7 @@ class api extends AWS_CONTROLLER
 		}
 
 		set_repeat_submission_digest($text);
+		set_user_operation_last_time('save_danmaku', $this->user_id, $this->user_info['permission']);
 
 		$this->model('danmaku')->save_danmaku(
 			$video_info['id'],
