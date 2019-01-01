@@ -67,10 +67,21 @@ class reputation_class extends AWS_MODEL
 			$auto_banning_agree_count = get_setting('auto_banning_agree_count');
 			$auto_banning_reputation = get_setting('auto_banning_reputation');
 
-			if ( ($auto_banning_agree_count !== '' AND $auto_banning_agree_count >= $agree_count)
-				OR ($auto_banning_reputation !== '' AND $auto_banning_reputation >= $reputation) )
+			if (get_setting('auto_banning_type') == 'AND')
 			{
-				$fields['forbidden'] = 1;
+				if ( ($auto_banning_agree_count !== '' AND $auto_banning_agree_count >= $agree_count)
+					AND ($auto_banning_reputation !== '' AND $auto_banning_reputation >= $reputation) )
+				{
+					$fields['forbidden'] = 1;
+				}
+			}
+			else
+			{
+				if ( ($auto_banning_agree_count !== '' AND $auto_banning_agree_count >= $agree_count)
+					OR ($auto_banning_reputation !== '' AND $auto_banning_reputation >= $reputation) )
+				{
+					$fields['forbidden'] = 1;
+				}
 			}
 		}
 
