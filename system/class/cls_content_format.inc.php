@@ -24,6 +24,24 @@ class CF
 		return $text;
 	}
 
+	private static function &kb_tips()
+	{
+		static $text;
+		if (!isset($text))
+		{
+			$text = get_setting('kb_replaced_tips');
+			if ($text)
+			{
+				$text = '<p class="aw-small-text">' . $text . '</p>';
+			}
+			else
+			{
+				$text = '';
+			}
+		}
+		return $text;
+	}
+
 	private static function &get_kb_item($id)
 	{
 		static $cache;
@@ -143,7 +161,7 @@ class CF
 		if ($kb = self::get_kb($user_info, $key))
 		{
 			$text = $kb['title'] . "\r\n" . $kb['message'];
-			return nl2br(FORMAT::parse_bbcode($text));
+			return self::kb_tips() . nl2br(FORMAT::parse_bbcode($text));
 		}
 
 		if (!isset($string))
@@ -159,7 +177,7 @@ class CF
 		if ($kb = self::get_kb($user_info, $key))
 		{
 			$text = $kb['title'] . "\r\n" . $kb['message'];
-			return nl2br(FORMAT::parse_bbcode($text));
+			return self::kb_tips() . nl2br(FORMAT::parse_bbcode($text));
 		}
 
 		if (!isset($string))
