@@ -42,7 +42,7 @@ class CF
 	// 获得知识库 id (替换原内容)
 	private static function get_kb_id(&$user_info, &$key)
 	{
-		if (!$user_info['flagged'])
+		if ($user_info['flagged'] != 3)
 		{
 			return 0;
 		}
@@ -147,5 +147,16 @@ class CF
 			return self::deleted();
 		}
 		return nl2br(FORMAT::parse_links($string));
+	}
+
+	// TODO: 每帖之回复只复读一次
+	public static function skip(&$user_info, $key = null)
+	{
+		if ($user_info['flagged'] == 2)
+		{
+			return true;
+		}
+
+		return false;
 	}
 }

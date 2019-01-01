@@ -204,7 +204,7 @@ class ajax extends AWS_CONTROLLER
 				), 1, null));
 			}
 
-			if ($user_info['flagged'])
+			if ($user_info['flagged'] > 0)
 			{
 				H::ajax_json_output(AWS_APP::RSM(array(
 					'url' => get_js_url('/')

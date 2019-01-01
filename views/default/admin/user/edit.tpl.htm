@@ -154,11 +154,23 @@
                                 <div class="col-sm-6 col-xs-8">
                                     <div class="btn-group mod-btn">
                                         <label type="button" class="btn mod-btn-color">
-                                            <input type="radio" name="forbidden" value="1"<?php if ($this->user['forbidden']) { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+                                            <input type="radio" name="forbidden" value="0"<?php if ($this->user['forbidden'] == 0) { ?> checked="checked"<?php } ?> /> <?php _e('正常'); ?>
                                         </label>
 
                                         <label type="button" class="btn mod-btn-color">
-                                            <input type="radio" name="forbidden" value="0"<?php if (!$this->user['forbidden']) { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+                                            <input type="radio" name="forbidden" value="1"<?php if ($this->user['forbidden'] == 1) { ?> checked="checked"<?php } ?> /> <?php _e('封禁'); ?>
+                                        </label>
+
+                                        <label type="button" class="btn mod-btn-color">
+                                            <input type="radio" name="forbidden" value="2"<?php if ($this->user['forbidden'] == 2) { ?> checked="checked"<?php } ?> /> <?php _e('自动封禁'); ?>
+                                        </label>
+
+                                        <label type="button" class="btn mod-btn-color">
+                                            <input type="radio" name="forbidden" value="3"<?php if ($this->user['forbidden'] == 3) { ?> checked="checked"<?php } ?> /> <?php _e('自动删号'); ?>
+                                        </label>
+
+                                        <label type="button" class="btn mod-btn-color">
+                                            <input type="radio" name="forbidden" value="4"<?php if ($this->user['forbidden'] == 4) { ?> checked="checked"<?php } ?> /> <?php _e('临时封禁'); ?>
                                         </label>
                                     </div>
                                 </div>
@@ -169,15 +181,27 @@
                     <tr>
                         <td>
                             <div class="form-group">
-                                <span class="col-sm-4 col-xs-3 control-label"><?php _e('影子禁止'); ?>:</span>
+                                <span class="col-sm-4 col-xs-3 control-label"><?php _e('标记'); ?>:</span>
                                 <div class="col-sm-6 col-xs-8">
                                     <div class="btn-group mod-btn">
                                         <label type="button" class="btn mod-btn-color">
-                                            <input type="radio" name="flagged" value="1"<?php if ($this->user['flagged']) { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+                                            <input type="radio" name="flagged" value="0"<?php if ($this->user['flagged'] == 0) { ?> checked="checked"<?php } ?> /> <?php _e('正常'); ?>
                                         </label>
 
                                         <label type="button" class="btn mod-btn-color">
-                                            <input type="radio" name="flagged" value="0"<?php if (!$this->user['flagged']) { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+                                            <input type="radio" name="flagged" value="-1"<?php if ($this->user['flagged'] == -1) { ?> checked="checked"<?php } ?> /> <?php _e('仅标记'); ?>
+                                        </label>
+
+                                        <label type="button" class="btn mod-btn-color">
+                                            <input type="radio" name="flagged" value="1"<?php if ($this->user['flagged'] == 1) { ?> checked="checked"<?php } ?> /> <?php _e('禁止'); ?>
+                                        </label>
+
+                                        <label type="button" class="btn mod-btn-color">
+                                            <input type="radio" name="flagged" value="2"<?php if ($this->user['flagged'] == 2) { ?> checked="checked"<?php } ?> /> <?php _e('禁止 + 隐藏'); ?>
+                                        </label>
+
+                                        <label type="button" class="btn mod-btn-color">
+                                            <input type="radio" name="flagged" value="3"<?php if ($this->user['flagged'] == 3) { ?> checked="checked"<?php } ?> /> <?php _e('禁止 + 替换'); ?>
                                         </label>
                                     </div>
                                 </div>

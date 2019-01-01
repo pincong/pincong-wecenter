@@ -1,5 +1,6 @@
 							<?php if ($this->comments) { ?>
 								<?php foreach ($this->comments AS $key => $val) { ?>
+								<?php if (CF::skip($val['user_info'])) continue; ?>
 								<?php if ($val['user_info']['forbidden']) $val['fold'] = -1; ?>
 								<div class="aw-item" id="answer_list_<?php echo $val['id']; ?>" data-fold="<?php echo $val['fold']; ?>">
 									<div class="mod-head">

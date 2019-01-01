@@ -83,7 +83,7 @@ class AWS_CONTROLLER
 
 			H::redirect_msg(AWS_APP::lang()->_t('抱歉, 你的账号已经被禁止登录'), '/');
 		}
-		elseif ($this->user_info['flagged'])
+		elseif ($this->user_info['flagged'] > 0)
 		{
 			$this->model('account')->logout();
 
