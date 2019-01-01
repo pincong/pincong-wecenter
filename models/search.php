@@ -157,7 +157,7 @@ class search_class extends AWS_MODEL
 			$url = get_js_url('/people/' . $user_info['url_token']);
 
 			$detail = array(
-				'avatar_file' => get_avatar_url($user_info['uid'], 'mid'),	// 头像
+				'avatar_file' => UF::avatar($user_info, 'mid'),	// 头像
 				'signature' => $user_info['signature'],	// 签名
 				'reputation' =>  $user_info['reputation'],	// 威望
 				'agree_count' =>  $user_info['agree_count'],	// 赞同

@@ -74,7 +74,7 @@
 
             <li class="dropdown username">
                 <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                    <img src="<?php echo get_avatar_url($this->user_info['uid'], 'mid'); ?>" class="img-circle" width="30">
+                    <img src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" class="img-circle" width="30">
                     <?php echo $this->user_info['user_name']; ?>
                     <span class="caret"></span>
                 </a>

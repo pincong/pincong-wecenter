@@ -19,6 +19,7 @@ class core_autoload
 	private static $aliases = array(
 		'TPL'				=> 'class/cls_template.inc.php',
 		'FORMAT'			=> 'class/cls_format.inc.php',
+		'UF'				=> 'class/cls_user_format.inc.php',
 		'HTTP'				=> 'class/cls_http.inc.php',
 		'H'					=> 'class/cls_helper.inc.php',
 		'ACTION_LOG'		=> 'class/cls_action_log_class.inc.php',

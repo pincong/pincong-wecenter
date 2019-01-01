@@ -78,7 +78,7 @@
 				<!-- 上传头像 -->
 				<div class="side-bar">
 					<dl>
-						<dt class="pull-left"><img class="aw-border-radius-5" src="<?php echo get_avatar_url($this->user_id, 'max'); ?>?rand=<?php echo rand(1, 999); ?>" alt="" id="avatar_src" /></dt>
+						<dt class="pull-left"><img class="aw-border-radius-5" src="<?php echo UF::avatar($this->user_info, 'max'); ?>?rand=<?php echo rand(1, 999); ?>" alt="" id="avatar_src" /></dt>
 						<dd class="pull-left">
 							<h5><?php _e('头像设置'); ?></h5>
 							<p><?php _e('支持 jpg、gif、png 等格式的图片'); ?></p>

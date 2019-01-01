@@ -62,18 +62,14 @@ class ajax extends AWS_CONTROLLER
 			{
 				if ($val['uid'] == $question_info['published_uid'] and $question_info['anonymous'] == 1)
 				{
-					$focus_users[$key] = array(
-						'uid' => 0,
-						'user_name' => AWS_APP::lang()->_t('匿名用户'),
-						'avatar_file' => get_avatar_url(0, 'mid'),
-					);
+					continue;
 				}
 				else
 				{
 					$focus_users[$key] = array(
 						'uid' => $val['uid'],
 						'user_name' => $val['user_name'],
-						'avatar_file' => get_avatar_url($val['uid'], 'mid'),
+						'avatar_file' => UF::avatar($val, 'mid'),
 						'url' => get_js_url('/people/' . $val['url_token'])
 					);
 				}

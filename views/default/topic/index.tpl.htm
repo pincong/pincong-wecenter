@@ -232,7 +232,7 @@
 							<?php foreach ($this->best_answer_users AS $key => $val) { ?>
 							<dl>
 								<dt class="pull-left aw-border-radius-5">
-									<a href="people/<?php echo $val['user_info']['url_token']; ?>"><img src="<?php echo get_avatar_url($val['user_info']['uid'], 'mid'); ?>" alt="" /></a>
+									<a href="people/<?php echo $val['user_info']['url_token']; ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 								</dt>
 
 								<dd class="pull-left">

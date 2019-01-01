@@ -101,7 +101,7 @@ class ajax extends AWS_CONTROLLER
 			'type' => 'people',
 			'uid' => $user_info['uid'],
 			'user_name' => $user_info['user_name'],
-			'avatar_file' => get_avatar_url($user_info['uid'], 'mid'),
+			'avatar_file' => UF::avatar($user_info, 'mid'),
 			'signature' => $user_info['signature'],
 			'focus' => ($user_follow_check ? true : false),
 			'is_me' => (($this->user_id == $user_info['uid']) ? true : false),

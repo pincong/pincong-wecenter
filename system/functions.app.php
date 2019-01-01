@@ -22,47 +22,6 @@
  * @author		WeCenter Dev Team
  */
 
-
-/**
- * 获取头像地址
- *
- * 举个例子：$uid=12345，那么头像路径很可能(根据您部署的上传文件夹而定)会被存储为/uploads/000/01/23/45_avatar_min.jpg
- *
- * @param  int
- * @param  string
- * @return string
- */
-function get_avatar_url($uid, $size = 'min')
-{
-	$uid = intval($uid);
-
-	if (!$uid)
-	{
-		return G_STATIC_URL . '/common/avatar-' . $size . '-img.png';
-	}
-
-	foreach (AWS_APP::config()->get('image')->avatar_thumbnail as $key => $val)
-	{
-		$all_size[] = $key;
-	}
-
-	$size = in_array($size, $all_size) ? $size : $all_size[0];
-
-	$uid = sprintf("%09d", $uid);
-	$dir1 = substr($uid, 0, 3);
-	$dir2 = substr($uid, 3, 2);
-	$dir3 = substr($uid, 5, 2);
-
-	if (file_exists(get_setting('upload_dir') . '/avatar/' . $dir1 . '/' . $dir2 . '/' . $dir3 . '/' . substr($uid, - 2) . '_avatar_' . $size . '.jpg'))
-	{
-		return get_setting('upload_url') . '/avatar/' . $dir1 . '/' . $dir2 . '/' . $dir3 . '/' . substr($uid, - 2) . '_avatar_' . $size . '.jpg';
-	}
-	else
-	{
-		return G_STATIC_URL . '/common/avatar-' . $size . '-img.png';
-	}
-}
-
 // 检测当前操作是否需要验证码
 function human_valid($permission_tag)
 {

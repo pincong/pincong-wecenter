@@ -550,7 +550,7 @@ class topic_class extends AWS_MODEL
 
 					$user_list[$user_info['uid']]['user_name'] = $user_info['user_name'];
 
-					$user_list[$user_info['uid']]['avatar_file'] = get_avatar_url($user_info['uid'], 'mid');
+					$user_list[$user_info['uid']]['avatar_file'] = UF::avatar($user_info, 'mid');
 
 					$user_list[$user_info['uid']]['url'] = get_js_url('/people/' . $user_info['url_token']);
 				}

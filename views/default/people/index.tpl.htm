@@ -8,7 +8,7 @@
                     <!-- 用户数据内容 -->
                     <div class="aw-mod aw-user-detail-box">
                         <div class="mod-head">
-                            <img src="<?php echo get_avatar_url($this->user['uid'], 'max'); ?>" alt="<?php echo $this->user['user_name']; ?>" />
+                            <img src="<?php echo UF::avatar($this->user, 'max'); ?>" alt="<?php echo $this->user['user_name']; ?>" />
                             <span class="pull-right operate">
                             <?php if ($this->user['uid'] != $this->user_id AND $this->user_id) { ?>
 
@@ -336,7 +336,7 @@
                             <?php if ($this->friends_list) { ?>
                             <p>
                                 <?php foreach ($this->friends_list AS $key => $val) { ?>
-                                    <a class="aw-user-name" data-id="<?php echo $val['uid']; ?>" href="people/<?php echo $val['url_token']; ?>"><img src="<?php echo get_avatar_url($val['uid'], 'mid'); ?>" alt="<?php echo $val['user_name']; ?>" /></a>
+                                    <a class="aw-user-name" data-id="<?php echo $val['uid']; ?>" href="people/<?php echo $val['url_token']; ?>"><img src="<?php echo UF::avatar($val, 'mid'); ?>" alt="<?php echo $val['user_name']; ?>" /></a>
                                 <?php } ?>
                             </p>
                             <?php } ?>
@@ -352,7 +352,7 @@
                             <?php if ($this->fans_list) { ?>
                             <p>
                                 <?php foreach ($this->fans_list AS $key => $val) { ?>
-                                    <a class="aw-user-name" data-id="<?php echo $val['uid']; ?>" href="people/<?php echo $val['url_token']; ?>"><img src="<?php echo get_avatar_url($val['uid'], 'mid'); ?>" alt="<?php echo $val['user_name']; ?>"></a>
+                                    <a class="aw-user-name" data-id="<?php echo $val['uid']; ?>" href="people/<?php echo $val['url_token']; ?>"><img src="<?php echo UF::avatar($val, 'mid'); ?>" alt="<?php echo $val['user_name']; ?>"></a>
                                 <?php } ?>
                             </p>
                             <?php } ?>
