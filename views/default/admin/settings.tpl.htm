@@ -74,42 +74,6 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('上传目录外部访问 URL 地址'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
-                                <input name="upload_url" class="form-control" type="text" value="<?php echo $this->setting['upload_url']; ?>"/>
-
-                                <span class="help-block"><?php _e('末尾不带 / 或 \\'); ?></span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('上传文件存放绝对路径'); ?></span>
-                            <div class="col-sm-5 col-xs-8">
-                                <input name="upload_dir" class="form-control" type="text" value="<?php echo $this->setting['upload_dir']; ?>"/>
-
-                                <span class="help-block"><?php _e('末尾不带 / 或 \\ '); ?></span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('static 目录资源 URL 地址'); ?></span>
-                            <div class="col-sm-5 col-xs-8">
-                                <input name="img_url" class="form-control" type="text" value="<?php echo $this->setting['img_url']; ?>"/>
-
-                                <span class="help-block"><?php _e('末尾不带 / 或 \，留空使用根目录下的 static 资源'); ?></span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
             </table>
         </div>
 
@@ -702,35 +666,6 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('编辑器设置'); ?>:</span>
-                            <div class="col-sm-6 col-xs-8">
-                                <label><input type="radio" name="advanced_editor_enable" value="Y"<?php if ($this->setting['advanced_editor_enable'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('高级编辑器'); ?></label>
-                                <label class="col-md-offset-1"><input type="radio" name="advanced_editor_enable" value="N"<?php if ($this->setting['advanced_editor_enable'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('纯文本编辑器'); ?></label>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('启用分类功能'); ?>:</span>
-                            <div class="col-sm-6 col-xs-8">
-                                <div class="btn-group mod-btn">
-                                    <label type="button" class="btn mod-btn-color">
-                                        <input type="radio" name="category_enable" value="Y"<?php if ($this->setting['category_enable'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
-                                    </label>
-
-                                    <label type="button" class="btn mod-btn-color">
-                                        <input type="radio" name="category_enable" value="N"<?php if ($this->setting['category_enable'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('允许上传附件'); ?>:</span>
                             <div class="col-sm-6 col-xs-8">
                                 <div class="btn-group mod-btn">
@@ -769,67 +704,68 @@
                         </div>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('上传文件存放绝对路径'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="upload_dir" class="form-control" type="text" value="<?php echo $this->setting['upload_dir']; ?>"/>
+
+                                <span class="help-block"><?php _e('末尾不带 / 或 \\ '); ?></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('上传目录外部访问 URL 地址'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="upload_url" class="form-control" type="text" value="<?php echo $this->setting['upload_url']; ?>"/>
+
+                                <span class="help-block"><?php _e('末尾不带 / 或 \\'); ?></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('static 目录资源 URL 地址'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="img_url" class="form-control" type="text" value="<?php echo $this->setting['img_url']; ?>"/>
+
+                                <span class="help-block"><?php _e('末尾不带 / 或 \，留空使用根目录下的 static 资源'); ?></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
 
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('自动展开评论'); ?>:</span>
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('编辑器设置'); ?>:</span>
+                            <div class="col-sm-6 col-xs-8">
+                                <label><input type="radio" name="advanced_editor_enable" value="Y"<?php if ($this->setting['advanced_editor_enable'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('高级编辑器'); ?></label>
+                                <label class="col-md-offset-1"><input type="radio" name="advanced_editor_enable" value="N"<?php if ($this->setting['advanced_editor_enable'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('纯文本编辑器'); ?></label>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('启用分类功能'); ?>:</span>
                             <div class="col-sm-6 col-xs-8">
                                 <div class="btn-group mod-btn">
                                     <label type="button" class="btn mod-btn-color">
-                                        <input type="radio" name="unfold_question_comments" value="Y"<?php if ($this->setting['unfold_question_comments'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+                                        <input type="radio" name="category_enable" value="Y"<?php if ($this->setting['category_enable'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
                                     </label>
 
                                     <label type="button" class="btn mod-btn-color">
-                                        <input type="radio" name="unfold_question_comments" value="N"<?php if ($this->setting['unfold_question_comments'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+                                        <input type="radio" name="category_enable" value="N"<?php if ($this->setting['category_enable'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
                                     </label>
                                 </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('敏感词列表'); ?>:</span>
-                            <div class="col-sm-7 col-xs-8">
-                                <textarea class="form-control textarea" rows="5" name="sensitive_words"><?php echo $this->setting['sensitive_words']; ?></textarea>
-                                <span class="help-block"><?php _e('支持普通字符串和正则表达式，每行一个。正则表达式请以 <code>{</code> 开始、以 <code>}</code> 结束，且需符合 <a href="https://php.net/manual/zh/pcre.pattern.php" target="_blank">PCRE 模式</a>，如 <code>{/敏\s*感\s*词/i}</code>。'); ?></span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('敏感词替换'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
-                                <input name="sensitive_words_replacement" type="text" class="form-control" value="<?php echo $this->setting['sensitive_words_replacement']; ?>"/>
-                                <span class="help-block"><?php _e('将敏感词替换为别的内容, 留空则不替换'); ?></span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('站外 URL 白名单'); ?>:</span>
-                            <div class="col-sm-7 col-xs-8">
-                                <textarea class="form-control textarea" rows="5" name="content_url_whitelist"><?php echo $this->setting['content_url_whitelist']; ?></textarea>
-                                <span class="help-block"><?php _e('支持普通字符串和正则表达式，每行一个。'); ?></span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('超链接黑名单'); ?>:</span>
-                            <div class="col-sm-7 col-xs-8">
-                                <textarea class="form-control textarea" rows="5" name="hyperlink_blacklist"><?php echo $this->setting['hyperlink_blacklist']; ?></textarea>
-                                <span class="help-block"><?php _e('支持普通字符串和正则表达式，每行一个。'); ?></span>
                             </div>
                         </div>
                     </td>
@@ -857,6 +793,71 @@
                 <tr>
                     <td>
                         <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('自动展开评论'); ?>:</span>
+                            <div class="col-sm-6 col-xs-8">
+                                <div class="btn-group mod-btn">
+                                    <label type="button" class="btn mod-btn-color">
+                                        <input type="radio" name="unfold_question_comments" value="Y"<?php if ($this->setting['unfold_question_comments'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+                                    </label>
+
+                                    <label type="button" class="btn mod-btn-color">
+                                        <input type="radio" name="unfold_question_comments" value="N"<?php if ($this->setting['unfold_question_comments'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('敏感词列表'); ?>:</span>
+                            <div class="col-sm-8 col-xs-8">
+                                <textarea class="form-control textarea" rows="5" name="sensitive_words"><?php echo $this->setting['sensitive_words']; ?></textarea>
+                                <span class="help-block"><?php _e('支持普通字符串和正则表达式，每行一个。正则表达式请以 <code>{</code> 开始、以 <code>}</code> 结束，且需符合 <a href="https://php.net/manual/zh/pcre.pattern.php" target="_blank">PCRE 模式</a>，如 <code>{/敏\s*感\s*词/i}</code>。'); ?></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('敏感词替换'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="sensitive_words_replacement" type="text" class="form-control" value="<?php echo $this->setting['sensitive_words_replacement']; ?>"/>
+                                <span class="help-block"><?php _e('将敏感词替换为别的内容, 留空则不替换'); ?></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('站外 URL 白名单'); ?>:</span>
+                            <div class="col-sm-8 col-xs-8">
+                                <textarea class="form-control textarea" rows="5" name="content_url_whitelist"><?php echo $this->setting['content_url_whitelist']; ?></textarea>
+                                <span class="help-block"><?php _e('支持普通字符串和正则表达式，每行一个。'); ?></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('超链接黑名单'); ?>:</span>
+                            <div class="col-sm-8 col-xs-8">
+                                <textarea class="form-control textarea" rows="5" name="hyperlink_blacklist"><?php echo $this->setting['hyperlink_blacklist']; ?></textarea>
+                                <span class="help-block"><?php _e('支持普通字符串和正则表达式，每行一个。'); ?></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('第三方图片上传 URL'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <input name="image_upload_link" type="text" class="form-control" value="<?php echo $this->setting['image_upload_link']; ?>"/>
@@ -869,7 +870,7 @@
                     <td>
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('搜索引擎 URL'); ?>:</span>
-                            <div class="col-sm-7 col-xs-8">
+                            <div class="col-sm-8 col-xs-8">
                                 <textarea class="form-control textarea" rows="5" name="search_engine_list"><?php echo $this->setting['search_engine_list']; ?></textarea>
                                 <span class="help-block"><?php _e('以 %s 取代查询，每行一个。e.g. Google, https://www.google.com/search?q=%s%20site:mydomain.com'); ?></span>
                             </div>
