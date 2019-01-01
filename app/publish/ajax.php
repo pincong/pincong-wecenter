@@ -184,7 +184,7 @@ class ajax extends AWS_CONTROLLER
 		$_POST['later'] = intval($_POST['later']);
 		if ($_POST['later'])
 		{
-			if (!$this->user_info['permission']['reply_later'])
+			if (!$this->user_info['permission']['post_later'])
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能延迟发布')));
 			}
