@@ -54,11 +54,11 @@ class main extends AWS_CONTROLLER
 
 		if (! $_GET['sort'] or $_GET['sort'] != 'ASC')
 		{
-			$_GET['sort'] = 'DESC';
+			$sort = 'DESC';
 		}
 		else
 		{
-			$_GET['sort'] = 'ASC';
+			$sort = 'ASC';
 		}
 
 		if (get_setting('unfold_question_comments') == 'Y')
@@ -143,15 +143,18 @@ class main extends AWS_CONTROLLER
 
 				$answer_list_where[] = 'uid IN(' . implode($follow_uids, ',') . ')';
 				$answer_count_where = 'uid IN(' . implode($follow_uids, ',') . ')';
-				$answer_order_by = 'add_time ASC';
+				//$answer_order_by = 'add_time ASC';
+				$answer_order_by = 'answer_id ASC';
 			}
 			else if ($_GET['sort_key'] == 'add_time')
 			{
-				$answer_order_by = $_GET['sort_key'] . " " . $_GET['sort'];
+				//$answer_order_by = "add_time " . $sort;
+				$answer_order_by = "answer_id " . $sort;
 			}
 			else
 			{
-				$answer_order_by = "agree_count " . $_GET['sort'] . ", add_time ASC";
+				//$answer_order_by = "agree_count " . $sort . ", add_time ASC";
+				$answer_order_by = "agree_count " . $sort . ", answer_id ASC";
 			}
 
 			if ($answer_count_where)
