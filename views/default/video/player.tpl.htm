@@ -223,7 +223,6 @@
 
 
 .ab-player {
-	position: relative;
 	min-width: 200px;
 }
 
@@ -317,59 +316,56 @@
 .ab-control {
 	background: #fff;
 	font-size: 14px;
-}
-
-.ab-control-bar {
 	height: 20px;
 	border-bottom: 1px solid #ececec;
 }
 
-.ab-control-bar .c-cell {
+.ab-control .c-cell {
 	vertical-align: middle;
 }
 
-.ab-control-bar .c-btn {
+.ab-control .c-btn {
 	display: inline-block;
 	line-height: 20px;
 	width: 25px;
 	height: 100%;
 }
 
-.ab-control-bar .c-slider {
+.ab-control .c-slider {
 	margin: 0 4px;
 }
 
-.ab-control-bar .ab-play-btn {
+.ab-control .ab-play-btn {
 	width: 35px;
 }
 
-.ab-control-bar .ab-time-label {
+.ab-control .ab-time-label {
 	text-align: center;
 	font-size: 11px;
 }
 
-.ab-control-bar .ab-time-label span {
+.ab-control .ab-time-label span {
 	display: inline-block;
 }
 
-.ab-control-bar .ab-time-label-current,
-.ab-control-bar .ab-time-label-total {
+.ab-control .ab-time-label-current,
+.ab-control .ab-time-label-total {
 	width: 36px;
 }
 
-.ab-control-bar .ab-volume-bar {
+.ab-control .ab-volume-bar {
 	width: 60px;
 }
 
-.ab-control-bar .ab-font-btn {
+.ab-control .ab-font-btn {
 	width: 40px;
 }
 
-.ab-control-bar .ab-color-btn {
+.ab-control .ab-color-btn {
 	width: 40px;
 }
 
-.ab-control-bar .ab-send-btn {
+.ab-control .ab-send-btn {
 	border-top: none;
 	width: 58px;
 	height: 100%;
@@ -377,7 +373,7 @@
 	font-size: 12px;
 }
 
-.ab-control-bar .ab-danmaku-input {
+.ab-control .ab-danmaku-input {
 	display: block;
 	width: 100%;
 	height: 100%;
@@ -385,11 +381,18 @@
 	font-size: 12px;
 }
 
+
+.ab-dlg-wrapper {
+	position: relative;
+	width: 100%;
+	height: 0px;
+}
+
 .ab-font-dlg {
 	width: 220px;
 	height: 160px;
-	left: 5px;
-	bottom: 30px;
+	left: 2px;
+	bottom: 2px;
 	visibility: hidden;
 }
 
@@ -400,22 +403,6 @@
 	vertical-align: middle;
 	overflow: hidden;
 	margin: 2px auto;
-}
-
-.ab-color-dlg {
-	width: 206px;
-	height: 201px;
-	left: 5px;
-	bottom: 30px;
-	padding: 0;
-	visibility: hidden;
-}
-
-.ab-color-dlg .colpick {
-	width: 100%;
-	height: 100%;
-	border: 0;
-	background: transparent;
 }
 
 .ab-font-dlg .c-dlg-btn-group .c-dlg-btn {
@@ -457,10 +444,26 @@
 	line-height: 44px;
 }
 
+.ab-color-dlg {
+	width: 206px;
+	height: 201px;
+	left: 2px;
+	bottom: 2px;
+	padding: 0;
+	visibility: hidden;
+}
+
+.ab-color-dlg .colpick {
+	width: 100%;
+	height: 100%;
+	border: 0;
+	background: transparent;
+}
+
 .ab-settings-dlg {
 	max-width: 230px;
-	right: 1px;
-	bottom: 50px;
+	right: 2px;
+	bottom: 2px;
 	visibility: hidden;
 }
 
@@ -486,20 +489,20 @@
 
 
 @media (max-width: 640px) {
-	.ab-control-bar .ab-volume-bar {
+	.ab-control .ab-volume-bar {
 		display: none !important;
 	}
-	.ab-control-bar .ab-send-btn {
+	.ab-control .ab-send-btn {
 		width: 40px;
 	}
 }
 
 @media (max-width: 480px) {
-	.ab-control-bar .ab-time-label-separator,
-	.ab-control-bar .ab-time-label-total {
+	.ab-control .ab-time-label-separator,
+	.ab-control .ab-time-label-total {
 		display: none !important;
 	}
-	.ab-control-bar .ab-volume-btn {
+	.ab-control .ab-volume-btn {
 		display: none !important;
 	}
 }
@@ -1187,99 +1190,102 @@ var ABP = {};
 		</div>
 	</div>
 
-	<div class="ab-control">
-		<!-- 控制条第一行 -->
-		<div class="c-table ab-control-bar">
-			<div class="c-cell c-content-width"><!-- 播放按钮
-				--><span class="c-btn ab-play-btn"><i class="c-icon-play"></i></span><!--
-			--></div>
-			<div class="c-cell c-separator"></div>
-			<div class="c-cell"><!-- 进度条 宽度自适应 -->
-				<div class="c-slider ab-seekbar">
-					<div class="c-slider-fill"></div>
-					<div class="c-slider-fill c-slider-fill-dark"></div>
+	<div class="ab-dlg-wrapper">
+		<div class="c-dlg ab-settings-dlg">
+			<p class="c-dlg-title">播放速度</p>
+			<div class="c-dlg-btn-group">
+				<div class="ab-speed-option-group-1">
+					<label><input type="radio" value="0.25" name="abp-speed"><span class="c-dlg-btn ab-speed-option">0.25</span></label>
+					<label><input type="radio" value="0.75" name="abp-speed"><span class="c-dlg-btn ab-speed-option">0.75</span></label>
+					<label><input type="radio" value="1.25" name="abp-speed"><span class="c-dlg-btn ab-speed-option">1.25</span></label>
+					<label><input type="radio" value="1.75" name="abp-speed"><span class="c-dlg-btn ab-speed-option">1.75</span></label>
+				</div>
+				<div class="ab-speed-option-group-2">
+					<label><input type="radio" value="0.5" name="abp-speed"><span class="c-dlg-btn ab-speed-option">0.5</span></label>
+					<label><input type="radio" value="1.0" name="abp-speed" checked="checked"><span class="c-dlg-btn ab-speed-option">1.0</span></label>
+					<label><input type="radio" value="1.5" name="abp-speed"><span class="c-dlg-btn ab-speed-option">1.5</span></label>
+					<label><input type="radio" value="2.0" name="abp-speed"><span class="c-dlg-btn ab-speed-option">2.0</span></label>
 				</div>
 			</div>
-			<div class="c-cell c-content-width"><!-- 时间 -->
-				<div class="ab-time-label"><!--
-					--><span class="ab-time-label-current">00:00</span><!--
-					--><span class="ab-time-label-separator"> / </span><!--
-					--><span class="ab-time-label-total">00:00</span><!--
-				--></div>
+			<p class="c-dlg-title ab-quality-option-title">清晰度</p>
+			<div class="c-dlg-btn-group ab-quality-option-group">
+				<!--
+				<label><input type="radio" name="abp-quality"><span class="c-dlg-btn ab-quality-option">1080p</span></label>
+				<label><input type="radio" name="abp-quality" checked="checked"><span class="c-dlg-btn ab-quality-option">720p</span></label>
+				<label><input type="radio" name="abp-quality"><span class="c-dlg-btn ab-quality-option">360p</span></label>
+				-->
 			</div>
-			<div class="c-cell c-content-width"><!-- 音量按钮
-				--><span class="c-btn ab-volume-btn"><i class="c-icon-volume-high"></i></span><!--
-			--></div>
-			<div class="c-cell c-content-width"><!-- 音量调节 -->
-				<div class="c-slider ab-volume-bar">
-					<div class="c-slider-fill"></div>
-				</div>
-			</div>
-			<div class="c-cell c-content-width"><!-- 选项按钮
-				--><span class="c-btn c-btn-on ab-danmaku-btn"><i class="c-icon-comment"></i></span><!--
-				--><span class="c-btn ab-loop-btn"><i class="c-icon-loop"></i></span><!--
-				--><span class="c-btn ab-settings-btn"><i class="c-icon-gear"></i></span><!--
-				--><!--span class="c-btn ab-fullscreen-btn"><i class="c-icon-screen-full"></i></span--><!--
-			--></div>
-		</div>
-		<!-- end 控制条第一行 -->
-		<!-- 控制条第二行 -->
-		<div class="c-table ab-control-bar">
-			<div class="c-cell c-content-width"><!-- 弹幕选项按钮
-				--><span class="c-btn ab-font-btn"><i class="c-icon-font-style"></i></span><!--
-				--><span class="c-btn ab-color-btn"><i class="c-icon-color-mode"></i></span><!--
-			--></div>
-			<div class="c-cell"><!-- 弹幕输入框 宽度自适应
-				--><input type="text" class="c-input ab-danmaku-input"><!-- 
-			--></div>
-			<div class="c-cell c-content-width"><!-- 弹幕发送按钮-->
-				<div class="c-text-btn ab-send-btn">发送</div>
-			</div>
-		</div>
-		<!-- end 控制条第二行 -->
-	</div>
-
-	<div class="c-dlg ab-font-dlg">
-		<p class="c-dlg-title">弹幕字号</p>
-		<div class="c-dlg-btn-group">
-			<label><input type="radio" value="18" name="abp-danmaku-size"><span class="c-dlg-btn ab-danmaku-size-1">小字号</span></label>
-			<label><input type="radio" value="25" name="abp-danmaku-size" checked="checked"><span class="c-dlg-btn ab-danmaku-size-2">中字号</span></label>
-		</div>
-		<p class="c-dlg-title">弹幕模式</p>
-		<div class="c-dlg-btn-group">
-			<label><input type="radio" value="5" name="abp-danmaku-mode"><span class="c-dlg-btn ab-danmaku-mode-1">顶端渐隐</span></label>
-			<label><input type="radio" value="1" name="abp-danmaku-mode" checked="checked"><span class="c-dlg-btn ab-danmaku-mode-2">滚动字幕</span></label>
-			<label><input type="radio" value="4" name="abp-danmaku-mode"><span class="c-dlg-btn ab-danmaku-mode-3">底端渐隐</span></label>
 		</div>
 	</div>
 
-	<div class="c-dlg ab-color-dlg"></div>
-
-	<div class="c-dlg ab-settings-dlg">
-		<p class="c-dlg-title">播放速度</p>
-		<div class="c-dlg-btn-group">
-			<div class="ab-speed-option-group-1">
-				<label><input type="radio" value="0.25" name="abp-speed"><span class="c-dlg-btn ab-speed-option">0.25</span></label>
-				<label><input type="radio" value="0.75" name="abp-speed"><span class="c-dlg-btn ab-speed-option">0.75</span></label>
-				<label><input type="radio" value="1.25" name="abp-speed"><span class="c-dlg-btn ab-speed-option">1.25</span></label>
-				<label><input type="radio" value="1.75" name="abp-speed"><span class="c-dlg-btn ab-speed-option">1.75</span></label>
-			</div>
-			<div class="ab-speed-option-group-2">
-				<label><input type="radio" value="0.5" name="abp-speed"><span class="c-dlg-btn ab-speed-option">0.5</span></label>
-				<label><input type="radio" value="1.0" name="abp-speed" checked="checked"><span class="c-dlg-btn ab-speed-option">1.0</span></label>
-				<label><input type="radio" value="1.5" name="abp-speed"><span class="c-dlg-btn ab-speed-option">1.5</span></label>
-				<label><input type="radio" value="2.0" name="abp-speed"><span class="c-dlg-btn ab-speed-option">2.0</span></label>
+	<!-- 控制条第一行 -->
+	<div class="c-table ab-control">
+		<div class="c-cell c-content-width"><!-- 播放按钮
+			--><span class="c-btn ab-play-btn"><i class="c-icon-play"></i></span><!--
+		--></div>
+		<div class="c-cell c-separator"></div>
+		<div class="c-cell"><!-- 进度条 宽度自适应 -->
+			<div class="c-slider ab-seekbar">
+				<div class="c-slider-fill"></div>
+				<div class="c-slider-fill c-slider-fill-dark"></div>
 			</div>
 		</div>
-		<p class="c-dlg-title ab-quality-option-title">清晰度</p>
-		<div class="c-dlg-btn-group ab-quality-option-group">
-			<!--
-			<label><input type="radio" name="abp-quality"><span class="c-dlg-btn ab-quality-option">1080p</span></label>
-			<label><input type="radio" name="abp-quality" checked="checked"><span class="c-dlg-btn ab-quality-option">720p</span></label>
-			<label><input type="radio" name="abp-quality"><span class="c-dlg-btn ab-quality-option">360p</span></label>
-			-->
+		<div class="c-cell c-content-width"><!-- 时间 -->
+			<div class="ab-time-label"><!--
+				--><span class="ab-time-label-current">00:00</span><!--
+				--><span class="ab-time-label-separator"> / </span><!--
+				--><span class="ab-time-label-total">00:00</span><!--
+			--></div>
+		</div>
+		<div class="c-cell c-content-width"><!-- 音量按钮
+			--><span class="c-btn ab-volume-btn"><i class="c-icon-volume-high"></i></span><!--
+		--></div>
+		<div class="c-cell c-content-width"><!-- 音量调节 -->
+			<div class="c-slider ab-volume-bar">
+				<div class="c-slider-fill"></div>
+			</div>
+		</div>
+		<div class="c-cell c-content-width"><!-- 选项按钮
+			--><span class="c-btn c-btn-on ab-danmaku-btn"><i class="c-icon-comment"></i></span><!--
+			--><span class="c-btn ab-loop-btn"><i class="c-icon-loop"></i></span><!--
+			--><span class="c-btn ab-settings-btn"><i class="c-icon-gear"></i></span><!--
+			--><!--span class="c-btn ab-fullscreen-btn"><i class="c-icon-screen-full"></i></span--><!--
+		--></div>
+	</div>
+	<!-- end 控制条第一行 -->
+
+	<div class="ab-dlg-wrapper">
+		<div class="c-dlg ab-font-dlg">
+			<p class="c-dlg-title">弹幕字号</p>
+			<div class="c-dlg-btn-group">
+				<label><input type="radio" value="18" name="abp-danmaku-size"><span class="c-dlg-btn ab-danmaku-size-1">小字号</span></label>
+				<label><input type="radio" value="25" name="abp-danmaku-size" checked="checked"><span class="c-dlg-btn ab-danmaku-size-2">中字号</span></label>
+			</div>
+			<p class="c-dlg-title">弹幕模式</p>
+			<div class="c-dlg-btn-group">
+				<label><input type="radio" value="5" name="abp-danmaku-mode"><span class="c-dlg-btn ab-danmaku-mode-1">顶端渐隐</span></label>
+				<label><input type="radio" value="1" name="abp-danmaku-mode" checked="checked"><span class="c-dlg-btn ab-danmaku-mode-2">滚动字幕</span></label>
+				<label><input type="radio" value="4" name="abp-danmaku-mode"><span class="c-dlg-btn ab-danmaku-mode-3">底端渐隐</span></label>
+			</div>
+		</div>
+
+		<div class="c-dlg ab-color-dlg"></div>
+	</div>
+
+	<!-- 控制条第二行 -->
+	<div class="c-table ab-control">
+		<div class="c-cell c-content-width"><!-- 弹幕选项按钮
+			--><span class="c-btn ab-font-btn"><i class="c-icon-font-style"></i></span><!--
+			--><span class="c-btn ab-color-btn"><i class="c-icon-color-mode"></i></span><!--
+		--></div>
+		<div class="c-cell"><!-- 弹幕输入框 宽度自适应
+			--><input type="text" class="c-input ab-danmaku-input"><!-- 
+		--></div>
+		<div class="c-cell c-content-width"><!-- 弹幕发送按钮-->
+			<div class="c-text-btn ab-send-btn">发送</div>
 		</div>
 	</div>
+	<!-- end 控制条第二行 -->
 </div>
 
 
