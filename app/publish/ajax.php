@@ -168,6 +168,7 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择问题分类')));
         }
 
+		// TODO: 在管理后台添加字数选项
         if (cjk_strlen($question_content) < 5)
         {
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('问题标题字数不得少于 5 个字')));
@@ -179,6 +180,12 @@ class ajax extends AWS_CONTROLLER
         }
 
         $question_detail = my_trim($_POST['question_detail']);
+
+		// TODO: 在管理后台添加字数选项
+        if (cjk_strlen($question_detail) > 50000)
+        {
+            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('问题字数不得多于 50000 字')));
+        }
 
         if ($_POST['topics'])
         {
@@ -219,6 +226,12 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
         }
 
+		if ($_POST['later'])
+		{
+			//TODO: 延迟显示
+			$url = get_js_url('/publish/delay_display/');
+		}
+		else
         {
             $question_id = $this->model('publish')->publish_question(
                 $question_content,
@@ -234,20 +247,10 @@ class ajax extends AWS_CONTROLLER
                 $_POST['later']
             );
 
-			//TODO: 延迟显示
-            //if (intval($_POST['later']))
-            //{
-            //    $url = get_js_url('/publish/delay_display/');
-            //}
-            //else
-            {
-                $url = get_js_url('/question/' . $question_id);
-            }
-
-            H::ajax_json_output(AWS_APP::RSM(array(
-                'url' => $url
-            ), 1, null));
+			$url = get_js_url('/question/' . $question_id);
         }
+
+		H::ajax_json_output(AWS_APP::RSM(array('url' => $url), 1, null));
     }
 
     public function publish_article_action()
@@ -300,6 +303,12 @@ class ajax extends AWS_CONTROLLER
 
         $article_content = my_trim($_POST['message']);
 
+		// TODO: 在管理后台添加字数选项
+        if (cjk_strlen($article_content) > 50000)
+        {
+            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('文章字数不得多于 50000 字')));
+        }
+
         if ($_POST['topics'])
         {
 			$topic_title_limit = intval(get_setting('topic_title_limit'));
@@ -338,6 +347,12 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
         }
 
+		if ($_POST['later'])
+		{
+			//TODO: 延迟显示
+			$url = get_js_url('/publish/delay_display/');
+		}
+		else
         {
             $article_id = $this->model('publish')->publish_article(
                 $article_title,
@@ -351,20 +366,10 @@ class ajax extends AWS_CONTROLLER
                 $_POST['later']
             );
 
-			//TODO: 延迟显示
-            //if (intval($_POST['later']))
-            //{
-            //    $url = get_js_url('/publish/delay_display/');
-            //}
-            //else
-            {
-                $url = get_js_url('/article/' . $article_id);
-            }
-
-            H::ajax_json_output(AWS_APP::RSM(array(
-                'url' => $url
-            ), 1, null));
+			$url = get_js_url('/article/' . $article_id);
         }
+
+		H::ajax_json_output(AWS_APP::RSM(array('url' => $url), 1, null));
     }
 
 	public function modify_article_action()
