@@ -367,6 +367,7 @@ $(document).ready(function () {
 	var video_url;
 	var video_player = new ABP.Player('.ab-player');
 	video_player.setPoster('<?php echo $this->video_info['thumb_url']; ?>');
+	video_player.setDuration(<?php echo $this->video_info['duration']; ?>);
 	video_player.loadDanmaku(DANMAKU_LIST);
 
 	// 产生交互, 但是视频还没有载入

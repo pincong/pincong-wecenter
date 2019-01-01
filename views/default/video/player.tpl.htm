@@ -527,20 +527,17 @@ var ABP = {};
 		ABP.Util.bindDragStart(self.$element, function(e) {
 			e.preventDefault();
 			self.dragging = true;
-			console.log('start');
 			self.emitter.emit('start', e);
 		});
 		ABP.Util.bindDragMove(self.$document, function(e) {
 			if (!self.dragging) return;
 			e.preventDefault();
-			console.log('move');
 			self.emitter.emit('move', e);
 		});
 		ABP.Util.bindDragEnd(self.$document, function(e) {
 			if (!self.dragging) return;
 			e.preventDefault();
 			self.dragging = false;
-			console.log('end');
 			self.emitter.emit('end', e);
 		});
 	};
@@ -582,6 +579,8 @@ var ABP = {};
 		this.danmakuEnabled = true;
 		this.videoLoaded = false;
 		this.danmakuColor = 0xffffff;
+		this.timeSeeking = 0;
+		this.duration = 0;
 		// end 初始状态
 
 		this._init();
@@ -619,13 +618,15 @@ var ABP = {};
 		this._toggleMute();
 	};
 
-	Player.prototype.seek = function(seconds) {
+	Player.prototype.seek = function(time) {
+		if (this.timeSeeking == time) return;
+		this.timeSeeking = time;
 		if (!this.videoLoaded) {
 			this.emitter.emit('requireVideo', function() {
-				this._seek(seconds);
+				this._seek(time);
 			}.bind(this));
 		} else {
-			this._seek(seconds);
+			this._seek(time);
 		}
 	};
 
@@ -643,6 +644,11 @@ var ABP = {};
 		} else {
 			this.$poster.css('background-image', 'none');
 		}
+	};
+
+	Player.prototype.setDuration = function(dur) {
+		this.duration = dur;
+		this.$durationLabel.text(ABP.Util.formatTime(dur));
 	};
 
 	Player.prototype.showLoader = function() {
@@ -748,7 +754,7 @@ var ABP = {};
 		ABP.Util.bindClick(self.$seekbar, function(e) {
 			self._seekbarClick(e);
 		});
-		self.seekbarDrag.on('move', function(e) {
+		self.seekbarDrag.on('end', function(e) {
 			self._seekbarClick(e);
 		});
 
@@ -778,7 +784,7 @@ var ABP = {};
 		};
 		this.video.onloadedmetadata = function() {
 			self.videoLoaded = true;
-			self._updateSeekbar();
+			self.duration = self.video.duration;
 			self._updateDurationLabel();
 		};
 
@@ -941,7 +947,7 @@ var ABP = {};
 		var progress = (ABP.Util.eventX(e) - this.$seekbar.offset().left) / this.$seekbar.width();
 		if (progress < 0) progress = 0;
 		if (progress > 1) progress = 1;
-		this.seek(this.video.duration * progress);
+		this.seek(this.duration * progress);
 	};
 
 	Player.prototype._sendButtonClick = function() {
