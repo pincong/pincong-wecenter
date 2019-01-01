@@ -97,6 +97,8 @@
 								<li><a href="#article_comments" id="page_article_comments" data-toggle="tab"><?php _e('评论'); ?></a></li>
 								<li><a href="#videos" id="page_videos" data-toggle="tab"><?php _e('影片'); ?></a></li>
 								<li><a href="#video_comments" id="page_video_comments" data-toggle="tab"><?php _e('评论'); ?></a></li>
+								<li><a href="#received_votes" id="page_received_votes" data-toggle="tab"><?php _e('收到的赞'); ?></a></li>
+								<li><a href="#sent_votes" id="page_sent_votes" data-toggle="tab"><?php _e('送出的赞'); ?></a></li>
 								<li><a href="#focus" id="page_focus" data-toggle="tab"><?php _e('关注'); ?></a></li>
 								<?php if ($this->user_id == $this->user['uid']) { ?>
 								<li><a href="#currency" id="page_currency" data-toggle="tab"><?php _e('%s', get_setting('currency_name')); ?></a></li>
@@ -301,6 +303,42 @@
 								</div>
 							</div>
 
+							<div class="tab-pane" id="received_votes">
+								<div class="aw-mod">
+									<div class="mod-head">
+										<h3><?php _e('收到的赞'); ?></h3>
+									</div>
+									<div class="mod-body">
+										<div class="aw-padding-x-20" id="contents_user_received_votes"></div>
+									</div>
+									<div class="mod-footer">
+										<!-- 加载更多内容 -->
+										<a class="aw-load-more-content" id="bp_user_received_votes_more">
+											<span><?php _e('更多'); ?></span>
+										</a>
+										<!-- end 加载更多内容 -->
+									</div>
+								</div>
+							</div>
+
+							<div class="tab-pane" id="sent_votes">
+								<div class="aw-mod">
+									<div class="mod-head">
+										<h3><?php _e('送出的赞'); ?></h3>
+									</div>
+									<div class="mod-body">
+										<div class="aw-padding-x-20" id="contents_user_sent_votes"></div>
+									</div>
+									<div class="mod-footer">
+										<!-- 加载更多内容 -->
+										<a class="aw-load-more-content" id="bp_user_sent_votes_more">
+											<span><?php _e('更多'); ?></span>
+										</a>
+										<!-- end 加载更多内容 -->
+									</div>
+								</div>
+							</div>
+
 							<div class="tab-pane" id="focus">
 								<!-- 自定义切换 -->
 								<div class="aw-mod">
@@ -441,6 +479,20 @@ $(document).ready(function () {
 		if (page_video_comments_inited) return;
 		page_video_comments_inited = true;
 		AWS.load_list_view(G_BASE_URL + '/people/info/video_comments/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_video_comments_more'), $('#contents_user_video_comments'), 1);
+	});
+
+	var page_received_votes_inited = false;
+	$('#page_received_votes').click(function() {
+		if (page_received_votes_inited) return;
+		page_received_votes_inited = true;
+		AWS.load_list_view(G_BASE_URL + '/people/info/received_votes/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_received_votes_more'), $('#contents_user_received_votes'), 1);
+	});
+
+	var page_sent_votes_inited = false;
+	$('#page_sent_votes').click(function() {
+		if (page_sent_votes_inited) return;
+		page_sent_votes_inited = true;
+		AWS.load_list_view(G_BASE_URL + '/people/info/sent_votes/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_sent_votes_more'), $('#contents_user_sent_votes'), 1);
 	});
 
 	var page_focus_inited = false;

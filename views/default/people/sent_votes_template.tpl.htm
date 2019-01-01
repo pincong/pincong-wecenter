@@ -1,0 +1,16 @@
+<?php if ($this->list) { ?>
+<?php foreach($this->list AS $key => $val) { ?>
+<li>
+	<p class="aw-small-text">
+		<?php if ($val['value'] > 0) { ?>+<?php } ?><?php echo $val['value']; ?>
+		•
+		<a href="<?php echo UF::url($val['recipient_user_info']); ?>"><?php echo UF::name($val['recipient_user_info']); ?></a>
+		•
+		<?php echo date_friendly($val['add_time']); ?>
+		•
+		<?php echo $val['type']; ?>
+		#<?php echo $val['item_id']; ?>
+	</p>
+</li>
+<?php } ?>
+<?php } ?>

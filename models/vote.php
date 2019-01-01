@@ -20,6 +20,46 @@ if (!defined('IN_ANWSION'))
 
 class vote_class extends AWS_MODEL
 {
+	public function get_sent_votes_by_uid($uid, $page, $per_page)
+	{
+		$list = $this->fetch_page('vote', 'uid = ' . intval($uid), 'id DESC', $page, $per_page);
+		foreach ($list AS $key => $val)
+		{
+			$recipient_uids[] = $val['recipient_uid'];
+		}
+
+		if ($recipient_uids)
+		{
+			$recipient_user_infos = $this->model('account')->get_user_info_by_uids($recipient_uids);
+			foreach ($list AS $key => $val)
+			{
+				$list[$key]['recipient_user_info'] = $recipient_user_infos[$val['recipient_uid']];
+			}
+		}
+
+		return $list;
+	}
+
+	public function get_received_votes_by_uid($uid, $page, $per_page)
+	{
+		$list = $this->fetch_page('vote', 'recipient_uid = ' . intval($uid), 'id DESC', $page, $per_page);
+		foreach ($list AS $key => $val)
+		{
+			$uids[] = $val['uid'];
+		}
+
+		if ($uids)
+		{
+			$user_infos = $this->model('account')->get_user_info_by_uids($uids);
+			foreach ($list AS $key => $val)
+			{
+				$list[$key]['user_info'] = $user_infos[$val['uid']];
+			}
+		}
+
+		return $list;
+	}
+
 	private function process_currency_agree(&$type, $item_id, $uid, $item_uid, $affect_currency)
 	{
 		switch ($type)
