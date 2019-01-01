@@ -140,10 +140,10 @@ class ajax extends AWS_CONTROLLER
 		$later = intval($_POST['later']);
 		if ($later)
 		{
-			/*if (!$this->user_info['permission']['post_later'])
+			if (!$this->user_info['permission']['post_later'])
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能延迟发布')));
-			}*/
+			}
 
 			if ($later < 10 OR $later > 1440)
 			{
@@ -298,10 +298,10 @@ class ajax extends AWS_CONTROLLER
 		$later = intval($_POST['later']);
 		if ($later)
 		{
-			/*if (!$this->user_info['permission']['post_later'])
+			if (!$this->user_info['permission']['post_later'])
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能延迟发布')));
-			}*/
+			}
 
 			if ($later < 10 OR $later > 1440)
 			{

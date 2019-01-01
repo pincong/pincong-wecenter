@@ -935,7 +935,9 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			'vote_agree',
 			'vote_disagree',
 			'thank_user',
-			'allow_anonymous'
+			'allow_anonymous',
+			'post_later',
+			'reply_later'
         );
 
         $group_setting = array();
