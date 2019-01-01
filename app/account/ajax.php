@@ -188,7 +188,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (is_null($user_info))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('该账号连续多次尝试登录失败, 为了安全起见, 该账号 %s 分钟内禁止登录', get_setting('limit_login_attempts_interval'))));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('该账号已经连续多次尝试登录失败, 为了安全起见, 该账号 %s 分钟内禁止登录', get_setting('limit_login_attempts_interval'))));
 		}
 		elseif (!$user_info)
 		{
@@ -198,7 +198,10 @@ class ajax extends AWS_CONTROLLER
 		{
 			if ($user_info['forbidden'])
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('抱歉, 你的账号已经被禁止登录')));
+				//H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('抱歉, 你的账号已经被禁止登录')));
+				H::ajax_json_output(AWS_APP::RSM(array(
+					'url' => get_js_url('/people/') . $user_info['url_token']
+				), 1, null));
 			}
 
 			if (get_setting('site_close') == 'Y' AND $user_info['group_id'] != 1)
