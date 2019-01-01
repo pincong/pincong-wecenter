@@ -42,6 +42,11 @@ class ajax extends AWS_CONTROLLER
 		}
 		else
 		{
+			if (!$this->user_info['permission']['follow_people'])
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不关注其他人')));
+			}
+
 			$action = 'add';
 
 			$this->model('follow')->user_follow_add($this->user_id, $_POST['uid']);
