@@ -22,7 +22,7 @@ class system_class extends AWS_MODEL
 {
 	public function fetch_category_data()
 	{
-		$order = 'sort ASC, id ASC';
+		$order = 'sort DESC, id ASC';
 
 		static $category_all;
 

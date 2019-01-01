@@ -39,7 +39,7 @@ class menu_class extends AWS_MODEL
 	{
 		if (!$nav_menu_data = AWS_APP::cache()->get('nav_menu_list'))
 		{
-			$nav_menu_data = $this->fetch_all('nav_menu', null, 'sort ASC');
+			$nav_menu_data = $this->fetch_all('nav_menu', null, 'sort DESC');
 
 			AWS_APP::cache()->set('nav_menu_list', $nav_menu_data, get_setting('cache_level_low'), 'nav_menu');
 		}
