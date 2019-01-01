@@ -153,7 +153,7 @@ class posts_class extends AWS_MODEL
 		return $this->delete('posts_index', "post_id = " . intval($post_id) . " AND post_type = '" . $this->quote($post_type) . "'");
 	}
 
-	public function get_posts_list($post_type, $page = 1, $per_page = 10, $sort = null, $topic_ids = null, $category_id = null, $answer_count = null, $day = 30, $is_recommend = false)
+	public function get_posts_list($post_type, $page = 1, $per_page = 10, $sort = null, $topic_ids = null, $category_id = null, $answer_count = null, $day = 30, $recommend = false)
 	{
 		$order_key = 'add_time DESC';
 
@@ -188,7 +188,7 @@ class posts_class extends AWS_MODEL
 
 		if ($topic_ids)
 		{
-			$posts_index = $this->get_posts_list_by_topic_ids($post_type, $post_type, $topic_ids, $category_id, $answer_count, $order_key, $is_recommend, $page, $per_page);
+			$posts_index = $this->get_posts_list_by_topic_ids($post_type, $post_type, $topic_ids, $category_id, $answer_count, $order_key, $recommend, $page, $per_page);
 		}
 		else
 		{
@@ -208,7 +208,7 @@ class posts_class extends AWS_MODEL
 				}
 			}
 
-			if ($is_recommend)
+			if ($recommend)
 			{
 				$where[] = 'is_recommend = 1';
 			}
@@ -413,7 +413,7 @@ class posts_class extends AWS_MODEL
 		return $explore_list_data;
 	}
 
-	public function get_posts_list_by_topic_ids($post_type, $topic_type, $topic_ids, $category_id = null, $answer_count = null, $order_by = 'post_id DESC', $is_recommend = false, $page = 1, $per_page = 10)
+	public function get_posts_list_by_topic_ids($post_type, $topic_type, $topic_ids, $category_id = null, $answer_count = null, $order_by = 'post_id DESC', $recommend = false, $page = 1, $per_page = 10)
 	{
 		if (!is_array($topic_ids))
 		{
@@ -422,9 +422,9 @@ class posts_class extends AWS_MODEL
 
 		array_walk_recursive($topic_ids, 'intval_string');
 
-		$result_cache_key = 'posts_list_by_topic_ids_' .  md5(implode(',', $topic_ids) . $answer_count . $category_id . $order_by . $is_recommend . $page . $per_page . $post_type . $topic_type);
+		$result_cache_key = 'posts_list_by_topic_ids_' .  md5(implode(',', $topic_ids) . $answer_count . $category_id . $order_by . $recommend . $page . $per_page . $post_type . $topic_type);
 
-		$found_rows_cache_key = 'posts_list_by_topic_ids_found_rows_' . md5(implode(',', $topic_ids) . $answer_count . $category_id . $is_recommend . $per_page . $post_type . $topic_type);
+		$found_rows_cache_key = 'posts_list_by_topic_ids_found_rows_' . md5(implode(',', $topic_ids) . $answer_count . $category_id . $recommend . $per_page . $post_type . $topic_type);
 
 		$topic_relation_where[] = '`topic_id` IN(' . implode(',', $topic_ids) . ')';
 
@@ -468,7 +468,7 @@ class posts_class extends AWS_MODEL
 			}
 		}
 
-		if ($is_recommend)
+		if ($recommend)
 		{
 			$where[] = 'is_recommend = 1';
 		}

@@ -50,9 +50,9 @@ class main extends AWS_CONTROLLER
 		{
 			$url = '/search/q-' . base64_encode($_POST['q']);
 
-			if ($_GET['is_recommend'])
+			if ($_GET['recommend'])
 			{
-				$url .= '__is_recommend-1';
+				$url .= '__recommend-1';
 			}
 
 			HTTP::redirect($url);

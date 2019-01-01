@@ -20,28 +20,28 @@ if (!defined('IN_ANWSION'))
 
 class search_class extends AWS_MODEL
 {
-	public function get_mixed_result($types, $q, $topic_ids, $page, $limit = 20, $is_recommend = false)
+	public function get_mixed_result($types, $q, $topic_ids, $page, $limit = 20, $recommend = false)
 	{
 		$types = explode(',', $types);
 
-		if (in_array('users', $types) AND !$is_recommend)
+		if (in_array('users', $types) AND !$recommend)
 		{
 			$result = array_merge((array)$result, (array)$this->search_users($q, $page, $limit));
 		}
 
-		if (in_array('topics', $types) AND !$is_recommend)
+		if (in_array('topics', $types) AND !$recommend)
 		{
 			$result = array_merge((array)$result, (array)$this->search_topics($q, $page, $limit));
 		}
 
 		if (in_array('questions', $types))
 		{
-			$result = array_merge((array)$result, (array)$this->search_questions($q, $topic_ids, $page, $limit, $is_recommend));
+			$result = array_merge((array)$result, (array)$this->search_questions($q, $topic_ids, $page, $limit, $recommend));
 		}
 
 		if (in_array('articles', $types))
 		{
-			$result = array_merge((array)$result, (array)$this->search_articles($q, $topic_ids, $page, $limit, $is_recommend));
+			$result = array_merge((array)$result, (array)$this->search_articles($q, $topic_ids, $page, $limit, $recommend));
 		}
 
 		return $result;
@@ -87,17 +87,17 @@ class search_class extends AWS_MODEL
 		return $result;
 	}
 
-	public function search_questions($q, $topic_ids = null, $page = 1, $limit = 20, $is_recommend = false)
+	public function search_questions($q, $topic_ids = null, $page = 1, $limit = 20, $recommend = false)
 	{
-		return $this->model('search_fulltext')->search_questions($q, $topic_ids, $page, $limit, $is_recommend);
+		return $this->model('search_fulltext')->search_questions($q, $topic_ids, $page, $limit, $recommend);
 	}
 
-	public function search_articles($q, $topic_ids = null, $page = 1, $limit = 20, $is_recommend = false)
+	public function search_articles($q, $topic_ids = null, $page = 1, $limit = 20, $recommend = false)
 	{
-		return $this->model('search_fulltext')->search_articles($q, $topic_ids, $page, $limit, $is_recommend);
+		return $this->model('search_fulltext')->search_articles($q, $topic_ids, $page, $limit, $recommend);
 	}
 
-	public function search($q, $search_type, $page = 1, $limit = 20, $topic_ids = null, $is_recommend = false)
+	public function search($q, $search_type, $page = 1, $limit = 20, $topic_ids = null, $recommend = false)
 	{
 		if (!$q)
 		{
@@ -124,7 +124,7 @@ class search_class extends AWS_MODEL
 			$search_type = 'users,topics,questions,articles';
 		}
 
-		$result_list = $this->get_mixed_result($search_type, $q, $topic_ids, $page, $limit, $is_recommend);
+		$result_list = $this->get_mixed_result($search_type, $q, $topic_ids, $page, $limit, $recommend);
 
 		if ($result_list)
 		{

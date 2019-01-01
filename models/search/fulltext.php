@@ -88,7 +88,7 @@ class search_fulltext_class extends AWS_MODEL
 		return trim("SELECT *, MATCH(" . $column . "_fulltext) AGAINST('" . $this->quote($this->encode_search_code($keyword)) . "' IN BOOLEAN MODE) AS score FROM " . $this->get_table($table) . " WHERE MATCH(" . $column . "_fulltext) AGAINST('" . $this->quote($this->encode_search_code($keyword)) . "' IN BOOLEAN MODE) " . $where);
 	}
 
-	public function search_questions($q, $topic_ids = null, $page = 1, $limit = 20, $is_recommend = false)
+	public function search_questions($q, $topic_ids = null, $page = 1, $limit = 20, $recommend = false)
 	{
 		if ($topic_ids)
 		{
@@ -99,7 +99,7 @@ class search_fulltext_class extends AWS_MODEL
 			$where[] = '`question_id` IN (SELECT `item_id` FROM `' . $this->get_table('topic_relation') . '` WHERE `topic_id` IN(' . implode(',', $topic_ids) . ') AND `type` = "question")';
 		}
 
-		if ($is_recommend)
+		if ($recommend)
 		{
 			$where[] = '(`is_recommend` = "1" OR `chapter_id` IS NOT NULL)';
 		}
@@ -137,7 +137,7 @@ class search_fulltext_class extends AWS_MODEL
 		return array_slice($result, $slice_offset, $limit);
 	}
 
-	public function search_articles($q, $topic_ids = null, $page = 1, $limit = 20, $is_recommend = false)
+	public function search_articles($q, $topic_ids = null, $page = 1, $limit = 20, $recommend = false)
 	{
 		if ($topic_ids)
 		{
@@ -148,7 +148,7 @@ class search_fulltext_class extends AWS_MODEL
 			$where[] = '`id` IN (SELECT `item_id` FROM ' . $this->get_table('topic_relation') . ' WHERE topic_id IN(' . implode(',', $topic_ids) . ') AND `type` = "article")';
 		}
 
-		if ($is_recommend)
+		if ($recommend)
 		{
 			$where[] = '(`is_recommend` = "1" OR `chapter_id` IS NOT NULL)';
 		}

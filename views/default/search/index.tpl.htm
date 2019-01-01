@@ -9,7 +9,7 @@
 						<div class="mod-head">
 							<div class="tabbable">
 								<ul class="nav nav-tabs aw-nav-tabs active" id="list_nav">
-									<?php if (!$_GET['is_recommend']) { ?>
+									<?php if (!$_GET['recommend']) { ?>
 									<li><a href="#users" data-toggle="tab"><?php _e('用户'); ?></a></li>
 									<li><a href="#topics" data-toggle="tab"><?php _e('话题'); ?></a></li>
 									<?php } ?>
@@ -48,7 +48,7 @@
 <script type="text/javascript">
 	search_query = '<?php echo addslashes($this->keyword); ?>';
 	split_query = '<?php echo addslashes($this->split_keyword); ?>';
-	<?php if ($_GET['is_recommend']) { ?>search_recommend = true;<?php } ?>
+	<?php if ($_GET['recommend']) { ?>search_recommend = true;<?php } ?>
 </script>
 
 <?php TPL::output('global/footer.tpl.htm'); ?>
