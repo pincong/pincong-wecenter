@@ -2513,7 +2513,7 @@
 				editor.focus();
 
 				if (!node || is(node, 'body')) {
-					editor.execCommand('formatBlock', 'p');
+					editor.execCommand('formatBlock', 'div');
 
 					node  = rangeHelper.getFirstBlockParent();
 
@@ -2542,7 +2542,7 @@
 				editor.focus();
 
 				if (!node || is(node, 'body')) {
-					editor.execCommand('formatBlock', 'p');
+					editor.execCommand('formatBlock', 'div');
 
 					node = rangeHelper.getFirstBlockParent();
 
@@ -2948,7 +2948,7 @@
 				html += base.selectedHtml() + endHTML;
 			}
 
-			div           = createElement('p', {}, doc);
+			div           = createElement('div', {}, doc);
 			node          = doc.createDocumentFragment();
 			div.innerHTML = html;
 
@@ -3147,7 +3147,7 @@
 				range = base.selectedRange();
 
 			if (range) {
-				div = createElement('p', {}, doc);
+				div = createElement('div', {}, doc);
 				appendChild(div, range.cloneContents());
 
 				return div.innerHTML;
@@ -3630,7 +3630,7 @@
 		traverse(body, function (node) {
 			if (isInline(node, true)) {
 				if (!wrapper) {
-					wrapper = createElement('p', {}, doc);
+					wrapper = createElement('div', {}, doc);
 					insertBefore(wrapper, node);
 				}
 
@@ -4515,7 +4515,7 @@
 
 			if (focusEnd) {
 				if (!(node = wysiwygBody.lastChild)) {
-					node = createElement('p', {}, wysiwygDocument);
+					node = createElement('div', {}, wysiwygDocument);
 					appendChild(wysiwygBody, node);
 				}
 
@@ -6034,7 +6034,7 @@
 
 					// Add line break after if has styling
 					if (!is(node, '.sceditor-nlf') && hasStyling(node)) {
-						var paragraph = createElement('p', {}, wysiwygDocument);
+						var paragraph = createElement('div', {}, wysiwygDocument);
 						paragraph.className = 'sceditor-nlf';
 						paragraph.innerHTML = !IE_BR_FIX$2 ? '<br />' : '';
 						appendChild(wysiwygBody, paragraph);
@@ -6747,7 +6747,7 @@
 			attr(block, 'style', '');
 
 			if (!is(block, 'p,div,td')) {
-				convertElement(block, 'p');
+				convertElement(block, 'div');
 			}
 
 			rangeHelper.restoreRange();
