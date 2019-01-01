@@ -154,7 +154,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (get_setting('register_valid_type') == 'N')
 		{
-			$this->model('active')->active_user_by_uid($uid);
+			$this->model('account')->active_user_by_uid($uid);
 		}
 
 		$user_info = $this->model('account')->get_user_info_by_uid($uid);
@@ -354,7 +354,7 @@ class ajax extends AWS_CONTROLLER
 
 		$user_info = $this->model('account')->get_user_info_by_uid(intval($_POST['uid']));
 
-		if (!$this->model('active')->verify_user_recovery_code($user_info['uid'], $recovery_code))
+		if (!$this->model('account')->verify_user_recovery_code($user_info['uid'], $recovery_code))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1,  AWS_APP::lang()->_t('恢复码无效')));
 		}

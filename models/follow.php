@@ -111,8 +111,9 @@ class follow_class extends AWS_MODEL
 	 *
 	 * @param  $friend_uid
 	 * @param  $limit
+	 * @param  $users_attrib	// 是否获取附加用户资料
 	 */
-	public function get_user_fans($friend_uid, $limit = 20)
+	public function get_user_fans($friend_uid, $limit = 20, $users_attrib = true)
 	{
 		if (!$user_fans = $this->fetch_all('user_follow', 'friend_uid = ' . intval($friend_uid), 'add_time DESC', $limit))
 		{
@@ -124,7 +125,7 @@ class follow_class extends AWS_MODEL
 			$fans_uids[$val['fans_uid']] = $val['fans_uid'];
 		}
 
-		return $this->model('account')->get_user_info_by_uids($fans_uids, true);
+		return $this->model('account')->get_user_info_by_uids($fans_uids, $users_attrib);
 	}
 
 	/**
@@ -132,8 +133,9 @@ class follow_class extends AWS_MODEL
 	 *
 	 * @param  $friend_uid
 	 * @param  $limit
+	 * @param  $users_attrib	// 是否获取附加用户资料
 	 */
-	public function get_user_friends($fans_uid, $limit = 20)
+	public function get_user_friends($fans_uid, $limit = 20, $users_attrib = true)
 	{
 		if (!$user_follow = $this->fetch_all('user_follow', 'fans_uid = ' . intval($fans_uid), 'add_time DESC', $limit))
 		{
@@ -145,7 +147,7 @@ class follow_class extends AWS_MODEL
 			$friend_uids[$val['friend_uid']] = $val['friend_uid'];
 		}
 
-		return $this->model('account')->get_user_info_by_uids($friend_uids, true);
+		return $this->model('account')->get_user_info_by_uids($friend_uids, $users_attrib);
 	}
 
 	public function get_user_friends_ids($fans_uid)

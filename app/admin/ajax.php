@@ -1014,7 +1014,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
                 H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('注册失败')));
             }
 
-            $this->model('active')->active_user_by_uid($uid);
+            $this->model('account')->active_user_by_uid($uid);
 
             if ($_POST['group_id'] == 1 AND !$this->user_info['permission']['is_administrator'])
             {
@@ -1072,7 +1072,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
             case 'approval':
                 foreach ($_POST['approval_uids'] AS $approval_uid)
                 {
-                    $this->model('active')->active_user_by_uid($approval_uid);;
+                    $this->model('account')->active_user_by_uid($approval_uid);;
                 }
             break;
 

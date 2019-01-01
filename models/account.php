@@ -1374,4 +1374,35 @@ class account_class extends AWS_MODEL
 
         return true;
     }
+
+	public function calc_user_recovery_code($uid)
+	{
+		if (! $user_info = $this->fetch_row('users', 'uid = ' . intval($uid)))
+		{
+			return false;
+		}
+		return md5($user_info['user_name'] . $user_info['uid'] . md5($user_info['password'] . $user_info['salt']) . G_COOKIE_HASH_KEY);
+	}
+
+	public function verify_user_recovery_code($uid, $recovery_code)
+	{
+		if (!$code = $this->calc_user_recovery_code($uid))
+		{
+			return false;
+		}
+		return ($code == $recovery_code);
+	}
+
+	public function active_user_by_uid($uid)
+	{
+		if (!$uid)
+		{
+			return false;
+		}
+
+		return $this->update('users', array(
+			'group_id' => 4,
+		), 'uid = ' . intval($uid));
+	}
+
 }
