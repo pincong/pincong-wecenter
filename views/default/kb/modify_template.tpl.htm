@@ -13,7 +13,7 @@
 			</div>
 			<div class="modal-footer">
 				<span><input id="anonymous_checkbox" type="checkbox" value="1" name="anonymous" /><label for="anonymous_checkbox"><?php _e('匿名'); ?></label></span>
-				<button class="btn btn-large btn-success" onclick="AWS.ajax_post($('#edit_form'), AWS.ajax_processer, 'ajax_post_alert');return false;"><?php _e('确定'); ?></button>
+				<button class="btn btn-large btn-success" onclick="AWS.submit_form($('#edit_form'), null, $('.error_message'));return false;"><?php _e('确定'); ?></button>
 			</div>
 			</form>
 		</div>

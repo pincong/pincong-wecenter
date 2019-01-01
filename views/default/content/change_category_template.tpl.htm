@@ -16,7 +16,7 @@
 				</select>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-large btn-success" onclick="AWS.ajax_post($('#change_category'), AWS.ajax_processer, 'ajax_post_alert');return false;"><?php _e('确定'); ?></button>
+				<button class="btn btn-large btn-success" onclick="AWS.submit_form($('#change_category'), null, $('.error_message'));return false;"><?php _e('确定'); ?></button>
 			</div>
 			</form>
 		</div>

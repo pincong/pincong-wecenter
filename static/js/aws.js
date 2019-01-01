@@ -394,7 +394,7 @@ var AWS =
 		}
 	},
 
-	submit: function(form_el, btn_el, callback)
+	submit_form: function(form_el, btn_el, err_el, callback)
 	{
 		// 若有编辑器的话就从编辑器更新内容再提交
 		if (G_ADVANCED_EDITOR_ENABLE == 'Y')
@@ -462,7 +462,29 @@ var AWS =
 				}
 				else
 				{
-					AWS.alert(result.err);
+					if (!err_el || !err_el.length)
+					{
+						AWS.alert(result.err);
+					}
+					else
+					{
+						if (err_el.find('em').length)
+						{
+							err_el.find('em').html(result.err);
+						}
+						else
+						{
+							err_el.html(result.err);
+						}
+						if (err_el.css('display') != 'none')
+						{
+							AWS.shake(err_el);
+						}
+						else
+						{
+							err_el.fadeIn();
+						}
+					}
 					callback && callback('error');
 				}
 			},
@@ -489,6 +511,11 @@ var AWS =
 				callback && callback('error');
 			}
 		});
+	},
+
+	submit: function(form_el, btn_el, callback)
+	{
+		AWS.submit_form(form_el, btn_el, null, callback);
 	},
 
 	// 加载更多
@@ -587,7 +614,7 @@ var AWS =
 	},
 
 	// 提交表单并跳转
-	submit_form: function(url, data, method, target)
+	submit_redirect: function(url, data, method, target)
 	{
 		data = data || {};
 		method = method || 'post';
@@ -1721,7 +1748,7 @@ AWS.User =
 
 	ask_user: function(ask_user_id, ask_user_name)
 	{
-		AWS.submit_form(G_BASE_URL + '/publish/', {ask_user_id: ask_user_id, ask_user_name: ask_user_name});
+		AWS.submit_redirect(G_BASE_URL + '/publish/', {ask_user_id: ask_user_id, ask_user_name: ask_user_name});
 	},
 
 	add_favorite: function(item_type, item_id)
