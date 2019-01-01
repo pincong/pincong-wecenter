@@ -1088,14 +1088,4 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
         H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('设置已保存')));
     }
-
-    public function remove_receiving_account_action()
-    {
-        if (!$_POST['id'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择要删除的账号')));
-        }
-
-        H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-    }
 }
