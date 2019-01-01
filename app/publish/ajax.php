@@ -244,27 +244,6 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
         }
 
-        if ($this->publish_approval_valid(array(
-                $question_content,
-                $question_detail
-            )))
-        {
-            $this->model('publish')->publish_approval('question', array(
-                'question_content' => $question_content,
-                'question_detail' => $question_detail,
-                'category_id' => $_POST['category_id'],
-                'topics' => $_POST['topics'],
-                'anonymous' => $_POST['anonymous'],
-                'ask_user_id' => $_POST['ask_user_id'],
-                'permission_create_topic' => $this->user_info['permission']['create_topic'],
-                'later' => $_POST['later']
-            ), $this->user_id);
-
-            H::ajax_json_output(AWS_APP::RSM(array(
-                'url' => get_js_url('/publish/wait_approval/')
-            ), 1, null));
-        }
-        else
         {
             $question_id = $this->model('publish')->publish_question(
                 $question_content,
@@ -382,26 +361,6 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
         }
 
-        if ($this->publish_approval_valid(array(
-                $article_title,
-                $article_content
-            )))
-        {
-            $this->model('publish')->publish_approval('article', array(
-                'title' => $article_title,
-                'message' => $article_content,
-                'category_id' => $_POST['category_id'],
-                'topics' => $_POST['topics'],
-                'permission_create_topic' => $this->user_info['permission']['create_topic'],
-                'anonymous' => $_POST['anonymous'],
-                'later' => $_POST['later']
-            ), $this->user_id);
-
-            H::ajax_json_output(AWS_APP::RSM(array(
-                'url' => get_js_url('/publish/wait_approval/')
-            ), 1, null));
-        }
-        else
         {
             $article_id = $this->model('publish')->publish_article(
                 $article_title,

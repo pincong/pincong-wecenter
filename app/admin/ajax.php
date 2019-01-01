@@ -145,39 +145,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
         H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('保存设置成功')));
     }
 
-    public function approval_manage_action()
-    {
-        if (!in_array($_POST['batch_type'], array('approval', 'decline')))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('错误的请求')));
-        }
-
-        if ($_POST['approval_id'])
-        {
-            $_POST['approval_ids'] = array($_POST['approval_id']);
-        }
-
-        if (!$_POST['approval_ids'] OR !is_array($_POST['approval_ids']))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择条目进行操作')));
-        }
-
-        switch ($_POST['type'])
-        {
-            default:
-                $func = $_POST['batch_type'] . '_publish';
-
-                foreach ($_POST['approval_ids'] AS $approval_id)
-                {
-                    $this->model('publish')->$func($approval_id);
-                }
-
-                break;
-        }
-
-        H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-    }
-
     public function article_manage_action()
     {
         if (!$_POST['article_ids'])
@@ -982,8 +949,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			'publish_article',
 			'comment_article',
 			'publish_comment',
-            'publish_approval',
-            'publish_approval_time',
             'edit_question',
             'edit_topic',
             'manage_topic',
@@ -1451,90 +1416,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
             'labels' => $labels,
             'data' => $data
         ));
-    }
-
-    public function save_approval_item_action()
-    {
-        if (!$_POST['id'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择待审项')));
-        }
-
-        if (!$_POST['type'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('类型不能为空')));
-        }
-
-        switch ($_POST['type'])
-        {
-            default:
-                $approval_item = $this->model('publish')->get_approval_item($_POST['id']);
-
-                break;
-        }
-
-        if (!$approval_item)
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('待审项不存在')));
-        }
-
-        if ($_POST['type'] != $approval_item['type'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('类型不正确')));
-        }
-
-        if (!$_POST['title'] AND in_array($_POST['type'], array('question', 'article')))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入标题')));
-        }
-
-        if (!$_POST['content'] AND in_array($_POST['type'], array('answer', 'article_comment')))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入内容')));
-        }
-
-        switch ($approval_item['type'])
-        {
-            case 'question':
-                $approval_item['data']['question_content'] = htmlspecialchars_decode($_POST['title']);
-
-                $approval_item['data']['question_detail'] = htmlspecialchars_decode($_POST['content']);
-
-                $approval_item['data']['topics'] = explode(',', htmlspecialchars_decode($_POST['topics']));
-
-                break;
-
-            case 'answer':
-                $approval_item['data']['answer_content'] = htmlspecialchars_decode($_POST['content']);
-
-                break;
-
-            case 'article':
-                $approval_item['data']['title'] = htmlspecialchars_decode($_POST['title']);
-
-                $approval_item['data']['message'] = htmlspecialchars_decode($_POST['content']);
-
-                break;
-
-            case 'article_comment':
-                $approval_item['data']['message'] = htmlspecialchars_decode($_POST['content']);
-
-                break;
-        }
-
-        switch ($approval_item['type'])
-        {
-            default:
-                $this->model('publish')->update('approval', array(
-                    'data' => serialize($approval_item['data'])
-                ), 'id = ' . $approval_item['id']);
-
-                break;
-        }
-
-        H::ajax_json_output(AWS_APP::RSM(array(
-            'url' => get_js_url('/admin/approval/list/')
-        ), 1, null));
     }
 
     public function save_today_topics_action()

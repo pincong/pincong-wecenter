@@ -1,17 +1,0 @@
-<p><strong><?php _e('内容'); ?></strong></p>
-<blockquote><?php echo $this->approval_item['content']; ?></blockquote>
-
-<?php if ($this->approval_item['data']['topics']) {  ?>
-<p><strong><?php _e('话题'); ?></strong></p>
-<blockquote><?php echo htmlspecialchars(implode(', ', $this->approval_item['data']['topics'])); ?></blockquote>
-<?php } ?>
-
-<form id="approval_form" action="admin/ajax/approval_manage/" method="post">
-    <input type="hidden" id="approval_type" name="batch_type" value="approval" />
-
-    <input type="hidden" name="type" value="<?php echo htmlspecialchars($this->approval_item['type']); ?>" />
-
-    <input type="hidden" name="approval_id" value="<?php echo $this->approval_item['id']; ?>" />
-</form>
-
-<p align="center">	<a class="btn btn-success" onclick="$('#approval_type').val('approval'); AWS.ajax_post($('#approval_form'));" href="javascript:;"><?php _e('通过审核'); ?></a> &nbsp; <a class="btn btn-danger" onclick="$('#approval_type').val('decline'); AWS.ajax_post($('#approval_form'));" href="javascript:;"><?php _e('拒绝审核'); ?></a></p>

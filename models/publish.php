@@ -20,120 +20,6 @@ if (!defined('IN_ANWSION'))
 
 class publish_class extends AWS_MODEL
 {
-	public function approval_publish($id)
-	{
-		if (!$approval_item = $this->get_approval_item($id))
-		{
-			return false;
-		}
-
-		switch ($approval_item['type'])
-		{
-			case 'question':
-				$question_id = $this->publish_question(
-                    $approval_item['data']['question_content'],
-                    $approval_item['data']['question_detail'],
-                    $approval_item['data']['category_id'],
-                    $approval_item['uid'],
-                    $approval_item['data']['topics'],
-                    $approval_item['data']['anonymous'],
-                    null,
-                    $approval_item['data']['ask_user_id'],
-                    $approval_item['data']['permission_create_topic'],
-                    null,
-                    $approval_item['data']['later']
-                );
-
-				$this->model('notify')->send(0, $approval_item['uid'], notify_class::TYPE_QUESTION_APPROVED, notify_class::CATEGORY_QUESTION, 0, array('question_id' => $question_id));
-
-				break;
-
-			case 'answer':
-				$answer_id = $this->publish_answer(
-					$approval_item['data']['question_id'],
-					$approval_item['data']['answer_content'],
-					$approval_item['uid'],
-					$approval_item['data']['anonymous'],
-					null,
-					$approval_item['data']['auto_focus']
-				);
-
-				break;
-
-			case 'article':
-				$article_id = $this->publish_article(
-                    $approval_item['data']['title'],
-                    $approval_item['data']['message'],
-                    $approval_item['uid'],
-                    $approval_item['data']['topics'],
-                    $approval_item['data']['category_id'],
-                    null,
-                    $approval_item['data']['permission_create_topic'],
-                    $approval_item['data']['anonymous'],
-                    $approval_item['data']['later']
-                );
-
-				$this->model('notify')->send(0, $approval_item['uid'], notify_class::TYPE_ARTICLE_APPROVED, notify_class::CATEGORY_ARTICLE, 0, array('article_id' => $article_id));
-
-				break;
-
-			case 'article_comment':
-				$article_comment_id = $this->publish_article_comment(
-                    $approval_item['data']['article_id'],
-                    $approval_item['data']['message'],
-                    $approval_item['uid'],
-                    $approval_item['data']['at_uid'],
-                    $approval_item['data']['anonymous']
-                );
-
-				break;
-		}
-
-		$this->delete('approval', 'id = ' . intval($id));
-
-		return true;
-	}
-
-	public function decline_publish($id)
-	{
-		$approval_item = $this->get_approval_item($id);
-
-		if (!$approval_item)
-		{
-			return false;
-		}
-
-		switch ($approval_item['type'])
-		{
-			case 'question':
-			case 'answer':
-			case 'article':
-				$this->delete('approval', 'id = ' . $approval_item['id']);
-
-				break;
-
-			case 'article_comment':
-				$this->delete('approval', 'id = ' . $approval_item['id']);
-
-				break;
-		}
-
-		switch ($approval_item['type'])
-		{
-			case 'question':
-				$this->model('notify')->send(0, $approval_item['uid'], notify_class::TYPE_QUESTION_REFUSED, notify_class::CATEGORY_QUESTION, 0, array('title' => $approval_item['data']['question_content']));
-
-				break;
-
-			case 'article':
-				$this->model('notify')->send(0, $approval_item['uid'], notify_class::TYPE_ARTICLE_REFUSED, notify_class::CATEGORY_ARTICLE, 0, array('title' => $approval_item['data']['title']));
-
-				break;
-		}
-
-		return true;
-	}
-
 	public function publish_answer($question_id, $answer_content, $uid, $anonymous = null, $attach_access_key = null, $auto_focus = true)
 	{
 		if (!$question_info = $this->model('question')->get_question_info_by_id($question_id))
@@ -209,16 +95,6 @@ class publish_class extends AWS_MODEL
 		$this->model('posts')->set_posts_index($question_id, 'question');
 
 		return $answer_id;
-	}
-
-	public function publish_approval($type, $data, $uid, $attach_access_key = null)
-	{
-		return $this->insert('approval', array(
-			'type' => $type,
-			'data' => serialize($data),
-			'uid' => intval($uid),
-			'time' => fake_time()
-		));
 	}
 
 	public function publish_question($question_content, $question_detail, $category_id, $uid, $topics = null, $anonymous = null, $attach_access_key = null, $ask_user_id = null, $create_topic = true, $from = null, $later = null)
@@ -415,29 +291,6 @@ class publish_class extends AWS_MODEL
 		$this->model('posts')->set_posts_index($article_id, 'article');
 
 		return $comment_id;
-	}
-
-	public function get_approval_list($type, $page, $per_page)
-	{
-		if ($approval_list = $this->fetch_page('approval', "`type` = '" . $this->quote($type) . "'", 'time ASC', $page, $per_page))
-		{
-			foreach ($approval_list AS $key => $val)
-			{
-				$approval_list[$key]['data'] = unserialize($val['data']);
-			}
-		}
-
-		return $approval_list;
-	}
-
-	public function get_approval_item($id)
-	{
-		if ($approval_item = $this->fetch_row('approval', 'id = ' . intval($id)))
-		{
-			$approval_item['data'] = unserialize($approval_item['data']);
-		}
-
-		return $approval_item;
 	}
 
 }

@@ -71,12 +71,6 @@ class admin_class extends AWS_MODEL
         }
 
         $admin_notifications = array(
-                                // 内容审核
-                                'answer_approval' => $this->count('approval', 'type = "answer"'),
-                                'question_approval' => $this->count('approval', 'type = "question"'),
-                                'article_approval' => $this->count('approval', 'type = "article"'),
-                                'article_comment_approval' => $this->count('approval', 'type = "article_comment"'),
-
                                 // 用户举报
                                 'user_report' => $this->count('report', 'status = 0'),
 
@@ -106,38 +100,6 @@ class admin_class extends AWS_MODEL
         if (!$notifications)
         {
             return false;
-        }
-
-        if ($notifications['question_approval'])
-        {
-            $notifications_texts[] = array(
-                                            'url' => 'admin/approval/list/',
-                                            'text' => AWS_APP::lang()->_t('有 %s 个问题待审核', $notifications['question_approval'])
-                                        );
-        }
-
-        if ($notifications['answer_approval'])
-        {
-            $notifications_texts[] = array(
-                                            'url' => 'admin/approval/list/type-answer',
-                                            'text' => AWS_APP::lang()->_t('有 %s 个回答待审核', $notifications['answer_approval'])
-                                        );
-        }
-
-        if ($notifications['article_approval'])
-        {
-            $notifications_texts[] = array(
-                                            'url' => 'admin/approval/list/type-article',
-                                            'text' => AWS_APP::lang()->_t('有 %s 篇文章待审核', $notifications['article_approval'])
-                                        );
-        }
-
-        if ($notifications['article_comment_approval'])
-        {
-            $notifications_texts[] = array(
-                                            'url' => 'admin/approval/list/type-article_comment',
-                                            'text' => AWS_APP::lang()->_t('有 %s 个文章评论待审核', $notifications['article_comment_approval'])
-                                        );
         }
 
         if ($notifications['user_report'])

@@ -99,19 +99,6 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
 		}
 
-		if ($this->publish_approval_valid($message))
-		{
-			$this->model('publish')->publish_approval('article_comment', array(
-				'article_id' => intval($_POST['article_id']),
-				'message' => $message,
-				'at_uid' => intval($_POST['at_uid'])
-			), $this->user_id);
-
-			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/publish/wait_approval/article_id-' . intval($_POST['article_id']) )
-			), 1, null));
-		}
-		else
 		{
 			$comment_id = $this->model('publish')->publish_article_comment(
                 $_POST['article_id'],

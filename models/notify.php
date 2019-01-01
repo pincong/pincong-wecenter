@@ -237,19 +237,12 @@ class notify_class extends AWS_MODEL
 			switch ($notify['model_type'])
 			{
 				case self::CATEGORY_ARTICLE :
-					if ($notify['action_type'] == self::TYPE_ARTICLE_REFUSED)
+					if (!$article_list[$data['article_id']])
 					{
-						$tmp_data['title'] = $data['title'];
+						continue;
 					}
-					else
-					{
-						if (!$article_list[$data['article_id']])
-						{
-							continue;
-						}
 
-						$tmp_data['title'] = $article_list[$data['article_id']]['title'];
-					}
+					$tmp_data['title'] = $article_list[$data['article_id']]['title'];
 
 					$querys = array();
 
@@ -291,19 +284,12 @@ class notify_class extends AWS_MODEL
 					switch ($notify['action_type'])
 					{
 						default :
-							if ($notify['action_type'] == self::TYPE_QUESTION_REFUSED)
+							if (!$question_list[$data['question_id']])
 							{
-								$tmp_data['title'] = $data['title'];
+								continue;
 							}
-							else
-							{
-								if (!$question_list[$data['question_id']])
-								{
-									continue;
-								}
 
-								$tmp_data['title'] = $question_list[$data['question_id']]['question_content'];
-							}
+							$tmp_data['title'] = $question_list[$data['question_id']]['question_content'];
 
 							$rf = false;
 
@@ -380,7 +366,6 @@ class notify_class extends AWS_MODEL
 								switch ($notify['action_type'])
 								{
 									case self::TYPE_REDIRECT_QUESTION:
-									case self::TYPE_QUESTION_REFUSED:
 										break;
 
 									case self::TYPE_MOD_QUESTION:
@@ -1067,26 +1052,6 @@ class notify_class extends AWS_MODEL
 
 					case self::TYPE_CONTEXT:
 						$data[$key]['message'] = $val['content'];
-
-						break;
-
-					case self::TYPE_ARTICLE_APPROVED:
-						$data[$key]['message'] = AWS_APP::lang()->_t('你发起的文章 %s 审核通过', '<a href="' . $val['key_url'] . '">' . $val['title'] . '</a>');
-
-						break;
-
-					case self::TYPE_ARTICLE_REFUSED:
-						$data[$key]['message'] = AWS_APP::lang()->_t('你发起的文章 %s 审核未通过', $val['title']);
-
-						break;
-
-					case self::TYPE_QUESTION_APPROVED:
-						$data[$key]['message'] = AWS_APP::lang()->_t('你发起的问题 %s 审核通过', '<a href="' . $val['key_url'] . '">' . $val['title'] . '</a>');
-
-						break;
-
-					case self::TYPE_QUESTION_REFUSED:
-						$data[$key]['message'] = AWS_APP::lang()->_t('你发起的问题 %s 审核未通过', $val['title']);
 
 						break;
 

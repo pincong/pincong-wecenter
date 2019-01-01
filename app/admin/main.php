@@ -42,8 +42,6 @@ class main extends AWS_ADMIN_CONTROLLER
         TPL::assign('question_no_answer_count', $this->model('system')->count('question', 'answer_count = 0'));
         TPL::assign('best_answer_count', $this->model('system')->count('question', 'best_answer > 0'));
         TPL::assign('topic_count', $this->model('system')->count('topic'));
-        TPL::assign('approval_question_count', $this->model('publish')->count('approval', "type = 'question'"));
-        TPL::assign('approval_answer_count', $this->model('publish')->count('approval', "type = 'answer'"));
 
         $admin_menu = (array)AWS_APP::config()->get('admin_menu');
 

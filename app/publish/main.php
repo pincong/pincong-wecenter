@@ -164,22 +164,6 @@ class main extends AWS_CONTROLLER
 		TPL::output('publish/article');
 	}
 
-	public function wait_approval_action()
-	{
-		if ($_GET['question_id'])
-		{
-			{
-				$url = '/question/' . $_GET['question_id'];
-			}
-		}
-		else
-		{
-			$url = '/';
-		}
-
-		H::redirect_msg(AWS_APP::lang()->_t('发布成功, 请等待管理员审核...'), $url);
-	}
-
 	public function delay_display_action()
 	{
 		$url = '/';
