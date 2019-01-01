@@ -24,13 +24,7 @@ CREATE TABLE IF NOT EXISTS `aws_category` (
 -- Dumping data for table panic.aws_category: 7 rows
 /*!40000 ALTER TABLE `aws_category` DISABLE KEYS */;
 INSERT INTO `aws_category` (`id`, `title`, `type`, `icon`, `parent_id`, `sort`, `url_token`) VALUES
-	(1, '时政', 'question', NULL, 0, 0, NULL),
-	(2, '财经', 'question', NULL, 0, 0, NULL),
-	(3, '世界', 'question', NULL, 0, 0, NULL),
-	(4, '科技', 'question', NULL, 0, 0, NULL),
-	(5, '文娱', 'question', NULL, 0, 0, NULL),
-	(6, '生活', 'question', NULL, 0, 0, NULL),
-	(7, '其他', 'question', NULL, 0, 0, NULL);
+	(1, '默认分类', 'question', NULL, 0, 0, NULL);
 /*!40000 ALTER TABLE `aws_category` ENABLE KEYS */;
 
 
@@ -113,20 +107,18 @@ INSERT INTO `aws_system_setting` (`id`, `varname`, `value`) VALUES
 	(98, 'question_topics_limit', 's:1:"3";'),
 	(104, 'new_question_force_add_topic', 's:1:"N";'),
 	(105, 'unfold_question_comments', 's:1:"N";'),
-	(106, 'reporting_disabled', 's:1:"Y";'),
 	(112, 'admin_notifications', 'a:2:{s:17:"register_approval";s:1:"0";s:15:"verify_approval";s:1:"0";}'),
 	(225, 'currency_system_config_question_disagreed', 's:1:"0";'),
 	(226, 'currency_system_config_agree_answer', 's:1:"0";'),
 	(127, 'enable_help_center', 's:1:"Y";'),
 	(129, 'register_agreement', 's:231:"请勿将自身身份与其他网站相关联，切记不要使用与其他网站相同 ID 或者有关联的身份发言。\n\n由于本站不需邮箱即可注册，忘记密码将无法找回，请您妥善保管账号和密码。";'),
 	(138, 'content_url_whitelist', 's:210:"https://pincong.rocks/\nhttps://www.pincong.rocks/\nhttps://i.imgur.com/\nhttps://i.redd.it/\nhttps://media.8ch.net/\nhttps://archive.is/\nhttps://web.archive.org/\nhttps://upload.wikimedia.org/\nhttps://pbs.twimg.com/";'),
-	(137, 'pm_enabled', 's:1:"N";'),
 	(145, 'expiration_private_messages', 's:2:"30";'),
 	(146, 'expiration_notifications', 's:2:"30";'),
 	(147, 'expiration_integral_logs', 's:2:"30";'),
 	(148, 'expiration_user_actions', 's:2:"30";'),
-	(149, 'random_seconds_min', 's:4:"3600";'),
-	(150, 'random_seconds_max', 's:5:"90000";'),
+	(149, 'random_seconds_min', 's:1:"0";'),
+	(150, 'random_seconds_max', 's:1:"1";'),
 	(231, 'reward_daily_active_users_currency', 's:0:"";'),
 	(230, 'reward_daily_active_users_reputation', 's:0:"";'),
 	(229, 'currency_system_config_answer_disagreed', 's:1:"0";'),
@@ -165,7 +157,7 @@ INSERT INTO `aws_system_setting` (`id`, `varname`, `value`) VALUES
 	(206, 'currency_name', 's:9:"游戏币";'),
 	(205, 'currency_rule_name', 's:12:"游戏规则";'),
 	(202, 'expiration_currency_logs', 's:0:"";'),
-	(203, 'expiration_votes', 's:1:"1";'),
+	(203, 'expiration_votes', 's:2:"30";'),
 	(204, 'time_blurring', 's:1:"Y";');
 /*!40000 ALTER TABLE `aws_system_setting` ENABLE KEYS */;
 
