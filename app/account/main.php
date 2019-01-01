@@ -72,18 +72,9 @@ class main extends AWS_CONTROLLER
 
 	public function login_action()
 	{
-		$url = base64_decode($_GET['url']);
-
 		if ($this->user_id)
 		{
-			if ($url)
-			{
-				header('Location: ' . $url);
-			}
-			else
-			{
-				HTTP::redirect('/');
-			}
+			HTTP::redirect('/');
 		}
 
 		$this->crumb(AWS_APP::lang()->_t('登录'), '/account/login/');
@@ -92,7 +83,7 @@ class main extends AWS_CONTROLLER
 
 		if ($_GET['url'])
 		{
-			$return_url = htmlspecialchars(base64_decode($_GET['url']));
+			$return_url = '/'; //htmlspecialchars(base64_decode($_GET['url']));
 		}
 		else
 		{
@@ -107,6 +98,10 @@ class main extends AWS_CONTROLLER
 
 	public function register_action()
 	{
+		if ($this->user_id)
+		{
+			HTTP::redirect('/');
+		}
 
 		if (get_setting('register_type') == 'close')
 		{
@@ -122,11 +117,6 @@ class main extends AWS_CONTROLLER
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('邀请码无效或已经使用, 请使用新的邀请码'), '/');
 			}
-		}
-
-		if ($this->user_id)
-		{
-			HTTP::redirect('/');
 		}
 
 		$this->crumb(AWS_APP::lang()->_t('注册'), '/account/register/');
