@@ -107,16 +107,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
             }
         }
 
-        if ($_POST['censoruser'])
-        {
-            $_POST['censoruser'] = trim($_POST['censoruser']);
-        }
-
-        if ($_POST['sensitive_words'])
-        {
-            $_POST['sensitive_words'] = trim($_POST['sensitive_words']);
-        }
-
         if ($_POST['_set_notification_settings'])
         {
             if ($notify_actions = $this->model('notify')->notify_action_details)

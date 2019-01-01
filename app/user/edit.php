@@ -43,6 +43,12 @@ class edit extends AWS_CONTROLLER
 		$user['data'] = unserialize_array($user['extra_data']);
 		TPL::assign('user', $user);
 
+		$banning_reason_list = get_key_value_pairs('banning_reason_list', null, true);
+		if (count($banning_reason_list > 0))
+		{
+			TPL::assign('banning_reason_list', $banning_reason_list);
+		}
+
 		TPL::output("user/forbid_user_template");
 	}
 
@@ -60,6 +66,12 @@ class edit extends AWS_CONTROLLER
 
 		$user['data'] = unserialize_array($user['extra_data']);
 		TPL::assign('user', $user);
+
+		$banning_reason_list = get_key_value_pairs('banning_reason_list', null, true);
+		if (count($banning_reason_list > 0))
+		{
+			TPL::assign('banning_reason_list', $banning_reason_list);
+		}
 
 		TPL::output("user/flag_user_template");
 	}

@@ -1209,6 +1209,18 @@
                     </td>
                 </tr>
 
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('用户封禁理由列表'); ?>:</span>
+                            <div class="col-sm-8 col-xs-8">
+                                <textarea class="form-control textarea" rows="5" name="banning_reason_list"><?php echo $this->setting['banning_reason_list']; ?></textarea>
+                                <span class="help-block"><?php _e('每行一个, 不使用请留空'); ?></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
             </table>
         </div>
 

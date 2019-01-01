@@ -13,9 +13,20 @@
 					<option value="1" <?php if ($this->user['forbidden'] == 0) { ?>selected="selected"<?php } ?>><?php _e('封禁'); ?></option>
 					<option value="0" <?php if ($this->user['forbidden'] != 0) { ?>selected="selected"<?php } ?>><?php _e('取消封禁'); ?></option>
 				</select>
-				<div class="aw-margin-y-10">
-				<textarea name="reason" class="form-control" rows="4" placeholder="<?php _e('详情...'); ?>"><?php echo $this->user['data']['banned_reason']; ?></textarea>
+				<?php if ($this->banning_reason_list) { ?>
+				<div class="aw-margin-y-30">
+					<select class="form-control" name="reason">
+						<option value=""><?php _e('请选择理由...'); ?></option>
+						<?php foreach ($this->banning_reason_list as $key => $val) { $val = htmlspecialchars($key); ?>
+						<option value="<?php echo $val; ?>"><?php echo $val; ?></option>
+						<?php } ?>
+					</select>
 				</div>
+				<?php } else { ?>
+				<div class="aw-margin-y-10">
+					<textarea name="reason" class="form-control" rows="4" placeholder="<?php _e('详情...'); ?>"><?php echo $this->user['data']['banned_reason']; ?></textarea>
+				</div>
+				<?php } ?>
 			</div>
 			<div class="modal-footer">
 				<a data-dismiss="modal" aria-hidden="true" class="aw-small-text"><?php _e('取消'); ?></a>

@@ -261,6 +261,11 @@ function get_key_value_pairs($varname, $separator = ',', $allow_empty_separator 
 			continue;
 		}
 
+		if (!isset($separator) AND $allow_empty_separator)
+		{
+			$result[$row] = null;
+		}
+
 		$pos = strpos($row, $separator);
 		if (!$pos)
 		{
