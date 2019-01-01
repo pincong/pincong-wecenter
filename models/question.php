@@ -1061,15 +1061,13 @@ class question_class extends AWS_MODEL
 				'time' => fake_time()
 			));
 
-			$this->shutdown_update('question', array(
-				'thanks_count' => $this->count('question_thanks', 'question_id = ' . intval($question_id)),
-			), 'question_id = ' . intval($question_id));
+			$this->query('UPDATE ' . $this->get_table('question') . ' SET thanks_count = thanks_count + 1 WHERE question_id = ' . intval($question_id));
 
 			$this->model('currency')->process($uid, 'QUESTION_THANKS', get_setting('currency_system_config_thanks'), '感谢问题 #' . $question_id, $question_id);
 
 			$this->model('currency')->process($question_info['published_uid'], 'THANKS_QUESTION', -get_setting('currency_system_config_thanks'), '问题被感谢 #' . $question_id, $question_id);
 
-			//$this->model('account')->update_thanks_count($question_info['published_uid']);
+			$this->model('account')->update_thanks_count($question_info['published_uid']);
 
 			return true;
 		}

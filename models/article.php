@@ -637,15 +637,13 @@ class article_class extends AWS_MODEL
 				'time' => fake_time()
 			));
 
-			$this->shutdown_update('article', array(
-				'thanks_count' => $this->count('article_thanks', 'article_id = ' . intval($article_id)),
-			), 'id = ' . intval($article_id));
+			$this->query('UPDATE ' . $this->get_table('article') . ' SET thanks_count = thanks_count + 1 WHERE id = ' . intval($article_id));
 
 			$this->model('currency')->process($uid, 'ARTICLE_THANKS', get_setting('currency_system_config_thanks'), '感谢文章 #' . $article_id, $article_id);
 
 			$this->model('currency')->process($article_info['uid'], 'THANKS_ARTICLE', -get_setting('currency_system_config_thanks'), '文章被感谢 #' . $article_id, $article_id);
 
-			//$this->model('account')->update_thanks_count($article_info['uid']);
+			$this->model('account')->update_thanks_count($article_info['uid']);
 
 			return true;
 		}

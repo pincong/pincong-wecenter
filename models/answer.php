@@ -741,16 +741,14 @@ class answer_class extends AWS_MODEL
 			));
 		}
 
-		$this->update_answer_by_id($answer_id, array(
-			'thanks_count' => $this->count('answer_thanks', 'answer_id = ' . ($answer_id))
-		));
+		$this->query('UPDATE ' . $this->get_table('answer') . ' SET thanks_count = thanks_count + 1 WHERE answer_id = ' . ($answer_id));
 
 		$answer_info = $this->get_answer_by_id($answer_id);
 
 		$this->model('currency')->process($uid, 'ANSWER_THANKS', get_setting('currency_system_config_thanks'), '感谢回复 #' . $answer_info['answer_id'], $answer_info['answer_id']);
 		$this->model('currency')->process($answer_info['uid'], 'THANKS_ANSWER', -get_setting('currency_system_config_thanks'), '回复被感谢 #' . $answer_info['answer_id'], $answer_info['answer_id']);
 
-		//$this->model('account')->update_thanks_count($answer_info['uid']);
+		$this->model('account')->update_thanks_count($answer_info['uid']);
 
 		return true;
 	}

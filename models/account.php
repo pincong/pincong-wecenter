@@ -979,13 +979,7 @@ class account_class extends AWS_MODEL
 
     public function update_thanks_count($uid)
     {
-        $answer_counter = $this->sum('answer', 'thanks_count', 'uid = ' . intval($uid));
-        $question_counter = $this->sum('question', 'thanks_count', 'published_uid = ' . intval($uid));
-        $article_counter = $this->sum('article', 'thanks_count', 'uid = ' . intval($uid));
-
-        return $this->update('users', array(
-            'thanks_count' => ($answer_counter + $question_counter + $article_counter)
-        ), "uid = " . intval($uid));
+        return $this->query('UPDATE ' . $this->get_table('users') . ' SET thanks_count = thanks_count + 1 WHERE uid = ' . intval($uid));
     }
 
     public function add_user_group($group_name, $type, $reputation_lower = 0, $reputation_higer = 0, $reputation_factor = 0)
