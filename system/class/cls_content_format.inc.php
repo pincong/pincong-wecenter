@@ -149,13 +149,41 @@ class CF
 		return nl2br(FORMAT::parse_links($string));
 	}
 
-	// TODO: 每帖之回复只复读一次
-	public static function skip(&$user_info, $key = null)
+	public static function skip(&$user_info, $limited = true)
 	{
 		if ($user_info['flagged'] == 2)
 		{
 			return true;
 		}
+
+		if ($user_info['flagged'] != 3 OR !$limited)
+		{
+			return false;
+		}
+
+		// 每帖之复读次数超过限制则跳过(隐藏)
+		static $max_replies;
+		if (!isset($max_replies))
+		{
+			$max_replies = get_setting('kb_replies_per_post');
+		}
+		if (!$max_replies)
+		{
+			return false;
+		}
+
+		static $ref_count;
+		if (!isset($ref_count))
+		{
+			$ref_count = 1;
+		}
+
+		if ($ref_count > $max_replies)
+		{
+			return true; // 超出限制
+		}
+
+		$ref_count = $ref_count + 1;
 
 		return false;
 	}
