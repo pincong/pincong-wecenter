@@ -96,8 +96,8 @@
 
 								<span class="pull-right  more-operate">
 									<?php if ($this->user_id) { ?>
-									<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认提升?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/v/ajax/bump/', 'video_id=<?php echo $this->video_info['id']; ?>');});"><i class="icon icon-up"></i> <?php _e('提升'); ?></a>
-									<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认下沉?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/v/ajax/sink/', 'video_id=<?php echo $this->video_info['id']; ?>');});"><i class="icon icon-down"></i> <?php _e('下沉'); ?></a>
+									<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认提升?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/v/ajax/bump/', 'video_id=<?php echo $this->video_info['id']; ?>', true);});"><i class="icon icon-up"></i> <?php _e('提升'); ?></a>
+									<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认下沉?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/v/ajax/sink/', 'video_id=<?php echo $this->video_info['id']; ?>', true);});"><i class="icon icon-down"></i> <?php _e('下沉'); ?></a>
 									<?php } ?>
 
 									<?php if ($this->video_info['uid'] == $this->user_id OR $this->user_info['permission']['edit_video']) { ?>

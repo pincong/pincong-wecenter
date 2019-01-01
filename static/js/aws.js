@@ -68,7 +68,7 @@ var AWS =
 		}
 	},
 
-	ajax_request: function(url, params)
+	ajax_request: function(url, params, no_reload)
 	{
 		AWS.loading('show');
 
@@ -112,7 +112,7 @@ var AWS =
 			}
 			else if (result.errno == 1)
 			{
-				window.location.reload();
+				no_reload || window.location.reload();
 			}
 		}
 
