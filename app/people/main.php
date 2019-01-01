@@ -128,9 +128,10 @@ class main extends AWS_CONTROLLER
 		{
 			$where = array();
 
-			if ($_GET['group_id'])
+			$group_id = intval($_GET['group_id']);
+			if ($group_id > 99)
 			{
-				$where[] = 'group_id = ' . intval($_GET['group_id']);
+				$where[] = 'group_id = ' . $group_id;
 			}
 
 			$users_list = $this->model('account')->get_users_list(implode('', $where), calc_page_limit($_GET['page'], get_setting('contents_per_page')), true, false, 'forbidden ASC, reputation DESC');
