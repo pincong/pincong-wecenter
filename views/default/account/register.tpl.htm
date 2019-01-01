@@ -16,7 +16,7 @@
 					<i class="icon icon-delete"></i> <em></em>
 				</li>
 				<li>
-					<input class="aw-register-name form-control" type="text" name="user_name" placeholder="<?php _e('用户名'); ?>" tips="<?php _e('请输入一个 2-14 位的用户名');?>" errortips="<?php _e('用户名长度不符合');?>" value="" />
+					<input class="aw-register-name form-control" type="text" name="user_name" placeholder="<?php _e('用户名'); ?>" tips="<?php _e('请输入一个用户名');?>" errortips="<?php _e('用户名长度不符合');?>" value="" />
 				</li>
 				<li>
 					<input class="aw-register-pwd form-control" type="password" name="password" placeholder="<?php _e('密码'); ?>" tips="<?php _e('请输入至少 6 个字符, 区分大小写'); ?>" errortips="<?php _e('密码不符合规则'); ?>" />
@@ -105,13 +105,7 @@ $(document).ready(function ()
 						case 'user_name' :
 							var _this = $(this);
 							$(this).parent().find('.aw-reg-tips').detach();
-							if ($(this).val().length >= 0 && $(this).val().length < 2)
-							{
-								$(this).parent().find('.aw-reg-tips').detach();
-								$(this).parent().append('<span class="aw-reg-tips aw-reg-err"><i class="aw-icon i-err"></i>' + $(this).attr('errortips') + '</span>');
-								return;
-							}
-							if ($(this).val().length > 17)
+							if (!$(this).val().trim())
 							{
 								$(this).parent().find('.aw-reg-tips').detach();
 								$(this).parent().append('<span class="aw-reg-tips aw-reg-err"><i class="aw-icon i-err"></i>' + $(this).attr('errortips') + '</span>');
@@ -121,7 +115,7 @@ $(document).ready(function ()
 							{
 								$.post(G_BASE_URL + '/account/ajax/check_username/', 
 									{
-										username: $(this).val()
+										username: $(this).val().trim()
 									}, function (result)
 								{
 									if (result.errno == -1)

@@ -102,108 +102,6 @@ function is_digits($num)
 	return false;
 }
 
-if (! function_exists('iconv'))
-{
-	/**
-	 * 系统不开启 iconv 模块时, 自建 iconv(), 使用 MB String 库处理
-	 *
-	 * @param  string
-	 * @param  string
-	 * @param  string
-	 * @return string
-	 */
-	function iconv($from_encoding = 'GBK', $target_encoding = 'UTF-8', $string)
-	{
-		return convert_encoding($string, $from_encoding, $target_encoding);
-	}
-}
-
-if (! function_exists('iconv_substr'))
-{
-	/**
-	 * 系统不开启 iconv_substr 模块时, 自建 iconv_substr(), 使用 MB String 库处理
-	 *
-	 * @param  string
-	 * @param  string
-	 * @param  int
-	 * @param  string
-	 * @return string
-	 */
-	function iconv_substr($string, $start, $length, $charset = 'UTF-8')
-	{
-		return mb_substr($string, $start, $length, $charset);
-	}
-}
-
-if (! function_exists('iconv_strpos'))
-{
-	/**
-	 * 系统不开启 iconv_substr 模块时, 自建 iconv_strpos(), 使用 MB String 库处理
-	 *
-	 * @param  string
-	 * @param  string
-	 * @param  int
-	 * @param  string
-	 * @return string
-	 */
-	function iconv_strpos($haystack, $needle, $offset = 0, $charset = 'UTF-8')
-	{
-		return mb_strpos($haystack, $needle, $offset, $charset);
-	}
-}
-
-/**
- * 兼容性转码
- *
- * 系统转换编码调用此函数, 会自动根据当前环境采用 iconv 或 MB String 处理
- *
- * @param  string
- * @param  string
- * @param  string
- * @return string
- */
-function convert_encoding($string, $from_encoding = 'GBK', $target_encoding = 'UTF-8')
-{
-	if (function_exists('mb_convert_encoding'))
-	{
-		return mb_convert_encoding($string, str_replace('//IGNORE', '', strtoupper($target_encoding)), $from_encoding);
-	}
-	else
-	{
-		if (strtoupper($from_encoding) == 'UTF-16')
-		{
-			$from_encoding = 'UTF-16BE';
-		}
-
-		if (strtoupper($target_encoding) == 'UTF-16')
-		{
-			$target_encoding = 'UTF-16BE';
-		}
-
-		if (strtoupper($target_encoding) == 'GB2312' or strtoupper($target_encoding) == 'GBK')
-		{
-			$target_encoding .= '//IGNORE';
-		}
-
-		return iconv($from_encoding, $target_encoding, $string);
-	}
-}
-
-/**
- * 兼容性转码 (数组)
- *
- * 系统转换编码调用此函数, 会自动根据当前环境采用 iconv 或 MB String 处理, 支持多维数组转码
- *
- * @param  array
- * @param  string
- * @param  string
- * @return array
- */
-function convert_encoding_array($data, $from_encoding = 'GBK', $target_encoding = 'UTF-8')
-{
-	return eval('return ' . convert_encoding(var_export($data, true) . ';', $from_encoding, $target_encoding));
-}
-
 /**
  * 双字节语言版 strpos
  *
@@ -217,11 +115,6 @@ function convert_encoding_array($data, $from_encoding = 'GBK', $target_encoding 
  */
 function cjk_strpos($haystack, $needle, $offset = 0, $charset = 'UTF-8')
 {
-	if (function_exists('iconv_strpos'))
-	{
-		return iconv_strpos($haystack, $needle, $offset, $charset);
-	}
-
 	return mb_strpos($haystack, $needle, $offset, $charset);
 }
 
@@ -244,14 +137,7 @@ function cjk_substr($string, $start, $length, $charset = 'UTF-8', $dot = '')
 		return $string;
 	}
 
-	if (function_exists('mb_substr'))
-	{
-		return mb_substr($string, $start, $length, $charset) . $dot;
-	}
-	else
-	{
-		return iconv_substr($string, $start, $length, $charset) . $dot;
-	}
+	return mb_substr($string, $start, $length, $charset) . $dot;
 }
 
 /**
@@ -265,14 +151,7 @@ function cjk_substr($string, $start, $length, $charset = 'UTF-8', $dot = '')
  */
 function cjk_strlen($string, $charset = 'UTF-8')
 {
-	if (function_exists('mb_strlen'))
-	{
-		return mb_strlen($string, $charset);
-	}
-	else
-	{
-		return iconv_strlen($string, $charset);
-	}
+	return mb_strlen($string, $charset);
 }
 
 /**

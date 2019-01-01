@@ -44,14 +44,10 @@ class ajax extends AWS_CONTROLLER
 
 	public function check_username_action()
 	{
-		if ($this->model('register')->check_username_char($_POST['username']))
+		if ($this->model('register')->check_username_char($_POST['username']) OR
+			$this->model('register')->check_username_sensitive_words($_POST['username']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名不符合规则')));
-		}
-
-		if ($this->model('register')->check_username_sensitive_words($_POST['username']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名中包含敏感词或系统保留字')));
 		}
 
 		if ($this->model('account')->username_exists($_POST['username']))
@@ -105,10 +101,11 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('本站已开启注册频率限制, 请稍后再试')));
 		}
 
-		if ($check_rs = $this->model('register')->check_username_char($_POST['user_name']))
+		if ($check_result = $this->model('register')->check_username_char($_POST['user_name']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名包含无效字符')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, $check_result));
 		}
+
 		if ( trim($_POST['user_name']) != $_POST['user_name'] OR
 			$this->model('register')->check_username_sensitive_words($_POST['user_name']) )
 		{

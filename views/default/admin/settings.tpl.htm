@@ -254,7 +254,7 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('用户名最少字符数'); ?>:</span>
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('用户名最少字数'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <input name="username_length_min" class="form-control" type="text" value="<?php echo $this->setting['username_length_min']; ?>"/>
                             </div>
@@ -264,11 +264,31 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('用户名最多字符数'); ?>:</span>
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('用户名最多字数'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <input name="username_length_max" class="form-control" type="text" value="<?php echo $this->setting['username_length_max']; ?>"/>
+                             </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('用户名最少字节数'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="username_bytes_min" class="form-control" type="text" value="<?php echo $this->setting['username_bytes_min']; ?>"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('用户名最多字节数'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="username_bytes_max" class="form-control" type="text" value="<?php echo $this->setting['username_bytes_max']; ?>"/>
 
-                                <span class="help-block"><?php _e('注: 一个汉字等于 2 个字符'); ?></span>
+                                <span class="help-block"><?php _e('注: 一个汉字等于 3 个字节'); ?></span>
                             </div>
                         </div>
                     </td>
