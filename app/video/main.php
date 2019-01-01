@@ -77,7 +77,7 @@ class main extends AWS_CONTROLLER
 			foreach ($video_topics AS $topic_info)
 			{
 				// 推荐相关 下文
-				//$video_topic_ids[] = $topic_info['topic_id'];
+				$video_topic_ids[] = $topic_info['topic_id'];
 			}
 		}
 
@@ -113,6 +113,8 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
+		TPL::assign('question_related_list', $this->model('question')->get_related_question_list(null, $video_info['title']));
+
 		$this->model('content')->update_view_count('video', $video_info['id'], session_id());
 
 		TPL::assign('comments', $comments);
@@ -133,8 +135,7 @@ class main extends AWS_CONTROLLER
 			import_editor_static_files();
 		}
 
-		/*
-		// 推荐相关 暂不实现
+		// 推荐相关
 		$recommend_posts = $this->model('posts')->get_recommend_posts_by_topic_ids($video_topic_ids);
 
 		if ($recommend_posts)
@@ -151,7 +152,6 @@ class main extends AWS_CONTROLLER
 
 			TPL::assign('recommend_posts', $recommend_posts);
 		}
-		*/
 
 		TPL::output('video/index');
 	}

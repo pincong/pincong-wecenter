@@ -159,14 +159,11 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('question_related_list', $this->model('question')->get_related_question_list($question_info['question_id'], $question_info['question_content']));
 
-		if ($this->user_id)
+		if ($question_topics)
 		{
-			if ($question_topics)
+			foreach ($question_topics AS $key => $val)
 			{
-				foreach ($question_topics AS $key => $val)
-				{
-					$question_topic_ids[] = $val['topic_id'];
-				}
+				$question_topic_ids[] = $val['topic_id'];
 			}
 		}
 
