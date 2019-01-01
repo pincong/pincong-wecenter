@@ -117,7 +117,7 @@
 										<?php _e('删除问题'); ?>&nbsp;</label>
 									<?php } ?>
 
-									<?php if (!$this->question_info['question_id']) { ?>
+									<?php if (!$this->question_info['question_id'] AND $this->user_info['permission']['post_anonymously']) { ?>
 									<label><input type="checkbox" class="pull-left" value="1" name="anonymous" />
 										<?php _e('匿名'); ?></label>
 									<?php } ?>

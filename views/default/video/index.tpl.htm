@@ -249,8 +249,10 @@
 						<div class="mod-footer clearfix">
 
 							<label class="pull-right">
-								&nbsp;<input type="checkbox" value="1" name="anonymous" /> <?php _e('匿名'); ?>&nbsp;
-								<a href="javascript:;" onclick="AWS.ajax_post($('#answer_form'), AWS.ajax_processer, 'reply');" class="btn btn-normal btn-success btn-submit btn-reply"><?php _e('回复'); ?></a>
+								<?php if ($this->user_info['permission']['post_anonymously']) { ?>
+								&nbsp;<input type="checkbox" value="1" name="anonymous" /> <?php _e('匿名'); ?>
+								<?php } ?>
+								&nbsp;<a href="javascript:;" onclick="AWS.ajax_post($('#answer_form'), AWS.ajax_processer, 'reply');" class="btn btn-normal btn-success btn-submit btn-reply"><?php _e('回复'); ?></a>
 							</label>
 
 							<label class="pull-right">

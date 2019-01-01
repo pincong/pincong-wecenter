@@ -113,7 +113,7 @@
 										<?php _e('删除文章'); ?>&nbsp;</label>
 									<?php } ?>
 
-									<?php if (!$this->article_info['id']) { ?>
+									<?php if (!$this->article_info['id'] AND $this->user_info['permission']['post_anonymously']) { ?>
 									<label><input type="checkbox" class="pull-left" value="1" name="anonymous" />
 										<?php _e('匿名'); ?></label>
 									<?php } ?>
