@@ -66,7 +66,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($this->user_info['group_id'] != 1 AND $this->user_info['group_id'] != 2 AND $this->user_info['group_id'] != 3)
 		{
-			if ($user_info['group_id'] != 4 OR intval($this->user_info['reputation']) <= intval($user_info['reputation']))
+			if ($user_info['group_id'] < 4 OR intval($this->user_info['reputation']) <= intval($user_info['reputation']))
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 			}
@@ -158,7 +158,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($this->user_info['group_id'] != 1 AND $this->user_info['group_id'] != 2 AND $this->user_info['group_id'] != 3)
 		{
-			if ($user_info['group_id'] != 4 OR intval($this->user_info['reputation']) <= intval($user_info['reputation']))
+			if ($user_info['group_id'] < 4 OR intval($this->user_info['reputation']) <= intval($user_info['reputation']))
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 			}
