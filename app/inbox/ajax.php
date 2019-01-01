@@ -40,10 +40,10 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入私信内容')));
 		}
 
-		// TODO: 在管理后台添加字数选项
-		if (cjk_strlen($message) > 500)
+		$length_limit = get_setting('pm_length_limit');
+		if (cjk_strlen($message) > $length_limit)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('私信字数不得多于 500 字')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('私信字数不得多于 %s 字', $length_limit)));
 		}
 
 		if (!$recipient_user = $this->model('account')->get_user_info_by_username($_POST['recipient']))
