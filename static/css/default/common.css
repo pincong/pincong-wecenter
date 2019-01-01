@@ -181,9 +181,6 @@ a.aw-load-more-content{display: block;}
 .i-private-replay-triangle{width: 8px;height: 10px;background: url('img/icon-angle-right.png') no-repeat;}
 .aw-table th{background-color: #fafafa !important;border-bottom: none !important;}
 
-/* email未验证提示 */
-.aw-email-verify{height:38px;line-height:38px;background-color: #fff07b;border-bottom: 1px solid #d9cda7;color: #988328;}
-
 /* 顶部 */
 .aw-top-menu-wrap{position:relative;z-index:1001;width:100%;min-height:50px;background-color:#499ef3;}
 .aw-container-wrap{margin-top: 30px;}
@@ -813,7 +810,6 @@ blockquote {margin: 0 40px;padding: 0 15px;font-size: 14px;color: #777;border-le
 /* 发起box */
 .aw-publish-box input{width:170px !important;}
 .aw-publish-box .modal-body{padding-bottom: 0px;}
-.aw-publish-box #qp_captcha{height: 36px;margin-left: 10px;}
 .aw-publish-box .aw-publish-title .dropdown{width: 100%;background-color: #fff;}
 .aw-publish-box .aw-publish-title .dropdown .dropdown-toggle span{width: 90%;}
 .aw-publish-box .aw-publish-title .dropdown .dropdown-toggle a{width: 10%;}
@@ -896,20 +892,7 @@ blockquote {margin: 0 40px;padding: 0 15px;font-size: 14px;color: #777;border-le
 .aw-point-rule .green{color: #388202;}
 .aw-point-rule .red{color: #ff5d61;}
 
-/* 404页面 */
-.aw-404 {background:#f4f4f4;}
-.aw-404 .aw-footer-wrap {background-color: #fff;}
-.aw-404-wrap{width: 500px;height:auto;margin:100px auto 300px;text-align: center;}
-.aw-404-wrap p{margin: 45px auto 30px; font-size: 18px;}
-.aw-404-wrap p a{font-size:18px;color: #54beff;}
-.aw-404-wrap .aw-search-box {width: 460px;float: none;margin: 0 auto;}
-.aw-404-wrap .aw-search-box .form-control {border-radius: 0;border-color: #54beff;}
-.aw-404-wrap .aw-search-box .input-group {margin: 0 auto;}
-.aw-404-wrap .aw-search-box .input-group input {width: 460px;padding-right: 50px;}
-.aw-404-wrap .aw-search-box #global_search_btns {top:0;right:0;z-index:10;width:40px;height:32px;border-radius: 0;border-color: #54beff; color: #fff;background-color: #54beff;}
-
-#browser-not-support{position:fixed;bottom:0;z-index:9999;width:100%;padding:20px;background-color: #f2dede;}
-#browser-not-support img{margin-right: 20px;}
+#browser-not-support{position:fixed;bottom:0;z-index:9999;width:100%;padding:5px;background-color: #f2dede;}
 
 /* 帮助中心 */
 .aw-help-center .mod-head {padding: 40px 0;}

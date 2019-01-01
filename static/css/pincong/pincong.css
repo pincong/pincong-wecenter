@@ -45,8 +45,4 @@ a:hover{text-decoration: none;color: #404451;}
 .aw-favorite-tag-list ul li i{display:none;position: absolute;right: 10px;top: 14px;width:24px;height:24px;background-color: #404451;color: #fff;text-align: center;line-height: 24px;border-radius: 12px;font-size: 20px;}
 .aw-first-login .mod-head ul.active, .aw-first-login .mod-head ul li.active{background: #697287;color: #fff;}
 .aw-first-login .mod-head ul li i{position:absolute;top:0;right:-16px;display: none;width: 0;height: 0;border-top: 26px solid transparent;border-left: 16px solid #697287;border-bottom: 24px solid transparent;}
-.aw-404-wrap p a{font-size:18px;color: #54beff;}
-.aw-404-wrap .aw-search-box {width: 460px;float: none;margin: 0 auto;}
-.aw-404-wrap .aw-search-box .form-control {border-radius: 0;border-color: #54beff;}
-.aw-404-wrap .aw-search-box #global_search_btns {top:0;right:0;z-index:10;width:40px;height:32px;border-radius: 0;border-color: #54beff; color: #fff;background-color: #54beff;}
 .navbar-collapse {background: #404451;}
