@@ -274,7 +274,7 @@ class account_class extends AWS_MODEL
     /**
      * 通过 UID 数组获取用户信息
      *
-     * @param arrary
+     * @param array
      * @param boolean
      * @return array
      */
@@ -518,16 +518,84 @@ class account_class extends AWS_MODEL
      *
      * @param array
      * @param uid
-     * @return int
+     * @return void
      */
     public function update_users_attrib_fields($update_data, $uid)
     {
+		if ($update_data['extra_data'])
+		{
+			$update_data['extra_data'] = serialize($update_data['extra_data']);
+		}
 		if ($this->update('users_attrib', $update_data, 'uid = ' . intval($uid)))
 		{
 			return;
 		}
 		$update_data['uid'] = intval($uid);
 		$this->insert('users_attrib', $update_data);
+    }
+
+    /**
+     * 获取用户附加表 extra_data 字段
+     *
+     * @param array
+     * @param uid
+     * @return mixed	成功返回 array, 失败返回 false
+     */
+    public function get_users_attrib_extra_data($uid)
+    {
+		$user_attrib = $this->fetch_row('users_attrib', 'uid = ' . intval($uid));
+		if (!$user_attrib)
+		{
+			return false;
+		}
+
+		if ($user_attrib['extra_data'])
+		{
+			$result = unserialize($user_attrib['extra_data']);
+		}
+
+		if (!is_array($result))
+		{
+			$result = array();
+		}
+
+		return $result;
+    }
+
+    /**
+     * 更新用户附加表 extra_data 字段
+     *
+     * @param array
+     * @param uid
+     * @return void
+     */
+    public function update_users_attrib_extra_data($data, $uid)
+    {
+		if (!is_array($data))
+		{
+			return;
+		}
+
+		$extra_data = $this->get_users_attrib_extra_data($uid);
+		if (!is_array($extra_data))
+		{
+			return;
+		}
+
+		// 覆盖或刪除原有的
+		foreach ($data AS $key => $val)
+		{
+			if ($val === null)
+			{
+				unset($extra_data[$key]);
+			}
+			else
+			{
+				$extra_data[$key] = $val;
+			}
+		}
+
+		$this->update_users_attrib_fields(array('extra_data' => $extra_data), $uid);
     }
 
     /**
@@ -1110,16 +1178,35 @@ class account_class extends AWS_MODEL
 		);
 	}
 
-    public function forbid_user_by_uid($uid, $status, $admin_uid = null)
+    public function forbid_user_by_uid($uid, $status, $admin_uid = null, $reason = null)
     {
-        if (!$uid)
-        {
-            return false;
-        }
+		if (!$uid)
+		{
+			return false;
+		}
 
-        return $this->model('account')->update_users_fields(array(
-            'forbidden' => intval($status)
-        ), $uid);
+		$status = intval($status);
+		if (!$this->update_users_fields(array('forbidden' => ($status)), $uid))
+		{
+			return false;
+		}
+
+		if (!$status)
+		{
+			$extra_data = array(
+				'banned_by' => null,
+				'banned_reason' => null
+			);
+		}
+		else
+		{
+			$extra_data = array(
+				'banned_by' => $admin_uid,
+				'banned_reason' => $reason
+			);
+		}
+
+		$this->update_users_attrib_extra_data($extra_data, $uid);
     }
 
     public function set_default_timezone($time_zone, $uid)
