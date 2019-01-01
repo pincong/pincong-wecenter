@@ -132,9 +132,9 @@ class Zend_Cache_Backend_Memcached extends Zend_Cache_Backend implements Zend_Ca
             $this->setOption('servers', $value);
         }
         // Modify by WeCenter
-        if (defined('IN_SAE')){
-            $this->_memcache = memcache_init();
-        } else {
+        //if (defined('IN_SAE')){
+        //    $this->_memcache = memcache_init();
+        //} else {
 			$this->_memcache = new Memcache;
 			foreach ($this->_options['servers'] as $server) {
 				if (!array_key_exists('port', $server)) {
@@ -170,7 +170,7 @@ class Zend_Cache_Backend_Memcached extends Zend_Cache_Backend implements Zend_Ca
 											$server['status'], $server['failure_callback']);
 				}
 			}
-        }
+        //}
     }
 
     /**

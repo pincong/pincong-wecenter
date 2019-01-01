@@ -23,7 +23,7 @@ class core_cache
 	);
 
 	// 支持 File, Memcached, APC, Xcache, 手册参考: http://framework.zend.com/manual/zh/zend.cache.html
-	private $backendName = G_CACHE_TYPE;
+	private $backendName;
 
 	private $backendOptions;
 
@@ -38,24 +38,39 @@ class core_cache
 		$this->groupPrefix = $file_name_prefix . $this->groupPrefix;
 		$this->cachePrefix = $file_name_prefix . $this->cachePrefix;
 
-		if ($this->backendName == 'Memcached')
+		if (G_CACHE_TYPE == 'Memcache')
 		{
+			$this->backendName = 'Memcached'; // 注意区别
+
 			$this->backendOptions = array(
 				// Memcache 配置
 				'servers' => array(
 					array(
 						'host' => G_CACHE_TYPE_MEMCACHED_HOST,
 						'port' => G_CACHE_TYPE_MEMCACHED_PORT,
-						'persistent' => true,
 						'timeout' => 5,
-						'compression' => false,	// 压缩
-						'compatibility' => false	// 兼容旧版 Memcache servers
 					)
 				)
 			);
 		}
-		else if ($this->backendName == 'File')
+		else if (G_CACHE_TYPE == 'Memcached')
 		{
+			$this->backendName = 'Libmemcached'; // 注意区别
+
+			$this->backendOptions = array(
+				// Memcached 配置
+				'servers' => array(
+					array(
+						'host' => G_CACHE_TYPE_MEMCACHED_HOST,
+						'port' => G_CACHE_TYPE_MEMCACHED_PORT,
+					)
+				)
+			);
+		}
+		else if (G_CACHE_TYPE == 'File')
+		{
+			$this->backendName = 'File';
+
 			$cache_dir = ROOT_PATH . 'cache/';
 
 			if (!file_exists($cache_dir . 'index.html'))

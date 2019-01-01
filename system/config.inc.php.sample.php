@@ -33,7 +33,7 @@ define('G_SESSION_SAVE', 'db');
 // Session 文件存储路径
 define('G_SESSION_SAVE_PATH', '');
 
-// Cache 类型 (File, Memcached)
+// Cache 类型 (File, Memcache, Memcached)
 define('G_CACHE_TYPE', 'File');
 
 // Cache options
