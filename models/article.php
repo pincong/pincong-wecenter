@@ -458,17 +458,6 @@ class article_class extends AWS_MODEL
 				$this->update('article', array(
 					'votes' => $votes
 				), 'id = ' . ($item_id));
-
-				/*switch ($rating)
-				{
-					case 1:
-						ACTION_LOG::save_action($uid, $item_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_AGREE_ARTICLE);
-					break;
-
-					case -1:
-						ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action = ' . ACTION_LOG::ADD_AGREE_ARTICLE . ' AND uid = ' . ($uid) . ' AND associate_id = ' . ($item_id));
-					break;
-				}*/
 			break;
 
 			case 'comment':
@@ -478,7 +467,8 @@ class article_class extends AWS_MODEL
 			break;
 		}
 
-		$this->model('account')->add_user_agree_count($item_uid, $add_agree_count);
+		// 更新作者赞同数和威望
+		$this->model('reputation')->increase_agree_count_and_reputation($item_uid, $add_agree_count, $reputation_factor);
 
 		return true;
 	}

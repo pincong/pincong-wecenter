@@ -1196,8 +1196,6 @@ class question_class extends AWS_MODEL
 					$this->model('integral')->process($uid, 'AGREE_QUESTION', get_setting('integral_system_config_agree_question'), '赞同问题 #' . $question_id, $question_id);
 					$this->model('integral')->process($question_uid, 'QUESTION_AGREED', get_setting('integral_system_config_question_agreed'), '问题被赞同 #' . $question_id, $question_id);
 				}
-
-				//ACTION_LOG::save_action($uid, $question_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_AGREE, '', intval($question_id));
 			}
 			else if ($vote_value == -1)
 			{
@@ -1214,35 +1212,19 @@ class question_class extends AWS_MODEL
 		{
 			$this->delete_question_vote($vote_info['voter_id']);
 
-			//ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action = ' . ACTION_LOG::ADD_AGREE . ' AND uid = ' . intval($uid) . ' AND associate_id = ' . intval($question_id) . ' AND associate_attached = ' . intval($question_id));
-
 			$add_agree_count = -$vote_value;
 		}
 		else //更新记录
 		{
 			$this->set_question_vote_status($vote_info['voter_id'], $vote_value);
 
-			/*if ($vote_value == 1)
-			{
-				ACTION_LOG::save_action($uid, $question_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_AGREE, '', $question_id);
-			}*/
-
 			$add_agree_count = $vote_value * 2;
 		}
 
-		/*if ($vote_value == 1 AND $vote_info['vote_value'] != 1 AND $question_uid != $uid)
-		{
-			$this->model('notify')->send($uid, $question_uid, notify_class::TYPE_QUESTION_AGREE, notify_class::CATEGORY_QUESTION, $question_id, array(
-				'from_uid' => $uid,
-				'question_id' => $question_id,
-				'item_id' => $question_id,
-			));
-		}*/
-
 		$this->update_vote_count($question_id);
 
-		// 更新作者的被赞同数
-		$this->model('account')->add_user_agree_count($question_uid, $add_agree_count);
+		// 更新作者赞同数和威望
+		$this->model('reputation')->increase_agree_count_and_reputation($question_uid, $add_agree_count, $reputation_factor);
 
 		return true;
 	}

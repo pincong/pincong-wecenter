@@ -1060,6 +1060,7 @@ class account_class extends AWS_MODEL
         }
     }
 
+	// $type 0:系统组|1:会员组(威望组)
     public function get_user_group_list($type = 0, $custom = null)
     {
         $type = intval($type);
@@ -1080,64 +1081,6 @@ class account_class extends AWS_MODEL
         }
 
         return $group;
-    }
-
-    public function get_user_group_by_reputation($reputation, $field = null)
-    {
-        if ($mem_groups = $this->get_user_group_list(1))
-        {
-            foreach ($mem_groups as $key => $val)
-            {
-                if ((intval($reputation) >= intval($val['reputation_lower'])) AND (intval($reputation) < intval($val['reputation_higer'])))
-                {
-                    $group = $val;
-
-                    break;
-                }
-            }
-        }
-        else    // 若会员组为空，则返回为普通会员组
-        {
-            $group = $this->get_user_group(4);
-        }
-
-        if ($field)
-        {
-            return $group[$field];
-        }
-
-        return $group;
-    }
-
-    public function update_user_reputation_group($uid)
-    {
-        if (!$user_info = $this->get_user_info_by_uid($uid) OR !$user_group = $this->get_user_group($user_info['group_id']))
-        {
-            return false;
-        }
-
-        if ($user_group['custom'] == 1)
-        {
-            if ($user_info['reputation_group'])
-            {
-                $this->update_users_fields(array(
-                    'reputation_group' => 0
-                ), $uid);
-            }
-
-            return false;
-        }
-
-        $reputation_group = $this->get_user_group_by_reputation($user_info['reputation'], 'group_id');
-
-        if ($reputation_group != $user_info['reputation_group'])
-        {
-            return $this->update_users_fields(array(
-                'reputation_group' => intval($reputation_group)
-            ), $uid);
-        }
-
-        return false;
     }
 
     public function get_user_group($group_id, $reputation_group = 0)
@@ -1215,25 +1158,6 @@ class account_class extends AWS_MODEL
         return $this->update('users', array(
             'recent_topics' => serialize($new_recent_topics)
         ), 'uid = ' . intval($uid));
-    }
-
-    public function add_user_agree_count($uid, $n)
-    {
-		$user_info = $this->model('account')->get_user_info_by_uid($uid);
-		if (!$user_info)
-		{
-			return false;
-		}
-		$count = intval($user_info['agree_count']) + intval($n);
-        $this->update('users', array(
-            'agree_count' => $count
-        ), 'uid = ' . intval($uid));
-
-		// 临时添加
-		if (!$user_info['forbidden'] AND $user_info['group_id'] == 4 AND -$count >= get_setting('user_downvote_forbidden'))
-		{
-			$this->model('account')->forbidden_user_by_uid($uid, 1);
-		}
     }
 
     public function associate_remote_avatar($uid, $headimgurl)
