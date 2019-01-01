@@ -476,6 +476,28 @@
 	line-height: 44px;
 }
 
+.ab-settings-dlg {
+	max-width: 230px;
+	right: 1px;
+	bottom: 52px;
+	visibility: hidden;
+}
+
+.ab-speed-option {
+	font-size: 12px;
+	width: 36px;
+}
+
+.ab-quality-option {
+	font-size: 12px;
+	padding-left: 6px;
+	padding-right: 6px;
+	margin-bottom: 3px;
+}
+
+.ab-quality-option-title {
+	display: none;
+}
 </style>
 
 <script>
@@ -758,8 +780,10 @@ var ABP = {};
 
 		this.$fontBtn = this.$$('.ab-font-btn');
 		this.$colorBtn = this.$$('.ab-color-btn');
+		this.$settingsDlg = this.$$('.ab-settings-dlg');
 		this.$fontDlg = this.$$('.ab-font-dlg');
 		this.$colorDlg = this.$$('.ab-color-dlg');
+		this.$settingsBtn = this.$$('.ab-settings-btn');
 
 		this.$loader = this.$$('.ab-loader');
 
@@ -810,6 +834,9 @@ var ABP = {};
 				self._toggleColorDialog();
 			}
 		});
+		ABP.Util.bindClick(self.$settingsBtn, function() {
+			self._toggleSettingsDialog();
+		});
 
 		ABP.Util.bindClick(self.$volumeBar, function(e) {
 			self._volumeBarClick(e);
@@ -830,6 +857,10 @@ var ABP = {};
 
 		ABP.Util.bindClick(self.$sendBtn, function() {
 			self._sendButtonClick();
+		});
+
+		ABP.Util.bindClick(self.$$('input[name="abp-speed"]'), function() {
+			self.video.playbackRate = this.value;
 		});
 
 		this.video.onplaying = function() {
@@ -1080,6 +1111,16 @@ var ABP = {};
 		}
 	};
 
+	Player.prototype._toggleSettingsDialog = function() {
+		if (this.$settingsDlg.css('visibility') == 'hidden') {
+			this.$settingsDlg.css('visibility', 'visible');
+			this.$settingsBtn.addClass('c-btn-hover');
+		} else {
+			this.$settingsDlg.css('visibility', 'hidden');
+			this.$settingsBtn.removeClass('c-btn-hover');
+		}
+	};
+
 	// ------ end 私有方法 ------
 
 	ABP.Player = Player;
@@ -1167,6 +1208,24 @@ var ABP = {};
 	</div>
 
 	<div class="c-dlg ab-color-dlg"></div>
+
+	<div class="c-dlg ab-settings-dlg">
+		<p class="c-dlg-title">播放速度</p>
+		<div class="c-dlg-btn-group">
+			<label><input type="radio" value="0.5" name="abp-speed"><span class="c-dlg-btn ab-speed-option">0.5</span></label>
+			<label><input type="radio" value="1.0" name="abp-speed" checked="checked"><span class="c-dlg-btn ab-speed-option">1.0</span></label>
+			<label><input type="radio" value="1.5" name="abp-speed"><span class="c-dlg-btn ab-speed-option">1.5</span></label>
+			<label><input type="radio" value="2.0" name="abp-speed"><span class="c-dlg-btn ab-speed-option">2.0</span></label>
+		</div>
+		<p class="c-dlg-title ab-quality-option-title">清晰度</p>
+		<div class="c-dlg-btn-group ab-quality-option-group">
+			<!--
+			<label><input type="radio" name="abp-quality"><span class="c-dlg-btn ab-quality-option">1080p</span></label>
+			<label><input type="radio" name="abp-quality" checked="checked"><span class="c-dlg-btn ab-quality-option">720p</span></label>
+			<label><input type="radio" name="abp-quality"><span class="c-dlg-btn ab-quality-option">360p</span></label>
+			-->
+		</div>
+	</div>
 </div>
 
 
