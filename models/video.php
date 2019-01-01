@@ -317,7 +317,7 @@ class video_class extends AWS_MODEL
 		return true;
 	}
 
-	public function get_videos_list($category_id, $page, $per_page, $order_by, $day = null)
+	public function get_video_list($category_id, $page, $per_page, $order_by, $day = null)
 	{
 		$where = array();
 
@@ -335,7 +335,7 @@ class video_class extends AWS_MODEL
 	}
 
 	/*
-	public function get_videos_list_by_topic_ids($page, $per_page, $order_by, $topic_ids)
+	public function get_video_list_by_topic_ids($page, $per_page, $order_by, $topic_ids)
 	{
 		if (!$topic_ids)
 		{

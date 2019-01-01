@@ -66,6 +66,9 @@
 							<h1><?php if (!$this->video_info['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $this->video_info['title']; ?><?php } ?></h1>
 						</div>
 						<div class="mod-body">
+							<div>
+								<img src="<?php echo $this->video_info['thumb_url']; ?>" alt="" style="max-width:100%">
+							</div>
 							<div class="content markitup-box">
 								<?php echo FORMAT::text(FORMAT::parse_links($this->video_info['message'])); ?>
 							</div>

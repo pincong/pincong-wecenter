@@ -1,0 +1,77 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+
+<div class="aw-container-wrap">
+	<?php TPL::output('block/content_nav_menu.tpl.htm'); ?>
+
+	<div class="container">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="col-sm-12 col-md-9 aw-main-content">
+					<div class="aw-mod aw-article-list">
+						<?php if ($this->video_list) { ?>
+						<?php foreach ($this->video_list AS $key => $val) { ?>
+						<div class="aw-item">
+    						<?php if ($val['anonymous'] == 0) { ?>
+							<a class="aw-user-name" href="people/<?php echo $val['user_info']['url_token']; ?>">
+								<img alt="" src="<?php echo get_avatar_url($val['uid'], 'mid'); ?>" />
+							</a>
+    						<?php } else { ?>
+							<a class="aw-user-name" href="javascript:;">
+								<img src="<?php echo G_STATIC_URL; ?>/common/avatar-max-img.png" alt="<?php _e('匿名用户'); ?>" title="<?php _e('匿名用户'); ?>" />
+							</a>
+    						<?php } ?>
+							<div class="aw-content">
+								<div class="mod-body">
+									<h2><a href="v/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['title']; ?><?php } ?></a></h2>
+									<div class="aw-topic-bar">
+										<div class="tag-bar clearfix">
+											<?php foreach($this->video_topics[$val['id']] as $topic_key => $topic_val) { ?>
+											<span class="topic-tag">
+												<a href="topic/<?php echo $topic_val['url_token']; ?>" class="text" data-id="<?php echo $topic_val['topic_id']; ?>"><?php echo $topic_val['topic_title']; ?></a>
+											</span>
+											<?php } ?>
+										</div>
+									</div>
+								</div>
+								<div class="mod-footer clearfix">
+									<span class="pull-right more-operate text-color-999">
+										<?php if ($val['anonymous'] == 0) { ?><?php echo $val['user_info']['user_name']; ?><?php } else { ?><?php _e('匿名用户'); ?><?php } ?> 发表于 : <?php echo date_friendly($val['add_time']); ?>
+
+										<a class="text-color-999" href="v/<?php echo $val['id']; ?>"><i class="icon icon-comment"></i> <?php _e('评论'); ?> (<?php echo $val['comments']; ?>)</a>
+									</span>
+								</div>
+							</div>
+						</div>
+						<?php } ?>
+
+						<?php echo $this->pagination; ?>
+
+						<?php } ?>
+					</div>
+					<!-- end 投稿列表 -->
+				</div>
+				<!-- 侧边栏 -->
+				<div class="col-sm-12 col-md-3 aw-side-bar">
+					<!-- 热门投稿 -->
+					<div class="aw-mod aw-text-align-justify">
+						<div class="mod-head">
+							<h3><?php _e('热门投稿'); ?></h3>
+						</div>
+						<div class="mod-body">
+							<ul>
+								<?php foreach($this->hot_videos AS $key => $val) { ?>
+								<li><a href="v/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['title']; ?><?php } ?></a></li>
+								<?php } ?>
+							</ul>
+						</div>
+					</div>
+					<!-- end 热门投稿 -->
+					<?php TPL::output('block/sidebar_hot_topics.tpl.htm'); ?>
+				</div>
+				<!-- end 侧边栏 -->
+			</div>
+		</div>
+	</div>
+</div>
+
+<?php TPL::output('global/footer.tpl.htm'); ?>
