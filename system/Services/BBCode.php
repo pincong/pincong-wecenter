@@ -77,6 +77,20 @@ class Services_BBCode
         return "<ul>" . preg_replace("/[\n\r?]/", "", $match[1]) . "</ul>";
 	}
 
+	private function _list_ul_callback($match)
+	{
+		$match[1] = preg_replace_callback("/\[li\](.*?)\[\/li\]/is", array(&$this, '_list_element_callback'), $match[1]);
+
+        return "<ul>" . preg_replace("/[\n\r?]/", "", $match[1]) . "</ul>";
+	}
+
+	private function _list_ol_callback($match)
+	{
+		$match[1] = preg_replace_callback("/\[li\](.*?)\[\/li\]/is", array(&$this, '_list_element_callback'), $match[1]);
+
+        return "<ol>" . preg_replace("/[\n\r?]/", "", $match[1]) . "</ol>";
+	}
+
 	private function _list_element_callback($match)
 	{
 		return "<li>" . preg_replace("/[\n\r?]$/", "", $match[1]) . "</li>";
@@ -150,6 +164,12 @@ class Services_BBCode
 
         // Replace [list=1|a]...[/list] with <ul|ol><li>...</li></ul|ol>
         $this->bbcode_table["/\[list=(1|a)\](.*?)\[\/list\]/is"] = '_list_advance_callback';
+
+        // Replace [ul]...[/ul] with <ul><li>...</li></ul>
+        $this->bbcode_table["/\[ul\](.*?)\[\/ul\]/is"] = '_list_ul_callback';
+
+        // Replace [ol]...[/ol] with <ol><li>...</li></ol>
+        $this->bbcode_table["/\[ol\](.*?)\[\/ol\]/is"] = '_list_ol_callback';
 
         return $this;
     }
