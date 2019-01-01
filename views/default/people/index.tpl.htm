@@ -63,7 +63,7 @@
 
 						<div class="mod-body clearfix">
 							<div>
-								<span><i class="icon icon-prestige"></i> <?php _e(get_setting('reputation_name')); ?> : <b><?php echo $this->user['reputation']; ?></b></span>
+								<span><i class="icon icon-prestige"></i> <?php _e(get_setting('reputation_name')); ?> : <b><?php echo intval($this->user['reputation']); ?></b></span>
 								<span><i class="icon icon-agree"></i> <?php _e('赞同'); ?> : <b><?php echo $this->user['agree_count']; ?></b></span>
 								<?php if($this->user_info['permission']['is_administrator'] OR $this->user['uid'] == $this->user_id) { ?>
 								<span><i class="icon"></i> <?php _e(get_setting('currency_name')); ?> : <b><?php echo $this->user['currency']; ?></b> <?php _e(get_setting('currency_unit')); ?></span>

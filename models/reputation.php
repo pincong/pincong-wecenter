@@ -68,22 +68,6 @@ class reputation_class extends AWS_MODEL
 		}
 	}
 
-	// 通过威望值得到威望系数
-	public function get_reputation_factor_by_reputation($reputation)
-	{
-		if ($reputation_groups = $this->get_reputation_group_list())
-		{
-			foreach ($reputation_groups as $key => $val)
-			{
-				if ((intval($reputation) >= intval($val['reputation_lower'])) AND (intval($reputation) < intval($val['reputation_higer'])))
-				{
-					return intval($val['reputation_factor']);
-				}
-			}
-		}
-		return 0;
-	}
-
 	// 增加用户赞同数和威望
 	public function increase_agree_count_and_reputation($uid, $vote, $reputation_factor)
 	{
@@ -105,7 +89,7 @@ class reputation_class extends AWS_MODEL
 		}
 
 		$agree_count_delta = intval($vote);
-		$reputation_delta = $agree_count_delta * intval($reputation_factor);
+		$reputation_delta = $agree_count_delta * floatval($reputation_factor);
 
 		$this->query('UPDATE ' . $this->get_table('users') . ' SET agree_count = agree_count + ' . $agree_count_delta . ', reputation = reputation + ' . $reputation_delta . ' WHERE uid = ' . ($uid));
 

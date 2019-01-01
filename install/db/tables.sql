@@ -531,7 +531,7 @@ CREATE TABLE IF NOT EXISTS `aws_users` (
   `flagged` tinyint(1) DEFAULT '0',
   `agree_count` int(10) DEFAULT '0' COMMENT '赞同数量',
   `views_count` int(10) DEFAULT '0' COMMENT '个人主页查看数量',
-  `reputation` int(10) DEFAULT '0' COMMENT '威望',
+  `reputation` float DEFAULT '0' COMMENT '威望',
   `currency` int(10) DEFAULT '0',
   `user_update_time` int(10) DEFAULT '0',
   `verified` varchar(32) DEFAULT NULL,

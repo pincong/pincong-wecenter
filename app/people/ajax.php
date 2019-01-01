@@ -60,7 +60,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		H::ajax_json_output(array(
-			'reputation' => $user_info['reputation'],
+			'reputation' => intval($user_info['reputation']),
 			'agree_count' => $user_info['agree_count'],
 			'type' => 'people',
 			'uid' => $user_info['uid'],
