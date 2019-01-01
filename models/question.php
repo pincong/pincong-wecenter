@@ -147,14 +147,14 @@ class question_class extends AWS_MODEL
 	 * 增加问题浏览次数记录
 	 * @param int $question_id
 	 */
-	public function update_views($question_id)
+	public function update_view_count($question_id)
 	{
-		if (AWS_APP::cache()->get('update_views_question_' . md5(session_id()) . '_' . intval($question_id)))
+		if (AWS_APP::cache()->get('update_view_count_question_' . md5(session_id()) . '_' . intval($question_id)))
 		{
 			return false;
 		}
 
-		AWS_APP::cache()->set('update_views_question_' . md5(session_id()) . '_' . intval($question_id), time(), 60);
+		AWS_APP::cache()->set('update_view_count_question_' . md5(session_id()) . '_' . intval($question_id), time(), 60);
 
 		$this->shutdown_query("UPDATE " . $this->get_table('question') . " SET view_count = view_count + 1 WHERE question_id = " . intval($question_id));
 

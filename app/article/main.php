@@ -98,7 +98,7 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('question_related_list', $this->model('question')->get_related_question_list(null, $article_info['title']));
 
-		$this->model('article')->update_views($article_info['id']);
+		$this->model('article')->update_view_count($article_info['id']);
 
 		TPL::assign('comments', $comments);
 		TPL::assign('comments_count', $article_info['comments']);
