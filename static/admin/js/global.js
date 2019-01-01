@@ -82,7 +82,7 @@ $(function () {
         dragEnd: function () {
             var arr = [];
             $.each($('.aw-nav-menu ul li'), function (i, e) {
-                arr.push($(this).attr('data-sort'));
+                arr.unshift($(this).attr('data-sort'));
             });
             $('#nav_sort').val(arr.join(','));
 

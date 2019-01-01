@@ -31,7 +31,7 @@ class menu_class extends AWS_MODEL
 			'type_id' => $type_id,
 			'link' => $link,
 			'icon' => '',
-			'sort' => 99,
+			'sort' => 0
 		));
 	}
 
