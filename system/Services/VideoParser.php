@@ -151,6 +151,7 @@ class Services_VideoParser
 			return false;
 		}
 
+/*
 		if (!$cache)
 		{
 			return self::real_fetch_video_metadata($source_type, $source);
@@ -169,6 +170,9 @@ class Services_VideoParser
 			AWS_APP::cache()->set($cache_key, $result, 60);
 		}
 		return $result;
+*/
+		return self::real_fetch_video_metadata($source_type, $source);
+
 	}
 
 }
