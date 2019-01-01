@@ -60,7 +60,7 @@ class edit extends AWS_CONTROLLER
 		{
 			HTTP::error_403();
 		}
-		if ($comment_info['uid'] != $this->user_id and ! $this->user_info['permission']['edit_article'])
+		if ($comment_info['uid'] != $this->user_id and ! $this->user_info['permission']['edit_any_post'])
 		{
 			HTTP::error_403();
 		}

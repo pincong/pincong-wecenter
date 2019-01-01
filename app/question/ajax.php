@@ -414,7 +414,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论不存在')));
 		}
 
-		if (! $this->user_info['permission']['edit_question'] AND $this->user_id != $comment['uid'])
+		if (! $this->user_info['permission']['edit_any_post'] AND $this->user_id != $comment['uid'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('你没有权限删除该评论')));
 		}
@@ -433,7 +433,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function set_best_answer_action()
 	{
-		if (! $this->user_info['permission']['edit_question'])
+		if (! $this->user_info['permission']['edit_any_post'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
