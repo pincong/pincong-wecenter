@@ -97,7 +97,7 @@ class main extends AWS_CONTROLLER
 			TPL::assign('sidebar_hot_topics', $this->model('module')->sidebar_hot_topics($category_info['id']));
 		}
 
-		// 边栏专题
+		// 边栏功能
 		if (TPL::is_output('block/sidebar_feature.tpl.htm', 'explore/index'))
 		{
 			TPL::assign('feature_list', $this->model('feature')->get_enabled_feature_list());

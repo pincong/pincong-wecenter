@@ -279,7 +279,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
         if (trim($_POST['title']) == '')
         {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('专题标题不能为空')));
+            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('标题不能为空')));
         }
 
         if ($_GET['feature_id'])

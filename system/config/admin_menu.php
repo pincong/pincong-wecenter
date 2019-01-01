@@ -145,7 +145,7 @@ $config[] = array(
 
         array(
             'id' => 304,
-            'title' => AWS_APP::lang()->_t('专题管理'),
+            'title' => AWS_APP::lang()->_t('功能链接'),
             'url' => 'admin/feature/list/'
         ),
 
