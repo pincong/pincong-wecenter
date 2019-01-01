@@ -46,5 +46,5 @@ a:hover{text-decoration: none;color: #404451;}
 .aw-first-login .mod-head ul.active, .aw-first-login .mod-head ul li.active{background: #697287;color: #fff;}
 .aw-first-login .mod-head ul li i{position:absolute;top:0;right:-16px;display: none;width: 0;height: 0;border-top: 26px solid transparent;border-left: 16px solid #697287;border-bottom: 24px solid transparent;}
 .navbar-collapse {background: #404451;}
-.aw-common-list .aw-question-content h4{font-size: 16px;font-weight: bold;}
-.aw-question-detail .mod-head h1{color: #333;font-size:21px;font-weight: bold;}
+.aw-common-list .aw-question-content h4{font-size: 15px;font-weight: bold;}
+.aw-question-detail .mod-head h1{color: #333;font-size:19px;font-weight: bold;}
