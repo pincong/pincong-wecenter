@@ -80,7 +80,7 @@ class ajax extends AWS_CONTROLLER
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('延迟时间不能小于 10 分钟')));
 			}
 
-			if ($_POST['later'] > 1440 AND !$this->user_info['permission']['is_administrator'])
+			if ($_POST['later'] > 1440 AND $this->user_info['group_id'] != 1 AND $this->user_info['group_id'] != 2)
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('延迟时间不能大于 1440 分钟')));
 			}
@@ -189,7 +189,7 @@ class ajax extends AWS_CONTROLLER
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('延迟时间不能小于 10 分钟')));
 			}
 
-			if ($_POST['later'] > 1440 AND !$this->user_info['permission']['is_administrator'])
+			if ($_POST['later'] > 1440 AND $this->user_info['group_id'] != 1 AND $this->user_info['group_id'] != 2)
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('延迟时间不能大于 1440 分钟')));
 			}
