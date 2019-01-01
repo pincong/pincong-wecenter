@@ -1687,7 +1687,7 @@
 						'content="text/html;charset={charset}" />' +
 					'<link rel="stylesheet" type="text/css" href="{style}" />' +
 				'</head>' +
-				'<body contenteditable="true" {spellcheck}><p></p></body>' +
+				'<body contenteditable="true" {spellcheck}><div></div></body>' +
 			'</html>',
 
 		toolbarButton: '<a class="sceditor-button sceditor-button-{name}" ' +
@@ -5583,7 +5583,7 @@
 		 */
 		base.setWysiwygEditorValue = function (value) {
 			if (!value) {
-				value = '<p>' + (IE_VER ? '' : '<br />') + '</p>';
+				value = '<div>' + (IE_VER ? '' : '<br />') + '</div>';
 			}
 
 			wysiwygBody.innerHTML = value;
