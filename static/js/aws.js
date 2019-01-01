@@ -1302,6 +1302,7 @@ AWS.create_editor = function(element_id, max_btn)
 	sceditor.formats.bbcode.set('font', empty_handler);
 	sceditor.formats.bbcode.set('size', empty_handler);
 	sceditor.formats.bbcode.set('color', empty_handler);
+	sceditor.formats.bbcode.set('table', empty_handler);
 
 	return sceditor.create(document.getElementById(element_id), {
 		width: '100%',
