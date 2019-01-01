@@ -63,14 +63,20 @@ class ajax extends AWS_CONTROLLER
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请输入标题')));
 		}
-		$this->validate_title_length();
+		if (!$this->user_info['permission']['kb_manage'])
+		{
+			$this->validate_title_length();
+		}
 
 		$_POST['message'] = trim($_POST['message']);
 		if (!$_POST['message'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请输入内容')));
 		}
-		$this->validate_body_length();
+		if (!$this->user_info['permission']['kb_manage'])
+		{
+			$this->validate_body_length();
+		}
 	}
 
 	public function publish_action()
