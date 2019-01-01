@@ -128,6 +128,10 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		$status = intval($_POST['status']);
+		if (!in_array($status, array(-1, 0, 1, 2, 3)))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('操作失败')));
+		}
 		if ($status)
 		{
 			$reason = trim($_POST['reason']);
@@ -157,23 +161,6 @@ class ajax extends AWS_CONTROLLER
 			if ($user_info['group_id'] != 4 OR intval($this->user_info['reputation']) <= intval($user_info['reputation']))
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
-			}
-		}
-
-		if ($status)
-		{
-			if ($user_info['flagged'])
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('操作失败')));
-			}
-
-			$status = 1;
-		}
-		else
-		{
-			if (!$user_info['flagged'])
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('操作失败')));
 			}
 		}
 

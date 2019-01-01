@@ -390,13 +390,10 @@ class user_class extends AWS_MODEL
 		}
 
 		$status = intval($status);
-		if (!$this->model('account')->update_user_fields(array(
+		$this->model('account')->update_user_fields(array(
 			'forbidden' => ($status),
 			'user_update_time' => fake_time()
-		), $uid))
-		{
-			return false;
-		}
+		), $uid);
 
 		if (!$status)
 		{
@@ -428,12 +425,9 @@ class user_class extends AWS_MODEL
 		}
 
 		$status = intval($status);
-		if (!$this->model('account')->update_user_fields(array(
+		$this->model('account')->update_user_fields(array(
 			'flagged' => ($status),
-		), $uid))
-		{
-			return false;
-		}
+		), $uid);
 
 		if (!$status)
 		{
