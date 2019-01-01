@@ -936,4 +936,115 @@ class topic_class extends AWS_MODEL
 
 		return array_merge($related_topics_ids, explode(',', $contents_topic_id));
 	}
+
+
+	// e.g. $id=12345, return '000/01/23/'
+    public function get_image_dir($id)
+    {
+        $id = abs(intval($id));
+        $id = sprintf('%\'09d', $id);
+        $dir1 = substr($id, 0, 3);
+        $dir2 = substr($id, 3, 2);
+        $dir3 = substr($id, 5, 2);
+
+        return $dir1 . '/' . $dir2 . '/' . $dir3 . '/';
+    }
+
+	// e.g. $id=12345, return '45_topic_min.jpg'
+    public function get_image_filename($id, $size = 'min')
+    {
+        $id = abs(intval($id));
+        $id = sprintf('%\'09d', $id);
+
+        return substr($id, -2) . '_topic_' . $size . '.jpg';
+    }
+
+	// e.g. $id=12345, return '000/01/23/45_topic_min.jpg'
+    public function get_image_path($id, $size = 'min')
+    {
+        $id = abs(intval($id));
+        $id = sprintf('%\'09d', $id);
+        $dir1 = substr($id, 0, 3);
+        $dir2 = substr($id, 3, 2);
+        $dir3 = substr($id, 5, 2);
+
+        return $dir1 . '/' . $dir2 . '/' . $dir3 . '/' . substr($id, -2) . '_topic_' . $size . '.jpg';
+    }
+
+
+	public function upload_image($field, $id, &$error)
+	{
+		$id = intval($id);
+		if ($id <= 0)
+		{
+			return false;
+		}
+
+		$local_upload_dir = get_setting('upload_dir');
+		$save_dir = $local_upload_dir . '/topic/' . $this->get_image_dir($id);
+		$filename = $this->get_image_filename($id, 'real');
+
+		AWS_APP::upload()->initialize(array(
+			'allowed_types' => get_setting('allowed_upload_types'),
+			'upload_path' => $save_dir,
+			'is_image' => TRUE,
+			'max_size' => get_setting('upload_size_limit'),
+			'file_name' => $filename,
+			'encrypt_name' => FALSE
+		))->do_upload($field);
+
+		if (AWS_APP::upload()->get_error())
+		{
+			switch (AWS_APP::upload()->get_error())
+			{
+				case 'upload_invalid_filetype':
+					$error = AWS_APP::lang()->_t('文件类型无效');
+					return false;
+
+				case 'upload_invalid_filesize':
+					$error = AWS_APP::lang()->_t('文件尺寸过大, 最大允许尺寸为 %s KB', get_setting('upload_size_limit'));
+					return false;
+
+				default:
+					$error = AWS_APP::lang()->_t('错误代码: %s', AWS_APP::upload()->get_error());
+					return false;
+			}
+		}
+
+		if (! $upload_data = AWS_APP::upload()->data())
+		{
+			$error = AWS_APP::lang()->_t('上传失败');
+			return false;
+		}
+
+		if ($upload_data['is_image'] != 1)
+		{
+			$error = AWS_APP::lang()->_t('文件类型错误');
+			return false;
+		}
+
+		foreach(AWS_APP::config()->get('image')->topic_thumbnail AS $key => $val)
+		{
+			$result = AWS_APP::image()->initialize(array(
+				'local_upload_dir' => $local_upload_dir,
+				'quality' => 90,
+				'source_image' => $save_dir . $filename,
+				'new_image' => $save_dir . $this->get_image_filename($id, $key),
+				'width' => $val['w'],
+				'height' => $val['h']
+			))->resize();
+
+			if ($result == false)
+			{
+				$error = AWS_APP::lang()->_t('保存失败');
+				return false;
+			}
+		}
+
+		$this->update_topic(null, $id, null, null, fetch_salt(4)); // 生成随机字符串
+
+		return true;
+	}
+
+
 }

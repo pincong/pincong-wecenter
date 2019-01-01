@@ -93,7 +93,7 @@ class avatar_class extends AWS_MODEL
 
 		$local_upload_dir = get_setting('upload_dir');
 		$save_dir = $local_upload_dir . '/avatar/' . $this->get_avatar_dir($uid);
-		$filename = $this->model('avatar')->get_avatar_filename($uid, 'real');
+		$filename = $this->get_avatar_filename($uid, 'real');
 
 		AWS_APP::upload()->initialize(array(
 			'allowed_types' => get_setting('allowed_upload_types'),
@@ -125,6 +125,12 @@ class avatar_class extends AWS_MODEL
 		if (! $upload_data = AWS_APP::upload()->data())
 		{
 			$error = AWS_APP::lang()->_t('上传失败');
+			return false;
+		}
+
+		if ($upload_data['is_image'] != 1)
+		{
+			$error = AWS_APP::lang()->_t('文件类型错误');
 			return false;
 		}
 

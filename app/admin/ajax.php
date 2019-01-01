@@ -398,6 +398,9 @@ class ajax extends AWS_ADMIN_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有访问权限, 请重新登录')));
         }
 
+        H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('上传失败')));
+/*
+        // TODO: 以后再说
         AWS_APP::upload()->initialize(array(
             'allowed_types' => get_setting('allowed_upload_types'),
             'upload_path' => get_setting('upload_dir') . '/nav_menu',
@@ -442,6 +445,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
             'success' => true,
             'thumb' => get_setting('upload_url') . '/nav_menu/' . basename($upload_data['full_path'])
         )), ENT_NOQUOTES);
+*/
     }
 
 

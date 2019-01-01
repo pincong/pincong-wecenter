@@ -197,61 +197,14 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题不存在')));
 		}
 
-		AWS_APP::upload()->initialize(array(
-			'allowed_types' => get_setting('allowed_upload_types'),
-			'upload_path' => get_setting('upload_dir') . '/topic/' . gmdate('Ymd'),
-			'is_image' => TRUE,
-			'max_size' => get_setting('upload_size_limit')
-		))->do_upload('aws_upload_file');
-
-		if (AWS_APP::upload()->get_error())
+		if (!$this->model('topic')->upload_image('aws_upload_file', $_GET['topic_id'], $error))
 		{
-			switch (AWS_APP::upload()->get_error())
-			{
-				default:
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('错误代码') . ': ' . AWS_APP::upload()->get_error()));
-				break;
-
-				case 'upload_invalid_filetype':
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文件类型无效')));
-				break;
-
-				case 'upload_invalid_filesize':
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文件尺寸过大, 最大允许尺寸为 %s KB', get_setting('upload_size_limit'))));
-				break;
-			}
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', $error));
 		}
-
-		if (! $upload_data = AWS_APP::upload()->data())
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('上传失败, 请与管理员联系')));
-		}
-
-		if ($upload_data['is_image'] == 1)
-		{
-			foreach(AWS_APP::config()->get('image')->topic_thumbnail AS $key => $val)
-			{
-				$thumb_file[$key] = $upload_data['file_path'] . str_replace($upload_data['file_ext'], '_' . $val['w'] . '_' . $val['h'] . $upload_data['file_ext'], basename($upload_data['full_path']));
-
-				AWS_APP::image()->initialize(array(
-					'quality' => 90,
-					'source_image' => $upload_data['full_path'],
-					'new_image' => $thumb_file[$key],
-					'width' => $val['w'],
-					'height' => $val['h']
-				))->resize();
-
-				@unlink(get_setting('upload_dir') . '/topic/' . str_replace(AWS_APP::config()->get('image')->topic_thumbnail['min']['w'] . '_' . AWS_APP::config()->get('image')->topic_thumbnail['min']['h'], $val['w'] . '_' . $val['h'], $topic_info['topic_pic']));
-			}
-
-			@unlink(get_setting('upload_dir') . '/topic/' . str_replace('_' . AWS_APP::config()->get('image')->topic_thumbnail['min']['w'] . '_' . AWS_APP::config()->get('image')->topic_thumbnail['min']['h'], '', $topic_info['topic_pic']));
-		}
-
-		$this->model('topic')->update_topic($this->user_id, $_GET['topic_id'], null, null, gmdate('Ymd') . '/' . basename($thumb_file['min']));
 
 		echo htmlspecialchars(json_encode(array(
 			'success' => true,
-			'thumb' => get_setting('upload_url') . '/topic/' . gmdate('Ymd') . '/' . basename($thumb_file['mid'])
+			'thumb' => get_setting('upload_url') . '/topic/' . $this->model('topic')->get_image_path($_GET['topic_id'], 'mid')
 		)), ENT_NOQUOTES);
 	}
 
