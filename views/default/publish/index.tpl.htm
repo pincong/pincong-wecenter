@@ -97,13 +97,6 @@
 								<h3>&nbsp;</h3>
 								<?php } ?>
 
-								<?php if ($this->human_valid) { ?>
-								<div class="aw-auth-img clearfix">
-									<input class="form-control pull-right" type="text" name="seccode_verify" placeholder="<?php _e('验证码'); ?>" />
-									<em class="auth-img pull-right"><img src="" onclick="this.src = G_BASE_URL + '/account/captcha/' + Math.floor(Math.random() * 10000);" id="captcha"  /></em>
-								</div>
-								<?php } ?>
-
 								<?php if (!$this->question_info['question_id']) { ?>
 								<div class="aw-auth-img clearfix">
 									<input name="later" class="form-control pull-right" type="text" placeholder="<?php _e('分钟'); ?>" />

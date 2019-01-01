@@ -85,15 +85,6 @@ class AWS_CONTROLLER
 			TPL::assign('user_info', $this->user_info);
 		}
 
-		if ($this->user_id and ! $this->user_info['permission']['human_valid'])
-		{
-			unset(AWS_APP::session()->human_valid);
-		}
-		else if ($this->user_info['permission']['human_valid'] and ! is_array(AWS_APP::session()->human_valid))
-		{
-			AWS_APP::session()->human_valid = array();
-		}
-
 		// 引入系统 CSS 文件
 		TPL::import_css(array(
 			'css/common.css',

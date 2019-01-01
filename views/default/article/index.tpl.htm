@@ -259,10 +259,6 @@
 								<input class="pull-right form-control" type="text" name="later" placeholder="<?php _e('分钟'); ?>" /> <?php _e('延迟显示'); ?>&nbsp;
 							</label>
 
-							<?php if ($this->human_valid) { ?>
-							<em class="auth-img pull-right"><img src="" onclick="this.src = G_BASE_URL + '/account/captcha/' + Math.floor(Math.random() * 10000);" id="captcha" /></em>
-							<input class="pull-right form-control" type="text" name="seccode_verify" placeholder="<?php _e('验证码'); ?>" />
-							<?php } ?>
 						</div>
 						</form>
 						<?php } ?>

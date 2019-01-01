@@ -22,47 +22,6 @@
  * @author		WeCenter Dev Team
  */
 
-// 检测当前操作是否需要验证码
-function human_valid($permission_tag)
-{
-	if (! is_array(AWS_APP::session()->human_valid))
-	{
-		return FALSE;
-	}
-
-	if (! AWS_APP::session()->human_valid[$permission_tag] or ! AWS_APP::session()->permission[$permission_tag])
-	{
-		return FALSE;
-	}
-
-	foreach (AWS_APP::session()->human_valid[$permission_tag] as $time => $val)
-	{
-		if (date('H', $time) != date('H', time()))
-		{
-			unset(AWS_APP::session()->human_valid[$permission_tag][$time]);
-		}
-	}
-
-	if (sizeof(AWS_APP::session()->human_valid[$permission_tag]) >= AWS_APP::session()->permission[$permission_tag])
-	{
-		return TRUE;
-	}
-
-	return FALSE;
-}
-
-function set_human_valid($permission_tag)
-{
-	if (! is_array(AWS_APP::session()->human_valid))
-	{
-		return FALSE;
-	}
-
-	AWS_APP::session()->human_valid[$permission_tag][time()] = TRUE;
-
-	return count(AWS_APP::session()->human_valid[$permission_tag]);
-}
-
 // 防止重复提交
 function check_repeat_submission($text)
 {

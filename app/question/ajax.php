@@ -351,11 +351,6 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		if (human_valid('answer_valid_hour') and ! AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写正确的验证码')));
-		}
-
 		$answer_content = my_trim($_POST['answer_content']);
 
 		if (! $answer_content)
@@ -427,7 +422,6 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		set_repeat_submission_digest($answer_content);
-		set_human_valid('answer_valid_hour');
 
 		if ($later)
 		{

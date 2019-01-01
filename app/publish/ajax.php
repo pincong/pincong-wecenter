@@ -47,11 +47,6 @@ class ajax extends AWS_CONTROLLER
 
 	public function modify_question_action()
 	{
-		if (human_valid('question_valid_hour') AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写正确的验证码')));
-		}
-
 		if (!$question_info = $this->model('question')->get_question_info_by_id($_POST['question_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
@@ -151,11 +146,6 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		if (human_valid('question_valid_hour') AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写正确的验证码')));
-		}
-
 		$question_content = my_trim($_POST['question_content']);
 		if (!$question_content)
 		{
@@ -247,7 +237,6 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		set_repeat_submission_digest($question_content);
-		set_human_valid('question_valid_hour');
 
 		if ($later)
 		{
@@ -312,11 +301,6 @@ class ajax extends AWS_CONTROLLER
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('延迟时间只能在 10 ~ 1400 分钟之间')));
 			}
-		}
-
-		if (human_valid('question_valid_hour') AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写正确的验证码')));
 		}
 
 		$article_title = my_trim($_POST['title']);
@@ -403,7 +387,6 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		set_repeat_submission_digest($article_title);
-		set_human_valid('question_valid_hour');
 
 		if ($later)
 		{
@@ -444,11 +427,6 @@ class ajax extends AWS_CONTROLLER
 
 	public function modify_article_action()
 	{
-		if (human_valid('question_valid_hour') AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写正确的验证码')));
-		}
-
 		if (!$article_info = $this->model('article')->get_article_info_by_id($_POST['article_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文章不存在')));
@@ -536,11 +514,6 @@ class ajax extends AWS_CONTROLLER
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('延迟时间只能在 10 ~ 1400 分钟之间')));
 			}
-		}
-
-		if (human_valid('question_valid_hour') AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写正确的验证码')));
 		}
 
 		$video_url_info = Services_VideoParser::parse_video_url($_POST['video_webpage_url']);
@@ -645,7 +618,6 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		set_repeat_submission_digest($video_title);
-		set_human_valid('question_valid_hour');
 
 		if ($later)
 		{

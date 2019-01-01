@@ -68,8 +68,6 @@ class main extends AWS_CONTROLLER
 
 		$this->crumb($article_info['title'], '/article/' . $article_info['id']);
 
-		TPL::assign('human_valid', human_valid('answer_valid_hour'));
-
 		if ($_GET['item_id'])
 		{
 			$comments[] = $this->model('article')->get_comment_by_id($_GET['item_id']);
@@ -110,8 +108,6 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('comments', $comments);
 		TPL::assign('comments_count', $article_info['comments']);
-
-		TPL::assign('human_valid', human_valid('answer_valid_hour'));
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
 			'base_url' => get_js_url('/article/id-' . $article_info['id']),

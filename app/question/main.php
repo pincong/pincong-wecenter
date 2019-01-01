@@ -321,8 +321,6 @@ class main extends AWS_CONTROLLER
 		}
 		else
 		{
-			TPL::assign('human_valid', human_valid('answer_valid_hour'));
-
 			if ($this->user_id)
 			{
 				TPL::assign('pagination', AWS_APP::pagination()->initialize(array(

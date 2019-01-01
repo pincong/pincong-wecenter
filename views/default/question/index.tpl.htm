@@ -387,13 +387,6 @@
 							        </div>
 								</div>
 								<div class="mod-body clearfix">
-									<?php if ($this->human_valid) { ?>
-									<div class="aw-auth-img clearfix">
-											<input class="pull-right form-control" type="text" name="seccode_verify" placeholder="<?php _e('验证码'); ?>" />
-											<em class="auth-img pull-right"><img src="" onclick="this.src = G_BASE_URL + '/account/captcha/' + Math.floor(Math.random() * 10000);" id="captcha" /></em>
-									</div>
-									<?php } ?>
-
 									<div class="aw-auth-img clearfix">
 										<input name="later" class="form-control pull-right" type="text" placeholder="<?php _e('分钟'); ?>" />
 										<label class="pull-right"><?php _e('延迟显示'); ?></label>

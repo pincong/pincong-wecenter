@@ -196,10 +196,6 @@ var AW_TEMPLATE = {
 										'<span class="aw-edit-topic"><i class="icon icon-edit"></i>' + _t('编辑话题') + '</span>'+
 									'</div>'+
 								'</div>'+
-								'<div class="clearfix collapse" id="quick_publish_captcha">'+
-									'<input type="text" class="pull-left form-control" name="seccode_verify" placeholder="' + _t('验证码') + '" />'+
-									'<img id="qp_captcha" class="pull-left" onclick="this.src = \'' +G_BASE_URL + '/account/captcha/\' + Math.floor(Math.random() * 10000);" src="" />'+
-								'</div>'+
 							'</form>'+
 						'</div>'+
 						'<div class="modal-footer">'+

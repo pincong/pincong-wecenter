@@ -611,11 +611,6 @@ var AWS =
 						$('#quick_publish .aw-edit-topic').parents('.aw-topic-bar').prepend('<span class="topic-tag"><a class="text">' + data.topic_title + '</a><a class="close" onclick="$(this).parents(\'.topic-tag\').detach();"><i class="icon icon-delete"></i></a><input type="hidden" value="' + data.topic_title + '" name="topics[]" /></span>')
 					}
 
-					if (typeof(G_QUICK_PUBLISH_HUMAN_VALID) != 'undefined')
-					{
-						$('#quick_publish_captcha').show();
-						$('#captcha').click();
-					}
 				break;
 
 				case 'favorite':

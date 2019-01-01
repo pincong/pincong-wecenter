@@ -126,9 +126,6 @@ class main extends AWS_CONTROLLER
 		TPL::assign('comments', $comments);
 		TPL::assign('comment_count', $video_info['comment_count']);
 
-		// 验证码 暂不实现
-		//TPL::assign('human_valid', human_valid('answer_valid_hour'));
-
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
 			'base_url' => get_js_url('/v/id-' . $video_info['id']),
 			'total_rows' => $video_info['comment_count'],
