@@ -149,15 +149,18 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		$_POST['category_id'] = intval($_POST['category_id']);
-		if (!$_POST['category_id'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择分类')));
-		}
-
 		if (get_setting('category_enable') == 'N')
 		{
 			$_POST['category_id'] = 1;
+		}
+		else
+		{
+			$_POST['category_id'] = intval($_POST['category_id']);
+		}
+
+		if (!$_POST['category_id'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择分类')));
 		}
 
 		if (!$this->model('category')->category_exists($_POST['category_id']))
