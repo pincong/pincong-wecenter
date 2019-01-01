@@ -31,6 +31,13 @@
                                     <a class="btn btn-gray dropdown-toggle" data-toggle="dropdown" href="javascript:;">...</a>
                                     <div class="dropdown-menu aw-dropdown pull-right" role="menu" aria-labelledby="dropdownMenu">
                                         <ul class="aw-dropdown-list">
+											<li>
+												<?php if ($_GET['column'] == 'log') { ?>
+													<a href="article/<?php echo $this->article_info['id']; ?>"><?php _e('文章讨论'); ?></a>
+												<?php } else { ?>
+													<a href="article/<?php echo $this->article_info['id']; ?>?column=log&rf=false" rel="nofollow"><?php _e('修改记录'); ?></a>
+												<?php } ?>
+											</li>
                                             <li>
                                                 <a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/article/ajax/lock/', 'article_id=<?php echo $this->article_info['id']; ?>');"><?php if ($this->article_info['lock']) { ?><?php _e('解除锁定'); ?><?php } else { ?><?php _e('锁定文章'); ?><?php } ?></a>
                                             </li>
@@ -105,6 +112,23 @@
                         </div>
                     </div>
 
+					<?php if ($_GET['column'] == 'log') { ?>
+					<div class="aw-mod aw-question-edit">
+						<div class="mod-head common-head">
+							<h2><span class="pull-right"><a class="text-color-999" href="article/<?php echo $this->article_info['id']; ?>"><?php _e('返回文章'); ?> »</a></span><?php _e('修改记录'); ?></h2>
+						</div>
+						<div class="mod-body">
+							<ul id="c_log_list"></ul>
+						</div>
+						<div class="mod-footer">
+							<!-- 加载更多内容 -->
+							<a class="aw-load-more-content" id="bp_log_more">
+								<span><?php _e('更多'); ?>...</span>
+							</a>
+							<!-- end 加载更多内容 -->
+						</div>
+					</div>
+					<?php } else { ?>
                     <!-- 文章评论 -->
                     <div class="aw-mod">
                         <div class="mod-head common-head">
@@ -208,7 +232,9 @@
                         <?php } ?>
                     </div>
                     <!-- end 文章评论 -->
+					<?php } ?>
 
+					<?php if ($_GET['column'] != 'log') { ?>
                     <!-- 回复编辑器 -->
                     <div class="aw-mod aw-article-replay-box">
                         <a name="answer_form"></a>
@@ -242,6 +268,7 @@
                         <?php } ?>
                     </div>
                     <!-- end 回复编辑器 -->
+					<?php } ?>
                 </div>
                 <!-- 侧边栏 -->
                 <div class="col-sm-12 col-md-3 aw-side-bar">
@@ -323,13 +350,19 @@
 </div>
 
 <script type="text/javascript">
-    var ANSWER_EDIT_TIME = <?php echo get_setting('answer_edit_time'); ?>;
+var ANSWER_EDIT_TIME = <?php echo get_setting('answer_edit_time'); ?>;
 
-    $(document).ready(function () {
-        AWS.at_user_lists('#wmd-input');
-
-        AWS.Init.init_article_comment_box($('.aw-article-comment'));
-    });
+$(document).ready(function () {
+	if ($('#c_log_list').attr('id'))
+	{
+		AWS.load_list_view(G_BASE_URL + '/article/ajax/log/id-<?php echo $this->article_info['id']; ?>', $('#bp_log_more'), $('#c_log_list'));
+	}
+	else
+	{
+		AWS.at_user_lists('#wmd-input');
+		AWS.Init.init_article_comment_box($('.aw-article-comment'));
+	}
+});
 </script>
 
 <?php TPL::output('global/footer.tpl.htm'); ?>
