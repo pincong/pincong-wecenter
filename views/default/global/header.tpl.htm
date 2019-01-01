@@ -68,7 +68,7 @@
 			<!-- end 导航 -->
 			<!-- 用户栏 -->
 			<div class="aw-user-nav">
-				<!-- 登陆&注册栏 -->
+				<!-- 登录&注册栏 -->
 				<?php if ($this->user_id) { ?>
 					<a href="<?php echo UF::url($this->user_info); ?>" class="aw-user-nav-dropdown">
 						<img alt="" src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" />
@@ -90,7 +90,7 @@
 					<a class="login btn btn-normal btn-primary" href="account/login/"><?php _e('登录'); ?></a>
 					<?php if (get_setting('register_type') == 'open') { ?><a class="register btn btn-normal btn-success" href="account/register/"><?php _e('注册'); ?></a><?php } ?>
 				<?php } ?>
-				<!-- end 登陆&注册栏 -->
+				<!-- end 登录&注册栏 -->
 			</div>
 			<!-- end 用户栏 -->
 			<!-- 发起 -->
