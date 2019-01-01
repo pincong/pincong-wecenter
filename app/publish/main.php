@@ -120,8 +120,6 @@ class main extends AWS_CONTROLLER
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑这个文章'), '/article/' . $article_info['id']);
 			}
-
-			TPL::assign('article_topics', $this->model('topic')->get_topics_by_item_id($article_info['id'], 'article'));
 		}
 		else if (!$this->user_info['permission']['publish_article'])
 		{

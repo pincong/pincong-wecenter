@@ -8,9 +8,7 @@
 					<!-- tab 切换 -->
 					<ul class="nav nav-tabs aw-nav-tabs active">
 						<li class="active"><a href="publish/article/"><?php _e('文章'); ?></a></li>
-						<?php if ($this->user_info['permission']['publish_question']) { ?>
 						<li><a href="publish/"><?php _e('问题'); ?></a></li>
-						<?php } ?>
 						<h2 class="hidden-xs"><i class="icon icon-ask"></i> <?php _e('发起'); ?></h2>
 					</ul>
 					<!-- end tab 切换 -->
@@ -70,24 +68,8 @@
 											<a class="close" onclick="$(this).parents('.topic-tag').remove();">
 												<i class="icon icon-delete"></i>
 											</a>
-											<button class="close aw-close" onclick="">×</button></span><input type="hidden" value="<?php echo urldecode($_GET['topic_title']); ?>" name="topics[]" />
+											<input type="hidden" value="<?php echo urldecode($_GET['topic_title']); ?>" name="topics[]" />
 										</span>
-										<?php } ?>
-
-										<?php if ($_POST['topics']) { ?>
-										<?php foreach ($_POST['topics'] AS $key => $val) { ?>
-										<span class="topic-tag">
-											<a class="text"><?php echo $val; ?></a>
-											<input type="hidden" value="<?php echo $val; ?>" name="topics[]" />
-										</span>
-										<?php } ?>
-										<?php } else if ($this->article_topics) { ?>
-										<?php foreach ($this->article_topics AS $key => $val) { ?>
-										<span class="topic-tag">
-											<a class="text"><?php echo $val['topic_title']; ?></a>
-											<input type="hidden" value="<?php echo $val['topic_title']; ?>" name="topics[]" />
-										</span>
-										<?php } ?>
 										<?php } ?>
 
 										<span class="aw-edit-topic icon-inverse"><i class="icon icon-edit"></i> <?php _e('编辑话题'); ?></span>
