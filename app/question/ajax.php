@@ -325,10 +325,17 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
 		}
 
+		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
 		if (! $this->model('question')->get_question_info_by_id($_POST['question_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
 		}
+
+		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'type' => $this->model('question')->add_focus_question($_POST['question_id'], $this->user_id)

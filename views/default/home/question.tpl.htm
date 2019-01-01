@@ -1,0 +1,46 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+
+<div class="aw-container-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="col-sm-12 col-md-9 aw-main-content">
+					<a name="c_contents"></a>
+					<div class="aw-mod clearfix">
+						<div class="mod-head common-head">
+							<h2 id="main_title"><?php _e('我关注的问题'); ?></h2>
+						</div>
+
+						<div class="mod-body aw-feed-list clearfix" id="main_contents"></div>
+
+						<div class="mod-footer">
+							<!-- 加载更多内容 -->
+							<a id="bp_more" class="aw-load-more-content">
+								<span><?php _e('更多'); ?></span>
+							</a>
+							<!-- end 加载更多内容 -->
+						</div>
+					</div>
+				</div>
+				<!-- 侧边栏 -->
+				<div class="col-sm-12 col-md-3 aw-side-bar">
+					<?php TPL::output('block/sidebar_announce.tpl.htm'); ?>
+
+					<?php TPL::output('block/sidebar_menu.tpl.htm'); ?>
+
+					<!-- 可能感兴趣的人/或话题 -->
+					<?php TPL::output('block/sidebar_recommend_users_topics.tpl.htm'); ?>
+				</div>
+				<!-- end 侧边栏 -->
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+	AWS.load_list_view(G_BASE_URL + '/home/info/questions/', $('#bp_more'), $('#main_contents'));
+});
+</script>
+
+<?php TPL::output('global/footer.tpl.htm'); ?>

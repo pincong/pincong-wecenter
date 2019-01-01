@@ -47,6 +47,7 @@ class info extends AWS_CONTROLLER
 		TPL::output('home/activities_template');
 	}
 
+	// 邀请我回答的问题
 	public function invites_action()
 	{
 		$per_page = intval(get_setting('contents_per_page'));
@@ -79,6 +80,36 @@ class info extends AWS_CONTROLLER
 		TPL::assign('list', $list);
 
 		TPL::output('home/invites_template');
+	}
+
+	// 我关注的问题
+	public function questions_action()
+	{
+		$per_page = intval(get_setting('contents_per_page'));
+		// 注意: $limit分页的第一页是从0开始
+		$limit = intval($_GET['page']) * $per_page .', '. $per_page;
+
+		if ($list = $this->model('question')->get_user_focus($this->user_id, $limit));
+		{
+			foreach($list as $key => $val)
+			{
+				$uids[] = $val['uid'];
+			}
+
+			if ($uids)
+			{
+				$users_info = $this->model('account')->get_user_info_by_uids($uids);
+			}
+
+			foreach($list as $key => $val)
+			{
+				$list[$key]['user_info'] = $users_info[$val['uid']];
+			}
+		}
+
+		TPL::assign('list', $list);
+
+		TPL::output('home/questions_template');
 	}
 
 
