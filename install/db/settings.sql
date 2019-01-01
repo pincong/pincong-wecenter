@@ -64,7 +64,7 @@ INSERT INTO `aws_system_setting` (`varname`, `value`) VALUES
 	('sensitive_words_replacement', 's:0:"";'),
 	('auto_banning_agree_count', 's:0:"";'),
 	('auto_banning_reputation', 's:0:"";'),
-	('auto_banning_type', 's:3:"AND";'),
+	('auto_banning_type', 's:3:"OFF";'),
 	('currency_unit', 's:3:"葱";'),
 	('currency_name', 's:9:"游戏币";'),
 	('currency_rule_name', 's:12:"游戏规则";'),

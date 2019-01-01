@@ -1750,7 +1750,7 @@
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('用户赞同小于等于多少时自动封禁'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <input name="auto_banning_agree_count" type="text" class="form-control" value="<?php echo $this->setting['auto_banning_agree_count']; ?>"/>
-                                <div class="help-block"><?php _e('应填写负数, 不启用请留空'); ?></div>
+                                <div class="help-block"><?php _e('应填写负数'); ?></div>
                             </div>
                         </div>
                     </td>
@@ -1761,7 +1761,7 @@
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('用户威望小于等于多少时自动封禁'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <input name="auto_banning_reputation" type="text" class="form-control" value="<?php echo $this->setting['auto_banning_reputation']; ?>"/>
-                                <div class="help-block"><?php _e('应填写负数, 不启用请留空'); ?></div>
+                                <div class="help-block"><?php _e('应填写负数'); ?></div>
                             </div>
                         </div>
                     </td>
@@ -1778,10 +1778,14 @@
                                     </label>
 
                                     <label type="button" class="btn mod-btn-color">
-                                        <input type="radio" name="auto_banning_type" value="OR"<?php if ($this->setting['auto_banning_type'] != 'AND') { ?> checked="checked"<?php } ?> /> <?php _e('OR'); ?>
+                                        <input type="radio" name="auto_banning_type" value="OR"<?php if ($this->setting['auto_banning_type'] == 'OR') { ?> checked="checked"<?php } ?> /> <?php _e('OR'); ?>
                                     </label>
 
-                                    <span class="help-block"><?php _e('AND: 需满足全部条件, OR: 只需满足一个条件, 默认为 OR'); ?></span>
+                                    <label type="button" class="btn mod-btn-color">
+                                        <input type="radio" name="auto_banning_type" value="OFF"<?php if ($this->setting['auto_banning_type'] == 'OFF') { ?> checked="checked"<?php } ?> /> <?php _e('OFF'); ?>
+                                    </label>
+
+                                    <span class="help-block"><?php _e('AND: 需满足全部条件, OR: 只需满足一个条件, OFF: 关闭'); ?></span>
                                 </div>
                             </div>
                         </div>

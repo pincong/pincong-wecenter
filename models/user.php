@@ -328,18 +328,18 @@ class user_class extends AWS_MODEL
 
 	// ===== 封禁/标记相关 =====
 
-	public function auto_forbid_user($uid, $forbidden, $agree_count, $reputation)
+	public function auto_forbid_user($uid, $forbidden, $agree_count, $reputation, $auto_banning_type)
 	{
 		// 自动封禁/解封, $forbidden == 2 表示已被系统自动封禁
 		if (!$forbidden OR $forbidden == 2)
 		{
-			$auto_banning_agree_count = get_setting('auto_banning_agree_count');
-			$auto_banning_reputation = get_setting('auto_banning_reputation');
+			$auto_banning_agree_count = intval(get_setting('auto_banning_agree_count'));
+			$auto_banning_reputation = intval(get_setting('auto_banning_reputation'));
 
-			if (get_setting('auto_banning_type') == 'AND')
+			if ($auto_banning_type == 'AND')
 			{
-				if ( (is_numeric($auto_banning_agree_count) AND $auto_banning_agree_count >= $agree_count)
-					AND (is_numeric($auto_banning_reputation) AND $auto_banning_reputation >= $reputation) )
+				if ( ($auto_banning_agree_count >= $agree_count)
+					AND ($auto_banning_reputation >= $reputation) )
 				{
 					if (!$forbidden) // 满足封禁条件且未被封禁的用户
 					{
@@ -356,8 +356,8 @@ class user_class extends AWS_MODEL
 			}
 			else
 			{
-				if ( (is_numeric($auto_banning_agree_count) AND $auto_banning_agree_count >= $agree_count)
-					OR (is_numeric($auto_banning_reputation) AND $auto_banning_reputation >= $reputation) )
+				if ( ($auto_banning_agree_count >= $agree_count)
+					OR ($auto_banning_reputation >= $reputation) )
 				{
 					if (!$forbidden) // 满足封禁条件且未被封禁的用户
 					{

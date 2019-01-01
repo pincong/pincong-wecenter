@@ -96,9 +96,13 @@ class reputation_class extends AWS_MODEL
 		// 如果是普通会员则落实自动封禁功能
 		if ($user_info['group_id'] == 4)
 		{
-			$agree_count = $user_info['agree_count'] + $agree_count_delta;
-			$reputation = $user_info['reputation'] + $reputation_delta;
-			$this->model('user')->auto_forbid_user($uid, $user_info['forbidden'], $agree_count, $reputation);
+			$auto_banning_type = get_setting('auto_banning_type');
+			if ($auto_banning_type != 'OFF')
+			{
+				$agree_count = $user_info['agree_count'] + $agree_count_delta;
+				$reputation = $user_info['reputation'] + $reputation_delta;
+				$this->model('user')->auto_forbid_user($uid, $user_info['forbidden'], $agree_count, $reputation, $auto_banning_type);
+			}
 		}
 
 		return true;
