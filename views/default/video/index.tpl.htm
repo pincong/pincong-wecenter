@@ -149,7 +149,7 @@
 								<div class="aw-item" id="answer_list_<?php echo $val['id']; ?>">
 									<div class="mod-head">
 										<?php if ($val['anonymous'] == 0) { ?>
-										<a class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>">
+										<a class="aw-user-img aw-border-radius-5" data-id="<?php echo $val['user_info']['uid']; ?>" href="<?php echo UF::url($val['user_info']); ?>">
 											<img src="<?php echo UF::avatar($val['user_info'], 'mid', $this->user_info['permission']['is_administrator']); ?>" alt="" />
 										</a>
 										<?php } else { ?>
@@ -159,7 +159,7 @@
 										<?php } ?>
 										<p>
 										<?php if ($val['anonymous'] == 0) { ?>
-											<a href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
+											<a class="aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
 											<?php if ($val['user_info']['forbidden']) { ?><span class="text-color-999">[ <?php _e('封禁'); ?> ]</span><?php } ?>
 										<?php } else { ?>
 											<a class="text-color-999" href="javascript:;"><?php _e('匿名用户'); ?></a>
