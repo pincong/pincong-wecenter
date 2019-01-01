@@ -343,6 +343,49 @@ class content_class extends AWS_MODEL
 	}
 
 
+	public function pin($item_type, $item_id, $uid)
+	{
+		if (!$this->check_thread_type($item_type))
+		{
+			return false;
+		}
+
+		$where = 'id = ' . intval($item_id);
+		// TODO
+		if ($item_type == 'question')
+		{
+			$where = 'question_id = ' . intval($item_id);
+		}
+		$this->update($item_type, array('sort' => 1), $where);
+
+		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
+		$this->update('posts_index', array('sort' => 1), $where);
+
+		$this->model('content')->log($item_type, $item_id, '置顶', $uid);
+	}
+
+	public function unpin($item_type, $item_id, $uid)
+	{
+		if (!$this->check_thread_type($item_type))
+		{
+			return false;
+		}
+
+		$where = 'id = ' . intval($item_id);
+		// TODO
+		if ($item_type == 'question')
+		{
+			$where = 'question_id = ' . intval($item_id);
+		}
+		$this->update($item_type, array('sort' => 0), $where);
+
+		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
+		$this->update('posts_index', array('sort' => 0), $where);
+
+		$this->model('content')->log($item_type, $item_id, '取消置顶', $uid);
+	}
+
+
 	public function update_view_count($item_type, $item_id, $session_id)
 	{
 		if (!$this->check_thread_type($item_type))

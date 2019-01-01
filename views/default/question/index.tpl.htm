@@ -88,6 +88,17 @@
 												<?php } ?>
 											</li>
 										<?php } ?>
+
+										<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
+											<li>
+												<?php if ($this->question_info['sort']) { ?>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unpin/', 'item_type=question&item_id=<?php echo $this->question_info['question_id']; ?>');"><?php _e('取消置顶'); ?></a>
+												<?php } else { ?>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/pin/', 'item_type=question&item_id=<?php echo $this->question_info['question_id']; ?>');"><?php _e('置顶'); ?></a>
+												<?php } ?>
+											</li>
+										<?php } ?>
+
 										<?php if ($this->question_info['uid'] == $this->user_id OR $this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
 											<?php if ($this->user_info['permission']['change_category']) { ?>
 											<li>

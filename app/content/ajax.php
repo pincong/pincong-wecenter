@@ -242,4 +242,64 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
+
+	// 置顶
+	public function pin_action()
+	{
+		if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有设置置顶的权限')));
+		}
+
+		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
+		$item_info = $this->model('content')->get_thread_info_by_id($_POST['item_type'], $_POST['item_id']);
+		if (!$item_info)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
+		}
+
+		if (!$item_info['sort'])
+		{
+			set_user_operation_last_time_by_uid('modify', $this->user_id);
+
+			$this->model('content')->pin($_POST['item_type'], $_POST['item_id'], $this->user_id);
+		}
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
+	// 取消置顶
+	public function unpin_action()
+	{
+		if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有设置置顶的权限')));
+		}
+
+		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
+		$item_info = $this->model('content')->get_thread_info_by_id($_POST['item_type'], $_POST['item_id']);
+		if (!$item_info)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
+		}
+
+		if ($item_info['sort'])
+		{
+			set_user_operation_last_time_by_uid('modify', $this->user_id);
+
+			$this->model('content')->unpin($_POST['item_type'], $_POST['item_id'], $this->user_id);
+		}
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
+
 }

@@ -281,6 +281,7 @@ CREATE TABLE IF NOT EXISTS `aws_posts_index` (
   `view_count` int(10) DEFAULT '0',
   `uid` int(10) DEFAULT '0',
   `lock` tinyint(1) DEFAULT '0',
+  `sort` tinyint(2) DEFAULT '0',
   `agree_count` int(10) DEFAULT '0',
   `answer_count` int(10) DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -292,6 +293,7 @@ CREATE TABLE IF NOT EXISTS `aws_posts_index` (
   KEY `recommend` (`recommend`),
   KEY `uid` (`uid`),
   KEY `lock` (`lock`),
+  KEY `sort` (`sort`),
   KEY `agree_count` (`agree_count`),
   KEY `answer_count` (`answer_count`),
   KEY `view_count` (`view_count`)
