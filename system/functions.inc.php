@@ -478,6 +478,75 @@ function get_key_value_pairs($varname, $separator = ',')
 	return $result;
 }
 
+/**
+ * 检查 $content 是否包含 get_setting($varname)
+ *
+ * 命中返回 true, 未命中返回 false
+ *
+ * @param  string
+ * @param  string
+ * @param  boolean    true: 可出现在 $content 的任意位置, false: 只能出现在 $content 的开头
+ * @param  boolean
+ * @return boolean
+ */
+function content_contains($varname, $content, $any_position = false, $case_sensitive = false)
+{
+	if (!$content)
+	{
+		return false;
+	}
+
+	if (!$rows = get_setting($varname))
+	{
+		return false;
+	}
+
+	$rows = explode("\n", $rows);
+
+	foreach($rows AS $row)
+	{
+		$row = trim($row);
+
+		if (!$row)
+		{
+			continue;
+		}
+
+		// 正则表达式
+		if (substr($row, 0, 1) == '{' AND substr($row, -1, 1) == '}')
+		{
+			if (preg_match(substr($row, 1, -1), $content))
+			{
+				return true;
+			}
+
+			continue;
+		}
+
+		if ($case_sensitive)
+		{
+			$pos = strpos($content, $row);
+		}
+		else
+		{
+			$pos = stripos($content, $row);
+		}
+
+		if ($any_position AND $pos > 0)
+		{
+			return true;
+		}
+
+		if ($pos === 0)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
 // ------------------------------------------------------------------------
 
 
