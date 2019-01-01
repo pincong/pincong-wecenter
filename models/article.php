@@ -139,6 +139,20 @@ class article_class extends AWS_MODEL
 	}
 
 
+	public function update_article_comment_count($article_id)
+	{
+		$article_id = intval($article_id);
+		if (!$article_id)
+		{
+			return false;
+		}
+
+		// TODO: rename comments to comment_count
+		return $this->update('article', array(
+			'comments' => $this->count('article_comment', 'article_id = ' . ($article_id))
+		), 'id = ' . ($article_id));
+	}
+
 	public function get_article_info_by_id($article_id)
 	{
 		if (!is_digits($article_id))

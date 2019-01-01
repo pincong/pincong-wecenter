@@ -58,7 +58,7 @@ class UF
 	{
 		if (!$user_info)
 		{
-			return AWS_APP::lang()->_t('匿名用户');
+			return AWS_APP::lang()->_t('[已注销]');
 		}
 		return $user_info['user_name'];
 	}

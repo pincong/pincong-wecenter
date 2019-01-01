@@ -20,6 +20,20 @@ if (!defined('IN_ANWSION'))
 
 class answer_class extends AWS_MODEL
 {
+	public function update_answer_discussion_count($answer_id)
+	{
+		$answer_id = intval($answer_id);
+		if (!$answer_id)
+		{
+			return false;
+		}
+
+		return $this->update('answer', array(
+			'comment_count' => $this->count('answer_discussion', "answer_id = " . ($answer_id))
+		), "answer_id = " . ($answer_id));
+	}
+
+
 	public function get_answer_by_id($answer_id)
 	{
 		static $answers;
@@ -258,14 +272,6 @@ class answer_class extends AWS_MODEL
 		return $result;
 	}
 
-	public function update_answer_discussion_count($answer_id)
-	{
-		$count = $this->count('answer_discussion', "answer_id = " . intval($answer_id));
-
-		$this->shutdown_update('answer', array(
-			'comment_count' => $count
-		), "answer_id = " . intval($answer_id));
-	}
 
 	public function insert_answer_discussion($answer_id, $uid, $message, $anonymous = 0)
 	{

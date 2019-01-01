@@ -140,6 +140,34 @@ class question_class extends AWS_MODEL
 	}
 
 
+	public function update_answer_count($question_id)
+	{
+		$question_id = intval($question_id);
+		if (!$question_id)
+		{
+			return false;
+		}
+
+		return $this->update('question', array(
+			'answer_count' => $this->count('answer', 'question_id = ' . ($question_id))
+		), 'question_id = ' . ($question_id));
+	}
+
+
+	public function update_question_discussion_count($question_id)
+	{
+		$question_id = intval($question_id);
+		if (!$question_id)
+		{
+			return false;
+		}
+
+		return $this->update('question', array(
+			'comment_count' => $this->count('question_discussion', 'question_id = ' . ($question_id))
+		), 'question_id = ' . ($question_id));
+	}
+
+
 	public function get_focus_uid_by_question_id($question_id)
 	{
 		return $this->query_all('SELECT uid FROM ' . $this->get_table('question_focus') . ' WHERE question_id = ' . intval($question_id));
@@ -378,17 +406,6 @@ class question_class extends AWS_MODEL
 		}
 	}
 
-	public function update_answer_count($question_id)
-	{
-		if (!$question_id)
-		{
-			return false;
-		}
-
-		return $this->update('question', array(
-			'answer_count' => $this->count('answer', 'question_id = ' . intval($question_id))
-		), 'question_id = ' . intval($question_id));
-	}
 
 	public function update_focus_count($question_id)
 	{
@@ -646,14 +663,6 @@ class question_class extends AWS_MODEL
 		return $content;
 	}
 
-	public function update_question_discussion_count($question_id)
-	{
-		$count = $this->count('question_discussion', 'question_id = ' . intval($question_id));
-
-		$this->shutdown_update('question', array(
-			'comment_count' => $count
-		), 'question_id = ' . intval($question_id));
-	}
 
 	public function set_recommend($question_id)
 	{

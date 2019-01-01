@@ -152,6 +152,33 @@ class video_class extends AWS_MODEL
 	}
 
 
+	public function update_video_comment_count($video_id)
+	{
+		$video_id = intval($video_id);
+		if (!$video_id)
+		{
+			return false;
+		}
+
+		return $this->update('video', array(
+			'comment_count' => $this->count('video_comment', 'video_id = ' . ($video_id))
+		), 'id = ' . ($video_id));
+	}
+
+	public function update_video_danmaku_count($video_id)
+	{
+		$video_id = intval($video_id);
+		if (!$video_id)
+		{
+			return false;
+		}
+
+		return $this->update('video', array(
+			'danmaku_count' => $this->count('video_danmaku', 'video_id = ' . ($video_id))
+		), 'id = ' . ($video_id));
+	}
+
+
 	public function get_video_info_by_id($video_id)
 	{
 		if (!is_digits($video_id))
