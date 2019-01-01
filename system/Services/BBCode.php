@@ -49,11 +49,6 @@ class Services_BBCode
 		return '<span style="text-decoration:underline;">' . $match[1] . '</span>';
 	}
 
-	private function _h_callback($match)
-	{
-		return "<h2>$match[1]</h2>";
-	}
-
 	private function _url_callback($match)
 	{
 		return FORMAT::parse_link($match[1]);
@@ -130,7 +125,7 @@ class Services_BBCode
 		//$this->bbcode_table["/\[code\](((?![\[code\]]).*?)+)\[\/code\]/is"] = '_code_callback';
 
 		$this->bbcode_table["/\[left\](.*?)\[\/left\]/is"] = '_plain_text_callback';
-		$this->bbcode_table["/\[center\](.*?)\[\/center\]/is"] = '_plain_text_callback';
+		//$this->bbcode_table["/\[center\](.*?)\[\/center\]/is"] = '_plain_text_callback';
 		$this->bbcode_table["/\[right\](.*?)\[\/right\]/is"] = '_plain_text_callback';
 		$this->bbcode_table["/\[justify\](.*?)\[\/justify\]/is"] = '_plain_text_callback';
 		$this->bbcode_table["/\[sub\](.*?)\[\/sub\]/is"] = '_plain_text_callback';
@@ -158,8 +153,8 @@ class Services_BBCode
 		// Replace [u]...[/u] with <span style="text-decoration:underline;">...</span>
 		$this->bbcode_table["/\[u\](.*?)\[\/u\]/is"] = '_u_callback';
 
-		// Replace [h] with <h2>
-		$this->bbcode_table["/\[h\](.*?)\[\/h\]/is"] = '_h_callback';
+		// Replace [center] with <center>
+		$this->bbcode_table["/\[center\](.*?)\[\/center\]/is"] = '_center_callback';
 
 		// Replace [url]...[/url] with <a href="...">...</a>
 		$this->bbcode_table["/\[url\](.*?)\[\/url\]/is"] = '_url_callback';

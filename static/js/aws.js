@@ -1246,6 +1246,7 @@ AWS.create_editor = function(el, max_btn)
 			return content;
 		}
 	};
+	sceditor.formats.bbcode.set('hr', empty_handler);
 	sceditor.formats.bbcode.set('email', empty_handler);
 	sceditor.formats.bbcode.set('font', empty_handler);
 	sceditor.formats.bbcode.set('size', empty_handler);
@@ -1265,6 +1266,7 @@ AWS.create_editor = function(el, max_btn)
 		icons: 'material',
 		style: G_STATIC_URL + '/editor/sceditor/themes/content/default.css',
 		toolbar: 'bold,italic,underline,strike|' +
+			'left,center|' +
 			'bulletlist,orderedlist|' +
 			'code,quote|image,link,unlink|' +
 			'source' + (max_btn ? '|maximize' : '')
