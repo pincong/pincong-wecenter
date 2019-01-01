@@ -19,7 +19,7 @@
 					<!-- end tab 切换 -->
 					<form action="publish/ajax/<?php if ($this->video_info['id']) { ?>modify<?php } else { ?>publish<?php } ?>_video/" method="post" id="question_form" onsubmit="return false;">
 						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
-						<input type="hidden" name="article_id" id="article_id" value="<?php echo $this->video_info['id']; ?>" />
+						<input type="hidden" name="video_id" id="video_id" value="<?php echo $this->video_info['id']; ?>" />
 						<?php if ($this->video_category_list) { ?>
 							<select name="category_id" class="collapse" id="category_id">
 								<option value="0">- <?php _e('请选择分类'); ?> -</option>
@@ -63,7 +63,7 @@
 								<div class="aw-mod">
 									<div class="mod-head">
 										<div class="">
-											<input type="text" name="video_webpage_url" placeholder="https://" value="" class="form-control" />
+											<input type="text" name="web_url" placeholder="https://" value="" class="form-control" />
 										</div>
 									</div>
 									<div class="mod-body">
