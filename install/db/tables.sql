@@ -598,7 +598,7 @@ CREATE TABLE IF NOT EXISTS `aws_users` (
   `views_count` int(10) DEFAULT '0' COMMENT '个人主页查看数量',
   `reputation` int(10) DEFAULT '0' COMMENT '威望',
   `currency` int(10) DEFAULT '0',
-  `user_name_update_time` int(10) DEFAULT '0',
+  `user_update_time` int(10) DEFAULT '0',
   `verified` varchar(32) DEFAULT NULL,
   `default_timezone` varchar(32) DEFAULT NULL,
   `recent_topics` text,
@@ -610,7 +610,8 @@ CREATE TABLE IF NOT EXISTS `aws_users` (
   KEY `forbidden` (`forbidden`),
   KEY `currency` (`currency`),
   KEY `verified` (`verified`),
-  KEY `last_login` (`last_login`)
+  KEY `last_login` (`last_login`),
+  KEY `user_update_time` (`user_update_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.

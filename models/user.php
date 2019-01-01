@@ -278,6 +278,32 @@ class user_class extends AWS_MODEL
 
 		$this->delete('users', 'uid = ' . ($uid));
 		$this->delete('users_attrib', 'uid = ' . ($uid));
+	}
 
+	public function auto_delete_users()
+	{
+		$days = intval(get_setting('days_delete_forbidden_users'));
+		if (!$days)
+		{
+			return;
+		}
+		$seconds = $days * 24 * 3600;
+		$time_before = real_time() - $seconds;
+		if ($time_before < 0)
+		{
+			$time_before = 0;
+		}
+
+		$where = 'forbidden = 1 AND user_update_time < ' . $time_before;
+		$users = $this->fetch_all('users', $where);
+		if (!$users)
+		{
+			return;
+		}
+
+		foreach ($users AS $key => $val)
+		{
+			$this->delete_user_by_uid($val['uid']);
+		}
 	}
 }

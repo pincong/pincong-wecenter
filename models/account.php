@@ -517,7 +517,7 @@ class account_class extends AWS_MODEL
     {
         $this->update('users', array(
             'user_name' => htmlspecialchars($user_name),
-            'user_name_update_time' => fake_time()
+            'user_update_time' => fake_time()
         ), 'uid = ' . intval($uid));
 
         //return $this->model('search_fulltext')->push_index('user', $user_name, $uid);
@@ -1239,7 +1239,10 @@ class account_class extends AWS_MODEL
 		}
 
 		$status = intval($status);
-		if (!$this->update_users_fields(array('forbidden' => ($status)), $uid))
+		if (!$this->update_users_fields(array(
+			'forbidden' => ($status),
+			'user_update_time' => fake_time()
+		), $uid))
 		{
 			return false;
 		}

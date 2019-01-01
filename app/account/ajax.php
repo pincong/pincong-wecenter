@@ -458,7 +458,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			if ($user_name = htmlspecialchars(my_trim($_POST['user_name'])))
 			{
-				if ($this->user_info['user_name_update_time'] AND $this->user_info['user_name_update_time'] > (time() - 3600 * 24 * 30))
+				if ($this->user_info['user_update_time'] AND $this->user_info['user_update_time'] > (time() - 3600 * 24 * 30))
 				{
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你距离上次修改用户名未满 30 天')));
 				}

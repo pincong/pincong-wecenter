@@ -125,6 +125,8 @@ class crond_class extends AWS_MODEL
     // 每日时执行
     public function day()
     {
+		$this->model('user')->auto_delete_users();
+
         if ((!get_setting('db_engine') OR get_setting('db_engine') == 'MyISAM') AND !defined('IN_SAE'))
         {
             $this->query('OPTIMIZE TABLE `' . get_table('sessions') . '`');
