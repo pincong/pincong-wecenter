@@ -85,7 +85,7 @@ class ajax extends AWS_CONTROLLER
 
 			else if ($inbox_recv != 3) // 3为任何人
 			{
-				if (! $this->model('message')->check_permission($recipient_user['uid'], $this->user_id))
+				if (!$this->model('follow')->user_follow_check($recipient_user['uid'], $this->user_id))
 				{
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对方设置了只有 Ta 关注的人才能给 Ta 发送私信')));
 				}

@@ -240,19 +240,6 @@ class message_class extends AWS_MODEL
 		return $this->fetch_row('inbox_dialog', "(`sender_uid` = " . intval($sender_uid) . " AND `recipient_uid` = " . intval($recipient_uid) . ") OR (`recipient_uid` = " . intval($sender_uid) . " AND `sender_uid` = " . intval($recipient_uid) . ")");
 	}
 
-	public function check_permission($uid, $sender_uid)
-	{
-		if ($user_friends_ids = $this->model('follow')->get_user_friends_ids($uid))
-		{
-			if (! in_array($sender_uid, $user_friends_ids))
-			{
-				return false;
-			}
-
-			return true;
-		}
-	}
-
 	public function removed_message_clean()
 	{
 		$this->delete('inbox', 'sender_remove = 1 AND recipient_remove = 1');
