@@ -381,17 +381,24 @@ function get_js_url($url)
  */
 function calc_page_limit($page, $per_page)
 {
-	if (intval($per_page) == 0)
-	{
-		throw new Zend_Exception('Error param: per_page');
-	}
-
+	$page = intval($page);
 	if ($page < 1)
 	{
 		$page = 1;
 	}
 
-	return ((intval($page) - 1) * intval($per_page)) . ', ' . intval($per_page);
+	$per_page = intval($per_page);
+	if ($per_page < 1)
+	{
+		$per_page = 1;
+	}
+
+	if ($per_page > 1000)
+	{
+		$per_page = 1000;
+	}
+
+	return (($page - 1) * $per_page) . ', ' . ($per_page);
 }
 
 /**

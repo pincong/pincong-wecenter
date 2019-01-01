@@ -68,9 +68,9 @@ class ajax extends AWS_CONTROLLER
 	public function search_action()
 	{
 		$limit = intval($_GET['limit']);
-		if ($limit > 50)
+		if (!$limit OR $limit > 20)
 		{
-			$limit = 50;
+			$limit = 20;
 		}
 		$result = $this->model('search')->search(cjk_substr($_GET['q'], 0, 64), $_GET['type'], 1, $limit, $_GET['topic_ids'], $_GET['recommend']);
 
