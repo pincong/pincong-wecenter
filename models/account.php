@@ -700,7 +700,7 @@ class account_class extends AWS_MODEL
         return $this->update('users_group', $data, 'group_id = ' . intval($group_id));
     }
 
-    public function get_user_group_by_id($group_id, $field = null)
+    public function get_user_group_by_id($group_id)
     {
         if (!$group_id)
         {
@@ -711,14 +711,7 @@ class account_class extends AWS_MODEL
 
         if (isset($user_groups[$group_id]))
         {
-            if ($field)
-            {
-                return $user_groups[$group_id][$field];
-            }
-            else
-            {
-                return $user_groups[$group_id];
-            }
+            return $user_groups[$group_id];
         }
 
         if (!$user_group = AWS_APP::cache()->get('user_group_' . intval($group_id)))
@@ -735,14 +728,7 @@ class account_class extends AWS_MODEL
 
         $user_groups[$group_id] = $user_group;
 
-        if ($field)
-        {
-            return $user_group[$field];
-        }
-        else
-        {
-            return $user_group;
-        }
+        return $user_group;
     }
 
 	// $type 0:系统组|1:会员组(威望组)
@@ -768,18 +754,34 @@ class account_class extends AWS_MODEL
         return $group;
     }
 
-    public function get_user_group($group_id, $reputation_group = 0)
-    {
-        if ($group_id == 4 AND $reputation_group)
-        {
-            if ($user_group = $this->model('account')->get_user_group_by_id($reputation_group))
-            {
-                return $user_group;
-            }
-        }
+	public function get_user_group($group_id, $reputation_group_id = 0)
+	{
+		if (!$reputation_group_id)
+		{
+			return $this->model('account')->get_user_group_by_id($group_id);
+		}
 
-        return $this->model('account')->get_user_group_by_id($group_id);
-    }
+		// 普通会员 威望组
+		if ($group_id == 4)
+		{
+			return $this->model('account')->get_user_group_by_id($reputation_group_id);
+		}
+
+		// 系统组
+		if ($group_id < 100)
+		{
+			return $this->model('account')->get_user_group_by_id($group_id);
+		}
+
+		// 特殊组
+		if ($user_group = $this->model('account')->get_user_group_by_id($group_id))
+		{
+			return $user_group;
+		}
+
+		// 特殊组不存在则按威望组处理
+		return $this->model('account')->get_user_group_by_id($reputation_group_id);
+	}
 
 	public function get_user_group_by_user_info(&$user_info)
 	{

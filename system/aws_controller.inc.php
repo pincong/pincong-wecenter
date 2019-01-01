@@ -35,10 +35,7 @@ class AWS_CONTROLLER
 
 		if ($this->user_info)
 		{
-			$user_group = $this->model('account')->get_user_group(
-				$this->user_info['group_id'],
-				$this->model('reputation')->get_reputation_group_id_by_reputation($this->user_info['reputation'])
-			);
+			$user_group = $this->model('account')->get_user_group_by_user_info($this->user_info);
 
 			$user_settings = unserialize_array($this->user_info['settings']);
 			$this->user_info['default_timezone'] = $user_settings['timezone'];
