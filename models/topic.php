@@ -234,10 +234,12 @@ class topic_class extends AWS_MODEL
 				'topic_lock' => 0
 			));
 
-			if ($uid)
-			{
-				$this->add_focus_topic($uid, $topic_id);
-			}
+			// TODO: 在管理后台添加选项
+			// 创建者不再自动关注话题
+			//if ($uid)
+			//{
+			//	$this->add_focus_topic($uid, $topic_id);
+			//}
 		}
 		else
 		{
