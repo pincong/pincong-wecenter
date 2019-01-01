@@ -916,8 +916,8 @@ blockquote {margin: 0;padding: 0 10px;font-size: 15px;color: #777;border-left: 4
 
 /* 字体 */
 .aw-common-list .aw-question-content h4{font-size: 15px;}
-.aw-question-detail .mod-body{font-size: 15px; color:#333;}
-.aw-feed-list .mod-body{font-size: 15px; color:#333;}
+.aw-question-detail .mod-body{font-size: 15px; color:#000;}
+.aw-feed-list .mod-body{font-size: 15px; color:#000;}
 .aw-feed-list .aw-item .mod-footer .aw-comment-box .aw-comment-list {font-size: 14px;}
 .aw-side-bar {font-size: 13px;}
 .category .list > li{font-size: 13px;}
