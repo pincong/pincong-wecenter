@@ -46,7 +46,8 @@ class TPL
 		return self::$view;
 	}
 
-	public static function output($template_filename, $display = true, $plugin_name = null)
+	// 生成基本的 HTML
+	public static function &render($template_filename, $plugin_name = null)
 	{
 		if (!strstr($template_filename, self::$template_ext))
 		{
@@ -91,7 +92,13 @@ class TPL
 			self::assign('template_name', 'default');
 		}
 
-		$output = self::$view->getOutput($display_template_filename);
+		return self::$view->getOutput($display_template_filename);
+	}
+
+	// 进行一些处理 关键词替换等
+	public static function &process($template_filename, $plugin_name = null)
+	{
+		$output = self::render($template_filename, $plugin_name);
 
 		if (self::$in_app AND basename($template_filename) != 'debuger.tpl.htm')
 		{
@@ -134,16 +141,20 @@ class TPL
 			}
 		}
 
-		if ($display)
-		{
-			echo $output;
+		return $output;
+	}
 
-			flush();
-		}
-		else
-		{
-			return $output;
-		}
+	// 显示
+	public static function output($template_filename, $plugin_name = null)
+	{
+		echo self::process($template_filename, $plugin_name);
+		exit;
+	}
+
+	// 包含其它模板文件
+	public static function include($template_filename, $plugin_name = null)
+	{
+		echo self::render($template_filename, $plugin_name);
 	}
 
 	public static function set_meta($tag, $value)

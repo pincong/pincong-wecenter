@@ -1,6 +1,6 @@
-<?php TPL::output('global/header.tpl.htm'); ?>
+<?php TPL::include('global/header.tpl.htm'); ?>
 <div class="aw-container-wrap">
-	<?php TPL::output('block/content_nav_menu.tpl.htm'); ?>
+	<?php TPL::include('block/content_nav_menu.tpl.htm'); ?>
 
 	<div class="container">
 		<div class="row">
@@ -44,13 +44,13 @@
 
 				<!-- 侧边栏 -->
 				<div class="col-sm-12 col-md-3 aw-side-bar">
-					<?php TPL::output('block/sidebar_feature.tpl.htm'); ?>
-					<?php TPL::output('block/sidebar_hot_topics.tpl.htm'); ?>
-					<?php /*TPL::output('block/sidebar_hot_users.tpl.htm');*/ ?>
+					<?php TPL::include('block/sidebar_feature.tpl.htm'); ?>
+					<?php TPL::include('block/sidebar_hot_topics.tpl.htm'); ?>
+					<?php /*TPL::include('block/sidebar_hot_users.tpl.htm');*/ ?>
 				</div>
 				<!-- end 侧边栏 -->
 			</div>
 		</div>
 	</div>
 </div>
-<?php TPL::output('global/footer.tpl.htm'); ?>
+<?php TPL::include('global/footer.tpl.htm'); ?>

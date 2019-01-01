@@ -1,5 +1,5 @@
-<?php TPL::output('admin/global/header.tpl.htm'); ?>
-<?php TPL::output('admin/global/nav_menu.tpl.htm'); ?>
+<?php TPL::include('admin/global/header.tpl.htm'); ?>
+<?php TPL::include('admin/global/nav_menu.tpl.htm'); ?>
 
 <div class="aw-content-wrap">
 	<?php if ($this->writable_check) { ?>
@@ -196,4 +196,4 @@
 
 <script type="text/javascript" src="<?php echo G_STATIC_URL; ?>/admin/js/echarts-data.js"></script>
 <script type="text/javascript" src="<?php echo G_STATIC_URL; ?>/admin/js/echarts.js"></script>
-<?php TPL::output('admin/global/footer.tpl.htm'); ?>
+<?php TPL::include('admin/global/footer.tpl.htm'); ?>

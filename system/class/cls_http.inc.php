@@ -76,7 +76,7 @@ class HTTP
 		{
 			header('HTTP/1.1 403 Forbidden');
 
-			TPL::output('global/error_403');
+			echo TPL::render('global/error_403');
 			exit;
 		}
 	}
@@ -91,7 +91,7 @@ class HTTP
 		{
 			header('HTTP/1.1 404 Not Found');
 
-			TPL::output('global/error_404');
+			echo TPL::render('global/error_404');
 			exit;
 		}
 	}
@@ -115,7 +115,7 @@ class HTTP
 		if ($url = HTTP::parse_redirect_url($url))
 		{
 			header('Location: ' . $url);
-			die;
+			exit;
 		}
 	}
 

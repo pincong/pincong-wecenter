@@ -1,4 +1,4 @@
-<?php TPL::output('global/header.tpl.htm'); ?>
+<?php TPL::include('global/header.tpl.htm'); ?>
 
 <div class="aw-container-wrap">
 	<div class="container aw-publish">
@@ -24,7 +24,7 @@
 						<?php if (!$this->question_info['question_id'] AND get_setting('category_enable') != 'N') { ?>
 						<select name="category_id" class="collapse" id="category_id">
 							<option value="0">- <?php _e('请选择分类'); ?> -</option>
-							<?php TPL::output('block/category_options.tpl.htm'); ?>
+							<?php TPL::include('block/category_options.tpl.htm'); ?>
 						</select>
 						<?php } ?>
 						<div class="aw-mod aw-mod-publish">
@@ -162,4 +162,4 @@ $(document).ready(function () {
 });
 </script>
 
-<?php TPL::output('global/footer.tpl.htm'); ?>
+<?php TPL::include('global/footer.tpl.htm'); ?>

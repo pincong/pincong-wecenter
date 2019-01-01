@@ -1,5 +1,5 @@
-<?php TPL::output('admin/global/header.tpl.htm'); ?>
-<?php TPL::output('admin/global/nav_menu.tpl.htm'); ?>
+<?php TPL::include('admin/global/header.tpl.htm'); ?>
+<?php TPL::include('admin/global/nav_menu.tpl.htm'); ?>
 
 <div class="aw-content-wrap">
     <form action="admin/ajax/save_settings/" id="settings_form" method="post" onsubmit="return false">
@@ -1966,4 +1966,4 @@
     </form>
 </div>
 
-<?php TPL::output('admin/global/footer.tpl.htm'); ?>
+<?php TPL::include('admin/global/footer.tpl.htm'); ?>

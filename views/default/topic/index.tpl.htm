@@ -1,4 +1,4 @@
-<?php TPL::output('global/header.tpl.htm'); ?>
+<?php TPL::include('global/header.tpl.htm'); ?>
 
 <div class="aw-container-wrap">
 	<div class="container">
@@ -140,7 +140,7 @@
 					</div>
 					<!-- end 话题描述 -->
 
-					<?php TPL::output('topic/related_topics.tpl.htm'); ?>
+					<?php TPL::include('topic/related_topics.tpl.htm'); ?>
 
 					<?php if ($this->parent_topic_info) { ?>
 					<div class="aw-mod">
@@ -205,4 +205,4 @@
 
 <script type="text/javascript" src="<?php echo G_STATIC_URL; ?>/js/app/topic.js"></script>
 
-<?php TPL::output('global/footer.tpl.htm'); ?>
+<?php TPL::include('global/footer.tpl.htm'); ?>

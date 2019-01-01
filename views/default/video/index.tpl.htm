@@ -1,4 +1,4 @@
-<?php TPL::output('global/header.tpl.htm'); ?>
+<?php TPL::include('global/header.tpl.htm'); ?>
 
 <link rel="stylesheet" type="text/css" href="<?php echo G_STATIC_URL; ?>/player/css/icon.css" />
 <link rel="stylesheet" type="text/css" href="<?php echo G_STATIC_URL; ?>/player/css/CommentCoreLibrary.css" />
@@ -93,7 +93,7 @@
 						<div class="mod-body">
 							<?php if ($this->video_info['source_type']) { ?>
 							<div>
-								<?php TPL::output('video/player.tpl.htm'); ?>
+								<?php TPL::include('video/player.tpl.htm'); ?>
 							</div>
 							<?php } ?>
 							<div class="content markitup-box">
@@ -412,4 +412,4 @@ $(document).ready(function () {
 </script>
 <?php } ?>
 
-<?php TPL::output('global/footer.tpl.htm'); ?>
+<?php TPL::include('global/footer.tpl.htm'); ?>

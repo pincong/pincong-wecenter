@@ -1,4 +1,4 @@
-<?php TPL::output('global/header.tpl.htm'); ?>
+<?php TPL::include('global/header.tpl.htm'); ?>
 
 <div class="aw-container-wrap">
 	<div class="container">
@@ -75,16 +75,16 @@
 				</div>
 				<!-- 侧边栏 -->
 				<div class="col-sm-12 col-md-3 aw-side-bar">
-					<?php TPL::output('block/sidebar_announce.tpl.htm'); ?>
+					<?php TPL::include('block/sidebar_announce.tpl.htm'); ?>
 
-					<?php TPL::output('block/sidebar_menu.tpl.htm'); ?>
+					<?php TPL::include('block/sidebar_menu.tpl.htm'); ?>
 
 					<!-- 可能感兴趣的人/或话题 -->
-					<?php TPL::output('block/sidebar_recommend_users_topics.tpl.htm'); ?>
+					<?php TPL::include('block/sidebar_recommend_users_topics.tpl.htm'); ?>
 				</div>
 				<!-- end 侧边栏 -->
 			</div>
 		</div>
 	</div>
 </div>
-<?php TPL::output('global/footer.tpl.htm'); ?>
+<?php TPL::include('global/footer.tpl.htm'); ?>

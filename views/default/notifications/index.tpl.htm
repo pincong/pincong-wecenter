@@ -1,4 +1,4 @@
-<?php TPL::output('global/header.tpl.htm'); ?>
+<?php TPL::include('global/header.tpl.htm'); ?>
 
 <div class="aw-container-wrap">
 	<div class="container">
@@ -30,7 +30,7 @@
 				</div>
 				<!-- 侧边栏 -->
 				<div class="col-sm-12 col-md-3 aw-side-bar">
-					<?php TPL::output('block/sidebar_menu.tpl.htm'); ?>
+					<?php TPL::include('block/sidebar_menu.tpl.htm'); ?>
 				</div>
 				<!-- end 侧边栏 -->
 			</div>
@@ -44,4 +44,4 @@
 	});
 </script>
 
-<?php TPL::output('global/footer.tpl.htm'); ?>
+<?php TPL::include('global/footer.tpl.htm'); ?>

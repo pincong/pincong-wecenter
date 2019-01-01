@@ -12,7 +12,7 @@
 				<div class="alert alert-danger collapse error_message"><i class="icon icon-delete"></i> <em></em></div>
 				<select class="form-control" name="category_id">
 					<option value="0">- <?php _e('请选择分类'); ?> -</option>
-					<?php TPL::output('block/category_options.tpl.htm'); ?>
+					<?php TPL::include('block/category_options.tpl.htm'); ?>
 				</select>
 			</div>
 			<div class="modal-footer">

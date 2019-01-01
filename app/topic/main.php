@@ -173,7 +173,7 @@ class main extends AWS_CONTROLLER
 				}
 
 				TPL::assign('posts_list', $posts_list);
-				TPL::assign('all_list_bit', TPL::output('explore/ajax/list', false));
+				TPL::assign('all_list_bit', TPL::render('explore/ajax/list'));
 
 				if ($posts_list = $this->model('posts')->get_posts_list(null, 1, get_setting('contents_per_page'), null, $contents_related_topic_ids, null, null, 30, true))
 				{
@@ -187,10 +187,10 @@ class main extends AWS_CONTROLLER
 				}
 
 				TPL::assign('posts_list', $this->model('posts')->get_posts_list('question', 1, get_setting('contents_per_page'), 'new', explode(',', $contents_topic_id)));
-				TPL::assign('all_questions_list_bit', TPL::output('explore/ajax/list', false));
+				TPL::assign('all_questions_list_bit', TPL::render('explore/ajax/list'));
 
 				TPL::assign('posts_list', $this->model('posts')->get_posts_list('article', 1, get_setting('contents_per_page'), 'new', explode(',', $contents_topic_id)));
-				TPL::assign('article_list_bit', TPL::output('explore/ajax/list', false));
+				TPL::assign('article_list_bit', TPL::render('explore/ajax/list'));
 
 				TPL::assign('contents_topic_id', $contents_topic_id);
 				TPL::assign('contents_topic_title', $contents_topic_title);

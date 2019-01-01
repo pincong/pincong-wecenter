@@ -1,5 +1,5 @@
-<?php TPL::output('admin/global/header.tpl.htm'); ?>
-<?php TPL::output('admin/global/nav_menu.tpl.htm'); ?>
+<?php TPL::include('admin/global/header.tpl.htm'); ?>
+<?php TPL::include('admin/global/nav_menu.tpl.htm'); ?>
 
 <div class="aw-content-wrap">
     <div class="tab-content mod-content">
@@ -77,7 +77,7 @@
                             <input type="hidden" name="type" value="category">
                             <select name="type_id" class="form-control pull-left input-small">
                                 <option value="0"><?php _e('无'); ?></option>
-								<?php TPL::output('block/category_options.tpl.htm'); ?>
+								<?php TPL::include('block/category_options.tpl.htm'); ?>
                             </select>
                             <a onclick="AWS.ajax_post($(this).parents('form'));" class="btn btn-primary"><?php _e('添加至导航菜单'); ?></a>
                         </form>
@@ -129,4 +129,4 @@ $(document).ready(function () {
 });
 </script>
 
-<?php TPL::output('admin/global/footer.tpl.htm'); ?>
+<?php TPL::include('admin/global/footer.tpl.htm'); ?>

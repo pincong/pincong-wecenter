@@ -265,9 +265,7 @@ class ajax extends AWS_CONTROLLER
 		TPL::assign('answer_info', $answer_info);
 		TPL::assign('comments', $comments);
 
-		{
-			TPL::output("question/ajax/comments");
-		}
+		TPL::output("question/ajax/comments");
 	}
 
 	public function get_question_discussions_action()

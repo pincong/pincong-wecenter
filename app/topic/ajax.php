@@ -561,8 +561,6 @@ class ajax extends AWS_CONTROLLER
 
 		TPL::assign('topics_list', $topics_list);
 
-		{
-			TPL::output('topic/ajax/focus_topics_list');
-		}
+		TPL::output('topic/ajax/focus_topics_list');
 	}
 }

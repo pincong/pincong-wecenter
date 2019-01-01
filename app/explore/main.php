@@ -105,7 +105,7 @@ class main extends AWS_CONTROLLER
 		))->create_links());
 
 		TPL::assign('posts_list', $posts_list);
-		TPL::assign('posts_list_bit', TPL::output('explore/ajax/list', false));
+		TPL::assign('posts_list_bit', TPL::render('explore/ajax/list'));
 
 		TPL::output('explore/index');
 	}

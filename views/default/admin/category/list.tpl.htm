@@ -1,5 +1,5 @@
-<?php TPL::output('admin/global/header.tpl.htm'); ?>
-<?php TPL::output('admin/global/nav_menu.tpl.htm'); ?>
+<?php TPL::include('admin/global/header.tpl.htm'); ?>
+<?php TPL::include('admin/global/nav_menu.tpl.htm'); ?>
 
 <div class="aw-content-wrap">
     <div class="mod">
@@ -95,7 +95,7 @@
         </div>
     </div>
     <div id="target-category" class="collapse">
-        <?php TPL::output('block/category_options.tpl.htm'); ?>
+        <?php TPL::include('block/category_options.tpl.htm'); ?>
     </div>
 </div>
 
@@ -131,4 +131,4 @@
     });
 </script>
 
-<?php TPL::output('admin/global/footer.tpl.htm'); ?>
+<?php TPL::include('admin/global/footer.tpl.htm'); ?>

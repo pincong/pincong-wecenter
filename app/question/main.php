@@ -321,7 +321,7 @@ class main extends AWS_CONTROLLER
 		))->create_links());
 
 		TPL::assign('posts_list', $question_list);
-		TPL::assign('question_list_bit', TPL::output('explore/ajax/list', false));
+		TPL::assign('question_list_bit', TPL::render('explore/ajax/list'));
 
 		TPL::output('question/square');
 	}
