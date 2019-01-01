@@ -285,7 +285,7 @@
 													<a href="javascript:;" onclick="AWS.User.add_favorite('answer', '<?php echo $val['answer_id']; ?>');" class="text-color-999"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>
 												<?php } ?>
 
-												<?php if ($this->user_info['permission']['is_moderator'] OR $this->user_info['permission']['is_administrator']) { ?>
+												<?php if ($this->user_info['permission']['edit_question']) { ?>
 												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/question/ajax/set_best_answer/', 'answer_id=<?php echo $val['answer_id']; ?>');" class="text-color-999"><i class="icon icon-best"></i> <?php if (!$this->question_info['best_answer']) { ?><?php _e('设为最佳回复'); ?><?php } else { ?><?php _e('撤消最佳回复'); ?><?php } ?></a>
 												<?php } ?>
 											</div>
