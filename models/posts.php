@@ -549,20 +549,7 @@ class posts_class extends AWS_MODEL
 			'update_time' => $this->get_last_update_time()
 		), $where);
 
-		switch ($post_type)
-		{
-			case 'question':
-				$this->model('question')->log($post_id, 'QUESTION', '提升问题', $uid);
-				break;
-
-			case 'article':
-				$this->model('article')->log($post_id, 'ARTICLE', '提升文章', $uid);
-				break;
-
-			case 'video':
-				$this->model('video')->log($post_id, 'VIDEO', '提升影片', $uid);
-				break;
-		}
+		$this->model('content')->log($post_type, $post_id, '提升', $uid);
 
 		return true;
 	}
@@ -577,20 +564,7 @@ class posts_class extends AWS_MODEL
 			'update_time' => $this->get_last_update_time() - (7 * 24 * 3600)
 		), $where);
 
-		switch ($post_type)
-		{
-			case 'question':
-				$this->model('question')->log($post_id, 'QUESTION', '下沉问题', $uid);
-				break;
-
-			case 'article':
-				$this->model('article')->log($post_id, 'ARTICLE', '下沉文章', $uid);
-				break;
-
-			case 'video':
-				$this->model('video')->log($post_id, 'VIDEO', '下沉影片', $uid);
-				break;
-		}
+		$this->model('content')->log($post_type, $post_id, '下沉', $uid);
 
 		return true;
 	}

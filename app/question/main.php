@@ -100,7 +100,7 @@ class main extends AWS_CONTROLLER
 
 				if ($this->user_id AND ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
 				{
-					$message .= '&nbsp; (<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + \'/question/ajax/redirect/\', \'item_id=' . $question_info['question_id'] . '\');">' . AWS_APP::lang()->_t('撤消重定向') . '</a>)';
+					$message .= "&nbsp; (<a href=\"javascript:;\" onclick=\"AWS.ajax_request(G_BASE_URL + '/question/ajax/unredirect/', 'item_id=" . $question_info['question_id'] . "&target_id=" . $question_info['redirect']['target_id'] . "');\">" . AWS_APP::lang()->_t('撤消重定向') . "</a>)";
 				}
 
 				$redirect_message[] = $message;

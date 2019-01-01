@@ -21,71 +21,6 @@ if (!defined('IN_ANWSION'))
 class video_class extends AWS_MODEL
 {
 
-	/**
-	 * 记录日志
-	 * @param int $item_id 内容id
-	 * @param string $type VIDEO|VIDEO_COMMENT
-	 * @param string $note
-	 * @param int $uid
-	 * @param int $anonymous
-	 * @param int $child_id 回复/评论id
-	 */
-	public function log($item_id, $type, $note, $uid = 0, $anonymous = 0, $child_id = 0)
-	{
-		$this->insert('video_log', array(
-			'item_id' => intval($item_id),
-			'type' => $type,
-			'note' => $note,
-			'uid' => intval($uid),
-			'anonymous' => intval($anonymous),
-			'child_id' => intval($child_id),
-			'time' => fake_time()
-		));
-	}
-
-	/**
-	 *
-	 * 根据 item_id, 得到日志列表
-	 *
-	 * @param int     $item_id
-	 * @param int     $limit
-	 *
-	 * @return array
-	 */
-	public function list_logs($item_id, $limit = 20)
-	{
-		$log_list = $this->fetch_all('video_log', 'item_id = ' . intval($item_id), 'id DESC', $limit);
-		if (!$log_list)
-		{
-			return false;
-		}
-
-		foreach ($log_list AS $key => $log)
-		{
-			if (!$log['anonymous'])
-			{
-				$user_ids[] = $log['uid'];
-			}
-		}
-
-		if ($user_ids)
-		{
-			$users = $this->model('account')->get_user_info_by_uids($user_ids);
-		}
-		else
-		{
-			$users = array();
-		}
-
-		foreach ($log_list as $key => $log)
-		{
-			$log_list[$key]['user_info'] = $users[$log['uid']];
-		}
-
-		return $log_list;
-	}
-
-
 	public function modify_video($id, $uid, $title, $message, $category_id)
 	{
 		if (!$item_info = $this->model('video')->get_video_info_by_id($id))
@@ -107,11 +42,7 @@ class video_class extends AWS_MODEL
 			'category_id' => $category_id
 		), "post_id = " . intval($id) . " AND post_type = 'video'" );
 
-		if ($uid == $item_info['uid'])
-		{
-			$is_anonymous =  $item_info['anonymous'];
-		}
-		$this->model('video')->log($id, 'VIDEO', '编辑影片', $uid, $is_anonymous);
+		$this->model('content')->log('video', $id, '编辑影片', $uid);
 
 		return true;
 	}
@@ -130,11 +61,7 @@ class video_class extends AWS_MODEL
 			'title_fulltext' => null,
 		), 'id = ' . intval($id));
 
-		if ($uid == $item_info['uid'])
-		{
-			$is_anonymous =  $item_info['anonymous'];
-		}
-		$this->model('video')->log($id, 'VIDEO', '删除影片', $uid, $is_anonymous);
+		$this->model('content')->log('video', $id, '删除影片', $uid);
 
 		return true;
 	}
@@ -325,17 +252,13 @@ class video_class extends AWS_MODEL
 		return $this->delete('video', 'id = ' . intval($video_id));
 	}
 
-	public function remove_video_comment($comment, $uid)
+	public function remove_video_comment(&$comment, $uid)
 	{
 		$this->update('video_comment', array(
 			'message' => null
 		), "id = " . $comment['id']);
 
-		if ($uid == $comment['uid'])
-		{
-			$is_anonymous =  $comment['anonymous'];
-		}
-		$this->model('video')->log($comment['video_id'], 'VIDEO_COMMENT', '删除评论', $uid, $is_anonymous, $comment['id']);
+		$this->model('content')->log('video', $comment['video_id'], '删除评论', $uid, 'video_comment', $comment['id']);
 
 		return true;
 	}
@@ -429,11 +352,11 @@ class video_class extends AWS_MODEL
 
 		if ($lock_status)
 		{
-			$this->model('video')->log($video_id, 'VIDEO', '锁定影片', $uid);
+			$this->model('content')->log('video', $video_id, '锁定影片', $uid);
 		}
 		else
 		{
-			$this->model('video')->log($video_id, 'VIDEO', '解除锁定', $uid);
+			$this->model('content')->log('video', $video_id, '解除锁定', $uid);
 		}
 
 		return true;

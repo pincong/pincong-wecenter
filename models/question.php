@@ -21,71 +21,6 @@ if (!defined('IN_ANWSION'))
 class question_class extends AWS_MODEL
 {
 
-	/**
-	 * 记录日志
-	 * @param int $item_id 问题id
-	 * @param string $type QUESTION|QUESTION_COMMENT|ANSWER|ANSWER_COMMENT
-	 * @param string $note
-	 * @param int $uid
-	 * @param int $anonymous
-	 * @param int $child_id 回复/评论id
-	 */
-	public function log($item_id, $type, $note, $uid = 0, $anonymous = 0, $child_id = 0)
-	{
-		$this->insert('question_log', array(
-			'item_id' => intval($item_id),
-			'type' => $type,
-			'note' => $note,
-			'uid' => intval($uid),
-			'anonymous' => intval($anonymous),
-			'child_id' => intval($child_id),
-			'time' => fake_time()
-		));
-	}
-
-	/**
-	 *
-	 * 根据 item_id, 得到日志列表
-	 *
-	 * @param int     $item_id
-	 * @param int     $limit
-	 *
-	 * @return array
-	 */
-	public function list_logs($item_id, $limit = 20)
-	{
-		$log_list = $this->fetch_all('question_log', 'item_id = ' . intval($item_id), 'id DESC', $limit);
-		if (!$log_list)
-		{
-			return false;
-		}
-
-		foreach ($log_list AS $key => $log)
-		{
-			if (!$log['anonymous'])
-			{
-				$user_ids[] = $log['uid'];
-			}
-		}
-
-		if ($user_ids)
-		{
-			$users = $this->model('account')->get_user_info_by_uids($user_ids);
-		}
-		else
-		{
-			$users = array();
-		}
-
-		foreach ($log_list as $key => $log)
-		{
-			$log_list[$key]['user_info'] = $users[$log['uid']];
-		}
-
-		return $log_list;
-	}
-
-
 	public function modify_question($id, $uid, $title, $message, $category_id)
 	{
 		if (!$item_info = $this->model('question')->get_question_info_by_id($id))
@@ -107,11 +42,7 @@ class question_class extends AWS_MODEL
 			'category_id' => $category_id
 		), "post_id = " . intval($id) . " AND post_type = 'question'" );
 
-		if ($uid == $item_info['published_uid'])
-		{
-			$is_anonymous =  $item_info['anonymous'];
-		}
-		$this->model('question')->log($id, 'QUESTION', '编辑问题', $uid, $is_anonymous);
+		$this->model('content')->log('question', $id, '编辑问题', $uid);
 
 		return true;
 	}
@@ -130,11 +61,7 @@ class question_class extends AWS_MODEL
 			'question_content_fulltext' => null,
 		), 'question_id = ' . intval($id));
 
-		if ($uid == $item_info['published_uid'])
-		{
-			$is_anonymous =  $item_info['anonymous'];
-		}
-		$this->model('question')->log($id, 'QUESTION', '删除问题', $uid, $is_anonymous);
+		$this->model('content')->log('question', $id, '删除问题', $uid);
 
 		return true;
 	}
@@ -754,69 +681,62 @@ class question_class extends AWS_MODEL
 	}*/
 
 	// 只清空不删除
-	public function remove_question_discussion($comment, $uid)
+	public function remove_question_discussion(&$comment, $uid)
 	{
 		$this->update('question_discussion', array(
 			'message' => null
 		), "id = " . $comment['id']);
 
-		if ($uid == $comment['uid'])
-		{
-			$is_anonymous =  $comment['anonymous'];
-		}
-		$this->model('question')->log($comment['question_id'], 'QUESTION_COMMENT', '删除评论', $uid, $is_anonymous, $comment['id']);
+		$this->model('content')->log('question', $comment['question_id'], '删除评论', $uid, 'question_discussion', $comment['id']);
 
 		return true;
 	}
 
-	public function remove_answer_discussion($comment, $uid)
+	public function remove_answer_discussion(&$comment, $uid)
 	{
 		$this->update('answer_discussion', array(
 			'message' => null
 		), "id = " . $comment['id']);
 
-		if ($uid == $comment['uid'])
-		{
-			$is_anonymous =  $comment['anonymous'];
-		}
-
 		if ($answer = $this->fetch_row('answer', 'answer_id = ' . intval($comment['answer_id'])))
 		{
-			$this->model('question')->log($answer['question_id'], 'ANSWER_COMMENT', '删除回复评论', $uid, $is_anonymous, $comment['id']);
+			$this->model('content')->log('question', $answer['question_id'], '删除回复评论', $uid, 'answer_discussion', $comment['id']);
 		}
 
 		return true;
 	}
 
-	public function redirect($uid, $item_id, $target_id = NULL)
+	public function redirect($uid, $item_id, $target_id)
 	{
 		if ($item_id == $target_id)
 		{
 			return false;
 		}
 
-		if (! $target_id)
+		if (! $this->fetch_row('redirect', 'item_id = ' . intval($item_id) . ' AND target_id = ' . intval($target_id)))
 		{
-			if ($this->delete('redirect', 'item_id = ' . intval($item_id)))
-			{
-				$this->model('question')->log($item_id, 'QUESTION', '取消重定向', $uid);
-				return;
-			}
-		}
-		else if ($question = $this->get_question_info_by_id($item_id))
-		{
-			if (! $this->fetch_row('redirect', 'item_id = ' . intval($item_id) . ' AND target_id = ' . intval($target_id)))
-			{
-				$redirect_id = $this->insert('redirect', array(
-					'item_id' => intval($item_id),
-					'target_id' => intval($target_id),
-					'time' => fake_time(),
-					'uid' => intval($uid)
-				));
+			$redirect_id = $this->insert('redirect', array(
+				'item_id' => intval($item_id),
+				'target_id' => intval($target_id),
+				'time' => fake_time(),
+				'uid' => intval($uid)
+			));
 
-				$this->model('question')->log($item_id, 'QUESTION', '重定向', $uid, 0, $target_id);
-				return $redirect_id;
-			}
+			$this->model('content')->log('question', $item_id, '重定向', $uid, 'question', $target_id);
+			return $redirect_id;
+		}
+	}
+
+	public function unredirect($uid, $item_id, $target_id)
+	{
+		if ($item_id == $target_id)
+		{
+			return false;
+		}
+
+		if ($this->delete('redirect', 'item_id = ' . intval($item_id) . ' AND target_id = ' . intval($target_id)))
+		{
+			$this->model('content')->log('question', $item_id, '取消重定向', $uid, 'question', $target_id);
 		}
 	}
 
@@ -915,11 +835,11 @@ class question_class extends AWS_MODEL
 
 		if ($lock_status)
 		{
-			$this->model('question')->log($question_id, 'QUESTION', '锁定问题', $uid);
+			$this->model('content')->log('question', $question_id, '锁定问题', $uid);
 		}
 		else
 		{
-			$this->model('question')->log($question_id, 'QUESTION', '解除锁定', $uid);
+			$this->model('content')->log('question', $question_id, '解除锁定', $uid);
 		}
 
 		return true;

@@ -5,7 +5,7 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
--- Dumping structure for table panic.aws_answer
+--
 CREATE TABLE IF NOT EXISTS `aws_answer` (
   `answer_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '回答id',
   `question_id` int(11) DEFAULT '0' COMMENT '问题id',
@@ -23,10 +23,10 @@ CREATE TABLE IF NOT EXISTS `aws_answer` (
   KEY `anonymous` (`anonymous`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='回答';
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_answer_discussion
+--
 CREATE TABLE IF NOT EXISTS `aws_answer_discussion` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `answer_id` int(11) DEFAULT '0',
@@ -40,10 +40,10 @@ CREATE TABLE IF NOT EXISTS `aws_answer_discussion` (
   KEY `anonymous` (`anonymous`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_article
+--
 CREATE TABLE IF NOT EXISTS `aws_article` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `uid` int(10) DEFAULT '0',
@@ -77,10 +77,10 @@ CREATE TABLE IF NOT EXISTS `aws_article` (
   FULLTEXT KEY `title_fulltext` (`title_fulltext`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_article_comment
+--
 CREATE TABLE IF NOT EXISTS `aws_article_comment` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `uid` int(10) DEFAULT '0',
@@ -98,10 +98,10 @@ CREATE TABLE IF NOT EXISTS `aws_article_comment` (
   KEY `anonymous` (`anonymous`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_category
+--
 CREATE TABLE IF NOT EXISTS `aws_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(128) DEFAULT NULL,
@@ -112,10 +112,10 @@ CREATE TABLE IF NOT EXISTS `aws_category` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_favorite
+--
 CREATE TABLE IF NOT EXISTS `aws_favorite` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT '0',
@@ -129,10 +129,10 @@ CREATE TABLE IF NOT EXISTS `aws_favorite` (
   KEY `type` (`type`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_feature
+--
 CREATE TABLE IF NOT EXISTS `aws_feature` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(200) DEFAULT NULL COMMENT '专题标题',
@@ -144,10 +144,10 @@ CREATE TABLE IF NOT EXISTS `aws_feature` (
   KEY `sort` (`sort`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_help_chapter
+--
 CREATE TABLE IF NOT EXISTS `aws_help_chapter` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `title` varchar(240) DEFAULT NULL,
@@ -160,10 +160,10 @@ CREATE TABLE IF NOT EXISTS `aws_help_chapter` (
   KEY `sort` (`sort`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='帮助中心';
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_inbox
+--
 CREATE TABLE IF NOT EXISTS `aws_inbox` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT '0' COMMENT '发送者 ID',
@@ -182,10 +182,10 @@ CREATE TABLE IF NOT EXISTS `aws_inbox` (
   KEY `sender_receipt` (`receipt`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_inbox_dialog
+--
 CREATE TABLE IF NOT EXISTS `aws_inbox_dialog` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '对话ID',
   `sender_uid` int(11) DEFAULT NULL COMMENT '发送者UID',
@@ -203,10 +203,10 @@ CREATE TABLE IF NOT EXISTS `aws_inbox_dialog` (
   KEY `add_time` (`add_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_currency_log
+--
 CREATE TABLE IF NOT EXISTS `aws_currency_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT '0',
@@ -224,10 +224,10 @@ CREATE TABLE IF NOT EXISTS `aws_currency_log` (
   KEY `currency` (`currency`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_nav_menu
+--
 CREATE TABLE IF NOT EXISTS `aws_nav_menu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(128) DEFAULT NULL,
@@ -241,10 +241,10 @@ CREATE TABLE IF NOT EXISTS `aws_nav_menu` (
   KEY `parent_id` (`link`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_notification
+--
 CREATE TABLE IF NOT EXISTS `aws_notification` (
   `notification_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `sender_uid` int(11) DEFAULT NULL COMMENT '发送者ID',
@@ -263,10 +263,10 @@ CREATE TABLE IF NOT EXISTS `aws_notification` (
   KEY `add_time` (`add_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='系统通知';
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_notification_data
+--
 CREATE TABLE IF NOT EXISTS `aws_notification_data` (
   `notification_id` int(11) NOT NULL,
   `data` text,
@@ -275,10 +275,10 @@ CREATE TABLE IF NOT EXISTS `aws_notification_data` (
   KEY `add_time` (`add_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='系统通知数据表';
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_pages
+--
 CREATE TABLE IF NOT EXISTS `aws_pages` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `url_token` varchar(32) DEFAULT NULL,
@@ -292,10 +292,10 @@ CREATE TABLE IF NOT EXISTS `aws_pages` (
   KEY `enabled` (`enabled`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_posts_index
+--
 CREATE TABLE IF NOT EXISTS `aws_posts_index` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `post_id` int(10) DEFAULT '0' ,
@@ -325,10 +325,10 @@ CREATE TABLE IF NOT EXISTS `aws_posts_index` (
   KEY `view_count` (`view_count`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_question
+--
 CREATE TABLE IF NOT EXISTS `aws_question` (
   `question_id` int(11) NOT NULL AUTO_INCREMENT,
   `question_content` varchar(240) DEFAULT NULL COMMENT '问题标题',
@@ -367,10 +367,10 @@ CREATE TABLE IF NOT EXISTS `aws_question` (
   FULLTEXT KEY `question_content_fulltext` (`question_content_fulltext`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='问题列表';
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_question_discussion
+--
 CREATE TABLE IF NOT EXISTS `aws_question_discussion` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `question_id` int(11) DEFAULT '0',
@@ -384,10 +384,10 @@ CREATE TABLE IF NOT EXISTS `aws_question_discussion` (
   KEY `anonymous` (`anonymous`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_question_focus
+--
 CREATE TABLE IF NOT EXISTS `aws_question_focus` (
   `focus_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `question_id` int(11) DEFAULT '0' COMMENT '话题ID',
@@ -398,10 +398,10 @@ CREATE TABLE IF NOT EXISTS `aws_question_focus` (
   KEY `question_uid` (`question_id`,`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='问题关注表';
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_question_invite
+--
 CREATE TABLE IF NOT EXISTS `aws_question_invite` (
   `question_invite_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `question_id` int(11) DEFAULT '0' COMMENT '问题ID',
@@ -416,10 +416,10 @@ CREATE TABLE IF NOT EXISTS `aws_question_invite` (
   KEY `add_time` (`add_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='邀请问答';
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_redirect
+--
 CREATE TABLE IF NOT EXISTS `aws_redirect` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `item_id` int(11) DEFAULT '0',
@@ -431,10 +431,10 @@ CREATE TABLE IF NOT EXISTS `aws_redirect` (
   KEY `uid` (`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_related_topic
+--
 CREATE TABLE IF NOT EXISTS `aws_related_topic` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `topic_id` int(11) DEFAULT '0' COMMENT '话题 ID',
@@ -444,10 +444,10 @@ CREATE TABLE IF NOT EXISTS `aws_related_topic` (
   KEY `related_id` (`related_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_search_cache
+--
 CREATE TABLE IF NOT EXISTS `aws_search_cache` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `hash` varchar(32) NOT NULL,
@@ -458,10 +458,10 @@ CREATE TABLE IF NOT EXISTS `aws_search_cache` (
   KEY `time` (`time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_sessions
+--
 CREATE TABLE IF NOT EXISTS `aws_sessions` (
   `id` varchar(32) NOT NULL,
   `modified` int(10) NOT NULL,
@@ -472,10 +472,10 @@ CREATE TABLE IF NOT EXISTS `aws_sessions` (
   KEY `lifetime` (`lifetime`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_system_setting
+--
 CREATE TABLE IF NOT EXISTS `aws_system_setting` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `varname` varchar(240) NOT NULL COMMENT '字段名',
@@ -484,10 +484,10 @@ CREATE TABLE IF NOT EXISTS `aws_system_setting` (
   UNIQUE KEY `varname` (`varname`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='系统设置';
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_topic
+--
 CREATE TABLE IF NOT EXISTS `aws_topic` (
   `topic_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '话题id',
   `topic_title` varchar(64) DEFAULT NULL COMMENT '话题标题',
@@ -522,10 +522,10 @@ CREATE TABLE IF NOT EXISTS `aws_topic` (
   KEY `discuss_count_update` (`discuss_count_update`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='话题';
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_topic_focus
+--
 CREATE TABLE IF NOT EXISTS `aws_topic_focus` (
   `focus_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `topic_id` int(11) DEFAULT '0' COMMENT '话题ID',
@@ -537,10 +537,10 @@ CREATE TABLE IF NOT EXISTS `aws_topic_focus` (
   KEY `topic_uid` (`topic_id`,`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='话题关注表';
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_topic_merge
+--
 CREATE TABLE IF NOT EXISTS `aws_topic_merge` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `source_id` int(11) DEFAULT '0',
@@ -553,10 +553,10 @@ CREATE TABLE IF NOT EXISTS `aws_topic_merge` (
   KEY `uid` (`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_topic_relation
+--
 CREATE TABLE IF NOT EXISTS `aws_topic_relation` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增 ID',
   `topic_id` int(11) DEFAULT '0' COMMENT '话题id',
@@ -571,10 +571,10 @@ CREATE TABLE IF NOT EXISTS `aws_topic_relation` (
   KEY `item_id` (`item_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_users
+--
 CREATE TABLE IF NOT EXISTS `aws_users` (
   `uid` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户的 UID',
   `user_name` varchar(240) DEFAULT NULL COMMENT '用户名',
@@ -614,10 +614,10 @@ CREATE TABLE IF NOT EXISTS `aws_users` (
   KEY `user_update_time` (`user_update_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_users_attrib
+--
 CREATE TABLE IF NOT EXISTS `aws_users_attrib` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `uid` int(11) DEFAULT '0' COMMENT '用户UID',
@@ -627,10 +627,10 @@ CREATE TABLE IF NOT EXISTS `aws_users_attrib` (
   KEY `uid` (`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='用户附加属性表';
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_users_group
+--
 CREATE TABLE IF NOT EXISTS `aws_users_group` (
   `group_id` int(11) NOT NULL AUTO_INCREMENT,
   `type` tinyint(3) DEFAULT '0' COMMENT '0-系统组 1-会员组',
@@ -645,10 +645,10 @@ CREATE TABLE IF NOT EXISTS `aws_users_group` (
   KEY `custom` (`custom`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='用户组';
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_users_notification_setting
+--
 CREATE TABLE IF NOT EXISTS `aws_users_notification_setting` (
   `notice_setting_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `uid` int(11) DEFAULT '0',
@@ -657,10 +657,10 @@ CREATE TABLE IF NOT EXISTS `aws_users_notification_setting` (
   KEY `uid` (`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='通知设定';
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_user_action_history
+--
 CREATE TABLE IF NOT EXISTS `aws_user_action_history` (
   `history_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `uid` int(11) DEFAULT '0' COMMENT '用户id',
@@ -683,10 +683,10 @@ CREATE TABLE IF NOT EXISTS `aws_user_action_history` (
   KEY `associate_with_uid` (`uid`,`associate_type`,`associate_action`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='用户操作记录';
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_user_action_history_fresh
+--
 CREATE TABLE IF NOT EXISTS `aws_user_action_history_fresh` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `history_id` int(11) DEFAULT '0',
@@ -706,10 +706,10 @@ CREATE TABLE IF NOT EXISTS `aws_user_action_history_fresh` (
   KEY `anonymous` (`anonymous`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_user_follow
+--
 CREATE TABLE IF NOT EXISTS `aws_user_follow` (
   `follow_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `fans_uid` int(11) DEFAULT '0' COMMENT '关注人的UID',
@@ -721,10 +721,10 @@ CREATE TABLE IF NOT EXISTS `aws_user_follow` (
   KEY `user_follow` (`fans_uid`,`friend_uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='用户关注表';
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_verify_apply
+--
 CREATE TABLE IF NOT EXISTS `aws_verify_apply` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT '0',
@@ -740,10 +740,10 @@ CREATE TABLE IF NOT EXISTS `aws_verify_apply` (
   KEY `type` (`type`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_scheduled_posts
+--
 CREATE TABLE IF NOT EXISTS `aws_scheduled_posts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(32) DEFAULT NULL,
@@ -758,76 +758,32 @@ CREATE TABLE IF NOT EXISTS `aws_scheduled_posts` (
   KEY `time` (`time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_article_log
-CREATE TABLE IF NOT EXISTS `aws_article_log` (
+--
+CREATE TABLE IF NOT EXISTS `aws_content_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `item_id` int(11) DEFAULT '0',
-  `child_id` int(11) DEFAULT '0',
   `uid` int(11) DEFAULT '0',
-  `anonymous` int(11) DEFAULT '0',
-  `type` varchar(64) DEFAULT NULL,
+  `item_type` varchar(32) DEFAULT NULL,
+  `item_id` int(11) DEFAULT '0',
+  `child_type` varchar(32) DEFAULT NULL,
+  `child_id` int(11) DEFAULT '0',
   `note` varchar(128) DEFAULT NULL,
   `time` int(10) DEFAULT '0',
   PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
   KEY `item_id` (`item_id`),
   KEY `child_id` (`child_id`),
-  KEY `uid` (`uid`),
-  KEY `anonymous` (`anonymous`),
-  KEY `type` (`type`),
+  KEY `item_type` (`item_type`),
+  KEY `child_type` (`child_type`),
   KEY `time` (`time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_question_log
-CREATE TABLE IF NOT EXISTS `aws_question_log` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `item_id` int(11) DEFAULT '0',
-  `child_id` int(11) DEFAULT '0',
-  `uid` int(11) DEFAULT '0',
-  `anonymous` int(11) DEFAULT '0',
-  `type` varchar(64) DEFAULT NULL,
-  `note` varchar(128) DEFAULT NULL,
-  `time` int(10) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `item_id` (`item_id`),
-  KEY `child_id` (`child_id`),
-  KEY `uid` (`uid`),
-  KEY `anonymous` (`anonymous`),
-  KEY `type` (`type`),
-  KEY `time` (`time`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
--- Data exporting was unselected.
-
-
--- Dumping structure for table panic.aws_video_log
-CREATE TABLE IF NOT EXISTS `aws_video_log` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `item_id` int(11) DEFAULT '0',
-  `child_id` int(11) DEFAULT '0',
-  `uid` int(11) DEFAULT '0',
-  `anonymous` int(11) DEFAULT '0',
-  `type` varchar(64) DEFAULT NULL,
-  `note` varchar(128) DEFAULT NULL,
-  `time` int(10) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `item_id` (`item_id`),
-  KEY `child_id` (`child_id`),
-  KEY `uid` (`uid`),
-  KEY `anonymous` (`anonymous`),
-  KEY `type` (`type`),
-  KEY `time` (`time`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
--- Data exporting was unselected.
-
-
--- Dumping structure for table panic.aws_video
+--
 CREATE TABLE IF NOT EXISTS `aws_video` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `uid` int(10) DEFAULT '0',
@@ -867,10 +823,10 @@ CREATE TABLE IF NOT EXISTS `aws_video` (
   FULLTEXT KEY `title_fulltext` (`title_fulltext`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_video_comment
+--
 CREATE TABLE IF NOT EXISTS `aws_video_comment` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `uid` int(10) DEFAULT '0',
@@ -888,10 +844,10 @@ CREATE TABLE IF NOT EXISTS `aws_video_comment` (
   KEY `anonymous` (`anonymous`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_video_danmaku
+--
 CREATE TABLE IF NOT EXISTS `aws_video_danmaku` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `uid` int(10) DEFAULT '0',
@@ -914,10 +870,10 @@ CREATE TABLE IF NOT EXISTS `aws_video_danmaku` (
   KEY `stime` (`stime`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
--- Dumping structure for table panic.aws_vote
+--
 CREATE TABLE IF NOT EXISTS `aws_vote` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `uid` int(10) DEFAULT '0',
@@ -933,7 +889,7 @@ CREATE TABLE IF NOT EXISTS `aws_vote` (
   KEY `add_time` (`add_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Data exporting was unselected.
+--
 
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

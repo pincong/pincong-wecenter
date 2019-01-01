@@ -108,7 +108,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('指定影片不存在')));
 		}
 
-		$log_list = $this->model('video')->list_logs($_GET['id'], (intval($_GET['page']) * get_setting('contents_per_page')) . ', ' . get_setting('contents_per_page'));
+		$log_list = $this->model('content')->list_logs('video', $_GET['id'], $_GET['page'], get_setting('contents_per_page'));
 
 		TPL::assign('video_info', $video_info);
 

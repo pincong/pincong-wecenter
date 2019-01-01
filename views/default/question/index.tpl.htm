@@ -73,7 +73,7 @@
 											<?php if (($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) AND $this->user_id) { ?>
 											<li class="hidden-xs">
 											<?php if ($this->question_info['redirect']) { ?>
-												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/question/ajax/redirect/', 'item_id=<?php echo $this->question_info['question_id']; ?>');"><?php _e('撤消重定向'); ?></a>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/question/ajax/unredirect/', 'item_id=<?php echo $this->question_info['question_id']; ?>&target_id=<?php echo $this->question_info['redirect']['target_id']; ?>');"><?php _e('撤消重定向'); ?></a>
 											<?php } else { ?>
 												<a href="javascript:;" onclick="AWS.dialog('redirect', <?php echo $this->question_info['question_id']; ?>);"><?php _e('问题重定向'); ?></a>
 											<?php } ?>

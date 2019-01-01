@@ -183,8 +183,6 @@ class user_class extends AWS_MODEL
 		$this->update('question', array(
 			'published_uid' => '-1'
 		), 'published_uid = ' . intval($uid));
-
-		$this->delete('question_log', 'uid = ' . intval($uid));
 	}
 
 
@@ -194,8 +192,6 @@ class user_class extends AWS_MODEL
 		$this->update('article', array(
 			'uid' => '-1'
 		), 'uid = ' . intval($uid));
-
-		$this->delete('article_log', 'uid = ' . intval($uid));
 	}
 
 
@@ -205,8 +201,6 @@ class user_class extends AWS_MODEL
 		$this->update('video', array(
 			'uid' => '-1'
 		), 'uid = ' . intval($uid));
-
-		$this->delete('video_log', 'uid = ' . intval($uid));
 	}
 
 

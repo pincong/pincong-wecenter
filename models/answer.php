@@ -161,11 +161,7 @@ class answer_class extends AWS_MODEL
 
 		$this->update('answer', $data, 'answer_id = ' . intval($answer_id));
 
-		if ($uid == $answer_info['uid'])
-		{
-			$is_anonymous =  $answer_info['anonymous'];
-		}
-		$this->model('question')->log($question_id, 'ANSWER', '编辑回复', $uid, $is_anonymous, $answer_id);
+		$this->model('content')->log('question', $question_id, '编辑回复', $uid, 'answer', $answer_id);
 		return true;
 	}
 
@@ -358,7 +354,7 @@ class answer_class extends AWS_MODEL
 
 		if ($uid)
 		{
-			$this->model('question')->log($answer_info['question_id'], 'ANSWER', '设置最佳回复', $uid, 0, $answer_info['answer_id']);
+			$this->model('content')->log('question', $answer_info['question_id'], '设置最佳回复', $uid, 'answer', $answer_id);
 		}
 
 		return true;
@@ -377,7 +373,7 @@ class answer_class extends AWS_MODEL
 
 		if ($uid)
 		{
-			$this->model('question')->log($answer_info['question_id'], 'ANSWER', '取消最佳回复', $uid, 0, $answer_info['answer_id']);
+			$this->model('content')->log('question', $answer_info['question_id'], '取消最佳回复', $uid, 'answer', $answer_id);
 		}
 
 		return true;

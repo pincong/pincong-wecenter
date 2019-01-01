@@ -423,7 +423,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('指定问题不存在')));
 		}
 
-		$log_list = $this->model('question')->list_logs($_GET['id'], (intval($_GET['page']) * get_setting('contents_per_page')) . ', ' . get_setting('contents_per_page'));
+		$log_list = $this->model('content')->list_logs('question', $_GET['id'], $_GET['page'], get_setting('contents_per_page'));
 
 		TPL::assign('question_info', $question_info);
 
@@ -432,6 +432,7 @@ class ajax extends AWS_CONTROLLER
 		TPL::output('question/ajax/log');
 	}
 
+	// TODO: 重定向功能单独整理出来并支持文章和影片
 	public function redirect_action()
 	{
 		$question_info = $this->model('question')->get_question_info_by_id($_POST['item_id']);
@@ -448,13 +449,24 @@ class ajax extends AWS_CONTROLLER
 
 		$this->model('question')->redirect($this->user_id, $_POST['item_id'], $_POST['target_id']);
 
-		/*if ($_POST['target_id'] AND $_POST['item_id'] AND $question_info['published_uid'] != $this->user_id)
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
+	public function unredirect_action()
+	{
+		$question_info = $this->model('question')->get_question_info_by_id($_POST['item_id']);
+
+		if ($question_info['lock'])
 		{
-			$this->model('notify')->send($this->user_id, $question_info['published_uid'], notify_class::TYPE_REDIRECT_QUESTION, notify_class::CATEGORY_QUESTION, $_POST['item_id'], array(
-				'from_uid' => $this->user_id,
-				'question_id' => intval($_POST['item_id'])
-			));
-		}*/
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定的问题不能设置重定向')));
+		}
+
+		if (! ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+		}
+
+		$this->model('question')->unredirect($this->user_id, $_POST['item_id'], $_POST['target_id']);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
