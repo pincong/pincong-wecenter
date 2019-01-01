@@ -635,11 +635,6 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个回复')));
 		}
 
-		if ($answer_info['uid'] == $this->user_id and (time() - $answer_info['add_time'] > get_setting('answer_edit_time') * 60) and get_setting('answer_edit_time') and ! $this->user_info['permission']['edit_question'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经超过允许编辑的时限')));
-		}
-
 		$this->model('answer')->update_answer($_GET['answer_id'], $answer_info['question_id'], $answer_content, $this->user_id);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
