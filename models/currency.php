@@ -81,8 +81,6 @@ class currency_class extends AWS_MODEL
 				case 'QUESTION_ANSWER':
 				case 'INVITE_ANSWER':
 				case 'ANSWER_INVITE':
-				case 'THANKS_QUESTION':
-				case 'QUESTION_THANKS':
 				case 'MOVE_UP_QUESTION':
 				case 'QUESTION_MOVED_UP':
 				case 'MOVE_DOWN_QUESTION':
@@ -94,8 +92,6 @@ class currency_class extends AWS_MODEL
 					$question_ids[] = $item['item_id'];
 				break;
 
-				case 'ANSWER_THANKS':
-				case 'THANKS_ANSWER':
 				case 'BEST_ANSWER':
 				case 'AGREE_ANSWER':
 				case 'ANSWER_AGREED':
@@ -105,8 +101,6 @@ class currency_class extends AWS_MODEL
 				break;
 
 				case 'NEW_ARTICLE':
-				case 'ARTICLE_THANKS':
-				case 'THANKS_ARTICLE':
 				case 'MOVE_UP_ARTICLE':
 				case 'ARTICLE_MOVED_UP':
 				case 'MOVE_DOWN_ARTICLE':
@@ -161,8 +155,6 @@ class currency_class extends AWS_MODEL
 				case 'ANSWER_QUESTION':
 				case 'QUESTION_ANSWER':
 				case 'INVITE_ANSWER':
-				case 'THANKS_QUESTION':
-				case 'QUESTION_THANKS':
 				case 'MOVE_UP_QUESTION':
 				case 'QUESTION_MOVED_UP':
 				case 'MOVE_DOWN_QUESTION':
@@ -181,8 +173,6 @@ class currency_class extends AWS_MODEL
 
 				break;
 
-				case 'ANSWER_THANKS':
-				case 'THANKS_ANSWER':
 				case 'BEST_ANSWER':
 				case 'AGREE_ANSWER':
 				case 'ANSWER_AGREED':
@@ -202,8 +192,6 @@ class currency_class extends AWS_MODEL
 				break;
 
 				case 'NEW_ARTICLE':
-				case 'ARTICLE_THANKS':
-				case 'THANKS_ARTICLE':
 				case 'COMMENT_ARTICLE':
 				case 'ARTICLE_COMMENTED':
 				case 'MOVE_UP_ARTICLE':

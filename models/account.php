@@ -1101,11 +1101,6 @@ class account_class extends AWS_MODEL
         return $this->update_users_fields(array('avatar_file' => ''), $uid);
     }
 
-    public function update_thanks_count($uid)
-    {
-        return $this->query('UPDATE ' . $this->get_table('users') . ' SET thanks_count = thanks_count + 1 WHERE uid = ' . intval($uid));
-    }
-
     public function add_user_group($group_name, $type, $reputation_lower = 0, $reputation_higer = 0, $reputation_factor = 0)
     {
         return $this->insert('users_group', array(

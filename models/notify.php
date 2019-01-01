@@ -154,11 +154,6 @@ class notify_class extends AWS_MODEL
 
 					$action_type = $val['action_type'];
 
-					if ($val['action_type'] == self::TYPE_QUESTION_THANK)
-					{
-						$action_type = self::TYPE_ANSWER_THANK;
-					}
-
 					$action_ex_details[$val['source_id']][$action_type][] = $val;
 
 					$uids[] = $val['data']['from_uid'];
@@ -873,11 +868,6 @@ class notify_class extends AWS_MODEL
 
 							break;
 
-						case self::TYPE_ANSWER_THANK:
-							$data[$key]['extend_message'][] = AWS_APP::lang()->_t('%s 个新感谢, 按感谢者查看', $extend['count']) . ': ' . $users_list;
-
-							break;
-
 						case self::TYPE_MOD_QUESTION:
 							$data[$key]['extend_message'][] = AWS_APP::lang()->_t('%s 次编辑问题, 按编辑者查看', $extend['count']) . ': ' . $users_list;
 
@@ -1025,11 +1015,6 @@ class notify_class extends AWS_MODEL
 
 						break;
 
-					case self::TYPE_ANSWER_THANK:
-						$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a> ' . AWS_APP::lang()->_t('感谢了你在问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a> ' . AWS_APP::lang()->_t('中的回复');
-
-						break;
-
 					case self::TYPE_MOD_QUESTION:
 						$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a> ' . AWS_APP::lang()->_t('编辑了你发布的问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a>';
 
@@ -1042,11 +1027,6 @@ class notify_class extends AWS_MODEL
 
 					case self::TYPE_REDIRECT_QUESTION:
 						$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a> ' . AWS_APP::lang()->_t('重定向了你发起的问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a>';
-
-						break;
-
-					case self::TYPE_QUESTION_THANK:
-						$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a> ' . AWS_APP::lang()->_t('感谢了你发起的问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a>';
 
 						break;
 

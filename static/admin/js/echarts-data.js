@@ -277,16 +277,8 @@ Echarts.prototype = {
                 arr.push('新增回复投票');
                 break;
 
-            case 'new_answer_thanks':
-                arr.push('新增回复感谢');
-                break;
-
             case 'new_favorite_item':
                 arr.push('新增收藏');
-                break;
-
-            case 'new_question_thanks':
-                arr.push('新增问题感谢');
                 break;
 
             case 'new_question_redirect':

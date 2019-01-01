@@ -534,8 +534,6 @@ class answer_class extends AWS_MODEL
 
 			$this->delete('answer_comments', 'answer_id = ' . intval($answer_id));	// 删除评论
 
-			$this->delete('answer_thanks', 'answer_id = ' . intval($answer_id));	// 删除感谢
-
 			ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_ANSWER . ' AND associate_id = ' . intval($answer_id));
 			ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action = ' . ACTION_LOG::ANSWER_QUESTION . ' AND associate_attached = ' . intval($answer_id));
 
@@ -699,60 +697,6 @@ class answer_class extends AWS_MODEL
 	{
 		//return $this->delete('answer_comments', "id = " . intval($comment_id));
 	}*/
-
-	public function get_answers_thanks($answer_ids, $uid)
-	{
-		if (!$uid)
-		{
-			return false;
-		}
-
-		if (!is_array($answer_ids))
-		{
-			return false;
-		}
-
-		$all_rated = $this->fetch_all('answer_thanks', 'uid = ' . intval($uid) . ' AND answer_id IN(' . implode(',', $answer_ids) . ')');
-
-		foreach ($all_rated AS $key => $val)
-		{
-			$users_rated[$val['answer_id']] = $val;
-		}
-
-		return $users_rated;
-	}
-
-	public function answer_thanks($answer_id, $uid)
-	{
-		$answer_id = intval($answer_id);
-		$uid = intval($uid);
-
-		$user_rated = $this->fetch_row('answer_thanks', 'uid = ' . ($uid) . ' AND answer_id = ' . ($answer_id));
-		if ($user_rated)
-		{
-			return true;
-		}
-		else
-		{
-			$this->insert('answer_thanks', array(
-				'uid' => $uid,
-				'answer_id' => $answer_id,
-				'time' => fake_time()
-			));
-		}
-
-		$this->query('UPDATE ' . $this->get_table('answer') . ' SET thanks_count = thanks_count + 1 WHERE answer_id = ' . ($answer_id));
-
-		$answer_info = $this->get_answer_by_id($answer_id);
-
-		$this->model('currency')->process($uid, 'ANSWER_THANKS', get_setting('currency_system_config_thanks'), '感谢回复 #' . $answer_info['answer_id'], $answer_info['answer_id']);
-		$this->model('currency')->process($answer_info['uid'], 'THANKS_ANSWER', -get_setting('currency_system_config_thanks'), '回复被感谢 #' . $answer_info['answer_id'], $answer_info['answer_id']);
-
-		$this->model('account')->update_thanks_count($answer_info['uid']);
-
-		return true;
-	}
-
 
 	public function set_best_answer($answer_id, $uid)
 	{

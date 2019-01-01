@@ -14,7 +14,6 @@ CREATE TABLE IF NOT EXISTS `aws_answer` (
   `agree_count` int(11) DEFAULT '0' COMMENT '支持人数',
   `uid` int(11) DEFAULT '0' COMMENT '回答问题用户ID',
   `comment_count` int(11) DEFAULT '0' COMMENT '评论总数',
-  `thanks_count` int(11) DEFAULT '0' COMMENT '感谢数量',
   `category_id` int(11) DEFAULT '0' COMMENT '分类id',
   `anonymous` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`answer_id`),
@@ -40,19 +39,6 @@ CREATE TABLE IF NOT EXISTS `aws_answer_comments` (
   KEY `answer_id` (`answer_id`),
   KEY `time` (`time`),
   KEY `anonymous` (`anonymous`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
--- Data exporting was unselected.
-
-
--- Dumping structure for table panic.aws_answer_thanks
-CREATE TABLE IF NOT EXISTS `aws_answer_thanks` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uid` int(11) DEFAULT '0',
-  `answer_id` int(11) DEFAULT '0',
-  `time` int(10) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `answer_id` (`answer_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
@@ -84,7 +70,6 @@ CREATE TABLE IF NOT EXISTS `aws_article` (
   `views` int(10) DEFAULT '0',
   `add_time` int(10) DEFAULT '0',
   `lock` int(1) DEFAULT '0',
-  `thanks_count` int(11) DEFAULT '0',
   `votes` int(10) DEFAULT '0',
   `title_fulltext` text,
   `category_id` int(10) DEFAULT '0',
@@ -128,19 +113,6 @@ CREATE TABLE IF NOT EXISTS `aws_article_comments` (
   KEY `add_time` (`add_time`),
   KEY `votes` (`votes`),
   KEY `anonymous` (`anonymous`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
--- Data exporting was unselected.
-
-
--- Dumping structure for table panic.aws_article_thanks
-CREATE TABLE IF NOT EXISTS `aws_article_thanks` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uid` int(11) DEFAULT '0',
-  `article_id` int(11) DEFAULT '0',
-  `time` int(10) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `article_id` (`article_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
@@ -432,7 +404,6 @@ CREATE TABLE IF NOT EXISTS `aws_question` (
   `last_answer` int(11) DEFAULT '0' COMMENT '最后回答 ID',
   `lock` tinyint(1) DEFAULT '0' COMMENT '是否锁定',
   `anonymous` tinyint(1) DEFAULT '0',
-  `thanks_count` int(10) DEFAULT '0',
   `question_content_fulltext` text,
   `is_recommend` tinyint(1) DEFAULT '0',
   `chapter_id` int(10) DEFAULT NULL,
@@ -446,7 +417,6 @@ CREATE TABLE IF NOT EXISTS `aws_question` (
   KEY `agree_count` (`agree_count`),
   KEY `question_content` (`question_content`),
   KEY `lock` (`lock`),
-  KEY `thanks_count` (`thanks_count`),
   KEY `anonymous` (`anonymous`),
   KEY `best_answer` (`best_answer`),
   KEY `is_recommend` (`is_recommend`),
@@ -503,19 +473,6 @@ CREATE TABLE IF NOT EXISTS `aws_question_invite` (
   KEY `recipients_uid` (`recipients_uid`),
   KEY `add_time` (`add_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='邀请问答';
-
--- Data exporting was unselected.
-
-
--- Dumping structure for table panic.aws_question_thanks
-CREATE TABLE IF NOT EXISTS `aws_question_thanks` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uid` int(11) DEFAULT '0',
-  `question_id` int(11) DEFAULT '0',
-  `time` int(10) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `question_id` (`question_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
 
@@ -715,7 +672,6 @@ CREATE TABLE IF NOT EXISTS `aws_users` (
   `forbidden` tinyint(1) DEFAULT '0' COMMENT '是否禁止用户',
   `is_first_login` tinyint(1) DEFAULT '1' COMMENT '首次登录标记',
   `agree_count` int(10) DEFAULT '0' COMMENT '赞同数量',
-  `thanks_count` int(10) DEFAULT '0' COMMENT '感谢数量',
   `views_count` int(10) DEFAULT '0' COMMENT '个人主页查看数量',
   `reputation` int(10) DEFAULT '0' COMMENT '威望',
   `currency` int(10) DEFAULT '0',
@@ -728,7 +684,6 @@ CREATE TABLE IF NOT EXISTS `aws_users` (
   KEY `reputation` (`reputation`),
   KEY `group_id` (`group_id`),
   KEY `agree_count` (`agree_count`),
-  KEY `thanks_count` (`thanks_count`),
   KEY `forbidden` (`forbidden`),
   KEY `currency` (`currency`),
   KEY `verified` (`verified`),

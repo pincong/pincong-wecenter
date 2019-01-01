@@ -609,7 +609,6 @@ class topic_class extends AWS_MODEL
 				$best_answer_uids[] = $val['uid'];
 
 				$helpful_users[$val['uid']]['agree_count'] = $val['agree_count'];
-				$helpful_users[$val['uid']]['thanks_count'] = $val['thanks_count'];
 			}
 
 			$users_info = $this->model('account')->get_user_info_by_uids($best_answer_uids, true);

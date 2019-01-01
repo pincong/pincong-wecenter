@@ -250,8 +250,6 @@ class question_class extends AWS_MODEL
 
 		$this->delete('question_focus', 'question_id = ' . intval($question_id));
 
-		$this->delete('question_thanks', 'question_id = ' . intval($question_id));
-
 		$this->delete('topic_relation', "`type` = 'question' AND item_id = " . intval($question_id));		// 删除话题关联
 
 		$this->delete('question_invite', 'question_id = ' . intval($question_id));	// 删除邀请记录
@@ -979,54 +977,6 @@ class question_class extends AWS_MODEL
 		), '`lock` = 0 AND `update_time` < ' . (time() - 3600 * 24 * get_setting('auto_question_lock_day')));
 	}
 
-	public function get_question_thanks($question_id, $uid)
-	{
-		if (!$question_id OR !$uid)
-		{
-			return false;
-		}
-
-		return $this->fetch_row('question_thanks', 'question_id = ' . intval($question_id) . " AND uid = " . intval($uid));
-	}
-
-	public function question_thanks($question_id, $uid)
-	{
-		if (!$question_id OR !$uid)
-		{
-			return false;
-		}
-
-		if (!$question_info = $this->get_question_info_by_id($question_id))
-		{
-			return false;
-		}
-
-		if ($question_thanks = $this->get_question_thanks($question_id, $uid))
-		{
-			//$this->delete('question_thanks', "id = " . $question_thanks['id']);
-
-			return false;
-		}
-		else
-		{
-			$this->insert('question_thanks', array(
-				'question_id' => $question_id,
-				'uid' => $uid,
-				'time' => fake_time()
-			));
-
-			$this->query('UPDATE ' . $this->get_table('question') . ' SET thanks_count = thanks_count + 1 WHERE question_id = ' . intval($question_id));
-
-			$this->model('currency')->process($uid, 'QUESTION_THANKS', get_setting('currency_system_config_thanks'), '感谢问题 #' . $question_id, $question_id);
-
-			$this->model('currency')->process($question_info['published_uid'], 'THANKS_QUESTION', -get_setting('currency_system_config_thanks'), '问题被感谢 #' . $question_id, $question_id);
-
-			$this->model('account')->update_thanks_count($question_info['published_uid']);
-
-			return true;
-		}
-	}
-
 	public function get_related_topics($question_content)
 	{
 		if ($question_related_list = $this->get_related_question_list(null, $question_content, 10))
@@ -1227,8 +1177,6 @@ class question_class extends AWS_MODEL
 		}
 		$this->delete('question_vote', 'add_time < ' . $time_before);
 		$this->delete('answer_vote', 'add_time < ' . $time_before);
-		$this->delete('question_thanks', 'time < ' . $time_before);
-		$this->delete('answer_thanks', 'time < ' . $time_before);
 	}
 
 }

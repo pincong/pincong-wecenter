@@ -218,14 +218,10 @@ class main extends AWS_CONTROLLER
 				//$answer_agree_users = $this->model('answer')->get_vote_user_by_answer_ids($answer_ids);
 
 				$answer_vote_status = $this->model('answer')->get_answer_vote_status($answer_ids, $this->user_id);
-
-				$answer_users_rated_thanks = $this->model('answer')->get_answers_thanks($answer_ids, $this->user_id);
 			}
 
 			foreach ($answer_list as $answer)
 			{
-				$answer['answer_thanks'] = $answer_users_rated_thanks[$answer['answer_id']];
-
 				$answer['answer_content'] = $this->model('question')->parse_at_user($answer['answer_content']);
 
 				//$answer['agree_users'] = $answer_agree_users[$answer['answer_id']];
@@ -264,8 +260,6 @@ class main extends AWS_CONTROLLER
 
 		if ($this->user_id)
 		{
-			TPL::assign('question_thanks', $this->model('question')->get_question_thanks($question_info['question_id'], $this->user_id));
-
 			TPL::assign('invite_users', $this->model('question')->get_invite_users($question_info['question_id']));
 
 			TPL::assign('user_follow_check', $this->model('follow')->user_follow_check($this->user_id, $question_info['published_uid']));

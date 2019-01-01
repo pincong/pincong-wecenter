@@ -114,7 +114,6 @@ INSERT INTO `aws_system_setting` (`varname`, `value`) VALUES
 	('currency_system_config_question_moved_up', 's:1:"0";'),
 	('currency_system_config_move_up_question', 's:1:"0";'),
 	('currency_system_config_invite_answer', 's:1:"0";'),
-	('currency_system_config_thanks', 's:1:"0";'),
 	('currency_system_config_best_answer', 's:1:"0";'),
 	('currency_system_config_question_answered', 's:1:"0";'),
 	('currency_system_config_answer_question', 's:1:"0";'),

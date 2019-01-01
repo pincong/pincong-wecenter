@@ -494,11 +494,8 @@ class system_class extends AWS_MODEL
 			$update_tables[] = 'article';
 
 			$delete_tables[] = 'answer_comments';
-			$delete_tables[] = 'answer_thanks';
 			$delete_tables[] = 'article_comments';
-			$delete_tables[] = 'article_thanks';
 			$delete_tables[] = 'question_comments';
-			$delete_tables[] = 'question_thanks';
 
 			if ($inbox_dialog = $this->fetch_all('inbox_dialog', 'recipient_uid = ' . intval($uid) . ' OR sender_uid = ' . intval($uid)))
 			{
@@ -513,12 +510,9 @@ class system_class extends AWS_MODEL
 		{
 			$update_tables[] = 'answer';
 			$update_tables[] = 'answer_comments';
-			$update_tables[] = 'answer_thanks';
 			$update_tables[] = 'article';
 			$update_tables[] = 'article_comments';
-			$update_tables[] = 'article_thanks';
 			$update_tables[] = 'question_comments';
-			$update_tables[] = 'question_thanks';
 			$delete_tables[] = 'inbox';
 
 			$this->update('question', array(
@@ -596,14 +590,6 @@ class system_class extends AWS_MODEL
 
 			case 'new_answer_vote':
 				$query = "SELECT COUNT(voter_id) AS count, FROM_UNIXTIME(add_time, '%y-%m') AS statistic_date FROM " . get_table('answer_vote') . " WHERE add_time BETWEEN " . intval($start_time) . " AND " . intval($end_time) . " GROUP BY statistic_date ASC";
-			break;
-
-			case 'new_question_thanks':
-				$query = "SELECT COUNT(id) AS count, FROM_UNIXTIME(time, '%y-%m') AS statistic_date FROM " . get_table('question_thanks') . " WHERE time BETWEEN " . intval($start_time) . " AND " . intval($end_time) . " GROUP BY statistic_date ASC";
-			break;
-
-			case 'new_answer_thanks':
-				$query = "SELECT COUNT(id) AS count, FROM_UNIXTIME(time, '%y-%m') AS statistic_date FROM " . get_table('answer_thanks') . " WHERE time BETWEEN " . intval($start_time) . " AND " . intval($end_time) . " GROUP BY statistic_date ASC";
 			break;
 
 			case 'new_favorite_item':

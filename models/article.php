@@ -230,8 +230,6 @@ class article_class extends AWS_MODEL
 
 		$this->delete('article_vote', 'article_id = ' . intval($article_id));
 
-		$this->delete('article_thanks', 'article_id = ' . intval($article_id));
-
 		$this->delete('topic_relation', "`type` = 'article' AND item_id = " . intval($article_id));		// 删除话题关联
 
 		ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action IN(' . ACTION_LOG::ADD_ARTICLE . ', ' . ACTION_LOG::ADD_AGREE_ARTICLE . ', ' . ACTION_LOG::ADD_COMMENT_ARTICLE . ') AND associate_id = ' . intval($article_id));	// 删除动作
@@ -674,54 +672,6 @@ class article_class extends AWS_MODEL
 		), "post_id = " . intval($article_id) . " AND post_type = 'article'" );
 	}
 
-	public function get_article_thanks($article_id, $uid)
-	{
-		if (!$article_id OR !$uid)
-		{
-			return false;
-		}
-
-		return $this->fetch_row('article_thanks', 'article_id = ' . intval($article_id) . " AND uid = " . intval($uid));
-	}
-
-	public function article_thanks($article_id, $uid)
-	{
-		if (!$article_id OR !$uid)
-		{
-			return false;
-		}
-
-		if (!$article_info = $this->get_article_info_by_id($article_id))
-		{
-			return false;
-		}
-
-		if ($article_thanks = $this->get_article_thanks($article_id, $uid))
-		{
-			//$this->delete('article_thanks', "id = " . $article_thanks['id']);
-
-			return false;
-		}
-		else
-		{
-			$this->insert('article_thanks', array(
-				'article_id' => $article_id,
-				'uid' => $uid,
-				'time' => fake_time()
-			));
-
-			$this->query('UPDATE ' . $this->get_table('article') . ' SET thanks_count = thanks_count + 1 WHERE id = ' . intval($article_id));
-
-			$this->model('currency')->process($uid, 'ARTICLE_THANKS', get_setting('currency_system_config_thanks'), '感谢文章 #' . $article_id, $article_id);
-
-			$this->model('currency')->process($article_info['uid'], 'THANKS_ARTICLE', -get_setting('currency_system_config_thanks'), '文章被感谢 #' . $article_id, $article_id);
-
-			$this->model('account')->update_thanks_count($article_info['uid']);
-
-			return true;
-		}
-	}
-
 	public function delete_expired_votes()
 	{
 		$days = intval(get_setting('expiration_votes'));
@@ -736,7 +686,6 @@ class article_class extends AWS_MODEL
 			$time_before = 0;
 		}
 		$this->delete('article_vote', 'time < ' . $time_before);
-		$this->delete('article_thanks', 'time < ' . $time_before);
 	}
 
 }

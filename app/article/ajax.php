@@ -337,47 +337,6 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
-	public function article_thanks_action()
-	{
-		if (!$this->user_info['permission']['thank_user'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
-		}
-
-		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_thanks'))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
-		}
-
-		if (!$article_info = $this->model('article')->get_article_info_by_id($_POST['article_id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文章不存在')));
-		}
-
-		if ($article_info['uid'] == $this->user_id)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能感谢自己的文章')));
-		}
-
-		if ($this->model('article')->article_thanks($_POST['article_id'], $this->user_id))
-		{
-			/*$this->model('notify')->send($this->user_id, $article_info['uid'], notify_class::TYPE_ARTICLE_THANK, notify_class::CATEGORY_ARTICLE, $_POST['article_id'], array(
-				'article_id' => intval($_POST['article_id']),
-				'from_uid' => $this->user_id
-			));*/
-
-			H::ajax_json_output(AWS_APP::RSM(array(
-				'action' => 'add'
-			), 1, null));
-		}
-		else
-		{
-			H::ajax_json_output(AWS_APP::RSM(array(
-				'action' => 'remove'
-			), 1, null));
-		}
-	}
-
 	public function bump_action()
 	{
 		if (!$this->user_info['permission']['bump_sink'])

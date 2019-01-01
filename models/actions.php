@@ -265,8 +265,6 @@ class actions_class extends AWS_MODEL
 		{
 			//$answer_agree_users = $this->model('answer')->get_vote_user_by_answer_ids($final_list_answer_ids);
 			$answer_vote_status = $this->model('answer')->get_answer_vote_status($final_list_answer_ids, $uid);
-
-			$answer_users_rated_thanks = $this->model('answer')->get_answers_thanks($final_list_answer_ids, $uid);
 		}
 
 		foreach ($action_list as $key => $val)
@@ -283,11 +281,6 @@ class actions_class extends AWS_MODEL
 				if (isset($answer_vote_status[$answer_id]))
 				{
 					$action_list[$key]['answer_info']['agree_status'] = $answer_vote_status[$answer_id];
-				}
-
-				if (isset($answer_users_rated_thanks[$answer_id]))
-				{
-					$action_list[$key]['answer_info']['answer_thanks'] = $answer_users_rated_thanks[$answer_id];
 				}
 
 			}
