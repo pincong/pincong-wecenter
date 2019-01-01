@@ -1108,18 +1108,18 @@ function fake_time()
     {
         return time();
     }
-    return time() - rand($min, $max);
+    return time() + rand($min, $max);
 }
 
 function future_time()
 {
-    $min = intval(get_setting('random_seconds_min'));
-    $max = intval(get_setting('random_seconds_max'));
-    if (!$min && !$max)
+    //$min = intval(get_setting('random_seconds_min'));
+    //$max = intval(get_setting('random_seconds_max'));
+    //if (!$min && !$max)
     {
         return time();
     }
-    return time() + rand($min, $max);
+    //return time() + rand($min, $max);
 }
 
 function my_trim($str)
