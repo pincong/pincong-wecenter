@@ -314,7 +314,11 @@ var AWS =
 				}
 				if (result.errno == 1) // success
 				{
-					if (callback)
+					if (result.rsm && result.rsm.url)
+					{
+						window.location = decodeURIComponent(result.rsm.url);
+					}
+					else if (callback)
 					{
 						form_el.find('textarea').each(function()
 						{
@@ -332,11 +336,6 @@ var AWS =
 							$(this).val('');
 						});
 						callback(null, result.rsm);
-						return;
-					}
-					if (result.rsm && result.rsm.url)
-					{
-						window.location = decodeURIComponent(result.rsm.url);
 					}
 					else
 					{
