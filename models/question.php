@@ -839,7 +839,8 @@ class question_class extends AWS_MODEL
 		{
 			if ($this->delete('redirect', 'item_id = ' . intval($item_id)))
 			{
-				return; //ACTION_LOG::save_action($uid, $item_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::DEL_REDIRECT_QUESTION);
+				$this->model('question')->log($item_id, 'QUESTION', '取消重定向', $uid);
+				return;
 			}
 		}
 		else if ($question = $this->get_question_info_by_id($item_id))
@@ -853,8 +854,7 @@ class question_class extends AWS_MODEL
 					'uid' => intval($uid)
 				));
 
-				//ACTION_LOG::save_action($uid, $item_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::REDIRECT_QUESTION, $question['question_content'], $target_id);
-
+				$this->model('question')->log($item_id, 'QUESTION', '重定向', $uid, 0, $target_id);
 				return $redirect_id;
 			}
 		}
