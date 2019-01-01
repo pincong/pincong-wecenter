@@ -47,7 +47,7 @@ class ajax extends AWS_CONTROLLER
 		return $anonymous_uid;
 	}
 
-	private function validate_title_length($type)
+	private function validate_title_length($type, &$length)
 	{
 		$length_min = intval(get_setting('title_length_min'));
 		$length_max = intval(get_setting('title_length_max'));
@@ -133,7 +133,16 @@ class ajax extends AWS_CONTROLLER
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请输入标题')));
 		}
-		$this->validate_title_length($type);
+		$this->validate_title_length($type, $title_length);
+
+		if ($type == 'question' AND get_setting('question_ends_with_question') == 'Y')
+		{
+			$question_mark = cjk_substr($_POST['title'], $title_length - 1, 1);
+			if ($question_mark != '？' AND $question_mark != '?')
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('提问请以问号结尾')));
+			}
+		}
 
 		if ($act == 'publish' AND !check_repeat_submission($this->user_id, $_POST['title']))
 		{
