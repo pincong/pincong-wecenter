@@ -23,7 +23,7 @@ class publish_class extends AWS_MODEL
 	// 延迟显示的时间戳
 	private function calc_later_time($minutes)
 	{
-		return real_time() + $_POST['later'] * 60 + rand(-30, 30);
+		return real_time() + $minutes * 60 + rand(-30, 30);
 	}
 
 	private function save_topics($type, $uid, $item_id, &$topics, $permission_create_topic)
