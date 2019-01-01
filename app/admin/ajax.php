@@ -914,7 +914,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			'publish_comment',
             'edit_question',
             'edit_topic',
-            'manage_topic',
             'create_topic',
             'redirect_question',
             'human_valid',
