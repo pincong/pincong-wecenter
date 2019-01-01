@@ -88,6 +88,11 @@ class ajax extends AWS_CONTROLLER
 
 	public function edit_topic_action()
 	{
+		if (!check_user_operation_interval('edit_topic', $this->user_id, $this->user_info['permission']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
 		if (!($this->user_info['permission']['manage_topic']))
 		{
 			if (!$this->user_info['permission']['edit_topic'])
@@ -99,11 +104,6 @@ class ajax extends AWS_CONTROLLER
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定的话题不能编辑')));
 			}
-		}
-
-		if (!check_user_operation_interval('edit_topic', $this->user_id, $this->user_info['permission']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 
 		if (!$topic_info = $this->model('topic')->get_topic_by_id($_POST['topic_id']))
@@ -500,6 +500,11 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定的项目不存在')));
 		}
 
+		if (!check_user_operation_interval('edit_topic', $this->user_id, $this->user_info['permission']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
 		switch ($_POST['type'])
 		{
 			case 'question':
@@ -543,11 +548,6 @@ class ajax extends AWS_CONTROLLER
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定项目不存在')));
 				}
 			break;
-		}
-
-		if (!check_user_operation_interval('edit_topic', $this->user_id, $this->user_info['permission']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 
 		if (!$topic_title = my_trim($_POST['topic_title']))

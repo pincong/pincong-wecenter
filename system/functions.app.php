@@ -49,7 +49,7 @@ function check_user_operation_interval($op_name, $uid, &$user_permission)
 	{
 		return true;
 	}
-	$key = 'user_operation_last_time_' + intval($uid) + '_' + $op_name;
+	$key = 'user_operation_last_time_' . intval($uid) . '_' . $op_name;
 	$last_time = intval(AWS_APP::cache()->get($key));
 	if ($last_time + $interval > time())
 	{
@@ -65,7 +65,7 @@ function set_user_operation_last_time($op_name, $uid, &$user_permission)
 	{
 		return;
 	}
-	$key = 'user_operation_last_time_' + intval($uid) + '_' + $op_name;
+	$key = 'user_operation_last_time_' . intval($uid) . '_' . $op_name;
 	AWS_APP::cache()->set($key, time(), 86400);
 }
 
@@ -80,7 +80,7 @@ function check_user_operation_interval_by_uid($op_name, $uid, $interval)
 	{
 		return true;
 	}
-	$key = 'user_operation_last_time_' + intval($uid) + '_' + $op_name;
+	$key = 'user_operation_last_time_' . intval($uid) . '_' . $op_name;
 	$last_time = intval(AWS_APP::cache()->get($key));
 	if ($last_time + $interval > time())
 	{
@@ -91,7 +91,7 @@ function check_user_operation_interval_by_uid($op_name, $uid, $interval)
 
 function set_user_operation_last_time_by_uid($op_name, $uid)
 {
-	$key = 'user_operation_last_time_' + intval($uid) + '_' + $op_name;
+	$key = 'user_operation_last_time_' . intval($uid) . '_' . $op_name;
 	AWS_APP::cache()->set($key, time(), 86400);
 }
 
