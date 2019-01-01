@@ -550,7 +550,6 @@ var AWS =
 
 	/**
 	 *	公共弹窗
-	 *	inbox       : 私信
 	 */
 	dialog: function (type, data, callback)
 	{
@@ -562,14 +561,6 @@ var AWS =
 					'hide': data.hide,
 					'url': data.url,
 					'message': data.message
-				});
-			break;
-
-
-			case 'inbox':
-				var template = Hogan.compile(AW_TEMPLATE.inbox).render(
-				{
-					'recipient': data
 				});
 			break;
 
@@ -592,15 +583,6 @@ var AWS =
 
 			switch (type)
 			{
-				case 'inbox' :
-					AWS.Dropdown.bind_dropdown_list($('.aw-inbox #invite-input'), 'inbox');
-					//私信用户下拉点击事件
-					$(document).on('click','.aw-inbox .aw-dropdown-list li a',function() {
-						$('.alert-box #quick_publish input.form-control').val($(this).text());
-						$(this).parents('.aw-dropdown').hide();
-					});
-				break;
-
 				case 'ajaxData':
 					$.get(data.url, function (result) {
 						$('#aw_dialog_ajax_data').html(result);
@@ -1569,6 +1551,22 @@ AWS.User =
 			'item_id' : item_id,
 			'item_type' : item_type
 		}, 1);
+	},
+
+	compose_message: function(recipient)
+	{
+		AWS.popup(G_BASE_URL + '/inbox/edit/compose/', function() {
+			if (recipient) {
+				recipient = AWS.htmlspecialchars(recipient);
+				$('#personal_message_recipient').val(recipient);
+			}
+			AWS.Dropdown.bind_dropdown_list($('#personal_message_recipient'), 'inbox');
+			//私信用户下拉点击事件
+			$(document).on('click','.aw-inbox .aw-dropdown-list li a',function() {
+				$('#personal_message_form input.form-control').val($(this).text());
+				$(this).parents('.aw-dropdown').hide();
+			});
+		});
 	},
 }
 

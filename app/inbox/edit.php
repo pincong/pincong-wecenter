@@ -12,7 +12,25 @@
 +---------------------------------------------------------------------------
 */
 
-define('G_VERSION', '19.0.0');
-define('G_VERSION_BUILD', '20160523');
-define('G_DISPLAY_VERSION', '');
-define('G_DISPLAY_VERSION_BUILD', '3');
+
+if (!defined('IN_ANWSION'))
+{
+	die;
+}
+
+class edit extends AWS_CONTROLLER
+{
+	public function get_access_rule()
+	{
+		$rule_action['rule_type'] = 'white';
+
+		$rule_action['redirect'] = false; // 不跳转到登录页面直接输出403
+		return $rule_action;
+	}
+
+	public function compose_action()
+	{
+		TPL::output("inbox/compose_template");
+	}
+
+}

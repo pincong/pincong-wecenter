@@ -29,7 +29,7 @@ var AW_TEMPLATE = {
 					'</div>'+
 					'<div class="mod-footer clearfix">'+
 						'<span>'+
-							'<a class="aw-small-text" onclick="AWS.dialog(\'inbox\', \'{{user_name}}\');"><i class="icon icon-inbox"></i> ' + _t('私信') + '</a>&nbsp;&nbsp;&nbsp;&nbsp;<a  class="aw-small-text" onclick="AWS.User.ask_user({{uid}}, {{ask_name}});"><i class="icon icon-at"></i> ' + _t('问Ta') + '</a>'+
+							'<a class="aw-small-text" onclick="AWS.User.compose_message(\'{{user_name}}\');"><i class="icon icon-inbox"></i> ' + _t('私信') + '</a>&nbsp;&nbsp;&nbsp;&nbsp;<a  class="aw-small-text" onclick="AWS.User.ask_user({{uid}}, {{ask_name}});"><i class="icon icon-at"></i> ' + _t('问Ta') + '</a>'+
 						'</span>'+
 						'<a class="btn btn-normal btn-success follow {{focus}} pull-right" onclick="AWS.User.follow($(this), \'user\', {{uid}});"><span>{{focusTxt}}</span> <em>|</em> <b>{{fansCount}}</b></a>'+
 					'</div>'+
@@ -53,35 +53,6 @@ var AW_TEMPLATE = {
 					'<div class="mod-footer">'+
 						'<span>'+ _t('讨论数') + ': {{discuss_count}}</span>'+
 						'<a class="btn btn-normal btn-success follow {{focus}} pull-right" onclick="AWS.User.follow($(this), \'topic\', {{topic_id}});"><span>{{focusTxt}}</span> <em>|</em> <b>{{focus_count}}</b></a>'+
-					'</div>'+
-				'</div>'+
-			'</div>',
-
-	'inbox' :
-			'<div class="modal fade alert-box aw-inbox">'+
-				'<div class="modal-dialog">'+
-					'<div class="modal-content">'+
-						'<div class="modal-header">'+
-							'<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>'+
-							'<h3 class="modal-title" id="myModalLabel">' + _t('新私信') + '</h3>'+
-						'</div>'+
-						'<div class="modal-body">'+
-							'<div class="alert alert-danger collapse error_message"> <i class="icon icon-delete"></i> <em></em></div>'+
-							'<form action="' + G_BASE_URL + '/inbox/ajax/send/" method="post" id="quick_publish" onsubmit="return false">'+
-								'<input type="hidden" name="post_hash" value="' + G_POST_HASH + '" />'+
-								'<input id="invite-input" class="form-control" type="text" placeholder="' + _t('搜索用户') + '" name="recipient" value="{{recipient}}" />'+
-								'<div class="aw-dropdown">'+
-									'<p class="title">' + _t('没有找到相关结果') + '</p>'+
-									'<ul class="aw-dropdown-list">'+
-									'</ul>'+
-								'</div>'+
-								'<textarea class="form-control" name="message" rows="3" placeholder="' + _t('私信内容...') + '"></textarea>'+
-							'</form>'+
-						'</div>'+
-						'<div class="modal-footer">'+
-							'<a data-dismiss="modal" aria-hidden="true" class="aw-small-text">' + _t('取消') + '</a>'+
-							'<button class="btn btn-large btn-success" onclick="AWS.submit_form($(\'#quick_publish\'), $(this), $(\'.error_message\'));">' + _t('发送') + '</button>'+
-						'</div>'+
 					'</div>'+
 				'</div>'+
 			'</div>',

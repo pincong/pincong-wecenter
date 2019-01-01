@@ -1,0 +1,27 @@
+<div class="modal fade alert-box aw-inbox">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>
+				<h3 class="modal-title" id="myModalLabel"><?php _e('新私信'); ?></h3>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-danger collapse error_message"> <i class="icon icon-delete"></i> <em></em></div>
+				<form action="inbox/ajax/send/" method="post" id="personal_message_form" onsubmit="return false">
+					<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
+					<input id="personal_message_recipient" class="form-control" type="text" placeholder="<?php _e('搜索用户'); ?>" name="recipient" value="" />
+					<div class="aw-dropdown">
+						<p class="title"><?php _e('没有找到相关结果'); ?></p>
+						<ul class="aw-dropdown-list">
+						</ul>
+					</div>
+					<textarea class="form-control" name="message" rows="3" placeholder="<?php _e('私信内容...'); ?>"></textarea>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<a data-dismiss="modal" aria-hidden="true" class="aw-small-text"><?php _e('取消'); ?></a>
+				<button class="btn btn-large btn-success" onclick="AWS.submit_form($('#personal_message_form'), $(this), $('.error_message'));"><?php _e('发送'); ?></button>
+			</div>
+		</div>
+	</div>
+</div>
