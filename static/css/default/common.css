@@ -196,10 +196,13 @@ a.aw-load-more-content{display: block;}
 .aw-editor-dropdown img{margin-right: 5px;}
 
 /* 翻页 */
+.page-control .pagination{float: right;}
 .page-control{text-align: center;}
+.page-control:after {content: ".";display: block;height: 0;clear: both;visibility: hidden;}
 .pagination{margin:20px 0 0;}
 .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus{background-color: #499ef3;color: #fff;border-color: #499ef3;}
 .pagination > li > a, .pagination > li > span{background-color: #fafafa;color: #999;border-color: #e6e6e6;}
+
 /* 字体icon & icon */
 .icon-tips{display:block;width: 6px;height: 6px;border-radius: 6px;background-color: #ff5428;}
 .icon-inverse{display:inline-block;height: 20px;padding:0 5px;line-height:20px;background-color: #ccc;color: #fff;text-align: center;border-radius: 4px;font-size: 12px;}
