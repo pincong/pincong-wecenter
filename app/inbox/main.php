@@ -139,19 +139,19 @@ class main extends AWS_CONTROLLER
 			H::redirect_msg(AWS_APP::lang()->_t('指定的站内信不存在'), '/inbox/');
 		}
 
+		if ($dialog['sender_uid'] != $this->user_id)
+		{
+			$recipient_user = $this->model('account')->get_user_info_by_uid($dialog['sender_uid']);
+		}
+		else
+		{
+			$recipient_user = $this->model('account')->get_user_info_by_uid($dialog['recipient_uid']);
+		}
+
 		$this->model('message')->set_message_read($_GET['id'], $this->user_id);
 
 		if ($list = $this->model('message')->get_message_by_dialog_id($_GET['id']))
 		{
-			if ($dialog['sender_uid'] != $this->user_id)
-			{
-				$recipient_user = $this->model('account')->get_user_info_by_uid($dialog['sender_uid']);
-			}
-			else
-			{
-				$recipient_user = $this->model('account')->get_user_info_by_uid($dialog['recipient_uid']);
-			}
-
 			foreach ($list as $key => $val)
 			{
 				if ($dialog['sender_uid'] == $this->user_id AND $val['sender_remove'])
