@@ -255,23 +255,6 @@ CREATE TABLE IF NOT EXISTS `aws_notification_data` (
 
 
 --
-CREATE TABLE IF NOT EXISTS `aws_pages` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `url_token` varchar(32) DEFAULT NULL,
-  `title` varchar(240) DEFAULT NULL,
-  `keywords` varchar(240) DEFAULT NULL,
-  `description` varchar(240) DEFAULT NULL,
-  `contents` text,
-  `enabled` tinyint(1) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `url_token` (`url_token`),
-  KEY `enabled` (`enabled`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
---
-
-
---
 CREATE TABLE IF NOT EXISTS `aws_posts_index` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `post_id` int(10) DEFAULT '0' ,
@@ -545,6 +528,7 @@ CREATE TABLE IF NOT EXISTS `aws_users` (
   `topic_focus_count` int(10) DEFAULT '0' COMMENT '关注话题数量',
   `group_id` int(10) DEFAULT '4' COMMENT '用户组',
   `forbidden` tinyint(1) DEFAULT '0' COMMENT '是否禁止用户',
+  `flagged` tinyint(1) DEFAULT '0',
   `agree_count` int(10) DEFAULT '0' COMMENT '赞同数量',
   `views_count` int(10) DEFAULT '0' COMMENT '个人主页查看数量',
   `reputation` int(10) DEFAULT '0' COMMENT '威望',
@@ -561,6 +545,7 @@ CREATE TABLE IF NOT EXISTS `aws_users` (
   KEY `group_id` (`group_id`),
   KEY `agree_count` (`agree_count`),
   KEY `forbidden` (`forbidden`),
+  KEY `flagged` (`flagged`),
   KEY `currency` (`currency`),
   KEY `verified` (`verified`),
   KEY `last_login` (`last_login`),
@@ -745,7 +730,6 @@ CREATE TABLE IF NOT EXISTS `aws_vote` (
   `item_id` int(10) DEFAULT '0',
   `value` tinyint(1) DEFAULT '0',
   `add_time` int(10) DEFAULT '0',
-  `extra_data` text COMMENT '预留',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
   KEY `type` (`type`),

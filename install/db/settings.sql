@@ -39,7 +39,7 @@ INSERT INTO `aws_system_setting` (`varname`, `value`) VALUES
 	('request_route_custom', 's:0:"";'),
 	('upload_size_limit', 's:3:"512";'),
 	('topic_title_limit', 's:1:"6";'),
-	('url_rewrite_enable', 's:1:"Y";'),
+	('url_rewrite_enable', 's:1:"N";'),
 	('site_close', 's:1:"N";'),
 	('close_notice', 's:39:"站点已关闭，管理员请登录。";'),
 	('username_rule', 's:1:"1";'),
@@ -88,9 +88,4 @@ INSERT INTO `aws_users_group` (`group_id`, `type`, `custom`, `group_name`, `repu
 TRUNCATE `aws_users`;
 INSERT INTO `aws_users` (`uid`, `user_name`, `password`, `salt`, `group_id`) VALUES
 	(1, 'admin', '$2y$10$TaEOhERXEB51Ds8i/iBbq.Qy2v82s3yidCLGz/iv25PJ7hxXnq7r.', 'gzeu', 1);
-
-
-TRUNCATE `aws_users_attrib`;
-INSERT INTO `aws_users_attrib` (`id`, `uid`) VALUES
-	(1, 1);
 
