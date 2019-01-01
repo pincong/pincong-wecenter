@@ -20,6 +20,34 @@ if (!defined('IN_ANWSION'))
 
 class message_class extends AWS_MODEL
 {
+	private $key;
+	public function get_key()
+	{
+		if (!$this->key)
+		{
+			$this->key = AWS_APP::crypt()->new_key(G_SECUKEY);
+		}
+		return $this->key;
+	}
+
+	public function encrypt($message)
+	{
+		if (!$message)
+		{
+			return '';
+		}
+		return AWS_APP::crypt()->encode($message, $this->get_key());
+	}
+
+	public function decrypt($message)
+	{
+		if (!$message)
+		{
+			return '';
+		}
+		return AWS_APP::crypt()->decode($message, $this->get_key());
+	}
+
 	public function send_message($sender_uid, $recipient_uid, $message)
 	{
 		if (!$sender_uid OR !$recipient_uid OR !$message)
@@ -49,7 +77,7 @@ class message_class extends AWS_MODEL
 
 		$message_id = $this->insert('inbox', array(
 			'dialog_id' => $inbox_dialog_id,
-			'message' => htmlspecialchars($message),
+			'message' => $this->encrypt(htmlspecialchars($message)),
 			'add_time' => $now,
 			'uid' => $sender_uid
 		));
@@ -139,6 +167,7 @@ class message_class extends AWS_MODEL
 		{
 			foreach ($inbox AS $key => $val)
 			{
+				$val['message'] = $this->decrypt($val['message']);
 				$message[$val['id']] = $val;
 			}
 		}
@@ -200,7 +229,7 @@ class message_class extends AWS_MODEL
 		{
 			$dialog_message = $this->fetch_row('inbox', 'dialog_id = ' . intval($dialog_id), 'id DESC');
 
-			$last_message[$dialog_id] = cjk_substr($dialog_message['message'], 0, 60, 'UTF-8', '...');
+			$last_message[$dialog_id] = cjk_substr($this->decrypt($dialog_message['message']), 0, 60, 'UTF-8', '...');
 		}
 
 		return $last_message;
