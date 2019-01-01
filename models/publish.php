@@ -20,6 +20,86 @@ if (!defined('IN_ANWSION'))
 
 class publish_class extends AWS_MODEL
 {
+
+	public function publish_scheduled_item($item)
+	{
+		switch ($item['type'])
+		{
+			case 'question':
+				$this->publish_question(
+					$item['title'],
+					$item['message'],
+					$item['parent_id'], // category_id
+					$item['uid'],
+					$item['extra_data']['topics'],
+					$item['anonymous'],
+					$item['extra_data']['ask_user_id'],
+					$item['extra_data']['permission_create_topic']
+				);
+				break;
+
+			case 'answer':
+				$this->publish_answer(
+					$item['parent_id'], // question_id,
+					$item['message'],
+					$item['uid'],
+					$item['anonymous'],
+					$item['extra_data']['auto_focus']
+				);
+				break;
+
+			case 'article':
+				$this->publish_article(
+					$item['title'],
+					$item['message'],
+					$item['uid'],
+					$item['extra_data']['topics'],
+					$item['parent_id'], // category_id
+					$item['extra_data']['permission_create_topic'],
+					$item['anonymous']
+				);
+				break;
+
+			case 'article_comment':
+				$this->publish_article_comment(
+					$item['parent_id'], // article_id
+					$item['message'],
+					$item['uid'],
+					$item['extra_data']['at_uid'],
+					$item['anonymous']
+				);
+				break;
+		}
+	}
+
+	public function publish_scheduled_posts()
+	{
+		$now = real_time();
+		if ($items = $this->query_all("SELECT * FROM " . $this->get_table('scheduled_posts') . " WHERE time < " . $now))
+		{
+			foreach ($items as $key => $val)
+			{
+				$val['extra_data'] = unserialize($val['extra_data']);
+				$this->publish_scheduled_item($val);
+				$this->delete('scheduled_posts', 'id = ' . ($val['id']));
+			}
+		}
+	}
+
+	public function schedule($type, $time, $title, $message, $uid, $anonymous, $parent_id, $extra_data)
+	{
+		return $this->insert('scheduled_posts', array(
+			'type' => $type,
+			'time' => $time,
+			'title' => $title,
+			'message' => $message,
+			'uid' => intval($uid),
+			'anonymous' => intval($anonymous),
+			'parent_id' => intval($parent_id),
+			'extra_data' => serialize($extra_data)
+		));
+	}
+
 	public function publish_answer($question_id, $answer_content, $uid, $anonymous = null, $auto_focus = true)
 	{
 		if (!$question_info = $this->model('question')->get_question_info_by_id($question_id))
