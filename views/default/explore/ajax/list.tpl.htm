@@ -21,7 +21,7 @@
 		<!-- 贡献 -->
 		<?php if (is_array($val['answer_users'])) { ?>
 		<div class="pull-right hidden-xs contribute">
-			<span class="pull-right aw-small-text"><?php _e('贡献'); ?></span>
+			<span class="pull-right aw-small-text aw-nowrap"><?php _e('贡献'); ?></span>
 			<?php foreach ($val['answer_users'] AS $answer_user) { ?>
 			<a class="aw-user-name" data-id="<?php echo $answer_user['uid']; ?>" href="<?php echo UF::url($answer_user); ?>" rel="nofollow"><img src="<?php echo UF::avatar($answer_user, 'mid', $this->user_info['permission']['is_administrator']); ?>" alt="" /></a>
 			<?php } ?>
