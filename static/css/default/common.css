@@ -192,15 +192,6 @@ a.aw-load-more-content{display: block;}
 .aw-logo{width:90px;height:40px;margin:7px 0 0 0;}
 .aw-logo a{display:block;width: 90px;height: 40px;}
 .aw-logo h1{height:25px;line-height:25px;margin:-2px 0 2px 0;font-size:14px;}
-.aw-publish-btn{width:80px;}
-.aw-publish-btn a{display:block;width:80px;height: 32px;line-height: 32px;font-size: 14px;text-align: center;border-radius: 3px;}
-.aw-publish-btn i{vertical-align:-2px;margin-right: 10px;font-size: 16px;}
-.aw-publish-btn:hover #header_publish{border-radius: 4px 4px 0 0;}
-.aw-publish-btn:hover .dropdown-list{display: block;}
-.aw-publish-btn .dropdown-list{position: absolute;display: none;}
-.aw-publish-btn .dropdown-list a{background-color: #4dabff;border-radius: 0;color: #fff;}
-.aw-publish-btn .dropdown-list a:hover{background-color: #339dff;}
-.aw-publish-btn .dropdown-list ul li:last-child a{border-radius: 0 0 4px 4px;}
 .aw-top-nav{margin:0;border: none;}
 .aw-top-nav .icon-bar{background-color: #fff;font-size: 0;}
 .aw-top-nav > nav > ul > li > a{padding:16px;color: #fff;}
@@ -246,6 +237,18 @@ a.aw-load-more-content{display: block;}
 .aw-search-box .aw-dropdown .mod-footer .btn-success{margin:10px;}
 .aw-search-box .aw-dropdown .aw-dropdown-list{max-height: 337px;overflow-y: scroll;border-bottom: 1px solid #f0f0f0;}
 .aw-search-box .aw-dropdown .aw-dropdown-list li.question .aw-hide-txt{width: 250px;}
+
+.aw-publish-btn {width:80px;}
+.aw-publish-btn .dropdown-menu{min-width:1px; width:80px;}
+.aw-publish-btn .dropdown-toggle{border-radius:3px;}
+.aw-publish-btn.open .dropdown-toggle{border-radius:4px 4px 0 0;}
+.aw-publish-btn a{display:block; height:32px; line-height:32px; font-size:14px; text-align:center;}
+.aw-publish-btn i{vertical-align:-2px; margin-right:10px; font-size:16px;}
+.aw-publish-btn .dropdown-menu{margin:0; padding:0; border:none; box-shadow:none; border-radius:0 0 4px 4px;}
+.aw-publish-btn .dropdown-menu, .aw-publish-btn.open .dropdown-toggle{background-color:#4dabff;}
+.aw-publish-btn .dropdown-menu a{color:#fff; line-height:24px;}
+.aw-publish-btn .dropdown-menu a:hover, .aw-publish-btn .dropdown-menu a:focus, .aw-publish-btn .dropdown-menu a:active{color:#fff; background-color:#339dff;}
+.aw-publish-btn .dropdown-menu li:last-child a{border-radius:0 0 4px 4px;}
 
 /* 分类 */
 .category{margin-bottom: 20px;}

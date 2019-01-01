@@ -20,7 +20,7 @@
 							<p class="search"><span><?php _e('搜索'); ?>:</span><a onClick="$('#global_search_form').submit();"></a></p>
 						</div>
 						<div class="mod-footer">
-							<a href="<?php if (get_setting('quick_publish') == 'Y' && $this->user_id) { ?>javascript:;<?php } else { ?>publish<?php } ?>" onclick="$('#header_publish').click();" class="pull-right btn btn-mini btn-success publish"><?php _e('发起问题'); ?></a>
+							<a href="javascript:;" onclick="$('#header_publish').click();" class="pull-right btn btn-mini btn-success publish"><?php _e('发起问题'); ?></a>
 						</div>
 					</div>
 				</form>
@@ -117,26 +117,22 @@
 					$publish_url_params .= 'topic_title-' . urlencode($this->topic_info['topic_title']);
 				}
 			?>
-			<div class="aw-publish-btn">
-				<a id="header_publish" class="btn-primary" href="publish/<?php
-					echo $publish_url_params;
-				?>" onclick="<?php
-					if (get_setting('quick_publish') == 'Y') {
-						?>AWS.dialog('publish', {'category_enable':'<?php echo (get_setting('category_enable') == 'Y') ? '1' : '0'; ?>', 'category_id':'<?php echo intval($_GET['category']); ?>', 'topic_title':'<?php echo $this->topic_info['topic_title']; ?>'}); return false;<?php
-					}
-				?>"><i class="icon icon-ask"></i><?php _e('发起'); ?></a>
-				<div class="dropdown-list pull-right">
-					<ul>
-						<li>
-							<a href="publish/<?php echo $publish_url_params;?>"><?php _e('问题'); ?></a>
-						</li>
-						<li>
-							<a href="publish/article/<?php echo $publish_url_params;?>"><?php _e('文章'); ?></a>
-						</li>
-					</ul>
-				</div>
+			<div class="dropdown aw-publish-btn">
+				<a href="javascript:;" class="btn-primary dropdown-toggle" data-toggle="dropdown"><i class="icon icon-ask"></i><?php _e('发起'); ?></a>
+				<ul class="dropdown-menu">
+					<?php if ($this->user_info['permission']['publish_question']) { ?>
+					<li><a href="publish/<?php echo $publish_url_params;?>"><?php _e('问题'); ?></a></li>
+					<?php } ?>
+					<?php if ($this->user_info['permission']['publish_article']) { ?>
+					<li><a href="publish/article/<?php echo $publish_url_params;?>"><?php _e('文章'); ?></a></li>
+					<?php } ?>
+					<?php if ($this->user_info['permission']['publish_video']) { ?>
+					<li><a href="publish/video/<?php echo $publish_url_params;?>"><?php _e('投稿'); ?></a></li>
+					<?php } ?>
+				</ul>
 			</div>
 			<?php }?>
+
 			<!-- end 发起 -->
 		</div>
 	</div>
