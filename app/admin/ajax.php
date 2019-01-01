@@ -830,7 +830,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
             $update_data['sex'] = intval($_POST['sex']);
 
-            $update_data['reputation'] = intval($_POST['reputation']);
+            $update_data['reputation'] = floatval($_POST['reputation']);
             $update_data['agree_count'] = intval($_POST['agree_count']);
             $update_data['currency'] = intval($_POST['currency']);
 
