@@ -375,10 +375,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
             }
         }
 
-        $settings_var['nav_menu_show_child'] = isset($_POST['nav_menu_show_child']) ? 'Y' : 'N';
-
-        $this->model('setting')->set_vars($settings_var);
-
         H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('导航菜单保存成功')));
     }
 

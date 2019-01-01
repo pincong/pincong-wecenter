@@ -35,41 +35,6 @@ class menu_class extends AWS_MODEL
 		));
 	}
 
-	public function process_child_menu_links($data, $app)
-	{
-		if (!$data)
-		{
-			return false;
-		}
-
-		switch ($app)
-		{
-			case 'explore':
-				$url_prefix = '';
-			break;
-
-			case 'article':
-				$url_prefix = 'article/';
-			break;
-		}
-
-		foreach ($data AS $key => $val)
-		{
-			if (!$val['url_token'])
-			{
-				$val['url_token'] = $val['id'];
-			}
-
-			{
-				$data[$key]['link'] = $url_prefix . 'category-' . $val['url_token'];
-			}
-
-			$data[$key]['child'] = $this->process_child_menu_links($this->model('system')->fetch_category($val['type'], $val['id']), $app);
-		}
-
-		return $data;
-	}
-
 	public function get_nav_menu_list($app = null)
 	{
 		if (!$nav_menu_data = AWS_APP::cache()->get('nav_menu_list'))
@@ -97,6 +62,10 @@ class menu_class extends AWS_MODEL
 					$url_prefix = 'article/';
 					break;
 
+				case 'video':
+					$url_prefix = 'video/';
+					break;
+
 			}
 
 			foreach ($nav_menu_data as $key => $val)
@@ -106,8 +75,6 @@ class menu_class extends AWS_MODEL
 					case 'category':
 						{
 							$nav_menu_data[$key]['link'] = $url_prefix . 'category-' . $category_info[$val['type_id']]['url_token'];
-
-							$nav_menu_data[$key]['child'] = $this->process_child_menu_links($this->model('system')->fetch_category($category_info[$val['type_id']]['type'], $val['type_id']), $app);
 						}
 					break;
 				}
