@@ -159,7 +159,8 @@ class main extends AWS_CONTROLLER
 					}
 				}
 
-				$contents_related_topic_ids = array_merge($related_topics_ids, explode(',', $contents_topic_id));
+				//$contents_related_topic_ids = array_merge($related_topics_ids, explode(',', $contents_topic_id));
+				$contents_related_topic_ids = explode(',', $contents_topic_id);
 
 				TPL::assign('contents_related_topic_ids', implode(',', $contents_related_topic_ids));
 
