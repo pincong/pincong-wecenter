@@ -25,9 +25,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		$rule_action['rule_type'] = 'white';
 
-		$rule_action['actions'] = array(
-			'list_logs'
-		);
+		$rule_action['actions'] = array();
 
 		return $rule_action;
 	}
@@ -35,20 +33,6 @@ class ajax extends AWS_CONTROLLER
 	public function setup()
 	{
 		HTTP::no_cache_header();
-	}
-
-	public function list_logs_action()
-	{
-		if (!$item_info = $this->model('content')->get_thread_info_by_id($_GET['item_type'], $_GET['item_id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
-		}
-
-		$log_list = $this->model('content')->list_logs($_GET['item_type'], $_GET['item_id'], $_GET['page'], get_setting('contents_per_page'));
-
-		TPL::assign('list', $log_list);
-
-		TPL::output('content/ajax/log');
 	}
 
 	public function change_category_action()

@@ -54,11 +54,7 @@
 									<div class="aw-dropdown pull-right" role="menu" aria-labelledby="dropdownMenu">
 										<ul class="aw-dropdown-list">
 											<li>
-												<?php if ($_GET['column'] == 'log') { ?>
-													<a href="question/<?php echo $this->question_info['question_id']; ?>"><?php _e('问题讨论'); ?></a>
-												<?php } else { ?>
-													<a href="question/<?php echo $this->question_info['question_id']; ?>?column=log&rf=false" rel="nofollow"><?php _e('修改记录'); ?></a>
-												<?php } ?>
+												<a href="content/log/item_type-question__item_id-<?php echo $this->question_info['question_id']; ?>" rel="nofollow"><?php _e('修改记录'); ?></a>
 											</li>
 										<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
 											<li>
@@ -205,23 +201,7 @@
 						<!-- end 站内邀请 -->
 					</div>
 
-					<?php if ($_GET['column'] == 'log') { ?>
-					<div class="aw-mod aw-question-edit">
-						<div class="mod-head common-head">
-							<h2><span class="pull-right"><a class="text-color-999" href="question/<?php echo $this->question_info['question_id']; ?>"><?php _e('返回问题'); ?> »</a></span><?php _e('修改记录'); ?></h2>
-						</div>
-						<div class="mod-body">
-							<ul id="c_log_list"></ul>
-						</div>
-						<div class="mod-footer">
-							<!-- 加载更多内容 -->
-							<a class="aw-load-more-content" id="bp_log_more">
-								<span><?php _e('更多'); ?>...</span>
-							</a>
-							<!-- end 加载更多内容 -->
-						</div>
-					</div>
-					<?php } else { ?>
+					<!-- 问题回复 -->
 					<div class="aw-mod aw-question-comment">
 						<div class="mod-head">
 							<ul class="nav nav-tabs aw-nav-tabs active">
@@ -349,10 +329,8 @@
 							<div class="clearfix"><?php echo $this->pagination; ?></div>
 						<?php } ?>
 					</div>
-					<?php } ?>
-					<!-- end 问题详细模块 -->
+					<!-- end 问题回复 -->
 
-					<?php if ($_GET['column'] != 'log') { ?>
 					<!-- 回复编辑器 -->
 					<div class="aw-mod aw-replay-box question">
 						<a name="answer_form"></a>
@@ -414,7 +392,6 @@
 						<?php } ?>
 					</div>
 					<!-- end 回复编辑器 -->
-					<?php } ?>
 				</div>
 				<!-- 侧边栏 -->
 				<div class="col-sm-12 col-md-3 aw-side-bar">

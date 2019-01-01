@@ -1,0 +1,44 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+
+<div class="aw-container-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="col-sm-12 aw-main-content">
+
+					<div class="aw-mod aw-question-edit">
+						<div class="mod-head common-head">
+							<?php
+								if (($_GET['item_type']) == 'video') {
+									$item_type = 'v';
+								} else {
+									$item_type = htmlspecialchars($_GET['item_type']);
+								}
+							?>
+							<h2><span class="pull-right"><a class="text-color-999" href="<?php echo $item_type; ?>/<?php echo intval($_GET['item_id']); ?>?rf=false"><?php _e('返回'); ?> »</a></span><?php _e('修改记录'); ?></h2>
+						</div>
+						<div class="mod-body">
+							<ul id="c_log_list"></ul>
+						</div>
+						<div class="mod-footer">
+							<!-- 加载更多内容 -->
+							<a class="aw-load-more-content" id="bp_log_more">
+								<span><?php _e('更多'); ?>...</span>
+							</a>
+							<!-- end 加载更多内容 -->
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+	AWS.load_list_view(G_BASE_URL + '/content/list_logs/item_type-<?php echo htmlspecialchars($_GET['item_type']); ?>__item_id-<?php echo intval($_GET['item_id']); ?>', $('#bp_log_more'), $('#c_log_list'), 1);
+});
+</script>
+
+<?php TPL::output('global/footer.tpl.htm'); ?>
