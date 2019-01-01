@@ -7,7 +7,7 @@
 		<a class="aw-user-name" href="<?php echo UF::url($val); ?>"><?php echo UF::name($val); ?> <?php if ($val['verified']) { ?><i class="icon-v <?php if ($val['verified'] == 'enterprise') { ?> i-ve<?php } ?>" title="<?php if ($val['verified'] == 'enterprise') { ?>企业认证<?php } else { ?>个人认证<?php } ?>"></i><?php } ?></a>
 	</p>
 	<p>
-		<span><i class="aw-icon i-user-prestige"></i><?php _e('威望'); ?>: <em class="aw-text-color-green"><?php echo $val['reputation']; ?></em></span>
+		<span><i class="aw-icon i-user-prestige"></i><?php _e(get_setting('reputation_name')); ?>: <em class="aw-text-color-green"><?php echo $val['reputation']; ?></em></span>
 	</p>
 	<p class="signature aw-hide-txt">
 		<?php echo UF::signature($val); ?>

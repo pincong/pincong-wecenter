@@ -19,8 +19,8 @@ var AW_TEMPLATE = {
 							'<i class="{{verified_enterprise}} pull-left" title="{{verified_title}}"></i>'+
 						'</p>'+
 						'<p class="aw-user-center-follow-meta">'+
-							'<span>' + _t('威望') + ': <em class="aw-text-color-green">{{reputation}}</em></span>'+
-							'<span>' + _t('赞同') + ': <em class="aw-text-color-orange">{{agree_count}}</em></span>'+
+							'<span><i class="icon icon-prestige"></i> : <em class="aw-text-color-green">{{reputation}}</em></span>'+
+							'<span><i class="icon icon-agree"></i> : <em class="aw-text-color-orange">{{agree_count}}</em></span>'+
 						'</p>'+
 					'</div>'+
 					'<div class="mod-body">'+
