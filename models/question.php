@@ -1224,7 +1224,7 @@ class question_class extends AWS_MODEL
 			$add_agree_count = $vote_value * 2;
 		}
 
-		$this->update_vote_count($question_id);
+		$this->update_vote_count($question_id, $add_agree_count);
 
 		// 更新作者赞同数和威望
 		$this->model('reputation')->increase_agree_count_and_reputation($question_uid, $add_agree_count, $reputation_factor);
@@ -1242,13 +1242,9 @@ class question_class extends AWS_MODEL
 		return $this->delete('question_vote', "voter_id = " . intval($voter_id));
 	}
 
-	public function update_vote_count($question_id)
+	public function update_vote_count($question_id, $delta)
 	{
-		$agree_count = $this->count('question_vote', 'question_id = ' . intval($question_id) . ' AND vote_value = 1');
-		$disagree_count = $this->count('question_vote', 'question_id = ' . intval($question_id) . ' AND vote_value = -1');
-
-		$count = $agree_count - $disagree_count;
-		return $this->query("UPDATE " . $this->get_table('question') . " SET agree_count = {$count} WHERE question_id = " . intval($question_id));
+		$this->query('UPDATE ' . $this->get_table('question') . ' SET agree_count = agree_count + ' . $delta . ' WHERE question_id = ' . intval($question_id));
 	}
 
 	public function set_question_vote_status($voter_id, $vote_value)

@@ -443,23 +443,14 @@ class article_class extends AWS_MODEL
 			$add_agree_count = $rating * 2;
 		}
 
-		$agree_count = $this->count('article_vote', "`type` = '" . ($type) . "' AND item_id = " . ($item_id) . " AND rating = 1");
-		$disagree_count = $this->count('article_vote', "`type` = '" . ($type) . "' AND item_id = " . ($item_id) . " AND rating = -1");
-
-		$votes = $agree_count - $disagree_count;
-
 		switch ($type)
 		{
 			case 'article':
-				$this->update('article', array(
-					'votes' => $votes
-				), 'id = ' . ($item_id));
+				$this->query('UPDATE ' . $this->get_table('article') . ' SET votes = votes + ' . $add_agree_count . ' WHERE id = ' . ($item_id));
 			break;
 
 			case 'comment':
-				$this->update('article_comments', array(
-					'votes' => $votes
-				), 'id = ' . ($item_id));
+				$this->query('UPDATE ' . $this->get_table('article_comments') . ' SET votes = votes + ' . $add_agree_count . ' WHERE id = ' . ($item_id));
 			break;
 		}
 
