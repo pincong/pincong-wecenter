@@ -79,10 +79,10 @@ class ajax extends AWS_CONTROLLER
 
 		$this->model('message')->send_message($this->user_id, $recipient_user['uid'], $_POST['message']);
 
-		if ($_POST['return_url'])
+		if ($_POST['dialog_id'])
 		{
 			$rsm = array(
-				'url' => get_js_url(strip_tags($_POST['return_url']))
+				'url' => get_js_url('/inbox/read/' . intval($_POST['dialog_id']))
 			);
 		}
 		else

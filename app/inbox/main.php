@@ -174,6 +174,8 @@ class main extends AWS_CONTROLLER
 
 		$this->crumb(AWS_APP::lang()->_t('私信对话') . ': ' . $recipient_user['user_name'], '/inbox/read/' . intval($_GET['id']));
 
+		// TODO: 把所有的 dialog 改为 dialogue
+		TPL::assign('dialog_id', $dialog['id']);
 		TPL::assign('list', $list);
 		TPL::assign('recipient_user', $recipient_user);
 

@@ -59,11 +59,6 @@ class message_class extends AWS_MODEL
 		$this->model('account')->update_inbox_unread($recipient_uid);
 		//$this->model('account')->update_inbox_unread($sender_uid);
 
-		if ($user_info = $this->model('account')->get_user_info_by_uid($sender_uid))
-		{
-
-		}
-
 		return $message_id;
 	}
 

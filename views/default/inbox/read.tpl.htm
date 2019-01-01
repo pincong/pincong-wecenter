@@ -15,8 +15,9 @@
 						<div class="mod-body">
 							<!-- 私信内容输入框　-->
 							<form action="inbox/ajax/send/" method="post" id="recipient_form">
-				        		<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
-				        		<input type="hidden" name="recipient" value="<?php echo $this->recipient_user['user_name']; ?>" />
+								<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
+								<input type="hidden" name="dialog_id" value="<?php echo $this->dialog_id; ?>" />
+								<input type="hidden" name="recipient" value="<?php echo $this->recipient_user['user_name']; ?>" />
 								<a href="people/<?php echo $this->user_info['url_token']; ?>" data-id="<?php echo $this->user_info['uid']; ?>" class="aw-user-img aw-border-radius-5"><img src="<?php echo get_avatar_url($this->user_info['uid'], 'mid'); ?>" alt="" /></a>
 								<textarea rows="3" class="form-control message" placeholder="<?php _e('想要对ta说点什么'); ?>?" type="text" name="message" /></textarea>
 								<p>
