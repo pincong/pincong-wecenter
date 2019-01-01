@@ -46,14 +46,7 @@ class ajax extends AWS_CONTROLLER
 			$per_page = get_setting('contents_per_page');
 		}
 
-		if ($_GET['sort_type'] == 'hot')
-		{
-			$posts_list = $this->model('posts')->get_hot_posts($_GET['post_type'], $_GET['category'], $topic_ids, $_GET['day'], $_GET['page'], $per_page);
-		}
-		else
-		{
-			$posts_list = $this->model('posts')->get_posts_list($_GET['post_type'], $_GET['page'], $per_page, $_GET['sort_type'], $topic_ids, $_GET['category'], $_GET['answer_count'], $_GET['day'], $_GET['recommend']);
-		}
+		$posts_list = $this->model('posts')->get_posts_list($_GET['post_type'], $_GET['page'], $per_page, $_GET['sort_type'], $topic_ids, $_GET['category'], $_GET['answer_count'], $_GET['day'], $_GET['recommend']);
 
 		if ($posts_list)
 		{

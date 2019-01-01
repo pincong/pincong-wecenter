@@ -35,7 +35,6 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-
 		if (is_digits($_GET['id']))
 		{
 			if (!$topic_info = $this->model('topic')->get_topic_by_id($_GET['id']))
@@ -99,112 +98,68 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('topic_info', $topic_info);
 
-		switch ($topic_info['model_type'])
+		$related_topics_ids = array();
+
+		$page_keywords[] = $topic_info['topic_title'];
+
+		if ($related_topics = $this->model('topic')->related_topics($topic_info['topic_id']))
 		{
-			default:
-				$related_topics_ids = array();
+			foreach ($related_topics AS $key => $val)
+			{
+				$related_topics_ids[$val['topic_id']] = $val['topic_id'];
 
-				$page_keywords[] = $topic_info['topic_title'];
-
-				if ($related_topics = $this->model('topic')->related_topics($topic_info['topic_id']))
-				{
-					foreach ($related_topics AS $key => $val)
-					{
-						$related_topics_ids[$val['topic_id']] = $val['topic_id'];
-
-						$page_keywords[] = $val['topic_title'];
-					}
-				}
-
-				TPL::set_meta('keywords', implode(',', $page_keywords));
-				TPL::set_meta('description', cjk_substr(str_replace("\r\n", ' ', strip_tags($topic_info['topic_description'])), 0, 128, 'UTF-8', '...'));
-
-				if ($child_topic_ids = $this->model('topic')->get_child_topic_ids($topic_info['topic_id']))
-				{
-					foreach ($child_topic_ids AS $key => $topic_id)
-					{
-						$related_topics_ids[$topic_id] = $topic_id;
-					}
-				}
-
-				TPL::assign('related_topics', $related_topics);
-
-				$contents_topic_id = $topic_info['topic_id'];
-				$contents_topic_title = $topic_info['topic_title'];
-
-				if ($merged_topics = $this->model('topic')->get_merged_topic_ids($topic_info['topic_id']))
-				{
-					foreach ($merged_topics AS $key => $val)
-					{
-						$merged_topic_ids[] = $val['source_id'];
-					}
-
-					$contents_topic_id .= ',' . implode(',', $merged_topic_ids);
-
-					if ($merged_topics_info = $this->model('topic')->get_topics_by_ids($merged_topic_ids))
-					{
-						foreach($merged_topics_info AS $key => $val)
-						{
-							$merged_topic_title[] = $val['topic_title'];
-						}
-					}
-
-					if ($merged_topic_title)
-					{
-						$contents_topic_title .= ',' . implode(',', $merged_topic_title);
-					}
-				}
-
-				// TODO: 这究竟是合并的话题还是相关话题???
-				//$contents_related_topic_ids = array_merge($related_topics_ids, explode(',', $contents_topic_id));
-				$contents_related_topic_ids = explode(',', $contents_topic_id);
-
-				TPL::assign('contents_related_topic_ids', implode(',', $contents_related_topic_ids));
-
-				if ($posts_list = $this->model('posts')->get_posts_list(null, 1, get_setting('contents_per_page'), 'new', $contents_related_topic_ids))
-				{
-					foreach ($posts_list AS $key => $val)
-					{
-						if ($val['answer_count'])
-						{
-							$posts_list[$key]['answer_users'] = $this->model('question')->get_answer_users_by_question_id($val['question_id'], 2, $val['uid']);
-						}
-					}
-				}
-
-				TPL::assign('posts_list', $posts_list);
-				TPL::assign('all_list_bit', TPL::render('explore/ajax/list'));
-
-				if ($posts_list = $this->model('posts')->get_posts_list(null, 1, get_setting('contents_per_page'), null, $contents_related_topic_ids, null, null, 30, true))
-				{
-					foreach ($posts_list AS $key => $val)
-					{
-						if ($val['answer_count'])
-						{
-							$posts_list[$key]['answer_users'] = $this->model('question')->get_answer_users_by_question_id($val['question_id'], 2, $val['uid']);
-						}
-					}
-				}
-
-				TPL::assign('posts_list', $this->model('posts')->get_posts_list('question', 1, get_setting('contents_per_page'), 'new', explode(',', $contents_topic_id)));
-				TPL::assign('all_questions_list_bit', TPL::render('explore/ajax/list'));
-
-				TPL::assign('posts_list', $this->model('posts')->get_posts_list('article', 1, get_setting('contents_per_page'), 'new', explode(',', $contents_topic_id)));
-				TPL::assign('article_list_bit', TPL::render('explore/ajax/list'));
-
-				TPL::assign('contents_topic_id', $contents_topic_id);
-				TPL::assign('contents_topic_title', $contents_topic_title);
-
-				TPL::assign('redirect_message', $redirect_message);
-
-				if ($topic_info['parent_id'])
-				{
-					TPL::assign('parent_topic_info', $this->model('topic')->get_topic_by_id($topic_info['parent_id']));
-				}
-
-				TPL::output('topic/index');
-			break;
+				$page_keywords[] = $val['topic_title'];
+			}
 		}
+
+		TPL::set_meta('keywords', implode(',', $page_keywords));
+		TPL::set_meta('description', cjk_substr(str_replace("\r\n", ' ', strip_tags($topic_info['topic_description'])), 0, 128, 'UTF-8', '...'));
+
+		if ($child_topic_ids = $this->model('topic')->get_child_topic_ids($topic_info['topic_id']))
+		{
+			foreach ($child_topic_ids AS $key => $topic_id)
+			{
+				$related_topics_ids[$topic_id] = $topic_id;
+			}
+		}
+
+		TPL::assign('related_topics', $related_topics);
+
+		$topic_ids[] = $topic_info['topic_id'];
+
+		if ($merged_topics = $this->model('topic')->get_merged_topic_ids($topic_info['topic_id']))
+		{
+			foreach ($merged_topics AS $key => $val)
+			{
+				$topic_ids[] = $val['source_id'];
+			}
+		}
+
+		if ($posts_list = $this->model('posts')->get_posts_list(null, 1, get_setting('contents_per_page'), 'new', $topic_ids))
+		{
+			foreach ($posts_list AS $key => $val)
+			{
+				// TODO: if ($val['post_type'] == 'question')
+				if ($val['answer_count'])
+				{
+					$posts_list[$key]['answer_users'] = $this->model('question')->get_answer_users_by_question_id($val['question_id'], 2, $val['uid']);
+				}
+			}
+		}
+
+		TPL::assign('posts_list', $posts_list);
+		TPL::assign('all_list_bit', TPL::render('explore/ajax/list'));
+
+		TPL::assign('topic_ids', implode(',', $topic_ids));
+
+		TPL::assign('redirect_message', $redirect_message);
+
+		if ($topic_info['parent_id'])
+		{
+			TPL::assign('parent_topic_info', $this->model('topic')->get_topic_by_id($topic_info['parent_id']));
+		}
+
+		TPL::output('topic/index');
 	}
 
 	public function index_square_action()

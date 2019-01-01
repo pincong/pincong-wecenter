@@ -39,11 +39,6 @@
 								<!-- tab 切换 -->
 								<ul class="nav nav-tabs aw-nav-tabs hidden-xs">
 									<li class="active"><a href="#all" data-toggle="tab"><?php _e('全部内容'); ?></a></li>
-
-									<li><a href="#questions" data-toggle="tab"><?php _e('问题'); ?></a></li>
-
-									<li><a href="#articles" data-toggle="tab"><?php _e('文章'); ?></a></li>
-
 									<li><a href="#about" id="i_about" data-toggle="tab"><?php _e('关于话题'); ?></a></li>
 								</ul>
 								<!-- end tab 切换 -->
@@ -69,40 +64,6 @@
 									</div>
 								</div>
 								<!-- end 全部 -->
-
-								<!-- 问题 -->
-								<div class="tab-pane" id="questions">
-									<div class="aw-mod">
-										<div class="mod-body">
-											<div class="aw-common-list" id="c_question_list">
-												<?php echo $this->all_questions_list_bit; ?>
-											</div>
-										</div>
-										<div class="mod-footer">
-											<a class="aw-load-more-content" id="c_question_more" auto-load="false">
-												<span><?php _e('更多'); ?>...</span>
-											</a>
-										</div>
-									</div>
-								</div>
-								<!-- end 问题 -->
-
-								<!-- 文章 -->
-								<div class="tab-pane" id="articles">
-									<div class="aw-mod">
-										<div class="mod-body">
-											<div class="aw-common-list" id="c_article_list">
-												<?php echo $this->article_list_bit; ?>
-											</div>
-										</div>
-										<div class="mod-footer">
-											<a class="aw-load-more-content" id="bp_articles_more" auto-load="false">
-												<span><?php _e('更多'); ?>...</span>
-											</a>
-										</div>
-									</div>
-								</div>
-								<!-- end 文章 -->
 
 								<div class="tab-pane" id="about">
 									<div class="aw-topic-detail-about text-color-666 markitup-box">
@@ -187,13 +148,11 @@
 </div>
 
 <script type="text/javascript">
-	var TOPIC_ID = '<?php echo $this->topic_info['topic_id']; ?>';
-
-	var CONTENTS_TOPIC_ID = '<?php echo $this->contents_topic_id; ?>';
-	var CONTENTS_RELATED_TOPIC_IDS = '<?php echo $this->contents_related_topic_ids; ?>';
-	var CONTENTS_TOPIC_TITLE = '<?php echo $this->contents_topic_title; ?>';
+$(document).ready(function () {
+	if ($('.tabbable').length) {
+		AWS.load_list_view(G_BASE_URL + '/explore/ajax/list/topic_id-<?php echo $this->topic_ids; ?>', $('#c_all_more'), $('#c_all_list'), 2);
+	}
+});
 </script>
-
-<script type="text/javascript" src="<?php echo G_STATIC_URL; ?>/js/app/topic.js"></script>
 
 <?php TPL::include('global/footer.tpl.htm'); ?>

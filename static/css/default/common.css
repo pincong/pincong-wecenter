@@ -102,7 +102,7 @@ table td{vertical-align: middle !important;}
 .aw-mod .mod-head h4, .aw-mod .mod-head h4 a{font-size:14px;}
 
 .dropdown-menu li.first, .aw-comment-list li:first-child, .aw-li-border-bottom li:first-child{border-top:none;}
-.aw-dropdown-list li.user a img, .aw-question-tags, .aw-mod.topic-nav ul > li > p a, .aw-mod.topic-nav ul > li > a, .aw-border-radius-5, .aw-border-radius-5 img, .aw-load-more-content, .aw-user-name img, .aw-topic-name img, .aw-topic-name span, .aw-topic-img img, .aw-login-register a img, .aw-login-register .aw-user-head img, .aw-dropdown, .category dl dt img, .category .span12 > ul > li, .aw-mod.side-nav ul li a, .topic-edit-notes li, .aw-notopic-sort, .aw-comment-box, .aw-topic-detail-title .mod-body img, .aw-topic-search, .aw-mod-topic-edit-box .mod-head .img, .aw-inbox-read .mod-footer li .aw-item, .aw-inbox .mod-footer li .aw-user-img img, .aw-invite-list ul li img, .aw-mod-search-result .aw-item .aw-user-img img, .aw-mod-search-result .aw-item .aw-topic-img img, .aw-card-tips, .aw-card-tips .mod-head .img img, .aw-first-login .aw-complete-data .side-bar img, .aw-replay-box .mod-body, .aw-publish-box .aw-publish-title .dropdown .dropdown-toggle, .markitup-box code, .aw-publish-title.active input, #aw-loading, .aw-user-nav > a img{border-radius: 4px;}
+.aw-dropdown-list li.user a img, .aw-question-tags, .aw-mod.topic-nav ul > li > p a, .aw-mod.topic-nav ul > li > a, .aw-border-radius-5, .aw-border-radius-5 img, .aw-load-more-content, .aw-user-name img, .aw-topic-name img, .aw-topic-name span, .aw-topic-img img, .aw-login-register a img, .aw-login-register .aw-user-head img, .aw-dropdown, .category dl dt img, .category .span12 > ul > li, .aw-mod.side-nav ul li a, .aw-notopic-sort, .aw-comment-box, .aw-topic-detail-title .mod-body img, .aw-topic-search, .aw-mod-topic-edit-box .mod-head .img, .aw-inbox-read .mod-footer li .aw-item, .aw-inbox .mod-footer li .aw-user-img img, .aw-invite-list ul li img, .aw-mod-search-result .aw-item .aw-user-img img, .aw-mod-search-result .aw-item .aw-topic-img img, .aw-card-tips, .aw-card-tips .mod-head .img img, .aw-first-login .aw-complete-data .side-bar img, .aw-replay-box .mod-body, .aw-publish-box .aw-publish-title .dropdown .dropdown-toggle, .markitup-box code, .aw-publish-title.active input, #aw-loading, .aw-user-nav > a img{border-radius: 4px;}
 .category dl{border-radius: 10px;}
 
 .aw-publish-title .dropdown .dropdown-toggle, .aw-publish-title .dropdown .dropdown-toggle a{border-radius: 0 5px 5px 0;}
@@ -389,12 +389,6 @@ a.aw-load-more-content{display: block;}
 .aw-mod.topic-about .aw-topic-name{display: inline-block;margin:0 4px 8px 0;}
 .aw-mod.topic-about .aw-edit-topic-box .aw-dropdown{top: 38px;}
 .aw-mod.topic-about .aw-edit-topic-box input{width: 100% !important;}
-/* 话题修改记录 */
-.aw-mod.topic-edit-notes .icon{cursor: pointer;}
-.aw-mod.topic-edit-notes h3{padding-bottom: 0;}
-.aw-mod.topic-edit-notes li{padding:5px !important;cursor: pointer;}
-.aw-mod.topic-edit-notes li:hover{background: #ebebeb;}
-.aw-mod.topic-edit-notes .icon-down{margin-top: 2px;}
 /* 话题编辑 */
 .aw-topic-bar .aw-topic-name{display:inline-block;margin:0 10px 5px 0;}
 /* 文章分类 */

@@ -1661,7 +1661,7 @@ AWS.Dropdown =
 
 	/* 下拉菜单数据获取 */
 	/*
-	*    type : search, publish, invite, inbox, topic_question, topic
+	*    type : search, publish, invite, inbox, topic
 	*/
 	get_dropdown_list: function(selector, type, data)
 	{
@@ -1683,10 +1683,6 @@ AWS.Dropdown =
 			case 'invite' :
 			case 'inbox' :
 				url = G_BASE_URL + '/search/ajax/search/?type=users&q=' + encodeURIComponent(data) + '&limit=10';
-			break;
-
-			case 'topic_question' :
-				url = G_BASE_URL + '/search/ajax/search/?type=questions,articles&q=' + encodeURIComponent(data) + '&topic_ids=' + CONTENTS_RELATED_TOPIC_IDS + '&limit=50';
 			break;
 
 			case 'topic' :
@@ -1776,7 +1772,6 @@ AWS.Dropdown =
 					break;
 
 					case 'publish' :
-					case 'topic_question' :
 						$.each(result, function (i, a)
 						{
 							$(selector).parent().find('.aw-dropdown-list').append(Hogan.compile(AW_TEMPLATE.questionDropdownList).render(
