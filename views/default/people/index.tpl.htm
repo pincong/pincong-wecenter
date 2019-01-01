@@ -4,7 +4,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="aw-content-wrap clearfix">
-				<div class="col-sm-12 col-md-9 aw-main-content">
+				<div class="col-sm-12 aw-main-content">
 				<!-- main-content -->
 					<!-- 用户数据内容 -->
 					<div class="aw-mod aw-user-detail-box">
@@ -53,8 +53,7 @@
 								<!-- end 封禁 -->
 							</h1>
 							<p class="text-color-999"><?php echo UF::signature($this->user, $this->user_info['permission']['is_administrator']); ?></p>
-							<p class="aw-user-flag">
-							</p>
+							<p class="aw-user-flag"></p>
 						</div>
 
 						<div class="mod-body clearfix">
@@ -90,14 +89,81 @@
 						<!-- tabs -->
 
 							<div class="tab-pane active" id="overview">
+								<!-- 概述 -->
 								<div class="aw-mod">
 									<div class="mod-head">
 										<h3><?php _e('概述'); ?></h3>
 									</div>
 									<div class="mod-body">
-										<span class="text-color-999"><?php echo $this->user['reputation_group_name']; ?></span>
+										<span><?php echo $this->user['reputation_group_name']; ?></span>
+										<p></p>
 									</div>
 								</div>
+
+								<div class="aw-mod people-following">
+									<div class="mod-body">
+										<a onclick="$('#page_focus').click();$('#focus .aw-tabs ul li').eq(0).click();$.scrollTo($('#focus').offset()['top'], 600, {queue:true})" class="pull-right font-size-12"><?php _e('更多'); ?> »</a>
+										<span>
+											<?php _e('关注 %s 人', '<em class="aw-text-color-blue">' . $this->user['friend_count'] . '</em>'); ?>
+										</span>
+										<?php if ($this->friends_list) { ?>
+										<p>
+											<?php foreach ($this->friends_list AS $key => $val) { ?>
+												<a class="aw-user-name" data-id="<?php echo $val['uid']; ?>" href="<?php echo UF::url($val); ?>"><img src="<?php echo UF::avatar($val, 'mid', $this->user_info['permission']['is_administrator']); ?>" alt="" /></a>
+											<?php } ?>
+										</p>
+										<?php } ?>
+									</div>
+								</div>
+
+								<hr style="margin:0 20px; border-color: #e2e2e2;">
+
+								<div class="aw-mod people-following">
+									<div class="mod-body">
+										<a onclick="$('#page_focus').click();$('#focus .aw-tabs ul li').eq(1).click();$.scrollTo($('#focus').offset()['top'], 600, {queue:true})" class="pull-right font-size-12"><?php _e('更多'); ?> »</a>
+										<span>
+											<?php _e('被 %s 人关注', '<em class="aw-text-color-blue">' . $this->user['fans_count'] . '</em>'); ?>
+										</span>
+										<?php if ($this->fans_list) { ?>
+										<p>
+											<?php foreach ($this->fans_list AS $key => $val) { ?>
+											<?php if ($val['forbidden'] AND !$this->user_info['permission']['is_administrator']) continue; ?>
+												<a class="aw-user-name" data-id="<?php echo $val['uid']; ?>" href="<?php echo UF::url($val); ?>"><img src="<?php echo UF::avatar($val, 'mid'); ?>" alt=""></a>
+											<?php } ?>
+										</p>
+										<?php } ?>
+									</div>
+								</div>
+
+								<hr style="margin:0 20px; border-color: #e2e2e2;">
+
+								<div class="aw-mod people-following">
+									<div class="mod-body">
+										<?php _e('关注 %s 话题', '<em class="aw-text-color-blue">' . $this->user['topic_focus_count'] . '</em>'); ?>
+										<?php if ($this->focus_topics) { ?>
+										<div class="aw-topic-bar">
+											<div class="tag-bar clearfix">
+												<?php foreach ($this->focus_topics AS $key => $val) { ?>
+													<span class="topic-tag">
+														<a href="topic/<?php echo $val['url_token']; ?>" class="text" data-id="<?php echo $val['topic_id']; ?>"><?php echo $val['topic_title']; ?></a>
+													</span>
+												<?php } ?>
+											</div>
+										</div>
+										<?php } ?>
+									</div>
+								</div>
+
+								<hr style="margin:0 20px; border-color: #e2e2e2;">
+
+								<div class="aw-mod people-following">
+									<div class="mod-body">
+										<span class="aw-text-color-666">
+											<?php _e('主页访问量'); ?> : <?php _e('%s 次访问', $this->user['views_count']); ?>
+										</span>
+									</div>
+								</div>
+							<!-- end 概述 -->
 							</div>
 
 							<div class="tab-pane" id="questions">
@@ -299,67 +365,6 @@
 					</div>
 				<!-- end main-content -->
 				</div>
-
-				<!-- 侧边栏 -->
-				<div class="col-sm-12 col-md-3 aw-side-bar">
-					<div class="aw-mod people-following">
-						<div class="mod-body">
-							<a onclick="$('#page_focus').click();$('#focus .aw-tabs ul li').eq(0).click();$.scrollTo($('#focus').offset()['top'], 600, {queue:true})" class="pull-right font-size-12"><?php _e('更多'); ?> »</a>
-							<span>
-								<?php _e('关注 %s 人', '<em class="aw-text-color-blue">' . $this->user['friend_count'] . '</em>'); ?>
-							</span>
-							<?php if ($this->friends_list) { ?>
-							<p>
-								<?php foreach ($this->friends_list AS $key => $val) { ?>
-									<a class="aw-user-name" data-id="<?php echo $val['uid']; ?>" href="<?php echo UF::url($val); ?>"><img src="<?php echo UF::avatar($val, 'mid', $this->user_info['permission']['is_administrator']); ?>" alt="" /></a>
-								<?php } ?>
-							</p>
-							<?php } ?>
-						</div>
-					</div>
-					<div class="aw-mod people-following">
-						<div class="mod-body">
-							<a onclick="$('#page_focus').click();$('#focus .aw-tabs ul li').eq(1).click();$.scrollTo($('#focus').offset()['top'], 600, {queue:true})" class="pull-right font-size-12"><?php _e('更多'); ?> »</a>
-							<span>
-								<?php _e('被 %s 人关注', '<em class="aw-text-color-blue">' . $this->user['fans_count'] . '</em>'); ?>
-							</span>
-
-							<?php if ($this->fans_list) { ?>
-							<p>
-								<?php foreach ($this->fans_list AS $key => $val) { ?>
-								<?php if ($val['forbidden'] AND !$this->user_info['permission']['is_administrator']) continue; ?>
-									<a class="aw-user-name" data-id="<?php echo $val['uid']; ?>" href="<?php echo UF::url($val); ?>"><img src="<?php echo UF::avatar($val, 'mid'); ?>" alt=""></a>
-								<?php } ?>
-							</p>
-							<?php } ?>
-						</div>
-
-					</div>
-					<div class="aw-mod people-following">
-						<div class="mod-body">
-							<?php _e('关注 %s 话题', '<em class="aw-text-color-blue">' . $this->user['topic_focus_count'] . '</em>'); ?>
-							<?php if ($this->focus_topics) { ?>
-							<div class="aw-topic-bar">
-								<div class="tag-bar clearfix">
-									<?php foreach ($this->focus_topics AS $key => $val) { ?>
-										<span class="topic-tag">
-											<a href="topic/<?php echo $val['url_token']; ?>" class="text" data-id="<?php echo $val['topic_id']; ?>"><?php echo $val['topic_title']; ?></a>
-										</span>
-									<?php } ?>
-								</div>
-							</div>
-							<?php } ?>
-						</div>
-					</div>
-					<div class="aw-mod">
-						<div class="mod-body">
-							<span class="aw-text-color-666">
-								<?php _e('主页访问量'); ?> : <?php _e('%s 次访问', $this->user['views_count']); ?>
-							</span>
-						</div>
-					</div>
-				</div>
-				<!-- end 侧边栏 -->
 			</div>
 		</div>
 	</div>
