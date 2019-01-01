@@ -399,15 +399,15 @@ a.aw-load-more-content{display: block;}
 .aw-topic-bar .aw-notopic-sort{margin:0;}
 .aw-question-detail{margin-bottom:30px;padding:10px 20px 0;}
 .aw-question-detail > .mod-head{position: relative;padding-bottom:14px;border-bottom:1px solid #f5f5f5;}
-.aw-question-detail .mod-head h1{max-width:500px;margin:0;font-size:20px;line-height: 30px;}
-.aw-question-detail .mod-head .operate{position: absolute;right: 0;top: 0;}
-.aw-question-detail .mod-head .operate > a{margin:0 5px 0 0;}
-.aw-question-detail .mod-head .operate .btn-group .btn{width:46px;height:34px;line-height: 20px;padding:0;font-size: 26px;box-shadow: none;}
-.aw-question-detail .mod-head .operate .btn-group.open .btn{background-color:#499ef3;color: #fff;}
-.aw-question-detail .mod-head .operate .btn-group .icon-cog{margin-right: 0px;color: #666;}
-.aw-question-detail .mod-head .operate .aw-dropdown {min-width: 120px;}
-.aw-question-detail .mod-head .operate .dropdown-menu ul li{padding:5px 10px;}
-.aw-question-detail .mod-head .operate .dropdown-menu ul li a{display: block;}
+.aw-question-detail .mod-head h1{margin:0;font-size:20px;line-height: 30px;}
+.aw-topic-bar .tag-bar .ooperate{position: absolute;right: 0;top: 0;}
+.aw-topic-bar .tag-bar .operate > a{margin:0 5px 0 0;}
+.aw-topic-bar .tag-bar .operate .btn-group .btn{width:46px;height:34px;line-height: 20px;padding:0;font-size: 26px;box-shadow: none;}
+.aw-topic-bar .tag-bar .operate .btn-group.open .btn{background-color:#499ef3;color: #fff;}
+.aw-topic-bar .tag-bar .operate .btn-group .icon-cog{margin-right: 0px;color: #666;}
+.aw-topic-bar .tag-bar .operate .aw-dropdown {min-width: 120px;}
+.aw-topic-bar .tag-bar .operate .dropdown-menu ul li{padding:5px 10px;}
+.aw-topic-bar .tag-bar .operate .dropdown-menu ul li a{display: block;}
 .aw-question-detail .content{padding:10px 0;}
 .aw-question-detail .meta{min-height: 20px;line-height: 20px;font-size: 12px;}
 .aw-question-detail .meta > span, .aw-question-detail .meta > a, .aw-question-detail .meta > div{margin-right:15px;}
@@ -558,7 +558,6 @@ blockquote {margin: 0 40px;padding: 0 15px;font-size: 14px;color: #777;border-le
 .aw-article-list .aw-item .more{font-size: 12px;}
 
 /* 文章详情页 */
-.aw-article-content .aw-question-detail h1{max-width: 600px;}
 .aw-article-content .aw-question-detail .mod-body{margin-bottom: 20px;}
 .aw-article-content .aw-question-detail .mod-body > a{line-height: 38px;margin:0 0 0 15px !important;}
 .aw-article-vote a{border-radius: 4px;background-color: #f5f5f5;}
