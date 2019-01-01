@@ -746,7 +746,8 @@ var ABP = {};
 
 		this.$seekbar = this.$$('.ab-control .ab-seekbar');
 		this.seekbarDrag = new ABP.Drag(this.$seekbar);
-		this.$seekbarProgress = this.$seekbar.children('div');
+		this.$seekbarProgress = this.$seekbar.children('div:eq(1)');
+		this.$seekbarBufferedProgress = this.$seekbar.children('div:eq(0)');
 
 		this.$timeLabel = this.$$('.ab-control .ab-time-label');
 		this.$currentTimeLabel = this.$timeLabel.children('.ab-time-label-current');
@@ -859,6 +860,16 @@ var ABP = {};
 			self._updateDurationLabel();
 		};
 
+		this.video.onloadeddata = function() {
+			//console.log('loadeddata');
+			self._updateSeekbarBuffered();
+		};
+
+		this.video.onprogress = function() {
+			//console.log('progress');
+			self._updateSeekbarBuffered();
+		};
+
 		this.video.onseeking = function() {
 			//console.log('seeking');
 			self.showLoader();
@@ -949,6 +960,13 @@ var ABP = {};
 	Player.prototype._updateSeekbar = function() {
 		var width = (this.video.currentTime / this.video.duration * 100) + '%';
 		this.$seekbarProgress.css('width', width);
+	};
+
+	Player.prototype._updateSeekbarBuffered = function() {
+		var timeRanges = this.video.buffered;
+		if (!timeRanges || !timeRanges.length) return;
+		var width = (timeRanges.end(timeRanges.length - 1) / this.video.duration * 100) + '%';
+		this.$seekbarBufferedProgress.css('width', width);
 	};
 
 	Player.prototype._updateCurrentTimeLabel = function() {
@@ -1071,7 +1089,7 @@ var ABP = {};
 <div class="c-table ab-player">
 	<div class="c-row ab-video">
 		<div class="c-cell ccl">
-			<video width="100%">Your browser does not support HTML5 video.</video>
+			<video width="100%" autobuffer="true">Your browser does not support HTML5 video.</video>
 			<div class="ccl-container"></div>
 			<div class="ab-poster"></div>
 			<div class="c-loader ab-loader"></div>
@@ -1090,7 +1108,7 @@ var ABP = {};
 			<div class="c-cell c-separator"></div>
 			<div class="c-cell"><!-- 进度条 宽度自适应 -->
 				<div class="c-slider ab-seekbar">
-					<!--<div class="c-slider-fill"></div>-->
+					<div class="c-slider-fill"></div>
 					<div class="c-slider-fill c-slider-fill-dark"></div>
 				</div>
 			</div>
