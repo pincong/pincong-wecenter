@@ -142,7 +142,7 @@
 							<?php if ($this->comments) { ?>
 
 								<?php foreach ($this->comments AS $key => $val) { ?>
-								<?php if ($val['user_info']['forbidden']) continue; ?>
+								<?php if ($val['user_info']['forbidden'] AND !$this->user_info['permission']['is_administrator']) continue; ?>
 								<div class="aw-item" id="answer_list_<?php echo $val['id']; ?>">
 									<div class="mod-head">
 										<?php if ($val['anonymous'] == 0) { ?>
