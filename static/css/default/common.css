@@ -282,7 +282,7 @@ a.aw-load-more-content{display: block;}
 .aw-feed-list .aw-item.active{margin:0 -20px;padding:14px 20px;background-color: #fffed1;}
 .aw-feed-list .aw-item .mod-head, .aw-feed-list .aw-item .mod-body, .aw-feed-list .aw-item .mod-footer{position: relative;width:100%;padding-left: 50px;}
 .aw-feed-list .aw-item .mod-head{z-index: 1;}
-.aw-feed-list .aw-item .mod-footer{min-height:28px;line-height: 28px;margin-top:10px;}
+.aw-feed-list .aw-item .mod-footer{min-height:28px;line-height: 28px;margin-top:10px;font-size: 12px;}
 .aw-feed-list .aw-item .aw-user-img{position:absolute;left:0;top:3px;width: 40px;height: 40px;}
 .aw-feed-list .aw-item .aw-user-img img{width: 40px;height: 40px;}
 .aw-feed-list .aw-item .close{display: none;}
@@ -980,6 +980,7 @@ blockquote {margin: 0 40px;padding: 0 15px;font-size: 14px;color: #777;border-le
 .aw-common-list .aw-question-content h4{font-size: 15px;}
 .aw-question-detail .mod-body{font-size: 15px; color:#333;}
 .aw-feed-list .mod-body{font-size: 15px; color:#333;}
+.aw-feed-list .aw-item .mod-footer .aw-comment-box .aw-comment-list {font-size: 14px;}
 
 
 @media (max-width: 992px){
