@@ -1,9 +1,10 @@
 <?php if ($this->users_list) { ?>
 <?php foreach ($this->users_list AS $key => $val) { ?>
+<?php if ($val['forbidden'] AND !$this->user_info['permission']['is_administrator']) continue; ?>
 <li>
 	<div class="mod-head">
 		<a class="aw-user-img pull-left aw-border-radius-5" data-id="<?php echo $val['uid']; ?>" href="<?php echo UF::url($val); ?>">
-			<img src="<?php echo UF::avatar($val, 'mid', $this->user_info['permission']['is_administrator']); ?>" alt="" />
+			<img src="<?php echo UF::avatar($val, 'mid'); ?>" alt="" />
 		</a>
 		<p><a href="<?php echo UF::url($val); ?>"><?php echo UF::name($val); ?></a></p>
 	</div>
