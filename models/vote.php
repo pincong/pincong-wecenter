@@ -208,8 +208,15 @@ class vote_class extends AWS_MODEL
 		// factor设定
 		if ($word_count > $bonus_min_count)
 		{
-			$sigmoid = 1 / (1 + exp(-6 * (($word_count - $bonus_min_count) / $bonus_max_count - 0.5))) ;
-			$factor = $bonus_factor / 2 * (1 + $sigmoid) * $factor;
+			$sigmoid = 1 / (1 + exp(-6 * (($word_count - $bonus_min_count) / $bonus_max_count - 0.5)));
+			if ($word_count < ($bonus_max_count / 2))
+			{
+				$factor = $bonus_factor / 4 * (1 + $sigmoid) * $factor;
+			}
+			else
+			{
+				$factor = $bonus_factor / 2 * (1 + $sigmoid) * $factor;
+			}
 			$factor = round($factor, 6);
 		}
 		return $factor;
