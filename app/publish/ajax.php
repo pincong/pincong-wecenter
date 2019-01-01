@@ -47,6 +47,11 @@ class ajax extends AWS_CONTROLLER
 
     public function modify_question_action()
     {
+        if (human_valid('question_valid_hour') AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
+        {
+            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写正确的验证码')));
+        }
+
         if (!$question_info = $this->model('question')->get_question_info_by_id($_POST['question_id']))
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
@@ -83,11 +88,6 @@ class ajax extends AWS_CONTROLLER
         }
 
         $question_detail = my_trim($_POST['question_detail']);
-
-        if (human_valid('question_valid_hour') AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写正确的验证码')));
-        }
 
         // !注: 来路检测后面不能再放报错提示
         if (!valid_post_hash($_POST['post_hash']))
@@ -153,6 +153,11 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
         }
 
+        if (human_valid('question_valid_hour') AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
+        {
+            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写正确的验证码')));
+        }
+
         $question_content = my_trim($_POST['question_content']);
         if (!$question_content)
         {
@@ -190,11 +195,6 @@ class ajax extends AWS_CONTROLLER
         }
 
         $question_detail = my_trim($_POST['question_detail']);
-
-        if (human_valid('question_valid_hour') AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写正确的验证码')));
-        }
 
         if ($_POST['topics'])
         {
@@ -272,6 +272,11 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
         }
 
+        if (human_valid('question_valid_hour') AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
+        {
+            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写正确的验证码')));
+        }
+
         $article_title = my_trim($_POST['title']);
         if (!$article_title)
         {
@@ -304,11 +309,6 @@ class ajax extends AWS_CONTROLLER
         }
 
         $article_content = my_trim($_POST['message']);
-
-        if (human_valid('question_valid_hour') AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写正确的验证码')));
-        }
 
         if ($_POST['topics'])
         {
@@ -378,6 +378,11 @@ class ajax extends AWS_CONTROLLER
 
     public function modify_article_action()
     {
+        if (human_valid('question_valid_hour') AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
+        {
+            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写正确的验证码')));
+        }
+
         if (!$article_info = $this->model('article')->get_article_info_by_id($_POST['article_id']))
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文章不存在')));
@@ -419,11 +424,6 @@ class ajax extends AWS_CONTROLLER
         }
 
         $article_content = my_trim($_POST['message']);
-
-        if (human_valid('question_valid_hour') AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写正确的验证码')));
-        }
 
         // !注: 来路检测后面不能再放报错提示
         if (!valid_post_hash($_POST['post_hash']))
