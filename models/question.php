@@ -539,9 +539,9 @@ class question_class extends AWS_MODEL
 
 		if ($question_invites = $this->fetch_row('question_invite', 'question_id = ' . intval($question_id) . ' AND sender_uid = ' . $question_info['published_uid'] . ' AND recipients_uid = ' . intval($recipients_uid)))
 		{
-			$this->model('integral')->process($question_info['published_uid'], 'INVITE_ANSWER', get_setting('integral_system_config_invite_answer'), '邀请回答成功 #' . $question_id, $question_id);
+			$this->model('currency')->process($question_info['published_uid'], 'INVITE_ANSWER', get_setting('currency_system_config_invite_answer'), '邀请回答成功 #' . $question_id, $question_id);
 
-			$this->model('integral')->process($recipients_uid, 'ANSWER_INVITE', -get_setting('integral_system_config_invite_answer'), '回复邀请回答 #' . $question_id, $question_id);
+			$this->model('currency')->process($recipients_uid, 'ANSWER_INVITE', -get_setting('currency_system_config_invite_answer'), '回复邀请回答 #' . $question_id, $question_id);
 		}
 
 		$this->delete('question_invite', 'question_id = ' . intval($question_id) . ' AND recipients_uid = ' . intval($recipients_uid));
@@ -1065,9 +1065,9 @@ class question_class extends AWS_MODEL
 				'thanks_count' => $this->count('question_thanks', 'question_id = ' . intval($question_id)),
 			), 'question_id = ' . intval($question_id));
 
-			$this->model('integral')->process($uid, 'QUESTION_THANKS', get_setting('integral_system_config_thanks'), '感谢问题 #' . $question_id, $question_id);
+			$this->model('currency')->process($uid, 'QUESTION_THANKS', get_setting('currency_system_config_thanks'), '感谢问题 #' . $question_id, $question_id);
 
-			$this->model('integral')->process($question_info['published_uid'], 'THANKS_QUESTION', -get_setting('integral_system_config_thanks'), '问题被感谢 #' . $question_id, $question_id);
+			$this->model('currency')->process($question_info['published_uid'], 'THANKS_QUESTION', -get_setting('currency_system_config_thanks'), '问题被感谢 #' . $question_id, $question_id);
 
 			//$this->model('account')->update_thanks_count($question_info['published_uid']);
 
@@ -1194,18 +1194,18 @@ class question_class extends AWS_MODEL
 
 			if ($vote_value == 1)
 			{
-				if (!$this->model('integral')->fetch_log($uid, 'AGREE_QUESTION', $question_id))
+				if (!$this->model('currency')->fetch_log($uid, 'AGREE_QUESTION', $question_id))
 				{
-					$this->model('integral')->process($uid, 'AGREE_QUESTION', get_setting('integral_system_config_agree_question'), '赞同问题 #' . $question_id, $question_id);
-					$this->model('integral')->process($question_uid, 'QUESTION_AGREED', get_setting('integral_system_config_question_agreed'), '问题被赞同 #' . $question_id, $question_id);
+					$this->model('currency')->process($uid, 'AGREE_QUESTION', get_setting('currency_system_config_agree_question'), '赞同问题 #' . $question_id, $question_id);
+					$this->model('currency')->process($question_uid, 'QUESTION_AGREED', get_setting('currency_system_config_question_agreed'), '问题被赞同 #' . $question_id, $question_id);
 				}
 			}
 			else if ($vote_value == -1)
 			{
-				if (!$this->model('integral')->fetch_log($uid, 'DISAGREE_QUESTION', $question_id))
+				if (!$this->model('currency')->fetch_log($uid, 'DISAGREE_QUESTION', $question_id))
 				{
-					$this->model('integral')->process($uid, 'DISAGREE_QUESTION', get_setting('integral_system_config_disagree_question'), '反对问题 #' . $question_id, $question_id);
-					$this->model('integral')->process($question_uid, 'QUESTION_DISAGREED', get_setting('integral_system_config_question_disagreed'), '问题被反对 #' . $question_id, $question_id);
+					$this->model('currency')->process($uid, 'DISAGREE_QUESTION', get_setting('currency_system_config_disagree_question'), '反对问题 #' . $question_id, $question_id);
+					$this->model('currency')->process($question_uid, 'QUESTION_DISAGREED', get_setting('currency_system_config_question_disagreed'), '问题被反对 #' . $question_id, $question_id);
 				}
 			}
 

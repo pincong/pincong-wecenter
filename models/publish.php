@@ -64,11 +64,11 @@ class publish_class extends AWS_MODEL
 
 		ACTION_LOG::save_action($uid, $question_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ANSWER_QUESTION, $answer_content, $answer_id, null, intval($anonymous));
 
-		if ($question_info['published_uid'] != $uid AND !$this->model('integral')->fetch_log($uid, 'ANSWER_QUESTION', $question_id))
+		if ($question_info['published_uid'] != $uid AND !$this->model('currency')->fetch_log($uid, 'ANSWER_QUESTION', $question_id))
 		{
-			$this->model('integral')->process($uid, 'ANSWER_QUESTION', get_setting('integral_system_config_answer_question'), '回答问题 #' . $question_id, $question_id);
+			$this->model('currency')->process($uid, 'ANSWER_QUESTION', get_setting('currency_system_config_answer_question'), '回答问题 #' . $question_id, $question_id);
 
-			$this->model('integral')->process($question_info['published_uid'], 'QUESTION_ANSWER', get_setting('integral_system_config_question_answered'), '问题被回答 #' . $question_id, $question_id);
+			$this->model('currency')->process($question_info['published_uid'], 'QUESTION_ANSWER', get_setting('currency_system_config_question_answered'), '问题被回答 #' . $question_id, $question_id);
 		}
 
 		$this->model('question')->save_last_answer($question_id, $answer_id);
@@ -145,7 +145,7 @@ class publish_class extends AWS_MODEL
 			// 记录日志
 			ACTION_LOG::save_action($uid, $question_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_QUESTION, $question_content, $question_detail, null, intval($anonymous));
 
-			$this->model('integral')->process($uid, 'NEW_QUESTION', get_setting('integral_system_config_new_question'), '发起问题 #' . $question_id, $question_id);
+			$this->model('currency')->process($uid, 'NEW_QUESTION', get_setting('currency_system_config_new_question'), '发起问题 #' . $question_id, $question_id);
 
 			$this->model('posts')->set_posts_index($question_id, 'question');
 
@@ -204,7 +204,7 @@ class publish_class extends AWS_MODEL
 			// 记录日志
 			ACTION_LOG::save_action($uid, $article_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_ARTICLE, $title, $message, null, intval($anonymous));
 
-            $this->model('integral')->process($uid, 'NEW_ARTICLE', get_setting('integral_system_config_new_article'), '发起文章 #' . $article_id, $article_id);
+            $this->model('currency')->process($uid, 'NEW_ARTICLE', get_setting('currency_system_config_new_article'), '发起文章 #' . $article_id, $article_id);
 
 			$this->model('posts')->set_posts_index($article_id, 'article');
 
@@ -281,11 +281,11 @@ class publish_class extends AWS_MODEL
 
 		ACTION_LOG::save_action($uid, $article_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_COMMENT_ARTICLE, $message, $comment_id, null, intval($anonymous));
 
-		if ($article_info['uid'] != $uid AND !$this->model('integral')->fetch_log($uid, 'COMMENT_ARTICLE', $article_id))
+		if ($article_info['uid'] != $uid AND !$this->model('currency')->fetch_log($uid, 'COMMENT_ARTICLE', $article_id))
 		{
-			$this->model('integral')->process($uid, 'COMMENT_ARTICLE', get_setting('integral_system_config_comment_article'), '评论文章 #' . $article_id, $article_id);
+			$this->model('currency')->process($uid, 'COMMENT_ARTICLE', get_setting('currency_system_config_comment_article'), '评论文章 #' . $article_id, $article_id);
 
-			$this->model('integral')->process($article_info['uid'], 'ARTICLE_COMMENTED', get_setting('integral_system_config_article_commented'), '文章被评论 #' . $article_id, $article_id);
+			$this->model('currency')->process($article_info['uid'], 'ARTICLE_COMMENTED', get_setting('currency_system_config_article_commented'), '文章被评论 #' . $article_id, $article_id);
 		}
 
 		$this->model('posts')->set_posts_index($article_id, 'article');

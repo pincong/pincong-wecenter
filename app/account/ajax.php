@@ -507,9 +507,9 @@ class ajax extends AWS_CONTROLLER
 		}
 	}
 
-	public function integral_log_action()
+	public function currency_log_action()
 	{
-		if ($log = $this->model('integral')->fetch_all('integral_log', 'uid = ' . $this->user_id, 'id DESC', (intval($_GET['page']) * 10) . ', 10'))
+		if ($log = $this->model('currency')->fetch_all('currency_log', 'uid = ' . $this->user_id, 'id DESC', (intval($_GET['page']) * 10) . ', 10'))
 		{
 			foreach ($log AS $key => $val)
 			{
@@ -520,10 +520,10 @@ class ajax extends AWS_CONTROLLER
 			}
 
 			TPL::assign('log', $log);
-			TPL::assign('log_detail', $this->model('integral')->parse_log_item($parse_items));
+			TPL::assign('log_detail', $this->model('currency')->parse_log_item($parse_items));
 		}
 
-		TPL::output('account/ajax/integral_log');
+		TPL::output('account/ajax/currency_log');
 	}
 
 	public function verify_action()

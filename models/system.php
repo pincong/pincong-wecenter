@@ -451,7 +451,7 @@ class system_class extends AWS_MODEL
 	{
 		$delete_tables = array(
 			'favorite',
-			'integral_log',
+			'currency_log',
 			'question_focus',
 			'topic_focus',
 			'users_attrib',

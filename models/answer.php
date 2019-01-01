@@ -387,18 +387,18 @@ class answer_class extends AWS_MODEL
 
 			if ($vote_value == 1)
 			{
-				if (!$this->model('integral')->fetch_log($uid, 'AGREE_ANSWER', $answer_info['answer_id']))
+				if (!$this->model('currency')->fetch_log($uid, 'AGREE_ANSWER', $answer_info['answer_id']))
 				{
-					$this->model('integral')->process($uid, 'AGREE_ANSWER', get_setting('integral_system_config_agree_answer'), '赞同回复 #' . $answer_info['answer_id'], $answer_info['answer_id']);
-					$this->model('integral')->process($answer_uid, 'ANSWER_AGREED', get_setting('integral_system_config_answer_agreed'), '回复被赞同 #' . $answer_info['answer_id'], $answer_info['answer_id']);
+					$this->model('currency')->process($uid, 'AGREE_ANSWER', get_setting('currency_system_config_agree_answer'), '赞同回复 #' . $answer_info['answer_id'], $answer_info['answer_id']);
+					$this->model('currency')->process($answer_uid, 'ANSWER_AGREED', get_setting('currency_system_config_answer_agreed'), '回复被赞同 #' . $answer_info['answer_id'], $answer_info['answer_id']);
 				}
 			}
 			else if ($vote_value == -1)
 			{
-				if (!$this->model('integral')->fetch_log($uid, 'DISAGREE_ANSWER', $answer_info['answer_id']))
+				if (!$this->model('currency')->fetch_log($uid, 'DISAGREE_ANSWER', $answer_info['answer_id']))
 				{
-					$this->model('integral')->process($uid, 'DISAGREE_ANSWER', get_setting('integral_system_config_disagree_answer'), '反对回复 #' . $answer_info['answer_id'], $answer_info['answer_id']);
-					$this->model('integral')->process($answer_uid, 'ANSWER_DISAGREED', get_setting('integral_system_config_answer_disagreed'), '回复被反对 #' . $answer_info['answer_id'], $answer_info['answer_id']);
+					$this->model('currency')->process($uid, 'DISAGREE_ANSWER', get_setting('currency_system_config_disagree_answer'), '反对回复 #' . $answer_info['answer_id'], $answer_info['answer_id']);
+					$this->model('currency')->process($answer_uid, 'ANSWER_DISAGREED', get_setting('currency_system_config_answer_disagreed'), '回复被反对 #' . $answer_info['answer_id'], $answer_info['answer_id']);
 				}
 			}
 
@@ -752,8 +752,8 @@ class answer_class extends AWS_MODEL
 
 		$answer_info = $this->get_answer_by_id($answer_id);
 
-		$this->model('integral')->process($uid, 'ANSWER_THANKS', get_setting('integral_system_config_thanks'), '感谢回复 #' . $answer_info['answer_id'], $answer_info['answer_id']);
-		$this->model('integral')->process($answer_info['uid'], 'THANKS_ANSWER', -get_setting('integral_system_config_thanks'), '回复被感谢 #' . $answer_info['answer_id'], $answer_info['answer_id']);
+		$this->model('currency')->process($uid, 'ANSWER_THANKS', get_setting('currency_system_config_thanks'), '感谢回复 #' . $answer_info['answer_id'], $answer_info['answer_id']);
+		$this->model('currency')->process($answer_info['uid'], 'THANKS_ANSWER', -get_setting('currency_system_config_thanks'), '回复被感谢 #' . $answer_info['answer_id'], $answer_info['answer_id']);
 
 		//$this->model('account')->update_thanks_count($answer_info['uid']);
 
@@ -768,7 +768,7 @@ class answer_class extends AWS_MODEL
 			return false;
 		}
 
-		$this->model('integral')->process($answer_info['uid'], 'BEST_ANSWER', get_setting('integral_system_config_best_answer'), '问题 #' . $answer_info['question_id'] . ' 最佳回复', $answer_info['answer_id']);
+		$this->model('currency')->process($answer_info['uid'], 'BEST_ANSWER', get_setting('currency_system_config_best_answer'), '问题 #' . $answer_info['question_id'] . ' 最佳回复', $answer_info['answer_id']);
 
 		$this->shutdown_update('question', array(
 			'best_answer' => $answer_info['answer_id']

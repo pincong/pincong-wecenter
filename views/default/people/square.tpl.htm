@@ -26,7 +26,7 @@
 								<div class="meta">
 									<span><i class="icon icon-prestige"></i><?php _e('威望'); ?> : <b><?php echo $val['reputation']; ?></b></span>
 									<span><i class="icon icon-agree"></i><?php _e('赞同'); ?> : <b><?php echo $val['agree_count']; ?></b></span>
-									<span><i class="icon icon-score"></i><?php _e('%s', get_setting('integral_name')); ?> : <b><?php echo $val['integral']; ?></b> <?php _e('%s', get_setting('integral_unit')); ?></span>
+									<span><i class="icon icon-score"></i><?php _e('%s', get_setting('currency_name')); ?> : <b><?php echo $val['currency']; ?></b> <?php _e('%s', get_setting('currency_unit')); ?></span>
 								</div>
 								
 								<?php if ($val['uid'] != $this->user_id AND $this->user_id) { ?>

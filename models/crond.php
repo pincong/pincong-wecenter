@@ -113,7 +113,7 @@ class crond_class extends AWS_MODEL
     public function hour()
     {
         $this->model('message')->delete_expired_messages();
-        $this->model('integral')->delete_expired_logs();
+        $this->model('currency')->delete_expired_logs();
         ACTION_LOG::delete_expired_data();
         $this->model('notify')->delete_expired_data();
     }

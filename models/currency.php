@@ -18,12 +18,12 @@ if (!defined('IN_ANWSION'))
 	die;
 }
 
-class integral_class extends AWS_MODEL
+class currency_class extends AWS_MODEL
 {
-	public function process($uid, $action, $integral, $note = '', $item_id = null)
+	public function process($uid, $action, $currency, $note = '', $item_id = null)
 	{
-		$integral = intval($integral);
-		if ($integral == 0)
+		$currency = intval($currency);
+		if ($currency == 0)
 		{
 			return false;
 		}
@@ -33,12 +33,12 @@ class integral_class extends AWS_MODEL
 		{
 			return false;
 		}
-		$balance = intval($user_info['integral']) + $integral;
+		$balance = intval($user_info['currency']) + $currency;
 
-		$log_id = $this->insert('integral_log', array(
+		$log_id = $this->insert('currency_log', array(
 			'uid' => intval($uid),
 			'action' => $action,
-			'integral' => $integral,
+			'currency' => $currency,
 			'balance' => $balance,
 			'note' => $note,
 			'item_id' => intval($item_id),
@@ -46,7 +46,7 @@ class integral_class extends AWS_MODEL
 		));
 
 		$this->update('users', array(
-			'integral' => $balance
+			'currency' => $balance
 		), 'uid = ' . intval($uid));
 
 		return $log_id;
@@ -59,7 +59,7 @@ class integral_class extends AWS_MODEL
         {
             $where .= ' AND item_id = ' . intval($item_id);
         }
-		return $this->fetch_row('integral_log', $where);
+		return $this->fetch_row('currency_log', $where);
 	}
 
 	public function parse_log_item($parse_items)
@@ -239,7 +239,7 @@ class integral_class extends AWS_MODEL
 		return $result;
 	}
 
-    public function check_balance_for_operation($integral, $key)
+    public function check_balance_for_operation($currency, $key)
     {
         $reward = intval(get_setting($key));
         if ($reward >= 0)
@@ -247,8 +247,8 @@ class integral_class extends AWS_MODEL
             return true;
         }
 
-        $integral += $reward;
-        if ($integral < 0)
+        $currency += $reward;
+        if ($currency < 0)
         {
             return false;
         }
@@ -258,7 +258,7 @@ class integral_class extends AWS_MODEL
 
 	public function delete_expired_logs()
 	{
-		$days = intval(get_setting('expiration_integral_logs'));
+		$days = intval(get_setting('expiration_currency_logs'));
 		if (!$days)
 		{
 			return;
@@ -269,7 +269,7 @@ class integral_class extends AWS_MODEL
 		{
 			$time_before = 0;
 		}
-		$this->delete('integral_log', 'time < ' . $time_before);
+		$this->delete('currency_log', 'time < ' . $time_before);
 	}
 
 }

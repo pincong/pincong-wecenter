@@ -456,7 +456,7 @@ class account_class extends AWS_MODEL
                 'is_first_login' => 1
             ), 'uid = ' . intval($uid));
 
-            $this->model('integral')->process($uid, 'REGISTER', get_setting('integral_system_config_register'), '初始资本');
+            $this->model('currency')->process($uid, 'REGISTER', get_setting('currency_system_config_register'), '初始资本');
         }
 
         return $uid;

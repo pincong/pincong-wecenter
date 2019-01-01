@@ -48,10 +48,10 @@
                                 <td><?php echo date_friendly($val['reg_time']); ?></td>
                                 <td><?php echo $val['reputation']; ?></td>
                                 <td><?php echo $val['agree_count']; ?></td>
-                                <td><?php echo $val['integral']; ?></td>
+                                <td><?php echo $val['currency']; ?></td>
                                 <td class="nowrap">
                                     <a href="admin/user/edit/uid-<?php echo $val['uid']; ?>" class="icon icon-edit md-tip" title="<?php _e('编辑'); ?>"></a>
-                                    <a href="admin/user/integral_log/uid-<?php echo $val['uid']; ?>" class="icon icon-signup md-tip" title="<?php _e('积分日志'); ?>"></a>
+                                    <a href="admin/user/currency_log/uid-<?php echo $val['uid']; ?>" class="icon icon-signup md-tip" title="<?php _e('积分日志'); ?>"></a>
                                     <?php if ($val['uid'] != $this->user_id) { ?><a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/admin/ajax/forbidden_user/' , 'uid=<?php echo $val['uid']; ?>&status=<?php echo intval($val['forbidden']) ? 0 : 1; ?>');" title="<?php if ($val['forbidden']) { ?><?php _e('解除封禁'); ?><?php } else { ?><?php _e('封禁用户'); ?><?php } ?>" class="icon <?php if ($val['forbidden']) { ?>icon-plus<?php } else { ?>icon-forbid<?php } ?> md-tip"><?php } ?>
                                 </td>
                             </tr>
@@ -104,13 +104,13 @@
                         <div class="col-sm-6 col-xs-9">
                             <div class="row">
                                 <div class="col-xs-11  col-sm-5 mod-double">
-                                    <input type="text" class="form-control" name="integral_min" value="<?php echo $_GET['integral_min']; ?>" />
+                                    <input type="text" class="form-control" name="currency_min" value="<?php echo $_GET['currency_min']; ?>" />
                                 </div>
                                 <span class="mod-symbol col-xs-1 col-sm-1">
                                 -
                                 </span>
                                 <div class="col-xs-11 col-sm-5">
-                                    <input type="text" class="form-control" name="integral_max" value="<?php echo $_GET['integral_max']; ?>" />
+                                    <input type="text" class="form-control" name="currency_max" value="<?php echo $_GET['currency_max']; ?>" />
                                 </div>
                             </div>
                         </div>

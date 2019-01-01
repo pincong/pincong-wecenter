@@ -59,11 +59,11 @@ class setting extends AWS_CONTROLLER
 		TPL::output('account/setting/privacy');
 	}
 
-	public function integral_action()
+	public function currency_action()
 	{
-		$this->crumb(AWS_APP::lang()->_t('我的%s', get_setting('integral_name')), '/account/setting/integral/');
+		$this->crumb(AWS_APP::lang()->_t('我的%s', get_setting('currency_name')), '/account/setting/currency/');
 
-		TPL::output('account/setting/integral');
+		TPL::output('account/setting/currency');
 	}
 
 	public function security_action()

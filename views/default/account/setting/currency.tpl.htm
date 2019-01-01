@@ -3,7 +3,7 @@
 
 <div class="aw-mod aw-user-setting-points">
 	<div class="aw-mod-head">
-		<h3><?php _e('当前%s', get_setting('integral_name')); ?>:<span class="aw-text-color-orange"><?php echo $this->user_info['integral']; ?></span></h3>
+		<h3><?php _e('当前%s', get_setting('currency_name')); ?>:<span class="aw-text-color-orange"><?php echo $this->user_info['currency']; ?></span></h3>
 	</div>
 	<div class="aw-mod-body">
 		<table class="table table-hover">
@@ -16,11 +16,11 @@
                     <th width="40%"><?php _e('相关信息'); ?></th>
 				</tr>
 			</thead>
-            <tbody id="contents_integral_log">
+            <tbody id="contents_currency_log">
             </tbody>
 	    </table>
 	    <!-- 加载更多内容 -->
-		<a class="aw-load-more-content" id="integral_log_more">
+		<a class="aw-load-more-content" id="currency_log_more">
 			<span><?php _e('更多'); ?>...</span>
 		</a>
 		<!-- end 加载更多内容 -->
@@ -29,7 +29,7 @@
 
 <script type="text/javascript">
 	$(document).ready(function () {
-		AWS.load_list_view(G_BASE_URL + '/account/ajax/integral_log/', $('#integral_log_more'), $('#contents_integral_log'));
+		AWS.load_list_view(G_BASE_URL + '/account/ajax/currency_log/', $('#currency_log_more'), $('#contents_currency_log'));
 	});
 </script>
 

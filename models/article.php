@@ -389,18 +389,18 @@ class article_class extends AWS_MODEL
 			{
 				if ($rating == 1)
 				{
-					if (!$this->model('integral')->fetch_log($uid, 'AGREE_ARTICLE', $item_id))
+					if (!$this->model('currency')->fetch_log($uid, 'AGREE_ARTICLE', $item_id))
 					{
-						$this->model('integral')->process($uid, 'AGREE_ARTICLE', get_setting('integral_system_config_agree_question'), '赞同文章 #' . $item_id, $item_id);
-						$this->model('integral')->process($item_uid, 'ARTICLE_AGREED', get_setting('integral_system_config_question_agreed'), '文章被赞同 #' . $item_id, $item_id);
+						$this->model('currency')->process($uid, 'AGREE_ARTICLE', get_setting('currency_system_config_agree_question'), '赞同文章 #' . $item_id, $item_id);
+						$this->model('currency')->process($item_uid, 'ARTICLE_AGREED', get_setting('currency_system_config_question_agreed'), '文章被赞同 #' . $item_id, $item_id);
 					}
 				}
 				else
 				{
-					if (!$this->model('integral')->fetch_log($uid, 'DISAGREE_ARTICLE', $item_id))
+					if (!$this->model('currency')->fetch_log($uid, 'DISAGREE_ARTICLE', $item_id))
 					{
-						$this->model('integral')->process($uid, 'DISAGREE_ARTICLE', get_setting('integral_system_config_disagree_question'), '反对文章 #' . $item_id, $item_id);
-						$this->model('integral')->process($item_uid, 'ARTICLE_DISAGREED', get_setting('integral_system_config_question_disagreed'), '文章被反对 #' . $item_id, $item_id);
+						$this->model('currency')->process($uid, 'DISAGREE_ARTICLE', get_setting('currency_system_config_disagree_question'), '反对文章 #' . $item_id, $item_id);
+						$this->model('currency')->process($item_uid, 'ARTICLE_DISAGREED', get_setting('currency_system_config_question_disagreed'), '文章被反对 #' . $item_id, $item_id);
 					}
 				}
 			}
@@ -408,18 +408,18 @@ class article_class extends AWS_MODEL
 			{
 				if ($rating == 1)
 				{
-					if (!$this->model('integral')->fetch_log($uid, 'AGREE_ARTICLE_COMMENT', $item_id))
+					if (!$this->model('currency')->fetch_log($uid, 'AGREE_ARTICLE_COMMENT', $item_id))
 					{
-						$this->model('integral')->process($uid, 'AGREE_ARTICLE_COMMENT', get_setting('integral_system_config_agree_answer'), '赞同文章评论 #' . $item_id, $item_id);
-						$this->model('integral')->process($item_uid, 'ARTICLE_COMMENT_AGREED', get_setting('integral_system_config_answer_agreed'), '文章评论被赞同 #' . $item_id, $item_id);
+						$this->model('currency')->process($uid, 'AGREE_ARTICLE_COMMENT', get_setting('currency_system_config_agree_answer'), '赞同文章评论 #' . $item_id, $item_id);
+						$this->model('currency')->process($item_uid, 'ARTICLE_COMMENT_AGREED', get_setting('currency_system_config_answer_agreed'), '文章评论被赞同 #' . $item_id, $item_id);
 					}
 				}
 				else
 				{
-					if (!$this->model('integral')->fetch_log($uid, 'DISAGREE_ARTICLE_COMMENT', $item_id))
+					if (!$this->model('currency')->fetch_log($uid, 'DISAGREE_ARTICLE_COMMENT', $item_id))
 					{
-						$this->model('integral')->process($uid, 'DISAGREE_ARTICLE_COMMENT', get_setting('integral_system_config_disagree_answer'), '反对文章评论 #' . $item_id, $item_id);
-						$this->model('integral')->process($item_uid, 'ARTICLE_COMMENT_DISAGREED', get_setting('integral_system_config_answer_disagreed'), '文章评论被反对 #' . $item_id, $item_id);
+						$this->model('currency')->process($uid, 'DISAGREE_ARTICLE_COMMENT', get_setting('currency_system_config_disagree_answer'), '反对文章评论 #' . $item_id, $item_id);
+						$this->model('currency')->process($item_uid, 'ARTICLE_COMMENT_DISAGREED', get_setting('currency_system_config_answer_disagreed'), '文章评论被反对 #' . $item_id, $item_id);
 					}
 				}
 			}
@@ -650,9 +650,9 @@ class article_class extends AWS_MODEL
 				'thanks_count' => $this->count('article_thanks', 'article_id = ' . intval($article_id)),
 			), 'id = ' . intval($article_id));
 
-			$this->model('integral')->process($uid, 'ARTICLE_THANKS', get_setting('integral_system_config_thanks'), '感谢文章 #' . $article_id, $article_id);
+			$this->model('currency')->process($uid, 'ARTICLE_THANKS', get_setting('currency_system_config_thanks'), '感谢文章 #' . $article_id, $article_id);
 
-			$this->model('integral')->process($article_info['uid'], 'THANKS_ARTICLE', -get_setting('integral_system_config_thanks'), '文章被感谢 #' . $article_id, $article_id);
+			$this->model('currency')->process($article_info['uid'], 'THANKS_ARTICLE', -get_setting('currency_system_config_thanks'), '文章被感谢 #' . $article_id, $article_id);
 
 			//$this->model('account')->update_thanks_count($article_info['uid']);
 

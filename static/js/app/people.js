@@ -13,7 +13,7 @@ $(document).ready(function () {
 		
 	AWS.load_list_view(G_BASE_URL + '/people/ajax/topics/uid-' + PEOPLE_USER_ID, $('#bp_user_topics_more'), $('#contents_user_topics'));	// 话题
 
-	AWS.load_list_view(G_BASE_URL + '/account/ajax/integral_log/', $('#bp_user_integral'), $('#contents_user_integral'));	// 积分
+	AWS.load_list_view(G_BASE_URL + '/account/ajax/currency_log/', $('#bp_user_currency'), $('#contents_user_currency'));	// 积分
 	
 	if (window.location.hash)
 	{

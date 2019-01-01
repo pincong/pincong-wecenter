@@ -541,7 +541,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('删除过期积分日志'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="expiration_integral_logs" type="text" class="form-control" value="<?php echo $this->setting['expiration_integral_logs']; ?>"/>
+                                <input name="expiration_currency_logs" type="text" class="form-control" value="<?php echo $this->setting['expiration_currency_logs']; ?>"/>
 
                                 <div class="help-block"><?php _e('单位'); ?>: 天, <?php _e('填写 0 则不启用'); ?></div>
                             </div>
@@ -1024,7 +1024,7 @@
             </table>
         </div>
 
-        <?php } else if ($_GET['category'] == 'integral') { ?>
+        <?php } else if ($_GET['category'] == 'currency') { ?>
         <div class="mod-head">
             <h3>
                 <span class="pull-left"><?php _e('积分与威望'); ?></span>
@@ -1039,7 +1039,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('积分规则名称'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_rule_name" type="text" class="form-control" value="<?php echo $this->setting['integral_rule_name']; ?>"/>
+                                <input name="currency_rule_name" type="text" class="form-control" value="<?php echo $this->setting['currency_rule_name']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1049,7 +1049,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('积分名称'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_name" type="text" class="form-control" value="<?php echo $this->setting['integral_name']; ?>"/>
+                                <input name="currency_name" type="text" class="form-control" value="<?php echo $this->setting['currency_name']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1059,7 +1059,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('积分单位'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_unit" type="text" class="form-control" value="<?php echo $this->setting['integral_unit']; ?>"/>
+                                <input name="currency_unit" type="text" class="form-control" value="<?php echo $this->setting['currency_unit']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1069,7 +1069,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('新用户注册默认拥有积分'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_system_config_register" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_register']; ?>"/>
+                                <input name="currency_system_config_register" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_register']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1079,7 +1079,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('发起问题'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_system_config_new_question" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_new_question']; ?>"/>
+                                <input name="currency_system_config_new_question" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_new_question']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1089,7 +1089,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('回复问题'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_system_config_answer_question" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_answer_question']; ?>"/>
+                                <input name="currency_system_config_answer_question" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_answer_question']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1099,7 +1099,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('问题被回复'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_system_config_question_answered" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_question_answered']; ?>"/>
+                                <input name="currency_system_config_question_answered" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_question_answered']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1109,7 +1109,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('回复被评为最佳回复'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_system_config_best_answer" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_best_answer']; ?>"/>
+                                <input name="currency_system_config_best_answer" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_best_answer']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1119,7 +1119,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('送出感谢'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_system_config_thanks" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_thanks']; ?>"/>
+                                <input name="currency_system_config_thanks" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_thanks']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1129,7 +1129,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('发起者邀请用户回答问题且收到答案'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_system_config_invite_answer" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_invite_answer']; ?>"/>
+                                <input name="currency_system_config_invite_answer" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_invite_answer']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1139,7 +1139,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('提升问题或文章'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_system_config_move_up_question" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_move_up_question']; ?>"/>
+                                <input name="currency_system_config_move_up_question" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_move_up_question']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1149,7 +1149,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('问题或文章被提升'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_system_config_question_moved_up" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_question_moved_up']; ?>"/>
+                                <input name="currency_system_config_question_moved_up" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_question_moved_up']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1159,7 +1159,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('下沉问题或文章'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_system_config_move_down_question" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_move_down_question']; ?>"/>
+                                <input name="currency_system_config_move_down_question" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_move_down_question']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1169,7 +1169,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('问题或文章被下沉'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_system_config_question_moved_down" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_question_moved_down']; ?>"/>
+                                <input name="currency_system_config_question_moved_down" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_question_moved_down']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1180,7 +1180,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('发起文章'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_system_config_new_article" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_new_article']; ?>"/>
+                                <input name="currency_system_config_new_article" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_new_article']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1190,7 +1190,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('评论文章'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_system_config_comment_article" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_comment_article']; ?>"/>
+                                <input name="currency_system_config_comment_article" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_comment_article']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1200,7 +1200,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('文章被评论'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_system_config_article_commented" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_article_commented']; ?>"/>
+                                <input name="currency_system_config_article_commented" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_article_commented']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1211,7 +1211,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('赞同问题或文章'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_system_config_agree_question" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_agree_question']; ?>"/>
+                                <input name="currency_system_config_agree_question" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_agree_question']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1221,7 +1221,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('问题或文章被赞同'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_system_config_question_agreed" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_question_agreed']; ?>"/>
+                                <input name="currency_system_config_question_agreed" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_question_agreed']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1231,7 +1231,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('反对问题或文章'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_system_config_disagree_question" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_disagree_question']; ?>"/>
+                                <input name="currency_system_config_disagree_question" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_disagree_question']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1241,7 +1241,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('问题或文章被反对'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_system_config_question_disagreed" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_question_disagreed']; ?>"/>
+                                <input name="currency_system_config_question_disagreed" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_question_disagreed']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1252,7 +1252,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('赞同回复'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_system_config_agree_answer" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_agree_answer']; ?>"/>
+                                <input name="currency_system_config_agree_answer" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_agree_answer']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1262,7 +1262,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('回复被赞同'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_system_config_answer_agreed" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_answer_agreed']; ?>"/>
+                                <input name="currency_system_config_answer_agreed" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_answer_agreed']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1272,7 +1272,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('反对回复'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_system_config_disagree_answer" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_disagree_answer']; ?>"/>
+                                <input name="currency_system_config_disagree_answer" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_disagree_answer']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1282,7 +1282,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('回复被反对'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="integral_system_config_answer_disagreed" type="text" class="form-control" value="<?php echo $this->setting['integral_system_config_answer_disagreed']; ?>"/>
+                                <input name="currency_system_config_answer_disagreed" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_answer_disagreed']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1304,7 +1304,7 @@
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('奖励每日活跃用户多少积分'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="reward_daily_active_users_integral" type="text" class="form-control" value="<?php echo $this->setting['reward_daily_active_users_integral']; ?>"/>
+                                <input name="reward_daily_active_users_currency" type="text" class="form-control" value="<?php echo $this->setting['reward_daily_active_users_currency']; ?>"/>
                                 <span class="help-block"><?php _e('留空则不启用'); ?></span>
                             </div>
                         </div>

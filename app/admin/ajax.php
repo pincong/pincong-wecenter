@@ -1144,7 +1144,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
         H::ajax_json_output(AWS_APP::RSM(null, 1, null));
     }
 
-    public function integral_process_action()
+    public function currency_process_action()
     {
         if (!$_POST['uid'])
         {
@@ -1156,10 +1156,10 @@ class ajax extends AWS_ADMIN_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请填写理由')));
         }
 
-        $this->model('integral')->process($_POST['uid'], 'AWARD', $_POST['integral'], $_POST['note']);
+        $this->model('currency')->process($_POST['uid'], 'AWARD', $_POST['currency'], $_POST['note']);
 
         H::ajax_json_output(AWS_APP::RSM(array(
-            'url' => get_js_url('/admin/user/integral_log/uid-' . $_POST['uid'])
+            'url' => get_js_url('/admin/user/currency_log/uid-' . $_POST['uid'])
         ), 1, null));
     }
 

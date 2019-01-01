@@ -508,18 +508,18 @@ class posts_class extends AWS_MODEL
         switch ($post_type)
         {
             case 'question':
-                $this->model('integral')->process($uid, 'MOVE_UP_QUESTION', get_setting('integral_system_config_move_up_question'), '提升问题 #' . $post_id, $post_id);
+                $this->model('currency')->process($uid, 'MOVE_UP_QUESTION', get_setting('currency_system_config_move_up_question'), '提升问题 #' . $post_id, $post_id);
                 if ($result['uid'] != $uid)
                 {
-                    $this->model('integral')->process($result['uid'], 'QUESTION_MOVED_UP', get_setting('integral_system_config_question_moved_up'), '问题被提升 #' . $post_id, $post_id);
+                    $this->model('currency')->process($result['uid'], 'QUESTION_MOVED_UP', get_setting('currency_system_config_question_moved_up'), '问题被提升 #' . $post_id, $post_id);
                 }
                 break;
 
             case 'article':
-                $this->model('integral')->process($uid, 'MOVE_UP_ARTICLE', get_setting('integral_system_config_move_up_question'), '提升文章 #' . $post_id, $post_id);
+                $this->model('currency')->process($uid, 'MOVE_UP_ARTICLE', get_setting('currency_system_config_move_up_question'), '提升文章 #' . $post_id, $post_id);
                 if ($result['uid'] != $uid)
                 {
-                    $this->model('integral')->process($result['uid'], 'ARTICLE_MOVED_UP', get_setting('integral_system_config_question_moved_up'), '文章被提升 #' . $post_id, $post_id);
+                    $this->model('currency')->process($result['uid'], 'ARTICLE_MOVED_UP', get_setting('currency_system_config_question_moved_up'), '文章被提升 #' . $post_id, $post_id);
                 }
                 break;
         }
@@ -553,18 +553,18 @@ class posts_class extends AWS_MODEL
         switch ($post_type)
         {
             case 'question':
-                $this->model('integral')->process($uid, 'MOVE_DOWN_QUESTION', get_setting('integral_system_config_move_down_question'), '下沉问题 #' . $post_id, $post_id);
+                $this->model('currency')->process($uid, 'MOVE_DOWN_QUESTION', get_setting('currency_system_config_move_down_question'), '下沉问题 #' . $post_id, $post_id);
                 if ($result['uid'] != $uid)
                 {
-                    $this->model('integral')->process($result['uid'], 'QUESTION_MOVED_DOWN', get_setting('integral_system_config_question_moved_down'), '问题被下沉 #' . $post_id, $post_id);
+                    $this->model('currency')->process($result['uid'], 'QUESTION_MOVED_DOWN', get_setting('currency_system_config_question_moved_down'), '问题被下沉 #' . $post_id, $post_id);
                 }
                 break;
 
             case 'article':
-                $this->model('integral')->process($uid, 'MOVE_DOWN_ARTICLE', get_setting('integral_system_config_move_down_question'), '下沉文章 #' . $post_id, $post_id);
+                $this->model('currency')->process($uid, 'MOVE_DOWN_ARTICLE', get_setting('currency_system_config_move_down_question'), '下沉文章 #' . $post_id, $post_id);
                 if ($result['uid'] != $uid)
                 {
-                    $this->model('integral')->process($result['uid'], 'ARTICLE_MOVED_DOWN', get_setting('integral_system_config_question_moved_down'), '文章被下沉 #' . $post_id, $post_id);
+                    $this->model('currency')->process($result['uid'], 'ARTICLE_MOVED_DOWN', get_setting('currency_system_config_question_moved_down'), '文章被下沉 #' . $post_id, $post_id);
                 }
                 break;
         }

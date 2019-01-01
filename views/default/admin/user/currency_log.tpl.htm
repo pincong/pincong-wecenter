@@ -21,34 +21,34 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php if ($this->integral_log) { ?>
-					<?php foreach ($this->integral_log AS $key => $val) { ?>
+					<?php if ($this->currency_log) { ?>
+					<?php foreach ($this->currency_log AS $key => $val) { ?>
 					<tr>
 						<td><?php echo date_friendly($val['time']); ?></td>
-						<td><?php if ($val['integral'] > 0) { ?><?php _e('收入'); ?><?php } else { ?><?php _e('支出'); ?><?php } ?></td>
-						<td><span style="color:<?php if ($val['integral'] > 0) { ?>#F5A900<?php } ?>"><?php echo $val['integral']; ?></span></td>
+						<td><?php if ($val['currency'] > 0) { ?><?php _e('收入'); ?><?php } else { ?><?php _e('支出'); ?><?php } ?></td>
+						<td><span style="color:<?php if ($val['currency'] > 0) { ?>#F5A900<?php } ?>"><?php echo $val['currency']; ?></span></td>
 						<td><?php echo $val['balance']; ?></td>
 						<td><?php echo $val['note'] ;?></td>
-						<td><?php if ($this->integral_log_detail[$val['id']]) { ?><a href="<?php echo $this->integral_log_detail[$val['id']]['url']; ?>" target="_blank"><?php echo $this->integral_log_detail[$val['id']]['title']; ?></a><?php } else { ?> - <?php } ?></td>
+						<td><?php if ($this->currency_log_detail[$val['id']]) { ?><a href="<?php echo $this->currency_log_detail[$val['id']]['url']; ?>" target="_blank"><?php echo $this->currency_log_detail[$val['id']]['title']; ?></a><?php } else { ?> - <?php } ?></td>
 					</tr>
 					<?php } ?>
 					<?php } ?>
 				</tbody>
 			</table>
 			<div class="mod-table-foot">
-			    <form id="integral_form" action="admin/ajax/integral_process/" method="post" onsubmit="return false">
+			    <form id="currency_form" action="admin/ajax/currency_process/" method="post" onsubmit="return false">
 				<input name="uid" type="hidden" value="<?php echo $this->user['uid']; ?>">
 			        <div class="col-sm-10 col-md-2 clearfix">
 			            <div class="form-group">
 			                <span class="col-sm-6 mod-category-foot"><?php _e('当前积分'); ?>:</span>
-			                <span class="col-sm-6 "><?php echo $this->user['integral']; ?></span>
+			                <span class="col-sm-6 "><?php echo $this->user['currency']; ?></span>
 			            </div>
 			        </div>
 			        <div class="col-sm-12 col-md-3">
 			            <div class="form-group">
 			                <span class="col-sm-4 mod-category-foot"><?php _e('操作积分') ?>:</span>
 			                <div class="col-sm-8 col-xs-12">
-			                    <input type="text" class="form-control" name="integral" />
+			                    <input type="text" class="form-control" name="currency" />
 			                </div>
 			            </div>
 			        </div>
@@ -61,7 +61,7 @@
 			            </div>
 			        </div>
 			        <div class="col-sm-10 col-md-4">
-			            <a onclick="AWS.ajax_post($('#integral_form'));" class="btn-primary btn"><?php _e('提交'); ?></a>
+			            <a onclick="AWS.ajax_post($('#currency_form'));" class="btn-primary btn"><?php _e('提交'); ?></a>
 			            <div class="pull-right"><?php echo $this->pagination; ?></div>
 			        </div>
 			    </form>

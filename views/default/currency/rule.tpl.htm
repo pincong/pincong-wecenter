@@ -1,0 +1,114 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+
+<div class="aw-container-wrap">
+    <div class="container aw-custom-page">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="aw-point-rule">
+                    <h1><?php _e(get_setting('currency_rule_name')); ?></h1>
+
+                    <dl>
+                        <dt><?php _e('新用户注册默认拥有'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_register') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_register'), get_setting('currency_unit'))); ?></span></dd>
+                    </dl>
+                    <dl>
+                        <dt><?php _e('发起问题'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_new_question') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_new_question'), get_setting('currency_unit'))); ?></span></dd>
+                    </dl>
+                    <dl>
+                        <dt><?php _e('回复问题'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_answer_question') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_answer_question'), get_setting('currency_unit'))); ?></span></dd>
+                    </dl>
+                    <dl>
+                        <dt><?php _e('问题被回复'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_question_answered') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_question_answered'), get_setting('currency_unit'))); ?></span></dd>
+                    </dl>
+                    <dl>
+                        <dt><?php _e('回复被评为最佳回复'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_best_answer') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_best_answer'), get_setting('currency_unit'))); ?></span></dd>
+                    </dl>
+                    <dl>
+                        <dt><?php _e('送出感谢'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_thanks') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_thanks'), get_setting('currency_unit'))); ?></span></dd>
+                    </dl>
+                    <dl>
+                        <dt><?php _e('收到感谢'); ?></dt>
+                        <dd><span class="<?php if (-get_setting('currency_system_config_thanks') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(-get_setting('currency_system_config_thanks'), get_setting('currency_unit'))); ?></span></dd>
+                    </dl>
+                    <dl>
+                        <dt><?php _e('发起者邀请用户回答问题且收到答案'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_invite_answer') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_invite_answer'), get_setting('currency_unit'))); ?></span></dd>
+                    </dl>
+                    <dl>
+                        <dt><?php _e('回复问题发起者的邀请'); ?></dt>
+                        <dd><span class="<?php if (-get_setting('currency_system_config_invite_answer') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(-get_setting('currency_system_config_invite_answer'), get_setting('currency_unit'))); ?></span></dd>
+                    </dl>
+                    <dl>
+                        <dt><?php _e('提升问题或文章'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_move_up_question') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_move_up_question'), get_setting('currency_unit'))); ?></span></dd>
+                    </dl>
+                    <dl>
+                        <dt><?php _e('问题或文章被提升'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_question_moved_up') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_question_moved_up'), get_setting('currency_unit'))); ?></span></dd>
+                    </dl>
+                    <dl>
+                        <dt><?php _e('下沉问题或文章'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_move_down_question') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_move_down_question'), get_setting('currency_unit'))); ?></span></dd>
+                    </dl>
+                    <dl>
+                        <dt><?php _e('问题或文章被下沉'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_question_moved_down') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_question_moved_down'), get_setting('currency_unit'))); ?></span></dd>
+                    </dl>
+                    <dl>
+                        <dt><?php _e('发起文章'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_new_article') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_new_article'), get_setting('currency_unit'))); ?></span></dd>
+                    </dl>
+                    <dl>
+                        <dt><?php _e('评论文章'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_comment_article') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_comment_article'), get_setting('currency_unit'))); ?></span></dd>
+                    </dl>
+                    <dl>
+                        <dt><?php _e('文章被评论'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_article_commented') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_article_commented'), get_setting('currency_unit'))); ?></span></dd>
+                    </dl>
+
+                    <dl>
+                        <dt><?php _e('赞同问题或文章'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_agree_question') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_agree_question'), get_setting('currency_unit'))); ?></span></dd>
+                    </dl>
+                    <dl>
+                        <dt><?php _e('问题或文章被赞同'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_question_agreed') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_question_agreed'), get_setting('currency_unit'))); ?></span></dd>
+                    </dl>
+                    <dl>
+                        <dt><?php _e('反对问题或文章'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_disagree_question') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_disagree_question'), get_setting('currency_unit'))); ?></span></dd>
+                    </dl>
+                    <dl>
+                        <dt><?php _e('问题或文章被反对'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_question_disagreed') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_question_disagreed'), get_setting('currency_unit'))); ?></span></dd>
+                    </dl>
+
+                    <dl>
+                        <dt><?php _e('赞同回复'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_agree_answer') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_agree_answer'), get_setting('currency_unit'))); ?></span></dd>
+                    </dl>
+                    <dl>
+                        <dt><?php _e('回复被赞同'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_answer_agreed') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_answer_agreed'), get_setting('currency_unit'))); ?></span></dd>
+                    </dl>
+                    <dl>
+                        <dt><?php _e('反对回复'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_disagree_answer') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_disagree_answer'), get_setting('currency_unit'))); ?></span></dd>
+                    </dl>
+                    <dl>
+                        <dt><?php _e('回复被反对'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_answer_disagreed') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_answer_disagreed'), get_setting('currency_unit'))); ?></span></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php TPL::output('global/footer.tpl.htm'); ?>

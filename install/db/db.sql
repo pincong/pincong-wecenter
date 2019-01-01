@@ -309,12 +309,12 @@ CREATE TABLE IF NOT EXISTS `aws_inbox_dialog` (
 -- Data exporting was unselected.
 
 
--- Dumping structure for table panic.aws_integral_log
-CREATE TABLE IF NOT EXISTS `aws_integral_log` (
+-- Dumping structure for table panic.aws_currency_log
+CREATE TABLE IF NOT EXISTS `aws_currency_log` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT '0',
   `action` varchar(64) DEFAULT NULL,
-  `integral` int(11) DEFAULT NULL,
+  `currency` int(11) DEFAULT NULL,
   `note` varchar(128) DEFAULT NULL,
   `balance` int(11) DEFAULT '0',
   `item_id` int(11) DEFAULT '0',
@@ -323,7 +323,7 @@ CREATE TABLE IF NOT EXISTS `aws_integral_log` (
   KEY `uid` (`uid`),
   KEY `action` (`action`),
   KEY `time` (`time`),
-  KEY `integral` (`integral`)
+  KEY `currency` (`currency`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
@@ -744,7 +744,7 @@ CREATE TABLE IF NOT EXISTS `aws_users` (
   `views_count` int(10) DEFAULT '0' COMMENT '个人主页查看数量',
   `reputation` int(10) DEFAULT '0' COMMENT '威望',
   `reputation_update_time` int(10) DEFAULT '0' COMMENT '威望更新',
-  `integral` int(10) DEFAULT '0',
+  `currency` int(10) DEFAULT '0',
   `user_name_update_time` int(10) DEFAULT '0',
   `verified` varchar(32) DEFAULT NULL,
   `default_timezone` varchar(32) DEFAULT NULL,
@@ -757,7 +757,7 @@ CREATE TABLE IF NOT EXISTS `aws_users` (
   KEY `agree_count` (`agree_count`),
   KEY `thanks_count` (`thanks_count`),
   KEY `forbidden` (`forbidden`),
-  KEY `integral` (`integral`),
+  KEY `currency` (`currency`),
   KEY `verified` (`verified`),
   KEY `answer_count` (`answer_count`),
   KEY `last_login` (`last_login`)

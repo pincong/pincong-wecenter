@@ -38,7 +38,7 @@
                             <div class="meta">
                                 <span><i class="icon icon-prestige"></i> <?php _e('威望'); ?> : <em class="aw-text-color-green"><?php echo $this->user['reputation']; ?></em></span>
                                 <span><i class="icon icon-agree"></i> <?php _e('赞同'); ?> : <em class="aw-text-color-orange"><?php echo $this->user['agree_count']; ?></em></span>
-                                <span><i class="icon icon-score"></i> <?php _e('%s', get_setting('integral_name')); ?> : <em class="aw-text-color-orange"><?php echo $this->user['integral']; ?></em> <?php _e('%s', get_setting('integral_unit')); ?></span>
+                                <span><i class="icon icon-score"></i> <?php _e('%s', get_setting('currency_name')); ?> : <em class="aw-text-color-orange"><?php echo $this->user['currency']; ?></em> <?php _e('%s', get_setting('currency_unit')); ?></span>
                             </div>
 
                         </div>
@@ -52,7 +52,7 @@
                                 <li><a href="#actions" id="page_actions" data-toggle="tab"><?php _e('动态'); ?></a></li>
                                 <li><a href="#detail" id="page_detail" data-toggle="tab"><?php _e('详细资料'); ?></a></li>
                                 <?php if ($this->user_id == $this->user['uid']) { ?>
-                                <li><a href="#integral" id="page_integral" data-toggle="tab"><?php _e('我的%s', get_setting('integral_name')); ?></a></li>
+                                <li><a href="#currency" id="page_currency" data-toggle="tab"><?php _e('我的%s', get_setting('currency_name')); ?></a></li>
                                 <?php } ?>
                             </ul>
                         </div>
@@ -273,7 +273,7 @@
                                             <p class="meta">
                                                 <span><i class="icon icon-prestige"></i><?php _e('威望'); ?>: <em class="aw-text-color-green"><?php echo $this->user['reputation']; ?></em></span>
                                                 <span><i class="icon icon-agree"></i><?php _e('赞同'); ?>: <em class="aw-text-color-orange"><?php echo $this->user['agree_count']; ?></em></span>
-                                                <span><i class="icon icon-score"></i><?php _e('%s', get_setting('integral_name')); ?>: <em class="aw-text-color-orange"><?php echo $this->user['integral']; ?></em> <?php _e('%s', get_setting('integral_unit')); ?></span>
+                                                <span><i class="icon icon-score"></i><?php _e('%s', get_setting('currency_name')); ?>: <em class="aw-text-color-orange"><?php echo $this->user['currency']; ?></em> <?php _e('%s', get_setting('currency_unit')); ?></span>
                                             </p>
                                         </dd>
                                     </dl>
@@ -282,10 +282,10 @@
                                 </div>
                             </div>
                             <?php if ($this->user_id == $this->user['uid']) { ?>
-                            <div class="tab-pane" id="integral">
+                            <div class="tab-pane" id="currency">
                                 <div class="aw-mod">
                                     <div class="mod-head">
-                                        <h3><i class="icon icon-point"></i><?php _e('我的%s', get_setting('integral_name')); ?></h3>
+                                        <h3><i class="icon icon-point"></i><?php _e('我的%s', get_setting('currency_name')); ?></h3>
                                     </div>
                                     <div class="mod-body">
                                         <table class="table table-hover aw-table">
@@ -298,13 +298,13 @@
                                                     <th width="40%"><?php _e('相关信息'); ?></th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="contents_user_integral">
+                                            <tbody id="contents_user_currency">
                                             </tbody>
                                         </table>
                                     </div>
                                     <div class="mod-footer">
                                         <!-- 加载更多内容 -->
-                                        <a class="aw-load-more-content" id="bp_user_integral">
+                                        <a class="aw-load-more-content" id="bp_user_currency">
                                             <span><?php _e('更多'); ?></span>
                                         </a>
                                         <!-- end 加载更多内容 -->

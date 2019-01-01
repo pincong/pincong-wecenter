@@ -56,14 +56,14 @@ class user extends AWS_ADMIN_CONTROLLER
             $where[] = 'group_id = ' . intval($_GET['group_id']);
         }
 
-        if ($_GET['integral_min'])
+        if ($_GET['currency_min'])
         {
-            $where[] = 'integral >= ' . intval($_GET['integral_min']);
+            $where[] = 'currency >= ' . intval($_GET['currency_min']);
         }
 
-        if ($_GET['integral_max'])
+        if ($_GET['currency_max'])
         {
-            $where[] = 'integral <= ' . intval($_GET['integral_max']);
+            $where[] = 'currency <= ' . intval($_GET['currency_max']);
         }
 
         if ($_GET['reputation_min'])
@@ -251,13 +251,13 @@ class user extends AWS_ADMIN_CONTROLLER
         TPL::output('admin/user/verify_approval_edit');
     }
 
-    public function integral_log_action()
+    public function currency_log_action()
     {
-        if ($log = $this->model('integral')->fetch_page('integral_log', 'uid = ' . intval($_GET['uid']), 'id DESC', $_GET['page'], 50))
+        if ($log = $this->model('currency')->fetch_page('currency_log', 'uid = ' . intval($_GET['uid']), 'id DESC', $_GET['page'], 50))
         {
             TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-                'base_url' => get_js_url('/admin/user/integral_log/uid-' . intval($_GET['uid'])),
-                'total_rows' => $this->model('integral')->found_rows(),
+                'base_url' => get_js_url('/admin/user/currency_log/uid-' . intval($_GET['uid'])),
+                'total_rows' => $this->model('currency')->found_rows(),
                 'per_page' => 50
             ))->create_links());
 
@@ -269,15 +269,15 @@ class user extends AWS_ADMIN_CONTROLLER
                 );
             }
 
-            TPL::assign('integral_log', $log);
-            TPL::assign('integral_log_detail', $this->model('integral')->parse_log_item($parse_items));
+            TPL::assign('currency_log', $log);
+            TPL::assign('currency_log_detail', $this->model('currency')->parse_log_item($parse_items));
         }
 
         TPL::assign('user', $this->model('account')->get_user_info_by_uid($_GET['uid']));
         TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(402));
 
-        $this->crumb(AWS_APP::lang()->_t('积分日志'), '/admin/user/integral_log/uid-' . $_GET['uid']);
+        $this->crumb(AWS_APP::lang()->_t('积分日志'), '/admin/user/currency_log/uid-' . $_GET['uid']);
 
-        TPL::output('admin/user/integral_log');
+        TPL::output('admin/user/currency_log');
     }
 }
