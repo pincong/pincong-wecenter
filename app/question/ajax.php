@@ -184,7 +184,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在的用户组不允许发布站外链接')));
 		}
 
-		$this->model('answer')->insert_answer_comment($_GET['answer_id'], $this->user_id, $message);
+		$this->model('answer')->insert_answer_comment($_GET['answer_id'], $this->user_id, $message, $_POST['anonymous']);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'item_id' => intval($_GET['answer_id']),
@@ -258,7 +258,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得超过 %s 字', $comment_length_max)));
 		}
 
-		$this->model('question')->insert_question_comment($_GET['question_id'], $this->user_id, $message);
+		$this->model('question')->insert_question_comment($_GET['question_id'], $this->user_id, $message, $_POST['anonymous']);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'item_id' => intval($_GET['question_id']),

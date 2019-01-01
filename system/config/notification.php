@@ -30,7 +30,7 @@ $config['action_details'][notify_class::TYPE_ANSWER_COMMENT] = array(
 	'desc' => AWS_APP::lang()->_t('我的问题评论被回复')
 );
 
-$config['action_details'][notify_class::TYPE_COMMENT_AT_ME] = array(
+$config['action_details'][notify_class::TYPE_QUESTION_COMMENT_AT_ME] = array(
 	'user_setting' => 1,
 	'combine' => 1,
 	'desc' => AWS_APP::lang()->_t('有问题评论提到我')

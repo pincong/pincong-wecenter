@@ -697,19 +697,20 @@ class question_class extends AWS_MODEL
 		$this->model('posts')->set_posts_index($question_id, 'question');
 	}
 
-	public function insert_question_comment($question_id, $uid, $message)
+	public function insert_question_comment($question_id, $uid, $message, $anonymous = 0)
 	{
 		if (!$question_info = $this->model('question')->get_question_info_by_id($question_id))
 		{
 			return false;
 		}
 
-		$message = $this->model('question')->parse_at_user($_POST['message'], false, false, true);
+		$message = $this->model('question')->parse_at_user($message, false, false, true);
 
 		$comment_id = $this->insert('question_comments', array(
 			'uid' => intval($uid),
 			'question_id' => intval($question_id),
 			'message' => htmlspecialchars($message),
+			'anonymous' => intval($anonymous),
 			'time' => fake_time()
 		));
 
@@ -720,7 +721,8 @@ class question_class extends AWS_MODEL
 			$this->model('notify')->send($uid, $question_info['published_uid'], notify_class::TYPE_QUESTION_COMMENT, notify_class::CATEGORY_QUESTION, $question_info['question_id'], array(
 				'from_uid' => $uid,
 				'question_id' => $question_info['question_id'],
-				'comment_id' => $comment_id
+				'comment_id' => $comment_id,
+				'anonymous' => intval($anonymous)
 			));
 
 		}
@@ -734,10 +736,11 @@ class question_class extends AWS_MODEL
 					continue;
 				}
 
-				$this->model('notify')->send($uid, $user_id, notify_class::TYPE_COMMENT_AT_ME, notify_class::CATEGORY_QUESTION, $question_info['question_id'], array(
+				$this->model('notify')->send($uid, $user_id, notify_class::TYPE_QUESTION_COMMENT_AT_ME, notify_class::CATEGORY_QUESTION, $question_info['question_id'], array(
 					'from_uid' => $uid,
 					'question_id' => $question_info['question_id'],
-					'comment_id' => $comment_id
+					'comment_id' => $comment_id,
+					'anonymous' => intval($anonymous)
 				));
 
 			}

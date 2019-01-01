@@ -34,7 +34,7 @@ class notify_class extends AWS_MODEL
 
 	const TYPE_PEOPLE_FOCUS	= 101;	// 被人关注
 	const TYPE_NEW_ANSWER	= 102;	// 关注的问题增加了新回复
-	const TYPE_COMMENT_AT_ME	= 103;	// 有评论@提到我
+	const TYPE_QUESTION_COMMENT_AT_ME	= 103;	// 有评论@提到我
 	const TYPE_INVITE_QUESTION	= 104;	// 被人邀请问题问题
 	const TYPE_ANSWER_COMMENT	= 105;	// 我的回复被评论
 	const TYPE_QUESTION_COMMENT	= 106;	// 我的问题被评论
@@ -326,7 +326,7 @@ class notify_class extends AWS_MODEL
 										$from_uid = $ex_notify['data']['from_uid'];
 									}
 
-									if ($ex_notify['action_type'] == self::TYPE_QUESTION_COMMENT OR $ex_notify['action_type'] == self::TYPE_COMMENT_AT_ME)
+									if ($ex_notify['action_type'] == self::TYPE_QUESTION_COMMENT OR $ex_notify['action_type'] == self::TYPE_QUESTION_COMMENT_AT_ME)
 									{
 										$comment_type[] = 'question';
 									}
@@ -394,7 +394,7 @@ class notify_class extends AWS_MODEL
 										break;
 
 									case self::TYPE_QUESTION_COMMENT:
-									case self::TYPE_COMMENT_AT_ME:
+									case self::TYPE_QUESTION_COMMENT_AT_ME:
 										$querys[] = 'comment_unfold=question';
 										break;
 
@@ -492,7 +492,7 @@ class notify_class extends AWS_MODEL
 				{
 					$notification_ids[] = $ex_notify['notification_id'];
 
-					if ($ex_notify['action_type'] == self::TYPE_QUESTION_COMMENT OR ($ex_notify['action_type'] == self::TYPE_COMMENT_AT_ME AND $ex_notify['data']['comment_type'] == 1))
+					if ($ex_notify['action_type'] == self::TYPE_QUESTION_COMMENT OR ($ex_notify['action_type'] == self::TYPE_QUESTION_COMMENT_AT_ME AND $ex_notify['data']['comment_type'] == 1))
 					{
 						$comment_type[] = 'question';
 					}
@@ -853,7 +853,7 @@ class notify_class extends AWS_MODEL
 							$data[$key]['extend_message'][] = AWS_APP::lang()->_t('他们在回答中提到了你') . ': ' . $users_list;
 							break;
 
-						case self::TYPE_COMMENT_AT_ME:
+						case self::TYPE_QUESTION_COMMENT_AT_ME:
 							$data[$key]['extend_message'][] = AWS_APP::lang()->_t('他们在问题中的评论提到了你') . ': ' . $users_list;
 
 							break;
@@ -951,8 +951,16 @@ class notify_class extends AWS_MODEL
 
 						break;
 
-					case self::TYPE_COMMENT_AT_ME:
-						$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a> ' . AWS_APP::lang()->_t('在问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a> ' . AWS_APP::lang()->_t('中的评论提到了你');
+					case self::TYPE_QUESTION_COMMENT_AT_ME:
+						if ($val['anonymous'])
+						{
+							$data[$key]['message'] = AWS_APP::lang()->_t('匿名用户');
+						}
+						else
+						{
+							$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a>';
+						}
+						$data[$key]['message'] .= ' ' . AWS_APP::lang()->_t('在问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a> ' . AWS_APP::lang()->_t('中的评论提到了你');
 
 						break;
 
@@ -1002,12 +1010,28 @@ class notify_class extends AWS_MODEL
 						break;
 
 					case self::TYPE_ANSWER_COMMENT:
-						$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a> ' . AWS_APP::lang()->_t('评论了你在问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a> ' . AWS_APP::lang()->_t('中的回复');
+						if ($val['anonymous'])
+						{
+							$data[$key]['message'] = AWS_APP::lang()->_t('匿名用户');
+						}
+						else
+						{
+							$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a>';
+						}
+						$data[$key]['message'] .= ' ' . AWS_APP::lang()->_t('评论了你在问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a> ' . AWS_APP::lang()->_t('中的回复');
 
 						break;
 
 					case self::TYPE_QUESTION_COMMENT:
-						$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a> ' . AWS_APP::lang()->_t('评论了你发起的问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a>';
+						if ($val['anonymous'])
+						{
+							$data[$key]['message'] = AWS_APP::lang()->_t('匿名用户');
+						}
+						else
+						{
+							$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a>';
+						}
+						$data[$key]['message'] .= ' ' . AWS_APP::lang()->_t('评论了你发起的问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a>';
 
 						break;
 

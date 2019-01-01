@@ -2513,7 +2513,7 @@ AWS.Init =
 						'comment_form_id': comment_box_id.replace('#', ''),
 						'comment_form_action': comment_form_action
 					}));
-
+/*
 					$(comment_box_id).find('.aw-comment-txt').bind(
 					{
 						focus: function ()
@@ -2529,12 +2529,7 @@ AWS.Init =
 							}
 						}
 					});
-
-					$(comment_box_id).find('.close-comment-box').click(function ()
-					{
-						$(comment_box_id).fadeOut();
-						$(comment_box_id).find('.aw-comment-txt').css('height', $(this).css('line-height'));
-					});
+*/
 				}
 				else
 				{

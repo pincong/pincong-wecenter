@@ -502,7 +502,7 @@ blockquote {margin: 0 40px;padding: 0 15px;font-size: 14px;color: #777;border-le
 .aw-comment-box .aw-comment-list a{color: #155faa;}
 .aw-comment-box form{padding:15px;background-color: #fafafa;}
 .aw-comment-box textarea{height: 32px;margin:0;}
-.aw-comment-box .aw-comment-box-btn{display:none;height:auto;overflow:hidden;margin-top:10px;}
+.aw-comment-box .aw-comment-box-btn{height:auto;overflow:hidden;margin-top:10px;}
 .aw-comment-box .aw-comment-box-btn .btn{margin-left:10px;}
 .aw-comment-box .aw-comment-box-btn .btn.disbaled{pointer-events:none;}
 .aw-comment-list li{position: relative;padding:15px 0 15px 42px;border-top:1px solid #f5f5f5;line-height: 22px;}
