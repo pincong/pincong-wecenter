@@ -29,6 +29,9 @@
 						<?php } ?>
 						<div class="aw-mod aw-mod-publish">
 							<div class="mod-body">
+								<?php if (isset($_POST['ask_user_name'])) { ?>
+								<h3><?php _e('向 %s 提问', $_POST['ask_user_name']); ?></h3>
+								<?php } ?>
 								<h3><?php _e('问题标题'); ?>:</h3>
 								<!-- 问题标题 -->
 								<div class="aw-publish-title<?php if (!$this->question_category_list) { ?> active<?php } ?>">
@@ -51,7 +54,7 @@
 								</div>
 								<!-- end 问题标题 -->
 
-								<h3><?php _e('问题补充 (选填)'); ?>:</h3>
+								<h3><?php _e('问题补充'); ?>:</h3>
 								<div class="aw-mod aw-editor-box">
 									<div class="mod-head">
 										<div class="wmd-panel">

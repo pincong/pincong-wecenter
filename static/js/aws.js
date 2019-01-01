@@ -489,6 +489,26 @@ var AWS =
 		});
 	},
 
+	submit_form: function(url, data, method, target)
+	{
+		data = data || {};
+		method = method || 'post';
+		target = target || '_top';
+		var form = $('<form>', {
+			action: url,
+			method: method,
+			target: target
+		});
+		for (var key in data) {
+			form.append($('<input>', {
+				name: key,
+				value: data[key],
+				type: 'hidden'
+			}));
+		}
+		form.appendTo('body').submit().remove();
+	},
+
 	// 警告弹窗
 	alert: function (text)
 	{
@@ -1644,6 +1664,10 @@ AWS.User =
 		}, 'json');
 	},
 
+	ask_user: function(ask_user_id, ask_user_name)
+	{
+		AWS.submit_form(G_BASE_URL + '/publish/', {ask_user_id: ask_user_id, ask_user_name: ask_user_name});
+	},
 }
 
 AWS.Dropdown =
