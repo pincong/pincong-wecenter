@@ -586,6 +586,8 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
+		set_user_operation_last_time_by_uid('modify', $this->user_id);
+
 		$uid = intval($_POST['uid']);
 		$user_info = $this->model('account')->get_user_info_by_uid($uid);
 
@@ -602,17 +604,43 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		$user_group = $this->model('account')->get_user_group(
-			$user_info['group_id'],
-			$this->model('reputation')->get_reputation_group_id_by_reputation($user_info['reputation'])
-		);
-
-		if ($status AND $user_group['permission']['banning_type'] == 'protected')
+		if ($status)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('操作失败')));
-		}
+			if ($user_info['forbidden'])
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('该用户已经被封禁')));
+			}
 
-		set_user_operation_last_time_by_uid('modify', $this->user_id);
+			$user_group = $this->model('account')->get_user_group_by_user_info($user_info);
+			if ($user_group)
+			{
+				$banning_type = $user_group['permission']['banning_type'];
+			}
+
+			if ($banning_type == 'protected')
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('操作失败')));
+			}
+			elseif ($banning_type == 'permanent')
+			{
+				$status = 3;
+			}
+			elseif ($banning_type == 'temporary')
+			{
+				$status = 4;
+			}
+			else
+			{
+				$status = 1;
+			}
+		}
+		else
+		{
+			if (!$user_info['forbidden'])
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('该用户没有被封禁')));
+			}
+		}
 
 		$this->model('account')->forbid_user_by_uid($uid, $status, $this->user_id, $reason);
 

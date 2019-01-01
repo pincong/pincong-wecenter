@@ -677,9 +677,22 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('多少天以后删除被封禁用户'); ?>:</span>
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('永久封禁的用户多少天以后删除'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <input name="days_delete_forbidden_users" type="text" class="form-control" value="<?php echo $this->setting['days_delete_forbidden_users']; ?>"/>
+
+                                <div class="help-block"><?php _e('单位'); ?>: 天, <?php _e('填写 0 则不启用'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('临时封禁的用户多少天以后解封'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="days_unforbid_users" type="text" class="form-control" value="<?php echo $this->setting['days_unforbid_users']; ?>"/>
 
                                 <div class="help-block"><?php _e('单位'); ?>: 天, <?php _e('填写 0 则不启用'); ?></div>
                             </div>

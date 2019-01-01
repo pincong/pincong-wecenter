@@ -288,7 +288,7 @@ class user_class extends AWS_MODEL
 			$time_before = 0;
 		}
 
-		$where = 'forbidden = 1 AND user_update_time < ' . $time_before;
+		$where = 'forbidden = 3 AND user_update_time < ' . $time_before;
 		$users = $this->fetch_all('users', $where);
 		if (!$users)
 		{
@@ -298,6 +298,33 @@ class user_class extends AWS_MODEL
 		foreach ($users AS $key => $val)
 		{
 			$this->delete_user_by_uid($val['uid']);
+		}
+	}
+
+	public function auto_unforbid_users()
+	{
+		$days = intval(get_setting('days_unforbid_users'));
+		if (!$days)
+		{
+			return;
+		}
+		$seconds = $days * 24 * 3600;
+		$time_before = real_time() - $seconds;
+		if ($time_before < 0)
+		{
+			$time_before = 0;
+		}
+
+		$where = 'forbidden = 4 AND user_update_time < ' . $time_before;
+		$users = $this->fetch_all('users', $where);
+		if (!$users)
+		{
+			return;
+		}
+
+		foreach ($users AS $key => $val)
+		{
+			$this->model('account')->forbid_user_by_uid($val['uid'], 0);
 		}
 	}
 }

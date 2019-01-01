@@ -1223,7 +1223,7 @@ class account_class extends AWS_MODEL
         return $this->model('account')->get_user_group_by_id($group_id);
     }
 
-	public function get_user_group_by_user_info($user_info)
+	public function get_user_group_by_user_info(&$user_info)
 	{
 		return $this->model('account')->get_user_group(
 			$user_info['group_id'],

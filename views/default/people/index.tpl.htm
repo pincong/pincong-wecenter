@@ -30,15 +30,26 @@
 							<h1>
 								<?php echo UF::name($this->user); ?>
 								<?php if ($this->user['verified']) { ?><i class="icon-v <?php if ($this->user['verified'] == 'enterprise') { ?> i-ve<?php } ?>" title="<?php if ($this->user['verified'] == 'enterprise') { ?>企业认证<?php } else { ?>个人认证<?php } ?>"></i><?php } ?>
-								<?php if ($this->user['forbidden'] == 1) { ?>
-									<span class="text-color-999"><a href="people/<?php echo $this->user['extra_data']['banned_by']; ?>"><?php _e('管理员'); ?></a><?php _e('封禁'); ?></span>
-									<br />
-									<span class="text-color-999"><?php _e('封禁理由'); ?> : <?php echo $this->user['extra_data']['banned_reason']; ?></span>
-								<?php } else if ($this->user['forbidden']) { ?>
+								<!-- 封禁 -->
+								<?php if ($this->user['forbidden'] == 2) { ?>
 									<span class="text-color-999"><?php _e('系统自动封禁'); ?></span>
 									<br />
 									<span class="text-color-999"><?php _e('封禁理由'); ?> : <?php _e('累计收到反对票的数量过多'); ?></span>
+								<?php } else if ($this->user['forbidden']) { ?>
+									<span class="text-color-999"><a href="people/<?php echo $this->user['extra_data']['banned_by']; ?>"><?php _e('管理员'); ?></a><?php _e('封禁'); ?></span>
+									<?php if ($this->user['forbidden'] == 3 AND get_setting('days_delete_forbidden_users')) {
+										$expiration_date = intval(get_setting('days_delete_forbidden_users')) * 86400 + $this->user['user_update_time'];
+									?>
+									<span class="text-color-999"><?php _e('将于 %s 删除', date_friendly($expiration_date)); ?></span>
+									<?php } else if ($this->user['forbidden'] == 4 AND get_setting('days_unforbid_users')) {
+										$expiration_date = intval(get_setting('days_unforbid_users')) * 86400 + $this->user['user_update_time'];
+									?>
+									<span class="text-color-999"><?php _e('将于 %s 解封', date_friendly($expiration_date)); ?></span>
+									<?php } ?>
+									<br />
+									<span class="text-color-999"><?php _e('封禁理由'); ?> : <?php echo $this->user['extra_data']['banned_reason']; ?></span>
 								<?php } ?>
+								<!-- end 封禁 -->
 							</h1>
 							<p class="text-color-999"><?php echo UF::signature($this->user, $this->user_info['permission']['is_administrator']); ?></p>
 							<p class="aw-user-flag">
