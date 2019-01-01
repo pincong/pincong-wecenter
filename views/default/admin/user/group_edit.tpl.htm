@@ -377,6 +377,58 @@
 				<tr>
 					<td>
 						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('发言间隔限制'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input type="text" name="interval_post" class="form-control" value="<?php echo intval($this->group_pms['interval_post']); ?>" />
+
+								<span class="help-block"><?php _e('灌水预防机制 (单位: 秒, 设置 0 则采用默认操作间隔限制)'); ?></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('编辑间隔限制'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input type="text" name="interval_modify" class="form-control" value="<?php echo intval($this->group_pms['interval_modify']); ?>" />
+
+								<span class="help-block"><?php _e('(单位: 秒, 同上)'); ?></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('点赞间隔限制'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input type="text" name="interval_vote" class="form-control" value="<?php echo intval($this->group_pms['interval_vote']); ?>" />
+
+								<span class="help-block"><?php _e('(单位: 秒, 同上)'); ?></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('管理间隔限制'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input type="text" name="interval_manage" class="form-control" value="<?php echo intval($this->group_pms['interval_manage']); ?>" />
+
+								<span class="help-block"><?php _e('(单位: 秒, 同上)'); ?></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('每日发帖上限'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="thread_limit_per_day" class="form-control" value="<?php echo intval($this->group_pms['thread_limit_per_day']); ?>" />
