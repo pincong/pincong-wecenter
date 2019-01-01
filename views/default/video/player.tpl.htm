@@ -498,6 +498,10 @@
 .ab-quality-option-title {
 	display: none;
 }
+
+.ab-speed-option-group-1 {
+	margin-bottom: 3px;
+}
 </style>
 
 <script>
@@ -1253,10 +1257,18 @@ var ABP = {};
 	<div class="c-dlg ab-settings-dlg">
 		<p class="c-dlg-title">播放速度</p>
 		<div class="c-dlg-btn-group">
-			<label><input type="radio" value="0.5" name="abp-speed"><span class="c-dlg-btn ab-speed-option">0.5</span></label>
-			<label><input type="radio" value="1.0" name="abp-speed" checked="checked"><span class="c-dlg-btn ab-speed-option">1.0</span></label>
-			<label><input type="radio" value="1.5" name="abp-speed"><span class="c-dlg-btn ab-speed-option">1.5</span></label>
-			<label><input type="radio" value="2.0" name="abp-speed"><span class="c-dlg-btn ab-speed-option">2.0</span></label>
+			<div class="ab-speed-option-group-1">
+				<label><input type="radio" value="0.25" name="abp-speed"><span class="c-dlg-btn ab-speed-option">0.25</span></label>
+				<label><input type="radio" value="0.75" name="abp-speed"><span class="c-dlg-btn ab-speed-option">0.75</span></label>
+				<label><input type="radio" value="1.25" name="abp-speed"><span class="c-dlg-btn ab-speed-option">1.25</span></label>
+				<label><input type="radio" value="1.75" name="abp-speed"><span class="c-dlg-btn ab-speed-option">1.75</span></label>
+			</div>
+			<div class="ab-speed-option-group-2">
+				<label><input type="radio" value="0.5" name="abp-speed"><span class="c-dlg-btn ab-speed-option">0.5</span></label>
+				<label><input type="radio" value="1.0" name="abp-speed" checked="checked"><span class="c-dlg-btn ab-speed-option">1.0</span></label>
+				<label><input type="radio" value="1.5" name="abp-speed"><span class="c-dlg-btn ab-speed-option">1.5</span></label>
+				<label><input type="radio" value="2.0" name="abp-speed"><span class="c-dlg-btn ab-speed-option">2.0</span></label>
+			</div>
 		</div>
 		<p class="c-dlg-title ab-quality-option-title">清晰度</p>
 		<div class="c-dlg-btn-group ab-quality-option-group">
