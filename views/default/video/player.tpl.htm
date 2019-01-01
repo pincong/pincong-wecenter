@@ -665,7 +665,7 @@ var ABP = {};
 		// end 事件发射器
 
 		// 初始状态
-		this.isPlaying = false;
+		this.playing = false;
 		this.danmakuEnabled = true;
 		this.videoLoaded = false;
 		this.danmakuColor = 0xffffff;
@@ -722,7 +722,9 @@ var ABP = {};
 		// 影片未载入
 		if (this.timeSeeking == time) return;
 		this.timeSeeking = time;
-		this.emitter.emit('requireVideo', function() {});
+		this.emitter.emit('requireVideo', function() {
+			this.playing = true;
+		}.bind(this));
 	};
 
 	Player.prototype.loadDanmaku = function(danmakuArray) {
@@ -881,13 +883,13 @@ var ABP = {};
 			//console.log('playing');
 			self.$playIcon.attr('class', 'c-icon-pause');
 			if (self.danmakuEnabled) self.cm.start();
-			self.isPlaying = true;
+			self.playing = true;
 			self.video.playbackRate = self.playbackRate;
 		};
 		this.video.onpause = function() {
 			self.$playIcon.attr('class', 'c-icon-play');
 			if (self.danmakuEnabled) self.cm.stop();
-			self.isPlaying = false;
+			self.playing = false;
 		};
 		this.video.onvolumechange = function() {
 			self._updateVolumeIcon();
@@ -904,7 +906,7 @@ var ABP = {};
 			if (self.timeSeeking) {
 				self.video.currentTime = self.timeSeeking;
 				self.timeSeeking = 0;
-				if (self.isPlaying) self.video.play();
+				if (self.playing) self.video.play();
 			}
 			self._updateDurationLabel();
 		};
@@ -939,7 +941,7 @@ var ABP = {};
 	};
 
 	Player.prototype._togglePlay = function() {
-		if (this.isPlaying) {
+		if (this.playing) {
 			this.video.pause();
 		} else {
 			this.video.play();
