@@ -99,6 +99,7 @@ class main extends AWS_CONTROLLER
 		$danmaku = $this->model('danmaku')->get_danmaku_list_by_video_id($video_info['id'], 1, 5000);
 		foreach ($danmaku as $key => $val)
 		{
+			unset($danmaku[$key]['uid']);
 			unset($danmaku[$key]['video_id']);
 			unset($danmaku[$key]['extra_data']);
 			unset($danmaku[$key]['anonymous']);

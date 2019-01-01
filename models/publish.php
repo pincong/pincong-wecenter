@@ -170,9 +170,9 @@ class publish_class extends AWS_MODEL
 
 		if ($question_info['published_uid'] != $uid AND !$this->model('currency')->fetch_log($uid, 'ANSWER_QUESTION', $question_id))
 		{
-			$this->model('currency')->process($uid, 'ANSWER_QUESTION', get_setting('currency_system_config_answer_question'), '回答问题 #' . $question_id, $question_id);
+			$this->model('currency')->process($uid, 'ANSWER_QUESTION', get_setting('currency_system_config_reply_question'), '回答问题 #' . $question_id, $question_id);
 
-			$this->model('currency')->process($question_info['published_uid'], 'QUESTION_ANSWER', get_setting('currency_system_config_question_answered'), '问题被回答 #' . $question_id, $question_id);
+			$this->model('currency')->process($question_info['published_uid'], 'QUESTION_ANSWER', get_setting('currency_system_config_question_replied'), '问题被回答 #' . $question_id, $question_id);
 		}
 
 		$this->model('question')->save_last_answer($question_id, $answer_id);
@@ -355,9 +355,9 @@ class publish_class extends AWS_MODEL
 
 		if ($article_info['uid'] != $uid AND !$this->model('currency')->fetch_log($uid, 'COMMENT_ARTICLE', $article_id))
 		{
-			$this->model('currency')->process($uid, 'COMMENT_ARTICLE', get_setting('currency_system_config_comment_article'), '评论文章 #' . $article_id, $article_id);
+			$this->model('currency')->process($uid, 'COMMENT_ARTICLE', get_setting('currency_system_config_reply_article'), '评论文章 #' . $article_id, $article_id);
 
-			$this->model('currency')->process($article_info['uid'], 'ARTICLE_COMMENTED', get_setting('currency_system_config_article_commented'), '文章被评论 #' . $article_id, $article_id);
+			$this->model('currency')->process($article_info['uid'], 'ARTICLE_COMMENTED', get_setting('currency_system_config_article_replied'), '文章被评论 #' . $article_id, $article_id);
 		}
 
 		$this->model('posts')->set_posts_index($article_id, 'article', null, $bring_to_top);
@@ -404,7 +404,7 @@ class publish_class extends AWS_MODEL
 			//ACTION_LOG::save_action($uid, $video_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_VIDEO, $title, $message, null, intval($anonymous));
 			*/
 
-			$this->model('currency')->process($uid, 'NEW_VIDEO', get_setting('currency_system_config_new_article'), '发起投稿 #' . $video_id, $video_id);
+			$this->model('currency')->process($uid, 'NEW_VIDEO', get_setting('currency_system_config_new_video'), '发起投稿 #' . $video_id, $video_id);
 
 			$this->model('posts')->set_posts_index($video_id, 'video');
 
@@ -495,9 +495,9 @@ class publish_class extends AWS_MODEL
 
 		if ($video_info['uid'] != $uid AND !$this->model('currency')->fetch_log($uid, 'COMMENT_VIDEO', $video_id))
 		{
-			$this->model('currency')->process($uid, 'COMMENT_VIDEO', get_setting('currency_system_config_comment_article'), '评论投稿 #' . $video_id, $video_id);
+			$this->model('currency')->process($uid, 'COMMENT_VIDEO', get_setting('currency_system_config_reply_video'), '评论投稿 #' . $video_id, $video_id);
 
-			$this->model('currency')->process($video_info['uid'], 'VIDEO_COMMENTED', get_setting('currency_system_config_article_commented'), '投稿被评论 #' . $video_id, $video_id);
+			$this->model('currency')->process($video_info['uid'], 'VIDEO_COMMENTED', get_setting('currency_system_config_video_replied'), '投稿被评论 #' . $video_id, $video_id);
 		}
 
 		$this->model('posts')->set_posts_index($video_id, 'video', null, $bring_to_top);

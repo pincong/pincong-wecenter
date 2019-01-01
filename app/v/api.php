@@ -26,9 +26,7 @@ class api extends AWS_CONTROLLER
 		$rule_action['rule_type'] = 'white';
 
 		$rule_action['actions'] = array(
-			'get_video_metadata',
-			'save_danmaku',
-			'remove_danmaku'
+			'get_video_metadata'
 		);
 
 		return $rule_action;

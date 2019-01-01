@@ -1102,10 +1102,11 @@
                         </div>
                     </td>
                 </tr>
+
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('发起问题'); ?>:</span>
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('提问'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <input name="currency_system_config_new_question" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_new_question']; ?>"/>
                             </div>
@@ -1115,9 +1116,9 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('回复问题'); ?>:</span>
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('回应'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="currency_system_config_answer_question" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_answer_question']; ?>"/>
+                                <input name="currency_system_config_reply_question" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_reply_question']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1125,9 +1126,9 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('问题被回复'); ?>:</span>
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('收到回应'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="currency_system_config_question_answered" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_question_answered']; ?>"/>
+                                <input name="currency_system_config_question_replied" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_question_replied']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1136,7 +1137,7 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('发起文章'); ?>:</span>
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('发文'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <input name="currency_system_config_new_article" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_new_article']; ?>"/>
                             </div>
@@ -1146,9 +1147,9 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('评论文章'); ?>:</span>
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('回应'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="currency_system_config_comment_article" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_comment_article']; ?>"/>
+                                <input name="currency_system_config_reply_article" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_reply_article']; ?>"/>
                             </div>
                         </div>
                     </td>
@@ -1156,9 +1157,40 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('文章被评论'); ?>:</span>
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('收到回应'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="currency_system_config_article_commented" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_article_commented']; ?>"/>
+                                <input name="currency_system_config_article_replied" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_article_replied']; ?>"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('投稿'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="currency_system_config_new_video" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_new_video']; ?>"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('回应'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="currency_system_config_reply_video" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_reply_video']; ?>"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('收到回应'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="currency_system_config_video_replied" type="text" class="form-control" value="<?php echo $this->setting['currency_system_config_video_replied']; ?>"/>
                             </div>
                         </div>
                     </td>
