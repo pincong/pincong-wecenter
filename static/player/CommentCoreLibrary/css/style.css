@@ -1,8 +1,8 @@
-.abp {
+.ccl {
   position: relative;
 }
 
-.abp .container {
+.ccl .ccl-container {
   border: 0;
   bottom: 0;
   display: block;
@@ -22,7 +22,7 @@
   z-index: 9999;
 }
 
-.abp .container .cmt {
+.ccl .ccl-container .cmt {
   color: #fff;
   font-family: SimHei, SimSun, Heiti, "MS Mincho", "Meiryo", "Microsoft YaHei", monospace;
   font-size: 25px;
@@ -45,11 +45,11 @@
   word-break: keep-all;
 }
 
-.abp .container .cmt.noshadow {
+.ccl .ccl-container .cmt.noshadow {
   text-shadow: none;
 }
 
-.abp .container .cmt.rshadow {
+.ccl .ccl-container .cmt.rshadow {
   text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 
