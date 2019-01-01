@@ -54,6 +54,20 @@ class reputation_class extends AWS_MODEL
 		return 0;
 	}
 
+	public function get_reputation_group_name_by_reputation($reputation)
+	{
+		if ($reputation_groups = $this->get_reputation_group_list())
+		{
+			foreach ($reputation_groups as $key => $val)
+			{
+				if ((intval($reputation) >= intval($val['reputation_lower'])) AND (intval($reputation) < intval($val['reputation_higer'])))
+				{
+					return $val['group_name'];
+				}
+			}
+		}
+	}
+
 	// 通过威望值得到威望系数
 	public function get_reputation_factor_by_reputation($reputation)
 	{

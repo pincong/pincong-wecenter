@@ -69,12 +69,16 @@
 
 						<div class="mod-footer clearfix">
 							<ul class="nav nav-tabs aw-nav-tabs">
-								<li class="active"><a href="#questions" id="page_questions" data-toggle="tab"><?php _e('发问'); ?></a></li>
-								<li><a href="#answers" id="page_answers" data-toggle="tab"><?php _e('回复'); ?></a></li>
+								<li class="active"><a href="#overview" id="page_overview" data-toggle="tab"><?php _e('概述'); ?></a></li>
+								<li><a href="#questions" id="page_questions" data-toggle="tab"><?php _e('发问'); ?></a></li>
+								<li><a href="#answers" id="page_answers" data-toggle="tab"><?php _e('回答'); ?></a></li>
 								<li><a href="#articles" id="page_articles" data-toggle="tab"><?php _e('文章'); ?></a></li>
+								<li><a href="#article_comments" id="page_article_comments" data-toggle="tab"><?php _e('评论'); ?></a></li>
+								<li><a href="#videos" id="page_videos" data-toggle="tab"><?php _e('影片'); ?></a></li>
+								<li><a href="#video_comments" id="page_video_comments" data-toggle="tab"><?php _e('评论'); ?></a></li>
 								<li><a href="#focus" id="page_focus" data-toggle="tab"><?php _e('关注'); ?></a></li>
 								<?php if ($this->user_id == $this->user['uid']) { ?>
-								<li><a href="#currency" id="page_currency" data-toggle="tab"><?php _e('我的%s', get_setting('currency_name')); ?></a></li>
+								<li><a href="#currency" id="page_currency" data-toggle="tab"><?php _e('%s', get_setting('currency_name')); ?></a></li>
 								<?php } ?>
 							</ul>
 						</div>
@@ -85,7 +89,18 @@
 						<div class="tab-content">
 						<!-- tabs -->
 
-							<div class="tab-pane active" id="questions">
+							<div class="tab-pane active" id="overview">
+								<div class="aw-mod">
+									<div class="mod-head">
+										<h3><?php _e('概述'); ?></h3>
+									</div>
+									<div class="mod-body">
+										<span class="text-color-999"><?php echo $this->user['reputation_group_name']; ?></span>
+									</div>
+								</div>
+							</div>
+
+							<div class="tab-pane" id="questions">
 								<div class="aw-mod">
 									<div class="mod-head">
 										<h3><?php _e('发问'); ?></h3>
@@ -106,7 +121,7 @@
 							<div class="tab-pane" id="answers">
 								<div class="aw-mod">
 									<div class="mod-head">
-										<h3><?php _e('回复'); ?></h3>
+										<h3><?php _e('回答'); ?></h3>
 									</div>
 									<div class="mod-body">
 										<div class="aw-profile-answer-list" id="contents_user_actions_answers"></div>
@@ -135,6 +150,48 @@
 											<span><?php _e('更多'); ?></span>
 										</a>
 										<!-- end 加载更多内容 -->
+									</div>
+								</div>
+							</div>
+
+							<div class="tab-pane" id="article_comments">
+								<div class="aw-mod">
+									<div class="mod-head">
+										<h3><?php _e('文章评论'); ?></h3>
+									</div>
+									<div class="mod-body">
+										<!-- TODO -->
+									</div>
+									<div class="mod-footer">
+										<!-- TODO -->
+									</div>
+								</div>
+							</div>
+
+							<div class="tab-pane" id="videos">
+								<div class="aw-mod">
+									<div class="mod-head">
+										<h3><?php _e('影片'); ?></h3>
+									</div>
+									<div class="mod-body">
+										<!-- TODO -->
+									</div>
+									<div class="mod-footer">
+										<!-- TODO -->
+									</div>
+								</div>
+							</div>
+
+							<div class="tab-pane" id="video_comments">
+								<div class="aw-mod">
+									<div class="mod-head">
+										<h3><?php _e('影片评论'); ?></h3>
+									</div>
+									<div class="mod-body">
+										<!-- TODO -->
+									</div>
+									<div class="mod-footer">
+										<!-- TODO -->
 									</div>
 								</div>
 							</div>

@@ -70,6 +70,8 @@ class main extends AWS_CONTROLLER
 			HTTP::redirect('/people/' . $user['url_token']);
 		}
 
+		$user['reputation_group_name'] = $this->model('reputation')->get_reputation_group_name_by_reputation($user['reputation']);
+
 		$this->model('people')->update_view_count($user['uid'], session_id());
 
 		TPL::assign('user', $user);
@@ -83,16 +85,6 @@ class main extends AWS_CONTROLLER
 		TPL::assign('fans_list', $this->model('follow')->get_user_fans($user['uid'], 5));
 		TPL::assign('friends_list', $this->model('follow')->get_user_friends($user['uid'], 5));
 		TPL::assign('focus_topics', $this->model('topic')->get_focus_topic_list($user['uid'], 10));
-
-		TPL::assign('user_actions_questions', $this->model('actions')->get_user_actions($user['uid'], 5, ACTION_LOG::ADD_QUESTION, $this->user_id));
-		TPL::assign('user_actions_answers', $this->model('actions')->get_user_actions($user['uid'], 5, ACTION_LOG::ANSWER_QUESTION, $this->user_id));
-		TPL::assign('user_actions', $this->model('actions')->get_user_actions($user['uid'], 5, implode(',', array(
-			ACTION_LOG::ADD_QUESTION,
-			ACTION_LOG::ANSWER_QUESTION,
-			//ACTION_LOG::ADD_REQUESTION_FOCUS,
-			//ACTION_LOG::ADD_AGREE,
-			ACTION_LOG::ADD_ARTICLE
-		)), $this->user_id));
 
 		TPL::output('people/index');
 	}
