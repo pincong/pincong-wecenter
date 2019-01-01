@@ -693,7 +693,16 @@ class answer_class extends AWS_MODEL
 
 	public function remove_comment($comment_id)
 	{
-		return $this->delete('answer_comments', "id = " . intval($comment_id));
+		//return $this->delete('answer_comments', "id = " . intval($comment_id));
+
+		// 只清空不删除
+		// TODO: implement update_answer_comment()
+		$this->update('answer_comments', array(
+			'message' => null,
+			'time' => fake_time()
+		), "id = " . intval($comment_id));
+
+		return true;
 	}
 
 	public function get_answers_thanks($answer_ids, $uid)
