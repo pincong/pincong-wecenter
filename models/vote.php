@@ -196,10 +196,6 @@ class vote_class extends AWS_MODEL
 		if ($total > 0)
 		{
 			$factor = $factor * round(exp(-floatval($arg) * $total), 6);
-			if (is_infinite($factor))
-			{
-				$factor = 0;
-			}
 		}
 		return $factor;
 	}
@@ -410,6 +406,10 @@ class vote_class extends AWS_MODEL
 		elseif ($value == -1)
 		{
 			$limit = intval(get_setting('same_user_downvotes_per_day'));
+		}
+		else
+		{
+			return true;
 		}
 
 		if (!$limit)

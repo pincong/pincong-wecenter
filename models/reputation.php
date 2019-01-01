@@ -89,6 +89,10 @@ class reputation_class extends AWS_MODEL
 			return false;
 		}
 		$reputation_delta = $agree_count_delta * floatval($reputation_factor);
+		if (is_infinite($reputation_delta))
+		{
+			$reputation_delta = 0;
+		}
 
 		$this->query('UPDATE ' . $this->get_table('users') . ' SET agree_count = agree_count + ' . $agree_count_delta . ', reputation = reputation + ' . $reputation_delta . ' WHERE uid = ' . ($uid));
 
