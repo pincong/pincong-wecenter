@@ -820,6 +820,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
             }
 
             $update_data['forbidden'] = intval($_POST['forbidden']);
+            $update_data['flagged'] = intval($_POST['flagged']);
 
             $update_data['group_id'] = intval($_POST['group_id']);
 

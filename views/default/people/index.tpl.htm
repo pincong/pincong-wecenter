@@ -18,11 +18,19 @@
 									<a href="javascript:;" class="text-color-999" onclick="AWS.User.edit_signature('<?php echo $this->user['uid']; ?>', decodeURIComponent('<?php echo urlencode($this->user['signature']); ?>'));"><i class="icon icon-edit"></i> 签名</a>
 								<?php } ?>
 
-								<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
+								<?php if ($this->user_info['permission']['forbid_user']) { ?>
 									<?php if ($this->user['forbidden']) { ?>
 									<a href="javascript:;" class="text-color-999" onclick="AWS.User.unforbid_user(<?php echo $this->user['uid']; ?>);"><i class="icon icon-forbid"></i> 解封</a>
 									<?php } else { ?>
 									<a href="javascript:;" class="text-color-999" onclick="AWS.User.forbid_user(<?php echo $this->user['uid']; ?>);"><i class="icon icon-forbid"></i> 封禁</a>
+									<?php } ?>
+								<?php } ?>
+
+								<?php if ($this->user_info['permission']['flag_user']) { ?>
+									<?php if ($this->user['flagged']) { ?>
+									<a href="javascript:;" class="text-color-999" onclick="AWS.User.unflag_user(<?php echo $this->user['uid']; ?>);"><i class="icon icon-forbid"></i> 取消影子禁止</a>
+									<?php } else { ?>
+									<a href="javascript:;" class="text-color-999" onclick="AWS.User.flag_user(<?php echo $this->user['uid']; ?>);"><i class="icon icon-forbid"></i> 影子禁止</a>
 									<?php } ?>
 								<?php } ?>
 
@@ -36,6 +44,7 @@
 							<h1>
 								<?php echo UF::name($this->user); ?>
 								<?php if ($this->user['verified']) { ?><em class="aw-verified"><?php echo $this->user['verified']; ?></em><?php } ?>
+
 								<!-- 封禁 -->
 								<?php if ($this->user['forbidden'] == 2) { ?>
 									<span class="text-color-999"><?php _e('系统自动封禁'); ?></span>
@@ -57,6 +66,11 @@
 								<?php } ?>
 								<!-- end 封禁 -->
 							</h1>
+							<?php if ($this->user['flagged'] AND $this->user_info['permission']['flag_user']) { ?>
+							<h1>
+								<span class="text-color-999"><a href="people/<?php echo $this->user['data']['flagged_by']; ?>"><?php _e('影子禁止'); ?></a> : <?php echo $this->user['data']['flagged_reason']; ?></span>
+							</h1>
+							<?php } ?>
 							<p class="text-color-999"><?php echo UF::signature($this->user, $this->user_info['permission']['is_administrator']); ?></p>
 							<p class="aw-user-flag"></p>
 						</div>

@@ -832,6 +832,43 @@ class account_class extends AWS_MODEL
 		$this->update_user_extra_data($extra_data, $uid);
     }
 
+    public function flag_user_by_uid($uid, $status, $admin_uid = null, $reason = null)
+    {
+		if (!$uid)
+		{
+			return false;
+		}
+
+		$status = intval($status);
+		if (!$this->update_user_fields(array(
+			'flagged' => ($status),
+		), $uid))
+		{
+			return false;
+		}
+
+		if (!$status)
+		{
+			$extra_data = array(
+				'flagged_by' => null,
+				'flagged_reason' => null
+			);
+		}
+		else
+		{
+			if ($reason)
+			{
+				$reason = htmlspecialchars($reason);
+			}
+			$extra_data = array(
+				'flagged_by' => $admin_uid,
+				'flagged_reason' => $reason
+			);
+		}
+
+		$this->update_user_extra_data($extra_data, $uid);
+    }
+
     public function set_default_timezone($timezone, $uid)
     {
 		if (!is_valid_timezone($timezone))

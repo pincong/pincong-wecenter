@@ -1496,6 +1496,22 @@ AWS.User =
 		AWS.ajax_request(G_BASE_URL + '/account/ajax/forbid_user/' , 'uid=' + uid + '&status=0');
 	},
 
+	flag_user: function(uid)
+	{
+		AWS.dialog('textBox', {
+			title: _t('标记')
+		}, function(text)
+		{
+			text = encodeURIComponent(text.trim());
+			AWS.ajax_request(G_BASE_URL + '/account/ajax/flag_user/' , 'uid=' + uid + '&status=1&reason=' + text);
+		});
+	},
+
+	unflag_user: function(uid)
+	{
+		AWS.ajax_request(G_BASE_URL + '/account/ajax/flag_user/' , 'uid=' + uid + '&status=0');
+	},
+
 	edit_verified_title: function(uid, text)
 	{
 		AWS.dialog('textBox', {

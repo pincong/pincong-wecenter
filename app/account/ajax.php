@@ -425,7 +425,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function forbid_user_action()
 	{
-		if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
+		if (!$this->user_info['permission']['forbid_user'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
@@ -507,6 +507,73 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		$this->model('account')->forbid_user_by_uid($uid, $status, $this->user_id, $reason);
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
+	public function flag_user_action()
+	{
+		if (!$this->user_info['permission']['flag_user'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+		}
+
+		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
+		$status = intval($_POST['status']);
+		if ($status)
+		{
+			$reason = trim($_POST['reason']);
+			if (!$reason)
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写理由')));
+			}
+			// TODO: 字数选项
+			if (cjk_strlen($reason) > 200)
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('理由太长')));
+			}
+		}
+
+		set_user_operation_last_time('manage', $this->user_id);
+
+		$uid = intval($_POST['uid']);
+		$user_info = $this->model('account')->get_user_info_by_uid($uid);
+
+		if (!$user_info)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('用户不存在')));
+		}
+
+		if ($this->user_info['group_id'] != 1 AND $this->user_info['group_id'] != 2 AND $this->user_info['group_id'] != 3)
+		{
+			if ($user_info['group_id'] != 4 OR intval($this->user_info['reputation']) <= intval($user_info['reputation']))
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+			}
+		}
+
+		if ($status)
+		{
+			if ($user_info['flagged'])
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('操作失败')));
+			}
+
+			$status = 1;
+		}
+		else
+		{
+			if (!$user_info['flagged'])
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('操作失败')));
+			}
+		}
+
+		$this->model('account')->flag_user_by_uid($uid, $status, $this->user_id, $reason);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}

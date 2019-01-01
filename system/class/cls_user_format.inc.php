@@ -50,7 +50,7 @@ class UF
 
 	public static function signature(&$user_info, $show_forbidden = true)
 	{
-		if (!$user_info OR (!$show_forbidden AND $user_info['forbidden']))
+		if (!$user_info OR (!$show_forbidden AND ($user_info['forbidden'] OR $user_info['flagged'])))
 		{
 			return '';
 		}
