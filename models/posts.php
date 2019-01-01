@@ -480,102 +480,96 @@ class posts_class extends AWS_MODEL
 		return $recommend_posts;
 	}
 
-    public function bump_post($uid, $post_id, $post_type)
-    {
-        $post_id = intval($post_id);
-        $result = $this->fetch_row('posts_index', "post_id = " . $post_id . " AND post_type = '" . $this->quote($post_type) . "'");
-        if (!$result)
-        {
-            return false;
-        }
+	public function bump_post($uid, $post_id, $post_type)
+	{
+		$post_id = intval($post_id);
+		$result = $this->fetch_row('posts_index', "post_id = " . $post_id . " AND post_type = '" . $this->quote($post_type) . "'");
+		if (!$result)
+		{
+			return false;
+		}
 
-        $now = real_time();
-        $update_time = intval($result['update_time']);
-        if (!$update_time)
-        {
-            $update_time = $now;
-        }
-        $update_time += 24 * 3600;
-        if ($update_time > $now)
-        {
-            $update_time = $now;
-        }
+		$update_time = intval($result['update_time']);
+		if (!$update_time)
+		{
+			$update_time = fake_time();
+		}
+		$update_time += 24 * 3600;
 
-        $data = array(
-            'update_time' => $update_time,
-        );
+		$data = array(
+			'update_time' => $update_time,
+		);
 
-        $this->update('posts_index', $data, 'id = ' . $result['id']);
+		$this->update('posts_index', $data, 'id = ' . $result['id']);
 
-        switch ($post_type)
-        {
-            case 'question':
-                $this->model('currency')->process($uid, 'MOVE_UP_QUESTION', get_setting('currency_system_config_move_up_question'), '提升问题 #' . $post_id, $post_id);
-                if ($result['uid'] != $uid)
-                {
-                    $this->model('currency')->process($result['uid'], 'QUESTION_MOVED_UP', get_setting('currency_system_config_question_moved_up'), '问题被提升 #' . $post_id, $post_id);
-                }
+		switch ($post_type)
+		{
+			case 'question':
+				$this->model('currency')->process($uid, 'MOVE_UP_QUESTION', get_setting('currency_system_config_move_up_question'), '提升问题 #' . $post_id, $post_id);
+				if ($result['uid'] != $uid)
+				{
+					$this->model('currency')->process($result['uid'], 'QUESTION_MOVED_UP', get_setting('currency_system_config_question_moved_up'), '问题被提升 #' . $post_id, $post_id);
+				}
 				$this->model('question')->log($post_id, 'QUESTION', '提升问题', $uid);
-                break;
+				break;
 
-            case 'article':
-                $this->model('currency')->process($uid, 'MOVE_UP_ARTICLE', get_setting('currency_system_config_move_up_question'), '提升文章 #' . $post_id, $post_id);
-                if ($result['uid'] != $uid)
-                {
-                    $this->model('currency')->process($result['uid'], 'ARTICLE_MOVED_UP', get_setting('currency_system_config_question_moved_up'), '文章被提升 #' . $post_id, $post_id);
-                }
+			case 'article':
+				$this->model('currency')->process($uid, 'MOVE_UP_ARTICLE', get_setting('currency_system_config_move_up_question'), '提升文章 #' . $post_id, $post_id);
+				if ($result['uid'] != $uid)
+				{
+					$this->model('currency')->process($result['uid'], 'ARTICLE_MOVED_UP', get_setting('currency_system_config_question_moved_up'), '文章被提升 #' . $post_id, $post_id);
+				}
 				$this->model('article')->log($post_id, 'ARTICLE', '提升文章', $uid);
-                break;
-        }
+				break;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    public function sink_post($uid, $post_id, $post_type)
-    {
-        $post_id = intval($post_id);
-        $result = $this->fetch_row('posts_index', "post_id = " . $post_id . " AND post_type = '" . $this->quote($post_type) . "'");
-        if (!$result)
-        {
-            return false;
-        }
+	public function sink_post($uid, $post_id, $post_type)
+	{
+		$post_id = intval($post_id);
+		$result = $this->fetch_row('posts_index', "post_id = " . $post_id . " AND post_type = '" . $this->quote($post_type) . "'");
+		if (!$result)
+		{
+			return false;
+		}
 
-        $now = real_time();
-        $update_time = intval($result['update_time']);
-        $update_time -= 24 * 3600;
-        if ($update_time <= 0)
-        {
-            $update_time = 0;
-        }
+		$update_time = intval($result['update_time']);
+		$update_time -= 24 * 3600;
+		if ($update_time <= 0)
+		{
+			$update_time = 0;
+		}
 
-        $data = array(
-            'update_time' => $update_time,
-        );
+		$data = array(
+			'update_time' => $update_time,
+		);
 
-        $this->update('posts_index', $data, 'id = ' . $result['id']);
+		$this->update('posts_index', $data, 'id = ' . $result['id']);
 
-        switch ($post_type)
-        {
-            case 'question':
-                $this->model('currency')->process($uid, 'MOVE_DOWN_QUESTION', get_setting('currency_system_config_move_down_question'), '下沉问题 #' . $post_id, $post_id);
-                if ($result['uid'] != $uid)
-                {
-                    $this->model('currency')->process($result['uid'], 'QUESTION_MOVED_DOWN', get_setting('currency_system_config_question_moved_down'), '问题被下沉 #' . $post_id, $post_id);
-                }
+		switch ($post_type)
+		{
+			case 'question':
+				$this->model('currency')->process($uid, 'MOVE_DOWN_QUESTION', get_setting('currency_system_config_move_down_question'), '下沉问题 #' . $post_id, $post_id);
+				if ($result['uid'] != $uid)
+				{
+					$this->model('currency')->process($result['uid'], 'QUESTION_MOVED_DOWN', get_setting('currency_system_config_question_moved_down'), '问题被下沉 #' . $post_id, $post_id);
+				}
 				$this->model('question')->log($post_id, 'QUESTION', '下沉问题', $uid);
-                break;
+				break;
 
-            case 'article':
-                $this->model('currency')->process($uid, 'MOVE_DOWN_ARTICLE', get_setting('currency_system_config_move_down_question'), '下沉文章 #' . $post_id, $post_id);
-                if ($result['uid'] != $uid)
-                {
-                    $this->model('currency')->process($result['uid'], 'ARTICLE_MOVED_DOWN', get_setting('currency_system_config_question_moved_down'), '文章被下沉 #' . $post_id, $post_id);
-                }
+			case 'article':
+				$this->model('currency')->process($uid, 'MOVE_DOWN_ARTICLE', get_setting('currency_system_config_move_down_question'), '下沉文章 #' . $post_id, $post_id);
+				if ($result['uid'] != $uid)
+				{
+					$this->model('currency')->process($result['uid'], 'ARTICLE_MOVED_DOWN', get_setting('currency_system_config_question_moved_down'), '文章被下沉 #' . $post_id, $post_id);
+				}
 				$this->model('article')->log($post_id, 'ARTICLE', '下沉文章', $uid);
-                break;
-        }
+				break;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
 }
