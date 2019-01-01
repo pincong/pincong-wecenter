@@ -34,9 +34,16 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能发送私信')));
 		}
 
-		if (my_trim($_POST['message']) == '')
+		$message = $_POST['message'];
+		if (my_trim($message) == '')
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入私信内容')));
+		}
+
+		// TODO: 在管理后台添加字数选项
+		if (cjk_strlen($message) > 500)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('私信字数不得多于 500 字')));
 		}
 
 		if (!$recipient_user = $this->model('account')->get_user_info_by_username($_POST['recipient']))
@@ -92,7 +99,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
 		}
 
-		$this->model('message')->send_message($this->user_id, $recipient_user['uid'], $_POST['message']);
+		$this->model('message')->send_message($this->user_id, $recipient_user['uid'], $message);
 
 		if ($_POST['dialog_id'])
 		{
