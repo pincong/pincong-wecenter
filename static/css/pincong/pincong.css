@@ -49,15 +49,4 @@ a:hover{text-decoration: none;color: #404451;}
 .aw-404-wrap .aw-search-box {width: 460px;float: none;margin: 0 auto;}
 .aw-404-wrap .aw-search-box .form-control {border-radius: 0;border-color: #54beff;}
 .aw-404-wrap .aw-search-box #global_search_btns {top:0;right:0;z-index:10;width:40px;height:32px;border-radius: 0;border-color: #54beff; color: #fff;background-color: #54beff;}
-@media (max-width: 769px) {
-	.aw-feed-list .aw-item .more-operate{display:inline-block;}
-	.aw-main-content {border:none;}
-	/*导航条*/
-	.navbar-collapse.active{display: block;}
-    .navbar-collapse {
-        position: absolute;
-        width: 120px;
-        left: -15px;
-        background: #404451;
-    }
-}
+.navbar-collapse {background: #404451;}

@@ -941,6 +941,7 @@ blockquote {margin: 0 40px;padding: 0 15px;font-size: 14px;color: #777;border-le
 .aw-feed-list .mod-body{font-size: 15px; color:#333;}
 .aw-feed-list .aw-item .mod-footer .aw-comment-box .aw-comment-list {font-size: 14px;}
 
+.navbar-collapse {background: #499ef3;}
 
 @media (max-width: 992px){
 	.container {width: 100% !important;}
@@ -950,18 +951,17 @@ blockquote {margin: 0 40px;padding: 0 15px;font-size: 14px;color: #777;border-le
 	.aw-main-content {border:none;}
 	/*导航条*/
 	.navbar-collapse.active{display: block;}
-    .navbar-collapse {
-        position: absolute;
-        width: 120px;
-        left: -15px;
-        background: #499ef3;
-    }
+	.navbar-collapse {
+		position: absolute;
+		width: 120px;
+		left: -15px;
+	}
 }
 @media (min-width: 768px) {
-    .navbar-collapse {
-        position: static;
-        width: auto;
-    }
+	.navbar-collapse {
+		position: static;
+		width: auto;
+	}
 }
 /* iphone横屏幕 */
 @media (max-width:736px) {
