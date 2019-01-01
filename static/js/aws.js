@@ -175,100 +175,6 @@ var AWS =
 		return false;
 	},
 
-	ajax_post: function(formEl, processer, type) // 表单对象，用 jQuery 获取，回调函数名
-	{
-		// 若有编辑器的话就从编辑器更新内容再提交
-		if (G_ADVANCED_EDITOR_ENABLE == 'Y')
-		{
-			formEl.find('textarea').each(function()
-			{
-				if (this._sceditor)
-				{
-					this._sceditor.updateOriginal();
-				}
-			});
-		}
-
-		if (typeof (processer) != 'function')
-		{
-			var processer = AWS.ajax_processer;
-
-			AWS.loading('show');
-		}
-
-		if (!type)
-		{
-			var type = 'default';
-		}
-
-		var custom_data = {
-			_post_type: 'ajax'
-		};
-
-		formEl.ajaxSubmit(
-		{
-			dataType: 'json',
-			data: custom_data,
-			success: function (result)
-			{
-				processer(type, result);
-			},
-			error: function (error)
-			{
-				console.log(error);
-				if ($.trim(error.responseText) != '')
-				{
-					AWS.loading('hide');
-
-					alert(_t('发生错误, 返回的信息:') + ' ' + error.responseText);
-				}
-				else if (error.status == 0)
-				{
-					AWS.loading('hide');
-
-					alert(_t('网络连接异常'));
-				}
-				else if (error.status == 500)
-				{
-					AWS.loading('hide');
-
-					alert(_t('内部服务器错误'));
-				}
-			}
-		});
-	},
-
-	// ajax提交callback
-	ajax_processer: function (type, result)
-	{
-		AWS.loading('hide');
-
-		if (typeof (result.errno) == 'undefined')
-		{
-			AWS.alert(result);
-		}
-		else if (result.errno != 1)
-		{
-			switch (type)
-			{
-				case 'default':
-				case 'comments_form':
-					AWS.alert(result.err);
-
-					$('.aw-comment-box-btn .btn-success, .btn-reply').removeClass('disabled');
-				break;
-			}
-		}
-		else
-		{
-			if (type == 'comments_form')
-			{
-				AWS.reload_comments_list(result.rsm.item_id, result.rsm.item_id, result.rsm.type_name);
-				$('#aw-comment-box-' + result.rsm.type_name + '-' + result.rsm.item_id + ' form textarea').val('');
-				$('.aw-comment-box-btn .btn-success').removeClass('disabled');
-			}
-		}
-	},
 
 	submit_form: function(form_el, btn_el, err_el, callback)
 	{
@@ -1514,9 +1420,12 @@ AWS.User =
 	// 提交评论
 	save_comment: function(selector)
 	{
-		selector.addClass('disabled');
-
-		AWS.ajax_post(selector.parents('form'), AWS.ajax_processer, 'comments_form');
+		AWS.submit(selector.parents('form'), selector, function(err, rsm)
+		{
+			if (err) return;
+			AWS.reload_comments_list(rsm.item_id, rsm.item_id, rsm.type_name);
+			$('#aw-comment-box-' + rsm.type_name + '-' + rsm.item_id + ' form textarea').css('height', '34px');
+		});
 	},
 
 	// 删除评论
