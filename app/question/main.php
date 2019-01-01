@@ -42,10 +42,10 @@ class main extends AWS_CONTROLLER
 			$this->model('notify')->read_notification($_GET['notification_id'], $this->user_id);
 		}
 
-		if ($_GET['column'] == 'log' AND !$this->user_id)
+		/*if ($_GET['column'] == 'log' AND !$this->user_id)
 		{
 			HTTP::redirect('/question/' . $_GET['id']);
-		}
+		}*/
 
 		if (! $question_info = $this->model('question')->get_question_info_by_id($_GET['id']))
 		{

@@ -53,9 +53,10 @@
 								<?php if (!$this->question_info['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $this->question_info['question_content']; ?><?php } ?>
 							</h1>
 
-							<?php if ($this->user_id) { ?>
 							<div class="operate clearfix">
+								<?php if ($this->user_id) { ?>
 								<a href="javascript:;" onclick="AWS.User.follow($(this), 'question', <?php echo $this->question_info['question_id']; ?>);" class="follow btn btn-normal btn-success pull-left <?php if ($this->question_focus) { ?> active<?php } ?>"><span><?php if ($this->question_focus) { ?><?php _e('取消关注'); ?><?php } else { ?><?php _e('关注'); ?><?php } ?></span> <em>|</em> <b><?php echo $this->question_info['focus_count']?></b></a>
+								<?php } ?>
 								<!-- 下拉菜单 -->
 								<div class="btn-group pull-left">
 									<a class="btn btn-gray dropdown-toggle" data-toggle="dropdown" href="javascript:;">...</a>
@@ -99,7 +100,6 @@
 								</div>
 								<!-- end 下拉菜单 -->
 							</div>
-							<?php } ?>
 						</div>
 						<div class="mod-body">
 							<div class="content markitup-box">
