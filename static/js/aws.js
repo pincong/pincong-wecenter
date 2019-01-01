@@ -548,51 +548,6 @@ var AWS =
 		});
 	},
 
-	/**
-	 *	公共弹窗
-	 */
-	dialog: function (type, data, callback)
-	{
-		switch (type)
-		{
-			case 'alertImg':
-				var template = Hogan.compile(AW_TEMPLATE.alertImg).render(
-				{
-					'hide': data.hide,
-					'url': data.url,
-					'message': data.message
-				});
-			break;
-
-
-			case 'ajaxData':
-				var template = AW_TEMPLATE.ajaxData.replace('{{title}}', data.title).replace('{{data}}', '<div id="aw_dialog_ajax_data"></div>');
-			break;
-
-			case 'imagePreview':
-				var template = AW_TEMPLATE.ajaxData.replace('{{title}}', data.title).replace('{{data}}', '<p align="center"><img src="' + data.image + '" alt="" style="max-width:520px" /></p>');
-			break;
-		}
-
-		if (template)
-		{
-			$('.alert-box').remove();
-			$('.modal-backdrop').remove();
-
-			$('#aw-ajax-box').html(template).show();
-
-			switch (type)
-			{
-				case 'ajaxData':
-					$.get(data.url, function (result) {
-						$('#aw_dialog_ajax_data').html(result);
-					});
-				break;
-			}
-
-			$(".alert-box").modal('show');
-		}
-	},
 
 	// 兼容placeholder
 	check_placeholder: function(selector)

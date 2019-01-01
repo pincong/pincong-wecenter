@@ -220,9 +220,6 @@ $(document).ready(function ()
         $(this).tooltip('show');
     });
 
-    //搜索下拉
-	// TODO: remove #aw-search-query
-    //AWS.Dropdown.bind_dropdown_list('#aw-search-query', 'search');
 
     //编辑器@人
     AWS.at_user_lists('#wmd-input, .aw-article-replay-box #comment_editor', 5);

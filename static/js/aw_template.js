@@ -69,21 +69,6 @@ var AW_TEMPLATE = {
 			'</div>'+
 		'</div>',
 
-	'ajaxData' :
-		'<div class="modal fade alert-box aw-topic-edit-note-box aw-question-edit" aria-labelledby="myModalLabel" role="dialog">'+
-			'<div class="modal-dialog">'+
-				'<div class="modal-content">'+
-					'<div class="modal-header">'+
-						'<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>'+
-						'<h3 class="modal-title" id="myModalLabel">{{title}}</h3>'+
-					'</div>'+
-					'<div class="modal-body">'+
-						'{{data}}'+
-					'</div>'+
-				'</div>'+
-			'</div>'+
-		'</div>',
-
 	'commentBox' :
 			'<div class="aw-comment-box" id="{{comment_form_id}}">'+
 				'<div class="aw-comment-list"><p align="center" class="aw-padding10"><i class="aw-loading"></i></p></div>'+
@@ -130,30 +115,6 @@ var AW_TEMPLATE = {
 	'questionDropdownList' :
 		'<li class="question" data-id="{{id}}"><a class="aw-hide-txt" href="{{url}}">{{name}}</a></li>',
 
-	'inviteUserList' :
-		'<li>'+
-			'<a class="pull-right btn btn-mini btn-default" onclick="disinvite_user($(this),{{uid}});$(this).parent().detach();">' + _t('取消邀请') + '</a>'+
-			'<a class="aw-user-name" data-id="{{uid}}">'+
-				'<img src="{{img}}" alt="" />'+
-			'</a>'+
-			'<span class="aw-text-color-666">{{name}}</span>'+
-		'</li>',
-
-	'alertImg' :
-		'<div class="modal fade alert-box aw-tips-box aw-alert-img-box">'+
-			'<div class="modal-dialog">'+
-				'<div class="modal-content">'+
-					'<div class="modal-header">'+
-						'<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>'+
-						'<h3 class="modal-title" id="myModalLabel">' + _t('提示信息') + '</h3>'+
-					'</div>'+
-					'<div class="modal-body">'+
-						'<p class="hide {{hide}}">{{message}}</p>'+
-						'<img src="{{url}}" />'+
-					'</div>'+
-				'</div>'+
-			'</div>'+
-		'</div>',
 
 	'alertBox' :
 			'<div class="modal fade alert-box aw-tips-box">'+
