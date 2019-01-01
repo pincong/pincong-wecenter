@@ -270,7 +270,7 @@
 								<li><a href="topic/edit/<?php echo $this->topic_info['topic_id']; ?>"><?php _e('编辑话题'); ?></a></li>
 							<?php } ?>
 
-							<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
+							<?php if ($this->user_info['permission']['manage_topic']) { ?>
 
 								<li><a href="topic/manage/<?php echo $this->topic_info['topic_id']; ?>"><?php _e('管理话题'); ?></a></li>
 

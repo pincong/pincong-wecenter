@@ -944,7 +944,8 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			'send_pm',
 			'receive_pm',
 			'bring_thread_to_top',
-			'invite_answer'
+			'invite_answer',
+			'manage_topic'
         );
 
         $group_setting = array();

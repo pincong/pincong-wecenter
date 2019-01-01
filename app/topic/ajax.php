@@ -96,7 +96,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function edit_topic_action()
 	{
-		if (!($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
+		if (!($this->user_info['permission']['manage_topic']))
 		{
 			if (!$this->user_info['permission']['edit_topic'])
 			{
@@ -133,7 +133,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function save_related_topic_action()
 	{
-		if (!($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
+		if (!($this->user_info['permission']['manage_topic']))
 		{
 			if (!$this->user_info['permission']['edit_topic'])
 			{
@@ -182,7 +182,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function remove_related_topic_action()
 	{
-		if (!($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
+		if (!($this->user_info['permission']['manage_topic']))
 		{
 			if (!$this->user_info['permission']['edit_topic'])
 			{
@@ -201,7 +201,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function upload_topic_pic_action()
 	{
-		if (!($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
+		if (!($this->user_info['permission']['manage_topic']))
 		{
 			if (!$this->user_info['permission']['edit_topic'])
 			{
@@ -292,7 +292,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function set_parent_id_action()
 	{
-		if (!($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
+		if (!($this->user_info['permission']['manage_topic']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
@@ -319,7 +319,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function save_url_token_action()
 	{
-		if (!($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
+		if (!($this->user_info['permission']['manage_topic']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
@@ -353,7 +353,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function save_seo_title_action()
 	{
-		if (!($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
+		if (!($this->user_info['permission']['manage_topic']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
@@ -372,7 +372,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function lock_action()
 	{
-		if (! $this->user_info['permission']['is_moderator'] AND ! $this->user_info['permission']['is_administrator'])
+		if (! $this->user_info['permission']['manage_topic'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
@@ -389,7 +389,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function remove_action()
 	{
-		if (! $this->user_info['permission']['is_moderator'] AND ! $this->user_info['permission']['is_administrator'])
+		if (! $this->user_info['permission']['manage_topic'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
@@ -403,7 +403,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function merge_topic_action()
 	{
-		if (!($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
+		if (!($this->user_info['permission']['manage_topic']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定的话题不能编辑')));
 		}
@@ -432,7 +432,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function remove_merge_topic_action()
 	{
-		if (!($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
+		if (!($this->user_info['permission']['manage_topic']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
@@ -444,7 +444,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function feature_topic_action()
 	{
-		if (!$this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'])
+		if (!$this->user_info['permission']['manage_topic'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
