@@ -298,6 +298,19 @@
 				<tr>
 					<td>
 						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('受限分类'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input type="text" name="restricted_categories" class="form-control" value="<?php echo intval($this->group_pms['restricted_categories']); ?>" />
+
+								<span class="help-block"><?php _e('禁止发言的分类 ID (多个分类请用逗号","隔开, 设置 0 为不限制)'); ?></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('操作间隔限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="operation_interval" class="form-control" value="<?php echo intval($this->group_pms['operation_interval']); ?>" />
