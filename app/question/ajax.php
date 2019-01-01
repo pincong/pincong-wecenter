@@ -181,18 +181,6 @@ class ajax extends AWS_CONTROLLER
 	}
 
 
-	// TODO: 删除
-	// 编辑答案时用到
-	public function fetch_answer_data_action()
-	{
-		$answer_info = $this->model('answer')->get_answer_by_id($_GET['id']);
-
-		if ($answer_info['uid'] == $this->user_id OR $this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'])
-		{
-			echo json_encode($answer_info);
-		}
-	}
-
 	public function get_focus_users_action()
 	{
 		if ($focus_users_info = $this->model('question')->get_focus_users_by_question($_GET['question_id'], 18))
@@ -335,83 +323,6 @@ class ajax extends AWS_CONTROLLER
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'type' => $this->model('question')->add_focus_question($_POST['question_id'], $this->user_id)
-		), 1, null));
-	}
-
-	public function update_answer_action()
-	{
-		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
-		if (! $answer_info = $this->model('answer')->get_answer_by_id($_GET['answer_id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('答案不存在')));
-		}
-
-		if ($_POST['do_delete'])
-		{
-			if ($answer_info['uid'] != $this->user_id and ! $this->user_info['permission']['edit_question'])
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
-			}
-
-			// TODO: implement remove_answer_action()
-
-			/*$this->model('answer')->remove_answer_by_id($_GET['answer_id']);
-
-			// 通知回复的作者
-			if ($this->user_id != $answer_info['uid'])
-			{
-				$this->model('notify')->send($this->user_id, $answer_info['uid'], notify_class::TYPE_REMOVE_ANSWER, notify_class::CATEGORY_QUESTION, $answer_info['question_id'], array(
-					'from_uid' => $this->user_id,
-					'question_id' => $answer_info['question_id']
-				));
-			}
-
-			$this->model('question')->save_last_answer($answer_info['question_id']);*/
-
-			// 只清空不删除
-			$this->model('answer')->update_answer($_GET['answer_id'], $answer_info['question_id'], null, $this->user_id);
-
-			H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-		}
-
-		$answer_content = my_trim($_POST['answer_content']);
-
-		if (!$answer_content)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入回复内容')));
-		}
-
-		$answer_length_min = intval(get_setting('answer_length_min'));
-		if ($answer_length_min AND cjk_strlen($answer_content) < $answer_length_min)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('回复内容字数不得少于 %s 字', $answer_length_min)));
-		}
-
-		$answer_length_max = intval(get_setting('answer_length_max'));
-		if ($answer_length_max AND cjk_strlen($answer_content) > $answer_length_max)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('回复内容字数不得多于 %s 字', $answer_length_max)));
-		}
-
-		if ($answer_info['uid'] != $this->user_id and ! $this->user_info['permission']['edit_question'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个回复')));
-		}
-
-		set_user_operation_last_time_by_uid('modify', $this->user_id);
-
-		$this->model('answer')->update_answer($_GET['answer_id'], $answer_info['question_id'], $answer_content, $this->user_id);
-
-		// 删除回复邀请, 如果有
-		$this->model('question')->answer_question_invite($answer_info['question_id'], $this->user_id);
-
-		H::ajax_json_output(AWS_APP::RSM(array(
-			'target_id' => $_GET['target_id'],
-			'display_id' => $_GET['display_id']
 		), 1, null));
 	}
 

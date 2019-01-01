@@ -71,28 +71,6 @@ var AW_TEMPLATE = {
 				'</div>'+
 			'</div>',
 
-	'editCommentBox' :
-				'<div class="modal fade alert-box aw-edit-comment-box aw-editor-box">'+
-				'<div class="modal-dialog">'+
-					'<div class="modal-content">'+
-						'<div class="modal-header">'+
-							'<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>'+
-							'<h3 class="modal-title" id="myModalLabel">' + _t('编辑回复') + '</h3>'+
-						'</div>'+
-						'<form action="' + G_BASE_URL + '/question/ajax/update_answer/answer_id-{{answer_id}}" method="post" onsubmit="return false" id="answer_edit">'+
-						'<div class="modal-body">'+
-							'<div class="alert alert-danger collapse error_message"><i class="icon icon-delete"></i> <em></em></div>'+
-							'<textarea name="answer_content" id="editor_reply" class="form-control" rows="10"></textarea>'+
-						'</div>'+
-						'<div class="modal-footer">'+
-							'<span><input id="aw-do-delete" type="checkbox" value="1" name="do_delete" /><label for="aw-do-delete">' + _t('删除回复') + '</label></span>'+
-							'<button class="btn btn-large btn-success" onclick="AWS.ajax_post($(\'#answer_edit\'), AWS.ajax_processer, \'ajax_post_alert\');return false;">' + _t('确定') + '</button>'+
-						'</div>'+
-						'</form>'+
-					'</div>'+
-				'</div>'+
-			'</div>',
-
 	'articleCommentBox' :
 		'<div class="aw-article-replay-box clearfix">'+
 			'<form action="'+ G_BASE_URL +'/publish/ajax/publish_article_comment/" onsubmit="return false;" method="post">'+
@@ -348,38 +326,6 @@ var AW_TEMPLATE = {
 			'</a>'+
 			'<span class="aw-text-color-666">{{name}}</span>'+
 		'</li>',
-
-	'educateInsert' :
-			'<td class="e1" data-txt="{{school}}">{{school}}</td>'+
-			'<td class="e2" data-txt="{{departments}}">{{departments}}</td>'+
-			'<td class="e3" data-txt="{{year}}">{{year}} ' + _t('年') + '</td>'+
-			'<td><a class="delete-educate">' + _t('删除') + '</a>&nbsp;&nbsp;<a class="edit-educate">' + _t('编辑') + '</a></td>',
-
-	'educateEdit' :
-			'<td><input type="text" value="{{school}}" class="school form-control"></td>'+
-			'<td><input type="text" value="{{departments}}" class="departments form-control"></td>'+
-			'<td><select class="year edityear">'+
-				'</select> ' + _t('年') + '</td>'+
-			'<td><a class="delete-educate">' + _t('删除') + '</a>&nbsp;&nbsp;<a class="add-educate">' + _t('保存') + '</a></td>',
-
-	'workInsert' :
-			'<td class="w1" data-txt="{{company}}">{{company}}</td>'+
-			'<td class="w2" data-txt="{{jobid}}">{{work}}</td>'+
-			'<td class="w3" data-s-val="{{syear}}" data-e-val="{{eyear}}">{{syear}} ' + _t('年') + ' ' + _t('至') + ' {{eyear}}</td>'+
-			'<td><a class="delete-work">' + _t('删除') + '</a>&nbsp;&nbsp;<a class="edit-work">' + _t('编辑') + '</a></td>',
-
-	'workEidt' :
-			'<td><input type="text" value="{{company}}" class="company form-control"></td>'+
-			'<td>'+
-				'<select class="work editwork">'+
-				'</select>'+
-			'</td>'+
-			'<td><select class="syear editsyear">'+
-				'</select>&nbsp;&nbsp;' + _t('年') + ' &nbsp;&nbsp; ' + _t('至') + '&nbsp;&nbsp;&nbsp;&nbsp;'+
-				'<select class="eyear editeyear">'+
-				'</select> ' + _t('年') +
-			'</td>'+
-			'<td><a class="delete-work">' + _t('删除') + '</a>&nbsp;&nbsp;<a class="add-work">' + _t('保存') + '</a></td>',
 
 	'alertImg' :
 		'<div class="modal fade alert-box aw-tips-box aw-alert-img-box">'+

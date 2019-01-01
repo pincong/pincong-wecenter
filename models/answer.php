@@ -127,51 +127,6 @@ class answer_class extends AWS_MODEL
 
 
 	/**
-	 *
-	 * 更新问题回复内容
-	 */
-	public function update_answer($answer_id, $question_id, $answer_content, $uid, $anonymous = null)
-	{
-		$answer_id = intval($answer_id);
-		$question_id = intval($question_id);
-
-		if (!$answer_id OR !$question_id)
-		{
-			return false;
-		}
-
-		if (!$answer_info = $this->model('answer')->get_answer_by_id($answer_id))
-		{
-			return false;
-		}
-
-		if (isset($answer_content))
-		{
-			$answer_content = htmlspecialchars($answer_content);
-		}
-
-		$data = array(
-			'answer_content' => $answer_content
-		);
-
-		// 更新问题最后时间
-		$this->shutdown_update('question', array(
-			'update_time' => fake_time(),
-		), 'question_id = ' . intval($question_id));
-
-		$this->update('answer', $data, 'answer_id = ' . intval($answer_id));
-
-		$this->model('content')->log('question', $question_id, '编辑回复', $uid, 'answer', $answer_id);
-		return true;
-	}
-
-	public function update_answer_by_id($answer_id, $answer_info)
-	{
-		return $this->update('answer', $answer_info, 'answer_id = ' . intval($answer_id));
-	}
-
-
-	/**
 	 * 删除问题关联的所有回复及相关的内容
 	 */
 	public function remove_answers_by_question_id($question_id)

@@ -170,7 +170,7 @@ class ajax extends AWS_CONTROLLER
 	}
 
 
-	private function do_validate_reply()
+	private function do_validate_reply($act = 'new')
 	{
 		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']))
 		{
@@ -213,7 +213,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容字数不得多于 20000 字')));
 		}
 
-		if (!check_repeat_submission($_POST['message']))
+		if ($act == 'new' AND !check_repeat_submission($_POST['message']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请不要重复提交')));
 		}
@@ -897,6 +897,63 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'ajax_html' => TPL::output('video/ajax/comment', false)
 		), 1, null));
+	}
+
+
+	public function modify_answer_action()
+	{
+		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
+		if (!$answer_info = $this->model('answer')->get_answer_by_id($_GET['id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('内容不存在')));
+		}
+
+		if ($answer_info['uid'] != $this->user_id and ! $this->user_info['permission']['edit_question'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
+		}
+
+		if (!$question_info = $this->model('question')->get_question_info_by_id($answer_info['question_id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
+		}
+
+		if ($question_info['lock'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的问题不能编辑')));
+		}
+
+		if (!$_POST['do_delete'])
+		{
+			$this->do_validate_reply('modify');
+		}
+
+		set_user_operation_last_time_by_uid('modify', $this->user_id);
+
+		if ($_POST['do_delete'])
+		{
+			$this->model('question')->clear_answer(
+				$answer_info['answer_id'],
+				$this->user_id
+			);
+		}
+		else
+		{
+			$this->model('question')->modify_answer(
+				$answer_info['answer_id'],
+				$this->user_id,
+				$_POST['message']
+			);
+		}
+
+		// 删除回复邀请, 如果有
+		$this->model('question')->answer_question_invite($answer_info['question_id'], $this->user_id);
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
 }

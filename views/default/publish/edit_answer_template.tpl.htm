@@ -8,7 +8,7 @@
 			<form action="publish/ajax/modify_answer/id-<?php echo $this->answer_info['answer_id']; ?>" method="post" onsubmit="return false" id="answer_edit">
 			<div class="modal-body">
 				<div class="alert alert-danger collapse error_message"><i class="icon icon-delete"></i> <em></em></div>
-				<textarea name="answer_content" id="editor_reply" class="form-control" rows="10"><?php echo $this->answer_info['answer_content']; ?></textarea>
+				<textarea name="message" id="editor_reply" class="form-control" rows="10"><?php echo $this->answer_info['answer_content']; ?></textarea>
 			</div>
 			<div class="modal-footer">
 				<span><input id="aw-do-delete" type="checkbox" value="1" name="do_delete" /><label for="aw-do-delete"><?php _e('删除'); ?></label></span>

@@ -531,7 +531,6 @@ var AWS =
 	 *	imageBox    : 插入图片
 	 *	videoBox    : 插入视频
 	 *  linkbox     : 插入链接
-	 *	commentEdit : 评论编辑
 	 *  favorite    : 评论添加收藏
 	 *	inbox       : 私信
 	 */
@@ -563,12 +562,6 @@ var AWS =
 				});
 			break;
 
-			case 'commentEdit':
-				var template = Hogan.compile(AW_TEMPLATE.editCommentBox).render(
-				{
-					'answer_id': data.answer_id
-				});
-			break;
 
 			case 'favorite':
 				var template = Hogan.compile(AW_TEMPLATE.favoriteBox).render(
@@ -693,20 +686,6 @@ var AWS =
 						'item_type' : $('#favorite_form input[name="item_type"]').val()
 					}, function (result)
 					{
-
-					}, 'json');
-				break;
-
-				case 'commentEdit':
-					$.get(G_BASE_URL + '/question/ajax/fetch_answer_data/' + data.answer_id, function (result)
-					{
-						$('#editor_reply').html(result.answer_content.replace('&amp;', '&'));
-
-						if (G_ADVANCED_EDITOR_ENABLE == 'Y')
-						{
-							// 初始化编辑器
-							AWS.create_editor('editor_reply');
-						}
 
 					}, 'json');
 				break;

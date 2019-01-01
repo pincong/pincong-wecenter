@@ -67,6 +67,40 @@ class question_class extends AWS_MODEL
 	}
 
 
+	public function modify_answer($answer_id, $uid, $message)
+	{
+		if (!$answer_info = $this->model('answer')->get_answer_by_id($answer_id))
+		{
+			return false;
+		}
+
+		$this->update('answer', array(
+			'answer_content' => htmlspecialchars($message)
+		), 'answer_id = ' . intval($answer_id));
+
+		$this->model('content')->log('question', $answer_info['question_id'], '编辑回复', $uid, 'answer', $answer_id);
+
+		return true;
+	}
+
+
+	public function clear_answer($answer_id, $uid)
+	{
+		if (!$answer_info = $this->model('answer')->get_answer_by_id($answer_id))
+		{
+			return false;
+		}
+
+		$this->update('answer', array(
+			'answer_content' => null
+		), 'answer_id = ' . intval($answer_id));
+
+		$this->model('content')->log('question', $answer_info['question_id'], '删除回复', $uid, 'answer', $answer_id);
+
+		return true;
+	}
+
+
 	public function update_answer_count($question_id)
 	{
 		$question_id = intval($question_id);
