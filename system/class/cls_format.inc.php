@@ -228,4 +228,15 @@ class FORMAT
 
 		return $url;
 	}
+
+	public static function text($content)
+	{
+		return nl2br($content);
+	}
+
+	public static function html($content)
+	{
+		return nl2br(self::parse_bbcode($content));
+	}
+
 }
