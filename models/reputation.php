@@ -183,26 +183,4 @@ class reputation_class extends AWS_MODEL
 		return true;
 	}
 
-
-	public function calculate_by_uid($uid)
-	{
-		// TODO 根据每个问题/回答/文章/评论的赞同数计算威望
-	}
-
-	// 重新计算用户威望
-	public function calculate($start = 0, $limit = 100)
-	{
-		if ($users_list = $this->query_all('SELECT uid FROM ' . get_table('users') . ' ORDER BY uid ASC', intval($start) . ',' . intval($limit)))
-		{
-			foreach ($users_list as $key => $val)
-			{
-				$this->calculate_by_uid($val['uid']);
-			}
-
-			return true;
-		}
-
-		return false;
-	}
-
 }
