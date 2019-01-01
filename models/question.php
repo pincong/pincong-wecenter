@@ -683,18 +683,6 @@ class question_class extends AWS_MODEL
 		return true;
 	}
 
-	public function save_last_answer($question_id, $answer_id = null)
-	{
-		if (!$answer_id)
-		{
-			if ($last_answer = $this->fetch_row('answer', 'question_id = ' . intval($question_id), 'answer_id DESC')) // 'add_time DESC'
-			{
-				$answer_id = $last_answer['answer_id'];
-			}
-		}
-
-		return $this->shutdown_update('question', array('last_answer' => intval($answer_id)), 'question_id = ' . intval($question_id));
-	}
 
 	/**
 	 *

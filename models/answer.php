@@ -179,46 +179,6 @@ class answer_class extends AWS_MODEL
 		return $this->fetch_one('answer', 'answer_id', "question_id = " . intval($question_id) . " AND uid = " . intval($uid));
 	}
 
-	public function get_last_answer($question_id)
-	{
-		return $this->fetch_row('answer', 'question_id = ' . intval($question_id), 'answer_id DESC');
-	}
-
-	public function get_last_answer_by_question_ids($question_ids)
-	{
-		if (!is_array($question_ids) OR sizeof($question_ids) == 0)
-		{
-			return false;
-		}
-
-		array_walk_recursive($question_ids, 'intval_string');
-
-		if ($last_answer_query = $this->query_all("SELECT last_answer FROM " . get_table('question') . " WHERE question_id IN (" . implode(',', $question_ids) . ")"))
-		{
-			foreach ($last_answer_query AS $key => $val)
-			{
-				if ($val['last_answer'])
-				{
-					$last_answer_ids[] = $val['last_answer'];
-				}
-			}
-
-			if ($last_answer_ids)
-			{
-				if ($last_answer = $this->fetch_all('answer', "answer_id IN (" . implode(',', $last_answer_ids) . ")"))
-				{
-					foreach ($last_answer AS $key => $val)
-					{
-						$result[$val['question_id']] = $val;
-					}
-				}
-			}
-		}
-
-		return $result;
-	}
-
-
 	public function insert_answer_discussion($answer_id, $uid, $message)
 	{
 		if (!$answer_info = $this->model('answer')->get_answer_by_id($answer_id))

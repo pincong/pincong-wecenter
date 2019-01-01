@@ -247,7 +247,7 @@ class publish_class extends AWS_MODEL
 		$this->update('question', array(
 			'answer_count' => $this->count('answer', 'question_id = ' . intval($data['parent_id'])),
 			'update_time' => $now,
-			'last_answer' => $item_id
+			'last_uid' => $data['uid']
 		), 'question_id = ' . intval($data['parent_id']));
 
 		$this->model('posts')->set_posts_index($data['parent_id'], 'question');
@@ -330,7 +330,8 @@ class publish_class extends AWS_MODEL
 		// TODO: comments 字段改为 comment_count
 		$this->update('article', array(
 			'comments' => $this->count('article_comment', 'article_id = ' . intval($data['parent_id'])),
-			'update_time' => $now
+			'update_time' => $now,
+			'last_uid' => $data['uid']
 		), 'id = ' . intval($data['parent_id']));
 
 		$this->model('posts')->set_posts_index($data['parent_id'], 'article');
@@ -404,7 +405,8 @@ class publish_class extends AWS_MODEL
 
 		$this->update('video', array(
 			'comment_count' => $this->count('video_comment', 'video_id = ' . intval($data['parent_id'])),
-			'update_time' => $now
+			'update_time' => $now,
+			'last_uid' => $data['uid']
 		), 'id = ' . intval($data['parent_id']));
 
 		$this->model('posts')->set_posts_index($data['parent_id'], 'video');

@@ -367,17 +367,13 @@ class posts_class extends AWS_MODEL
 
 		if ($question_ids)
 		{
-			if ($last_answers = $this->model('answer')->get_last_answer_by_question_ids($question_ids))
-			{
-				foreach ($last_answers as $key => $val)
-				{
-					$data_list_uids[$val['uid']] = $val['uid'];
-				}
-			}
-
 			$topic_infos['question'] = $this->model('topic')->get_topics_by_item_ids($question_ids, 'question');
 
 			$question_infos = $this->model('question')->get_question_info_by_ids($question_ids);
+			foreach ($question_infos as $key => $val)
+			{
+				$data_list_uids[$val['last_uid']] = $val['last_uid'];
+			}
 		}
 
 		if ($article_ids)
@@ -385,6 +381,10 @@ class posts_class extends AWS_MODEL
 			$topic_infos['article'] = $this->model('topic')->get_topics_by_item_ids($article_ids, 'article');
 
 			$article_infos = $this->model('article')->get_article_info_by_ids($article_ids);
+			foreach ($article_infos as $key => $val)
+			{
+				$data_list_uids[$val['last_uid']] = $val['last_uid'];
+			}
 		}
 
 		if ($video_ids)
@@ -392,6 +392,10 @@ class posts_class extends AWS_MODEL
 			$topic_infos['video'] = $this->model('topic')->get_topics_by_item_ids($video_ids, 'video');
 
 			$video_infos = $this->model('video')->get_video_info_by_ids($video_ids);
+			foreach ($video_infos as $key => $val)
+			{
+				$data_list_uids[$val['last_uid']] = $val['last_uid'];
+			}
 		}
 
 		$users_info = $this->model('account')->get_user_info_by_uids($data_list_uids);
@@ -402,27 +406,19 @@ class posts_class extends AWS_MODEL
 			{
 				case 'question':
 					$explore_list_data[$key] = $question_infos[$data['post_id']];
-
-					$explore_list_data[$key]['answer_info'] = $last_answers[$data['post_id']];
-
-					if ($explore_list_data[$key]['answer_info'])
-					{
-						$explore_list_data[$key]['answer_info']['user_info'] = $users_info[$last_answers[$data['post_id']]['uid']];
-					}
-
 					break;
 
 				case 'article':
 					$explore_list_data[$key] = $article_infos[$data['post_id']];
-
 					break;
 
 				case 'video':
 					$explore_list_data[$key] = $video_infos[$data['post_id']];
-
 					break;
-
 			}
+			$explore_list_data[$key]['last_user_info'] = $users_info[$explore_list_data[$key]['last_uid']];
+
+			$explore_list_data[$key]['user_info'] = $users_info[$data['uid']];
 
 			$explore_list_data[$key]['post_type'] = $data['post_type'];
 
@@ -432,8 +428,6 @@ class posts_class extends AWS_MODEL
 			}
 
 			$explore_list_data[$key]['topics'] = $topic_infos[$data['post_type']][$data['post_id']];
-
-			$explore_list_data[$key]['user_info'] = $users_info[$data['uid']];
 		}
 
 		return $explore_list_data;

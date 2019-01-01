@@ -84,8 +84,6 @@ class user_class extends AWS_MODEL
 
 			// TODO: rename column answer_id to id
 			$this->delete('answer_discussion', 'answer_id = ' . $val['answer_id']);
-
-			//$this->update('question', array('last_answer' => 0), 'last_answer = ' . $val['answer_id']);
 		}
 
 		if ($question_ids)
@@ -94,6 +92,8 @@ class user_class extends AWS_MODEL
 			{
 				$this->model('question')->update_answer_count($key);
 			}
+
+			$this->update('question', array('last_uid' => '-1'), 'last_uid = ' . intval($uid));
 		}
 	}
 
@@ -119,9 +119,11 @@ class user_class extends AWS_MODEL
 			{
 				$this->model('article')->update_article_comment_count($key);
 			}
+
+			$this->update('article', array('last_uid' => '-1'), 'last_uid = ' . intval($uid));
 		}
 
-		$this->update('article_comment', array('at_uid' => '-1'), 'at_uid = ' . ($uid));
+		$this->update('article_comment', array('at_uid' => '-1'), 'at_uid = ' . intval($uid));
 	}
 
 
@@ -146,9 +148,11 @@ class user_class extends AWS_MODEL
 			{
 				$this->model('video')->update_video_comment_count($key);
 			}
+
+			$this->update('video', array('last_uid' => '-1'), 'last_uid = ' . intval($uid));
 		}
 
-		$this->update('video_comment', array('at_uid' => '-1'), 'at_uid = ' . ($uid));
+		$this->update('video_comment', array('at_uid' => '-1'), 'at_uid = ' . intval($uid));
 	}
 
 
@@ -217,7 +221,6 @@ class user_class extends AWS_MODEL
 		$this->update('topic_relation', array('uid' => '-1'), 'uid = ' . ($uid));
 
 		$this->model('notify')->delete_notify('sender_uid = ' . ($uid) . ' OR recipient_uid = ' . ($uid));
-		//ACTION_LOG::delete_action_history('uid = ' . ($uid));
 
 		$this->delete_private_messages($uid);
 

@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `aws_answer_discussion` (
 --
 CREATE TABLE IF NOT EXISTS `aws_article` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `uid` int(10) DEFAULT '0',
+  `uid` int(11) DEFAULT '0',
   `title` varchar(240) DEFAULT NULL,
   `message` text,
   `comments` int(10) DEFAULT '0',
@@ -56,6 +56,7 @@ CREATE TABLE IF NOT EXISTS `aws_article` (
   `recommend` tinyint(1) DEFAULT '0',
   `sort` tinyint(2) DEFAULT '0',
   `update_time` int(10) DEFAULT '0',
+  `last_uid` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
   KEY `comments` (`comments`),
@@ -301,11 +302,11 @@ CREATE TABLE IF NOT EXISTS `aws_question` (
   `comment_count` int(11) DEFAULT '0' COMMENT '评论数',
   `category_id` int(11) DEFAULT '0' COMMENT '分类 ID',
   `agree_count` int(11) DEFAULT '0' COMMENT '回复赞同数总和',
-  `last_answer` int(11) DEFAULT '0' COMMENT '最后回答 ID',
   `lock` tinyint(1) DEFAULT '0' COMMENT '是否锁定',
   `question_content_fulltext` text,
   `recommend` tinyint(1) DEFAULT '0',
   `sort` tinyint(2) DEFAULT '0',
+  `last_uid` int(11) DEFAULT '0',
   PRIMARY KEY (`question_id`),
   KEY `category_id` (`category_id`),
   KEY `update_time` (`update_time`),
@@ -643,7 +644,7 @@ CREATE TABLE IF NOT EXISTS `aws_content_log` (
 --
 CREATE TABLE IF NOT EXISTS `aws_video` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `uid` int(10) DEFAULT '0',
+  `uid` int(11) DEFAULT '0',
   `title` varchar(240) DEFAULT NULL,
   `message` text,
   `source_type` varchar(32) DEFAULT NULL,
@@ -659,6 +660,7 @@ CREATE TABLE IF NOT EXISTS `aws_video` (
   `sort` tinyint(2) DEFAULT '0',
   `add_time` int(10) DEFAULT '0',
   `update_time` int(10) DEFAULT '0',
+  `last_uid` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
   KEY `duration` (`duration`),
