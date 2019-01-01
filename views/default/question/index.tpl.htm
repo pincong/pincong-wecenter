@@ -448,8 +448,6 @@
 								<li><?php _e('最新活动'); ?>: <span class="aw-text-color-blue"><?php echo date_friendly($this->question_info['update_time']); ?></span></li>
 								<li><?php _e('浏览'); ?>: <span class="aw-text-color-blue"><?php echo $this->question_info['view_count']; ?></span></li>
 								<li><?php _e('关注'); ?>: <span class="aw-text-color-blue"><?php echo $this->question_info['focus_count']; ?></span> <?php _e('人'); ?></li>
-
-								<li class="aw-border-radius-5" id="focus_users"></li>
 							</ul>
 						</div>
 					</div>
@@ -462,14 +460,41 @@
 </div>
 
 <script type="text/javascript">
-	var ITEM_IDS = '<?php echo addslashes($_GET['item_id']); ?>';
 	var COMMENT_UNFOLD = '<?php echo addslashes($_GET['comment_unfold']); ?>';
 	var QUESTION_ID = <?php echo $this->question_info['question_id'];?>;
 	var USER_ANSWERED = '<?php echo $this->user_answered; ?>';
-	var ANSWER_TYPE = 'answer';
 
 $(document).ready(function () {
+	//问题页添加评论
+	AWS.Init.init_comment_box('.aw-add-comment');
+
+	//自动展开评论
+	if (COMMENT_UNFOLD == 'all')
+	{
+		$('.aw-add-comment').click();
+	}
+	else if (COMMENT_UNFOLD == 'question')
+	{
+		$('.aw-question-detail-meta .aw-add-comment').click();
+	}
+
+	//回复高亮
+	var answer_ids = '<?php echo addslashes($_GET['item_id']); ?>'.split(',');
+	$.each(answer_ids, function (i, answer_id) {
+		if (answer_id && $('#answer_list_' + answer_id).attr('id'))
+		{
+			if ($('#answer_list_' + answer_id).find('.aw-add-comment').data('comment-count') > 0)
+			{
+				$('#answer_list_' + answer_id).find('.aw-add-comment').click();
+			}
+
+			AWS.hightlight($('#answer_list_' + answer_id), 'active');
+		}
+	});
+
 	AWS.init_later_time_helper($('#later_time_input'), $('#later_time_label'));
+	// 初始化编辑器
+	AWS.create_editor(document.getElementById('wmd-input'), true);
 });
 </script>
 

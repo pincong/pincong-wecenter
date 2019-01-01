@@ -197,26 +197,6 @@ class ajax extends AWS_CONTROLLER
 	}
 
 
-	public function get_focus_users_action()
-	{
-		if ($focus_users_info = $this->model('question')->get_focus_users_by_question($_GET['question_id'], 18))
-		{
-			$question_info = $this->model('question')->get_question_info_by_id($_GET['question_id']);
-
-			foreach($focus_users_info as $key => $val)
-			{
-				$focus_users[$key] = array(
-					'uid' => $val['uid'],
-					'user_name' => $val['user_name'],
-					'avatar_file' => UF::avatar($val, 'mid'),
-					'url' => get_js_url('/people/' . $val['url_token'])
-				);
-			}
-		}
-
-		H::ajax_json_output($focus_users);
-	}
-
 	public function save_invite_action()
 	{
 		if (!$this->user_info['permission']['invite_answer'])
