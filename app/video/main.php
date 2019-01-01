@@ -222,7 +222,7 @@ class main extends AWS_CONTROLLER
 		*/
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-			'base_url' => get_js_url('/article/category_id-' . $_GET['category_id']),
+			'base_url' => get_js_url('/video/category_id-' . $_GET['category_id']),
 			'total_rows' => $video_list_total,
 			'per_page' => get_setting('contents_per_page')
 		))->create_links());
