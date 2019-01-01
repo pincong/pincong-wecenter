@@ -626,9 +626,21 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('用户收到反对数量达到多少个时自动封禁'); ?>:</span>
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('用户赞同小于等于多少时自动封禁'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="user_downvote_forbidden" type="text" class="form-control" value="<?php echo $this->setting['user_downvote_forbidden']; ?>"/>
+                                <input name="auto_banning_agree_count" type="text" class="form-control" value="<?php echo $this->setting['auto_banning_agree_count']; ?>"/>
+                                <div class="help-block"><?php _e('应填写负数, 不启用请留空'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('用户威望小于等于多少时自动封禁'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="auto_banning_reputation" type="text" class="form-control" value="<?php echo $this->setting['auto_banning_reputation']; ?>"/>
+                                <div class="help-block"><?php _e('应填写负数, 不启用请留空'); ?></div>
                             </div>
                         </div>
                     </td>
@@ -1296,38 +1308,6 @@
                     </td>
                 </tr>
 
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('发起者赞同反对威望系数'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
-                                <input name="publisher_reputation_factor" type="text" class="form-control" value="<?php echo get_setting('publisher_reputation_factor'); ?>"/>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('最佳回复威望系数'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
-                                <input name="best_answer_reput" type="text" class="form-control" value="<?php echo get_setting('best_answer_reput'); ?>"/>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('对数底值'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
-                                <input name="reputation_log_factor" type="text" class="form-control" value="<?php echo get_setting('reputation_log_factor'); ?>"/>
-
-                                <div class="help-block"><?php _e('控制显示的威望值大小，底数越小威望值越大，底数越大威望值越小，系统默认数值是 3'); ?><br /><?php _e('威望公式：log((((用户组威望系数 x 赞同数 - 用户组威望系数 x 反对数) + 发起者赞同反对威望系数 + 最佳回复威望系数) + 0.5), 对数底值)'); ?></div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
             </table>
         </div>
 
