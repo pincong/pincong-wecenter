@@ -83,7 +83,8 @@ class reputation_class extends AWS_MODEL
 			return false;
 		}
 
-		if ($user_info['flagged'] > 0)
+		//if ($user_info['flagged'] > 0)
+		if ($user_info['flagged'])
 		{
 			return false;
 		}
