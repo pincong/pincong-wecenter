@@ -259,10 +259,10 @@
 				b: null,
 				strong: null
 			},
-			styles: {
-				// 401 is for FF 3.5
-				'font-weight': ['bold', 'bolder', '401', '700', '800', '900']
-			},
+			//styles: {
+			//	// 401 is for FF 3.5
+			//	'font-weight': ['bold', 'bolder', '401', '700', '800', '900']
+			//},
 			format: '[b]{0}[/b]',
 			html: '<strong>{0}</strong>'
 		},
@@ -568,16 +568,16 @@
 					return content;
 				}
 
-				width = attr(element, 'width') || style('width');
-				height = attr(element, 'height') || style('height');
+				//width = attr(element, 'width') || style('width');
+				//height = attr(element, 'height') || style('height');
 
 				// only add width and height if one is specified
-				if ((element.complete && (width || height)) ||
-					(width && height)) {
+				//if ((element.complete && (width || height)) ||
+				//	(width && height)) {
 
-					attribs = '=' + dom.width(element) + 'x' +
-						dom.height(element);
-				}
+				//	attribs = '=' + dom.width(element) + 'x' +
+				//		dom.height(element);
+				//}
 
 				return '[img' + attribs + ']' + attr(element, 'src') + '[/img]';
 			},
@@ -690,7 +690,8 @@
 					}
 				}
 
-				return '[quote' + author + ']' + content + '[/quote]';
+				//return '[quote' + author + ']' + content + '[/quote]';
+				return '[quote]' + content + '[/quote]';
 			},
 			html: function (token, attrs, content) {
 				if (attrs.defaultattr) {
