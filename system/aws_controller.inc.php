@@ -73,9 +73,12 @@ class AWS_CONTROLLER
 
 		$this->user_info['group_name'] = $user_group['group_name'];
 		$this->user_info['permission'] = $user_group['permission'];
-		$this->user_info['reputation_factor'] = $user_group['reputation_factor'];
 
-		AWS_APP::session()->permission = $this->user_info['permission'];
+		$this->user_info['reputation_factor'] = 0;
+		if (!$this->user_info['flagged'])
+		{
+			$this->user_info['reputation_factor'] = $user_group['reputation_factor'];
+		}
 
 		if ($this->user_info['forbidden'])
 		{
@@ -304,7 +307,7 @@ class AWS_ADMIN_CONTROLLER extends AWS_CONTROLLER
 
 		if ($admin_info['uid'])
 		{
-			if ($admin_info['uid'] != $this->user_id OR !AWS_APP::session()->permission['is_administrator'])
+			if ($admin_info['uid'] != $this->user_id OR !$this->user_info['permission']['is_administrator'])
 			{
 				unset(AWS_APP::session()->admin_login);
 

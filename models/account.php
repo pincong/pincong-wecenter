@@ -621,11 +621,6 @@ class account_class extends AWS_MODEL
         {
             unset(AWS_APP::session()->client_info);
         }
-
-        if (isset(AWS_APP::session()->permission))
-        {
-            unset(AWS_APP::session()->permission);
-        }
     }
 
     public function get_user_list($where = null, $limit = 10, $orderby = 'uid DESC')
