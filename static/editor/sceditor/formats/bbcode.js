@@ -2532,7 +2532,7 @@
 							// code tags should skip most styles
 							if (tag !== 'code') {
 								// handle inline bbcodes
-								curTag = handleStyles(node, curTag);
+								//curTag = handleStyles(node, curTag); // FIXME: 同时解析 Tag 和 Style 会出现问题: <strong style="font-weight:bold">text</strong> 会被解析成 [b][b]text[/b][/b]
 								curTag = handleTags(node, curTag);
 
 								// handle blocklevel bbcodes
