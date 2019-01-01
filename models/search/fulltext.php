@@ -193,7 +193,7 @@ class search_fulltext_class extends AWS_MODEL
 			$string = implode(' ', $string);
 		}
 
-		$string = mb_convert_encoding($string, 'UTF-16', 'UTF-8');
+		$string = iconv('UTF-8', 'UTF-16BE', $string);
 
 		for ($i = 0; $i < strlen($string); $i++, $i++)
     	{

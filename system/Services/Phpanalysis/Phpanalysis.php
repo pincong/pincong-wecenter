@@ -10,22 +10,6 @@
  *
  */
 
-if (! function_exists('iconv'))
-{
-	/**
-	 * 系统不开启 iconv 模块时, 自建 iconv(), 使用 MB String 库处理
-	 *
-	 * @param  string
-	 * @param  string
-	 * @param  string
-	 * @return string
-	 */
-	function iconv($from_encoding, $target_encoding, $string)
-	{
-		return mb_convert_encoding($string, str_replace('//IGNORE', '', strtoupper($target_encoding)), $from_encoding);
-	}
-}
-
 define('_SP_', chr(0xFF) . chr(0xFE));
 
 class Services_Phpanalysis_Phpanalysis

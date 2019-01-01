@@ -22,6 +22,90 @@
  * @author		WeCenter Dev Team
  */
 
+
+if (! function_exists('iconv'))
+{
+	/**
+	 * 系统不开启 iconv 模块时, 自建 iconv(), 使用 MB String 库处理
+	 *
+	 * @param  string
+	 * @param  string
+	 * @param  string
+	 * @return string
+	 */
+	function iconv($from_encoding, $target_encoding, $string)
+	{
+		return mb_convert_encoding($string, str_replace('//IGNORE', '', strtoupper($target_encoding)), $from_encoding);
+	}
+}
+
+/**
+ * 双字节语言版 strpos
+ *
+ * 使用方法同 strpos()
+ *
+ * @param  string
+ * @param  string
+ * @param  int
+ * @param  string
+ * @return string
+ */
+function cjk_strpos($haystack, $needle, $offset = 0, $charset = 'UTF-8')
+{
+	if (function_exists('iconv_strpos'))
+	{
+		return iconv_strpos($haystack, $needle, $offset, $charset);
+	}
+
+	return mb_strpos($haystack, $needle, $offset, $charset);
+}
+
+/**
+ * 双字节语言版 strlen
+ *
+ * 使用方法同 strlen()
+ *
+ * @param  string
+ * @param  string
+ * @return string
+ */
+function cjk_strlen($string, $charset = 'UTF-8')
+{
+	if (function_exists('iconv_strlen'))
+	{
+		return iconv_strlen($string, $charset);
+	}
+
+	return mb_strlen($string, $charset);
+}
+
+/**
+ * 双字节语言版 substr
+ *
+ * 使用方法同 substr(), $dot 参数为截断后带上的字符串, 一般场景下使用省略号
+ *
+ * @param  string
+ * @param  int
+ * @param  int
+ * @param  string
+ * @param  string
+ * @return string
+ */
+function cjk_substr($string, $start, $length, $charset = 'UTF-8', $dot = '')
+{
+	if (cjk_strlen($string, $charset) <= $length)
+	{
+		return $string;
+	}
+
+	if (function_exists('iconv_substr'))
+	{
+		return iconv_substr($string, $start, $length, $charset) . $dot;
+	}
+
+	return mb_substr($string, $start, $length, $charset) . $dot;
+}
+
 /**
  * 获取站点根目录 URL
  *
@@ -100,58 +184,6 @@ function is_digits($num)
 	}
 
 	return false;
-}
-
-/**
- * 双字节语言版 strpos
- *
- * 使用方法同 strpos()
- *
- * @param  string
- * @param  string
- * @param  int
- * @param  string
- * @return string
- */
-function cjk_strpos($haystack, $needle, $offset = 0, $charset = 'UTF-8')
-{
-	return mb_strpos($haystack, $needle, $offset, $charset);
-}
-
-/**
- * 双字节语言版 substr
- *
- * 使用方法同 substr(), $dot 参数为截断后带上的字符串, 一般场景下使用省略号
- *
- * @param  string
- * @param  int
- * @param  int
- * @param  string
- * @param  string
- * @return string
- */
-function cjk_substr($string, $start, $length, $charset = 'UTF-8', $dot = '')
-{
-	if (cjk_strlen($string, $charset) <= $length)
-	{
-		return $string;
-	}
-
-	return mb_substr($string, $start, $length, $charset) . $dot;
-}
-
-/**
- * 双字节语言版 strlen
- *
- * 使用方法同 strlen()
- *
- * @param  string
- * @param  string
- * @return string
- */
-function cjk_strlen($string, $charset = 'UTF-8')
-{
-	return mb_strlen($string, $charset);
 }
 
 /**
