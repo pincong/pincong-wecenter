@@ -764,6 +764,7 @@ CREATE TABLE IF NOT EXISTS `aws_users_attrib` (
   `uid` int(11) DEFAULT NULL COMMENT '用户UID',
   `introduction` varchar(240) DEFAULT NULL COMMENT '个人简介',
   `signature` varchar(240) DEFAULT NULL COMMENT '个人签名',
+  `extra_data` TEXT COMMENT '不是特别重要的额外数据',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='用户附加属性表';

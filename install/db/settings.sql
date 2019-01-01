@@ -265,6 +265,7 @@ CREATE TABLE IF NOT EXISTS `aws_users_attrib` (
   `uid` int(11) DEFAULT NULL COMMENT '用户UID',
   `introduction` varchar(240) DEFAULT NULL COMMENT '个人简介',
   `signature` varchar(240) DEFAULT NULL COMMENT '个人签名',
+  `extra_data` TEXT COMMENT '不是特别重要的额外数据',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='用户附加属性表';
@@ -272,7 +273,7 @@ CREATE TABLE IF NOT EXISTS `aws_users_attrib` (
 -- Dumping data for table panic.aws_users_attrib: 0 rows
 /*!40000 ALTER TABLE `aws_users_attrib` DISABLE KEYS */;
 INSERT INTO `aws_users_attrib` (`id`, `uid`, `introduction`, `signature`) VALUES
-	(1, 1, NULL, '');
+	(1, 1, NULL, '', NULL);
 /*!40000 ALTER TABLE `aws_users_attrib` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

@@ -239,16 +239,20 @@ class account_class extends AWS_MODEL
             return false;
         }
 
-        if ($attrib)
-        {
-	        if ($user_attrib = $this->fetch_row('users_attrib', 'uid = ' . intval($uid)))
-	        {
-		        foreach ($user_attrib AS $key => $val)
-		        {
-			        $user_info[$key] = $val;
-		        }
-	        }
-        }
+		if ($attrib)
+		{
+			if ($user_attrib = $this->fetch_row('users_attrib', 'uid = ' . intval($uid)))
+			{
+				foreach ($user_attrib AS $key => $val)
+				{
+					$user_info[$key] = $val;
+				}
+				if ($user_info['extra_data'])
+				{
+					$user_info['extra_data'] = unserialize($user_info['extra_data']);
+				}
+			}
+		}
 
         if ($user_info['user_name'])
         {
@@ -352,6 +356,10 @@ class account_class extends AWS_MODEL
                     {
                         $result[$val['uid']][$attrib_key] = $attrib_val;
                     }
+					if ($result[$val['uid']]['extra_data'])
+					{
+						$result[$val['uid']]['extra_data'] = unserialize($result[$val['uid']]['extra_data']);
+					}
                 }
             }
 
