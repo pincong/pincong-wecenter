@@ -43,7 +43,7 @@ class question_class extends AWS_MODEL
 	}
 
 
-	public function clear_question($id, $uid)
+	public function clear_question($id, $uid = null)
 	{
 		if (!$item_info = $this->model('question')->get_question_info_by_id($id))
 		{
@@ -56,7 +56,10 @@ class question_class extends AWS_MODEL
 			'question_content_fulltext' => null,
 		), 'question_id = ' . intval($id));
 
-		$this->model('content')->log('question', $id, '删除问题', $uid);
+		if ($uid)
+		{
+			$this->model('content')->log('question', $id, '删除问题', $uid);
+		}
 
 		return true;
 	}
@@ -171,6 +174,8 @@ class question_class extends AWS_MODEL
 		return $result;
 	}
 
+	// TODO
+	/*
 	public function remove_question($question_id)
 	{
 		if (!$question_info = $this->get_question_info_by_id($question_id))
@@ -203,6 +208,7 @@ class question_class extends AWS_MODEL
 		$this->delete('question', 'question_id = ' . intval($question_id));
 
 	}
+	*/
 
 	public function add_focus_question($question_id, $uid)
 	{

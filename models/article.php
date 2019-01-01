@@ -42,7 +42,7 @@ class article_class extends AWS_MODEL
 		return true;
 	}
 
-	public function clear_article($id, $uid)
+	public function clear_article($id, $uid = null)
 	{
 		if (!$item_info = $this->model('article')->get_article_info_by_id($id))
 		{
@@ -55,7 +55,10 @@ class article_class extends AWS_MODEL
 			'title_fulltext' => null,
 		), 'id = ' . intval($id));
 
-		$this->model('content')->log('article', $id, '删除文章', $uid);
+		if ($uid)
+		{
+			$this->model('content')->log('article', $id, '删除文章', $uid);
+		}
 
 		return true;
 	}
@@ -228,6 +231,8 @@ class article_class extends AWS_MODEL
 		return $comments;
 	}
 
+	// TODO
+	/*
 	public function remove_article($article_id)
 	{
 		if (!$article_info = $this->get_article_info_by_id($article_id))
@@ -249,6 +254,7 @@ class article_class extends AWS_MODEL
 
 		return $this->delete('article', 'id = ' . intval($article_id));
 	}
+	*/
 
 	public function get_article_list($category_id, $page, $per_page, $order_by, $day = null)
 	{

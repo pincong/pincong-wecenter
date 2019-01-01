@@ -43,7 +43,7 @@ class video_class extends AWS_MODEL
 	}
 
 
-	public function clear_video($id, $uid)
+	public function clear_video($id, $uid = null)
 	{
 		if (!$item_info = $this->model('video')->get_video_info_by_id($id))
 		{
@@ -54,9 +54,15 @@ class video_class extends AWS_MODEL
 			'title' => null,
 			'message' => null,
 			'title_fulltext' => null,
+			'source_type' => null,
+			'source' => null,
+			'duration' => 0,
 		), 'id = ' . intval($id));
 
-		$this->model('content')->log('video', $id, '删除影片', $uid);
+		if ($uid)
+		{
+			$this->model('content')->log('video', $id, '删除影片', $uid);
+		}
 
 		return true;
 	}
@@ -256,6 +262,8 @@ class video_class extends AWS_MODEL
 		return $comments;
 	}
 
+	// TODO
+	/*
 	public function remove_video($video_id)
 	{
 		if (!$video_info = $this->get_video_info_by_id($video_id))
@@ -279,6 +287,7 @@ class video_class extends AWS_MODEL
 
 		return $this->delete('video', 'id = ' . intval($video_id));
 	}
+	*/
 
 	public function get_video_list($category_id, $page, $per_page, $order_by, $day = null)
 	{
