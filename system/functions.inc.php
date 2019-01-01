@@ -1006,15 +1006,20 @@ function real_time()
     return time();
 }
 
-function fake_time()
+function fake_time($timestamp = 0)
 {
+	if (!$timestamp)
+	{
+		$timestamp = time();
+	}
+
 	if (get_setting('time_blurring') == 'N')
 	{
-		return time();
+		return $timestamp;
 	}
 	$min = intval(get_setting('random_seconds_min'));
 	$max = intval(get_setting('random_seconds_max'));
-	return intval(time() / 86400) * 86400 + rand($min, $max);
+	return intval($timestamp / 86400) * 86400 + rand($min, $max);
 }
 
 function future_time()
