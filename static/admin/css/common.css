@@ -19,7 +19,7 @@ a:hover,a:focus{text-decoration:none;cursor:pointer;}
 body{background:#eff0f4;}
 ul,ol{padding:0;list-style:none;}
 .middle{line-height:32px;}
-.text-color-999{margin:2px 0 0;color:#999;font-size:11px;}
+.aw-small-text{margin:2px 0 0;color:#999;font-size:11px;}
 .aw-hide-txt{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .nopadding{padding:0;}
 .textwrap{ word-break: break-all;overflow: hidden}
@@ -144,7 +144,6 @@ ul,ol{padding:0;list-style:none;}
 .aw-content-wrap .mod-btn .mod-btn-color{border:1px solid #eaeaea;background:#fff;color:#000;}
 .mod-one-btn{text-align:center;}
 /*site_info 页面 start*/
-.aw-content-wrap .mod-text-color-999{padding-left:15px;color:#999;}
 .aw-content-wrap .mod-site-url li{margin-top:10px;height:102px;border:1px solid #D7E6F0;background:#fff;}
 .aw-content-wrap .mod-site-rule .col-sm-8{padding:0;}
 .aw-content-wrap .tab-content li > span{margin-right:10px;width:25%;height:100px;background:#F2F8FF;text-align:center;line-height:100px;}

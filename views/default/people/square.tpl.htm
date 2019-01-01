@@ -17,12 +17,12 @@
 								<a class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val); ?>">
 									<img alt="" src="<?php echo UF::avatar($val, 'mid', $this->user_info['permission']['is_administrator']); ?>" />
 								</a>
-								<p class="text-color-999 title">
+								<p class="aw-small-text title">
 									<a href="<?php echo UF::url($val); ?>" class="aw-user-name"><?php echo UF::name($val); ?></a>
 									<?php if ($val['verified']) { ?><em class="aw-verified"><?php echo $val['verified']; ?></em><?php } ?>
-									<?php if ($val['forbidden']) { ?><span class="text-color-999">[ <?php _e('封禁'); ?> ]</span><?php } ?>
+									<?php if ($val['forbidden']) { ?><span class="aw-small-text">[ <?php _e('封禁'); ?> ]</span><?php } ?>
 								</p>
-								<p class="text-color-999 signature"><?php echo UF::signature($val, $this->user_info['permission']['is_administrator']); ?></p>
+								<p class="aw-small-text signature"><?php echo UF::signature($val, $this->user_info['permission']['is_administrator']); ?></p>
 								<div class="meta">
 									<span><i class="icon icon-prestige"></i> <?php _e(get_setting('reputation_name')); ?> : <b><?php echo intval($val['reputation']); ?></b></span>
 									<span><i class="icon icon-agree"></i> <?php _e('赞同'); ?> : <b><?php echo $val['agree_count']; ?></b></span>
@@ -34,9 +34,9 @@
 								<?php if ($this->user_id AND $val['uid'] != $this->user_id) { ?>
 								<div class="operate hidden-xs">
 									<a href="javascript:;" onclick="AWS.User.follow($(this), 'user', <?php echo $val['uid'];?>);" class="follow btn btn-normal btn-success<?php if ($val['focus']) { ?> active<?php } ?>"><span><?php if ($val['focus']) { ?><?php _e('取消关注'); ?><?php } else { ?><?php _e('关注'); ?><?php } ?></span> <em>|</em> <b><?php echo $val['fans_count']; ?></b></a>
-									<a onclick="AWS.User.ask_user(<?php echo $val['uid']; ?>, '<?php echo UF::name($val); ?>');" class="text-color-999"><?php _e('问Ta'); ?></a>
-									<em class="text-color-999">•</em>
-									<a onclick="AWS.dialog('inbox', '<?php echo UF::name($val); ?>');" class="text-color-999"><?php _e('私信'); ?></a>
+									<a onclick="AWS.User.ask_user(<?php echo $val['uid']; ?>, '<?php echo UF::name($val); ?>');" class="aw-small-text"><?php _e('问Ta'); ?></a>
+									<em class="aw-small-text">•</em>
+									<a onclick="AWS.dialog('inbox', '<?php echo UF::name($val); ?>');" class="aw-small-text"><?php _e('私信'); ?></a>
 								</div>
 								<?php } ?>
 

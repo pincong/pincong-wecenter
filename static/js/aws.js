@@ -1445,7 +1445,7 @@ AWS.User =
 				{
 					selector.parents('.aw-invite-box').find('.invite-list').show();
 				}
-				selector.parents('.aw-invite-box').find('.invite-list').append(' <a class="text-color-999 invite-list-user" data-toggle="tooltip" data-placement="bottom" data-original-title="'+ selector.attr('data-value') +'"><img src='+ img +' /></a>');
+				selector.parents('.aw-invite-box').find('.invite-list').append(' <a class="aw-small-text invite-list-user" data-toggle="tooltip" data-placement="bottom" data-original-title="'+ selector.attr('data-value') +'"><img src='+ img +' /></a>');
 				selector.addClass('active').attr('onclick','AWS.User.disinvite_user($(this))').text('取消邀请');
 				selector.parents('.aw-question-detail').find('.aw-invite-replay .badge').text(parseInt(selector.parents('.aw-question-detail').find('.aw-invite-replay .badge').text()) + 1);
 			}

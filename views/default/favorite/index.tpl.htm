@@ -16,7 +16,7 @@
 								<div class="aw-item">
 									<div class="mod-head">
 										<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" data-id="<?php echo $val['user_info']['uid']; ?>" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
-										<p class="text-color-999">
+										<p class="aw-small-text">
 											<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
 											•
 											<?php echo date_friendly($val['item']['add_time']); ?>
@@ -62,7 +62,7 @@
 
 									</div>
 									<div class="mod-footer">
-										<a class="pull-right text-color-999" onclick="AWS.ajax_request(G_BASE_URL + '/favorite/ajax/remove_favorite_item/', 'item_type=<?php echo $val['type']; ?>&item_id=<?php echo $val['item_id']; ?>');"><?php _e('取消收藏'); ?></a>
+										<a class="pull-right aw-small-text" onclick="AWS.ajax_request(G_BASE_URL + '/favorite/ajax/remove_favorite_item/', 'item_type=<?php echo $val['type']; ?>&item_id=<?php echo $val['item_id']; ?>');"><?php _e('取消收藏'); ?></a>
 									</div>
 								</div>
 								<?php } ?>

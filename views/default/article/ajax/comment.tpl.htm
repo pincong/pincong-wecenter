@@ -15,7 +15,7 @@
 	</div>
 	<div class="mod-footer">
 		<div class="meta">
-			<span class="pull-right text-color-999"><?php echo date_friendly($this->comment_info['add_time']); ?></span>
+			<span class="pull-right aw-small-text"><?php echo date_friendly($this->comment_info['add_time']); ?></span>
 
 			<span class="operate aw-vote-ui">
 			<?php if ($this->user_id AND $this->user_id != $this->comment_info['uid']) { ?>
@@ -36,9 +36,9 @@
 			&nbsp;&nbsp;
 
 			<?php if ($this->user_id) { ?>
-				<a class="aw-article-comment text-color-999" data-id="<?php echo $this->comment_info['user_info']['uid']; ?>"><i class="icon icon-comment"></i> <?php _e('回复'); ?></a>
+				<a class="aw-article-comment aw-small-text" data-id="<?php echo $this->comment_info['user_info']['uid']; ?>"><i class="icon icon-comment"></i> <?php _e('回复'); ?></a>
 				<?php if ($this->user_id == $this->comment_info['user_info']['uid'] OR $this->user_info['permission']['edit_any_post']) { ?>
-				<a class="text-color-999" href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/publish/edit/article_comment/id-<?php echo $this->comment_info['id']; ?>');"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
+				<a class="aw-small-text" href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/publish/edit/article_comment/id-<?php echo $this->comment_info['id']; ?>');"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
 				<?php } ?>
 			<?php } ?>
 		</div>

@@ -6,13 +6,13 @@
 			<span class="message"><?php echo $val['message']; ?></span>
 		</p>
 		<p class="more">
-			<span class="text-color-999"><?php echo date_friendly($val['add_time']); ?></span>
+			<span class="aw-small-text"><?php echo date_friendly($val['add_time']); ?></span>
 			<?php if ($val['extend_message']) { ?>
 			 • 
-			<a class="text-color-999" onclick="$('#extend_message_<?php echo $val['notification_id']; ?>').fadeIn();$(this).hide();">展开</a>
+			<a class="aw-small-text" onclick="$('#extend_message_<?php echo $val['notification_id']; ?>').fadeIn();$(this).hide();">展开</a>
 			<?php } ?>
 
-			<a class="pull-right read text-color-999" onclick="AWS.Message.read_notification($(this).parents('.notification'), <?php echo $val['notification_id']; ?>, false)">
+			<a class="pull-right read aw-small-text" onclick="AWS.Message.read_notification($(this).parents('.notification'), <?php echo $val['notification_id']; ?>, false)">
 				标为已读
 			</a>
 		</p>

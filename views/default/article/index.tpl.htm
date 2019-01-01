@@ -113,25 +113,25 @@
 								<?php } ?>
 								</div>
 
-								<a href="vote/log/item_type-article__item_id-<?php echo $this->article_info['id']; ?>" class="text-color-999" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
+								<a href="vote/log/item_type-article__item_id-<?php echo $this->article_info['id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
 
 								<span class="pull-right  more-operate">
 								<?php if ($this->user_id) { ?>
 									<?php if ($this->user_info['permission']['bump_sink']) { ?>
-									<a href="javascript:;" class="text-color-999" onclick="AWS.confirm('<?php _e('确认提升?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/content/ajax/bump/', 'item_type=article&item_id=<?php echo $this->article_info['id']; ?>', true);});"><i class="icon icon-up"></i> <?php _e('提升'); ?></a>
-									<a href="javascript:;" class="text-color-999" onclick="AWS.confirm('<?php _e('确认下沉?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/content/ajax/sink/', 'item_type=article&item_id=<?php echo $this->article_info['id']; ?>', true);});"><i class="icon icon-down"></i> <?php _e('下沉'); ?></a>
+									<a href="javascript:;" class="aw-small-text" onclick="AWS.confirm('<?php _e('确认提升?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/content/ajax/bump/', 'item_type=article&item_id=<?php echo $this->article_info['id']; ?>', true);});"><i class="icon icon-up"></i> <?php _e('提升'); ?></a>
+									<a href="javascript:;" class="aw-small-text" onclick="AWS.confirm('<?php _e('确认下沉?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/content/ajax/sink/', 'item_type=article&item_id=<?php echo $this->article_info['id']; ?>', true);});"><i class="icon icon-down"></i> <?php _e('下沉'); ?></a>
 									<?php } ?>
 
 									<?php if ($this->article_info['uid'] == $this->user_id OR $this->user_info['permission']['edit_any_post']) { ?>
-									<a class="text-color-999" href="publish/article/<?php echo $this->article_info['id']; ?>"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
+									<a class="aw-small-text" href="publish/article/<?php echo $this->article_info['id']; ?>"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
 									<?php } ?>
 
-									<a href="javascript:;" onclick="AWS.User.add_favorite('article', '<?php echo $this->article_info['id']; ?>');" class="text-color-999"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>
+									<a href="javascript:;" onclick="AWS.User.add_favorite('article', '<?php echo $this->article_info['id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>
 								<?php } ?>
 
-									<a href="javascript:;" class="text-color-999" onclick="AWS.User.share_out();"><i class="icon icon-share"></i> <?php _e('分享'); ?></a>
+									<a href="javascript:;" class="aw-small-text" onclick="AWS.User.share_out();"><i class="icon icon-share"></i> <?php _e('分享'); ?></a>
 
-									<em class="text-color-999"><?php echo date_friendly($this->article_info['add_time']); ?></em>
+									<em class="aw-small-text"><?php echo date_friendly($this->article_info['add_time']); ?></em>
 								</span>
 							</div>
 						</div>

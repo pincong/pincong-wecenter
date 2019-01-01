@@ -62,7 +62,6 @@ table td{vertical-align: middle !important;}
 
 /*TODO: 删除*/
 .aw-padding10{padding:10px;}
-.text-color-999{font-size: 12px;color: #999;}
 
 .aw-small-text{font-size: 12px;color: #999;}
 .aw-deleted{color: #999;}
@@ -521,7 +520,7 @@ blockquote {margin: 0;padding: 0 10px;font-size: 15px;color: #777;border-left: 4
 .aw-question-related-list .mod-head{border:none;}
 .aw-question-related-list .mod-head h3{margin:0;color: #666;}
 .aw-question-related-list .mod-body ul li a:hover{text-decoration: underline;}
-.aw-question-related-list .mod-body ul li .text-color-999{font-size: 14px;}
+.aw-question-related-list .mod-body ul li .aw-small-text{font-size: 14px;}
 /* 问题列表公共模块 .aw-common-list */
 .aw-common-list{width:100%;height:auto;}
 .aw-common-list > div + div{border-top:1px solid #ececec;}

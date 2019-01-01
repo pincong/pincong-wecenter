@@ -9,7 +9,7 @@
 			<!-- 用户名 -->
 			<a class="aw-user-name" href="<?php echo UF::url($this->answer_info['user_info']); ?>" data-id="<?php echo $this->answer_info['uid']; ?>"><?php echo UF::name($this->answer_info['user_info']); ?></a>
 			<?php if ($this->answer_info['user_info']['verified']) { ?><em class="aw-verified"><?php echo $this->answer_info['user_info']['verified']; ?></em><?php } ?>
-			<?php if ($this->answer_info['user_info']['signature']) { ?> - <span class="text-color-999"><?php echo UF::signature($this->answer_info['user_info'], $this->user_info['permission']['is_administrator']); ?></span><?php } ?>
+			<?php if ($this->answer_info['user_info']['signature']) { ?> - <span class="aw-small-text"><?php echo UF::signature($this->answer_info['user_info'], $this->user_info['permission']['is_administrator']); ?></span><?php } ?>
 			<!-- end 用户名 -->
 		</div>
 	</div>
@@ -23,7 +23,7 @@
 	<div class="mod-footer">
 		<!-- 社交操作 -->
 		<div class="meta clearfix">
-			<span class="text-color-999 pull-right"><?php echo date_friendly($this->answer_info['add_time']); ?></span>
+			<span class="aw-small-text pull-right"><?php echo date_friendly($this->answer_info['add_time']); ?></span>
 			<!-- 投票栏 -->
 			<span class="operate aw-vote-ui">
 			<?php if ($this->user_id AND $this->user_id != $this->answer_info['user_info']['uid']) { ?>
@@ -48,12 +48,12 @@
 			<div class="more-operate">
 				<?php if ($this->user_id) { ?>
 					<?php if ($this->answer_info['uid'] == $this->user_id) { // 高级编辑器 ?>
-						<a class="text-color-999" href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/publish/edit/answer/id-<?php echo $this->answer_info['answer_id']; ?>', AWS.init_answer_editor);"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
+						<a class="aw-small-text" href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/publish/edit/answer/id-<?php echo $this->answer_info['answer_id']; ?>', AWS.init_answer_editor);"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
 					<?php } elseif ($this->user_info['permission']['edit_any_post']) { // 纯文本编辑器 ?>
-						<a class="text-color-999" href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/publish/edit/answer/id-<?php echo $this->answer_info['answer_id']; ?>');"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
+						<a class="aw-small-text" href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/publish/edit/answer/id-<?php echo $this->answer_info['answer_id']; ?>');"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
 					<?php } ?>
 
-					<a href="javascript:;" onclick="AWS.User.add_favorite('answer', '<?php echo $this->answer_info['answer_id']; ?>');" class="text-color-999"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>
+					<a href="javascript:;" onclick="AWS.User.add_favorite('answer', '<?php echo $this->answer_info['answer_id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>
 				<?php } ?>
 
 			</div>
