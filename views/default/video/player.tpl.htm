@@ -1,0 +1,278 @@
+
+<style>
+/* 通用组件 */
+
+.c-table {
+	display: table;
+	width: 100%;
+}
+.c-row {
+	display: table-row;
+	width: 100%;
+}
+.c-cell {
+	display: table-cell;
+	height: 100%;
+}
+
+/* 适配内容宽度 */
+.c-content-width {
+	width: 1px;
+	white-space: nowrap;
+}
+/* 适配内容高度 */
+.c-content-height {
+	height: 1px;
+}
+
+.c-btn {
+	box-sizing: border-box;
+	cursor: pointer;
+	text-align: center;
+	transition: opacity 0.1s linear 0s, color 0.1s linear 0s;
+	color: #A2A2A2;
+}
+.c-btn:hover {
+	color: #f45a8d;
+}
+.c-btn:active {
+	color: #fff;
+	background-color: #00a1d8;
+	outline: solid 1px #0085b3;
+}
+.c-btn-on {
+	color: #585858;
+}
+
+.c-slider {
+	box-sizing: border-box;
+	cursor: pointer;
+	position: relative;
+	border-radius: 6px;
+	height: 6px;
+	background: #949494;
+}
+.c-slider-fill {
+	box-sizing: border-box;
+	position: absolute;
+	top: 0;
+	height: 100%;
+	border-radius: 6px;
+	background: #00a0d8;
+}
+.c-slider-fill-dark {
+	background: #007bb1;
+}
+
+.c-input {
+	box-sizing: border-box;
+	box-shadow: inset 0 5px 10px rgba(0,0,0,.07);
+	transition: box-shadow .2s ease-in-out;
+	border: 0;
+	outline: none;
+	color: #666;
+}
+.c-input:focus {
+	box-shadow: inset 0 5px 5px rgba(0,0,0,.1);
+}
+
+.c-text-btn {
+	box-sizing: border-box;
+	cursor: pointer;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
+	color: #fff;
+	text-align: center;
+	transition: all .2s ease-in-out;
+	border: solid 1px #0085b3;
+	border-top: none;
+	border-right: none;
+	background-color: #00a1d8;
+}
+.c-text-btn:hover {
+	background-color: #00ace3;
+}
+.c-text-btn:active {
+	box-shadow: inset 0 0 5px #0085b3;
+	background-color: #00a1d8;
+}
+
+.c-separator {
+	width: 1px;
+	background-color: #ececec;
+}
+
+/* end 通用组件 */
+
+
+.ab-player {
+	background: #000;
+}
+
+.ab-video video {
+	width: 100%;
+	height: 100%;
+	background: #000;
+}
+
+.ab-control {
+	background: #fff;
+	font-size: 14px;
+}
+
+.ab-control-bar {
+	height: 20px;
+	border-top: 1px solid #ececec;
+}
+
+.ab-control-bar .c-cell {
+	vertical-align: middle;
+}
+
+.ab-control-bar .c-btn {
+	display: inline-block;
+	line-height: 20px;
+	width: 25px;
+	height: 100%;
+}
+
+.ab-control-bar .c-slider {
+	margin: 0 4px;
+}
+
+.ab-control-bar .ab-play-btn {
+	width: 35px;
+}
+
+.ab-control-bar .ab-time-label {
+	text-align: center;
+	font-size: 11px;
+}
+
+.ab-control-bar .ab-time-label span {
+	display: inline-block;
+}
+
+.ab-control-bar .ab-time-label-current,
+.ab-control-bar .ab-time-label-total {
+	width: 36px;
+}
+
+.ab-control-bar .ab-volume-bar {
+	width: 60px;
+}
+
+.ab-control-bar .ab-font-btn {
+	width: 40px;
+}
+
+.ab-control-bar .ab-color-btn {
+	width: 40px;
+}
+
+.ab-control-bar .ab-send-btn {
+	width: 58px;
+	height: 100%;
+	padding-top: 2px;
+	font-size: 12px;
+}
+
+.ab-control-bar .ab-danmaku-input {
+	display: block;
+	width: 100%;
+	height: 100%;
+	padding: 2px 4px;
+	font-size: 12px;
+}
+
+.ab-player {
+	height: 420px;
+}
+
+@media (max-width: 640px) {
+	.ab-control-bar .ab-volume-bar {
+		display: none !important;
+	}
+	.ab-control-bar .ab-send-btn {
+		width: 40px;
+	}
+
+	.ab-player {
+		height: 360px;
+	}
+}
+
+@media (max-width: 480px) {
+	.ab-control-bar .ab-time-label-separator,
+	.ab-control-bar .ab-time-label-total {
+		display: none !important;
+	}
+
+	.ab-player {
+		height: 240px;
+	}
+}
+
+
+</style>
+
+
+<div class="c-table ab-player">
+	<div class="c-row ab-video">
+		<video>
+			<p>Your browser does not support HTML5 video.</p>
+		</video>
+	</div>
+	<div class="c-row c-content-height ab-control">
+		<!-- 控制条第一行 -->
+		<div class="c-table ab-control-bar">
+			<div class="c-cell c-content-width"><!-- 播放按钮
+				--><span class="c-btn ab-play-btn"><i class="c-icon-play"></i></span><!--
+			--></div>
+			<div class="c-cell c-separator"></div>
+			<div class="c-cell"><!-- 进度条 宽度自适应 -->
+				<div class="c-slider ab-process-bar">
+					<div class="c-slider-fill"></div>
+					<div class="c-slider-fill c-slider-fill-dark"></div>
+				</div>
+			</div>
+			<div class="c-cell c-content-width"><!-- 时间 -->
+				<div class="ab-time-label"><!--
+					--><span class="ab-time-label-current">000:00</span><!--
+					--><span class="ab-time-label-separator"> / </span><!--
+					--><span class="ab-time-label-total">000:00</span><!--
+				--></div>
+			</div>
+			<div class="c-cell c-content-width"><!-- 音量按钮
+				--><span class="c-btn ab-volume-btn"><i class="c-icon-volume-high"></i></span><!--
+			--></div>
+			<div class="c-cell c-content-width"><!-- 音量调节 -->
+				<div class="c-slider ab-volume-bar">
+					<div class="c-slider-fill"></div>
+				</div>
+			</div>
+			<div class="c-cell c-content-width"><!-- 选项按钮
+				--><span class="c-btn c-btn-on ab-danmaku-btn"><i class="c-icon-comment"></i></span><!--
+				--><span class="c-btn ab-loop-btn"><i class="c-icon-loop"></i></span><!--
+				--><span class="c-btn ab-settings-btn"><i class="c-icon-gear"></i></span><!--
+				--><span class="c-btn ab-fullscreen-btn"><i class="c-icon-screen-full"></i></span><!--
+			--></div>
+		</div>
+		<!-- end 控制条第一行 -->
+		<!-- 控制条第二行 -->
+		<div class="c-table ab-control-bar">
+			<div class="c-cell c-content-width"><!-- 弹幕选项按钮
+				--><span class="c-btn ab-font-btn"><i class="c-icon-font-style"></i></span><!-- 
+				--><span class="c-btn ab-color-btn"><i class="c-icon-color-mode"></i></span><!-- 
+			--></div>
+			<div class="c-cell"><!-- 弹幕输入框 宽度自适应
+				--><input type="text" class="c-input ab-danmaku-input"><!-- 
+			--></div>
+			<div class="c-cell c-content-width"><!-- 弹幕发送按钮-->
+				<div class="c-text-btn ab-send-btn">发送</div>
+			</div>
+		</div>
+		<!-- end 控制条第二行 -->
+	</div>
+</div>

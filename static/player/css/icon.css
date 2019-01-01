@@ -1,0 +1,68 @@
+@font-face {
+  font-family: 'bilibili-helper';
+  src:url('bilibili-helper.eot?g1l381');
+  src:url('bilibili-helper.eot?#iefixg1l381') format('embedded-opentype'),
+    url('bilibili-helper.woff?g1l381') format('woff'),
+    url('bilibili-helper.ttf?g1l381') format('truetype'),
+    url('bilibili-helper.svg?g1l381#bilibili-helper') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+[class^="c-icon-"], [class*=" c-icon-"] {
+  font-family: 'bilibili-helper';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+}
+.c-icon-font-style:before {
+  content: "\e60a";
+}
+.c-icon-color-mode:before {
+  content: "\f065";
+}
+.c-icon-comment:before {
+  content: "\f02b";
+}
+.c-icon-gear:before {
+  content: "\f02f";
+}
+.c-icon-screen-full:before {
+  content: "\f066";
+}
+.c-icon-screen-normal:before {
+  content: "\f067";
+}
+.c-icon-screen:before {
+  content: "\e600";
+}
+.c-icon-tv:before {
+  content: "\e609";
+}
+.c-icon-play:before {
+  content: "\e602";
+}
+.c-icon-pause:before {
+  content: "\e603";
+}
+.c-icon-volume-high:before {
+  content: "\e604";
+}
+.c-icon-volume-medium:before {
+  content: "\e605";
+}
+.c-icon-volume-low:before {
+  content: "\e606";
+}
+.c-icon-volume-quiet:before {
+  content: "\e607";
+}
+.c-icon-volume-mute:before {
+  content: "\e608";
+}
+.c-icon-loop:before {
+  content: "\e601";
+}

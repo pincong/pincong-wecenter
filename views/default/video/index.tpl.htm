@@ -1,5 +1,8 @@
 <?php TPL::output('global/header.tpl.htm'); ?>
 
+
+<link rel="stylesheet" type="text/css" href="<?php echo G_STATIC_URL; ?>/player/css/icon.css" />
+
 <div class="aw-container-wrap">
 	<div class="container">
 		<div class="row">
@@ -67,7 +70,8 @@
 						</div>
 						<div class="mod-body">
 							<div>
-								<img src="<?php echo $this->video_info['thumb_url']; ?>" alt="" style="max-width:100%">
+								<!--<img src="<?php echo $this->video_info['thumb_url']; ?>" alt="" style="max-width:100%">-->
+								<?php TPL::output('video/player.tpl.htm'); ?>
 							</div>
 							<div class="content markitup-box">
 								<?php echo FORMAT::text(FORMAT::parse_links($this->video_info['message'])); ?>
