@@ -154,7 +154,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->model('category')->check_user_permission($_POST['category_id'], $this->user_info['permission']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限在这个分类下面发言')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你的等级还不能在这个分类发言')));
 		}
 
 		if (!$this->model('category')->category_exists($_POST['category_id']))
@@ -689,7 +689,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->model('category')->check_user_permission($question_info['category_id'], $this->user_info['permission']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限在这个分类下面发言')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你的等级还不能在这个分类发言')));
 		}
 
 		// 判断是否是问题发起者
@@ -788,7 +788,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->model('category')->check_user_permission($article_info['category_id'], $this->user_info['permission']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限在这个分类下面发言')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你的等级还不能在这个分类发言')));
 		}
 
 		if ($_POST['anonymous'])
@@ -864,7 +864,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->model('category')->check_user_permission($video_info['category_id'], $this->user_info['permission']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限在这个分类下面发言')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你的等级还不能在这个分类发言')));
 		}
 
 		if ($_POST['anonymous'])

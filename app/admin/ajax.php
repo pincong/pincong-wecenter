@@ -192,16 +192,12 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
         if ($_POST['category_id'])
         {
-            $category_id = intval($_POST['category_id']);
+            $this->model('category')->update_category_info($_POST['category_id'], $_POST['title'], $_POST['group_id'], $_POST['description'], $_POST['skip']);
         }
         else
         {
-            $category_id = $this->model('category')->add_category($_POST['title'], $_POST['group_id']);
+            $this->model('category')->add_category($_POST['title'], $_POST['group_id'], $_POST['description'], $_POST['skip']);
         }
-
-        $category = $this->model('category')->get_category_info($category_id);
-
-        $this->model('category')->update_category_info($category_id, $_POST['title'], $_POST['group_id'], $_POST['description']);
 
         H::ajax_json_output(AWS_APP::RSM(array(
             'url' => get_js_url('/admin/category/list/')

@@ -125,14 +125,15 @@ class category_class extends AWS_MODEL
 		return $category_list;
 	}
 
-	public function update_category_info($category_id, $title, $group_id, $description = null)
+	public function update_category_info($category_id, $title, $group_id, $description = null, $skip = 0)
 	{
 		AWS_APP::cache()->cleanGroup('category');
 
 		return $this->update('category', array(
 			'title' => htmlspecialchars($title),
 			'group_id' => intval($group_id),
-			'description' => $description
+			'description' => $description,
+			'skip' => intval($skip)
 		), 'id = ' . intval($category_id));
 	}
 
@@ -145,13 +146,15 @@ class category_class extends AWS_MODEL
 		), 'id = ' . intval($category_id));
 	}
 
-	public function add_category($title, $group_id)
+	public function add_category($title, $group_id, $description = null, $skip = 0)
 	{
 		AWS_APP::cache()->cleanGroup('category');
 
 		return $this->insert('category', array(
-			'title' => $title,
-			'group_id' => intval($group_id)
+			'title' => htmlspecialchars($title),
+			'group_id' => intval($group_id),
+			'description' => $description,
+			'skip' => intval($skip)
 		));
 	}
 

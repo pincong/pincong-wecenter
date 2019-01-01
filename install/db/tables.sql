@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `aws_category` (
   `description` varchar(240) DEFAULT NULL,
   `group_id` int(11) DEFAULT '0',
   `sort` smallint(6) DEFAULT '0',
-  `url_token` varchar(32) DEFAULT NULL,
+  `skip` TINYINT(1) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 

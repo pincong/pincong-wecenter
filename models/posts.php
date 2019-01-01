@@ -150,6 +150,31 @@ class posts_class extends AWS_MODEL
 		return $this->delete('posts_index', "post_id = " . intval($post_id) . " AND post_type = '" . $this->quote($post_type) . "'");
 	}
 
+	// 得到在首页显示的分类
+	public function get_default_category_ids()
+	{
+		static $ids;
+		if ($ids)
+		{
+			return $ids;
+		}
+
+		$categories = $this->model('category')->get_category_list();
+		foreach ($categories AS $key => $val)
+		{
+			if (!$val['skip'])
+			{
+				$ids[] = $val['id'];
+			}
+		}
+
+		if (!$ids)
+		{
+			$ids = array(0);
+		}
+		return $ids;
+	}
+
 	public function get_posts_list($post_type, $page = 1, $per_page = 10, $sort = null, $topic_ids = null, $category_id = null, $answer_count = null, $day = 30, $recommend = false)
 	{
 		$order_key = 'add_time DESC';
@@ -213,6 +238,10 @@ class posts_class extends AWS_MODEL
 			if ($category_id)
 			{
 				$where[] = 'category_id=' . intval($category_id);
+			}
+			else
+			{
+				$where[] = '`category_id` IN(' . implode(',', $this->get_default_category_ids()) . ')';
 			}
 
 			if ($post_type)
