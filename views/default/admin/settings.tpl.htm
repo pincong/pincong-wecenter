@@ -17,6 +17,16 @@
                 <tr>
                     <td>
                         <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('网站公告'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <textarea class="form-control textarea" name="site_announce"  ><?php echo htmlspecialchars($this->setting['site_announce']); ?></textarea>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('网站名称'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <input type="text" class="form-control" name="site_name" value="<?php echo $this->setting['site_name']; ?>">
@@ -50,6 +60,16 @@
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('公司名称'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <input name="company_name" class="form-control" type="text" value="<?php echo $this->setting['company_name']; ?>"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('网站统计代码'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <textarea class="form-control textarea" name="statistic_code" rows="4"><?php echo $this->setting['statistic_code']; ?></textarea>
                             </div>
                         </div>
                     </td>
@@ -355,16 +375,6 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('网站公告'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
-                                <textarea class="form-control textarea" name="site_announce"  ><?php echo htmlspecialchars($this->setting['site_announce']); ?></textarea>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('开启 Rewrite 伪静态'); ?>:</span>
                             <div class="col-sm-6 col-xs-8">
                                 <div class="btn-group mod-btn">
@@ -430,16 +440,6 @@
                                 <input name="unread_flush_interval" class="form-control" type="text" value="<?php echo $this->setting['unread_flush_interval']; ?>"/>
 
                                 <div class="help-block"><?php _e('单位'); ?>: <?php _e('秒'); ?></div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('网站统计代码'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
-                                <textarea class="form-control textarea" name="statistic_code" rows="9"><?php echo $this->setting['statistic_code']; ?></textarea>
                             </div>
                         </div>
                     </td>
@@ -686,62 +686,6 @@
                     </td>
                 </tr>
 
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('反对数量达到多少个时折叠');?>:</span>
-                            <div class="col-sm-5 col-xs-8">
-                                <input name="downvote_fold" type="text" class="form-control" value="<?php echo $this->setting['downvote_fold']; ?>"/>
-                                <span class="help-block"><?php _e('留空则不启用'); ?></span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('用户赞同小于等于多少时自动封禁'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
-                                <input name="auto_banning_agree_count" type="text" class="form-control" value="<?php echo $this->setting['auto_banning_agree_count']; ?>"/>
-                                <div class="help-block"><?php _e('应填写负数, 不启用请留空'); ?></div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('用户威望小于等于多少时自动封禁'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
-                                <input name="auto_banning_reputation" type="text" class="form-control" value="<?php echo $this->setting['auto_banning_reputation']; ?>"/>
-                                <div class="help-block"><?php _e('应填写负数, 不启用请留空'); ?></div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('自动封禁条件'); ?>:</span>
-                            <div class="col-sm-6 col-xs-8">
-                                <div class="btn-group mod-btn">
-                                    <label type="button" class="btn mod-btn-color">
-                                        <input type="radio" name="auto_banning_type" value="AND"<?php if ($this->setting['auto_banning_type'] == 'AND') { ?> checked="checked"<?php } ?> /> <?php _e('AND'); ?>
-                                    </label>
-
-                                    <label type="button" class="btn mod-btn-color">
-                                        <input type="radio" name="auto_banning_type" value="OR"<?php if ($this->setting['auto_banning_type'] != 'AND') { ?> checked="checked"<?php } ?> /> <?php _e('OR'); ?>
-                                    </label>
-
-                                    <span class="help-block"><?php _e('AND: 需满足全部条件, OR: 只需满足一个条件, 默认为 OR'); ?></span>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-
             </table>
         </div>
 
@@ -824,55 +768,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('回复内容最小字数限制'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
-                                <input name="answer_length_min" class="form-control" type="text" value="<?php echo $this->setting['answer_length_min']; ?>"/>
 
-                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('回复内容最大字数限制'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
-                                <input name="answer_length_max" class="form-control" type="text" value="<?php echo $this->setting['answer_length_max']; ?>"/>
-
-                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('问题标题最大字符数限制'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
-                                <input name="question_title_limit" class="form-control" type="text" value="<?php echo $this->setting['question_title_limit']; ?>"/>
-
-                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('问题话题数量限制'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
-                                <input name="question_topics_limit" class="form-control" type="text" value="<?php echo $this->setting['question_topics_limit']; ?>"/>
-
-                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
                 <tr>
                     <td>
                         <div class="form-group">
@@ -891,42 +787,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('评论内容最小字数限制'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
-                                <input name="comment_length_min" type="text" class="form-control" value="<?php echo $this->setting['comment_length_min']; ?>"/>
 
-                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('评论内容最大字数限制'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
-                                <input name="comment_length_max" type="text" class="form-control" value="<?php echo $this->setting['comment_length_max']; ?>"/>
-
-                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('话题标题最大字符数限制'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
-                                <input name="topic_title_limit" type="text" class="form-control" value="<?php echo $this->setting['topic_title_limit']; ?>"/>
-
-                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
                 <tr>
                     <td>
                         <div class="form-group">
@@ -944,7 +805,7 @@
                     <td>
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('敏感词列表'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
+                            <div class="col-sm-7 col-xs-8">
                                 <textarea class="form-control textarea" rows="5" name="sensitive_words"><?php echo $this->setting['sensitive_words']; ?></textarea>
                                 <span class="help-block"><?php _e('支持普通字符串和正则表达式，每行一个。正则表达式请以 <code>{</code> 开始、以 <code>}</code> 结束，且需符合 <a href="https://php.net/manual/zh/pcre.pattern.php" target="_blank">PCRE 模式</a>，如 <code>{/敏\s*感\s*词/i}</code>。'); ?></span>
                             </div>
@@ -966,7 +827,7 @@
                     <td>
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('站外 URL 白名单'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
+                            <div class="col-sm-7 col-xs-8">
                                 <textarea class="form-control textarea" rows="5" name="content_url_whitelist"><?php echo $this->setting['content_url_whitelist']; ?></textarea>
                                 <span class="help-block"><?php _e('支持普通字符串和正则表达式，每行一个。'); ?></span>
                             </div>
@@ -978,7 +839,7 @@
                     <td>
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('超链接黑名单'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
+                            <div class="col-sm-7 col-xs-8">
                                 <textarea class="form-control textarea" rows="5" name="hyperlink_blacklist"><?php echo $this->setting['hyperlink_blacklist']; ?></textarea>
                                 <span class="help-block"><?php _e('支持普通字符串和正则表达式，每行一个。'); ?></span>
                             </div>
@@ -1020,7 +881,7 @@
                     <td>
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('搜索引擎 URL'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
+                            <div class="col-sm-7 col-xs-8">
                                 <textarea class="form-control textarea" rows="5" name="search_engine_list"><?php echo $this->setting['search_engine_list']; ?></textarea>
                                 <span class="help-block"><?php _e('以 %s 取代查询，每行一个。e.g. Google, https://www.google.com/search?q=%s%20site:mydomain.com'); ?></span>
                             </div>
@@ -1233,7 +1094,7 @@
         <?php } else if ($_GET['category'] == 'permissions') { ?>
         <div class="mod-head">
             <h3>
-                <span class="pull-left"><?php _e('用户权限'); ?></span>
+                <span class="pull-left"><?php _e('用户限制'); ?></span>
 
                 <span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php _e('快速保存'); ?></a></span>
             </h3>
@@ -1264,6 +1125,184 @@
                                     <label type="button" class="btn mod-btn-color">
                                         <input type="radio" name="answer_self_question" value="N"<?php if ($this->setting['answer_self_question'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
                                     </label>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('问题话题数量限制'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="question_topics_limit" class="form-control" type="text" value="<?php echo $this->setting['question_topics_limit']; ?>"/>
+
+                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('话题标题最大字符数限制'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="topic_title_limit" type="text" class="form-control" value="<?php echo $this->setting['topic_title_limit']; ?>"/>
+
+                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('标题最小字数限制'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="title_length_min" class="form-control" type="text" value="<?php echo $this->setting['title_length_min']; ?>"/>
+
+                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('标题最大字数限制'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="title_length_max" class="form-control" type="text" value="<?php echo $this->setting['title_length_max']; ?>"/>
+
+                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('正文最小字数限制'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="content_length_min" class="form-control" type="text" value="<?php echo $this->setting['content_length_min']; ?>"/>
+
+                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('正文最大字数限制'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="content_length_max" class="form-control" type="text" value="<?php echo $this->setting['content_length_max']; ?>"/>
+
+                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('回复最小字数限制'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="reply_length_min" class="form-control" type="text" value="<?php echo $this->setting['reply_length_min']; ?>"/>
+
+                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('回复最大字数限制'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="reply_length_max" class="form-control" type="text" value="<?php echo $this->setting['reply_length_max']; ?>"/>
+
+                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('楼中楼评论最小字数限制'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="comment_length_min" class="form-control" type="text" value="<?php echo $this->setting['comment_length_min']; ?>"/>
+
+                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('楼中楼评论最大字数限制'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="comment_length_max" class="form-control" type="text" value="<?php echo $this->setting['comment_length_max']; ?>"/>
+
+                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('反对数量达到多少个时折叠');?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="downvote_fold" type="text" class="form-control" value="<?php echo $this->setting['downvote_fold']; ?>"/>
+                                <span class="help-block"><?php _e('留空则不启用'); ?></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('用户赞同小于等于多少时自动封禁'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="auto_banning_agree_count" type="text" class="form-control" value="<?php echo $this->setting['auto_banning_agree_count']; ?>"/>
+                                <div class="help-block"><?php _e('应填写负数, 不启用请留空'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('用户威望小于等于多少时自动封禁'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="auto_banning_reputation" type="text" class="form-control" value="<?php echo $this->setting['auto_banning_reputation']; ?>"/>
+                                <div class="help-block"><?php _e('应填写负数, 不启用请留空'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('自动封禁条件'); ?>:</span>
+                            <div class="col-sm-6 col-xs-8">
+                                <div class="btn-group mod-btn">
+                                    <label type="button" class="btn mod-btn-color">
+                                        <input type="radio" name="auto_banning_type" value="AND"<?php if ($this->setting['auto_banning_type'] == 'AND') { ?> checked="checked"<?php } ?> /> <?php _e('AND'); ?>
+                                    </label>
+
+                                    <label type="button" class="btn mod-btn-color">
+                                        <input type="radio" name="auto_banning_type" value="OR"<?php if ($this->setting['auto_banning_type'] != 'AND') { ?> checked="checked"<?php } ?> /> <?php _e('OR'); ?>
+                                    </label>
+
+                                    <span class="help-block"><?php _e('AND: 需满足全部条件, OR: 只需满足一个条件, 默认为 OR'); ?></span>
                                 </div>
                             </div>
                         </div>
@@ -1404,7 +1443,7 @@
                     <td>
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('示范 URL 列表'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
+                            <div class="col-sm-8 col-xs-8">
                                 <textarea class="form-control textarea" rows="5" name="video_config_example_url"><?php echo $this->setting['video_config_example_url']; ?></textarea>
                                 <span class="help-block"><?php _e('e.g. https://www.youtube.com/watch?v=abcdefghijk'); ?></span>
                             </div>
@@ -1416,7 +1455,7 @@
                     <td>
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('视频 URL 白名单'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
+                            <div class="col-sm-8 col-xs-8">
                                 <textarea class="form-control textarea" rows="5" name="video_config_url_whitelist"><?php echo $this->setting['video_config_url_whitelist']; ?></textarea>
                                 <span class="help-block"><?php _e('e.g. https://www.youtube.com/watch'); ?></span>
                             </div>
@@ -1428,7 +1467,7 @@
                     <td>
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('视频解析 API'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
+                            <div class="col-sm-8 col-xs-8">
                                 <textarea class="form-control textarea" rows="5" name="video_config_parser_api"><?php echo $this->setting['video_config_parser_api']; ?></textarea>
                                 <span class="help-block"><?php _e('每行一个'); ?></span>
                             </div>
@@ -1440,7 +1479,7 @@
                     <td>
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('视频解析 API 参数'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
+                            <div class="col-sm-8 col-xs-8">
                                 <textarea class="form-control textarea" rows="5" name="video_config_parser_api_params"><?php echo $this->setting['video_config_parser_api_params']; ?></textarea>
                                 <span class="help-block"><?php _e('e.g. access_token=123456789&api_key=abcdefg'); ?></span>
                             </div>
@@ -1452,7 +1491,7 @@
                     <td>
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('视频解析缓存规则'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
+                            <div class="col-sm-8 col-xs-8">
                                 <textarea class="form-control textarea" rows="5" name="video_config_parser_cache_rules"><?php echo $this->setting['video_config_parser_cache_rules']; ?></textarea>
                                 <span class="help-block"><?php _e('e.g. youtube, 60'); ?></span>
                             </div>
@@ -1464,9 +1503,9 @@
                     <td>
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('缩略图 URL 规则'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
+                            <div class="col-sm-8 col-xs-8">
                                 <textarea class="form-control textarea" rows="5" name="video_config_thumb_url_rules"><?php echo $this->setting['video_config_thumb_url_rules']; ?></textarea>
-                                <span class="help-block"><?php _e('根据视频 source 和 source_type 生成缩略图 URL, 详见 system/Services/VideoParser.php, e.g. youtube@s, https://i.ytimg.com/vi/{$source}/default.jpg'); ?></span>
+                                <span class="help-block"><?php _e('e.g. youtube@s, https://i.ytimg.com/vi/{$source}/default.jpg'); ?></span>
                             </div>
                         </div>
                     </td>

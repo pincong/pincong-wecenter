@@ -42,7 +42,7 @@ $config[] = array(
 
         array(
             'id' => 'SETTINGS_PERMISSIONS',
-            'title' => AWS_APP::lang()->_t('用户权限'),
+            'title' => AWS_APP::lang()->_t('用户限制'),
             'url' => 'admin/settings/category-permissions'
         ),
 
