@@ -2,13 +2,6 @@
 
 class Services_VideoParser
 {
-
-	// 检查视频网址是否支持
-	public static function check_url($url)
-	{
-		return content_contains('video_config_url_whitelist', $url);
-	}
-
     /**
      * 缩略图
      *
@@ -85,132 +78,26 @@ class Services_VideoParser
 	}
 
 
-	public static function fetch_metadata($source_type, $source, $from_cache = true)
+	public static function parse_video_url($url)
 	{
-		if (!$source = trim($source))
+		static $kvps;
+		if (!$kvps)
 		{
-			return false;
-		}
-		if (!$source_type = trim($source_type))
-		{
-			return false;
+			$kvps = get_key_value_pairs('video_config_url_parsing_rules');
 		}
 
-		if (!$from_cache)
+		foreach ($kvps as $type => $regex)
 		{
-			return self::real_fetch_metadata($source_type, $source);
-		}
-
-		$cache_rules = get_key_value_pairs('video_config_parser_cache_rules');
-
-		$cache_time = intval($cache_rules[$source_type]);
-		if (!$cache_time)
-		{
-			return self::real_fetch_metadata($source_type, $source);
-		}
-
-		$cache_key = 'fetch_metadata_' . $source_type . '_' . md5($source);
-
-		$result = AWS_APP::cache()->get($cache_key);
-		if (!$result)
-		{
-			$result = self::real_fetch_metadata($source_type, $source);
-			if (!$result)
+			if (preg_match($regex, $url, $matches))
 			{
-				return false;
+				return array(
+					'source_type' => $type,
+					'source' => $matches[1]
+				);
 			}
-			AWS_APP::cache()->set($cache_key, $result, $cache_time);
-		}
-		return $result;
-
-	}
-
-	public static function fetch_metadata_by_url($url)
-	{
-		if (!$url = trim($url))
-		{
-			return false;
-		}
-		return self::real_fetch_metadata(null, null, $url);
-	}
-
-    /**
-     * 发送 Http 请求, 取 metadata
-     * Http 请求成功返回 array, Http 请求失败返回 false
-     *
-     * @param string        $source_type
-     * @param string        $source
-     * @param string        $url	如果指定则忽略前两个参数
-     * @return mixed        例: array('source_type' => 'youtube', 'source' => 'abcdefghijk', 'duration' => 12345)
-     */
-	private static function real_fetch_metadata($source_type, $source, $url = null)
-	{
-		$api = self::get_parser_api();
-		if (!$api)
-		{
-			return false;
 		}
 
-		if ($url)
-		{
-			$content = 'url=' . urlencode($url);
-		}
-		else
-		{
-			$content = 'source_type=' . urlencode($source_type) . '&source=' . urlencode($source);
-		}
-
-		// 附加参数如 access_token 和/或 其他自定义信息
-		if ($api_params = get_setting('video_config_parser_api_params'))
-		{
-			$content .= '&' . $api_params;
-		}
-
-		$headers = array(
-			'Content-Type: application/x-www-form-urlencoded',
-			'Content-Length: ' . strlen($content)
-		);
-
-		$ctx = stream_context_create(array(
-			'http' => array(
-				'method' => 'POST',
-				'follow_location' => 0,
-				'protocol_version' => 1.1,
-				'header' => implode("\r\n", $headers),
-				'content' => $content,
-			)
-		));
-
-		// 发起请求
-		$body = @file_get_contents($api, false, $ctx);
-		if (!$body)
-		{
-			return false;
-		}
-
-		$body = json_decode($body, true);
-		if (!is_array($body))
-		{
-			return false;
-		}
-
-		// 请自行检查 $body['source_type'], $body['source'], ...
-		return $body;
-	}
-
-	private static function get_parser_api()
-	{
-		static $rows;
-		if (!$rows)
-		{
-			$rows = get_setting('video_config_parser_api');
-			if (!$rows)
-			{
-				return false;
-			}
-			$rows = explode("\n", $rows);
-		}
-		return trim($rows[rand(0, count($rows) - 1)]); // 随机选一个
+		return false;
 	}
 
 }

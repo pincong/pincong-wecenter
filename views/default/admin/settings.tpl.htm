@@ -1916,46 +1916,10 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('影片 URL 白名单'); ?>:</span>
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('来源 URL 正则表达式'); ?>:</span>
                             <div class="col-sm-8 col-xs-8">
-                                <textarea class="form-control textarea" rows="5" name="video_config_url_whitelist"><?php echo $this->setting['video_config_url_whitelist']; ?></textarea>
-                                <span class="help-block"><?php _e('e.g. https://www.youtube.com/watch'); ?></span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('影片解析 API'); ?>:</span>
-                            <div class="col-sm-8 col-xs-8">
-                                <textarea class="form-control textarea" rows="5" name="video_config_parser_api"><?php echo $this->setting['video_config_parser_api']; ?></textarea>
-                                <span class="help-block"><?php _e('每行一个'); ?></span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('影片解析 API 参数'); ?>:</span>
-                            <div class="col-sm-8 col-xs-8">
-                                <textarea class="form-control textarea" rows="5" name="video_config_parser_api_params"><?php echo $this->setting['video_config_parser_api_params']; ?></textarea>
-                                <span class="help-block"><?php _e('e.g. access_token=123456789&api_key=abcdefg'); ?></span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('影片解析缓存规则'); ?>:</span>
-                            <div class="col-sm-8 col-xs-8">
-                                <textarea class="form-control textarea" rows="5" name="video_config_parser_cache_rules"><?php echo $this->setting['video_config_parser_cache_rules']; ?></textarea>
-                                <span class="help-block"><?php _e('e.g. youtube, 60'); ?></span>
+                                <textarea class="form-control textarea" rows="5" name="video_config_url_parsing_rules"><?php echo $this->setting['video_config_url_parsing_rules']; ?></textarea>
+                                <span class="help-block"><?php _e('e.g. youtube, %(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i'); ?></span>
                             </div>
                         </div>
                     </td>

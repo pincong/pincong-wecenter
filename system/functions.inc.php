@@ -377,19 +377,20 @@ function get_key_value_pairs($varname, $separator = ',', $allow_empty_separator 
 			continue;
 		}
 
-		$array = explode($separator, $row);
-		$count = count($array);
-		if ($count < 2)
+		$pos = strpos($row, $separator);
+		if (!$pos)
 		{
-			if (!$allow_empty_separator)
+			if ($allow_empty_separator AND is_bool($pos))
 			{
-				continue;
+				$result[$row] = null;
 			}
-			$result[$row] = null;
+			continue;
 		}
 		else
 		{
-			$result[trim($array[0])] = trim($array[$count - 1]);
+			$key = substr($row, 0, $pos);
+			$value = substr($row, $pos + strlen($separator));
+			$result[trim($key)] = trim($value);
 		}
 	}
 

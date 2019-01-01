@@ -220,28 +220,6 @@ class ajax extends AWS_CONTROLLER
 	}
 
 
-	private function validate_video_metadata(&$metadata)
-	{
-		if (!$metadata)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('影片接口故障')));
-		}
-
-		if ($metadata['error'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, $metadata['error']));
-		}
-
-		$metadata['source_type'] = trim($metadata['source_type']);
-		$metadata['source'] = trim($metadata['source']);
-		$metadata['duration'] = intval($metadata['duration']);
-
-		if (!$metadata['source_type'] OR !$metadata['source'] OR !$metadata['duration'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('无法解析影片')));
-		}
-	}
-
 
 /*
 +--------------------------------------------------------------------------
@@ -378,8 +356,13 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
 
-		$web_url = trim($_POST['web_url']);
-		if (!Services_VideoParser::check_url($web_url))
+		if (!$web_url = trim($_POST['web_url']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请输入影片来源')));
+		}
+
+		$metadata = Services_VideoParser::parse_video_url($web_url);
+		if (!$metadata)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('无法识别影片来源')));
 		}
@@ -391,7 +374,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->model('ratelimit')->check_video($this->user_id, $this->user_info['permission']['thread_limit_per_day']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天影片的影片已经达到上限')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天发布的影片已经达到上限')));
 		}
 
 		$this->validate_thread('publish', 'video');
@@ -412,14 +395,6 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
 		}
 
-		// 开销大的操作放在最后
-		// 从影片网站取得元数据, 如时长
-		// 以 'https://www.youtube.com/watch?v=abcdefghijk' 为例
-		// $metadata['source_type'] 指影片网站, 如 'youtube'
-		// $metadata['source'] 指该影片在所在网站上的 id, 如 'abcdefghijk'
-		$metadata = Services_VideoParser::fetch_metadata_by_url($web_url);
-		$this->validate_video_metadata($metadata);
-
 		set_repeat_submission_digest($this->user_id, $_POST['title']);
 		set_user_operation_last_time('publish', $this->user_id);
 
@@ -432,7 +407,7 @@ class ajax extends AWS_CONTROLLER
 			'permission_create_topic' => $this->user_info['permission']['create_topic'],
 			'source_type' => $metadata['source_type'],
 			'source' => $metadata['source'],
-			'duration' => $metadata['duration'],
+			'duration' => 0,
 		), $this->user_id, $_POST['later']);
 
 		if ($_POST['later'])
@@ -599,11 +574,13 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$_POST['do_delete'])
 		{
-			$web_url = trim($_POST['web_url']);
-			$modify_source = !!$web_url;
-			if ($modify_source AND !Services_VideoParser::check_url($web_url))
+			if ($web_url = trim($_POST['web_url']))
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('无法识别影片来源')));
+				$metadata = Services_VideoParser::parse_video_url($web_url);
+				if (!$metadata)
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('无法识别影片来源')));
+				}
 			}
 
 			$this->validate_thread('modify', 'video');
@@ -626,16 +603,13 @@ class ajax extends AWS_CONTROLLER
 		}
 		else
 		{
-			if ($modify_source)
+			if ($metadata)
 			{
-				$metadata = Services_VideoParser::fetch_metadata_by_url($web_url);
-				$this->validate_video_metadata($metadata);
-
-				$this->model('video')->modify_video_source(
+				$this->model('video')->update_video_source(
 					$video_info['id'],
 					$metadata['source_type'],
 					$metadata['source'],
-					$metadata['duration']
+					0
 				);
 			}
 
