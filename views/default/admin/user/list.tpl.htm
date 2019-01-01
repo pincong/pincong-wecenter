@@ -32,6 +32,7 @@
                                 <th><?php _e('系统组'); ?></th>
                                 <th><?php _e('注册时间'); ?></th>
                                 <th><?php _e('威望'); ?></th>
+                                <th><?php _e('赞同'); ?></th>
                                 <th><?php _e('积分'); ?></th>
                                 <th><?php _e('操作'); ?></th>
                             </tr>
@@ -46,6 +47,7 @@
                                 <td><?php echo $this->system_group[$val['group_id']]['group_name']; ?></td>
                                 <td><?php echo date_friendly($val['reg_time']); ?></td>
                                 <td><?php echo $val['reputation']; ?></td>
+                                <td><?php echo $val['agree_count']; ?></td>
                                 <td><?php echo $val['integral']; ?></td>
                                 <td class="nowrap">
                                     <a href="admin/user/edit/uid-<?php echo $val['uid']; ?>" class="icon icon-edit md-tip" title="<?php _e('编辑'); ?>"></a>
