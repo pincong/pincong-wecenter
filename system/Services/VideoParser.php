@@ -84,9 +84,10 @@ class Services_VideoParser
      */
 	private static function real_fetch_video_metadata($source_type, $source)
 	{
-		$url = 'https://www.youtube.com/get_video_info?video_id=' . $source;
+		$url = 'https://www.youtube.com/get_video_info?video_id=' . $source . '&asv=3&el=detailpage&hl=en_US';
 
-		$header = 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/600.7.12 (KHTML, like Gecko) Version/8.0.7 Safari/600.7.12';
+		//$header = 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/600.7.12 (KHTML, like Gecko) Version/8.0.7 Safari/600.7.12';
+		$header = 'User-Agent: ' . $_SERVER['HTTP_USER_AGENT'];
 		$header .= "\r\n"; // 双引号内的字符串才会转义
 
 		$opts = array(
