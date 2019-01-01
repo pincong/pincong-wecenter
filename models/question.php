@@ -573,8 +573,6 @@ class question_class extends AWS_MODEL
 			$this->model('currency')->process($recipients_uid, 'ANSWER_INVITE', -get_setting('currency_system_config_invite_answer'), '回复邀请回答 #' . $question_id, $question_id);
 		}
 
-		$this->delete('question_invite', 'question_id = ' . intval($question_id) . ' AND recipients_uid = ' . intval($recipients_uid));
-
 		$this->model('account')->update_question_invite_count($recipients_uid);
 	}
 
