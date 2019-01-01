@@ -352,10 +352,11 @@ class answer_class extends AWS_MODEL
 	 * @param int $question_id //问题ID
 	 * @param int $vote_value  //-1反对 1 赞同
 	 * @param int $uid         //用户ID
+	 * @param int $answer_uid //被投票用户ID
 	 *
 	 * @return boolean true|false
 	 */
-	public function change_answer_vote($answer_id, $vote_value, $uid, $reputation_factor)
+	public function change_answer_vote($answer_id, $vote_value, $uid, $reputation_factor, $answer_uid)
 	{
 		if (!$answer_id)
 		{
@@ -370,10 +371,8 @@ class answer_class extends AWS_MODEL
 			return false;
 		}
 
-		$answer_info = $this->get_answer_by_id($answer_id);
-
-		$question_id = $answer_info['question_id'];
-		$answer_uid = $answer_info['uid'];
+		$answer_id = intval($answer_id);
+		$answer_uid = intval($answer_uid);
 
 		if (!$vote_info = $this->get_answer_vote_status($answer_id, $uid)) //添加记录
 		{
@@ -387,18 +386,18 @@ class answer_class extends AWS_MODEL
 
 			if ($vote_value == 1)
 			{
-				if (!$this->model('currency')->fetch_log($uid, 'AGREE_ANSWER', $answer_info['answer_id']))
+				if (!$this->model('currency')->fetch_log($uid, 'AGREE_ANSWER', $answer_id))
 				{
-					$this->model('currency')->process($uid, 'AGREE_ANSWER', get_setting('currency_system_config_agree_answer'), '赞同回复 #' . $answer_info['answer_id'], $answer_info['answer_id']);
-					$this->model('currency')->process($answer_uid, 'ANSWER_AGREED', get_setting('currency_system_config_answer_agreed'), '回复被赞同 #' . $answer_info['answer_id'], $answer_info['answer_id']);
+					$this->model('currency')->process($uid, 'AGREE_ANSWER', get_setting('currency_system_config_agree_answer'), '赞同回复 #' . $answer_id, $answer_id);
+					$this->model('currency')->process($answer_uid, 'ANSWER_AGREED', get_setting('currency_system_config_answer_agreed'), '回复被赞同 #' . $answer_id, $answer_id);
 				}
 			}
 			else if ($vote_value == -1)
 			{
-				if (!$this->model('currency')->fetch_log($uid, 'DISAGREE_ANSWER', $answer_info['answer_id']))
+				if (!$this->model('currency')->fetch_log($uid, 'DISAGREE_ANSWER', $answer_id))
 				{
-					$this->model('currency')->process($uid, 'DISAGREE_ANSWER', get_setting('currency_system_config_disagree_answer'), '反对回复 #' . $answer_info['answer_id'], $answer_info['answer_id']);
-					$this->model('currency')->process($answer_uid, 'ANSWER_DISAGREED', get_setting('currency_system_config_answer_disagreed'), '回复被反对 #' . $answer_info['answer_id'], $answer_info['answer_id']);
+					$this->model('currency')->process($uid, 'DISAGREE_ANSWER', get_setting('currency_system_config_disagree_answer'), '反对回复 #' . $answer_id, $answer_id);
+					$this->model('currency')->process($answer_uid, 'ANSWER_DISAGREED', get_setting('currency_system_config_answer_disagreed'), '回复被反对 #' . $answer_id, $answer_id);
 				}
 			}
 

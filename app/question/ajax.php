@@ -383,7 +383,7 @@ class ajax extends AWS_CONTROLLER
 
 		$reputation_factor = $this->model('reputation')->get_reputation_factor_by_reputation($this->user_info['reputation']);
 
-		$this->model('answer')->change_answer_vote($_POST['answer_id'], $value, $this->user_id, $reputation_factor);
+		$this->model('answer')->change_answer_vote($_POST['answer_id'], $value, $this->user_id, $reputation_factor, $answer_info['uid']);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
