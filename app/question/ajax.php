@@ -702,27 +702,20 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定的问题不能设置重定向')));
 		}
 
-		if (!$this->user_info['permission']['redirect_question'] AND ! ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
+		if (! ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
-		if ((!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator']) AND $this->user_info['permission']['function_interval'] AND ((time() - AWS_APP::cache()->get('function_interval_timer_redirect_' . $this->user_id)) < $this->user_info['permission']['function_interval']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('灌水预防机制已经打开, 在 %s 秒内不能操作', $this->user_info['permission']['function_interval'])));
-		}
-
 		$this->model('question')->redirect($this->user_id, $_POST['item_id'], $_POST['target_id']);
 
-		if ($_POST['target_id'] AND $_POST['item_id'] AND $question_info['published_uid'] != $this->user_id)
+		/*if ($_POST['target_id'] AND $_POST['item_id'] AND $question_info['published_uid'] != $this->user_id)
 		{
 			$this->model('notify')->send($this->user_id, $question_info['published_uid'], notify_class::TYPE_REDIRECT_QUESTION, notify_class::CATEGORY_QUESTION, $_POST['item_id'], array(
 				'from_uid' => $this->user_id,
 				'question_id' => intval($_POST['item_id'])
 			));
-		}
-
-		AWS_APP::cache()->set('function_interval_timer_redirect_' . $this->user_id, time(), 86400);
+		}*/
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}

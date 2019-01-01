@@ -98,7 +98,7 @@ class main extends AWS_CONTROLLER
 			{
 				$message = AWS_APP::lang()->_t('此问题将跳转至') . ' <a href="' . get_js_url('/question/' . $question_info['redirect']['target_id'] . '?rf=' . $question_info['question_id']) . '">' . $target_question['question_content'] . '</a>';
 
-				if ($this->user_id AND ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'] OR (!$this->question_info['lock'] AND $this->user_info['permission']['redirect_question'])))
+				if ($this->user_id AND ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
 				{
 					$message .= '&nbsp; (<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + \'/question/ajax/redirect/\', \'item_id=' . $question_info['question_id'] . '\');">' . AWS_APP::lang()->_t('撤消重定向') . '</a>)';
 				}
