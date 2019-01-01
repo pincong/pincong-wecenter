@@ -21,7 +21,7 @@ if (!defined('IN_ANWSION'))
 class video_class extends AWS_MODEL
 {
 
-	public function modify_video($id, $uid, $title, $message, $category_id)
+	public function modify_video($id, $uid, $title, $message)
 	{
 		if (!$item_info = $this->model('video')->get_video_info_by_id($id))
 		{
@@ -34,13 +34,8 @@ class video_class extends AWS_MODEL
 
 		$this->update('video', array(
 			'title' => htmlspecialchars($title),
-			'message' => htmlspecialchars($message),
-			'category_id' => $category_id,
+			'message' => htmlspecialchars($message)
 		), 'id = ' . intval($id));
-
-		$this->update('posts_index', array(
-			'category_id' => $category_id
-		), "post_id = " . intval($id) . " AND post_type = 'video'" );
 
 		$this->model('content')->log('video', $id, '编辑影片', $uid);
 

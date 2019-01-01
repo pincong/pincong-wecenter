@@ -321,8 +321,8 @@
 							<div class="col-sm-5 col-xs-8">
 								<select name="banning_type" class="form-control">
 									<option value=""></option>
-									<option value="permanent" <?php if ($this->group_pms['banning_type'] == 'permanent') { ?>selected="selected"<?php } ?>>永久</option>
-									<option value="temporary" <?php if ($this->group_pms['banning_type'] == 'temporary') { ?>selected="selected"<?php } ?>>临时</option>
+									<option value="permanent" <?php if ($this->group_pms['banning_type'] == 'permanent') { ?>selected="selected"<?php } ?>>永久 (自动删号)</option>
+									<option value="temporary" <?php if ($this->group_pms['banning_type'] == 'temporary') { ?>selected="selected"<?php } ?>>临时 (自动解封)</option>
 									<option value="protected" <?php if ($this->group_pms['banning_type'] == 'protected') { ?>selected="selected"<?php } ?>>保护 (不可封禁)</option>
 								</select>
 							</div>

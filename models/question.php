@@ -21,7 +21,7 @@ if (!defined('IN_ANWSION'))
 class question_class extends AWS_MODEL
 {
 
-	public function modify_question($id, $uid, $title, $message, $category_id)
+	public function modify_question($id, $uid, $title, $message)
 	{
 		if (!$item_info = $this->model('question')->get_question_info_by_id($id))
 		{
@@ -34,13 +34,8 @@ class question_class extends AWS_MODEL
 
 		$this->update('question', array(
 			'question_content' => htmlspecialchars($title),
-			'question_detail' => htmlspecialchars($message),
-			'category_id' => $category_id,
+			'question_detail' => htmlspecialchars($message)
 		), 'question_id = ' . intval($id));
-
-		$this->update('posts_index', array(
-			'category_id' => $category_id
-		), "post_id = " . intval($id) . " AND post_type = 'question'" );
 
 		$this->model('content')->log('question', $id, '编辑问题', $uid);
 

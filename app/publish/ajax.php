@@ -138,6 +138,11 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
+		if ($act == 'modify')
+		{
+			return;
+		}
+
 		if (get_setting('category_enable') == 'N')
 		{
 			$_POST['category_id'] = 1;
@@ -494,8 +499,7 @@ class ajax extends AWS_CONTROLLER
 				$question_info['question_id'],
 				$this->user_id,
 				$_POST['title'],
-				$_POST['message'],
-				$_POST['category_id']
+				$_POST['message']
 			);
 		}
 
@@ -557,8 +561,7 @@ class ajax extends AWS_CONTROLLER
 				$article_info['id'],
 				$this->user_id,
 				$_POST['title'],
-				$_POST['message'],
-				$_POST['category_id']
+				$_POST['message']
 			);
 		}
 
@@ -639,8 +642,7 @@ class ajax extends AWS_CONTROLLER
 				$video_info['id'],
 				$this->user_id,
 				$_POST['title'],
-				$_POST['message'],
-				$_POST['category_id']
+				$_POST['message']
 			);
 		}
 

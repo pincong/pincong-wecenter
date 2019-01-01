@@ -21,7 +21,7 @@ if (!defined('IN_ANWSION'))
 class article_class extends AWS_MODEL
 {
 
-	public function modify_article($id, $uid, $title, $message, $category_id)
+	public function modify_article($id, $uid, $title, $message)
 	{
 		if (!$item_info = $this->model('article')->get_article_info_by_id($id))
 		{
@@ -34,13 +34,8 @@ class article_class extends AWS_MODEL
 
 		$this->update('article', array(
 			'title' => htmlspecialchars($title),
-			'message' => htmlspecialchars($message),
-			'category_id' => $category_id,
+			'message' => htmlspecialchars($message)
 		), 'id = ' . intval($id));
-
-		$this->update('posts_index', array(
-			'category_id' => $category_id
-		), "post_id = " . intval($id) . " AND post_type = 'article'" );
 
 		$this->model('content')->log('article', $id, '编辑文章', $uid);
 
