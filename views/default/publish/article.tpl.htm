@@ -60,6 +60,7 @@
 									</div>
 								</div>
 
+								<?php if (!$this->article_info['id']) { ?>
 								<h3><?php _e('添加话题'); ?>:</h3>
 								<div class="aw-topic-bar" data-type="publish">
 									<div class="tag-bar clearfix">
@@ -107,8 +108,11 @@
 									</div>
 								</div>
 								<?php } ?>
+								<?php } else { ?>
+								<h3>&nbsp;</h3>
+								<?php } ?>
 
-								<?php if ($this->human_valid) { ?>
+								<?php if (!$this->human_valid) { ?>
 								<div class="aw-auth-img clearfix">
 									<em class="auth-img pull-right"><img src="" onclick="this.src = G_BASE_URL + '/account/captcha/' + Math.floor(Math.random() * 10000);" id="captcha"  /></em>
 									<input class="pull-right form-control" type="text" name="seccode_verify" placeholder="验证码" />
@@ -118,7 +122,7 @@
 							<div class="mod-footer clearfix">
 								<a href="currency/rule/" target="_blank">[<?php _e(get_setting('currency_rule_name')); ?>]</a>
 								<span class="aw-anonymity">
-									<?php if ($this->article_info['id'] AND ($this->user_info['permission']['is_administrator'] /*OR $this->user_info['permission']['is_moderator']*/)) { ?>
+									<?php if ($this->article_info['id']) { ?>
 									<label><input type="checkbox" class="pull-left" value="1" name="do_delete" />
 										<?php _e('删除文章'); ?>&nbsp;</label>
 									<?php } ?>
