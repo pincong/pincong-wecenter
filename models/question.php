@@ -106,11 +106,6 @@ class question_class extends AWS_MODEL
 
 		if ($question = $this->fetch_row('question', 'question_id = ' . intval($question_id)))
 		{
-			if (-$question['agree_count'] >= get_setting('question_downvote_fold'))
-			{
-				$question['fold'] = 1;
-			}
-
 			$questions[$question_id] = $question;
 		}
 
@@ -128,14 +123,8 @@ class question_class extends AWS_MODEL
 
 		if ($questions_list = $this->fetch_all('question', "question_id IN(" . implode(',', $question_ids) . ")"))
 		{
-			$question_downvote_fold = get_setting('question_downvote_fold');
 			foreach ($questions_list AS $key => $val)
 			{
-				if (-$val['agree_count'] >= $question_downvote_fold)
-				{
-					$val['fold'] = 1;
-				}
-
 				$result[$val['question_id']] = $val;
 			}
 		}

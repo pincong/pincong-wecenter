@@ -98,14 +98,6 @@ class video_class extends AWS_MODEL
 		{
 			if ($video = $this->fetch_row('video', 'id = ' . $video_id))
 			{
-				/*
-				// 自动折叠 赞不实现
-				if (-$video['agree_count'] >= get_setting('video_downvote_fold'))
-				{
-					$video['fold'] = 1;
-				}
-				*/
-
 				$videos[$video_id] = $video;
 			}
 		}
@@ -124,17 +116,8 @@ class video_class extends AWS_MODEL
 
 		if ($video_list = $this->fetch_all('video', 'id IN(' . implode(',', $video_ids) . ')'))
 		{
-			//$video_downvote_fold = get_setting('video_downvote_fold');
 			foreach ($video_list AS $key => $val)
 			{
-				/*
-				// 自动折叠 赞不实现
-				if (-$val['agree_count'] >= $video_downvote_fold)
-				{
-					$val['fold'] = 1;
-				}
-				*/
-
 				$result[$val['id']] = $val;
 			}
 		}
@@ -154,13 +137,10 @@ class video_class extends AWS_MODEL
 			$comment['user_info'] = $comment_user_infos[$comment['uid']];
 			$comment['at_user_info'] = $comment_user_infos[$comment['at_uid']];
 
-			/*
-			// 自动折叠 赞不实现
-			if (-$comment['agree_count'] >= get_setting('comment_downvote_fold'))
+			if (-$comment['agree_count'] >= get_setting('downvote_fold'))
 			{
-				$comment['fold'] = 1;
+				$comment['fold'] = 2;
 			}
-			*/
 		}
 
 		return $comment;
@@ -177,16 +157,14 @@ class video_class extends AWS_MODEL
 
 		if ($comments = $this->fetch_all('video_comment', 'id IN (' . implode(',', $comment_ids) . ')'))
 		{
-			//$comment_downvote_fold = get_setting('comment_downvote_fold');
+			$downvote_fold = get_setting('downvote_fold');
 			foreach ($comments AS $key => $val)
 			{
-				/*
-				// 自动折叠 赞不实现
-				if (-$val['agree_count'] >= $comment_downvote_fold)
+				if (-$val['agree_count'] >= $downvote_fold)
 				{
-					$val['fold'] = 1;
+					$val['fold'] = 2;
 				}
-				*/
+
 				$video_comments[$val['id']] = $val;
 			}
 		}
@@ -198,16 +176,13 @@ class video_class extends AWS_MODEL
 	{
 		if ($comments = $this->fetch_page('video_comment', 'video_id = ' . intval($video_id), 'id ASC', $page, $per_page))
 		{
-			//$comment_downvote_fold = get_setting('comment_downvote_fold');
+			$downvote_fold = get_setting('downvote_fold');
 			foreach ($comments AS $key => $val)
 			{
-				/*
-				// 自动折叠 赞不实现
-				if (-$val['agree_count'] >= $comment_downvote_fold)
+				if (-$val['agree_count'] >= $downvote_fold)
 				{
-					$comments[$key]['fold'] = 1;
+					$comments[$key]['fold'] = 2;
 				}
-				*/
 
 				$comment_uids[$val['uid']] = $val['uid'];
 

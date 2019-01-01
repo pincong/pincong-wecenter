@@ -98,11 +98,6 @@ class article_class extends AWS_MODEL
 		{
 			if ($article = $this->fetch_row('article', 'id = ' . $article_id))
 			{
-				if (-$article['votes'] >= get_setting('article_downvote_fold'))
-				{
-					$article['fold'] = 1;
-				}
-
 				$articles[$article_id] = $article;
 			}
 		}
@@ -121,14 +116,8 @@ class article_class extends AWS_MODEL
 
 		if ($article_list = $this->fetch_all('article', 'id IN(' . implode(',', $article_ids) . ')'))
 		{
-			$article_downvote_fold = get_setting('article_downvote_fold');
 			foreach ($article_list AS $key => $val)
 			{
-				if (-$val['votes'] >= $article_downvote_fold)
-				{
-					$val['fold'] = 1;
-				}
-
 				$result[$val['id']] = $val;
 			}
 		}
@@ -148,9 +137,9 @@ class article_class extends AWS_MODEL
 			$comment['user_info'] = $comment_user_infos[$comment['uid']];
 			$comment['at_user_info'] = $comment_user_infos[$comment['at_uid']];
 
-			if (-$comment['votes'] >= get_setting('comment_downvote_fold'))
+			if (-$comment['votes'] >= get_setting('downvote_fold'))
 			{
-				$comment['fold'] = 1;
+				$comment['fold'] = 2;
 			}
 		}
 
@@ -168,12 +157,12 @@ class article_class extends AWS_MODEL
 
 		if ($comments = $this->fetch_all('article_comment', 'id IN (' . implode(',', $comment_ids) . ')'))
 		{
-			$comment_downvote_fold = get_setting('comment_downvote_fold');
+			$downvote_fold = get_setting('downvote_fold');
 			foreach ($comments AS $key => $val)
 			{
-				if (-$val['votes'] >= $comment_downvote_fold)
+				if (-$val['votes'] >= $downvote_fold)
 				{
-					$val['fold'] = 1;
+					$val['fold'] = 2;
 				}
 				$article_comments[$val['id']] = $val;
 			}
@@ -186,12 +175,12 @@ class article_class extends AWS_MODEL
 	{
 		if ($comments = $this->fetch_page('article_comment', 'article_id = ' . intval($article_id), 'id ASC', $page, $per_page))
 		{
-			$comment_downvote_fold = get_setting('comment_downvote_fold');
+			$downvote_fold = get_setting('downvote_fold');
 			foreach ($comments AS $key => $val)
 			{
-				if (-$val['votes'] >= $comment_downvote_fold)
+				if (-$val['votes'] >= $downvote_fold)
 				{
-					$comments[$key]['fold'] = 1;
+					$comments[$key]['fold'] = 2;
 				}
 
 				$comment_uids[$val['uid']] = $val['uid'];
