@@ -325,7 +325,7 @@ class posts_class extends AWS_MODEL
 			}
 		}
 
-		$posts_index = $this->fetch_page('posts_index', implode(' AND ', $where), 'answer_count DESC', $page, $per_page);
+		$posts_index = $this->fetch_page('posts_index', implode(' AND ', $where), 'reputation DESC', $page, $per_page);
 
 		$this->posts_list_total = $this->found_rows();
 

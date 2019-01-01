@@ -175,7 +175,7 @@ class vote_class extends AWS_MODEL
 	}
 
 
-	private function get_bonus_factor(&$type, $item_id, $factor)
+	private function get_bonus_factor(&$type, $item_id, $factor, &$item_info)
 	{
 		$bonus_factor = get_setting('bonus_factor');
 		if (!is_numeric($bonus_factor))
@@ -185,8 +185,6 @@ class vote_class extends AWS_MODEL
 
 		$bonus_max_count = intval(get_setting('bonus_max_count'));
 		$bonus_min_count = intval(get_setting('bonus_min_count'));
-
-		$item_info = $this->model('content')->get_item_info_by_id($type, $item_id);
 
 		// TODO: question, answer 字段改名以避免特殊处理
 		if ($type == 'question')
@@ -226,9 +224,41 @@ class vote_class extends AWS_MODEL
 		return $factor;
 	}
 
+
+	// 用于筛选最热帖子 (首页排序)
+	private function update_parent_reputation(&$type, $item_id, $value, &$item_info)
+	{
+		switch ($type)
+		{
+			case 'answer':
+				$parent_id = $item_info['question_id'];
+				$parent_type = 'question';
+				break;
+
+			case 'article_comment':
+				$parent_id = $item_info['article_id'];
+				$parent_type = 'article';
+				break;
+
+			case 'video_comment':
+				$parent_id = $item_info['video_id'];
+				$parent_type = 'video';
+				break;
+
+			default:
+				return;
+		}
+
+		$where = "post_id = " . $parent_id . " AND post_type = '" . $parent_type . "'";
+		$sql = 'UPDATE ' . $this->get_table('posts_index') . ' SET reputation = reputation + ' . $value . ' WHERE ' . $where;
+		$this->query($sql);
+	}
+
+
 	private function increase_count_and_reputation(&$type, $item_id, $uid, $item_uid, $factor)
 	{
-		$factor = $this->get_bonus_factor($type, $item_id, $factor);
+		$item_info = $this->model('content')->get_item_info_by_id($type, $item_id);
+		$factor = floatval($this->get_bonus_factor($type, $item_id, $factor, $item_info));
 
 		// TODO: question_id 字段改名
 		if ($type == 'question')
@@ -245,13 +275,16 @@ class vote_class extends AWS_MODEL
 			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + 1, reputation = reputation + ' . ($factor) . ' WHERE id = ' . ($item_id);
 		}
 		$this->query($sql);
+
+		$this->update_parent_reputation($type, $item_id, $factor, $item_info);
 		$factor = $this->calc_upvote_reputation_factor($uid, $factor);
 		$this->model('reputation')->increase_agree_count_and_reputation($item_uid, 1, $factor);
 	}
 
 	private function decrease_count_and_reputation(&$type, $item_id, $uid, $item_uid, $factor)
 	{
-		$factor = $this->get_bonus_factor($type, $item_id, $factor);
+		$item_info = $this->model('content')->get_item_info_by_id($type, $item_id);
+		$factor = floatval($this->get_bonus_factor($type, $item_id, $factor, $item_info));
 
 		// TODO: question_id 字段改名
 		if ($type == 'question')
@@ -268,6 +301,8 @@ class vote_class extends AWS_MODEL
 			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count - 1, reputation = reputation - ' . ($factor) . ' WHERE id = ' . ($item_id);
 		}
 		$this->query($sql);
+
+		$this->update_parent_reputation($type, $item_id, -$factor, $item_info);
 		$factor = $this->calc_downvote_reputation_factor($uid, $factor);
 		$this->model('reputation')->increase_agree_count_and_reputation($item_uid, -1, $factor);
 	}
