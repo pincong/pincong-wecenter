@@ -231,19 +231,7 @@
 		quote: {
 			txtExec: ['[quote]', '[/quote]']
 		},
-		youtube: {
-			txtExec: function (caller) {
-				var editor = this;
 
-				getEditorCommand('youtube')._dropDown(
-					editor,
-					caller,
-					function (id) {
-						editor.insertText('[youtube]' + id + '[/youtube]');
-					}
-				);
-			}
-		},
 		rtl: {
 			txtExec: ['[rtl]', '[/rtl]']
 		},
@@ -762,24 +750,7 @@
 		},
 		// END_COMMAND
 
-		// START_COMMAND: YouTube
-		youtube: {
-			allowsEmpty: true,
-			tags: {
-				iframe: {
-					'data-youtube-id': null
-				}
-			},
-			format: function (element, content) {
-				element = attr(element, 'data-youtube-id');
 
-				return element ? '[youtube]' + element + '[/youtube]' : content;
-			},
-			html: '<iframe width="560" height="315" frameborder="0" ' +
-				'src="https://www.youtube.com/embed/{0}?wmode=opaque" ' +
-				'data-youtube-id="{0}" allowfullscreen></iframe>'
-		},
-		// END_COMMAND
 
 
 		// START_COMMAND: Rtl

@@ -1155,7 +1155,7 @@
 			'left,center,right,justify|font,size,color,removeformat|' +
 			'cut,copy,pastetext|bulletlist,orderedlist,indent,outdent|' +
 			'table|code,quote|horizontalrule,image,email,link,unlink|' +
-			'youtube,date,time|ltr,rtl|print,maximize,source',
+			'date,time|ltr,rtl|print,maximize,source',
 
 		/**
 		 * Comma separated list of commands to excludes from the toolbar
@@ -1740,16 +1740,7 @@
 				'<input type="text" id="des" /></div>' +
 			'<div><input type="button" class="button" value="{ins}" /></div>',
 
-		youtubeMenu:
-			'<div><label for="link">{label}</label> ' +
-				'<input type="text" id="link" dir="ltr" placeholder="https://" /></div>' +
-			'<div><input type="button" class="button" value="{insert}" />' +
-				'</div>',
 
-		youtube:
-			'<iframe width="560" height="315" frameborder="0" allowfullscreen ' +
-			'src="https://www.youtube.com/embed/{id}?wmode=opaque&start={time}" ' +
-			'data-youtube-id="{id}"></iframe>'
 	};
 
 	/**
@@ -2440,53 +2431,6 @@
 		// END_COMMAND
 
 
-		// START_COMMAND: YouTube
-		youtube: {
-			_dropDown: function (editor, caller, callback) {
-				var	content = createElement('div');
-
-				appendChild(content, _tmpl('youtubeMenu', {
-					label: editor._('Video URL:'),
-					insert: editor._('Insert')
-				}, true));
-
-				on(content, 'click', '.button', function (e) {
-					var val = find(content, '#link')[0].value;
-					var idMatch = val.match(/(?:v=|v\/|embed\/|youtu.be\/)(.{11})/);
-					var timeMatch = val.match(/[&|?](?:star)?t=((\d+[hms]?){1,3})/);
-					var time = 0;
-
-					if (timeMatch) {
-						each(timeMatch[1].split(/[hms]/), function (i, val) {
-							if (val !== '') {
-								time = (time * 60) + Number(val);
-							}
-						});
-					}
-
-					if (idMatch && /^[a-zA-Z0-9_\-]{11}$/.test(idMatch[1])) {
-						callback(idMatch[1], time);
-					}
-
-					editor.closeDropDown(true);
-					e.preventDefault();
-				});
-
-				editor.createDropDown(caller, 'insertlink', content);
-			},
-			exec: function (btn) {
-				var editor = this;
-
-				defaultCmds.youtube._dropDown(editor, btn, function (id, time) {
-					editor.wysiwygEditorInsertHtml(_tmpl('youtube', {
-						id: id,
-						time: time
-					}));
-				});
-			},
-			tooltip: 'Insert a YouTube video'
-		},
-		// END_COMMAND
 
 		// START_COMMAND: Date
 		date: {
