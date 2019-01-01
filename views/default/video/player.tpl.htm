@@ -50,7 +50,6 @@
 	box-sizing: border-box;
 	cursor: pointer;
 	position: relative;
-	//overflow: hidden;
 	border-radius: 6px;
 	height: 6px;
 	background: #949494;
@@ -436,6 +435,45 @@
 	background-repeat: no-repeat;
 	background-size: contain;
 	z-index: 1;
+}
+
+.ab-font-dlg .c-dlg-btn-group .c-dlg-btn {
+	position: relative;
+}
+.ab-font-dlg .c-dlg-btn-group .c-dlg-btn::after {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.ab-danmaku-size-1::after {
+	content: "A";
+	font-size: 18px;
+	line-height: 28px;
+}
+.ab-danmaku-size-2::after {
+	content: "A";
+	font-size: 22px;
+	line-height: 26px;
+}
+
+.ab-danmaku-mode-1::after {
+	content: "\258a\258a\258a";
+	font-size: 6px;
+	line-height: 14px;
+}
+.ab-danmaku-mode-2::after {
+	content: "\25c0 \258a\258a\258a        \A        \25c0 \258a\258a\258a";
+	white-space: pre;
+	font-size: 6px;
+	line-height: 12px;
+}
+.ab-danmaku-mode-3::after {
+	content: "\258a\258a\258a";
+	font-size: 6px;
+	line-height: 44px;
 }
 
 </style>
@@ -1098,14 +1136,14 @@ var ABP = {};
 	<div class="c-dlg ab-font-dlg">
 		<p class="c-dlg-title">弹幕字号</p>
 		<div class="c-dlg-btn-group">
-			<label><input type="radio" value="18" name="abp-danmaku-size"><span class="c-dlg-btn">小字号</span></label>
-			<label><input type="radio" value="25" name="abp-danmaku-size" checked="checked"><span class="c-dlg-btn">中字号</span></label>
+			<label><input type="radio" value="18" name="abp-danmaku-size"><span class="c-dlg-btn ab-danmaku-size-1">小字号</span></label>
+			<label><input type="radio" value="25" name="abp-danmaku-size" checked="checked"><span class="c-dlg-btn ab-danmaku-size-2">中字号</span></label>
 		</div>
 		<p class="c-dlg-title">弹幕模式</p>
 		<div class="c-dlg-btn-group">
-			<label><input type="radio" value="5" name="abp-danmaku-mode"><span class="c-dlg-btn">顶端渐隐</span></label>
-			<label><input type="radio" value="1" name="abp-danmaku-mode" checked="checked"><span class="c-dlg-btn">滚动字幕</span></label>
-			<label><input type="radio" value="4" name="abp-danmaku-mode"><span class="c-dlg-btn">底端渐隐</span></label>
+			<label><input type="radio" value="5" name="abp-danmaku-mode"><span class="c-dlg-btn ab-danmaku-mode-1">顶端渐隐</span></label>
+			<label><input type="radio" value="1" name="abp-danmaku-mode" checked="checked"><span class="c-dlg-btn ab-danmaku-mode-2">滚动字幕</span></label>
+			<label><input type="radio" value="4" name="abp-danmaku-mode"><span class="c-dlg-btn ab-danmaku-mode-3">底端渐隐</span></label>
 		</div>
 	</div>
 
