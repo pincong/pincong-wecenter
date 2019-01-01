@@ -61,7 +61,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (! $_POST['agreement_chk'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你必需同意%s才能继续', get_setting('user_agreement_name'))));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你必需同意 %s 才能继续', get_setting('user_agreement_name'))));
 		}
 
 		if (get_setting('register_type') == 'close')

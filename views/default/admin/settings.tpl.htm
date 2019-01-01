@@ -274,6 +274,16 @@
                 <tr>
                     <td>
                         <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('注册须知'); ?>:</span>
+                            <div class="col-sm-7 col-xs-8">
+                                <textarea class="form-control textarea" rows="5" name="register_notice"  ><?php echo $this->setting['register_notice']; ?></textarea>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
                             <span class="col-sm-3 col-xs-3 control-label"><?php _e('用户注册名不允许出现以下关键字'); ?>:</span>
                             <div class="col-sm-7 col-xs-8">
                                 <textarea class="form-control textarea" rows="5" name="censoruser"  ><?php echo $this->setting['censoruser']; ?></textarea>

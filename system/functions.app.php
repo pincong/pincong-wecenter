@@ -153,6 +153,21 @@ function is_inside_url($url)
 	return false;
 }
 
+function is_javascript($url)
+{
+	if (!$url)
+	{
+		return false;
+	}
+
+	if (stripos($url, 'javascript:') === 0)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 function import_editor_static_files()
 {
 	TPL::import_css('editor/sceditor/themes/square.css');
