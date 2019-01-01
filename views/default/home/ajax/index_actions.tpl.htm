@@ -73,10 +73,10 @@
 			</span>
 			<!-- end 投票栏 -->
 			<span class="operate">
-				<a class="aw-add-comment text-color-999" href="javascript:;" data-id="<?php echo $val['answer_info']['answer_id']; ?>" data-type="answer"><i class="icon icon-comment"></i><?php echo $val['answer_info']['comment_count']; ?></a>
+				<a class="aw-add-comment text-color-999" href="javascript:;" data-id="<?php echo $val['answer_info']['answer_id']; ?>" data-type="answer"><i class="icon icon-comment"></i> <?php echo $val['answer_info']['comment_count']; ?></a>
 			</span>
 			<span class="pull-right more-operate">
-				<a href="javascript:;" onclick="AWS.dialog('favorite', {item_id:<?php echo $val['answer_info']['answer_id']; ?>, item_type:'answer'});" class="text-color-999"><i class="icon icon-favor"></i><?php _e('收藏'); ?></a>
+				<a href="javascript:;" onclick="AWS.dialog('favorite', {item_id:<?php echo $val['answer_info']['answer_id']; ?>, item_type:'answer'});" class="text-color-999"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>
 			</span>
 		</div>
 		<!-- end 社交操作 -->

@@ -86,7 +86,7 @@
                                                         <h4><a href="<?php echo $val['link']; ?>"><?php echo $val['title']; ?></a></h4>
                                                     </div>
                                                     <div class="mod-body">
-                                                        <span class="aw-border-radius-5 count pull-left"><i class="icon icon-agree"></i><?php echo $val['answer_info']['agree_count']; ?></span>
+                                                        <span class="aw-border-radius-5 count pull-left"><i class="icon icon-agree"></i> <?php echo $val['answer_info']['agree_count']; ?></span>
                                                         <p class="aw-hide-txt"><?php echo cjk_substr($val['answer_info']['answer_content'], 0, 130, 'UTF-8', '...'); ?></p>
                                                     </div>
                                                 </div>
@@ -113,8 +113,8 @@
                                                         <h4><a href="question/<?php echo $val['question_info']['question_id']; ?>"><?php if (!$val['question_info']['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['question_info']['question_content']; ?><?php } ?></a></h4>
                                                     </div>
                                                     <div class="mod-body">
-                                                        <span class="aw-border-radius-5 count pull-left"><i class="icon icon-reply"></i><?php echo $val['question_info']['answer_count']; ?></span>
-                                                        <p class="aw-hide-txt"><?php _e('%s 次浏览', $val['question_info']['view_count']); ?> &nbsp;• <?php _e('%s 个关注', $val['question_info']['focus_count']); ?> &nbsp; • <?php echo date_friendly($val['add_time']); ?></p>
+                                                        <span class="aw-border-radius-5 count pull-left"><i class="icon icon-reply"></i> <?php echo $val['question_info']['answer_count']; ?></span>
+                                                        <p class="aw-hide-txt"><?php _e('%s 次浏览', $val['question_info']['view_count']); ?> • <?php _e('%s 个关注', $val['question_info']['focus_count']); ?> &nbsp; • <?php echo date_friendly($val['add_time']); ?></p>
                                                     </div>
                                                 </div>
                                                 <?php } ?>
@@ -281,8 +281,8 @@
                                         <dt><span><?php _e('个人成就'); ?>:</span></dt>
                                         <dd>
                                             <p class="meta">
-                                                <span><i class="icon icon-prestige"></i><?php _e('威望'); ?>: <em class="aw-text-color-green"><?php echo $this->user['reputation']; ?></em></span>
-                                                <span><i class="icon icon-agree"></i><?php _e('赞同'); ?>: <em class="aw-text-color-orange"><?php echo $this->user['agree_count']; ?></em></span>
+                                                <span><i class="icon icon-prestige"></i> <?php _e('威望'); ?>: <em class="aw-text-color-green"><?php echo $this->user['reputation']; ?></em></span>
+                                                <span><i class="icon icon-agree"></i> <?php _e('赞同'); ?>: <em class="aw-text-color-orange"><?php echo $this->user['agree_count']; ?></em></span>
                                             </p>
                                         </dd>
                                     </dl>
@@ -294,7 +294,7 @@
                             <div class="tab-pane" id="currency">
                                 <div class="aw-mod">
                                     <div class="mod-head">
-                                        <h3><i class="icon icon-point"></i><?php _e('我的%s', get_setting('currency_name')); ?></h3>
+                                        <h3><i class="icon icon-point"></i> <?php _e('我的%s', get_setting('currency_name')); ?></h3>
                                     </div>
                                     <div class="mod-body">
                                         <table class="table table-hover aw-table">
