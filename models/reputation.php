@@ -129,21 +129,27 @@ class reputation_class extends AWS_MODEL
 
 
 	// 奖励活跃用户
-	public function reward_active_users()
+	public function reward_daily_active_users()
 	{
-		// TODO: 在管理后台添加选项 不要硬编码
+		$reputation_above = get_setting('reward_daily_active_users_reputation');
+		$bonus = intval(get_setting('reward_daily_active_users_integral'));
+
+		if (!is_numeric($reputation_above) || !$bonus)
+		{
+			return false;
+		}
+
 		$time_after = real_time() - 24 * 3600; // 1天内的活跃用户
-		$reputation_above = 20;
-		$bonus = 10;
 
 		if ($active_users = $this->query_all("SELECT uid FROM " . $this->get_table('users') . " WHERE last_login > " . $time_after . " AND forbidden = 0 AND reputation > " . $reputation_above))
 		{
 			foreach ($active_users AS $key => $val)
 			{
-				$this->model('integral')->process($val['uid'], 'REWARD_ACTIVE_USERS', $bonus, '签到奖励');
+				$this->model('integral')->process($val['uid'], 'DAILY_BONUS', $bonus, '签到奖励');
 			}
 		}
-	
+
+		return true;
 	}
 
 
