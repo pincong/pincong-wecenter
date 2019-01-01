@@ -628,12 +628,14 @@ class ajax extends AWS_CONTROLLER
 
 		if ($_POST['do_delete'])
 		{
-			if (/*$answer_info['uid'] != $this->user_id and*/ ! $this->user_info['permission']['is_administrator'] and ! $this->user_info['permission']['is_moderator'])
+			if ($answer_info['uid'] != $this->user_id and ! $this->user_info['permission']['is_administrator'] and ! $this->user_info['permission']['is_moderator'])
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 			}
 
-			$this->model('answer')->remove_answer_by_id($_GET['answer_id']);
+			// TODO: implement remove_answer_action()
+
+			/*$this->model('answer')->remove_answer_by_id($_GET['answer_id']);
 
 			// 通知回复的作者
 			if ($this->user_id != $answer_info['uid'])
@@ -644,7 +646,10 @@ class ajax extends AWS_CONTROLLER
 				));
 			}
 
-			$this->model('question')->save_last_answer($answer_info['question_id']);
+			$this->model('question')->save_last_answer($answer_info['question_id']);*/
+
+			// 只清空不删除
+			$this->model('answer')->update_answer($_GET['answer_id'], $answer_info['question_id'], null);
 
 			H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 		}

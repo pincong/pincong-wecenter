@@ -141,11 +141,19 @@
 											<a href="javascript:;" class="aw-load-more-content" onclick="$(this).parent().parent().children('.markitup-box').toggle();"><?php _e('评论被折叠'); ?></a>
 										</div>
 										<div class="markitup-box collapse">
+										<?php if (!$val['message']) { ?>
+											<i class="text-color-999"><?php _e('已删除'); ?></i>
+										<?php } else { ?>
 											<?php echo nl2br($val['message']); ?>
+										<?php } ?>
 										</div>
 									<?php } else { ?>
 										<div class="markitup-box">
+										<?php if (!$val['message']) { ?>
+											<i class="text-color-999"><?php _e('已删除'); ?></i>
+										<?php } else { ?>
 											<?php echo nl2br($val['message']); ?>
+										<?php } ?>
 										</div>
 									<?php } ?>
                                     </div>

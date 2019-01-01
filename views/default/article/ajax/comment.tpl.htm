@@ -20,7 +20,11 @@
 		</p>
 	</div>
 	<div class="mod-body">
+	<?php if (!$this->comment_info['message']) { ?>
+		<i class="text-color-999"><?php _e('已删除'); ?></i>
+	<?php } else { ?>
 		<?php echo nl2br($this->comment_info['message']); ?>
+	<?php } ?>
 	</div>
 	<div class="mod-footer">
 		<div class="meta">

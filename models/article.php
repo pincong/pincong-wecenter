@@ -210,8 +210,13 @@ class article_class extends AWS_MODEL
 			return false;
 		}
 
+		if (isset($message))
+		{
+			$message = htmlspecialchars($message);
+		}
+
 		$this->update('article_comments', array(
-			'message' => htmlspecialchars($message),
+			'message' => $message,
 			'at_uid' => intval($at_uid),
 			'anonymous' => intval($anonymous)
 		), 'id = ' . $comment_info['id']);

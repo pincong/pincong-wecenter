@@ -323,8 +323,13 @@ class answer_class extends AWS_MODEL
 			return false;
 		}
 
+		if (isset($answer_content))
+		{
+			$answer_content = htmlspecialchars($answer_content);
+		}
+
 		$data = array(
-			'answer_content' => htmlspecialchars($answer_content)
+			'answer_content' => $answer_content
 		);
 
 		// 更新问题最后时间

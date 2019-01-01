@@ -295,21 +295,29 @@
 										</div>
 									</div>
 									<div class="mod-body clearfix">
-									<!-- 评论内容 -->
+									<!-- 回答 -->
 									<?php if ($val['force_fold'] || $val['fold']) { ?>
 										<div class="aw-load-more-content">
 											<span class="text-color-999 aw-alert-box text-color-999" href="javascript:;" tabindex="-1" onclick="AWS.User.why_fold();"><?php _e('为什么被折叠?'); ?></span>
 											<a href="javascript:;" class="aw-load-more-content" onclick="$(this).parent().parent().children('.markitup-box').toggle();"><?php _e('回复被折叠'); ?></a>
 										</div>
 										<div class="markitup-box collapse">
+										<?php if (!$val['answer_content']) { ?>
+											<i class="text-color-999"><?php _e('已删除'); ?></i>
+										<?php } else { ?>
 											<?php echo $val['answer_content']; ?>
+										<?php } ?>
 										</div>
 									<?php } else { ?>
 										<div class="markitup-box">
+										<?php if (!$val['answer_content']) { ?>
+											<i class="text-color-999"><?php _e('已删除'); ?></i>
+										<?php } else { ?>
 											<?php echo $val['answer_content']; ?>
+										<?php } ?>
 										</div>
 									<?php } ?>
-									<!-- end 评论内容 -->
+									<!-- end 回答 -->
 									</div>
 									<div class="mod-footer">
 										<!-- 社交操作 -->

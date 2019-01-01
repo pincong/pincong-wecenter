@@ -189,14 +189,16 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有删除评论的权限')));
 		}
 
-		if ($this->user_id == $comment_info['uid'])
+		// 只清空不删除
+		// TODO: implement update_comment_action()
+		//if ($this->user_id == $comment_info['uid'])
 		{
-			$this->model('article')->update_comment($comment_info['id'], '已删除');
+			$this->model('article')->update_comment($comment_info['id'], null);
 		}
-		else
-		{
-			$this->model('article')->remove_comment($comment_info['id']);
-		}
+		//else
+		//{
+		//	$this->model('article')->remove_comment($comment_info['id']);
+		//}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'url' => get_js_url('/article/' . $comment_info['article_id'])
