@@ -109,6 +109,7 @@
                             <span class="col-sm-3 col-xs-3 control-label"><?php _e('默认时区'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <select name="default_timezone" class="form-control">
+                                    <option value=''></option>
                                     <option value='Etc/GMT+12'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+12') { ?> selected="selected"<?php } ?>><?php _e('(GMT - 12:00 小时) 安尼威托克岛，卡瓦加兰'); ?></option>
                                     <option value='Etc/GMT+11'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+11') { ?> selected="selected"<?php } ?>><?php _e('(GMT - 11:00 小时) 中途岛，萨摩亚'); ?></option>
                                     <option value='Etc/GMT+10'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+10') { ?> selected="selected"<?php } ?>><?php _e('(GMT - 10:00 小时) 夏威夷'); ?></option>
@@ -133,7 +134,7 @@
                                     <option value='Asia/Kolkata'<?php if ($this->setting['default_timezone'] == 'Asia/Kolkata') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 5:30 小时) 孟买，加尔各答，马德拉斯，新德里'); ?></option>
                                     <option value='Etc/GMT-6'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-6') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 6:00 小时) 阿拉木图，科隆巴，达卡'); ?></option>
                                     <option value='Etc/GMT-7'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-7') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 7:00 小时) 曼谷，河内，雅加达'); ?></option>
-                                    <option value='Etc/GMT-8'<?php if (!$this->setting['default_timezone'] OR $this->setting['default_timezone'] == 'Etc/GMT-8') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 8:00 小时) 北京，香港，澳洲伯斯，新加坡，台北'); ?></option>
+                                    <option value='Etc/GMT-8'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-8') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 8:00 小时) 北京，香港，澳洲伯斯，新加坡，台北'); ?></option>
                                     <option value='Etc/GMT-9'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-9') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 9:00 小时) 大阪，札幌，首尔，东京，亚库次克'); ?></option>
                                     <option value='Etc/GMT-10'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-10') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 10:00 小时) 墨尔本，巴布亚新几内亚，雪梨'); ?></option>
                                     <option value='Etc/GMT-11'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-11') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 11:00 小时) 马加丹，新喀里多尼亚，所罗门群岛'); ?></option>
