@@ -19,6 +19,35 @@ if (!defined('IN_ANWSION'))
 
 class ratelimit_class extends AWS_MODEL
 {
+	public function check_thread($uid, $limit)
+	{
+		$limit = intval($limit);
+		if (!$limit)
+		{
+			return true;
+		}
+
+		$uid = intval($uid);
+		$time_after = real_time() - 24 * 3600;
+
+		$where = "add_time > " . $time_after . " AND uid =" . $uid;
+		$count = $this->count('posts_index', $where);
+		if ($count >= $limit)
+		{
+			return false;
+		}
+
+		$where = "(type = 'question' OR type = 'article' OR type = 'video') AND time > " . $time_after . " AND uid =" . $uid;
+		$count += $this->count('scheduled_posts', $where);
+		if ($count >= $limit)
+		{
+			return false;
+		}
+
+		return true;
+	}
+	
+	
 	public function check_question($uid, $limit)
 	{
 		$limit = intval($limit);

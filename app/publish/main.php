@@ -67,9 +67,9 @@ class main extends AWS_CONTROLLER
 				H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name')), '/currency/rule/');
 			}
 
-			if (!$this->model('ratelimit')->check_question($this->user_id, $this->user_info['permission']['thread_limit_per_day']))
+			if (!$this->model('ratelimit')->check_thread($this->user_id, $this->user_info['permission']['thread_limit_per_day']))
 			{
-				H::redirect_msg(AWS_APP::lang()->_t('你今天发布的问题已经达到上限'));
+				H::redirect_msg(AWS_APP::lang()->_t('今日发帖数量已经达到上限'));
 			}
 		}
 
@@ -140,9 +140,9 @@ class main extends AWS_CONTROLLER
 				H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name')), '/currency/rule/');
 			}
 
-			if (!$this->model('ratelimit')->check_article($this->user_id, $this->user_info['permission']['thread_limit_per_day']))
+			if (!$this->model('ratelimit')->check_thread($this->user_id, $this->user_info['permission']['thread_limit_per_day']))
 			{
-				H::redirect_msg(AWS_APP::lang()->_t('你今天发布的文章已经达到上限'));
+				H::redirect_msg(AWS_APP::lang()->_t('今日发帖数量已经达到上限'));
 			}
 		}
 
@@ -213,9 +213,9 @@ class main extends AWS_CONTROLLER
 				H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name')), '/currency/rule/');
 			}
 
-			if (!$this->model('ratelimit')->check_video($this->user_id, $this->user_info['permission']['thread_limit_per_day']))
+			if (!$this->model('ratelimit')->check_thread($this->user_id, $this->user_info['permission']['thread_limit_per_day']))
 			{
-				H::redirect_msg(AWS_APP::lang()->_t('你今天投稿的影片已经达到上限'));
+				H::redirect_msg(AWS_APP::lang()->_t('今日发帖数量已经达到上限'));
 			}
 		}
 
