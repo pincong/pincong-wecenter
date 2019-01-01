@@ -217,8 +217,7 @@ class article_class extends AWS_MODEL
 
 		$this->update('article_comments', array(
 			'message' => $message,
-			'at_uid' => intval($at_uid),
-			'anonymous' => intval($anonymous)
+			'at_uid' => intval($at_uid)
 		), 'id = ' . $comment_info['id']);
 
 		return true;
