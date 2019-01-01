@@ -299,6 +299,11 @@ class ajax extends AWS_CONTROLLER
 
 	public function avatar_upload_action()
 	{
+		if (get_setting('upload_enable') == 'N' AND !$this->user_info['permission']['is_administrator'])
+		{
+			die("{'error':'本站未开启上传功能'}");
+		}
+
 		AWS_APP::upload()->initialize(array(
 			'allowed_types' => get_setting('allowed_upload_types'),
 			'upload_path' => get_setting('upload_dir') . '/avatar/' . $this->model('account')->get_avatar($this->user_id, '', 1),
