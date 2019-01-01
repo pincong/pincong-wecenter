@@ -103,7 +103,7 @@ class publish_class extends AWS_MODEL
 			'type' => $type,
 			'time' => $time,
 			'uid' => $data['uid'],
-			'parent_id' => $data['parent_id'],
+			'parent_id' => intval($data['parent_id']),
 			// 暂时用 model('message')->encrypt
 			'data' => $this->model('message')->encrypt(serialize($data))
 		));
