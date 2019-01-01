@@ -200,12 +200,6 @@ var AWS =
 		{
 			var type = 'default';
 		}
-		else if (type == 'reply_question')
-		{
-			AWS.loading('show');
-
-			$('.btn-reply').addClass('disabled');
-		}
 
 		var custom_data = {
 			_post_type: 'ajax'
@@ -260,7 +254,6 @@ var AWS =
 				case 'default':
 				case 'comments_form':
 				case 'reply':
-				case 'reply_question':
 					AWS.alert(result.err);
 
 					$('.aw-comment-box-btn .btn-success, .btn-reply').removeClass('disabled');
@@ -333,38 +326,6 @@ var AWS =
 						$('#aw-ajax-box div.modal').modal('hide');
 					break;
 
-					// 问题回复
-					case 'reply_question':
-						AWS.loading('hide');
-
-						if (result.rsm.ajax_html)
-						{
-							$('.aw-replies').append(result.rsm.ajax_html);
-
-							$('.aw-comment-box-btn .btn-success, .btn-reply').removeClass('disabled');
-
-							$.scrollTo($('#' + $(result.rsm.ajax_html).attr('id')), 600, {queue:true});
-
-							// 问题
-							$('.question_answer_form').detach();
-
-							if ($('.aw-replay-box.question').length)
-							{
-								if (USER_ANSWERED)
-								{
-									$('.aw-replay-box').append('<p align="center">一个问题只能回复一次</p>');
-								}
-							}
-						}
-						else if(result.rsm.url)
-						{
-							window.location = decodeURIComponent(result.rsm.url);
-						}
-						else
-						{
-							window.location.reload();
-						}
-					break;
 					// 文章回复
 					case 'reply':
 						AWS.loading('hide');
@@ -442,11 +403,18 @@ var AWS =
 					{
 						form_el.find('textarea').each(function()
 						{
-							this.val('');;
+							$(this).val('');
+							if (G_ADVANCED_EDITOR_ENABLE == 'Y')
+							{
+								if (this._sceditor)
+								{
+									this._sceditor.val('');
+								}
+							}
 						});
-						form_el.find('input:​text').each(function()
+						form_el.find('input[type="​text"]').each(function()
 						{
-							this.val('');;
+							$(this).val('');
 						});
 						callback(null, result.rsm);
 						return;
@@ -516,6 +484,31 @@ var AWS =
 	submit: function(form_el, btn_el, callback)
 	{
 		AWS.submit_form(form_el, btn_el, null, callback);
+	},
+
+	submit_append: function(form_el, btn_el, append_el, callback)
+	{
+		AWS.submit_form(form_el, btn_el, null, function(err, rsm)
+		{
+			if (err)
+			{
+				callback && callback(err);
+				return;
+			}
+			if (append_el && append_el.length)
+			{
+				if (rsm && rsm.ajax_html)
+				{
+					append_el.append(rsm.ajax_html);
+					var el_id = $(rsm.ajax_html).attr('id');
+					if (el_id)
+					{
+						$.scrollTo($('#' + el_id), 600, {queue:true});
+					}
+				}
+			}
+			callback && callback(null, rsm);
+		});
 	},
 
 	// 加载更多
