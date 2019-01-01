@@ -18,7 +18,7 @@ class core_form
 
 	public function __construct()
 	{
-		$this->csrf_key = md5(G_COOKIE_HASH_KEY . $_SERVER['HTTP_USER_AGENT'] . AWS_APP::user()->get_info('uid') . session_id());
+		$this->csrf_key = md5(G_COOKIE_HASH_KEY . $_SERVER['HTTP_USER_AGENT'] . session_id());
 	}
 
 	public function new_post_hash()

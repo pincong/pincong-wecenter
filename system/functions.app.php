@@ -463,11 +463,6 @@ function valid_post_hash($hash)
  */
 function new_post_hash()
 {
-	if (! AWS_APP::session()->client_info)
-	{
-		return false;
-	}
-
 	return AWS_APP::form()->new_post_hash();
 }
 

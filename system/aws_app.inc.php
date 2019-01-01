@@ -81,7 +81,7 @@ class AWS_APP
 				if (isset($access_rule['actions']) AND in_array(load_class('core_uri')->action, $access_rule['actions']))
 				{
 					// action 在黑名单中, 不允许
-					self::login($access_rule['redirect']);
+					self::check_login($access_rule['redirect']);
 				}
 			}
 			else // 默认使用白名单
@@ -89,13 +89,13 @@ class AWS_APP
 				if (!isset($access_rule['actions']) OR !in_array(load_class('core_uri')->action, $access_rule['actions']))
 				{
 					// action 不在白名单中, 不允许
-					self::login($access_rule['redirect']);
+					self::check_login($access_rule['redirect']);
 				}
 			}
 		}
 		else
 		{
-			self::login();
+			self::check_login();
 		}
 
 		// 执行
@@ -260,9 +260,9 @@ class AWS_APP
 	 *
 	 * 检查用户登录状态并带领用户进入相关操作
 	 */
-	public static function login($redirect = true)
+	public static function check_login($redirect = true)
 	{
-		if (! AWS_APP::user()->get_info('uid'))
+		if (! AWS_APP::user()->get_session_info('uid'))
 		{
 			if ($redirect === false) // null 也跳转
 			{

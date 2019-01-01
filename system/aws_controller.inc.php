@@ -29,9 +29,11 @@ class AWS_CONTROLLER
 	public function __construct($process_setup = true)
 	{
 		// 从 Session 中获取当前用户 User ID
-		$this->user_id = AWS_APP::user()->get_info('uid');
-
-		$this->user_info = $this->model('account')->get_user_info_by_uid($this->user_id);
+		$this->user_id = AWS_APP::user()->get_session_info('uid');
+		if ($this->user_id)
+		{
+			$this->user_info = $this->model('account')->get_user_info_by_uid($this->user_id);
+		}
 
 		if ($this->user_info)
 		{

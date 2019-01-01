@@ -619,10 +619,7 @@ class account_class extends AWS_MODEL
 
     public function setsession_logout()
     {
-        if (isset(AWS_APP::session()->client_info))
-        {
-            unset(AWS_APP::session()->client_info);
-        }
+        AWS_APP::user()->clear_session_info();
     }
 
     public function get_user_list($where = null, $limit = 10, $orderby = 'uid DESC')
