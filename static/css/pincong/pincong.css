@@ -23,7 +23,7 @@ a:hover{text-decoration: none;color: #404451;}
 .aw-top-menu-wrap{position:relative;z-index:1001;width:100%;min-height:50px;background-color:#404451;}
 .aw-publish-btn .dropdown-menu, .aw-publish-btn.open .dropdown-toggle{background-color:#555c6c;}
 .aw-publish-btn .dropdown-menu a:hover, .aw-publish-btn .dropdown-menu a:focus, .aw-publish-btn .dropdown-menu a:active{color:#fff; background-color:#323341;}
-.aw-top-nav > nav > ul > li > a.active{background: #555c6c;font-weight: bold;}
+.aw-top-nav > nav > ul > li > a.active{background: #555c6c;}
 .aw-top-nav > nav > ul > li > a:hover, .aw-top-nav > nav > ul > li > a:focus{background: #555c6c;}
 .aw-top-nav > nav > ul > li .dropdown-list ul li a{display:block;height: 42px;line-height: 42px;padding:0 10px;background: #555c6c;text-align: center;color: #fff;}
 .aw-top-nav > nav > ul > li .dropdown-list ul li a:hover{background: #323341;}

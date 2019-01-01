@@ -191,8 +191,8 @@ a.aw-load-more-content{display: block;}
 .aw-logo h1{height:25px;line-height:25px;margin:-2px 0 2px 0;font-size:14px;}
 .aw-top-nav{margin:0;border: none;}
 .aw-top-nav .icon-bar{background-color: #fff;font-size: 0;}
-.aw-top-nav > nav > ul > li > a{padding:16px;color: #fff;}
-.aw-top-nav > nav > ul > li > a.active{background: #4dabff;font-weight: bold;}
+.aw-top-nav > nav > ul > li > a{padding-top:16px;padding-bottom:16px;color: #fff;}
+.aw-top-nav > nav > ul > li > a.active{background: #4dabff;}
 .aw-top-nav > nav > ul > li > a:hover, .aw-top-nav > nav > ul > li > a:focus{background: #4dabff;}
 .aw-top-nav > nav > ul > li > a i{position:relative;top:2px;font-size: 16px;}
 .aw-top-nav > nav > ul > li > a i.icon-home{top: 1px;}
