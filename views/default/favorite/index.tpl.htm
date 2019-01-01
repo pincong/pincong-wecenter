@@ -26,7 +26,7 @@
 										<?php if ($val['answer_info']) { ?>
 										<?php if ($val['answer_info']['anonymous'] == 0) { ?>
 										<p class="text-color-999">
-											<a class="aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a><?php if ($val['user_info']['signature']) { ?> - <?php echo $val['user_info']['signature']; ?><?php } ?>
+											<a class="aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a><?php if ($val['user_info']['signature']) { ?> - <?php echo UF::signature($val['user_info']); ?><?php } ?>
 										</p>
 										<?php } ?>
 

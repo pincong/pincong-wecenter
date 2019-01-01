@@ -28,7 +28,7 @@
 						<tr>
 							<td><input type="checkbox" name="approval_uids[]" value="<?php echo $val['uid']; ?>"></td>
 							<td><a href="<?php echo UF::url($val); ?>" target="_blank"><?php echo UF::name($val); ?></a> <?php if ($val['forbidden']) { ?><span class="text-color-999">[ <?php _e('封禁'); ?> ]</span><?php } ?></td>
-							<td><?php echo $val['signature']; ?></td>
+							<td><?php echo UF::signature($val); ?></td>
 							<td><?php echo date_friendly($val['reg_time']); ?></td>
 							<td><a href="admin/user/edit/uid-<?php echo $val['uid']; ?>" class="icon icon-edit md-tip" title="<?php _e('编辑'); ?>"></a></td>
 						</tr>

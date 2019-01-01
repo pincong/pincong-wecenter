@@ -55,7 +55,7 @@
   								<div class="form-group">
 								    <label class="col-sm-2 control-label"><?php _e('介绍'); ?>:</label>
 								    <div class="col-sm-10">
-								    	<input type="text" class="form-control" placeholder="<?php _e('如：80后IT男..'); ?>" id="welcome_signature" value="<?php if ($this->user_info['signature']) { echo $this->user_info['signature']; } ?>" name="signature" />
+								    	<input type="text" class="form-control" placeholder="<?php _e('如：80后IT男..'); ?>" id="welcome_signature" value="<?php echo UF::signature($this->user_info); ?>" name="signature" />
 								    </div>
 								</div>
 							</div>

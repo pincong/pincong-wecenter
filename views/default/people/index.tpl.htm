@@ -40,7 +40,7 @@
 									<span class="text-color-999"><?php _e('封禁理由'); ?> : <?php _e('累计收到反对票的数量过多'); ?></span>
 								<?php } ?>
 							</h1>
-                            <p class="text-color-999"><?php echo $this->user['signature']; ?></p>
+                            <p class="text-color-999"><?php echo UF::signature($this->user); ?></p>
                             <p class="aw-user-flag">
                             </p>
                         </div>

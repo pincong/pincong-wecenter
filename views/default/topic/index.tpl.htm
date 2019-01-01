@@ -237,7 +237,7 @@
 
 								<dd class="pull-left">
 									<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>" data-id="<?php echo $val['user_info']['uid']; ?>"><?php echo UF::name($val['user_info']); ?><?php if ($val['user_info']['verified']) { ?><i class="icon-v<?php if ($val['user_info']['verified'] == 'enterprise') { ?> i-ve<?php } ?>" title="<?php if ($val['user_info']['verified'] == 'enterprise') { ?>企业认证<?php } else { ?>个人认证<?php } ?>"></i><?php } ?>
-									<?php echo $val['signature']; ?></a>
+									<?php echo UF::signature($val); ?></a>
 									<p><?php _e('获得'); ?> <?php _e('%s 次赞同', '<b>' . $val['agree_count'] . '</b>'); ?></p>
 								</dd>
 							</dl>

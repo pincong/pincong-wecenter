@@ -301,7 +301,7 @@
 									<?php if ($this->video_info['user_info']['uid'] != $this->user_id AND $this->user_id) { ?>
 									<a class="icon-inverse follow tooltips icon icon-plus <?php if ($this->user_follow_check) { ?> active<?php } ?>" onclick="AWS.User.follow($(this), 'user', <?php echo $this->video_info['user_info']['uid']; ?>);"></a>
 									<?php } ?>
-									<p><?php echo $this->video_info['user_info']['signature']; ?></p>
+									<p><?php echo UF::signature($this->video_info['user_info']); ?></p>
 								</dd>
 							</dl>
 						</div>
