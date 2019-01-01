@@ -17,7 +17,7 @@
 					<option value="3" <?php if ($this->user['flagged'] == 3) { ?>selected="selected"<?php } ?>><?php _e('禁止登录 + 替换全部发言'); ?></option>
 				</select>
 				<div class="aw-margin-y-10">
-				<textarea name="reason" class="form-control" rows="5" placeholder="<?php _e('详情...'); ?>"><?php echo $this->user['data']['flagged_reason']; ?></textarea>
+				<textarea name="reason" class="form-control" rows="4" placeholder="<?php _e('详情...'); ?>"><?php echo $this->user['data']['flagged_reason']; ?></textarea>
 				</div>
 			</div>
 			<div class="modal-footer">

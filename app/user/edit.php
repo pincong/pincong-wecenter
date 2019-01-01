@@ -28,6 +28,24 @@ class edit extends AWS_CONTROLLER
 		return $rule_action;
 	}
 
+	public function forbid_user_action()
+	{
+		if (!$this->user_info['permission']['forbid_user'])
+		{
+			HTTP::error_403();
+		}
+
+		if (!$user = $this->model('account')->get_user_info_by_uid($_GET['uid']))
+		{
+			HTTP::error_404();
+		}
+
+		$user['data'] = unserialize_array($user['extra_data']);
+		TPL::assign('user', $user);
+
+		TPL::output("user/forbid_user_template");
+	}
+
 	public function flag_user_action()
 	{
 		if (!$this->user_info['permission']['flag_user'])

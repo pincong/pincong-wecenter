@@ -20,11 +20,7 @@
 								<?php } ?>
 
 								<?php if ($this->user_info['permission']['forbid_user']) { ?>
-									<?php if ($this->user['forbidden']) { ?>
-									<a href="javascript:;" class="aw-small-text" onclick="AWS.User.unforbid_user(<?php echo $this->user['uid']; ?>);"><i class="icon icon-forbid"></i> <?php _e('解封'); ?></a>
-									<?php } else { ?>
-									<a href="javascript:;" class="aw-small-text" onclick="AWS.User.forbid_user(<?php echo $this->user['uid']; ?>);"><i class="icon icon-forbid"></i> <?php _e('封禁'); ?></a>
-									<?php } ?>
+									<a href="javascript:;" class="aw-small-text" onclick="AWS.popup(G_BASE_URL + '/user/edit/forbid_user/uid-<?php echo $this->user['uid']; ?>');"><i class="icon icon-forbid"></i> <?php if ($this->user['forbidden']) { ?><?php _e('解封'); ?><?php } else { ?><?php _e('封禁'); ?><?php } ?></a>
 								<?php } ?>
 
 								<?php if ($this->user_info['permission']['flag_user']) { ?>

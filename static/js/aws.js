@@ -1381,20 +1381,6 @@ AWS.User =
 		AWS.alert(reason);
 	},
 
-	forbid_user: function(uid)
-	{
-		AWS.textBox(_t('请填写封禁理由'), '', function(text)
-		{
-			text = encodeURIComponent(text.trim());
-			AWS.ajax_request(G_BASE_URL + '/user/ajax/forbid_user/' , 'uid=' + uid + '&status=1&reason=' + text);
-		});
-	},
-
-	unforbid_user: function(uid)
-	{
-		AWS.ajax_request(G_BASE_URL + '/user/ajax/forbid_user/' , 'uid=' + uid + '&status=0');
-	},
-
 	edit_verified_title: function(uid, text)
 	{
 		AWS.textBox(_t('头衔'), text, function(text)
