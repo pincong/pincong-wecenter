@@ -300,7 +300,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			// 延迟显示
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/publish/delay_display/')
+				'url' => get_js_url('/publish/delay/')
 			), 1, null));
 		}
 
@@ -360,7 +360,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			// 延迟显示
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/publish/delay_display/')
+				'url' => get_js_url('/publish/delay/')
 			), 1, null));
 		}
 
@@ -438,7 +438,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			// 延迟显示
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/publish/delay_display/')
+				'url' => get_js_url('/publish/delay/')
 			), 1, null));
 		}
 
@@ -745,7 +745,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			// 延迟显示
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/publish/delay_display/')
+				'url' => get_js_url('/publish/delay/')
 			), 1, null));
 		}
 
@@ -822,7 +822,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			// 延迟显示
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/publish/delay_display/')
+				'url' => get_js_url('/publish/delay/')
 			), 1, null));
 		}
 
@@ -898,7 +898,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			// 延迟显示
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/publish/delay_display/')
+				'url' => get_js_url('/publish/delay/')
 			), 1, null));
 		}
 

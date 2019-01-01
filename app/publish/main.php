@@ -246,7 +246,7 @@ class main extends AWS_CONTROLLER
 		TPL::output('publish/video');
 	}
 
-	public function delay_display_action()
+	public function delay_action()
 	{
 		$url = '/';
 
