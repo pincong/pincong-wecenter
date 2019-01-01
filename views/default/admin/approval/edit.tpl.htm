@@ -65,17 +65,4 @@
     </div>
 </div>
 
-<script>
-    $(function(){
-
-        // 附件删除功能
-        $('.btn-danger').click(function()
-        {
-            $(this).parents('li').hide();
-
-            $(this).parents('li').find('input').attr('name', 'remove_' + $(this).parents('li').find('input').attr('name'));
-        });
-
-    });
-</script>
 <?php TPL::output('admin/global/footer.tpl.htm'); ?>
