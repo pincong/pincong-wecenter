@@ -213,7 +213,7 @@ class user extends AWS_ADMIN_CONTROLLER
         TPL::assign('user', $this->model('account')->get_user_info_by_uid($_GET['uid']));
         TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(402));
 
-        $this->crumb(AWS_APP::lang()->_t('积分日志'), '/admin/user/currency_log/uid-' . $_GET['uid']);
+        $this->crumb(AWS_APP::lang()->_t('代币日志'), '/admin/user/currency_log/uid-' . $_GET['uid']);
 
         TPL::output('admin/user/currency_log');
     }

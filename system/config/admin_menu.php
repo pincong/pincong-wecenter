@@ -36,7 +36,7 @@ $config[] = array(
 
         array(
             'id' => 'SETTINGS_CURRENCY',
-            'title' => AWS_APP::lang()->_t('威望积分'),
+            'title' => AWS_APP::lang()->_t('声望代币'),
             'url' => 'admin/settings/category-currency'
         ),
 

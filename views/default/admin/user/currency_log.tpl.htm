@@ -5,7 +5,7 @@
 	<div class="mod">
 		<div class="mod-head">
 			<h3>
-				<span class="pull-left"><?php _e('积分日志'); ?>: <?php echo UF::name($this->user); ?></span>
+				<span class="pull-left"><?php _e('代币日志'); ?>: <?php echo UF::name($this->user); ?></span>
 			</h3>
 		</div>
 		<div class="mod-body tab-content">
@@ -40,13 +40,13 @@
 				<input name="uid" type="hidden" value="<?php echo $this->user['uid']; ?>">
 			        <div class="col-sm-10 col-md-2 clearfix">
 			            <div class="form-group">
-			                <span class="col-sm-6 mod-category-foot"><?php _e('当前积分'); ?>:</span>
+			                <span class="col-sm-6 mod-category-foot"><?php _e('当前代币'); ?>:</span>
 			                <span class="col-sm-6 "><?php echo $this->user['currency']; ?></span>
 			            </div>
 			        </div>
 			        <div class="col-sm-12 col-md-3">
 			            <div class="form-group">
-			                <span class="col-sm-4 mod-category-foot"><?php _e('操作积分') ?>:</span>
+			                <span class="col-sm-4 mod-category-foot"><?php _e('操作代币') ?>:</span>
 			                <div class="col-sm-8 col-xs-12">
 			                    <input type="text" class="form-control" name="currency" />
 			                </div>

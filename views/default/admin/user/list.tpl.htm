@@ -33,7 +33,7 @@
                                 <th><?php _e('注册时间'); ?></th>
                                 <th><?php _e('声望'); ?></th>
                                 <th><?php _e('赞同'); ?></th>
-                                <th><?php _e('积分'); ?></th>
+                                <th><?php _e('代币'); ?></th>
                                 <th><?php _e('操作'); ?></th>
                             </tr>
                         </thead>
@@ -51,7 +51,7 @@
                                 <td><?php echo $val['currency']; ?></td>
                                 <td class="nowrap">
                                     <a href="admin/user/edit/uid-<?php echo $val['uid']; ?>" class="icon icon-edit md-tip" title="<?php _e('编辑'); ?>"></a>
-                                    <a href="admin/user/currency_log/uid-<?php echo $val['uid']; ?>" class="icon icon-signup md-tip" title="<?php _e('积分日志'); ?>"></a>
+                                    <a href="admin/user/currency_log/uid-<?php echo $val['uid']; ?>" class="icon icon-signup md-tip" title="<?php _e('代币日志'); ?>"></a>
                                     <?php if ($val['uid'] != $this->user_id) { ?><a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/admin/ajax/forbid_user/' , 'uid=<?php echo $val['uid']; ?>&status=<?php echo intval($val['forbidden']) ? 0 : 1; ?>');" title="<?php if ($val['forbidden']) { ?><?php _e('解除封禁'); ?><?php } else { ?><?php _e('封禁用户'); ?><?php } ?>" class="icon <?php if ($val['forbidden']) { ?>icon-plus<?php } else { ?>icon-forbid<?php } ?> md-tip"><?php } ?>
                                 </td>
                             </tr>
@@ -99,7 +99,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-2 col-xs-3 control-label"><?php _e('积分'); ?>:</label>
+                        <label class="col-sm-2 col-xs-3 control-label"><?php _e('代币'); ?>:</label>
 
                         <div class="col-sm-6 col-xs-9">
                             <div class="row">
