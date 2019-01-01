@@ -137,7 +137,7 @@ class article_class extends AWS_MODEL
 			$comment['user_info'] = $comment_user_infos[$comment['uid']];
 			$comment['at_user_info'] = $comment_user_infos[$comment['at_uid']];
 
-			if (-$comment['votes'] >= get_setting('downvote_fold'))
+			if (-$comment['agree_count'] >= get_setting('downvote_fold'))
 			{
 				$comment['fold'] = 2;
 			}
@@ -160,7 +160,7 @@ class article_class extends AWS_MODEL
 			$downvote_fold = get_setting('downvote_fold');
 			foreach ($comments AS $key => $val)
 			{
-				if (-$val['votes'] >= $downvote_fold)
+				if (-$val['agree_count'] >= $downvote_fold)
 				{
 					$val['fold'] = 2;
 				}
@@ -178,7 +178,7 @@ class article_class extends AWS_MODEL
 			$downvote_fold = get_setting('downvote_fold');
 			foreach ($comments AS $key => $val)
 			{
-				if (-$val['votes'] >= $downvote_fold)
+				if (-$val['agree_count'] >= $downvote_fold)
 				{
 					$comments[$key]['fold'] = 2;
 				}
@@ -498,11 +498,11 @@ class article_class extends AWS_MODEL
 		switch ($type)
 		{
 			case 'article':
-				$this->query('UPDATE ' . $this->get_table('article') . ' SET votes = votes + ' . $add_agree_count . ' WHERE id = ' . ($item_id));
+				$this->query('UPDATE ' . $this->get_table('article') . ' SET agree_count = agree_count + ' . $add_agree_count . ' WHERE id = ' . ($item_id));
 			break;
 
 			case 'comment':
-				$this->query('UPDATE ' . $this->get_table('article_comment') . ' SET votes = votes + ' . $add_agree_count . ' WHERE id = ' . ($item_id));
+				$this->query('UPDATE ' . $this->get_table('article_comment') . ' SET agree_count = agree_count + ' . $add_agree_count . ' WHERE id = ' . ($item_id));
 			break;
 		}
 

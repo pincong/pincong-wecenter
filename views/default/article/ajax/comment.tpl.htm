@@ -33,7 +33,7 @@
 			<span class="operate">
 			<?php if ($this->user_id AND $this->user_id != $this->comment_info['uid']) { ?>
 				<a href="javascript:;" class="agree<?php if ($this->comment_info['vote_info']['rating'] == 1) { ?> active<?php } ?>" onclick="AWS.User.article_comment_vote_agree($(this), <?php echo $this->comment_info['id']; ?>)">
-					<i class="icon icon-agree"></i> <b class="count"><?php echo $this->comment_info['votes']; ?></b>
+					<i class="icon icon-agree"></i> <b class="count"><?php echo $this->comment_info['agree_count']; ?></b>
 				</a>
 
 				<a href="javascript:;" class="disagree<?php if ($this->comment_info['vote_info']['rating'] == -1) { ?> active<?php } ?>" onclick="AWS.User.article_comment_vote_disagree($(this), <?php echo $this->comment_info['id']; ?>)">
@@ -41,7 +41,7 @@
 				</a>
 			<?php } else { ?>
 				<a href="javascript:;" class="agree disabled">
-					<i class="icon icon-agree"></i> <b class="count"><?php echo $this->comment_info['votes']; ?></b>
+					<i class="icon icon-agree"></i> <b class="count"><?php echo $this->comment_info['agree_count']; ?></b>
 				</a>
 			<?php } ?>
 			</span>

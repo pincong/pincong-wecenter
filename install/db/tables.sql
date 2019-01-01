@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `aws_article` (
   `views` int(10) DEFAULT '0',
   `add_time` int(10) DEFAULT '0',
   `lock` int(1) DEFAULT '0',
-  `votes` int(10) DEFAULT '0',
+  `agree_count` int(10) DEFAULT '0',
   `title_fulltext` text,
   `category_id` int(10) DEFAULT '0',
   `is_recommend` tinyint(1) DEFAULT '0',
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `aws_article` (
   KEY `views` (`views`),
   KEY `add_time` (`add_time`),
   KEY `lock` (`lock`),
-  KEY `votes` (`votes`),
+  KEY `agree_count` (`agree_count`),
   KEY `category_id` (`category_id`),
   KEY `is_recommend` (`is_recommend`),
   KEY `chapter_id` (`chapter_id`),
@@ -105,13 +105,13 @@ CREATE TABLE IF NOT EXISTS `aws_article_comment` (
   `message` text,
   `add_time` int(10) DEFAULT '0',
   `at_uid` int(10) DEFAULT NULL,
-  `votes` int(10) DEFAULT '0',
+  `agree_count` int(10) DEFAULT '0',
   `anonymous` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
   KEY `article_id` (`article_id`),
   KEY `add_time` (`add_time`),
-  KEY `votes` (`votes`),
+  KEY `agree_count` (`agree_count`),
   KEY `anonymous` (`anonymous`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 

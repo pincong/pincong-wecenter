@@ -106,7 +106,7 @@ class main extends AWS_CONTROLLER
 
 		/*
 		// 热门内容 暂不实现
-		TPL::assign('hot_videos', $this->model('video')->get_video_list(null, 1, 10, 'votes DESC', 30));
+		TPL::assign('hot_videos', $this->model('video')->get_video_list(null, 1, 10, 'agree_count DESC', 30));
 		*/
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
