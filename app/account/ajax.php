@@ -60,6 +60,13 @@ class ajax extends AWS_CONTROLLER
 
 	public function register_process_action()
 	{
+		if ($this->user_id)
+		{
+			H::ajax_json_output(AWS_APP::RSM(array(
+				'url' => get_js_url('/')
+			), 1, null));
+		}
+
 		if (! $_POST['agreement_chk'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你必需同意 %s 才能继续', get_setting('user_agreement_name'))));
@@ -164,6 +171,13 @@ class ajax extends AWS_CONTROLLER
 
 	public function login_process_action()
 	{
+		if ($this->user_id)
+		{
+			H::ajax_json_output(AWS_APP::RSM(array(
+				'url' => get_js_url('/')
+			), 1, null));
+		}
+
 		if (!$_POST['user_name'] OR !$_POST['password'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的帐号或密码')));
@@ -228,10 +242,13 @@ class ajax extends AWS_CONTROLLER
 
 			$this->model('account')->setcookie_login($user_info['uid'], $_POST['user_name'], $_POST['password'], $user_info['salt'], $expire);
 
-			if ($_POST['return_url'] AND !strstr($_POST['return_url'], '/logout') AND
-				(strstr($_POST['return_url'], '://') AND strstr($_POST['return_url'], base_url())))
+			if ($_POST['return_url'])
 			{
 				$url = get_js_url($_POST['return_url']);
+			}
+			else
+			{
+				$url = get_js_url('/');
 			}
 
 			H::ajax_json_output(AWS_APP::RSM(array(

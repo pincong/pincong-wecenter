@@ -237,10 +237,6 @@ var AWS =
 								}
 							}
 						});
-						form_el.find('input[type="​text"]').each(function()
-						{
-							$(this).val('');
-						});
 						callback(null, result.rsm);
 					}
 					else
