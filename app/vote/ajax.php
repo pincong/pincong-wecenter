@@ -42,6 +42,11 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
 
+		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
 		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_agree'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
@@ -63,6 +68,8 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能对自己发表的内容进行投票')));
 		}
 
+		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
+
 		$reputation_factor = $this->model('reputation')->get_reputation_factor_by_reputation($this->user_info['reputation']);
 
 		$this->model('vote')->agree($_POST['type'], $_POST['item_id'], $this->user_id, $item_info['uid'], $reputation_factor);
@@ -75,6 +82,11 @@ class ajax extends AWS_CONTROLLER
 		if (!$this->user_info['permission']['vote_disagree'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
+		}
+
+		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 
 		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_disagree'))
@@ -97,6 +109,8 @@ class ajax extends AWS_CONTROLLER
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能对自己发表的内容进行投票')));
 		}
+
+		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
 
 		$reputation_factor = $this->model('reputation')->get_reputation_factor_by_reputation($this->user_info['reputation']);
 
