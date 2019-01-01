@@ -129,12 +129,6 @@ $config[] = array(
             'id' => 304,
             'title' => AWS_APP::lang()->_t('功能链接'),
             'url' => 'admin/feature/list/'
-        ),
-
-        array(
-            'id' => 308,
-            'title' => AWS_APP::lang()->_t('页面管理'),
-            'url' => 'admin/page/'
         )
     )
 );
