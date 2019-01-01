@@ -487,7 +487,7 @@ var ABP = {};
 		if (Util.isTouchDevice()) {
 			$element.on('touchmove', listener);
 		} else {
-			$el.on('mousemove', listener);
+			$element.on('mousemove', listener);
 		}
 	};
 
@@ -581,6 +581,7 @@ var ABP = {};
 		this.danmakuColor = 0xffffff;
 		this.timeSeeking = 0;
 		this.duration = 0;
+		this.currentTime = 0;
 		// end 初始状态
 
 		this._init();
@@ -636,6 +637,7 @@ var ABP = {};
 
 	Player.prototype.setSource = function(url) {
 		this.video.src = url;
+		this.videoLoaded = false;
 	};
 
 	Player.prototype.setPoster = function(url) {
@@ -778,6 +780,7 @@ var ABP = {};
 			self._updateVolumeBar();
 		};
 		this.video.ontimeupdate = function() {
+			self.currentTime = self.video.currentTime;
 			self._updateDanmakuStage();
 			self._updateSeekbar();
 			self._updateCurrentTimeLabel();
@@ -785,6 +788,7 @@ var ABP = {};
 		this.video.onloadedmetadata = function() {
 			self.videoLoaded = true;
 			self.duration = self.video.duration;
+			self.video.currentTime = self.currentTime;
 			self._updateDurationLabel();
 		};
 
@@ -848,7 +852,8 @@ var ABP = {};
 	};
 
 	Player.prototype._seek = function(time) {
-		if (!isNaN(time)) this.video.currentTime = time;
+		this.currentTime = time;
+		if (this.videoLoaded) this.video.currentTime = time;
 		if (this.video.paused) this.video.play();
 	};
 
