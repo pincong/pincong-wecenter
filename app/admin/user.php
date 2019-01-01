@@ -81,6 +81,7 @@ class user extends AWS_ADMIN_CONTROLLER
         foreach($user_list as $key => $val)
         {
             $user_list[$key]['reputation_group_id'] = $this->model('reputation')->get_reputation_group_id_by_reputation($val['reputation']);
+            $user_list[$key]['url_token'] = urlencode($val['user_name']);
         }
 
         $total_rows = $this->model('people')->found_rows();
