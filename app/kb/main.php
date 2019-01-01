@@ -20,6 +20,21 @@ if (!defined('IN_ANWSION'))
 
 class main extends AWS_CONTROLLER
 {
+	public function get_access_rule()
+	{
+		$rule_action['rule_type'] = 'white';
+
+		if ($this->user_info['permission']['kb_explore'] AND $this->user_info['permission']['visit_site'])
+		{
+			$rule_action['actions'] = array(
+				'index',
+				'square'
+			);
+		}
+
+		return $rule_action;
+	}
+
 	public function index_action()
 	{
 		if (!$this->user_info['permission']['kb_explore'])
