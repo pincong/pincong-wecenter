@@ -51,14 +51,42 @@ class edit extends AWS_CONTROLLER
 
 	public function article_comment_action()
 	{
-		// TODO
-		HTTP::error_404();
+		$id = intval($_GET['id']);
+		if (!$id)
+		{
+			HTTP::error_403();
+		}
+		if (!$comment_info = $this->model('article')->get_comment_by_id($id))
+		{
+			HTTP::error_403();
+		}
+		if ($comment_info['uid'] != $this->user_id and ! $this->user_info['permission']['edit_article'])
+		{
+			HTTP::error_403();
+		}
+
+		TPL::assign('comment_info', $comment_info);
+		TPL::output("publish/edit_article_comment_template");
 	}
 
 	public function video_comment_action()
 	{
-		// TODO
-		HTTP::error_404();
+		$id = intval($_GET['id']);
+		if (!$id)
+		{
+			HTTP::error_403();
+		}
+		if (!$comment_info = $this->model('video')->get_comment_by_id($id))
+		{
+			HTTP::error_403();
+		}
+		if ($comment_info['uid'] != $this->user_id and ! $this->user_info['permission']['edit_video'])
+		{
+			HTTP::error_403();
+		}
+
+		TPL::assign('comment_info', $comment_info);
+		TPL::output("publish/edit_video_comment_template");
 	}
 
 }

@@ -60,26 +60,4 @@ class ajax extends AWS_CONTROLLER
 		), 1, null));
 	}
 
-	public function remove_comment_action()
-	{
-		$comment_info = $this->model('article')->get_comment_by_id($_POST['comment_id']);
-		if (!$comment_info || !$comment_info['message'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('评论不存在')));
-		}
-		
-		if ($this->user_id != $comment_info['uid'] AND!$this->user_info['permission']['edit_article'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有删除评论的权限')));
-		}
-
-		// 只清空不删除
-		// TODO: implement update_comment_action()
-		$this->model('article')->remove_article_comment($comment_info, $this->user_id);
-
-		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => get_js_url('/article/' . $comment_info['article_id'])
-		), 1, null));
-	}
-
 }

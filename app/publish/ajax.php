@@ -956,4 +956,111 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
+
+	public function modify_article_comment_action()
+	{
+		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
+		if (!$comment_info = $this->model('article')->get_comment_by_id($_GET['id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('内容不存在')));
+		}
+
+		if ($comment_info['uid'] != $this->user_id and ! $this->user_info['permission']['edit_article'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
+		}
+
+		if (!$article_info = $this->model('article')->get_article_info_by_id($comment_info['article_id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文章不存在')));
+		}
+
+		if ($article_info['lock'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的文章不能编辑')));
+		}
+
+		if (!$_POST['do_delete'])
+		{
+			$this->do_validate_reply('modify');
+		}
+
+		set_user_operation_last_time_by_uid('modify', $this->user_id);
+
+		if ($_POST['do_delete'])
+		{
+			$this->model('article')->clear_article_comment(
+				$comment_info['id'],
+				$this->user_id
+			);
+		}
+		else
+		{
+			$this->model('article')->modify_article_comment(
+				$comment_info['id'],
+				$this->user_id,
+				$_POST['message']
+			);
+		}
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
+	public function modify_video_comment_action()
+	{
+		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
+		if (!$comment_info = $this->model('video')->get_comment_by_id($_GET['id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('内容不存在')));
+		}
+
+		if ($comment_info['uid'] != $this->user_id and ! $this->user_info['permission']['edit_video'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
+		}
+
+		if (!$video_info = $this->model('video')->get_video_info_by_id($comment_info['video_id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('影片不存在')));
+		}
+
+		if ($video_info['lock'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的影片不能编辑')));
+		}
+
+		if (!$_POST['do_delete'])
+		{
+			$this->do_validate_reply('modify');
+		}
+
+		set_user_operation_last_time_by_uid('modify', $this->user_id);
+
+		if ($_POST['do_delete'])
+		{
+			$this->model('video')->clear_video_comment(
+				$comment_info['id'],
+				$this->user_id
+			);
+		}
+		else
+		{
+			$this->model('video')->modify_video_comment(
+				$comment_info['id'],
+				$this->user_id,
+				$_POST['message']
+			);
+		}
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
 }

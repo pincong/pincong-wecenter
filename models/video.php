@@ -67,6 +67,39 @@ class video_class extends AWS_MODEL
 	}
 
 
+	public function modify_video_comment($comment_id, $uid, $message)
+	{
+		if (!$comment_info = $this->model('video')->get_comment_by_id($comment_id))
+		{
+			return false;
+		}
+
+		$this->update('video_comment', array(
+			'message' => htmlspecialchars($message)
+		), 'id = ' . intval($comment_id));
+
+		$this->model('content')->log('video', $comment_info['video_id'], '编辑影片评论', $uid, 'video_comment', $comment_id);
+
+		return true;
+	}
+
+	public function clear_video_comment($comment_id, $uid)
+	{
+		if (!$comment_info = $this->model('video')->get_comment_by_id($comment_id))
+		{
+			return false;
+		}
+
+		$this->update('video_comment', array(
+			'message' => null
+		), 'id = ' . intval($comment_id));
+
+		$this->model('content')->log('video', $comment_info['video_id'], '删除影片评论', $uid, 'video_comment', $comment_id);
+
+		return true;
+	}
+
+
 	public function update_video_source($id, $source_type, $source, $duration)
 	{
 		$this->update('video', array(
@@ -250,17 +283,6 @@ class video_class extends AWS_MODEL
 		$this->model('posts')->remove_posts_index($video_id, 'video');
 
 		return $this->delete('video', 'id = ' . intval($video_id));
-	}
-
-	public function remove_video_comment(&$comment, $uid)
-	{
-		$this->update('video_comment', array(
-			'message' => null
-		), "id = " . $comment['id']);
-
-		$this->model('content')->log('video', $comment['video_id'], '删除评论', $uid, 'video_comment', $comment['id']);
-
-		return true;
 	}
 
 	public function get_video_list($category_id, $page, $per_page, $order_by, $day = null)

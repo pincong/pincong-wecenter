@@ -65,6 +65,38 @@ class article_class extends AWS_MODEL
 		return true;
 	}
 
+	public function modify_article_comment($comment_id, $uid, $message)
+	{
+		if (!$comment_info = $this->model('article')->get_comment_by_id($comment_id))
+		{
+			return false;
+		}
+
+		$this->update('article_comment', array(
+			'message' => htmlspecialchars($message)
+		), 'id = ' . intval($comment_id));
+
+		$this->model('content')->log('article', $comment_info['article_id'], '编辑文章评论', $uid, 'article_comment', $comment_id);
+
+		return true;
+	}
+
+	public function clear_article_comment($comment_id, $uid)
+	{
+		if (!$comment_info = $this->model('article')->get_comment_by_id($comment_id))
+		{
+			return false;
+		}
+
+		$this->update('article_comment', array(
+			'message' => null
+		), 'id = ' . intval($comment_id));
+
+		$this->model('content')->log('article', $comment_info['article_id'], '删除文章评论', $uid, 'article_comment', $comment_id);
+
+		return true;
+	}
+
 
 	public function update_article_comment_count($article_id)
 	{
@@ -221,35 +253,6 @@ class article_class extends AWS_MODEL
 		$this->model('posts')->remove_posts_index($article_id, 'article');
 
 		return $this->delete('article', 'id = ' . intval($article_id));
-	}
-
-	/*public function remove_comment($comment_id)
-	{
-		$comment_info = $this->get_comment_by_id($comment_id);
-
-		if (!$comment_info)
-		{
-			return false;
-		}
-
-		$this->delete('article_comment', 'id = ' . $comment_info['id']);
-
-		$this->update('article', array(
-			'comments' => $this->count('article_comment', 'article_id = ' . $comment_info['article_id'])
-		), 'id = ' . $comment_info['article_id']);
-
-		return true;
-	}*/
-
-	public function remove_article_comment(&$comment, $uid)
-	{
-		$this->update('article_comment', array(
-			'message' => null
-		), "id = " . $comment['id']);
-
-		$this->model('content')->log('article', $comment['article_id'], '删除评论', $uid, 'article_comment', $comment['id']);
-
-		return true;
 	}
 
 	public function get_article_list($category_id, $page, $per_page, $order_by, $day = null)
