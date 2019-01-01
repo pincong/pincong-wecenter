@@ -474,10 +474,6 @@ class system_class extends AWS_MODEL
 				{
 					$answer_ids[] = $val['answer_id'];
 				}
-
-				$this->update('attach', array(
-					'item_id' => 0
-				), "item_id IN (" . implode(',', $answer_ids) . ") AND item_type = 'answer'");
 			}
 
 			if ($user_articles = $this->query_all("SELECT id FROM " . get_table('article') . " WHERE uid = " . intval($uid)))

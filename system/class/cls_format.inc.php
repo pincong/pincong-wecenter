@@ -55,20 +55,6 @@ class FORMAT
 		return false;
 	}
 
-	public static function parse_attachs($str, $get_attachs_id = false)
-	{
-		if ($get_attachs_id)
-		{
-			preg_match_all('/\[attach\]([0-9]+)\[\/attach]/', $str, $matches);
-
-			return array_unique($matches[1]);
-		}
-		else
-		{
-			return preg_replace_callback('/\[attach\]([0-9]+)\[\/attach\]/i', 'parse_attachs_callback', $str);
-		}
-	}
-
 	public static function parse_bbcode($text)
 	{
 		if (!$text)

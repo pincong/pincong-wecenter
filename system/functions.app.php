@@ -63,17 +63,6 @@ function get_avatar_url($uid, $size = 'min')
 	}
 }
 
-/**
- * 附件url地址，实际上是通过一定格式编码指配到/app/file/main.php中，让download控制器处理并发送下载请求
- * @param  string $file_name 附件的真实文件名，即上传之前的文件名称，包含后缀
- * @param  string $url 附件完整的真实url地址
- * @return string 附件下载的完整url地址
- */
-function download_url($file_name, $url)
-{
-	return get_js_url('/file/download/file_name-' . base64_encode($file_name) . '__url-' . base64_encode($url));
-}
-
 // 检测当前操作是否需要验证码
 function human_valid($permission_tag)
 {
@@ -131,20 +120,6 @@ function set_repeat_submission_digest($text)
     AWS_APP::session()->repeat_submission_digest = md5($text);
 }
 
-/**
- * 仅附件处理中的preg_replace_callback()的每次搜索时的回调
- * @param  array $matches preg_replace_callback()搜索时返回给第二参数的结果
- * @return string  取出附件的加载模板字符串
- */
-function parse_attachs_callback($matches)
-{
-	if ($attach = AWS_APP::model('publish')->get_attach_by_id($matches[1]))
-	{
-		TPL::assign('attach', $attach);
-
-		return TPL::output('question/ajax/load_attach', false);
-	}
-}
 
 /**
  * 获取主题图片指定尺寸的完整url地址

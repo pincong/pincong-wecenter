@@ -523,20 +523,7 @@ function get_setting($varname = null, $permission_check = true)
 		return false;
 	}
 
-	if ($settings = AWS_APP::$settings)
-	{
-		// AWS_APP::session()->permission 是指当前用户所在用户组的权限许可项，在 users_group 表中，你可以看到 permission 字段
-		if ($permission_check AND $settings['upload_enable'] == 'Y')
-		{
-			if (AWS_APP::session())
-			{
-				if (!AWS_APP::session()->permission['upload_attach'])
-				{
-					$settings['upload_enable'] = 'N';
-				}
-			}
-		}
-	}
+	$settings = AWS_APP::$settings;
 
 	if ($varname)
 	{
@@ -815,7 +802,6 @@ function get_request_route($positive = true)
  */
 function strip_ubb($str)
 {
-	//$str = preg_replace('/\[attach\]([0-9]+)\[\/attach]/', '<i>** ' . AWS_APP::lang()->_t('插入的附件') . ' **</i>', $str);
 	$str = preg_replace('/\[[^\]]+\](http[s]?:\/\/[^\[]*)\[\/[^\]]+\]/', ' $1 ', $str);
 
 	$pattern = '/\[[^\]]+\]([^\[]*)\[\/[^\]]+\]/';
