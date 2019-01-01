@@ -747,11 +747,13 @@ CREATE TABLE IF NOT EXISTS `aws_scheduled_posts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(32) DEFAULT NULL,
   `uid` int(11) DEFAULT '0',
+  `parent_id` int(11) DEFAULT '0',
   `time` int(10) DEFAULT '0',
   `data` text,
   PRIMARY KEY (`id`),
   KEY `type` (`type`),
   KEY `uid` (`uid`),
+  KEY `parent_id` (`parent_id`),
   KEY `time` (`time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 

@@ -273,7 +273,7 @@ var AW_TEMPLATE = {
 						'<textarea class="aw-comment-txt form-control" rows="2" name="message" placeholder="' + _t('评论一下') + '..."></textarea>'+
 						'<div class="aw-comment-box-btn">'+
 							'<span class="pull-right">'+
-								'<input type="checkbox" name="anonymous" value="1"> ' + _t('匿名') +
+								'<!--<label><input type="checkbox" name="anonymous" value="1"> ' + _t('匿名') + '</label>-->' +
 								'<a href="javascript:;" class="btn btn-mini btn-success" onclick="AWS.User.save_comment($(this));">' + _t('评论') + '</a>'+
 							'</span>'+
 						'</div>'+

@@ -71,7 +71,7 @@ class currency_class extends AWS_MODEL
 		return $this->fetch_row('currency_log', $where);
 	}
 
-	public function parse_log_item($parse_items)
+	public function parse_log_items($parse_items)
 	{
 		if (!is_array($parse_items))
 		{

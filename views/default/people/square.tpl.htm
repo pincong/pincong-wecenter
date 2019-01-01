@@ -26,7 +26,9 @@
 								<div class="meta">
 									<span><i class="icon icon-prestige"></i> <?php _e(get_setting('reputation_name')); ?> : <b><?php echo $val['reputation']; ?></b></span>
 									<span><i class="icon icon-agree"></i> <?php _e('赞同'); ?> : <b><?php echo $val['agree_count']; ?></b></span>
+									<?php if($this->user_info['permission']['is_administrator']) { ?>
 									<span><i class="icon"></i> <?php _e(get_setting('currency_name')); ?> : <b><?php echo $val['currency']; ?></b> <?php _e(get_setting('currency_unit')); ?></span>
+									<?php } ?>
 								</div>
 								
 								<?php if ($val['uid'] != $this->user_id AND $this->user_id) { ?>

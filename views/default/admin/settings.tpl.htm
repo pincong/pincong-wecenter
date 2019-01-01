@@ -677,6 +677,30 @@
                 <tr>
                     <td>
                         <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('匿名用户 UID');?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="anonymous_uid" type="text" class="form-control" value="<?php echo $this->setting['anonymous_uid']; ?>"/>
+                                <span class="help-block"><?php _e('留空则不启用'); ?></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('反对数量达到多少个时折叠');?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="downvote_fold" type="text" class="form-control" value="<?php echo $this->setting['downvote_fold']; ?>"/>
+                                <span class="help-block"><?php _e('留空则不启用'); ?></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('用户赞同小于等于多少时自动封禁'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <input name="auto_banning_agree_count" type="text" class="form-control" value="<?php echo $this->setting['auto_banning_agree_count']; ?>"/>
@@ -836,24 +860,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('新问题强制要求添加话题'); ?>:</span>
-                            <div class="col-sm-6 col-xs-8">
-                                <div class="btn-group mod-btn">
-                                    <label type="button" class="btn mod-btn-color">
-                                        <input type="radio" name="new_question_force_add_topic" value="Y"<?php if ($this->setting['new_question_force_add_topic'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
-                                    </label>
 
-                                    <label type="button" class="btn mod-btn-color">
-                                        <input type="radio" name="new_question_force_add_topic" value="N"<?php if ($this->setting['new_question_force_add_topic'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
                 <tr>
                     <td>
                         <div class="form-group">
@@ -928,18 +935,6 @@
                                 <input name="upload_avatar_size_limit" type="text" class="form-control" value="<?php echo $this->setting['upload_avatar_size_limit']; ?>"/>
 
                                 <div class="help-block"><?php _e('单位'); ?>: KB</div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('反对数量达到多少个时折叠');?>:</span>
-                            <div class="col-sm-5 col-xs-8">
-                                <input name="downvote_fold" type="text" class="form-control" value="<?php echo $this->setting['downvote_fold']; ?>"/>
-                                <span class="help-block"><?php _e('留空则不启用'); ?></span>
                             </div>
                         </div>
                     </td>

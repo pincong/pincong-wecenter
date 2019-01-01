@@ -521,12 +521,12 @@ class ajax extends AWS_CONTROLLER
 			{
 				$parse_items[$val['id']] = array(
 					'item_id' => $val['item_id'],
-					'action' => $val['action']
+					'item_type' => $val['item_type']
 				);
 			}
 
 			TPL::assign('log', $log);
-			TPL::assign('log_detail', $this->model('currency')->parse_log_item($parse_items));
+			TPL::assign('log_detail', $this->model('currency')->parse_log_items($parse_items));
 		}
 
 		TPL::output('account/ajax/currency_log');

@@ -48,7 +48,9 @@
 							<div class="meta">
 								<span><i class="icon icon-prestige"></i> <?php _e(get_setting('reputation_name')); ?> : <em class="aw-text-color-green"><?php echo $this->user['reputation']; ?></em></span>
 								<span><i class="icon icon-agree"></i> <?php _e('赞同'); ?> : <em class="aw-text-color-orange"><?php echo $this->user['agree_count']; ?></em></span>
+								<?php if($this->user_info['permission']['is_administrator'] OR $this->user['uid'] == $this->user_id) { ?>
 								<span><i class="icon"></i> <?php _e(get_setting('currency_name')); ?> : <em class="aw-text-color-orange"><?php echo $this->user['currency']; ?></em> <?php _e(get_setting('currency_unit')); ?></span>
+								<?php } ?>
 							</div>
 
 						</div>

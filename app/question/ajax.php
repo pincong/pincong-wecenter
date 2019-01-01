@@ -61,302 +61,7 @@ class ajax extends AWS_CONTROLLER
 		return $anonymous_uid;
 	}
 
-	// TODO: 何处用到?
-	public function fetch_answer_data_action()
-	{
-		$answer_info = $this->model('answer')->get_answer_by_id($_GET['id']);
-
-		if ($answer_info['uid'] == $this->user_id OR $this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'])
-		{
-			echo json_encode($answer_info);
-		}
-	}
-
-	public function get_focus_users_action()
-	{
-		if ($focus_users_info = $this->model('question')->get_focus_users_by_question($_GET['question_id'], 18))
-		{
-			$question_info = $this->model('question')->get_question_info_by_id($_GET['question_id']);
-
-			foreach($focus_users_info as $key => $val)
-			{
-				if ($val['uid'] == $question_info['published_uid'] and $question_info['anonymous'] == 1)
-				{
-					continue;
-				}
-				else
-				{
-					$focus_users[$key] = array(
-						'uid' => $val['uid'],
-						'user_name' => $val['user_name'],
-						'avatar_file' => UF::avatar($val, 'mid'),
-						'url' => get_js_url('/people/' . $val['url_token'])
-					);
-				}
-			}
-		}
-
-		H::ajax_json_output($focus_users);
-	}
-
-	public function save_invite_action()
-	{
-		if (!$this->user_info['permission']['invite_answer'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
-		}
-
-		if (!$question_info = $this->model('question')->get_question_info_by_id($_POST['question_id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在或已被删除')));
-		}
-
-		if (!$invite_user_info = $this->model('account')->get_user_info_by_uid($_POST['uid']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('用户不存在')));
-		}
-
-		if ($invite_user_info['uid'] == $this->user_id)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能邀请自己回复问题')));
-		}
-
-		if ($this->model('question')->has_question_invite($_POST['question_id'], $invite_user_info['uid']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已邀请过该用户')));
-		}
-
-		$this->model('question')->add_invite($_POST['question_id'], $this->user_id, $invite_user_info['uid']);
-
-		$this->model('account')->update_question_invite_count($invite_user_info['uid']);
-
-		$notification_id = $this->model('notify')->send($this->user_id, $invite_user_info['uid'], notify_class::TYPE_INVITE_QUESTION, notify_class::CATEGORY_QUESTION, intval($_POST['question_id']), array(
-			'from_uid' => $this->user_id,
-			'question_id' => intval($_POST['question_id'])
-		));
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
-
-	public function save_answer_comment_action()
-	{
-		if (!$this->user_info['permission']['publish_comment'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
-		}
-
-		if ($_POST['anonymous'] AND !$this->user_info['permission']['comment_anonymously'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能匿名')));
-		}
-
-		if (!check_user_operation_interval('save_answer_comment', $this->user_id, $this->user_info['permission']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
-		$message = my_trim($_POST['message']);
-		if (!$message)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请输入评论内容')));
-		}
-
-        if (!check_repeat_submission($message))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请不要重复提交')));
-        }
-
-		$comment_length_min = intval(get_setting('comment_length_min'));
-		if ($comment_length_min AND cjk_strlen($message) < $comment_length_min)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得少于 %s 字', $comment_length_min)));
-		}
-
-		$comment_length_max = intval(get_setting('comment_length_max'));
-		if ($comment_length_max AND cjk_strlen($message) > $comment_length_max)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得超过 %s 字', $comment_length_max)));
-		}
-
-		if (!$this->model('ratelimit')->check_answer_comment($this->user_id, $this->user_info['permission']['comment_limit_per_day']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日评论回复已经达到上限')));
-		}
-
-		$answer_info = $this->model('answer')->get_answer_by_id($_GET['answer_id']);
-		if (!$answer_info)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('回复不存在')));
-		}
-		$question_info = $this->model('question')->get_question_info_by_id($answer_info['question_id']);
-		if (!$question_info)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('问题不存在')));
-		}
-
-		if ($question_info['lock'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能评论锁定的问题')));
-		}
-
-        set_repeat_submission_digest($message);
-		set_user_operation_last_time('save_answer_comment', $this->user_id, $this->user_info['permission']);
-
-		$this->model('answer')->insert_answer_comment($_GET['answer_id'], $this->user_id, $message, $_POST['anonymous']);
-
-		H::ajax_json_output(AWS_APP::RSM(array(
-			'item_id' => intval($_GET['answer_id']),
-			'type_name' => 'answer'
-		), 1, null));
-	}
-
-	public function get_answer_comments_action()
-	{
-		$comments = $this->model('answer')->get_answer_comments($_GET['answer_id']);
-
-		$user_infos = $this->model('account')->get_user_info_by_uids(fetch_array_value($comments, 'uid'));
-
-		foreach ($comments as $key => $val)
-		{
-			$comments[$key]['message'] = FORMAT::parse_links($this->model('question')->parse_at_user($comments[$key]['message']));
-			$comments[$key]['user_info'] = $user_infos[$val['uid']];
-		}
-
-		$answer_info = $this->model('answer')->get_answer_by_id($_GET['answer_id']);
-
-		TPL::assign('question', $this->model('question')->get_question_info_by_id($answer_info['question_id']));
-		TPL::assign('answer_info', $answer_info);
-		TPL::assign('comments', $comments);
-
-		{
-			TPL::output("question/ajax/comments");
-		}
-	}
-
-	public function save_question_comment_action()
-	{
-		if (!$this->user_info['permission']['publish_comment'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
-		}
-
-		if ($_POST['anonymous'] AND !$this->user_info['permission']['comment_anonymously'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能匿名')));
-		}
-
-		if (!check_user_operation_interval('save_question_comment', $this->user_id, $this->user_info['permission']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
-		$message = my_trim($_POST['message']);
-		if (!$message)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入评论内容')));
-		}
-
-        if (!check_repeat_submission($message))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请不要重复提交')));
-        }
-
-		$comment_length_min = intval(get_setting('comment_length_min'));
-		if ($comment_length_min AND cjk_strlen($message) < $comment_length_min)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得少于 %s 字', $comment_length_min)));
-		}
-
-		$comment_length_max = intval(get_setting('comment_length_max'));
-		if ($comment_length_max AND cjk_strlen($message) > $comment_length_max)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得超过 %s 字', $comment_length_max)));
-		}
-
-		if (!$this->model('ratelimit')->check_question_comment($this->user_id, $this->user_info['permission']['comment_limit_per_day']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日评论问题已经达到上限')));
-		}
-
-		$question_info = $this->model('question')->get_question_info_by_id($_GET['question_id']);
-		if (!$question_info)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('问题不存在')));
-		}
-
-		if ($question_info['lock'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能评论锁定的问题')));
-		}
-
-        set_repeat_submission_digest($message);
-		set_user_operation_last_time('save_question_comment', $this->user_id, $this->user_info['permission']);
-
-		$this->model('question')->insert_question_comment($_GET['question_id'], $this->user_id, $message, $_POST['anonymous']);
-
-		H::ajax_json_output(AWS_APP::RSM(array(
-			'item_id' => intval($_GET['question_id']),
-			'type_name' => 'question'
-		), 1, null));
-	}
-
-	public function get_question_comments_action()
-	{
-		$comments = $this->model('question')->get_question_comments($_GET['question_id']);
-
-		$user_infos = $this->model('account')->get_user_info_by_uids(fetch_array_value($comments, 'uid'));
-
-		foreach ($comments as $key => $val)
-		{
-			$comments[$key]['message'] = FORMAT::parse_links($this->model('question')->parse_at_user($comments[$key]['message']));
-			$comments[$key]['user_info'] = $user_infos[$val['uid']];
-		}
-
-		TPL::assign('question', $this->model('question')->get_question_info_by_id($_GET['question_id']));
-
-		TPL::assign('comments', $comments);
-
-		TPL::output("question/ajax/comments");
-	}
-
-
-	public function cancel_question_invite_action()
-	{
-		$this->model('question')->cancel_question_invite($_GET['question_id'], $this->user_id, $_GET['recipients_uid']);
-
-		$this->model('account')->update_question_invite_count($_GET['recipients_uid']);
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
-
-	public function question_invite_delete_action()
-	{
-		$question_invite_id = intval($_POST['question_invite_id']);
-
-		$this->model('question')->delete_question_invite($question_invite_id, $this->user_id);
-
-		$this->model('account')->update_question_invite_count($this->user_id);
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
-
-	public function focus_action()
-	{
-		if (!$_POST['question_id'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
-		}
-
-		if (! $this->model('question')->get_question_info_by_id($_POST['question_id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
-		}
-
-		H::ajax_json_output(AWS_APP::RSM(array(
-			'type' => $this->model('question')->add_focus_question($_POST['question_id'], $this->user_id)
-		), 1, null));
-	}
-
+	// TODO: 移动到 publish/ajax 统一处理
 	public function save_answer_action()
 	{
 		if (!$this->user_info['permission']['answer_question'])
@@ -487,11 +192,308 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		$answer_info = $this->model('answer')->get_answer_by_id($answer_id);
-		$answer_info['user_info'] = $this->user_info;
+		$answer_info['user_info'] = $this->model('account')->get_user_info_by_uid($publish_uid);
 		$answer_info['answer_content'] = $this->model('question')->parse_at_user($answer_info['answer_content']);
 		TPL::assign('answer_info', $answer_info);
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'ajax_html' => TPL::output('question/ajax/answer', false)
+		), 1, null));
+	}
+
+	public function save_answer_comment_action()
+	{
+		if (!$this->user_info['permission']['publish_comment'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
+		}
+
+		if ($_POST['anonymous'])// AND !$this->user_info['permission']['comment_anonymously'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能匿名')));
+		}
+
+		if (!check_user_operation_interval('save_answer_comment', $this->user_id, $this->user_info['permission']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
+		$message = my_trim($_POST['message']);
+		if (!$message)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请输入评论内容')));
+		}
+
+        if (!check_repeat_submission($message))
+        {
+            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请不要重复提交')));
+        }
+
+		$comment_length_min = intval(get_setting('comment_length_min'));
+		if ($comment_length_min AND cjk_strlen($message) < $comment_length_min)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得少于 %s 字', $comment_length_min)));
+		}
+
+		$comment_length_max = intval(get_setting('comment_length_max'));
+		if ($comment_length_max AND cjk_strlen($message) > $comment_length_max)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得超过 %s 字', $comment_length_max)));
+		}
+
+		if (!$this->model('ratelimit')->check_answer_comment($this->user_id, $this->user_info['permission']['comment_limit_per_day']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日评论回复已经达到上限')));
+		}
+
+		$answer_info = $this->model('answer')->get_answer_by_id($_GET['answer_id']);
+		if (!$answer_info)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('回复不存在')));
+		}
+		$question_info = $this->model('question')->get_question_info_by_id($answer_info['question_id']);
+		if (!$question_info)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('问题不存在')));
+		}
+
+		if ($question_info['lock'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能评论锁定的问题')));
+		}
+
+        set_repeat_submission_digest($message);
+		set_user_operation_last_time('save_answer_comment', $this->user_id, $this->user_info['permission']);
+
+		$this->model('answer')->insert_answer_comment($_GET['answer_id'], $this->user_id, $message, $_POST['anonymous']);
+
+		H::ajax_json_output(AWS_APP::RSM(array(
+			'item_id' => intval($_GET['answer_id']),
+			'type_name' => 'answer'
+		), 1, null));
+	}
+
+	public function save_question_comment_action()
+	{
+		if (!$this->user_info['permission']['publish_comment'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
+		}
+
+		if ($_POST['anonymous'])// AND !$this->user_info['permission']['comment_anonymously'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能匿名')));
+		}
+
+		if (!check_user_operation_interval('save_question_comment', $this->user_id, $this->user_info['permission']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
+		$message = my_trim($_POST['message']);
+		if (!$message)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入评论内容')));
+		}
+
+        if (!check_repeat_submission($message))
+        {
+            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请不要重复提交')));
+        }
+
+		$comment_length_min = intval(get_setting('comment_length_min'));
+		if ($comment_length_min AND cjk_strlen($message) < $comment_length_min)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得少于 %s 字', $comment_length_min)));
+		}
+
+		$comment_length_max = intval(get_setting('comment_length_max'));
+		if ($comment_length_max AND cjk_strlen($message) > $comment_length_max)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得超过 %s 字', $comment_length_max)));
+		}
+
+		if (!$this->model('ratelimit')->check_question_comment($this->user_id, $this->user_info['permission']['comment_limit_per_day']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日评论问题已经达到上限')));
+		}
+
+		$question_info = $this->model('question')->get_question_info_by_id($_GET['question_id']);
+		if (!$question_info)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('问题不存在')));
+		}
+
+		if ($question_info['lock'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能评论锁定的问题')));
+		}
+
+        set_repeat_submission_digest($message);
+		set_user_operation_last_time('save_question_comment', $this->user_id, $this->user_info['permission']);
+
+		$this->model('question')->insert_question_comment($_GET['question_id'], $this->user_id, $message, $_POST['anonymous']);
+
+		H::ajax_json_output(AWS_APP::RSM(array(
+			'item_id' => intval($_GET['question_id']),
+			'type_name' => 'question'
+		), 1, null));
+	}
+
+
+	// TODO: 删除
+	// 编辑答案时用到
+	public function fetch_answer_data_action()
+	{
+		$answer_info = $this->model('answer')->get_answer_by_id($_GET['id']);
+
+		if ($answer_info['uid'] == $this->user_id OR $this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'])
+		{
+			echo json_encode($answer_info);
+		}
+	}
+
+	public function get_focus_users_action()
+	{
+		if ($focus_users_info = $this->model('question')->get_focus_users_by_question($_GET['question_id'], 18))
+		{
+			$question_info = $this->model('question')->get_question_info_by_id($_GET['question_id']);
+
+			foreach($focus_users_info as $key => $val)
+			{
+				if ($val['uid'] == $question_info['published_uid'] and $question_info['anonymous'] == 1)
+				{
+					continue;
+				}
+				else
+				{
+					$focus_users[$key] = array(
+						'uid' => $val['uid'],
+						'user_name' => $val['user_name'],
+						'avatar_file' => UF::avatar($val, 'mid'),
+						'url' => get_js_url('/people/' . $val['url_token'])
+					);
+				}
+			}
+		}
+
+		H::ajax_json_output($focus_users);
+	}
+
+	public function save_invite_action()
+	{
+		if (!$this->user_info['permission']['invite_answer'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
+		}
+
+		if (!$question_info = $this->model('question')->get_question_info_by_id($_POST['question_id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在或已被删除')));
+		}
+
+		if (!$invite_user_info = $this->model('account')->get_user_info_by_uid($_POST['uid']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('用户不存在')));
+		}
+
+		if ($invite_user_info['uid'] == $this->user_id)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能邀请自己回复问题')));
+		}
+
+		if ($this->model('question')->has_question_invite($_POST['question_id'], $invite_user_info['uid']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已邀请过该用户')));
+		}
+
+		$this->model('question')->add_invite($_POST['question_id'], $this->user_id, $invite_user_info['uid']);
+
+		$this->model('account')->update_question_invite_count($invite_user_info['uid']);
+
+		$notification_id = $this->model('notify')->send($this->user_id, $invite_user_info['uid'], notify_class::TYPE_INVITE_QUESTION, notify_class::CATEGORY_QUESTION, intval($_POST['question_id']), array(
+			'from_uid' => $this->user_id,
+			'question_id' => intval($_POST['question_id'])
+		));
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
+	public function get_answer_comments_action()
+	{
+		$comments = $this->model('answer')->get_answer_comments($_GET['answer_id']);
+
+		$user_infos = $this->model('account')->get_user_info_by_uids(fetch_array_value($comments, 'uid'));
+
+		foreach ($comments as $key => $val)
+		{
+			$comments[$key]['message'] = FORMAT::parse_links($this->model('question')->parse_at_user($comments[$key]['message']));
+			$comments[$key]['user_info'] = $user_infos[$val['uid']];
+		}
+
+		$answer_info = $this->model('answer')->get_answer_by_id($_GET['answer_id']);
+
+		TPL::assign('question', $this->model('question')->get_question_info_by_id($answer_info['question_id']));
+		TPL::assign('answer_info', $answer_info);
+		TPL::assign('comments', $comments);
+
+		{
+			TPL::output("question/ajax/comments");
+		}
+	}
+
+	public function get_question_comments_action()
+	{
+		$comments = $this->model('question')->get_question_comments($_GET['question_id']);
+
+		$user_infos = $this->model('account')->get_user_info_by_uids(fetch_array_value($comments, 'uid'));
+
+		foreach ($comments as $key => $val)
+		{
+			$comments[$key]['message'] = FORMAT::parse_links($this->model('question')->parse_at_user($comments[$key]['message']));
+			$comments[$key]['user_info'] = $user_infos[$val['uid']];
+		}
+
+		TPL::assign('question', $this->model('question')->get_question_info_by_id($_GET['question_id']));
+
+		TPL::assign('comments', $comments);
+
+		TPL::output("question/ajax/comments");
+	}
+
+	public function cancel_question_invite_action()
+	{
+		$this->model('question')->cancel_question_invite($_GET['question_id'], $this->user_id, $_GET['recipients_uid']);
+
+		$this->model('account')->update_question_invite_count($_GET['recipients_uid']);
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
+	public function question_invite_delete_action()
+	{
+		$question_invite_id = intval($_POST['question_invite_id']);
+
+		$this->model('question')->delete_question_invite($question_invite_id, $this->user_id);
+
+		$this->model('account')->update_question_invite_count($this->user_id);
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
+	public function focus_action()
+	{
+		if (!$_POST['question_id'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
+		}
+
+		if (! $this->model('question')->get_question_info_by_id($_POST['question_id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
+		}
+
+		H::ajax_json_output(AWS_APP::RSM(array(
+			'type' => $this->model('question')->add_focus_question($_POST['question_id'], $this->user_id)
 		), 1, null));
 	}
 

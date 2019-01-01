@@ -272,12 +272,12 @@ class user extends AWS_ADMIN_CONTROLLER
             {
                 $parse_items[$val['id']] = array(
                     'item_id' => $val['item_id'],
-                    'action' => $val['action']
+                    'item_type' => $val['item_type']
                 );
             }
 
             TPL::assign('currency_log', $log);
-            TPL::assign('currency_log_detail', $this->model('currency')->parse_log_item($parse_items));
+            TPL::assign('currency_log_detail', $this->model('currency')->parse_log_items($parse_items));
         }
 
         TPL::assign('user', $this->model('account')->get_user_info_by_uid($_GET['uid']));

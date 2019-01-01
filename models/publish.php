@@ -50,15 +50,15 @@ class publish_class extends AWS_MODEL
 		switch ($val['type'])
 		{
 			case 'question':
-				$this->real_publish_question($data);
+				$this->real_publish_question($data, 1);
 				break;
 
 			case 'article':
-				$this->real_publish_article($data);
+				$this->real_publish_article($data, 1);
 				break;
 
 			case 'video':
-				$this->real_publish_video($data);
+				$this->real_publish_video($data, 1);
 				break;
 
 			case 'answer':
@@ -103,13 +103,14 @@ class publish_class extends AWS_MODEL
 			'type' => $type,
 			'time' => $time,
 			'uid' => $data['uid'],
+			'parent_id' => $data['parent_id'],
 			// 暂时用 model('message')->encrypt
 			'data' => $this->model('message')->encrypt(serialize($data))
 		));
 	}
 
 
-	private function real_publish_question(&$data)
+	private function real_publish_question(&$data, $view_count = 0)
 	{
 		$now = fake_time();
 
@@ -120,6 +121,7 @@ class publish_class extends AWS_MODEL
 			'category_id' => $data['category_id'],
 			'add_time' => $now,
 			'update_time' => $now,
+			'view_count' => $view_count,
 		));
 
 		if (!$item_id)
@@ -155,7 +157,7 @@ class publish_class extends AWS_MODEL
 		return $item_id;
 	}
 
-	private function real_publish_article(&$data)
+	private function real_publish_article(&$data, $view_count = 0)
 	{
 		$now = fake_time();
 
@@ -166,6 +168,7 @@ class publish_class extends AWS_MODEL
 			'category_id' => $data['category_id'],
 			'add_time' => $now,
 			'update_time' => $now,
+			'views' => $view_count,
 		));
 
 		if (!$item_id)
@@ -185,7 +188,7 @@ class publish_class extends AWS_MODEL
 		return $item_id;
 	}
 
-	private function real_publish_video(&$data)
+	private function real_publish_video(&$data, $view_count = 0)
 	{
 		$now = fake_time();
 
@@ -196,6 +199,7 @@ class publish_class extends AWS_MODEL
 			'category_id' => $data['category_id'],
 			'add_time' => $now,
 			'update_time' => $now,
+			'view_count' => $view_count,
 			'source_type' => $data['source_type'],
 			'source' => $data['source'],
 			'duration' => $data['duration'],

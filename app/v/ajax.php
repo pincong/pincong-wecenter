@@ -58,6 +58,7 @@ class ajax extends AWS_CONTROLLER
 		HTTP::no_cache_header();
 	}
 
+	// TODO: 移动到 publish/ajax 统一处理
 	public function save_comment_action()
 	{
 		if (!$this->user_info['permission']['comment_video'])
