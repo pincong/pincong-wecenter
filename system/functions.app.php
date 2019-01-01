@@ -53,7 +53,7 @@ function check_user_operation_interval($op_name, $uid, $interval, $check_default
 	{
 		$interval = intval(get_setting('user_operation_interval'));
 	}
-	if (!$interval)
+	if ($interval <= 0)
 	{
 		return true;
 	}
