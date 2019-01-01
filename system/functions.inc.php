@@ -364,7 +364,7 @@ function get_setting($varname = null)
  * @param  string
  * @return mixed
  */
-function get_key_value_pairs($varname, $separator = ',')
+function get_key_value_pairs($varname, $separator = ',', $allow_empty_separator = false)
 {
 	$result = array();
 
@@ -381,10 +381,16 @@ function get_key_value_pairs($varname, $separator = ',')
 		$count = count($array);
 		if ($count < 2)
 		{
-			continue;
+			if (!$allow_empty_separator)
+			{
+				continue;
+			}
+			$result[trim($array[0])] = '';
 		}
-
-		$result[trim($array[0])] = trim($array[$count - 1]);
+		else
+		{
+			$result[trim($array[0])] = trim($array[$count - 1]);
+		}
 	}
 
 	return $result;

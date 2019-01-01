@@ -68,8 +68,6 @@ class ajax extends AWS_CONTROLLER
 
 		TPL::assign('posts_list', $posts_list);
 
-		{
-			TPL::output('explore/ajax/list');
-		}
+		TPL::output('explore/ajax/list');
 	}
 }

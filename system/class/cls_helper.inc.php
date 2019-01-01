@@ -86,7 +86,7 @@ class H
 	 * @param unknown_type $content
 	 * @return mixed
 	 */
-	public static function sensitive_words_replace($content)
+	public static function &sensitive_words_replace(&$content)
 	{
 		if (!$content)
 		{
@@ -98,48 +98,32 @@ class H
 			return $content;
 		}
 
-		if (!$sensitive_words = get_setting('sensitive_words'))
+		$sensitive_words = get_key_value_pairs('sensitive_words', '<>', true);
+
+		foreach($sensitive_words AS $word => $replacement)
 		{
-			return $content;
-		}
-
-		$sensitive_words = explode("\n", $sensitive_words);
-
-		foreach($sensitive_words as $word)
-		{
-			$word = trim($word);
-
-			if (!$word)
+			if (!$replacement)
 			{
-				continue;
+				$replacement = $sensitive_words_replacement;
 			}
 
 			if (substr($word, 0, 1) == '{' AND substr($word, -1, 1) == '}')
 			{
-				$regex[] = substr($word, 1, -1);
+				$regex_array[] = substr($word, 1, -1);
+				$replacement_array[] = $replacement;
 			}
 			else
 			{
-				$content = str_ireplace($word, $sensitive_words_replacement, $content);
+				$content = str_ireplace($word, $replacement, $content);
 			}
 		}
 
-		if (isset($regex))
+		if (isset($regex_array))
 		{
-			preg_replace($regex, $sensitive_words_replacement, $content);
+			preg_replace($regex_array, $replacement_array, $content);
 		}
 
 		return $content;
-	}
-
-	/**
-	 * 是否包含敏感词
-	 * @param string $content
-	 * @return mixed
-	 */
-	public static function sensitive_word_exists($content)
-	{
-		return content_contains('sensitive_words', $content, true);
 	}
 
 	// 命中返回 true, 未命中返回 false
