@@ -1307,6 +1307,18 @@ var AWS =
 // 创建编辑器
 AWS.create_editor = function(element_id, max_btn)
 {
+	var empty_handler = {
+		format: function (element, content) {
+			return content;
+		},
+		html: function(token, attrs, content) {
+			return content;
+		}
+	};
+	sceditor.formats.bbcode.set('font', empty_handler);
+	sceditor.formats.bbcode.set('size', empty_handler);
+	sceditor.formats.bbcode.set('color', empty_handler);
+
 	return sceditor.create(document.getElementById(element_id), {
 		emoticonsEnabled: false,
 		format: 'bbcode',
