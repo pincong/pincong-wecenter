@@ -116,6 +116,7 @@ function base_url()
 	return rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
 }
 
+// TODO: 实现或删除
 function base64_current_path()
 {
 	return '';
@@ -1101,4 +1102,15 @@ function checksum($string) {
 		$i += 0x100000000;
 	}
 	return $i;
+}
+
+function safe_urlencode($string) {
+	return strtr(rawurlencode($string), array(
+		'-' => '%2D',
+		'_' => '%5F'
+	));
+}
+
+function safe_urldecode($string) {
+	return rawurldecode($string);
 }

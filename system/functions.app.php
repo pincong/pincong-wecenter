@@ -148,17 +148,3 @@ function import_editor_static_files()
 	TPL::import_js('editor/sceditor/formats/bbcode.js');
 }
 
-function base64_url_encode($param)
-{
-	if (!is_array($param))
-	{
-		return false;
-	}
-
-	return strtr(base64_encode(json_encode($param)), '+/=', '-_,');
-}
-
-function base64_url_decode($param)
-{
-	return json_decode(base64_decode(strtr($param, '-_,', '+/=')), true);
-}

@@ -24,7 +24,9 @@ class FORMAT
 		{
 			return self::parse_link($url);
 		}
-		return "<img src=\"$url\" alt=\"$url\" style=\"max-width:100%\">";
+		return '<a href="url/img/' . safe_urlencode($url) . '" target="_blank">' . 
+			'<img src="' . $url .'" alt="" style="max-width:100%">' . 
+			'</a>';
 	}
 
 	public static function parse_video($url)
