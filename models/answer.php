@@ -760,31 +760,6 @@ class answer_class extends AWS_MODEL
 		return true;
 	}
 
-	public function force_fold($answer_id, $uid)
-	{
-		$answer_id = intval($answer_id);
-
-		$answer_info = $this->get_answer_by_id($answer_id);
-
-		if ($answer_info['force_fold'])
-		{
-			$this->update_answer_by_id($answer_id, array(
-				'force_fold' => 0
-			));
-
-			return false;
-		}
-		else
-		{
-			$this->update_answer_by_id($answer_id, array(
-				'force_fold' => 1
-			));
-
-			ACTION_LOG::set_fold_action_history($answer_info['answer_id'], 1);
-
-			return true;
-		}
-	}
 
 	public function set_best_answer($answer_id)
 	{

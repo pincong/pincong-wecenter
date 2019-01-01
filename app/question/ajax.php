@@ -821,34 +821,6 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
-	public function answer_force_fold_action()
-	{
-		if (! $this->user_info['permission']['is_moderator'] AND ! $this->user_info['permission']['is_administrator'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
-		}
-
-		$answer_info = $this->model('answer')->get_answer_by_id($_POST['answer_id']);
-
-		if (! $answer_info)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('回复不存在')));
-		}
-
-		if ($this->model('answer')->force_fold($_POST['answer_id'], $this->user_id))
-		{
-			H::ajax_json_output(AWS_APP::RSM(array(
-				'action' => 'fold'
-			), 1, null));
-		}
-		else
-		{
-			H::ajax_json_output(AWS_APP::RSM(array(
-				'action' => 'unfold'
-			), 1, null));
-		}
-	}
-
 	public function lock_action()
 	{
 		if (! $this->user_info['permission']['is_moderator'] AND ! $this->user_info['permission']['is_administrator'])

@@ -1510,28 +1510,6 @@ AWS.User =
 		}, 'json');
 	},
 
-	// 回复强制折叠
-	answer_force_fold: function(selector, answer_id)
-	{
-		$.post(G_BASE_URL + '/question/ajax/answer_force_fold/', 'answer_id=' + answer_id, function (result) {
-			if (result.errno != 1)
-			{
-				AWS.alert(result.err);
-			}
-			else if (result.errno == 1)
-			{
-				if (result.rsm.action == 'fold')
-				{
-					selector.html(selector.html().replace(_t('强制折叠'), _t('撤消强制折叠')));
-				}
-				else
-				{
-					selector.html(selector.html().replace(_t('撤消强制折叠'), _t('强制折叠')));
-				}
-			}
-		}, 'json');
-	},
-
 	// 删除别人邀请我回复的问题
 	question_invite_delete: function(selector, question_invite_id)
 	{

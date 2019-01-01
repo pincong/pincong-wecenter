@@ -263,7 +263,7 @@
 									</div>
 									<div class="mod-body clearfix">
 									<!-- 回答 -->
-									<?php if ($val['force_fold'] || $val['fold']) { ?>
+									<?php if ($val['fold']) { ?>
 										<div class="aw-load-more-content">
 											<span class="text-color-999 aw-alert-box text-color-999" href="javascript:;" tabindex="-1" onclick="AWS.User.why_fold();"><?php _e('为什么被折叠?'); ?></span>
 											<a href="javascript:;" class="aw-load-more-content" onclick="$(this).parent().parent().children('.markitup-box').toggle();"><?php _e('回复被折叠'); ?></a>
@@ -313,10 +313,6 @@
 											<!-- 可显示/隐藏的操作box -->
 											<div class="more-operate">
 												<?php if ($this->user_id) { ?>
-													<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
-													<a href="javascript:;" onclick="AWS.User.answer_force_fold($(this), <?php echo $val['answer_id']; ?>);" class="text-color-999"><i class="icon icon-fold"></i> <?php if ($val['force_fold']) { ?><?php _e('撤消强制折叠'); ?><?php } else { ?><?php _e('强制折叠'); ?><?php } ?></a>
-													<?php } ?>
-
 													<?php if (($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) OR ($val['uid'] == $this->user_id AND ((TIMESTAMP - $val['add_time']) < (get_setting('answer_edit_time') * 60) OR (!get_setting('answer_edit_time'))))) { ?>
 													<a class="text-color-999" href="javascript:;" onclick="AWS.dialog('commentEdit', {answer_id:<?php echo $val['answer_id']; ?>});"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
 													<?php } ?>
