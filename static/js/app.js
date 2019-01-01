@@ -261,9 +261,9 @@ $(document).ready(function ()
         var $contentDiv = $(this);
         if($contentDiv.text().length > 1000) {
             $contentDiv.addClass('aw-briefly');
-            $button = $('<div class="aw-stretch-content-button-container"><button class="aw-stretch-content-button" type="button"></button></div>');
+            var $button = $('<div class="aw-stretch-content-button-container"><button class="aw-stretch-content-button" type="button"></button></div>');
             $button.click(function () {
-                $button.parent().removeClass('aw-briefly');
+                $contentDiv.removeClass('aw-briefly');
                 $button.hide();
             });
             $contentDiv.append($button);
