@@ -3,6 +3,8 @@
 .tags_sorted_by_file
 .DS_Store
 
+favicon.ico
+
 /system/config.inc.php
 /system/config/database.php
 
