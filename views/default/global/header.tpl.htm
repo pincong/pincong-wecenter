@@ -11,21 +11,19 @@
 			<!-- 导航 -->
 			<div class="aw-top-nav navbar">
 				<div class="navbar-header">
-				  <button  class="navbar-toggle pull-left">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				  </button>
+					<button  class="navbar-toggle pull-left">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
 				</div>
 				<nav role="navigation" class="collapse navbar-collapse bs-navbar-collapse">
-				  <ul class="nav navbar-nav">
-					<?php if ($this->user_id) { ?>
-					<li><a href="home/"<?php if ($_GET['app'] == 'home') { ?> class="active"<?php } ?>><i class="icon icon-home"></i> <?php _e('动态'); ?></a></li>
-					<?php } ?>
-
+				<ul class="nav navbar-nav">
 					<li><a href="<?php echo base_url(); ?>" class="<?php if (!$_GET['app'] OR $_GET['app'] == 'explore') { ?>active<?php } ?>"><i class="icon icon-list"></i> <?php _e('发现'); ?></a></li>
 
 					<?php if ($this->user_id) { ?>
+					<li><a href="home/"<?php if ($_GET['app'] == 'home') { ?> class="active"<?php } ?>><i class="icon icon-home"></i> <?php _e('动态'); ?></a></li>
+
 					<li>
 						<a href="notifications/" class="<?php if ($_GET['app'] == 'notifications') { ?>active<?php } ?>"><i class="icon icon-bell"></i> <?php _e('通知'); ?></a>
 						<span class="badge badge-important" style="display:none" id="notifications_unread"><?php echo $this->user_info['notification_unread']; ?></span>
@@ -43,7 +41,7 @@
 					<?php } ?>
 					<li><a href="search/"<?php if ($_GET['app'] == 'search') { ?> class="active"<?php } ?>><i class="icon icon-search"></i> <?php _e('搜索'); ?></a></li>
 
-				  </ul>
+				</ul>
 				</nav>
 			</div>
 			<!-- end 导航 -->
