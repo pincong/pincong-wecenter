@@ -33,7 +33,7 @@ a:hover{text-decoration: none;color: #404451;}
 .aw-mod.side-nav ul li a.active{background-color:#404451;color: #fff;}
 .aw-mod.side-nav ul li a.active .badge{background-color: #fff;color: #404451;}
 .aw-upload-box .upload-list li .img .icon-file{font-size: 48px;vertical-align: middle;color: #aac6e1;}
-.aw-question-detail .mod-head .operate .btn-group.open .btn{background-color:#404451;color: #fff;}
+.aw-topic-bar .tag-bar .operate .btn-group.open .btn{background-color:#404451;color: #fff;}
 .aw-comment-box .aw-comment-list a{color: #155faa;}
 .aw-invite-box .mod-footer a{display: inline-block;width: 28px;height: 24px;line-height:22px;background-color: #555c6c;text-align: center;border-radius: 4px;color: #fff;}
 .aw-article-list .aw-item h2 a:hover, .aw-article-list .aw-item .aw-mod-footer span a:hover{color: #4d8bcd;}
