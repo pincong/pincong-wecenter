@@ -198,7 +198,7 @@ class main extends AWS_CONTROLLER
 				TPL::assign('all_questions_list_bit', TPL::output('explore/ajax/list', false));
 
 				TPL::assign('posts_list', $this->model('posts')->get_posts_list('article', 1, get_setting('contents_per_page'), 'new', explode(',', $contents_topic_id)));
-				TPL::assign('articles_list_bit', TPL::output('explore/ajax/list', false));
+				TPL::assign('article_list_bit', TPL::output('explore/ajax/list', false));
 
 				TPL::assign('contents_topic_id', $contents_topic_id);
 				TPL::assign('contents_topic_title', $contents_topic_title);

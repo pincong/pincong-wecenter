@@ -152,7 +152,7 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		$article_list = $this->model('article')->get_articles_list($category_info['id'], $_GET['page'], get_setting('contents_per_page'), 'add_time DESC');
+		$article_list = $this->model('article')->get_article_list($category_info['id'], $_GET['page'], get_setting('contents_per_page'), 'add_time DESC');
 		$article_list_total = $this->model('article')->found_rows();
 
 		if ($article_list)
@@ -204,7 +204,7 @@ class main extends AWS_CONTROLLER
 		TPL::assign('article_list', $article_list);
 		TPL::assign('article_topics', $article_topics);
 
-		TPL::assign('hot_articles', $this->model('article')->get_articles_list(null, 1, 10, 'votes DESC', 30));
+		TPL::assign('hot_articles', $this->model('article')->get_article_list(null, 1, 10, 'votes DESC', 30));
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
 			'base_url' => get_js_url('/article/category_id-' . $_GET['category_id']),

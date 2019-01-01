@@ -83,26 +83,26 @@ class article extends AWS_ADMIN_CONTROLLER
 			$where[] = 'comments <= ' . intval($_GET['comment_count_max']);
 		}
 
-		if ($articles_list = $this->model('article')->fetch_page('article', implode(' AND ', $where), 'id DESC', $_GET['page'], $this->per_page))
+		if ($article_list = $this->model('article')->fetch_page('article', implode(' AND ', $where), 'id DESC', $_GET['page'], $this->per_page))
 		{
 			$search_articles_total = $this->model('article')->found_rows();
 		}
 
-		if ($articles_list)
+		if ($article_list)
 		{
-			foreach ($articles_list AS $key => $val)
+			foreach ($article_list AS $key => $val)
 			{
-				$articles_list_uids[$val['uid']] = $val['uid'];
+				$article_list_uids[$val['uid']] = $val['uid'];
 			}
 
-			if ($articles_list_uids)
+			if ($article_list_uids)
 			{
-				$articles_list_user_infos = $this->model('account')->get_user_info_by_uids($articles_list_uids);
+				$article_list_user_infos = $this->model('account')->get_user_info_by_uids($article_list_uids);
 			}
 
-			foreach ($articles_list AS $key => $val)
+			foreach ($article_list AS $key => $val)
 			{
-				$articles_list[$key]['user_info'] = $articles_list_user_infos[$val['uid']];
+				$article_list[$key]['user_info'] = $article_list_user_infos[$val['uid']];
 			}
 		}
 
@@ -125,7 +125,7 @@ class article extends AWS_ADMIN_CONTROLLER
 		$this->crumb(AWS_APP::lang()->_t('文章管理'), 'admin/article/list/');
 
 		TPL::assign('articles_count', $search_articles_total);
-		TPL::assign('list', $articles_list);
+		TPL::assign('list', $article_list);
 
 		TPL::output('admin/article/list');
 	}

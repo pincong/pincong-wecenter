@@ -72,9 +72,9 @@ class tools extends AWS_ADMIN_CONTROLLER
 
     public function update_article_search_index_action()
     {
-        if ($articles_list = $this->model('question')->fetch_page('article', null, 'id ASC', $_GET['page'], $_GET['per_page']))
+        if ($article_list = $this->model('question')->fetch_page('article', null, 'id ASC', $_GET['page'], $_GET['per_page']))
         {
-            foreach ($articles_list as $key => $val)
+            foreach ($article_list as $key => $val)
             {
                 $this->model('search_fulltext')->push_index('article', $val['title'], $val['id']);
 

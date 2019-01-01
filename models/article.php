@@ -119,10 +119,10 @@ class article_class extends AWS_MODEL
 
 		array_walk_recursive($article_ids, 'intval_string');
 
-		if ($articles_list = $this->fetch_all('article', 'id IN(' . implode(',', $article_ids) . ')'))
+		if ($article_list = $this->fetch_all('article', 'id IN(' . implode(',', $article_ids) . ')'))
 		{
 			$article_downvote_fold = get_setting('article_downvote_fold');
-			foreach ($articles_list AS $key => $val)
+			foreach ($article_list AS $key => $val)
 			{
 				if (-$val['votes'] >= $article_downvote_fold)
 				{
@@ -315,7 +315,7 @@ class article_class extends AWS_MODEL
 		return true;
 	}
 
-	public function get_articles_list($category_id, $page, $per_page, $order_by, $day = null)
+	public function get_article_list($category_id, $page, $per_page, $order_by, $day = null)
 	{
 		$where = array();
 
@@ -332,7 +332,7 @@ class article_class extends AWS_MODEL
 		return $this->fetch_page('article', implode(' AND ', $where), $order_by, $page, $per_page);
 	}
 
-	public function get_articles_list_by_topic_ids($page, $per_page, $order_by, $topic_ids)
+	public function get_article_list_by_topic_ids($page, $per_page, $order_by, $topic_ids)
 	{
 		if (!$topic_ids)
 		{
