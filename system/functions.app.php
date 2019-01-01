@@ -39,7 +39,7 @@ function set_repeat_submission_digest($text)
 }
 
 
-// 检查用户操作频率
+// 检查用户操作频率（根据用户权限）
 // 返回 true    正常
 // 返回 false   过于频繁
 function check_user_operation_interval($op_name, $uid, &$user_permission)
@@ -65,6 +65,32 @@ function set_user_operation_last_time($op_name, $uid, &$user_permission)
 	{
 		return;
 	}
+	$key = 'user_operation_last_time_' + intval($uid) + '_' + $op_name;
+	AWS_APP::cache()->set($key, time(), 86400);
+}
+
+
+// 检查用户操作频率
+// 返回 true    正常
+// 返回 false   过于频繁
+function check_user_operation_interval_by_uid($op_name, $uid, $interval)
+{
+	$interval = intval($interval);
+	if (!$interval)
+	{
+		return true;
+	}
+	$key = 'user_operation_last_time_' + intval($uid) + '_' + $op_name;
+	$last_time = intval(AWS_APP::cache()->get($key));
+	if ($last_time + $interval > time())
+	{
+		return false;
+	}
+	return true;
+}
+
+function set_user_operation_last_time_by_uid($op_name, $uid)
+{
 	$key = 'user_operation_last_time_' + intval($uid) + '_' + $op_name;
 	AWS_APP::cache()->set($key, time(), 86400);
 }
