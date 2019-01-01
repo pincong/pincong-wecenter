@@ -369,28 +369,65 @@
 
 <script type="text/javascript">
 $(document).ready(function () {
-	// TODO 懒加载
-	AWS.load_list_view(G_BASE_URL + '/people/info/questions/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_questions_more'), $('#contents_user_questions'), 1);
-	AWS.load_list_view(G_BASE_URL + '/people/info/answers/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_answers_more'), $('#contents_user_answers'), 1);
-	AWS.load_list_view(G_BASE_URL + '/people/info/articles/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_articles_more'), $('#contents_user_articles'), 1);
-	AWS.load_list_view(G_BASE_URL + '/people/info/article_comments/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_article_comments_more'), $('#contents_user_article_comments'), 1);
-	AWS.load_list_view(G_BASE_URL + '/people/info/videos/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_videos_more'), $('#contents_user_videos'), 1);
-	AWS.load_list_view(G_BASE_URL + '/people/info/video_comments/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_video_comments_more'), $('#contents_user_video_comments'), 1);
+	var page_questions_inited = false;
+	$('#page_questions').click(function() {
+		if (page_questions_inited) return;
+		page_questions_inited = true;
+		AWS.load_list_view(G_BASE_URL + '/people/info/questions/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_questions_more'), $('#contents_user_questions'), 1);
+	});
 
-	AWS.load_list_view(G_BASE_URL + '/people/info/followers/type-following__uid-<?php echo $this->user['uid']; ?>', $('#bp_user_follows_more'), $('#contents_user_follows'));
-	AWS.load_list_view(G_BASE_URL + '/people/info/followers/type-followers__uid-<?php echo $this->user['uid']; ?>', $('#bp_user_fans_more'), $('#contents_user_fans'));
-	AWS.load_list_view(G_BASE_URL + '/people/info/topics/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_topics_more'), $('#contents_user_topics'));
+	var page_answers_inited = false;
+	$('#page_answers').click(function() {
+		if (page_answers_inited) return;
+		page_answers_inited = true;
+		AWS.load_list_view(G_BASE_URL + '/people/info/answers/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_answers_more'), $('#contents_user_answers'), 1);
+	});
+
+	var page_articles_inited = false;
+	$('#page_articles').click(function() {
+		if (page_articles_inited) return;
+		page_articles_inited = true;
+		AWS.load_list_view(G_BASE_URL + '/people/info/articles/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_articles_more'), $('#contents_user_articles'), 1);
+	});
+
+	var page_article_comments_inited = false;
+	$('#page_article_comments').click(function() {
+		if (page_article_comments_inited) return;
+		page_article_comments_inited = true;
+		AWS.load_list_view(G_BASE_URL + '/people/info/article_comments/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_article_comments_more'), $('#contents_user_article_comments'), 1);
+	});
+
+	var page_videos_inited = false;
+	$('#page_videos').click(function() {
+		if (page_videos_inited) return;
+		page_videos_inited = true;
+		AWS.load_list_view(G_BASE_URL + '/people/info/videos/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_videos_more'), $('#contents_user_videos'), 1);
+	});
+
+	var page_video_comments_inited = false;
+	$('#page_video_comments').click(function() {
+		if (page_video_comments_inited) return;
+		page_video_comments_inited = true;
+		AWS.load_list_view(G_BASE_URL + '/people/info/video_comments/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_video_comments_more'), $('#contents_user_video_comments'), 1);
+	});
+
+	var page_focus_inited = false;
+	$('#page_focus').click(function() {
+		if (page_focus_inited) return;
+		page_focus_inited = true;
+		AWS.load_list_view(G_BASE_URL + '/people/info/followers/type-following__uid-<?php echo $this->user['uid']; ?>', $('#bp_user_follows_more'), $('#contents_user_follows'));
+		AWS.load_list_view(G_BASE_URL + '/people/info/followers/type-followers__uid-<?php echo $this->user['uid']; ?>', $('#bp_user_fans_more'), $('#contents_user_fans'));
+		AWS.load_list_view(G_BASE_URL + '/people/info/topics/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_topics_more'), $('#contents_user_topics'));
+	});
+
 	<?php if ($this->user_id == $this->user['uid']) { ?>
-	AWS.load_list_view(G_BASE_URL + '/currency/list_logs/', $('#bp_user_currency'), $('#contents_user_currency'));
+	var page_currency_inited = false;
+	$('#page_currency').click(function() {
+		if (page_currency_inited) return;
+		page_currency_inited = true;
+		AWS.load_list_view(G_BASE_URL + '/currency/list_logs/', $('#bp_user_currency'), $('#contents_user_currency'));
+	});
 	<?php } ?>
-
-	if (window.location.hash)
-	{
-		if (document.getElementById(window.location.hash.replace('#', '')))
-		{
-			document.getElementById(window.location.hash.replace('#', '')).click();
-		}
-	}
 
 	$('.aw-tabs li').click(function() {
 		$(this).addClass('active').siblings().removeClass('active');
