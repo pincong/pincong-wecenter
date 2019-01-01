@@ -20,6 +20,17 @@ if (!defined('IN_ANWSION'))
 
 class posts_class extends AWS_MODEL
 {
+	// 得到最后一次发帖/回复时间
+	public function get_last_update_time()
+	{
+		$result = $this->fetch_row('posts_index', null, 'update_time DESC');
+		if (!$result)
+		{
+			return 0;
+		}
+		return intval($result['update_time']);
+	}
+
 	public function set_posts_index($post_id, $post_type, $data = null)
 	{
 		if ($data)
@@ -87,10 +98,15 @@ class posts_class extends AWS_MODEL
 		{
 			$post_index = end($posts_index);
 
-			// 用于置顶帖子和模糊时间的排序
-			if ($post_index['update_time'] >= $data['update_time'])
+			if (get_setting('time_blurring') != 'N')
 			{
-				$data['update_time'] = intval($post_index['update_time']) + 1;
+				// 用于模糊时间的排序
+				$last_update_time = $this->get_last_update_time();
+				$update_time = intval($data['update_time']);
+				if ($last_update_time >= $update_time AND $last_update_time < $update_time + 36 * 3600)
+				{
+					$data['update_time'] = $last_update_time + 1;
+				}
 			}
 
 			$this->update('posts_index', $data, 'id = ' . intval($post_index['id']));
@@ -480,24 +496,12 @@ class posts_class extends AWS_MODEL
 	public function bump_post($uid, $post_id, $post_type)
 	{
 		$post_id = intval($post_id);
-		$result = $this->fetch_row('posts_index', "post_id = " . $post_id . " AND post_type = '" . $this->quote($post_type) . "'");
-		if (!$result)
-		{
-			return false;
-		}
 
-		$update_time = intval($result['update_time']);
-		if (!$update_time)
-		{
-			$update_time = fake_time();
-		}
-		$update_time += 24 * 3600;
+		$where = "post_id = " . ($post_id) . " AND post_type = '" . $this->quote($post_type) . "'";
 
-		$data = array(
-			'update_time' => $update_time,
-		);
-
-		$this->update('posts_index', $data, 'id = ' . $result['id']);
+		$this->update('posts_index', array(
+			'update_time' => $this->get_last_update_time()
+		), $where);
 
 		switch ($post_type)
 		{
@@ -526,24 +530,12 @@ class posts_class extends AWS_MODEL
 	public function sink_post($uid, $post_id, $post_type)
 	{
 		$post_id = intval($post_id);
-		$result = $this->fetch_row('posts_index', "post_id = " . $post_id . " AND post_type = '" . $this->quote($post_type) . "'");
-		if (!$result)
-		{
-			return false;
-		}
 
-		$update_time = intval($result['update_time']);
-		$update_time -= 24 * 3600;
-		if ($update_time <= 0)
-		{
-			$update_time = 0;
-		}
+		$where = "post_id = " . ($post_id) . " AND post_type = '" . $this->quote($post_type) . "'";
 
-		$data = array(
-			'update_time' => $update_time,
-		);
-
-		$this->update('posts_index', $data, 'id = ' . $result['id']);
+		$this->update('posts_index', array(
+			'update_time' => $this->get_last_update_time() - (7 * 24 * 3600)
+		), $where);
 
 		switch ($post_type)
 		{
