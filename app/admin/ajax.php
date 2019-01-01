@@ -1134,9 +1134,9 @@ class ajax extends AWS_ADMIN_CONTROLLER
         }
     }
 
-    public function forbidden_user_action()
+    public function forbid_user_action()
     {
-        $this->model('account')->forbidden_user_by_uid($_POST['uid'], $_POST['status'], $this->user_id);
+        $this->model('account')->forbid_user_by_uid($_POST['uid'], $_POST['status'], $this->user_id);
 
         H::ajax_json_output(AWS_APP::RSM(null, 1, null));
     }

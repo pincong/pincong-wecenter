@@ -1089,7 +1089,7 @@ class account_class extends AWS_MODEL
         return $this->model('account')->get_user_group_by_id($group_id);
     }
 
-    public function forbidden_user_by_uid($uid, $status, $admin_uid = null)
+    public function forbid_user_by_uid($uid, $status, $admin_uid = null)
     {
         if (!$uid)
         {

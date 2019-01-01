@@ -546,4 +546,29 @@ class ajax extends AWS_CONTROLLER
 		AWS_APP::cache()->delete('user_recommend_' . $this->user_id);
 	}
 
+	public function forbid_user_action()
+	{
+		if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+		}
+
+		$uid = intval($_POST['uid']);
+		$user_info = $this->model('account')->get_user_info_by_uid($uid);
+
+		if (!$user_info)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('用户不存在')));
+		}
+
+		if ($user_info['group_id'] != 4)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+		}
+
+		$this->model('account')->forbid_user_by_uid($uid, $_POST['status'], $this->user_id);
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
 }
