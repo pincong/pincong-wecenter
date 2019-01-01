@@ -443,7 +443,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => get_js_url('/v/' . $video_id)
+			'url' => get_js_url('/video/' . $video_id)
 		), 1, null));
 	}
 
@@ -647,7 +647,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => get_js_url('/v/' . $video_info['id'])
+			'url' => get_js_url('/video/' . $video_info['id'])
 		), 1, null));
 
 	}

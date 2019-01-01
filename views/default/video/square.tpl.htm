@@ -16,7 +16,7 @@
 							</a>
 							<div class="aw-content">
 								<div class="mod-body">
-									<h2><a href="v/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['title']; ?><?php } ?></a></h2>
+									<h2><a href="video/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['title']; ?><?php } ?></a></h2>
 									<div class="aw-topic-bar">
 										<div class="tag-bar clearfix">
 											<?php foreach($this->video_topics[$val['id']] as $topic_key => $topic_val) { ?>
@@ -31,7 +31,7 @@
 									<span class="pull-right more-operate text-color-999">
 										<?php echo UF::name($val['user_info']); ?> 发表于 : <?php echo date_friendly($val['add_time']); ?>
 
-										<a class="text-color-999" href="v/<?php echo $val['id']; ?>"><i class="icon icon-comment"></i> <?php _e('评论'); ?> (<?php echo $val['comment_count']; ?>)</a>
+										<a class="text-color-999" href="video/<?php echo $val['id']; ?>"><i class="icon icon-comment"></i> <?php _e('评论'); ?> (<?php echo $val['comment_count']; ?>)</a>
 									</span>
 								</div>
 							</div>
@@ -54,7 +54,7 @@
 						<div class="mod-body">
 							<ul>
 								<?php foreach($this->hot_videos AS $key => $val) { ?>
-								<li><a href="v/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['title']; ?><?php } ?></a></li>
+								<li><a href="video/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['title']; ?><?php } ?></a></li>
 								<?php } ?>
 							</ul>
 						</div>

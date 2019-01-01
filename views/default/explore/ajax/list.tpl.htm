@@ -9,7 +9,7 @@
 			<?php } elseif ($val['post_type'] == 'article') { ?>
 			<a href="article/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['title']; ?><?php } ?></a>
 			<?php } elseif ($val['post_type'] == 'video') { ?>
-			<a href="v/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['title']; ?><?php } ?></a>
+			<a href="video/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['title']; ?><?php } ?></a>
 			<?php } ?>
 		</h4>
 		<!-- 贡献 -->
