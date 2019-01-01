@@ -66,7 +66,7 @@ class ajax extends AWS_CONTROLLER
 		return $anonymous_uid;
 	}
 
-	private function do_validate()
+	private function do_validate($act = 'new')
 	{
 		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']))
 		{
@@ -109,7 +109,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('标题字数不得大于 150 字节', get_setting('question_title_limit'))));
 		}
 
-		if (!check_repeat_submission($_POST['title']))
+		if ($act == 'new' AND !check_repeat_submission($_POST['title']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请不要重复提交')));
 		}
@@ -446,7 +446,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$_POST['do_delete'])
 		{
-			$this->do_validate();
+			$this->do_validate('modify');
 		}
 
 		// !注: 来路检测后面不能再放报错提示
@@ -502,7 +502,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$_POST['do_delete'])
 		{
-			$this->do_validate();
+			$this->do_validate('modify');
 		}
 
 		// !注: 来路检测后面不能再放报错提示
@@ -564,7 +564,7 @@ class ajax extends AWS_CONTROLLER
 				H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('无法识别视频来源')));
 			}
 
-			$this->do_validate();
+			$this->do_validate('modify');
 		}
 
 		// !注: 来路检测后面不能再放报错提示
