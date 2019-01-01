@@ -43,7 +43,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你的等级还不能在这个分类发言')));
 		}
 
-		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -65,7 +65,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($item_info['category_id'] != $category_id)
 		{
-			set_user_operation_last_time_by_uid('modify', $this->user_id);
+			set_user_operation_last_time('manage', $this->user_id);
 
 			$this->model('content')->change_category($_POST['item_type'], $_POST['item_id'], $category_id, $item_info['category_id'], $this->user_id);
 		}
@@ -80,7 +80,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
-		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -92,7 +92,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$item_info['lock'])
 		{
-			set_user_operation_last_time_by_uid('modify', $this->user_id);
+			set_user_operation_last_time('manage', $this->user_id);
 
 			$this->model('content')->lock($_POST['item_type'], $_POST['item_id'], $this->user_id);
 		}
@@ -107,7 +107,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
-		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -119,7 +119,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($item_info['lock'])
 		{
-			set_user_operation_last_time_by_uid('modify', $this->user_id);
+			set_user_operation_last_time('manage', $this->user_id);
 
 			$this->model('content')->unlock($_POST['item_type'], $_POST['item_id'], $this->user_id);
 		}
@@ -134,7 +134,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有设置推荐的权限')));
 		}
 
-		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -147,7 +147,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$item_info['recommend'])
 		{
-			set_user_operation_last_time_by_uid('modify', $this->user_id);
+			set_user_operation_last_time('manage', $this->user_id);
 
 			$this->model('content')->recommend($_POST['item_type'], $_POST['item_id'], $this->user_id);
 		}
@@ -162,7 +162,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有设置推荐的权限')));
 		}
 
-		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -175,7 +175,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($item_info['recommend'])
 		{
-			set_user_operation_last_time_by_uid('modify', $this->user_id);
+			set_user_operation_last_time('manage', $this->user_id);
 
 			$this->model('content')->unrecommend($_POST['item_type'], $_POST['item_id'], $this->user_id);
 		}
@@ -190,7 +190,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
 
-		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -201,7 +201,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
 		}
 
-		set_user_operation_last_time_by_uid('modify', $this->user_id);
+		set_user_operation_last_time('manage', $this->user_id);
 
 		$this->model('content')->bump($_POST['item_type'], $_POST['item_id'], $this->user_id);
 
@@ -215,7 +215,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
 
-		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -226,7 +226,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
 		}
 
-		set_user_operation_last_time_by_uid('modify', $this->user_id);
+		set_user_operation_last_time('manage', $this->user_id);
 
 		$this->model('content')->sink($_POST['item_type'], $_POST['item_id'], $this->user_id);
 
@@ -242,7 +242,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有设置置顶的权限')));
 		}
 
-		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -255,7 +255,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$item_info['sort'])
 		{
-			set_user_operation_last_time_by_uid('modify', $this->user_id);
+			set_user_operation_last_time('manage', $this->user_id);
 
 			$this->model('content')->pin($_POST['item_type'], $_POST['item_id'], $this->user_id);
 		}
@@ -271,7 +271,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有设置置顶的权限')));
 		}
 
-		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -284,7 +284,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($item_info['sort'])
 		{
-			set_user_operation_last_time_by_uid('modify', $this->user_id);
+			set_user_operation_last_time('manage', $this->user_id);
 
 			$this->model('content')->unpin($_POST['item_type'], $_POST['item_id'], $this->user_id);
 		}
@@ -300,7 +300,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有折叠的权限')));
 		}
 
-		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -313,7 +313,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$item_info['fold'])
 		{
-			set_user_operation_last_time_by_uid('modify', $this->user_id);
+			set_user_operation_last_time('manage', $this->user_id);
 			switch ($_POST['item_type'])
 			{
 				case 'answer':
@@ -342,7 +342,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有折叠的权限')));
 		}
 
-		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -355,7 +355,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($item_info['fold'])
 		{
-			set_user_operation_last_time_by_uid('modify', $this->user_id);
+			set_user_operation_last_time('manage', $this->user_id);
 			switch ($_POST['item_type'])
 			{
 				case 'answer':

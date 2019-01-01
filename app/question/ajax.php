@@ -70,7 +70,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能匿名')));
 		}
 
-		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']))
+		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_post']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -120,7 +120,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
         set_repeat_submission_digest($this->user_id, $message);
-		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
+		set_user_operation_last_time('publish', $this->user_id);
 
 		$this->model('answer')->insert_answer_discussion($_GET['answer_id'], $this->user_id, $message);
 
@@ -147,7 +147,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能匿名')));
 		}
 
-		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']))
+		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_post']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -192,7 +192,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
         set_repeat_submission_digest($this->user_id, $message);
-		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
+		set_user_operation_last_time('publish', $this->user_id);
 
 		$this->model('question')->insert_question_discussion($_GET['question_id'], $this->user_id, $message);
 
@@ -316,7 +316,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
 		}
 
-		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']))
+		if (!check_user_operation_interval('focus', $this->user_id, $this->user_info['permission']['interval_post']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -326,7 +326,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
 		}
 
-		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
+		set_user_operation_last_time('focus', $this->user_id);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'type' => $this->model('question')->add_focus_question($_POST['question_id'], $this->user_id)

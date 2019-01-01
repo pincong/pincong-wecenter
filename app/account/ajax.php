@@ -96,7 +96,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		$register_interval = rand_minmax(get_setting('register_interval_min'), get_setting('register_interval_max'), get_setting('register_interval'));
-		if (!check_user_operation_interval_by_uid('register', 0, $register_interval))
+		if (!check_user_operation_interval('register', 0, $register_interval, false))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('本站已开启注册频率限制, 请稍后再试')));
 		}
@@ -124,7 +124,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('注册失败')));
 		}
 
-		set_user_operation_last_time_by_uid('register', 0);
+		set_user_operation_last_time('register', 0);
 
 		if (isset($_POST['sex']))
 		{
@@ -430,7 +430,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
-		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -450,7 +450,7 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		set_user_operation_last_time_by_uid('modify', $this->user_id);
+		set_user_operation_last_time('manage', $this->user_id);
 
 		$uid = intval($_POST['uid']);
 		$user_info = $this->model('account')->get_user_info_by_uid($uid);
@@ -518,7 +518,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
-		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -533,7 +533,7 @@ class ajax extends AWS_CONTROLLER
 			$text = htmlspecialchars($text);
 		}
 
-		set_user_operation_last_time_by_uid('modify', $this->user_id);
+		set_user_operation_last_time('manage', $this->user_id);
 
 		$this->model('account')->update_users_fields(array(
 			'verified' => $text
@@ -549,7 +549,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
-		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -564,7 +564,7 @@ class ajax extends AWS_CONTROLLER
 			$text = htmlspecialchars($text);
 		}
 
-		set_user_operation_last_time_by_uid('modify', $this->user_id);
+		set_user_operation_last_time('manage', $this->user_id);
 
 		$this->model('account')->update_users_attrib_fields(array(
 			'signature' => $text

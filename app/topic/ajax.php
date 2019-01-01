@@ -70,7 +70,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function edit_topic_action()
 	{
-		if (!check_user_operation_interval('edit_topic', $this->user_id, $this->user_info['permission']))
+		if (!check_user_operation_interval('edit_topic', $this->user_id, $this->user_info['permission']['interval_modify']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -100,7 +100,7 @@ class ajax extends AWS_CONTROLLER
 
 		$this->model('topic')->update_topic($this->user_id, $_POST['topic_id'], null, $_POST['topic_description']);
 
-		set_user_operation_last_time('edit_topic', $this->user_id, $this->user_info['permission']);
+		set_user_operation_last_time('edit_topic', $this->user_id);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'url' => get_js_url('/topic/' . $_POST['topic_id'])
@@ -440,7 +440,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定的项目不存在')));
 		}
 
-		if (!check_user_operation_interval('edit_topic', $this->user_id, $this->user_info['permission']))
+		if (!check_user_operation_interval('edit_topic', $this->user_id, $this->user_info['permission']['interval_modify']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -541,7 +541,7 @@ class ajax extends AWS_CONTROLLER
 
 		$this->model('topic')->save_topic_relation($this->user_id, $topic_id, $_POST['item_id'], $_POST['type']);
 
-		set_user_operation_last_time('edit_topic', $this->user_id, $this->user_info['permission']);
+		set_user_operation_last_time('edit_topic', $this->user_id);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'topic_id' => $topic_id,

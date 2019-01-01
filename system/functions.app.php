@@ -43,43 +43,16 @@ function set_repeat_submission_digest($uid, &$text)
 }
 
 
-// 检查用户操作频率（根据用户权限）
-// 返回 true    正常
-// 返回 false   过于频繁
-function check_user_operation_interval($op_name, $uid, &$user_permission)
-{
-	$interval = intval($user_permission['operation_interval']);
-	if (!$interval)
-	{
-		return true;
-	}
-	$key = 'user_operation_last_time_' . intval($uid) . '_' . $op_name;
-	$last_time = intval(AWS_APP::cache()->get($key));
-	if ($last_time + $interval > time())
-	{
-		return false;
-	}
-	return true;
-}
-
-function set_user_operation_last_time($op_name, $uid, &$user_permission)
-{
-	$interval = intval($user_permission['operation_interval']);
-	if (!$interval)
-	{
-		return;
-	}
-	$key = 'user_operation_last_time_' . intval($uid) . '_' . $op_name;
-	AWS_APP::cache()->set($key, time(), 86400);
-}
-
-
 // 检查用户操作频率
 // 返回 true    正常
 // 返回 false   过于频繁
-function check_user_operation_interval_by_uid($op_name, $uid, $interval)
+function check_user_operation_interval($op_name, $uid, $interval, $check_default_value = true)
 {
 	$interval = intval($interval);
+	if (!$interval AND $check_default_value)
+	{
+		$interval = intval(get_setting('user_operation_interval'));
+	}
 	if (!$interval)
 	{
 		return true;
@@ -93,12 +66,11 @@ function check_user_operation_interval_by_uid($op_name, $uid, $interval)
 	return true;
 }
 
-function set_user_operation_last_time_by_uid($op_name, $uid)
+function set_user_operation_last_time($op_name, $uid)
 {
 	$key = 'user_operation_last_time_' . intval($uid) . '_' . $op_name;
 	AWS_APP::cache()->set($key, time(), 86400);
 }
-
 
 // 获取主题图片指定尺寸的完整url地址
 function get_topic_pic_url(&$topic_info, $size = 'min')

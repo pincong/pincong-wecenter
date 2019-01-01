@@ -94,7 +94,7 @@ class ajax extends AWS_CONTROLLER
 
 	private function do_validate()
 	{
-		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']))
+		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_post']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -284,7 +284,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		set_repeat_submission_digest($this->user_id, $_POST['title']);
-		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
+		set_user_operation_last_time('publish', $this->user_id);
 
 		$question_id = $this->model('publish')->publish_question(array(
 			'title' => $_POST['title'],
@@ -346,7 +346,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		set_repeat_submission_digest($this->user_id, $_POST['title']);
-		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
+		set_user_operation_last_time('publish', $this->user_id);
 
 		$article_id = $this->model('publish')->publish_article(array(
 			'title' => $_POST['title'],
@@ -421,7 +421,7 @@ class ajax extends AWS_CONTROLLER
 		$this->validate_video_metadata($metadata);
 
 		set_repeat_submission_digest($this->user_id, $_POST['title']);
-		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
+		set_user_operation_last_time('publish', $this->user_id);
 
 		$video_id = $this->model('publish')->publish_video(array(
 			'title' => $_POST['title'],
@@ -451,7 +451,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function modify_question_action()
 	{
-		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_modify']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -485,7 +485,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
 		}
 
-		set_user_operation_last_time_by_uid('modify', $this->user_id);
+		set_user_operation_last_time('publish', $this->user_id);
 
 		if ($_POST['do_delete'])
 		{
@@ -513,7 +513,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function modify_article_action()
 	{
-		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_modify']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -547,7 +547,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
 		}
 
-		set_user_operation_last_time_by_uid('modify', $this->user_id);
+		set_user_operation_last_time('publish', $this->user_id);
 
 		if ($_POST['do_delete'])
 		{
@@ -574,7 +574,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function modify_video_action()
 	{
-		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_modify']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -615,7 +615,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
 		}
 
-		set_user_operation_last_time_by_uid('modify', $this->user_id);
+		set_user_operation_last_time('publish', $this->user_id);
 
 		if ($_POST['do_delete'])
 		{
@@ -733,7 +733,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		set_repeat_submission_digest($this->user_id, $_POST['message']);
-		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
+		set_user_operation_last_time('publish', $this->user_id);
 
 		$answer_id = $this->model('publish')->publish_answer(array(
 			'parent_id' => $question_info['question_id'],
@@ -810,7 +810,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		set_repeat_submission_digest($this->user_id, $_POST['message']);
-		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
+		set_user_operation_last_time('publish', $this->user_id);
 
 		$comment_id = $this->model('publish')->publish_article_comment(array(
 			'parent_id' => $article_info['id'],
@@ -886,7 +886,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		set_repeat_submission_digest($this->user_id, $_POST['message']);
-		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
+		set_user_operation_last_time('publish', $this->user_id);
 
 		$comment_id = $this->model('publish')->publish_video_comment(array(
 			'parent_id' => $video_info['id'],
@@ -914,7 +914,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function modify_answer_action()
 	{
-		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_modify']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -944,7 +944,7 @@ class ajax extends AWS_CONTROLLER
 			$this->validate_reply('modify', 'question');
 		}
 
-		set_user_operation_last_time_by_uid('modify', $this->user_id);
+		set_user_operation_last_time('publish', $this->user_id);
 
 		if ($_POST['do_delete'])
 		{
@@ -971,7 +971,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function modify_article_comment_action()
 	{
-		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_modify']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -1001,7 +1001,7 @@ class ajax extends AWS_CONTROLLER
 			$this->validate_reply('modify', 'article');
 		}
 
-		set_user_operation_last_time_by_uid('modify', $this->user_id);
+		set_user_operation_last_time('publish', $this->user_id);
 
 		if ($_POST['do_delete'])
 		{
@@ -1024,7 +1024,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function modify_video_comment_action()
 	{
-		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_modify']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -1054,7 +1054,7 @@ class ajax extends AWS_CONTROLLER
 			$this->validate_reply('modify', 'video');
 		}
 
-		set_user_operation_last_time_by_uid('modify', $this->user_id);
+		set_user_operation_last_time('publish', $this->user_id);
 
 		if ($_POST['do_delete'])
 		{

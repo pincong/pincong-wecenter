@@ -34,7 +34,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
 		}
 
-		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']))
+		if (!check_user_operation_interval('favorite', $this->user_id, $this->user_info['permission']['interval_post']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -44,7 +44,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
 		}
 
-		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
+		set_user_operation_last_time('favorite', $this->user_id);
 
 		$this->model('favorite')->add_favorite($_POST['item_id'], $_POST['item_type'], $this->user_id);
 
