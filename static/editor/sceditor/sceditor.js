@@ -1791,9 +1791,9 @@
 		image:
 			'<div><label for="link">{url}</label> ' +
 				'<input type="text" id="image" dir="ltr" placeholder="https://" /></div>' +
-			'<div><label for="width">{width}</label> ' +
+			'<div style="display:none"><label for="width">{width}</label> ' +
 				'<input type="text" id="width" size="2" dir="ltr" /></div>' +
-			'<div><label for="height">{height}</label> ' +
+			'<div style="display:none"><label for="height">{height}</label> ' +
 				'<input type="text" id="height" size="2" dir="ltr" /></div>' +
 			'<div><input type="button" class="button" value="{insert}" />' +
 				'</div>',
