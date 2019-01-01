@@ -48,6 +48,7 @@
 	box-sizing: border-box;
 	cursor: pointer;
 	position: relative;
+	overflow: hidden;
 	border-radius: 6px;
 	height: 6px;
 	background: #949494;
@@ -108,6 +109,10 @@
 
 .ab-player {
 	background: #000;
+}
+
+.ab-video .c-cell {
+	vertical-align: middle;
 }
 
 .ab-video video {
@@ -208,21 +213,222 @@
 	.ab-control-bar .ab-time-label-total {
 		display: none !important;
 	}
+	.ab-control-bar .ab-volume-btn {
+		display: none !important;
+	}
 
 	.ab-player {
 		height: 240px;
 	}
 }
-
-
 </style>
+
+<script>
+var ABP = {};
+(function() {
+	'use strict';
+	var Util = {};
+
+	Util.intPad = function(str, len) {
+		str = str + '';
+		len = len - str.length;
+		if (len <= 0) return str;
+		var pad = '';
+		for (var i = 0; i < len; i++) {
+			pad += '0';
+		}
+		return pad + str;
+	};
+
+	Util.formatTime = function(time) {
+		if (isNaN(time)) return '00:00';
+		return Util.intPad(parseInt(time / 60), 2) + ':' + Util.intPad(parseInt(time % 60), 2);
+	};
+
+	ABP.Util = Util;
+})();
+
+(function() {
+	'use strict';
+	function Player(htmlElement) {
+		var $player;
+		if (!htmlElement) {
+			$player = $('.ab-player');
+		} else {
+			$player = $(htmlElement);
+		}
+		this.$$ = function(selector) {
+			return $player.find(selector);
+		};
+		this.video = this.$$('.ab-video video')[0];
+		// 初始状态
+		this.isPlaying = false;
+		this.danmakuEnabled = true;
+		// end 初始状态
+		this.init();
+	};
+
+	Player.prototype.init = function() {
+		this.$playBtn = this.$$('.ab-control .ab-play-btn');
+		this.$playIcon = this.$playBtn.children('i');
+
+		this.$loopBtn = this.$$('.ab-control .ab-loop-btn');
+
+		this.$danmakuBtn = this.$$('.ab-control .ab-danmaku-btn');
+
+		this.$volumeBtn = this.$$('.ab-control .ab-volume-btn');
+		this.$volumeIcon = this.$volumeBtn.children('i');
+		this.$volumeBar = this.$$('.ab-control .ab-volume-bar');
+		this.$volumeProgress = this.$volumeBar.children('div');
+		this.updateVolumeIcon();
+		this.updateVolumeBar();
+
+		this.$seekbar = this.$$('.ab-control .ab-seekbar');
+		this.$seekbarProgress = this.$seekbar.children('div');
+
+		this.$timeLabel = this.$$('.ab-control .ab-time-label');
+		this.$currentTimeLabel = this.$timeLabel.children('.ab-time-label-current');
+		this.$durationLabel = this.$timeLabel.children('.ab-time-label-total');
+
+		this.bindEvents();
+	};
+
+	Player.prototype.bindEvents = function() {
+		var self = this;
+		this.$playBtn.click(function() {
+			self.togglePlay();
+		});
+		this.$loopBtn.click(function() {
+			self.toggleLoop();
+		});
+		this.$danmakuBtn.click(function() {
+			self.toggleDanmaku();
+		});
+		this.$volumeBtn.click(function() {
+			self.toggleMute();
+		});
+
+		this.$volumeBar.click(function(e) {
+			var progress = (e.clientX - self.$volumeBar.offset().left) / self.$volumeBar.width();
+			if (progress < 0) progress = 0;
+			if (progress > 1) progress = 1;
+			self.video.volume = progress;
+		});
+
+		this.$seekbar.click(function(e) {
+			var progress = (e.clientX - self.$seekbar.offset().left) / self.$seekbar.width();
+			if (progress < 0) progress = 0;
+			if (progress > 1) progress = 1;
+			self.video.currentTime = self.video.duration * progress;
+			if (self.video.paused) self.video.play();
+		});
+
+		this.video.onplaying = function() {
+			self.$playIcon.attr('class', 'c-icon-pause');
+			self.isPlaying = true;
+		};
+		this.video.onpause = function() {
+			self.$playIcon.attr('class', 'c-icon-play');
+			self.isPlaying = false;
+		};
+		this.video.onvolumechange = function() {
+			self.updateVolumeIcon();
+			self.updateVolumeBar();
+		};
+		this.video.ontimeupdate = function() {
+			self.updateSeekbar();
+			self.updateCurrentTimeLabel();
+		};
+		this.video.onloadedmetadata = function() {
+			self.updateSeekbar();
+			self.updateDurationLabel();
+		};
+	};
+
+	Player.prototype.togglePlay = function() {
+		if (this.isPlaying) {
+			this.video.pause();
+		} else {
+			this.video.play();
+		}
+	};
+
+	Player.prototype.toggleLoop = function() {
+		if (this.video.loop) {
+			this.$loopBtn.removeClass('c-btn-on');
+			this.video.loop = false;
+		} else {
+			this.$loopBtn.addClass('c-btn-on');
+			this.video.loop = true;
+		}
+	};
+
+	Player.prototype.toggleDanmaku = function() {
+		if (this.danmakuEnabled) {
+			this.danmakuEnabled = false;
+			this.$danmakuBtn.removeClass('c-btn-on');
+		} else {
+			this.danmakuEnabled = true;
+			this.$danmakuBtn.addClass('c-btn-on');
+		}
+	};
+
+	Player.prototype.toggleMute = function() {
+		if (this.video.muted) {
+			this.video.muted = false;
+		} else {
+			this.video.muted = true;
+		}
+		this.updateVolumeIcon();
+	};
+
+	Player.prototype.updateVolumeIcon = function() {
+		if (this.video.muted) {
+			this.$volumeIcon.attr('class', 'c-icon-volume-mute');
+		}
+		else if (this.video.volume < .10) {
+			this.$volumeIcon.attr('class', 'c-icon-volume-quiet');
+		}
+		else if (this.video.volume < .33) {
+			this.$volumeIcon.attr('class', 'c-icon-volume-low');
+		}
+		else if (this.video.volume < .67) {
+			this.$volumeIcon.attr('class', 'c-icon-volume-medium');
+		}
+		else {
+			this.$volumeIcon.attr('class', 'c-icon-volume-high');
+		}
+	};
+
+	Player.prototype.updateVolumeBar = function() {
+		this.$volumeProgress.css('width', (this.video.volume * 100) + '%');
+	};
+
+	Player.prototype.updateSeekbar = function() {
+		var width = (this.video.currentTime / this.video.duration * 100) + '%';
+		this.$seekbarProgress.css('width', width);
+	};
+
+	Player.prototype.updateCurrentTimeLabel = function() {
+		this.$currentTimeLabel.text(ABP.Util.formatTime(this.video.currentTime));
+	};
+
+	Player.prototype.updateDurationLabel = function() {
+		this.$durationLabel.text(ABP.Util.formatTime(this.video.duration));
+	};
+
+	ABP.Player = Player;
+})();
+</script>
 
 
 <div class="c-table ab-player">
 	<div class="c-row ab-video">
-		<video>
-			<p>Your browser does not support HTML5 video.</p>
-		</video>
+		<div class="c-cell">
+			<video>
+				<p>Your browser does not support HTML5 video.</p>
+			</video>
+		</div>
 	</div>
 	<div class="c-row c-content-height ab-control">
 		<!-- 控制条第一行 -->
@@ -232,16 +438,16 @@
 			--></div>
 			<div class="c-cell c-separator"></div>
 			<div class="c-cell"><!-- 进度条 宽度自适应 -->
-				<div class="c-slider ab-process-bar">
-					<div class="c-slider-fill"></div>
+				<div class="c-slider ab-seekbar">
+					<!--<div class="c-slider-fill"></div>-->
 					<div class="c-slider-fill c-slider-fill-dark"></div>
 				</div>
 			</div>
 			<div class="c-cell c-content-width"><!-- 时间 -->
 				<div class="ab-time-label"><!--
-					--><span class="ab-time-label-current">000:00</span><!--
+					--><span class="ab-time-label-current">00:00</span><!--
 					--><span class="ab-time-label-separator"> / </span><!--
-					--><span class="ab-time-label-total">000:00</span><!--
+					--><span class="ab-time-label-total">00:00</span><!--
 				--></div>
 			</div>
 			<div class="c-cell c-content-width"><!-- 音量按钮

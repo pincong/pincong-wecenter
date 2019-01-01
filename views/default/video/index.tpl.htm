@@ -319,8 +319,7 @@
 
 <script type="text/javascript">
 var VIDEO_ID = <?php echo $this->video_info['id']; ?>;
-var video_metadata;
-var $html5_video;
+var video_player;
 
 function get_video_metadata(callback) {
 	var url = G_BASE_URL + '/v/api/get_video_metadata/';
@@ -336,32 +335,26 @@ function get_video_metadata(callback) {
 	});
 }
 
-function get_and_play_video() {
-	get_video_metadata(function(error, data) {
-		if (error) {
-			alert('解析视频失败');
-			return;
-		}
-		video_metadata = data;
-		var video = $html5_video[0];
-		var source = document.createElement('source');
-		source.src = data['formats'][0]['url'];
-		video.appendChild(source);
-		video.play();
-	});
-}
-
-function play_video() {
-	if (video_metadata)
-		return;
-	get_and_play_video();
-}
-
-
 $(document).ready(function () {
-	$html5_video = $('.ab-player .ab-video video');
+	var $html5_video = $('.ab-player .ab-video video');
 	$html5_video.attr('poster', '<?php echo $this->video_info['thumb_url']; ?>');
-	$('.ab-player .ab-play-btn').click(play_video);
+
+	$('.ab-player .ab-play-btn').click(function() {
+		if (video_player)
+			return;
+		get_video_metadata(function(error, data) {
+			if (error) {
+				alert('解析视频失败');
+				return;
+			}
+			var video = $html5_video[0];
+			var source = document.createElement('source');
+			source.src = data['formats'][0]['url'];
+			video.appendChild(source);
+			video_player = new ABP.Player();
+			video_player.togglePlay();
+		});
+	});
 
 
 	/*if ($('#c_log_list').attr('id'))
