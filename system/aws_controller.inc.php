@@ -74,7 +74,7 @@ class AWS_CONTROLLER
 
 		AWS_APP::session()->permission = $this->user_info['permission'];
 
-		if ($this->user_info['forbidden'] == 1)
+		if ($this->user_info['forbidden'])
 		{
 			$this->model('account')->logout();
 
