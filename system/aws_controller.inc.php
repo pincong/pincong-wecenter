@@ -31,11 +31,13 @@ class AWS_CONTROLLER
 		// 从 Session 中获取当前用户 User ID
 		$this->user_id = AWS_APP::user()->get_info('uid');
 
-		if ($this->user_info = $this->model('account')->get_user_info_by_uid($this->user_id, TRUE))
+		$this->user_info = $this->model('account')->get_user_info_by_uid($this->user_id, TRUE);
+
+		if ($this->user_info)
 		{
 			$user_group = $this->model('account')->get_user_group(
 				$this->user_info['group_id'],
-				$this->model('reputation')->get_reputation_group_id_by_reputation($user['reputation'])
+				$this->model('reputation')->get_reputation_group_id_by_reputation($this->user_info['reputation'])
 			);
 
 			if ($this->user_info['default_timezone'])
