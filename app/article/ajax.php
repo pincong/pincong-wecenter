@@ -41,7 +41,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['comment_article'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
 
 		$message = my_trim($_POST['message']);
@@ -199,14 +199,14 @@ class ajax extends AWS_CONTROLLER
 		{
 			if (!$this->user_info['permission']['vote_agree'])
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 			}
 		}
 		elseif ($rating == -1)
 		{
 			if (!$this->user_info['permission']['vote_disagree'])
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 			}
 		}
 		else
@@ -286,7 +286,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['thank_user'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
 
 		if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_thanks'))
@@ -327,7 +327,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['bump_sink'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
 
 		if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_move_up_question'))
@@ -347,7 +347,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['bump_sink'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
 
 		if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_move_down_question'))

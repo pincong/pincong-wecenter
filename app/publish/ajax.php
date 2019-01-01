@@ -155,7 +155,7 @@ class ajax extends AWS_CONTROLLER
     {
         if (!$this->user_info['permission']['publish_question'])
         {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
         }
 
         $question_content = my_trim($_POST['question_content']);
@@ -278,7 +278,7 @@ class ajax extends AWS_CONTROLLER
     {
         if (!$this->user_info['permission']['publish_article'])
         {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
         }
 
         $article_title = my_trim($_POST['title']);

@@ -140,7 +140,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['publish_comment'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
 
 		$message = my_trim($_POST['message']);
@@ -220,7 +220,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['publish_comment'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
 
 		$message = my_trim($_POST['message']);
@@ -293,14 +293,14 @@ class ajax extends AWS_CONTROLLER
 		{
 			if (!$this->user_info['permission']['vote_agree'])
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 			}
 		}
 		elseif ($value == -1)
 		{
 			if (!$this->user_info['permission']['vote_disagree'])
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 			}
 		}
 		else
@@ -344,14 +344,14 @@ class ajax extends AWS_CONTROLLER
 		{
 			if (!$this->user_info['permission']['vote_agree'])
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 			}
 		}
 		elseif ($value == -1)
 		{
 			if (!$this->user_info['permission']['vote_disagree'])
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 			}
 		}
 		else
@@ -412,7 +412,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['thank_user'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
 
 		if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_thanks'))
@@ -453,7 +453,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['thank_user'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
 
 		$answer_info = $this->model('answer')->get_answer_by_id($_POST['answer_id']);
@@ -511,7 +511,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['answer_question'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
 
 		$answer_content = my_trim($_POST['answer_content']);
@@ -869,7 +869,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['bump_sink'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
 
 		if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_move_up_question'))
@@ -889,7 +889,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['bump_sink'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
 
 		if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_move_down_question'))
