@@ -965,18 +965,6 @@ class question_class extends AWS_MODEL
 		return true;
 	}
 
-	public function auto_lock_question()
-	{
-		if (!get_setting('auto_question_lock_day'))
-		{
-			return false;
-		}
-
-		return $this->shutdown_update('question', array(
-			'lock' => 1
-		), '`lock` = 0 AND `update_time` < ' . (time() - 3600 * 24 * get_setting('auto_question_lock_day')));
-	}
-
 	public function get_related_topics($question_content)
 	{
 		if ($question_related_list = $this->get_related_question_list(null, $question_content, 10))

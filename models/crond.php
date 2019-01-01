@@ -127,7 +127,6 @@ class crond_class extends AWS_MODEL
     public function day()
     {
         $this->model('answer')->calc_best_answer();
-        $this->model('question')->auto_lock_question();
 
         if ((!get_setting('db_engine') OR get_setting('db_engine') == 'MyISAM') AND !defined('IN_SAE'))
         {
