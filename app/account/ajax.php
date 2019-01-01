@@ -579,7 +579,8 @@ class ajax extends AWS_CONTROLLER
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写理由')));
 			}
-			if (cjk_strlen($reason) > 30)
+			// TODO: 字数选项
+			if (cjk_strlen($reason) > 200)
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('理由太长')));
 			}

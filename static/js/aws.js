@@ -1514,7 +1514,7 @@ AWS.User =
 			title: _t('请填写封禁理由')
 		}, function(text)
 		{
-			text = text.trim().substr(0, 50);
+			text = encodeURIComponent(text.trim());
 			AWS.ajax_request(G_BASE_URL + '/account/ajax/forbid_user/' , 'uid=' + uid + '&status=1&reason=' + text);
 		});
 	},
