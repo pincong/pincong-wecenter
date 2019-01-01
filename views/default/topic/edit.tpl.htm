@@ -70,12 +70,6 @@
 <script type="text/javascript">
 	$(function()
 	{
-		if (G_ADVANCED_EDITOR_ENABLE == 'Y')
-		{
-			// 初始化编辑器
-			AWS.create_editor('wmd-input');
-		}
-
 		if ($('#topic_pic_uploader').length)
 		{
 			var fileUpload = new FileUpload('avatar', $('#topic_pic_uploader'), $('#topic_pic_uploader'), G_BASE_URL + '/topic/ajax/upload_topic_pic/topic_id-<?php echo $this->topic_info['topic_id']; ?>', {'loading_status' : '#uploading_status'});
