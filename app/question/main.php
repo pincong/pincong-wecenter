@@ -286,25 +286,6 @@ class main extends AWS_CONTROLLER
 					$question_topic_ids[] = $val['topic_id'];
 				}
 			}
-
-			if ($helpful_users = $this->model('topic')->get_helpful_users_by_topic_ids($question_topic_ids, 17))
-			{
-				foreach ($helpful_users AS $key => $val)
-				{
-					if ($val['user_info']['uid'] == $this->user_id)
-					{
-						unset($helpful_users[$key]);
-					}
-					else
-					{
-						$helpful_users[$key]['has_invite'] = $this->model('question')->has_question_invite($question_info['question_id'], $val['user_info']['uid'], $this->user_id);
-
-						$helpful_users[$key]['experience'] = end($helpful_users[$key]['experience']);
-					}
-				}
-
-				TPL::assign('helpful_users', $helpful_users);
-			}
 		}
 
 		$this->crumb($question_info['question_content'], '/question/' . $question_info['question_id']);

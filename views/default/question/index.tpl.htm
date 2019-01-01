@@ -172,34 +172,6 @@
 									<?php } ?>
 								</div>
 							</div>
-							<?php if ($this->helpful_users) { ?>
-							<div class="mod-body clearfix">
-								<ul>
-									<?php foreach ($this->helpful_users AS $key => $val) { ?>
-										<li>
-											<a class="aw-user-img pull-left" data-id="<?php echo $val['user_info']['uid']; ?>" href="<?php echo UF::url($val['user_info']); ?>"><img class="img" alt="" src="<?php echo UF::avatar($val['user_info'], 'mid', $this->user_info['permission']['is_administrator']); ?>" /></a>
-											<div class="main">
-												<?php if ($val['has_invite']) { ?>
-													<a class="pull-right btn btn-mini btn-success active" data-value="<?php echo UF::name($val['user_info']); ?>" data-id="<?php echo $val['user_info']['uid']; ?>" onclick="AWS.User.disinvite_user($(this))"><?php _e('取消邀请'); ?></a>
-												<?php } else { ?>
-													<a class="pull-right btn btn-mini btn-success" data-value="<?php echo UF::name($val['user_info']); ?>" data-id="<?php echo $val['user_info']['uid']; ?>" onclick="AWS.User.invite_user($(this),$(this).parents('li').find('img').attr('src'));"><?php _e('邀请'); ?></a>
-												<?php } ?>
-
-												<a class="aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?><?php if ($val['user_info']['verified']) { ?><i class="icon-v<?php if ($val['user_info']['verified'] == 'enterprise') { ?> i-ve<?php } ?>" title="<?php if ($val['user_info']['verified'] == 'enterprise') { ?>企业认证<?php } else { ?>个人认证<?php } ?>"></i><?php } ?></a>
-
-												<p>
-
-													<?php _e('在 %s 话题下', '<span class="topic-tag"><a class="text" data-id="' . $val['experience']['topic_info']['topic_id'] . '" href="topic/' . $val['experience']['topic_info']['url_token'] . '">' . $val['experience']['topic_info']['topic_title'] . '</a></span>'); ?> <?php _e('获得 %s 个赞同', $val['experience']['agree_count']); ?>
-												</p>
-											</div>
-										</li>
-									<?php } ?>
-								</ul>
-							</div>
-							<div class="mod-footer">
-								<a class="next pull-right">&gt;</a> <a class="prev active pull-right">&lt;</a>
-							</div>
-							<?php } ?>
 						</div>
 						<!-- end 站内邀请 -->
 					</div>

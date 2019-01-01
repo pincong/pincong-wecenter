@@ -99,8 +99,6 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('topic_info', $topic_info);
 
-		TPL::assign('best_answer_users', $this->model('topic')->get_best_answer_users_by_topic_id($topic_info['topic_id'], 5));
-
 		switch ($topic_info['model_type'])
 		{
 			default:
@@ -157,6 +155,7 @@ class main extends AWS_CONTROLLER
 					}
 				}
 
+				// TODO: 这究竟是合并的话题还是相关话题???
 				//$contents_related_topic_ids = array_merge($related_topics_ids, explode(',', $contents_topic_id));
 				$contents_related_topic_ids = explode(',', $contents_topic_id);
 
@@ -187,13 +186,6 @@ class main extends AWS_CONTROLLER
 					}
 				}
 
-				TPL::assign('topic_recommend_list', $posts_list);
-				TPL::assign('posts_list', $posts_list);
-				TPL::assign('recommend_list_bit', TPL::output('explore/ajax/list', false));
-
-				TPL::assign('list', $this->model('topic')->get_topic_best_answer_action_list($contents_topic_id, $this->user_id, get_setting('contents_per_page')));
-				TPL::assign('best_questions_list_bit', TPL::output('home/ajax/index_actions', false));
-
 				TPL::assign('posts_list', $this->model('posts')->get_posts_list('question', 1, get_setting('contents_per_page'), 'new', explode(',', $contents_topic_id)));
 				TPL::assign('all_questions_list_bit', TPL::output('explore/ajax/list', false));
 
@@ -217,15 +209,12 @@ class main extends AWS_CONTROLLER
 
 	public function index_square_action()
 	{
-
 		if ($today_topics = rtrim(get_setting('today_topics'), ','))
 		{
 			if (!$today_topic = AWS_APP::cache()->get('square_today_topic_' . md5($today_topics)))
 			{
 				if ($today_topic = $this->model('topic')->get_topic_by_title(array_random(explode(',', $today_topics))))
 				{
-					$today_topic['best_answer_users'] = $this->model('topic')->get_best_answer_users_by_topic_id($today_topic['topic_id'], 5);
-
 					$today_topic['questions_list'] = $this->model('posts')->get_posts_list('question', 1, 3, 'new', explode(',', $today_topic['topic_id']));
 
 					AWS_APP::cache()->set('square_today_topic_' . md5($today_topics), $today_topic, (strtotime('Tomorrow') - time()));

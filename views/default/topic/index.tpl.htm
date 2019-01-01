@@ -40,17 +40,10 @@
 								<ul class="nav nav-tabs aw-nav-tabs hidden-xs">
 									<li class="active"><a href="#all" data-toggle="tab"><?php _e('全部内容'); ?></a></li>
 
-									<?php /*
-									<li><a href="#best_answers" data-toggle="tab"><?php _e('精华'); ?></a></li>
-
-									<li><a href="#recommend" data-toggle="tab"><?php _e('推荐'); ?></a></li>
-									*/ ?>
-
 									<li><a href="#questions" data-toggle="tab"><?php _e('问题'); ?></a></li>
 
 									<li><a href="#articles" data-toggle="tab"><?php _e('文章'); ?></a></li>
 
-									<li><a href="#favorite" id="i_favorite" data-toggle="tab" style="display:none"><?php _e('我的收藏'); ?></a></li>
 									<li><a href="#about" id="i_about" data-toggle="tab"><?php _e('关于话题'); ?></a></li>
 									<!--div class="aw-search-bar pull-right hidden-xs">
 										<i class="icon icon-search"></i>
@@ -68,33 +61,8 @@
 						<div class="mod-body">
 							<!-- tab 切换内容 -->
 							<div class="tab-content">
+								<!-- 全部 -->
 								<div class="tab-pane active" id="all">
-									<!-- 推荐问题 -->
-									<?php if ($this->recommend_list) { ?>
-									<div class="aw-mod aw-topic-recommend-list">
-										<div class="mod-body">
-											<div class="aw-common-list" id="c_recommend_list">
-												<ul>
-													<?php foreach ($this->topic_recommend_list AS $key => $val) { ?>
-													<li>
-														<?php if ($val['question_id']) { ?>
-														<a href="question/<?php echo $val['question_id']; ?>"><?php if (!$val['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['question_content']; ?><?php } ?></a>
-														<span class="pull-right text-color-999"><?php _e('% 个回复', $val['comment_count']); ?></span>
-														<?php } else { ?>
-														<a href="article/<?php echo $val['id']; ?>"><?php echo $val['title']; ?></a>
-														<span class="pull-right text-color-999"><?php _e('% 评论', $val['comments']); ?></span>
-														<?php } ?>
-													</li>
-													<?php } ?>
-												</ul>
-											</div>
-										</div>
-										<div class="mod-footer">
-											<a class="pull-right" id="aw-more-recommend"><?php _e('更多推荐内容'); ?> &gt;</a>
-										</div>
-									</div>
-									<?php } ?>
-									<!-- end 推荐问题 -->
 									<div class="aw-mod">
 										<div class="mod-body">
 											<div class="aw-common-list" id="c_all_list">
@@ -108,35 +76,9 @@
 										</div>
 									</div>
 								</div>
+								<!-- end 全部 -->
 
-								<div class="tab-pane" id="best_answers">
-									<div class="aw-feed-list" id="c_best_question_list">
-										<div class="mod-body">
-											<?php echo $this->best_questions_list_bit; ?>
-										</div>
-										<div class="mod-footer">
-											<a class="aw-load-more-content" id="bp_best_question_more" auto-load="false">
-												<span><?php _e('更多'); ?>...</span>
-											</a>
-										</div>
-									</div>
-								</div>
-
-								<div class="tab-pane" id="recommend">
-									<div class="aw-mod">
-										<div class="mod-body">
-											<div class="aw-common-list" id="c_recommend_list">
-												<?php echo $this->recommend_list_bit; ?>
-											</div>
-										</div>
-										<div class="mod-footer">
-											<a class="aw-load-more-content" id="c_recommend_more" auto-load="false">
-												<span><?php _e('更多'); ?>...</span>
-											</a>
-										</div>
-									</div>
-								</div>
-
+								<!-- 问题 -->
 								<div class="tab-pane" id="questions">
 									<div class="aw-mod">
 										<div class="mod-body">
@@ -151,9 +93,10 @@
 										</div>
 									</div>
 								</div>
+								<!-- end 问题 -->
 
+								<!-- 文章 -->
 								<div class="tab-pane" id="articles">
-									<!-- 动态首页&话题精华模块 -->
 									<div class="aw-mod">
 										<div class="mod-body">
 											<div class="aw-common-list" id="c_article_list">
@@ -166,20 +109,8 @@
 											</a>
 										</div>
 									</div>
-									<!-- end 动态首页&话题精华模块 -->
 								</div>
-
-								<div class="tab-pane" id="favorite">
-									<!-- 动态首页&话题精华模块 -->
-									<div class="aw-mod aw-feed-list" id="c_favorite_list"></div>
-									<!-- end 动态首页&话题精华模块 -->
-
-									<!-- 加载更多内容 -->
-									<a class="aw-load-more-content" id="bp_favorite_more">
-										<span><?php _e('更多'); ?>...</span>
-									</a>
-									<!-- end 加载更多内容 -->
-								</div>
+								<!-- end 文章 -->
 
 								<div class="tab-pane" id="about">
 									<div class="aw-topic-detail-about text-color-666 markitup-box">
@@ -220,32 +151,6 @@
 						<a class="aw-topic-name" href="topic/<?php echo $this->parent_topic_info['url_token']; ?>" data-id="<?php echo $this->parent_topic_info['topic_id']; ?>"><span><?php echo $this->parent_topic_info['topic_title']; ?></span></a>
 					</div>
 					<?php } ?>
-
-					<!-- 最佳回复者 -->
-					<?php if ($this->best_answer_users) { ?>
-					<div class="aw-mod">
-						<div class="mod-head">
-							<h3><?php _e('最佳回复者'); ?></h3>
-						</div>
-
-						<div class="mod-body">
-							<?php foreach ($this->best_answer_users AS $key => $val) { ?>
-							<dl>
-								<dt class="pull-left aw-border-radius-5">
-									<a href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid', $this->user_info['permission']['is_administrator']); ?>" alt="" /></a>
-								</dt>
-
-								<dd class="pull-left">
-									<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>" data-id="<?php echo $val['user_info']['uid']; ?>"><?php echo UF::name($val['user_info']); ?><?php if ($val['user_info']['verified']) { ?><i class="icon-v<?php if ($val['user_info']['verified'] == 'enterprise') { ?> i-ve<?php } ?>" title="<?php if ($val['user_info']['verified'] == 'enterprise') { ?>企业认证<?php } else { ?>个人认证<?php } ?>"></i><?php } ?>
-									<?php echo UF::signature($val); ?></a>
-									<p><?php _e('获得'); ?> <?php _e('%s 次赞同', '<b>' . $val['agree_count'] . '</b>'); ?></p>
-								</dd>
-							</dl>
-							<?php } ?>
-						</div>
-					</div>
-					<?php } ?>
-					<!-- end 最佳回复者 -->
 
 					<!-- xx人关注该话题 -->
 					<div class="aw-mod topic-status">

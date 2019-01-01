@@ -45,26 +45,6 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_json_output($this->model('topic')->get_focus_users_by_topic($_GET['topic_id'], 18));
 	}
 
-	public function question_list_action()
-	{
-		switch ($_GET['type'])
-		{
-			case 'best':
-				$action_list = $this->model('topic')->get_topic_best_answer_action_list(intval($_GET['topic_id']), $this->user_id, intval($_GET['page']) * get_setting('contents_per_page') . ', ' . get_setting('contents_per_page'));
-			break;
-
-			case 'favorite':
-				$action_list = $this->model('favorite')->get_item_list($_GET['topic_title'], $this->user_id, intval($_GET['page']) * get_setting('contents_per_page') . ', ' . get_setting('contents_per_page'));
-			break;
-		}
-
-		TPL::assign('list', $action_list);
-
-		{
-			TPL::output('home/ajax/index_actions');
-		}
-	}
-
 	public function topic_info_action()
 	{
 		$topic_info = $this->model('topic')->get_topic_by_id($_GET['topic_id']);

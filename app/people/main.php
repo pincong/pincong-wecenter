@@ -101,20 +101,7 @@ class main extends AWS_CONTROLLER
 
 		if ($_GET['topic_id'])
 		{
-			if ($helpful_users = $this->model('topic')->get_helpful_users_by_topic_ids($this->model('topic')->get_child_topic_ids($_GET['topic_id']), get_setting('contents_per_page'), 4))
-			{
-				foreach ($helpful_users AS $key => $val)
-				{
-					$users_list[$key] = $val['user_info'];
-					$users_list[$key]['experience'] = $val['experience'];
 
-
-					foreach ($val['experience'] AS $exp_key => $exp_val)
-					{
-						$users_list[$key]['total_agree_count'] += $exp_val['agree_count'];
-					}
-				}
-			}
 		}
 		else
 		{
