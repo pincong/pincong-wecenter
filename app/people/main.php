@@ -97,6 +97,8 @@ class main extends AWS_CONTROLLER
 
 		$base_url = '';
 
+		$order = 'reputation DESC, uid ASC';
+
 		$group_id = intval($_GET['group_id']);
 		if ($group_id > 99)
 		{
@@ -111,6 +113,7 @@ class main extends AWS_CONTROLLER
 		if (intval($_GET['forbidden']))
 		{
 			$where[] = 'forbidden <> 0';
+			$order = 'uid ASC';
 			if ($base_url)
 			{
 				$base_url .= '__';
@@ -125,6 +128,7 @@ class main extends AWS_CONTROLLER
 		if (intval($_GET['flagged']))
 		{
 			$where[] = 'flagged <> 0';
+			$order = 'uid ASC';
 			if ($base_url)
 			{
 				$base_url .= '__';
@@ -138,7 +142,7 @@ class main extends AWS_CONTROLLER
 
 		$where = implode(' AND ', $where);
 
-		$users_list = $this->model('account')->get_user_list($where, calc_page_limit($_GET['page'], get_setting('contents_per_page')), 'reputation DESC');
+		$users_list = $this->model('account')->get_user_list($where, calc_page_limit($_GET['page'], get_setting('contents_per_page')), $order);
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
 			'base_url' => get_js_url('/people/' . $base_url),
