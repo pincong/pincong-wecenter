@@ -1007,7 +1007,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
             'edit_article',
             'edit_question_topic',
 			'bump_sink',
-			'agree_disagree',
 			'vote_agree',
 			'vote_disagree',
 			'thank_user'

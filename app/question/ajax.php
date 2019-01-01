@@ -288,9 +288,24 @@ class ajax extends AWS_CONTROLLER
 
 	public function question_vote_action()
 	{
-		if (!$this->user_info['permission']['agree_disagree'])
+		$value = intval($_POST['value']);
+		if ($value == 1)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+			if (!$this->user_info['permission']['vote_agree'])
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+			}
+		}
+		elseif ($value == -1)
+		{
+			if (!$this->user_info['permission']['vote_disagree'])
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+			}
+		}
+		else
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('投票数据错误, 无法进行投票')));
 		}
 
 		$question_info = $this->model('question')->get_question_info_by_id($_POST['question_id']);
@@ -304,16 +319,6 @@ class ajax extends AWS_CONTROLLER
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能对自己发表的问题进行投票')));
 		}
-
-		if (! in_array($_POST['value'], array(
-			- 1,
-			1
-		)))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('投票数据错误, 无法进行投票')));
-		}
-
-		$value = intval($_POST['value']);
 
 		if ($value === 1 AND !$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_agree_question'))
 		{
@@ -334,9 +339,24 @@ class ajax extends AWS_CONTROLLER
 
 	public function answer_vote_action()
 	{
-		if (!$this->user_info['permission']['agree_disagree'])
+		$value = intval($_POST['value']);
+		if ($value == 1)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+			if (!$this->user_info['permission']['vote_agree'])
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+			}
+		}
+		elseif ($value == -1)
+		{
+			if (!$this->user_info['permission']['vote_disagree'])
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+			}
+		}
+		else
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('投票数据错误, 无法进行投票')));
 		}
 
 		$answer_info = $this->model('answer')->get_answer_by_id($_POST['answer_id']);
@@ -350,16 +370,6 @@ class ajax extends AWS_CONTROLLER
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能对自己发表的回复进行投票')));
 		}
-
-		if (! in_array($_POST['value'], array(
-			- 1,
-			1
-		)))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('投票数据错误, 无法进行投票')));
-		}
-
-		$value = intval($_POST['value']);
 
 		if ($value === 1 AND !$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_agree_answer'))
 		{

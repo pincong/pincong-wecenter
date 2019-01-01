@@ -205,13 +205,22 @@ class ajax extends AWS_CONTROLLER
 
 	public function article_vote_action()
 	{
-		if (!$this->user_info['permission']['agree_disagree'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
-		}
-
 		$rating = intval($_POST['rating']);
-		if ($rating !== 1 AND $rating !== -1)
+		if ($rating == 1)
+		{
+			if (!$this->user_info['permission']['vote_agree'])
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+			}
+		}
+		elseif ($rating == -1)
+		{
+			if (!$this->user_info['permission']['vote_disagree'])
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+			}
+		}
+		else
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('投票数据错误, 无法进行投票')));
 		}
