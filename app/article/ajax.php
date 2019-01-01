@@ -136,7 +136,8 @@ class ajax extends AWS_CONTROLLER
 				$_POST['anonymous'],
 				$article_info['id'],
 				array(
-					'at_uid' => $_POST['at_uid']
+					'at_uid' => $_POST['at_uid'],
+					'permission_bring_thread_to_top' => $this->user_info['permission']['bring_thread_to_top']
 				)
 			);
 
@@ -149,7 +150,8 @@ class ajax extends AWS_CONTROLLER
 				$message,
 				$this->user_id,
 				$_POST['at_uid'],
-				$_POST['anonymous']
+				$_POST['anonymous'],
+				$this->user_info['permission']['bring_thread_to_top']
 			);
 		}
 

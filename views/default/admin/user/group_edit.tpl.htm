@@ -499,6 +499,25 @@
 					</td>
 				</tr>
 
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许顶起帖子'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="bring_thread_to_top"<?php if ($this->group_pms['bring_thread_to_top']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="bring_thread_to_top"<?php if (!$this->group_pms['bring_thread_to_top']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+
 				<?php } else { ?>
 				<tr>
 					<td>

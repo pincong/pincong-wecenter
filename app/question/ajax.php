@@ -632,7 +632,8 @@ class ajax extends AWS_CONTROLLER
 				$_POST['anonymous'],
 				$question_info['question_id'],
 				array(
-					'auto_focus' => $_POST['auto_focus']
+					'auto_focus' => $_POST['auto_focus'],
+					'permission_bring_thread_to_top' => $this->user_info['permission']['bring_thread_to_top']
 				)
 			);
 
@@ -645,7 +646,8 @@ class ajax extends AWS_CONTROLLER
 				$answer_content,
 				$this->user_id,
 				$_POST['anonymous'],
-				$_POST['auto_focus']
+				$_POST['auto_focus'],
+				$this->user_info['permission']['bring_thread_to_top']
 			);
 		}
 

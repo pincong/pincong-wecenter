@@ -44,7 +44,8 @@ class publish_class extends AWS_MODEL
 					$item['message'],
 					$item['uid'],
 					$item['anonymous'],
-					$item['extra_data']['auto_focus']
+					$item['extra_data']['auto_focus'],
+					$item['extra_data']['permission_bring_thread_to_top']
 				);
 				break;
 
@@ -66,7 +67,8 @@ class publish_class extends AWS_MODEL
 					$item['message'],
 					$item['uid'],
 					$item['extra_data']['at_uid'],
-					$item['anonymous']
+					$item['anonymous'],
+					$item['extra_data']['permission_bring_thread_to_top']
 				);
 				break;
 		}
@@ -100,7 +102,7 @@ class publish_class extends AWS_MODEL
 		));
 	}
 
-	public function publish_answer($question_id, $answer_content, $uid, $anonymous = null, $auto_focus = true)
+	public function publish_answer($question_id, $answer_content, $uid, $anonymous = null, $auto_focus = true, $bring_to_top = true)
 	{
 		if (!$question_info = $this->model('question')->get_question_info_by_id($question_id))
 		{
@@ -168,7 +170,7 @@ class publish_class extends AWS_MODEL
 		// 删除回复邀请
 		$this->model('question')->answer_question_invite($question_id, $uid);
 
-		$this->model('posts')->set_posts_index($question_id, 'question');
+		$this->model('posts')->set_posts_index($question_id, 'question', null, $bring_to_top);
 
 		return $answer_id;
 	}
@@ -263,7 +265,7 @@ class publish_class extends AWS_MODEL
 		return $article_id;
 	}
 
-	public function publish_article_comment($article_id, $message, $uid, $at_uid = null, $anonymous = null)
+	public function publish_article_comment($article_id, $message, $uid, $at_uid = null, $anonymous = null, $bring_to_top = true)
 	{
 		if (!$article_info = $this->model('article')->get_article_info_by_id($article_id))
 		{
@@ -331,7 +333,7 @@ class publish_class extends AWS_MODEL
 			$this->model('currency')->process($article_info['uid'], 'ARTICLE_COMMENTED', get_setting('currency_system_config_article_commented'), '文章被评论 #' . $article_id, $article_id);
 		}
 
-		$this->model('posts')->set_posts_index($article_id, 'article');
+		$this->model('posts')->set_posts_index($article_id, 'article', null, $bring_to_top);
 
 		return $comment_id;
 	}

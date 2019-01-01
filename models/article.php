@@ -313,7 +313,6 @@ class article_class extends AWS_MODEL
 		$this->model('article')->log($article_id, 'ARTICLE', '编辑文章', $uid, $is_anonymous);
 
 		// TODO: 修改分类
-		//$this->model('posts')->set_posts_index($article_id, 'article');
 
 		return true;
 	}

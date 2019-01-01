@@ -32,7 +32,7 @@ class posts_class extends AWS_MODEL
 	}
 
 	// set_posts_index 现在仅在发帖/回复时调用
-	public function set_posts_index($post_id, $post_type, $post_data = null)
+	public function set_posts_index($post_id, $post_type, $post_data = null, $bring_to_top = true)
 	{
 		if ($post_data)
 		{
@@ -97,7 +97,11 @@ class posts_class extends AWS_MODEL
 				return false;
 		}
 
-
+		if (!$bring_to_top)
+		{
+			unset($data['update_time']);
+		}
+		else
 		if (!$post_data AND get_setting('time_blurring') != 'N')
 		{
 			// 用于模糊时间的排序
