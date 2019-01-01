@@ -47,16 +47,6 @@ class category_class extends AWS_MODEL
 
 	public function delete_category($type, $category_id)
 	{
-		$childs = $this->model('system')->fetch_category_data($type, $category_id);
-
-		if ($childs)
-		{
-			foreach($childs as $key => $val)
-			{
-				$this->delete_category($type, $val['id']);
-			}
-		}
-
 		$this->delete('nav_menu', "type = 'category' AND type_id = " . intval($category_id));
 
 		return $this->delete('category', 'id = ' . intval($category_id));

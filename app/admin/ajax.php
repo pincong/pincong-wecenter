@@ -185,11 +185,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有访问权限, 请重新登录')));
         }
 
-        if ($_POST['category_id'] AND $_POST['parent_id'] AND $category_list = $this->model('system')->fetch_category('question', $_POST['category_id']))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('系统允许最多二级分类, 当前分类下有子分类, 不能移动到其它分类')));
-        }
-
         if (trim($_POST['title']) == '')
         {
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入分类名称')));
@@ -219,17 +214,12 @@ class ajax extends AWS_ADMIN_CONTROLLER
         }
         else
         {
-            $category_id = $this->model('category')->add_category('question', $_POST['title'], $_POST['parent_id']);
+            $category_id = $this->model('category')->add_category('question', $_POST['title'], 0);
         }
 
         $category = $this->model('system')->get_category_info($category_id);
 
-        if ($category['id'] == $_POST['parent_id'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能设置当前分类为父级分类')));
-        }
-
-        $this->model('category')->update_category_info($category_id, $_POST['title'], $_POST['parent_id'], $_POST['url_token']);
+        $this->model('category')->update_category_info($category_id, $_POST['title'], 0, $_POST['url_token']);
 
         H::ajax_json_output(AWS_APP::RSM(array(
             'url' => get_js_url('/admin/category/list/')

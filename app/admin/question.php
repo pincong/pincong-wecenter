@@ -57,14 +57,7 @@ class question extends AWS_ADMIN_CONTROLLER
 
 		if ($_GET['category_id'])
 		{
-			if ($category_ids = $this->model('system')->get_category_with_child_ids('question', $_GET['category_id']))
-			{
-				$where[] = 'category_id IN (' . implode(',', $category_ids) . ')';
-			}
-			else
-			{
-				$where[] = 'category_id = ' . intval($category_id);
-			}
+			$where[] = 'category_id = ' . intval($category_id);
 		}
 
 		if (base64_decode($_GET['start_date']))
@@ -138,7 +131,7 @@ class question extends AWS_ADMIN_CONTROLLER
 		$this->crumb(AWS_APP::lang()->_t('问题管理'), 'admin/question/question_list/');
 
 		TPL::assign('question_count', $total_rows);
-		TPL::assign('category_list', $this->model('system')->build_category_html('question', 0, 0, null, true));
+		TPL::assign('category_list', $this->model('system')->build_category_html());
 		TPL::assign('keyword', $_GET['keyword']);
 		TPL::assign('list', $question_list);
 

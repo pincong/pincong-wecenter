@@ -220,7 +220,7 @@ class posts_class extends AWS_MODEL
 
 			if ($category_id)
 			{
-				$where[] = 'category_id IN(' . implode(',', $this->model('system')->get_category_with_child_ids('question', $category_id)) . ')';
+				$where[] = 'category_id=' . intval($category_id);
 			}
 
 			if ($post_type)
@@ -252,7 +252,7 @@ class posts_class extends AWS_MODEL
 
 		if ($category_id)
 		{
-			$where[] = 'category_id IN(' . implode(',', $this->model('system')->get_category_with_child_ids('question', $category_id)) . ')';
+			$where[] = 'category_id=' . intval($category_id);
 		}
 
 		if (is_array($topic_ids))
@@ -485,7 +485,7 @@ class posts_class extends AWS_MODEL
 
 		if ($category_id)
 		{
-			$where[] = 'category_id IN(' . implode(',', $this->model('system')->get_category_with_child_ids('question', $category_id)) . ')';
+			$where[] = 'category_id=' . intval($category_id);
 		}
 
 		if (!$result = AWS_APP::cache()->get($result_cache_key))

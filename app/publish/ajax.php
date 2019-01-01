@@ -42,7 +42,7 @@ class ajax extends AWS_CONTROLLER
 			exit(json_encode(array()));
 		}
 
-		exit($this->model('system')->build_category_json('question', 0));
+		exit($this->model('system')->build_category_json());
 	}
 
 	public function modify_question_action()

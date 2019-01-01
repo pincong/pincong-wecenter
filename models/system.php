@@ -20,47 +20,31 @@ if (!defined('IN_ANWSION'))
 
 class system_class extends AWS_MODEL
 {
-	public function fetch_category_data($type, $parent_id = 0, $order = 'sort ASC,id ASC')
+	public function fetch_category_data()
 	{
-		static $category_list_all;
+		$order = 'sort ASC, id ASC';
 
-		if (!$category_list_all[$type])
+		static $category_all;
+
+		if (!$category_all)
 		{
-			if ($type)
-			{
-				$category_list_all_query = $this->fetch_all('category', '`type` = \'' . $this->quote($type) . '\'', $order);
-			}
-			else
-			{
-				$category_list_all_query = $this->fetch_all('category', '', $order);
-			}
+			$category_all = $this->fetch_all('category', '', $order);
 
-			if ($category_list_all_query)
+			if (!$category_all)
 			{
-				foreach ($category_list_all_query AS $key => $val)
-				{
-					$category_list_all[$type][$val['parent_id']][] = $val;
-				}
+				$category_all = array();
 			}
-		}
-
-		if (!$category_all = $category_list_all[$type][$parent_id])
-		{
-			return array();
 		}
 
 		return $category_all;
 	}
 
 	/* 获取分类数组 */
-	public function fetch_category($type, $parent_id = 0)
+	public function fetch_category()
 	{
 		$category_list = array();
 
-		if (!$category_all = $this->fetch_category_data($type, $parent_id))
-		{
-			return $category_list;
-		}
+		$category_all = $this->fetch_category_data();
 
 		foreach ($category_all AS $key => $val)
 		{
@@ -82,27 +66,17 @@ class system_class extends AWS_MODEL
 				'sort' => $val['sort'],
 				'url_token' => $val['url_token']
 			);
-
-			if ($child_list = $this->fetch_category($type, $val['id']))
-			{
-				$category_list[$val['id']]['child'] = $child_list;
-			}
 		}
 
 		return $category_list;
 	}
 
 	/* 获取分类 HTML 数据 */
-	public function build_category_html($type, $parent_id = 0, $selected_id = 0, $prefix = '', $child = true)
+	public function build_category_html($selected_id = 0)
 	{
-		if (!$category_list = $this->fetch_category($type, $parent_id))
+		if (!$category_list = $this->fetch_category())
 		{
 			return false;
-		}
-
-		if ($prefix)
-		{
-			$_prefix = $prefix . ' ';
 		}
 
 		foreach ($category_list AS $category_id => $val)
@@ -115,52 +89,29 @@ class system_class extends AWS_MODEL
 			{
 				$html .= '<option value="' . $category_id . '">' . $_prefix . $val['title'] . '</option>';
 			}
-
-			if ($child AND $val['child'])
-			{
-				$html .= $this->build_category_html($type, $val['id'], $selected_id, $prefix . '--');
-			}
-			else
-			{
-				unset($prefix);
-			}
 		}
 
 		return $html;
 	}
 
 	/* 获取分类 JSON 数据 */
-	public function build_category_json($type, $parent_id = 0, $prefix = '')
+	public function build_category_json()
 	{
-		if (!$category_list = $this->fetch_category($type, $parent_id))
+		if (!$category_list = $this->fetch_category())
 		{
 			return false;
-		}
-
-		if ($prefix)
-		{
-			$_prefix = $prefix . ' ';
 		}
 
 		foreach ($category_list AS $category_id => $val)
 		{
 			$data[] = array(
 				'id' => $category_id,
-				'title' => $_prefix . $val['title'],
+				'title' => $val['title'],
 				'description' => $val['description'],
 				'sort' => $val['sort'],
 				'parent_id' => $val['parent_id'],
 				'url_token' => $val['url_token']
 			);
-
-			if ($val['child'])
-			{
-				$data = array_merge($data, json_decode($this->build_category_json($type, $val['id'], $prefix . '--'), true));
-			}
-			else
-			{
-				unset($prefix);
-			}
 		}
 
 		return json_encode($data);
@@ -233,17 +184,6 @@ class system_class extends AWS_MODEL
 		return $category_list;
 	}
 
-	public function get_category_with_child_ids($type, $category_id)
-	{
-		$category_ids[] = intval($category_id);
-
-		if ($child_ids = $this->fetch_category_data($type, $category_id))
-		{
-			$category_ids = array_merge($category_ids, fetch_array_value($child_ids, 'id'));
-		}
-
-		return $category_ids;
-	}
 
 	public function check_stop_keyword($keyword)
 	{
