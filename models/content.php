@@ -20,6 +20,18 @@ if (!defined('IN_ANWSION'))
 
 class content_class extends AWS_MODEL
 {
+	private $cached_contents = array();
+
+	private function get_cached_content_info($type, $item_id)
+	{
+		return $this->cached_contents[$type . '_' . $item_id];
+	}
+
+	private function cache_content_info($type, $item_id, &$content_info)
+	{
+		$this->cached_contents[$type . '_' . $item_id] = $content_info;
+	}
+
 	public function check_thread_type($type)
 	{
 		switch ($type)
@@ -70,6 +82,12 @@ class content_class extends AWS_MODEL
 			return false;
 		}
 
+		$item_info = $this->get_cached_content_info($type, $item_id);
+		if (isset($item_info))
+		{
+			return $item_info;
+		}
+
 		$where = 'id = ' . ($item_id);
 		// TODO: question_id 字段改为 id 以避免特殊处理
 		if ($type == 'question')
@@ -87,6 +105,7 @@ class content_class extends AWS_MODEL
 			}
 		}
 
+		$this->cache_content_info($type, $item_id, $item_info);
 		return $item_info;
 	}
 
@@ -97,6 +116,12 @@ class content_class extends AWS_MODEL
 		if (!$item_id OR !$this->check_reply_type($type))
 		{
 			return false;
+		}
+
+		$item_info = $this->get_cached_content_info($type, $item_id);
+		if (isset($item_info))
+		{
+			return $item_info;
 		}
 
 		$where = 'id = ' . ($item_id);
@@ -116,6 +141,7 @@ class content_class extends AWS_MODEL
 			}
 		}
 
+		$this->cache_content_info($type, $item_id, $item_info);
 		return $item_info;
 	}
 
@@ -126,6 +152,12 @@ class content_class extends AWS_MODEL
 		if (!$item_id OR !$this->check_item_type($type))
 		{
 			return false;
+		}
+
+		$item_info = $this->get_cached_content_info($type, $item_id);
+		if (isset($item_info))
+		{
+			return $item_info;
 		}
 
 		$where = 'id = ' . ($item_id);
@@ -153,6 +185,7 @@ class content_class extends AWS_MODEL
 			}
 		}
 
+		$this->cache_content_info($type, $item_id, $item_info);
 		return $item_info;
 	}
 
