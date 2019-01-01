@@ -362,10 +362,10 @@ class ajax extends AWS_CONTROLLER
 	public function avatar_upload_action()
 	{
 		AWS_APP::upload()->initialize(array(
-			'allowed_types' => 'jpg,jpeg,png,gif',
+			'allowed_types' => get_setting('allowed_upload_types'),
 			'upload_path' => get_setting('upload_dir') . '/avatar/' . $this->model('account')->get_avatar($this->user_id, '', 1),
 			'is_image' => TRUE,
-			'max_size' => get_setting('upload_avatar_size_limit'),
+			'max_size' => get_setting('upload_size_limit'),
 			'file_name' => $this->model('account')->get_avatar($this->user_id, '', 2),
 			'encrypt_name' => FALSE
 		))->do_upload('aws_upload_file');
@@ -383,7 +383,7 @@ class ajax extends AWS_CONTROLLER
                 break;
 
                 case 'upload_invalid_filesize':
-                    die("{'error':'文件尺寸过大, 最大允许尺寸为 " . get_setting('upload_avatar_size_limit') .  " KB'}");
+                    die("{'error':'文件尺寸过大, 最大允许尺寸为 " . get_setting('upload_size_limit') . " KB'}");
                 break;
             }
 		}

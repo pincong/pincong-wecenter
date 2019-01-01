@@ -421,7 +421,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
         }
 
         AWS_APP::upload()->initialize(array(
-            'allowed_types' => 'jpg,jpeg,png,gif',
+            'allowed_types' => get_setting('allowed_upload_types'),
             'upload_path' => get_setting('upload_dir') . '/nav_menu',
             'is_image' => TRUE,
             'file_name' => intval($_GET['id']) . '.jpg',
@@ -894,10 +894,10 @@ class ajax extends AWS_ADMIN_CONTROLLER
             if ($_FILES['user_avatar']['name'])
             {
                 AWS_APP::upload()->initialize(array(
-                    'allowed_types' => 'jpg,jpeg,png,gif',
+                    'allowed_types' => get_setting('allowed_upload_types'),
                     'upload_path' => get_setting('upload_dir') . '/avatar/' . $this->model('account')->get_avatar($user_info['uid'], '', 1),
                     'is_image' => TRUE,
-                    'max_size' => get_setting('upload_avatar_size_limit'),
+                    'max_size' => get_setting('upload_size_limit'),
                     'file_name' => $this->model('account')->get_avatar($user_info['uid'], '', 2),
                     'encrypt_name' => FALSE
                 ))->do_upload('user_avatar');

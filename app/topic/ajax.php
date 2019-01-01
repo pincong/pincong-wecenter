@@ -213,10 +213,10 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		AWS_APP::upload()->initialize(array(
-			'allowed_types' => 'jpg,jpeg,png,gif',
+			'allowed_types' => get_setting('allowed_upload_types'),
 			'upload_path' => get_setting('upload_dir') . '/topic/' . gmdate('Ymd'),
 			'is_image' => TRUE,
-			'max_size' => get_setting('upload_avatar_size_limit')
+			'max_size' => get_setting('upload_size_limit')
 		))->do_upload('aws_upload_file');
 
 		if (AWS_APP::upload()->get_error())

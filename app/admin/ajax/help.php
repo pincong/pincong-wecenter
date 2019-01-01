@@ -67,7 +67,7 @@ class ajax_help extends AWS_ADMIN_CONTROLLER
         if ($_FILES['icon']['name'])
         {
             AWS_APP::upload()->initialize(array(
-                'allowed_types' => 'jpg,jpeg,png,gif',
+                'allowed_types' => get_setting('allowed_upload_types'),
                 'upload_path' => get_setting('upload_dir') . '/chapter',
                 'is_image' => TRUE
             ))->do_upload('icon');
