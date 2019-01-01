@@ -94,8 +94,8 @@
 
 								<span class="pull-right  more-operate">
 									<?php if ($this->user_id) { ?>
-									<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认提升?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/v/ajax/bump/', 'video_id=<?php echo $this->video_info['id']; ?>');});"><i class="icon icon-up"></i><?php _e('提升'); ?></a>
-									<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认下沉?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/v/ajax/sink/', 'video_id=<?php echo $this->video_info['id']; ?>');});"><i class="icon icon-down"></i><?php _e('下沉'); ?></a>
+									<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认提升?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/v/ajax/bump/', 'video_id=<?php echo $this->video_info['id']; ?>');});"><i class="icon icon-up"></i> <?php _e('提升'); ?></a>
+									<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认下沉?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/v/ajax/sink/', 'video_id=<?php echo $this->video_info['id']; ?>');});"><i class="icon icon-down"></i> <?php _e('下沉'); ?></a>
 									<?php } ?>
 
 									<?php if ($this->video_info['uid'] == $this->user_id OR $this->user_info['permission']['edit_video']) { ?>
@@ -106,7 +106,7 @@
 									<a href="javascript:;" onclick="AWS.dialog('favorite', {item_id:<?php echo $this->video_info['id']; ?>, item_type:'video'});" class="text-color-999"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>
 									<?php } ?>
 
-									<a href="javascript:;" class="text-color-999" onclick="AWS.User.share_out();"><i class="icon icon-share"></i><?php _e('分享'); ?></a>
+									<a href="javascript:;" class="text-color-999" onclick="AWS.User.share_out();"><i class="icon icon-share"></i> <?php _e('分享'); ?></a>
 
 									<em class="text-color-999"><?php echo date_friendly($this->video_info['add_time']); ?></em>
 								</span>
