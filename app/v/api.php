@@ -65,7 +65,7 @@ class api extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
 
-		if (!check_user_operation_interval('save_danmaku', $this->user_id, $this->user_info['permission']))
+		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -90,10 +90,10 @@ class api extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('数据错误')));
 		}
 
-		// TODO: 在管理后台添加字数选项
-		if (cjk_strlen($text) > 100)
+		$length_limit = intval(get_setting('danmaku_length_limit'));
+		if (cjk_strlen($text) > $length_limit)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('字数不得多于 100 字')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('字数不得多于 %s 字', $length_limit)));
 		}
 
 		if (!check_repeat_submission($text))
@@ -122,7 +122,7 @@ class api extends AWS_CONTROLLER
 		}
 
 		set_repeat_submission_digest($text);
-		set_user_operation_last_time('save_danmaku', $this->user_id, $this->user_info['permission']);
+		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
 
 		$this->model('danmaku')->save_danmaku(
 			$video_info['id'],
@@ -133,6 +133,11 @@ class api extends AWS_CONTROLLER
 			$size,
 			$color
 		);
+
+		if (get_setting('danmaku_bring_top') == 'Y')
+		{
+			$this->model('posts')->bring_to_top($this->user_id, $video_info['id'], 'video');
+		}
 
 		H::ajax_json_output(AWS_APP::RSM($metadata, 1, null));
 	}
