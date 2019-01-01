@@ -55,7 +55,52 @@ class ajax extends AWS_CONTROLLER
 		return $anonymous_uid;
 	}
 
-	private function do_validate($act = 'new')
+	private function validate_title_length($type)
+	{
+		$length_min = intval(get_setting('title_length_min'));
+		$length_max = intval(get_setting('title_length_max'));
+		$length = cjk_strlen($_POST['title']);
+		if ($length_min AND $length < $length_min)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('标题字数不得小于 %s 字', $length_min)));
+		}
+		if ($length_max AND $length > $length_max)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('标题字数不得大于 %s 字', $length_max)));
+		}
+	}
+
+	private function validate_body_length($type)
+	{
+		$length_min = intval(get_setting($type . '_body_length_min'));
+		$length_max = intval(get_setting($type . '_body_length_max'));
+		$length = cjk_strlen($_POST['message']);
+		if ($length_min AND $length < $length_min)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('正文字数不得小于 %s 字', $length_min)));
+		}
+		if ($length_max AND $length > $length_max)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('正文字数不得大于 %s 字', $length_max)));
+		}
+	}
+
+	private function validate_reply_length($type)
+	{
+		$length_min = intval(get_setting($type . '_reply_length_min'));
+		$length_max = intval(get_setting($type . '_reply_length_max'));
+		$length = cjk_strlen($_POST['message']);
+		if ($length_min AND $length < $length_min)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('回复字数不得小于 %s 字', $length_min)));
+		}
+		if ($length_max AND $length > $length_max)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('回复字数不得大于 %s 字', $length_max)));
+		}
+	}
+
+	private function do_validate()
 	{
 		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']))
 		{
@@ -85,30 +130,26 @@ class ajax extends AWS_CONTROLLER
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('延迟时间不能大于 1440 分钟')));
 			}
 		}
+	}
+
+	private function validate_thread($act, $type)
+	{
+		$this->do_validate();
 
 		$_POST['title'] = trim($_POST['title']);
 		if (!$_POST['title'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请输入标题')));
 		}
+		$this->validate_title_length($type);
 
-		// TODO: 在管理后台添加字数选项
-		if (cjk_strlen($_POST['title']) > 150)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('标题字数不得大于 150 字节', get_setting('question_title_limit'))));
-		}
-
-		if ($act == 'new' AND !check_repeat_submission($this->user_id, $_POST['title']))
+		if ($act == 'publish' AND !check_repeat_submission($this->user_id, $_POST['title']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请不要重复提交')));
 		}
 
 		$_POST['message'] = trim($_POST['message']);
-		// TODO: 在管理后台添加字数选项
-		if (cjk_strlen($_POST['message']) > 20000)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容字数不得多于 20000 字')));
-		}
+		$this->validate_body_length($type);
 
 		if ($_POST['topics'])
 		{
@@ -169,50 +210,18 @@ class ajax extends AWS_CONTROLLER
 	}
 
 
-	private function do_validate_reply($act = 'new')
+	private function validate_reply($act, $parent_type)
 	{
-		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
-		if ($_POST['anonymous'] AND !$this->user_info['permission']['post_anonymously'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能匿名')));
-		}
-
-		$_POST['later'] = intval($_POST['later']);
-		if ($_POST['later'])
-		{
-			if (!$this->user_info['permission']['post_later'])
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能延迟发布')));
-			}
-
-			if ($_POST['later'] < 10)
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('延迟时间不能小于 10 分钟')));
-			}
-
-			if ($_POST['later'] > 1440 AND $this->user_info['group_id'] != 1 AND $this->user_info['group_id'] != 2 AND $this->user_info['group_id'] != 3)
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('延迟时间不能大于 1440 分钟')));
-			}
-		}
+		$this->do_validate();
 
 		$_POST['message'] = trim($_POST['message']);
 		if (!$_POST['message'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入回复内容')));
 		}
+		$this->validate_reply_length($parent_type);
 
-		// TODO: 在管理后台添加字数选项
-		if (cjk_strlen($_POST['message']) > 20000)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容字数不得多于 20000 字')));
-		}
-
-		if ($act == 'new' AND !check_repeat_submission($this->user_id, $_POST['message']))
+		if ($act == 'publish' AND !check_repeat_submission($this->user_id, $_POST['message']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请不要重复提交')));
 		}
@@ -265,7 +274,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天发布的问题已经达到上限')));
 		}
 
-		$this->do_validate();
+		$this->validate_thread('publish', 'question');
 
 		if ($_POST['anonymous'])
 		{
@@ -327,7 +336,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天发布的文章已经达到上限')));
 		}
 
-		$this->do_validate();
+		$this->validate_thread('publish', 'article');
 
 		if ($_POST['anonymous'])
 		{
@@ -393,7 +402,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天影片的影片已经达到上限')));
 		}
 
-		$this->do_validate();
+		$this->validate_thread('publish', 'video');
 
 		if ($_POST['anonymous'])
 		{
@@ -475,7 +484,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$_POST['do_delete'])
 		{
-			$this->do_validate('modify');
+			$this->validate_thread('modify', 'question');
 		}
 
 		// !注: 来路检测后面不能再放报错提示
@@ -537,7 +546,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$_POST['do_delete'])
 		{
-			$this->do_validate('modify');
+			$this->validate_thread('modify', 'article');
 		}
 
 		// !注: 来路检测后面不能再放报错提示
@@ -605,7 +614,7 @@ class ajax extends AWS_CONTROLLER
 				H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('无法识别影片来源')));
 			}
 
-			$this->do_validate('modify');
+			$this->validate_thread('modify', 'video');
 		}
 
 		// !注: 来路检测后面不能再放报错提示
@@ -677,7 +686,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天的回复已经达到上限')));
 		}
 
-		$this->do_validate_reply();
+		$this->validate_reply('publish', 'question');
 
 		if (!$question_info = $this->model('question')->get_question_info_by_id($_POST['question_id']))
 		{
@@ -776,7 +785,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天的文章评论已经达到上限')));
 		}
 
-		$this->do_validate_reply();
+		$this->validate_reply('publish', 'article');
 
 		if (!$article_info = $this->model('article')->get_article_info_by_id($_POST['article_id']))
 		{
@@ -852,7 +861,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天的影片评论已经达到上限')));
 		}
 
-		$this->do_validate_reply();
+		$this->validate_reply('publish', 'video');
 
 		if (!$video_info = $this->model('video')->get_video_info_by_id($_POST['video_id']))
 		{
@@ -940,7 +949,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$_POST['do_delete'])
 		{
-			$this->do_validate_reply('modify');
+			$this->validate_reply('modify', 'question');
 		}
 
 		set_user_operation_last_time_by_uid('modify', $this->user_id);
@@ -997,7 +1006,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$_POST['do_delete'])
 		{
-			$this->do_validate_reply('modify');
+			$this->validate_reply('modify', 'article');
 		}
 
 		set_user_operation_last_time_by_uid('modify', $this->user_id);
@@ -1050,7 +1059,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$_POST['do_delete'])
 		{
-			$this->do_validate_reply('modify');
+			$this->validate_reply('modify', 'video');
 		}
 
 		set_user_operation_last_time_by_uid('modify', $this->user_id);

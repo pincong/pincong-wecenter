@@ -1434,12 +1434,13 @@
                         </div>
                     </td>
                 </tr>
+
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('正文最小字数限制'); ?>:</span>
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('问题正文最小字数限制'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="content_length_min" class="form-control" type="text" value="<?php echo $this->setting['content_length_min']; ?>"/>
+                                <input name="question_body_length_min" class="form-control" type="text" value="<?php echo $this->setting['question_body_length_min']; ?>"/>
 
                                 <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
                             </div>
@@ -1449,9 +1450,9 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('正文最大字数限制'); ?>:</span>
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('问题正文最大字数限制'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="content_length_max" class="form-control" type="text" value="<?php echo $this->setting['content_length_max']; ?>"/>
+                                <input name="question_body_length_max" class="form-control" type="text" value="<?php echo $this->setting['question_body_length_max']; ?>"/>
 
                                 <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
                             </div>
@@ -1461,9 +1462,9 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('回复最小字数限制'); ?>:</span>
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('文章正文最小字数限制'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="reply_length_min" class="form-control" type="text" value="<?php echo $this->setting['reply_length_min']; ?>"/>
+                                <input name="article_body_length_min" class="form-control" type="text" value="<?php echo $this->setting['article_body_length_min']; ?>"/>
 
                                 <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
                             </div>
@@ -1473,15 +1474,112 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('回复最大字数限制'); ?>:</span>
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('文章正文最大字数限制'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
-                                <input name="reply_length_max" class="form-control" type="text" value="<?php echo $this->setting['reply_length_max']; ?>"/>
+                                <input name="article_body_length_max" class="form-control" type="text" value="<?php echo $this->setting['article_body_length_max']; ?>"/>
 
                                 <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
                             </div>
                         </div>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('影片正文最小字数限制'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="video_body_length_min" class="form-control" type="text" value="<?php echo $this->setting['video_body_length_min']; ?>"/>
+
+                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('影片正文最大字数限制'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="video_body_length_max" class="form-control" type="text" value="<?php echo $this->setting['video_body_length_max']; ?>"/>
+
+                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('问题回复最小字数限制'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="question_reply_length_min" class="form-control" type="text" value="<?php echo $this->setting['question_reply_length_min']; ?>"/>
+
+                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('问题回复最大字数限制'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="question_reply_length_max" class="form-control" type="text" value="<?php echo $this->setting['question_reply_length_max']; ?>"/>
+
+                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('文章回复最小字数限制'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="article_reply_length_min" class="form-control" type="text" value="<?php echo $this->setting['article_reply_length_min']; ?>"/>
+
+                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('文章回复最大字数限制'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="article_reply_length_max" class="form-control" type="text" value="<?php echo $this->setting['article_reply_length_max']; ?>"/>
+
+                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('影片回复最小字数限制'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="video_reply_length_min" class="form-control" type="text" value="<?php echo $this->setting['video_reply_length_min']; ?>"/>
+
+                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('影片回复最大字数限制'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="video_reply_length_max" class="form-control" type="text" value="<?php echo $this->setting['video_reply_length_max']; ?>"/>
+
+                                <div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
                 <tr>
                     <td>
                         <div class="form-group">
