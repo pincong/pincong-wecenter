@@ -255,6 +255,21 @@ $(document).ready(function ()
             }
         });
     }*/
+
+    /* RFC-091 展開閱讀全文 此功能由 onemorecat 提供 */
+    $('.mod-body.aw-feed-list .aw-item .markitup-box').each(function () {
+        var $contentDiv = $(this);
+        if($contentDiv.text().length > 1000) {
+            $contentDiv.addClass('aw-briefly');
+            $button = $('<div class="aw-stretch-content-button-container"><button class="aw-stretch-content-button" type="button"></button></div>');
+            $button.click(function () {
+                $button.parent().removeClass('aw-briefly');
+                $button.hide();
+            });
+            $contentDiv.append($button);
+        }
+    });
+
 });
 
 $(window).on('hashchange', function() {

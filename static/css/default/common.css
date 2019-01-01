@@ -922,6 +922,13 @@ blockquote {margin: 0;padding: 0 10px;font-size: 15px;color: #777;border-left: 4
 .aw-side-bar {font-size: 13px;}
 .category .list > li{font-size: 13px;}
 
+/* RFC-091 展開閱讀全文 此功能由 onemorecat 提供 */
+.aw-briefly {overflow: hidden;text-overflow: ellipsis;max-height: 50rem;mask-image: linear-gradient(#1a1a1a calc(100% - 10rem), transparent calc(100% - 4.8rem), transparent calc(100% - 4rem), #1a1a1a calc(100% - 4rem));}
+.aw-stretch-content-button {position: relative;margin: 0 auto;padding:0;border: 0;width: 100%;background-color: transparent;overflow: hidden}
+.aw-stretch-content-button:before {content: "";display: inline-block;position: relative;top: -2.2rem;margin: auto;height: 3rem;width: 3rem;transform: rotate(45deg);border: #999 solid;border-width: 0 0.3rem 0.3rem 0;}
+.aw-stretch-content-button:hover:before{border-color: #404451;}
+.aw-stretch-content-button-container {position: absolute;top: calc(100% - 4rem);left: 0;height: 4rem;width: 100%;background: #fff;text-align: center}
+
 .navbar-collapse {background: #499ef3;}
 
 @media (max-width: 992px){
