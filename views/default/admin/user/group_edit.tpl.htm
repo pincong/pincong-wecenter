@@ -352,6 +352,31 @@
 				<tr>
 					<td>
 						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('每日赞同上限'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input type="text" name="vote_agree_limit_per_day" class="form-control" value="<?php echo intval($this->group_pms['vote_agree_limit_per_day']); ?>" />
+
+								<span class="help-block"><?php _e('设置 0 为不限制'); ?></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('每日反对上限'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input type="text" name="vote_disagree_limit_per_day" class="form-control" value="<?php echo intval($this->group_pms['vote_disagree_limit_per_day']); ?>" />
+
+								<span class="help-block"><?php _e('设置 0 为不限制'); ?></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许编辑问题话题'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">

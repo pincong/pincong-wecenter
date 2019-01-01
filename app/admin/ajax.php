@@ -850,6 +850,8 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			'thread_limit_per_day',
 			'reply_limit_per_day',
 			'comment_limit_per_day',
+			'vote_agree_limit_per_day',
+			'vote_disagree_limit_per_day',
 			'publish_article',
             'edit_article',
             'edit_question_topic',

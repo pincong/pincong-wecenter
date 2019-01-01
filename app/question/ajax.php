@@ -320,12 +320,12 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能对自己发表的问题进行投票')));
 		}
 
-		if ($value === 1 AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_agree_question'))
+		if ($value === 1 AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_agree'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
 		}
 		else
-		if ($value === -1 AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_disagree_question'))
+		if ($value === -1 AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_disagree'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
 		}
@@ -371,12 +371,12 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能对自己发表的回复进行投票')));
 		}
 
-		if ($value === 1 AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_agree_answer'))
+		if ($value === 1 AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_agree'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
 		}
 		else
-		if ($value === -1 AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_disagree_answer'))
+		if ($value === -1 AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_disagree'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
 		}

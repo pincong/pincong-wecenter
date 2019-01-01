@@ -458,16 +458,16 @@ class article_class extends AWS_MODEL
 				{
 					if (!$this->model('currency')->fetch_log($uid, 'AGREE_ARTICLE', $item_id))
 					{
-						$this->model('currency')->process($uid, 'AGREE_ARTICLE', get_setting('currency_system_config_agree_question'), '赞同文章 #' . $item_id, $item_id);
-						$this->model('currency')->process($item_uid, 'ARTICLE_AGREED', get_setting('currency_system_config_question_agreed'), '文章被赞同 #' . $item_id, $item_id);
+						$this->model('currency')->process($uid, 'AGREE_ARTICLE', get_setting('currency_system_config_agree'), '赞同文章 #' . $item_id, $item_id);
+						$this->model('currency')->process($item_uid, 'ARTICLE_AGREED', get_setting('currency_system_config_agreed'), '文章被赞同 #' . $item_id, $item_id);
 					}
 				}
 				else
 				{
 					if (!$this->model('currency')->fetch_log($uid, 'DISAGREE_ARTICLE', $item_id))
 					{
-						$this->model('currency')->process($uid, 'DISAGREE_ARTICLE', get_setting('currency_system_config_disagree_question'), '反对文章 #' . $item_id, $item_id);
-						$this->model('currency')->process($item_uid, 'ARTICLE_DISAGREED', get_setting('currency_system_config_question_disagreed'), '文章被反对 #' . $item_id, $item_id);
+						$this->model('currency')->process($uid, 'DISAGREE_ARTICLE', get_setting('currency_system_config_disagree'), '反对文章 #' . $item_id, $item_id);
+						$this->model('currency')->process($item_uid, 'ARTICLE_DISAGREED', get_setting('currency_system_config_disagreed'), '文章被反对 #' . $item_id, $item_id);
 					}
 				}
 			}
@@ -477,16 +477,16 @@ class article_class extends AWS_MODEL
 				{
 					if (!$this->model('currency')->fetch_log($uid, 'AGREE_ARTICLE_COMMENT', $item_id))
 					{
-						$this->model('currency')->process($uid, 'AGREE_ARTICLE_COMMENT', get_setting('currency_system_config_agree_answer'), '赞同文章评论 #' . $item_id, $item_id);
-						$this->model('currency')->process($item_uid, 'ARTICLE_COMMENT_AGREED', get_setting('currency_system_config_answer_agreed'), '文章评论被赞同 #' . $item_id, $item_id);
+						$this->model('currency')->process($uid, 'AGREE_ARTICLE_COMMENT', get_setting('currency_system_config_agree'), '赞同文章评论 #' . $item_id, $item_id);
+						$this->model('currency')->process($item_uid, 'ARTICLE_COMMENT_AGREED', get_setting('currency_system_config_agreed'), '文章评论被赞同 #' . $item_id, $item_id);
 					}
 				}
 				else
 				{
 					if (!$this->model('currency')->fetch_log($uid, 'DISAGREE_ARTICLE_COMMENT', $item_id))
 					{
-						$this->model('currency')->process($uid, 'DISAGREE_ARTICLE_COMMENT', get_setting('currency_system_config_disagree_answer'), '反对文章评论 #' . $item_id, $item_id);
-						$this->model('currency')->process($item_uid, 'ARTICLE_COMMENT_DISAGREED', get_setting('currency_system_config_answer_disagreed'), '文章评论被反对 #' . $item_id, $item_id);
+						$this->model('currency')->process($uid, 'DISAGREE_ARTICLE_COMMENT', get_setting('currency_system_config_disagree'), '反对文章评论 #' . $item_id, $item_id);
+						$this->model('currency')->process($item_uid, 'ARTICLE_COMMENT_DISAGREED', get_setting('currency_system_config_disagreed'), '文章评论被反对 #' . $item_id, $item_id);
 					}
 				}
 			}

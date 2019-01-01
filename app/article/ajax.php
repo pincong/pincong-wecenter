@@ -272,12 +272,12 @@ class ajax extends AWS_CONTROLLER
 		switch ($_POST['type'])
 		{
 			case 'article':
-				if ($rating === 1 AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_agree_question'))
+				if ($rating === 1 AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_agree'))
 				{
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
 				}
 				else
-				if ($rating === -1 AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_disagree_question'))
+				if ($rating === -1 AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_disagree'))
 				{
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
 				}
@@ -285,12 +285,12 @@ class ajax extends AWS_CONTROLLER
 			break;
 
 			case 'comment':
-				if ($rating === 1 AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_agree_answer'))
+				if ($rating === 1 AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_agree'))
 				{
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
 				}
 				else
-				if ($rating === -1 AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_disagree_answer'))
+				if ($rating === -1 AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_disagree'))
 				{
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
 				}

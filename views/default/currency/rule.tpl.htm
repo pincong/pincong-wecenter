@@ -50,37 +50,20 @@
                     </dl>
 
                     <dl>
-                        <dt><?php _e('赞同问题或文章'); ?></dt>
-                        <dd><span class="<?php if (get_setting('currency_system_config_agree_question') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_agree_question'), get_setting('currency_unit'))); ?></span></dd>
+                        <dt><?php _e('赞同'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_agree') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_agree'), get_setting('currency_unit'))); ?></span></dd>
                     </dl>
                     <dl>
-                        <dt><?php _e('问题或文章被赞同'); ?></dt>
-                        <dd><span class="<?php if (get_setting('currency_system_config_question_agreed') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_question_agreed'), get_setting('currency_unit'))); ?></span></dd>
+                        <dt><?php _e('收到赞同'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_agreed') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_agreed'), get_setting('currency_unit'))); ?></span></dd>
                     </dl>
                     <dl>
-                        <dt><?php _e('反对问题或文章'); ?></dt>
-                        <dd><span class="<?php if (get_setting('currency_system_config_disagree_question') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_disagree_question'), get_setting('currency_unit'))); ?></span></dd>
+                        <dt><?php _e('反对'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_disagree') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_disagree'), get_setting('currency_unit'))); ?></span></dd>
                     </dl>
                     <dl>
-                        <dt><?php _e('问题或文章被反对'); ?></dt>
-                        <dd><span class="<?php if (get_setting('currency_system_config_question_disagreed') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_question_disagreed'), get_setting('currency_unit'))); ?></span></dd>
-                    </dl>
-
-                    <dl>
-                        <dt><?php _e('赞同回复'); ?></dt>
-                        <dd><span class="<?php if (get_setting('currency_system_config_agree_answer') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_agree_answer'), get_setting('currency_unit'))); ?></span></dd>
-                    </dl>
-                    <dl>
-                        <dt><?php _e('回复被赞同'); ?></dt>
-                        <dd><span class="<?php if (get_setting('currency_system_config_answer_agreed') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_answer_agreed'), get_setting('currency_unit'))); ?></span></dd>
-                    </dl>
-                    <dl>
-                        <dt><?php _e('反对回复'); ?></dt>
-                        <dd><span class="<?php if (get_setting('currency_system_config_disagree_answer') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_disagree_answer'), get_setting('currency_unit'))); ?></span></dd>
-                    </dl>
-                    <dl>
-                        <dt><?php _e('回复被反对'); ?></dt>
-                        <dd><span class="<?php if (get_setting('currency_system_config_answer_disagreed') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_answer_disagreed'), get_setting('currency_unit'))); ?></span></dd>
+                        <dt><?php _e('收到反对'); ?></dt>
+                        <dd><span class="<?php if (get_setting('currency_system_config_disagreed') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_disagreed'), get_setting('currency_unit'))); ?></span></dd>
                     </dl>
                 </div>
             </div>

@@ -1086,16 +1086,16 @@ class question_class extends AWS_MODEL
 			{
 				if (!$this->model('currency')->fetch_log($uid, 'AGREE_QUESTION', $question_id))
 				{
-					$this->model('currency')->process($uid, 'AGREE_QUESTION', get_setting('currency_system_config_agree_question'), '赞同问题 #' . $question_id, $question_id);
-					$this->model('currency')->process($question_uid, 'QUESTION_AGREED', get_setting('currency_system_config_question_agreed'), '问题被赞同 #' . $question_id, $question_id);
+					$this->model('currency')->process($uid, 'AGREE_QUESTION', get_setting('currency_system_config_agree'), '赞同问题 #' . $question_id, $question_id);
+					$this->model('currency')->process($question_uid, 'QUESTION_AGREED', get_setting('currency_system_config_agreed'), '问题被赞同 #' . $question_id, $question_id);
 				}
 			}
 			else if ($vote_value == -1)
 			{
 				if (!$this->model('currency')->fetch_log($uid, 'DISAGREE_QUESTION', $question_id))
 				{
-					$this->model('currency')->process($uid, 'DISAGREE_QUESTION', get_setting('currency_system_config_disagree_question'), '反对问题 #' . $question_id, $question_id);
-					$this->model('currency')->process($question_uid, 'QUESTION_DISAGREED', get_setting('currency_system_config_question_disagreed'), '问题被反对 #' . $question_id, $question_id);
+					$this->model('currency')->process($uid, 'DISAGREE_QUESTION', get_setting('currency_system_config_disagree'), '反对问题 #' . $question_id, $question_id);
+					$this->model('currency')->process($question_uid, 'QUESTION_DISAGREED', get_setting('currency_system_config_disagreed'), '问题被反对 #' . $question_id, $question_id);
 				}
 			}
 
