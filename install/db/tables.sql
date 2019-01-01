@@ -187,19 +187,6 @@ CREATE TABLE IF NOT EXISTS `aws_feature` (
 -- Data exporting was unselected.
 
 
--- Dumping structure for table panic.aws_feature_topic
-CREATE TABLE IF NOT EXISTS `aws_feature_topic` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `feature_id` int(11) DEFAULT '0' COMMENT '专题ID',
-  `topic_id` int(11) DEFAULT '0' COMMENT '话题ID',
-  PRIMARY KEY (`id`),
-  KEY `feature_id` (`feature_id`),
-  KEY `topic_id` (`topic_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
--- Data exporting was unselected.
-
-
 -- Dumping structure for table panic.aws_help_chapter
 CREATE TABLE IF NOT EXISTS `aws_help_chapter` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
