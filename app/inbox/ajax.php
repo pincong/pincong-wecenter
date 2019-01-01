@@ -54,7 +54,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对方的账号已经被禁止登录')));
 		}
 
-		if (!$this->user_info['permission']['is_administrator'])
+		if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
 		{
 			$recipient_user_group = $this->model('account')->get_user_group_by_user_info($recipient_user);
 			if (!$recipient_user_group['permission']['receive_pm'])
@@ -63,12 +63,16 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		if ($recipient_user['inbox_recv'])
+		if ($recipient_user['inbox_recv'] == 1)
 		{
 			if (! $this->model('message')->check_permission($recipient_user['uid'], $this->user_id))
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对方设置了只有 Ta 关注的人才能给 Ta 发送私信')));
 			}
+		}
+		else if ($recipient_user['inbox_recv'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对方设置了拒绝任何人给 Ta 发送私信')));
 		}
 
 		// !注: 来路检测后面不能再放报错提示
