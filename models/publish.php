@@ -345,6 +345,23 @@ class publish_class extends AWS_MODEL
 			return true;
 		}
 
+		$uid = intval($uid);
+		$time_after = real_time() - 24 * 3600;
+
+		$where = "add_time > " . $time_after . " AND uid =" . $uid;
+		$count = $this->count('answer', $where);
+		if ($count >= $limit)
+		{
+			return false;
+		}
+
+		$where = "type = 'answer' AND time > " . $time_after . " AND uid =" . $uid;
+		$count += $this->count('scheduled_posts', $where);
+		if ($count >= $limit)
+		{
+			return false;
+		}
+
 		return true;
 	}
 
@@ -354,6 +371,23 @@ class publish_class extends AWS_MODEL
 		if (!$limit)
 		{
 			return true;
+		}
+
+		$uid = intval($uid);
+		$time_after = real_time() - 24 * 3600;
+
+		$where = "add_time > " . $time_after . " AND published_uid =" . $uid;
+		$count = $this->count('question', $where);
+		if ($count >= $limit)
+		{
+			return false;
+		}
+
+		$where = "type = 'question' AND time > " . $time_after . " AND uid =" . $uid;
+		$count += $this->count('scheduled_posts', $where);
+		if ($count >= $limit)
+		{
+			return false;
 		}
 
 		return true;
@@ -367,6 +401,23 @@ class publish_class extends AWS_MODEL
 			return true;
 		}
 
+		$uid = intval($uid);
+		$time_after = real_time() - 24 * 3600;
+
+		$where = "add_time > " . $time_after . " AND uid =" . $uid;
+		$count = $this->count('article', $where);
+		if ($count >= $limit)
+		{
+			return false;
+		}
+
+		$where = "type = 'article' AND time > " . $time_after . " AND uid =" . $uid;
+		$count += $this->count('scheduled_posts', $where);
+		if ($count >= $limit)
+		{
+			return false;
+		}
+
 		return true;
 	}
 
@@ -376,6 +427,23 @@ class publish_class extends AWS_MODEL
 		if (!$limit)
 		{
 			return true;
+		}
+
+		$uid = intval($uid);
+		$time_after = real_time() - 24 * 3600;
+
+		$where = "add_time > " . $time_after . " AND uid =" . $uid;
+		$count = $this->count('article_comments', $where);
+		if ($count >= $limit)
+		{
+			return false;
+		}
+
+		$where = "type = 'article_comment' AND time > " . $time_after . " AND uid =" . $uid;
+		$count += $this->count('scheduled_posts', $where);
+		if ($count >= $limit)
+		{
+			return false;
 		}
 
 		return true;
