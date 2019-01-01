@@ -56,6 +56,12 @@ $config[] = array(
             'id' => 'SETTINGS_INTERFACE',
             'title' => AWS_APP::lang()->_t('界面设置'),
             'url' => 'admin/settings/category-interface'
+        ),
+
+        array(
+            'id' => 'SETTINGS_VIDEO',
+            'title' => AWS_APP::lang()->_t('视频处理'),
+            'url' => 'admin/settings/category-video'
         )
     )
 );

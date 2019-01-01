@@ -131,7 +131,7 @@ ul,ol{padding:0;list-style:none;}
 .aw-content-wrap .mod-table-foot .pull-right{margin-top:0;}
 
 /*右侧表格主体部分*/
-textarea{resize:none;}
+/*textarea{resize:none;}*/
 .aw-content-wrap .mod{margin-bottom:30px;box-shadow: 0 1px 2px #d5d7d8;}
 .aw-content-wrap .mod-body,.aw-content-wrap .mod-content{padding:20px;border:1px solid #e2e1e1;border-top:none;background:#fff;}
 .aw-content-wrap h2 i{position:relative;top:0;}
