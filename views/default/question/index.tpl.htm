@@ -43,7 +43,7 @@
 											<li>
 												<a href="content/log/item_type-question__item_id-<?php echo $this->question_info['question_id']; ?>" rel="nofollow"><?php _e('修改记录'); ?></a>
 											</li>
-										<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
+										<?php if ($this->user_info['permission']['lock_post']) { ?>
 											<li>
 												<?php if ($this->question_info['lock']) { ?>
 												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unlock/', 'item_type=question&item_id=<?php echo $this->question_info['question_id']; ?>');"><?php _e('取消锁定'); ?></a>
