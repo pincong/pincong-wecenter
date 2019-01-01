@@ -5,39 +5,30 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
--- 导出  表 panic.aws_answer 结构
+-- Dumping structure for table panic.aws_answer
 CREATE TABLE IF NOT EXISTS `aws_answer` (
   `answer_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '回答id',
   `question_id` int(11) NOT NULL COMMENT '问题id',
   `answer_content` text COMMENT '回答内容',
   `add_time` int(10) DEFAULT '0' COMMENT '添加时间',
-  `against_count` int(11) NOT NULL DEFAULT '0' COMMENT '反对人数',
   `agree_count` int(11) NOT NULL DEFAULT '0' COMMENT '支持人数',
   `uid` int(11) DEFAULT '0' COMMENT '发布问题用户ID',
   `comment_count` int(11) DEFAULT '0' COMMENT '评论总数',
-  `uninterested_count` int(11) DEFAULT '0' COMMENT '不感兴趣',
   `thanks_count` int(11) DEFAULT '0' COMMENT '感谢数量',
   `category_id` int(11) DEFAULT '0' COMMENT '分类id',
-  `has_attach` tinyint(1) DEFAULT '0' COMMENT '是否存在附件',
-  `force_fold` tinyint(1) DEFAULT '0' COMMENT '强制折叠',
   `anonymous` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`answer_id`),
   KEY `question_id` (`question_id`),
   KEY `agree_count` (`agree_count`),
-  KEY `against_count` (`against_count`),
   KEY `add_time` (`add_time`),
   KEY `uid` (`uid`),
-  KEY `uninterested_count` (`uninterested_count`),
-  KEY `force_fold` (`force_fold`),
   KEY `anonymous` (`anonymous`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='回答';
 
--- 正在导出表  panic.aws_answer 的数据：0 rows
-/*!40000 ALTER TABLE `aws_answer` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_answer` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_answer_comments 结构
+-- Dumping structure for table panic.aws_answer_comments
 CREATE TABLE IF NOT EXISTS `aws_answer_comments` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `answer_id` int(11) DEFAULT '0',
@@ -51,12 +42,10 @@ CREATE TABLE IF NOT EXISTS `aws_answer_comments` (
   KEY `anonymous` (`anonymous`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_answer_comments 的数据：0 rows
-/*!40000 ALTER TABLE `aws_answer_comments` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_answer_comments` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_answer_thanks 结构
+-- Dumping structure for table panic.aws_answer_thanks
 CREATE TABLE IF NOT EXISTS `aws_answer_thanks` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT '0',
@@ -66,27 +55,10 @@ CREATE TABLE IF NOT EXISTS `aws_answer_thanks` (
   KEY `answer_id` (`answer_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_answer_thanks 的数据：0 rows
-/*!40000 ALTER TABLE `aws_answer_thanks` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_answer_thanks` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_answer_uninterested 结构
-CREATE TABLE IF NOT EXISTS `aws_answer_uninterested` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `uid` int(11) DEFAULT '0',
-  `answer_id` int(11) DEFAULT '0',
-  `time` int(10) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `answer_id` (`answer_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
--- 正在导出表  panic.aws_answer_uninterested 的数据：0 rows
-/*!40000 ALTER TABLE `aws_answer_uninterested` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_answer_uninterested` ENABLE KEYS */;
-
-
--- 导出  表 panic.aws_answer_vote 结构
+-- Dumping structure for table panic.aws_answer_vote
 CREATE TABLE IF NOT EXISTS `aws_answer_vote` (
   `voter_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自动ID',
   `answer_id` int(11) DEFAULT NULL COMMENT '回复id',
@@ -99,12 +71,10 @@ CREATE TABLE IF NOT EXISTS `aws_answer_vote` (
   KEY `vote_value` (`vote_value`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_answer_vote 的数据：0 rows
-/*!40000 ALTER TABLE `aws_answer_vote` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_answer_vote` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_approval 结构
+-- Dumping structure for table panic.aws_approval
 CREATE TABLE IF NOT EXISTS `aws_approval` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `type` varchar(16) DEFAULT NULL,
@@ -117,12 +87,10 @@ CREATE TABLE IF NOT EXISTS `aws_approval` (
   KEY `time` (`time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_approval 的数据：0 rows
-/*!40000 ALTER TABLE `aws_approval` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_approval` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_article 结构
+-- Dumping structure for table panic.aws_article
 CREATE TABLE IF NOT EXISTS `aws_article` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `uid` int(10) NOT NULL,
@@ -131,7 +99,6 @@ CREATE TABLE IF NOT EXISTS `aws_article` (
   `comments` int(10) DEFAULT '0',
   `views` int(10) DEFAULT '0',
   `add_time` int(10) NOT NULL DEFAULT '0',
-  `has_attach` tinyint(1) NOT NULL DEFAULT '0',
   `lock` int(1) NOT NULL DEFAULT '0',
   `thanks_count` int(11) DEFAULT '0',
   `votes` int(10) DEFAULT '0',
@@ -143,7 +110,6 @@ CREATE TABLE IF NOT EXISTS `aws_article` (
   `update_time` int(10) DEFAULT '0',
   `anonymous` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `has_attach` (`has_attach`),
   KEY `uid` (`uid`),
   KEY `comments` (`comments`),
   KEY `views` (`views`),
@@ -159,12 +125,10 @@ CREATE TABLE IF NOT EXISTS `aws_article` (
   FULLTEXT KEY `title_fulltext` (`title_fulltext`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_article 的数据：0 rows
-/*!40000 ALTER TABLE `aws_article` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_article` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_article_comments 结构
+-- Dumping structure for table panic.aws_article_comments
 CREATE TABLE IF NOT EXISTS `aws_article_comments` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `uid` int(10) NOT NULL,
@@ -182,12 +146,10 @@ CREATE TABLE IF NOT EXISTS `aws_article_comments` (
   KEY `anonymous` (`anonymous`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_article_comments 的数据：0 rows
-/*!40000 ALTER TABLE `aws_article_comments` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_article_comments` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_article_thanks 结构
+-- Dumping structure for table panic.aws_article_thanks
 CREATE TABLE IF NOT EXISTS `aws_article_thanks` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT '0',
@@ -197,12 +159,10 @@ CREATE TABLE IF NOT EXISTS `aws_article_thanks` (
   KEY `article_id` (`article_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_article_thanks 的数据：0 rows
-/*!40000 ALTER TABLE `aws_article_thanks` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_article_thanks` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_article_vote 结构
+-- Dumping structure for table panic.aws_article_vote
 CREATE TABLE IF NOT EXISTS `aws_article_vote` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `uid` int(10) NOT NULL,
@@ -218,35 +178,10 @@ CREATE TABLE IF NOT EXISTS `aws_article_vote` (
   KEY `time` (`time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_article_vote 的数据：0 rows
-/*!40000 ALTER TABLE `aws_article_vote` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_article_vote` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_attach 结构
-CREATE TABLE IF NOT EXISTS `aws_attach` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `file_name` varchar(240) DEFAULT NULL COMMENT '附件名称',
-  `access_key` varchar(32) DEFAULT NULL COMMENT '批次 Key',
-  `add_time` int(10) DEFAULT '0' COMMENT '上传时间',
-  `file_location` varchar(240) DEFAULT NULL COMMENT '文件位置',
-  `is_image` int(1) DEFAULT '0',
-  `item_type` varchar(32) DEFAULT '0' COMMENT '关联类型',
-  `item_id` bigint(20) DEFAULT '0' COMMENT '关联 ID',
-  `wait_approval` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `access_key` (`access_key`),
-  KEY `is_image` (`is_image`),
-  KEY `fetch` (`item_id`,`item_type`),
-  KEY `wait_approval` (`wait_approval`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
--- 正在导出表  panic.aws_attach 的数据：0 rows
-/*!40000 ALTER TABLE `aws_attach` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_attach` ENABLE KEYS */;
-
-
--- 导出  表 panic.aws_category 结构
+-- Dumping structure for table panic.aws_category
 CREATE TABLE IF NOT EXISTS `aws_category` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(128) DEFAULT NULL,
@@ -261,12 +196,10 @@ CREATE TABLE IF NOT EXISTS `aws_category` (
   KEY `title` (`title`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_category 的数据：0 rows
-/*!40000 ALTER TABLE `aws_category` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_category` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_favorite 结构
+-- Dumping structure for table panic.aws_favorite
 CREATE TABLE IF NOT EXISTS `aws_favorite` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT '0',
@@ -280,12 +213,10 @@ CREATE TABLE IF NOT EXISTS `aws_favorite` (
   KEY `type` (`type`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_favorite 的数据：0 rows
-/*!40000 ALTER TABLE `aws_favorite` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_favorite` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_feature 结构
+-- Dumping structure for table panic.aws_feature
 CREATE TABLE IF NOT EXISTS `aws_feature` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(200) DEFAULT NULL COMMENT '专题标题',
@@ -303,12 +234,10 @@ CREATE TABLE IF NOT EXISTS `aws_feature` (
   KEY `enabled` (`enabled`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_feature 的数据：0 rows
-/*!40000 ALTER TABLE `aws_feature` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_feature` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_feature_topic 结构
+-- Dumping structure for table panic.aws_feature_topic
 CREATE TABLE IF NOT EXISTS `aws_feature_topic` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `feature_id` int(11) NOT NULL DEFAULT '0' COMMENT '专题ID',
@@ -318,12 +247,10 @@ CREATE TABLE IF NOT EXISTS `aws_feature_topic` (
   KEY `topic_id` (`topic_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_feature_topic 的数据：0 rows
-/*!40000 ALTER TABLE `aws_feature_topic` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_feature_topic` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_help_chapter 结构
+-- Dumping structure for table panic.aws_help_chapter
 CREATE TABLE IF NOT EXISTS `aws_help_chapter` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(240) NOT NULL,
@@ -336,12 +263,10 @@ CREATE TABLE IF NOT EXISTS `aws_help_chapter` (
   KEY `sort` (`sort`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='帮助中心';
 
--- 正在导出表  panic.aws_help_chapter 的数据：0 rows
-/*!40000 ALTER TABLE `aws_help_chapter` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_help_chapter` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_inbox 结构
+-- Dumping structure for table panic.aws_inbox
 CREATE TABLE IF NOT EXISTS `aws_inbox` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT NULL COMMENT '发送者 ID',
@@ -360,12 +285,10 @@ CREATE TABLE IF NOT EXISTS `aws_inbox` (
   KEY `sender_receipt` (`receipt`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_inbox 的数据：0 rows
-/*!40000 ALTER TABLE `aws_inbox` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_inbox` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_inbox_dialog 结构
+-- Dumping structure for table panic.aws_inbox_dialog
 CREATE TABLE IF NOT EXISTS `aws_inbox_dialog` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '对话ID',
   `sender_uid` int(11) DEFAULT NULL COMMENT '发送者UID',
@@ -383,12 +306,10 @@ CREATE TABLE IF NOT EXISTS `aws_inbox_dialog` (
   KEY `add_time` (`add_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_inbox_dialog 的数据：0 rows
-/*!40000 ALTER TABLE `aws_inbox_dialog` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_inbox_dialog` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_integral_log 结构
+-- Dumping structure for table panic.aws_integral_log
 CREATE TABLE IF NOT EXISTS `aws_integral_log` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT '0',
@@ -405,12 +326,10 @@ CREATE TABLE IF NOT EXISTS `aws_integral_log` (
   KEY `integral` (`integral`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_integral_log 的数据：0 rows
-/*!40000 ALTER TABLE `aws_integral_log` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_integral_log` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_nav_menu 结构
+-- Dumping structure for table panic.aws_nav_menu
 CREATE TABLE IF NOT EXISTS `aws_nav_menu` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(128) DEFAULT NULL,
@@ -424,12 +343,10 @@ CREATE TABLE IF NOT EXISTS `aws_nav_menu` (
   KEY `parent_id` (`link`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_nav_menu 的数据：0 rows
-/*!40000 ALTER TABLE `aws_nav_menu` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_nav_menu` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_notification 结构
+-- Dumping structure for table panic.aws_notification
 CREATE TABLE IF NOT EXISTS `aws_notification` (
   `notification_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `sender_uid` int(11) DEFAULT NULL COMMENT '发送者ID',
@@ -448,12 +365,10 @@ CREATE TABLE IF NOT EXISTS `aws_notification` (
   KEY `add_time` (`add_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='系统通知';
 
--- 正在导出表  panic.aws_notification 的数据：0 rows
-/*!40000 ALTER TABLE `aws_notification` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_notification` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_notification_data 结构
+-- Dumping structure for table panic.aws_notification_data
 CREATE TABLE IF NOT EXISTS `aws_notification_data` (
   `notification_id` int(11) unsigned NOT NULL,
   `data` text,
@@ -462,12 +377,10 @@ CREATE TABLE IF NOT EXISTS `aws_notification_data` (
   KEY `add_time` (`add_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='系统通知数据表';
 
--- 正在导出表  panic.aws_notification_data 的数据：0 rows
-/*!40000 ALTER TABLE `aws_notification_data` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_notification_data` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_pages 结构
+-- Dumping structure for table panic.aws_pages
 CREATE TABLE IF NOT EXISTS `aws_pages` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `url_token` varchar(32) NOT NULL,
@@ -481,12 +394,10 @@ CREATE TABLE IF NOT EXISTS `aws_pages` (
   KEY `enabled` (`enabled`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_pages 的数据：0 rows
-/*!40000 ALTER TABLE `aws_pages` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_pages` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_posts_index 结构
+-- Dumping structure for table panic.aws_posts_index
 CREATE TABLE IF NOT EXISTS `aws_posts_index` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `post_id` int(10) NOT NULL,
@@ -518,12 +429,10 @@ CREATE TABLE IF NOT EXISTS `aws_posts_index` (
   KEY `view_count` (`view_count`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_posts_index 的数据：0 rows
-/*!40000 ALTER TABLE `aws_posts_index` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_posts_index` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_question 结构
+-- Dumping structure for table panic.aws_question
 CREATE TABLE IF NOT EXISTS `aws_question` (
   `question_id` int(11) NOT NULL AUTO_INCREMENT,
   `question_content` varchar(240) NOT NULL DEFAULT '' COMMENT '问题内容',
@@ -539,11 +448,7 @@ CREATE TABLE IF NOT EXISTS `aws_question` (
   `action_history_id` int(11) NOT NULL DEFAULT '0' COMMENT '动作的记录表的关连id',
   `category_id` int(11) NOT NULL DEFAULT '0' COMMENT '分类 ID',
   `agree_count` int(11) NOT NULL DEFAULT '0' COMMENT '回复赞同数总和',
-  `against_count` int(11) NOT NULL DEFAULT '0' COMMENT '回复反对数总和',
   `best_answer` int(11) NOT NULL DEFAULT '0' COMMENT '最佳回复 ID',
-  `has_attach` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否存在附件',
-  `unverified_modify` text,
-  `unverified_modify_count` int(10) NOT NULL DEFAULT '0',
   `last_answer` int(11) NOT NULL DEFAULT '0' COMMENT '最后回答 ID',
   `popular_value` double NOT NULL DEFAULT '0',
   `popular_value_update` int(10) NOT NULL DEFAULT '0',
@@ -552,7 +457,6 @@ CREATE TABLE IF NOT EXISTS `aws_question` (
   `thanks_count` int(10) NOT NULL DEFAULT '0',
   `question_content_fulltext` text,
   `is_recommend` tinyint(1) NOT NULL DEFAULT '0',
-  `received_email_id` int(10) DEFAULT NULL,
   `chapter_id` int(10) unsigned DEFAULT NULL,
   `sort` tinyint(2) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`question_id`),
@@ -569,21 +473,16 @@ CREATE TABLE IF NOT EXISTS `aws_question` (
   KEY `popular_value` (`popular_value`),
   KEY `best_answer` (`best_answer`),
   KEY `popular_value_update` (`popular_value_update`),
-  KEY `against_count` (`against_count`),
   KEY `is_recommend` (`is_recommend`),
-  KEY `received_email_id` (`received_email_id`),
-  KEY `unverified_modify_count` (`unverified_modify_count`),
   KEY `chapter_id` (`chapter_id`),
   KEY `sort` (`sort`),
   FULLTEXT KEY `question_content_fulltext` (`question_content_fulltext`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='问题列表';
 
--- 正在导出表  panic.aws_question 的数据：0 rows
-/*!40000 ALTER TABLE `aws_question` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_question` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_question_comments 结构
+-- Dumping structure for table panic.aws_question_comments
 CREATE TABLE IF NOT EXISTS `aws_question_comments` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `question_id` int(11) DEFAULT '0',
@@ -597,12 +496,10 @@ CREATE TABLE IF NOT EXISTS `aws_question_comments` (
   KEY `anonymous` (`anonymous`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_question_comments 的数据：0 rows
-/*!40000 ALTER TABLE `aws_question_comments` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_question_comments` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_question_focus 结构
+-- Dumping structure for table panic.aws_question_focus
 CREATE TABLE IF NOT EXISTS `aws_question_focus` (
   `focus_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `question_id` int(11) DEFAULT NULL COMMENT '话题ID',
@@ -613,12 +510,10 @@ CREATE TABLE IF NOT EXISTS `aws_question_focus` (
   KEY `question_uid` (`question_id`,`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='问题关注表';
 
--- 正在导出表  panic.aws_question_focus 的数据：0 rows
-/*!40000 ALTER TABLE `aws_question_focus` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_question_focus` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_question_invite 结构
+-- Dumping structure for table panic.aws_question_invite
 CREATE TABLE IF NOT EXISTS `aws_question_invite` (
   `question_invite_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `question_id` int(11) NOT NULL COMMENT '问题ID',
@@ -633,12 +528,10 @@ CREATE TABLE IF NOT EXISTS `aws_question_invite` (
   KEY `add_time` (`add_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='邀请问答';
 
--- 正在导出表  panic.aws_question_invite 的数据：0 rows
-/*!40000 ALTER TABLE `aws_question_invite` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_question_invite` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_question_thanks 结构
+-- Dumping structure for table panic.aws_question_thanks
 CREATE TABLE IF NOT EXISTS `aws_question_thanks` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT '0',
@@ -648,27 +541,10 @@ CREATE TABLE IF NOT EXISTS `aws_question_thanks` (
   KEY `question_id` (`question_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_question_thanks 的数据：0 rows
-/*!40000 ALTER TABLE `aws_question_thanks` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_question_thanks` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_question_uninterested 结构
-CREATE TABLE IF NOT EXISTS `aws_question_uninterested` (
-  `interested_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `question_id` int(11) DEFAULT NULL COMMENT '话题ID',
-  `uid` int(11) DEFAULT NULL COMMENT '用户UID',
-  `add_time` int(10) DEFAULT '0',
-  PRIMARY KEY (`interested_id`),
-  KEY `uid` (`uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='问题不感兴趣表';
-
--- 正在导出表  panic.aws_question_uninterested 的数据：0 rows
-/*!40000 ALTER TABLE `aws_question_uninterested` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_question_uninterested` ENABLE KEYS */;
-
-
--- 导出  表 panic.aws_question_vote 结构
+-- Dumping structure for table panic.aws_question_vote
 CREATE TABLE IF NOT EXISTS `aws_question_vote` (
   `voter_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自动ID',
   `question_id` int(11) DEFAULT NULL COMMENT '问题id',
@@ -681,12 +557,10 @@ CREATE TABLE IF NOT EXISTS `aws_question_vote` (
   KEY `vote_value` (`vote_value`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_question_vote 的数据：0 rows
-/*!40000 ALTER TABLE `aws_question_vote` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_question_vote` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_redirect 结构
+-- Dumping structure for table panic.aws_redirect
 CREATE TABLE IF NOT EXISTS `aws_redirect` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `item_id` int(11) DEFAULT '0',
@@ -698,32 +572,10 @@ CREATE TABLE IF NOT EXISTS `aws_redirect` (
   KEY `uid` (`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_redirect 的数据：0 rows
-/*!40000 ALTER TABLE `aws_redirect` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_redirect` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_related_links 结构
-CREATE TABLE IF NOT EXISTS `aws_related_links` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `uid` int(10) NOT NULL,
-  `item_type` varchar(32) NOT NULL,
-  `item_id` int(10) NOT NULL,
-  `link` varchar(240) NOT NULL,
-  `add_time` int(10) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `uid` (`uid`),
-  KEY `item_type` (`item_type`),
-  KEY `item_id` (`item_id`),
-  KEY `add_time` (`add_time`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
--- 正在导出表  panic.aws_related_links 的数据：0 rows
-/*!40000 ALTER TABLE `aws_related_links` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_related_links` ENABLE KEYS */;
-
-
--- 导出  表 panic.aws_related_topic 结构
+-- Dumping structure for table panic.aws_related_topic
 CREATE TABLE IF NOT EXISTS `aws_related_topic` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `topic_id` int(11) DEFAULT '0' COMMENT '话题 ID',
@@ -733,73 +585,10 @@ CREATE TABLE IF NOT EXISTS `aws_related_topic` (
   KEY `related_id` (`related_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_related_topic 的数据：0 rows
-/*!40000 ALTER TABLE `aws_related_topic` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_related_topic` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_report 结构
-CREATE TABLE IF NOT EXISTS `aws_report` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uid` int(11) DEFAULT '0' COMMENT '举报用户id',
-  `type` varchar(50) DEFAULT NULL COMMENT '类别',
-  `target_id` int(11) DEFAULT '0' COMMENT 'ID',
-  `reason` varchar(240) DEFAULT NULL COMMENT '举报理由',
-  `url` varchar(240) DEFAULT NULL,
-  `add_time` int(11) DEFAULT '0' COMMENT '举报时间',
-  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否处理',
-  PRIMARY KEY (`id`),
-  KEY `add_time` (`add_time`),
-  KEY `status` (`status`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
--- 正在导出表  panic.aws_report 的数据：0 rows
-/*!40000 ALTER TABLE `aws_report` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_report` ENABLE KEYS */;
-
-
--- 导出  表 panic.aws_reputation_category 结构
-CREATE TABLE IF NOT EXISTS `aws_reputation_category` (
-  `auto_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `uid` int(10) DEFAULT '0',
-  `category_id` smallint(4) DEFAULT '0',
-  `update_time` int(10) DEFAULT '0',
-  `reputation` int(10) DEFAULT '0',
-  `thanks_count` int(10) DEFAULT '0',
-  `agree_count` int(10) DEFAULT '0',
-  `question_count` int(10) DEFAULT '0',
-  PRIMARY KEY (`auto_id`),
-  UNIQUE KEY `uid_category_id` (`uid`,`category_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
--- 正在导出表  panic.aws_reputation_category 的数据：0 rows
-/*!40000 ALTER TABLE `aws_reputation_category` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_reputation_category` ENABLE KEYS */;
-
-
--- 导出  表 panic.aws_reputation_topic 结构
-CREATE TABLE IF NOT EXISTS `aws_reputation_topic` (
-  `auto_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `uid` int(11) DEFAULT '0',
-  `topic_id` int(11) DEFAULT '0' COMMENT '话题ID',
-  `topic_count` int(10) DEFAULT '0' COMMENT '威望问题话题计数',
-  `update_time` int(10) DEFAULT '0' COMMENT '更新时间',
-  `agree_count` int(10) DEFAULT '0' COMMENT '赞成',
-  `thanks_count` int(10) DEFAULT '0' COMMENT '感谢',
-  `reputation` int(10) DEFAULT '0',
-  PRIMARY KEY (`auto_id`),
-  KEY `topic_count` (`topic_count`),
-  KEY `uid` (`uid`),
-  KEY `topic_id` (`topic_id`),
-  KEY `reputation` (`reputation`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
--- 正在导出表  panic.aws_reputation_topic 的数据：0 rows
-/*!40000 ALTER TABLE `aws_reputation_topic` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_reputation_topic` ENABLE KEYS */;
-
-
--- 导出  表 panic.aws_search_cache 结构
+-- Dumping structure for table panic.aws_search_cache
 CREATE TABLE IF NOT EXISTS `aws_search_cache` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `hash` varchar(32) NOT NULL,
@@ -810,12 +599,10 @@ CREATE TABLE IF NOT EXISTS `aws_search_cache` (
   KEY `time` (`time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_search_cache 的数据：0 rows
-/*!40000 ALTER TABLE `aws_search_cache` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_search_cache` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_sessions 结构
+-- Dumping structure for table panic.aws_sessions
 CREATE TABLE IF NOT EXISTS `aws_sessions` (
   `id` varchar(32) NOT NULL,
   `modified` int(10) NOT NULL,
@@ -826,12 +613,10 @@ CREATE TABLE IF NOT EXISTS `aws_sessions` (
   KEY `lifetime` (`lifetime`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_sessions 的数据：0 rows
-/*!40000 ALTER TABLE `aws_sessions` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_sessions` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_system_setting 结构
+-- Dumping structure for table panic.aws_system_setting
 CREATE TABLE IF NOT EXISTS `aws_system_setting` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `varname` varchar(240) NOT NULL COMMENT '字段名',
@@ -840,12 +625,10 @@ CREATE TABLE IF NOT EXISTS `aws_system_setting` (
   UNIQUE KEY `varname` (`varname`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='系统设置';
 
--- 正在导出表  panic.aws_system_setting 的数据：0 rows
-/*!40000 ALTER TABLE `aws_system_setting` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_system_setting` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_topic 结构
+-- Dumping structure for table panic.aws_topic
 CREATE TABLE IF NOT EXISTS `aws_topic` (
   `topic_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '话题id',
   `topic_title` varchar(64) DEFAULT NULL COMMENT '话题标题',
@@ -880,12 +663,10 @@ CREATE TABLE IF NOT EXISTS `aws_topic` (
   KEY `discuss_count_update` (`discuss_count_update`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='话题';
 
--- 正在导出表  panic.aws_topic 的数据：0 rows
-/*!40000 ALTER TABLE `aws_topic` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_topic` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_topic_focus 结构
+-- Dumping structure for table panic.aws_topic_focus
 CREATE TABLE IF NOT EXISTS `aws_topic_focus` (
   `focus_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `topic_id` int(11) DEFAULT NULL COMMENT '话题ID',
@@ -897,12 +678,10 @@ CREATE TABLE IF NOT EXISTS `aws_topic_focus` (
   KEY `topic_uid` (`topic_id`,`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='话题关注表';
 
--- 正在导出表  panic.aws_topic_focus 的数据：0 rows
-/*!40000 ALTER TABLE `aws_topic_focus` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_topic_focus` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_topic_merge 结构
+-- Dumping structure for table panic.aws_topic_merge
 CREATE TABLE IF NOT EXISTS `aws_topic_merge` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `source_id` int(11) NOT NULL DEFAULT '0',
@@ -915,12 +694,10 @@ CREATE TABLE IF NOT EXISTS `aws_topic_merge` (
   KEY `uid` (`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_topic_merge 的数据：0 rows
-/*!40000 ALTER TABLE `aws_topic_merge` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_topic_merge` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_topic_relation 结构
+-- Dumping structure for table panic.aws_topic_relation
 CREATE TABLE IF NOT EXISTS `aws_topic_relation` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增 ID',
   `topic_id` int(11) DEFAULT '0' COMMENT '话题id',
@@ -935,12 +712,10 @@ CREATE TABLE IF NOT EXISTS `aws_topic_relation` (
   KEY `item_id` (`item_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_topic_relation 的数据：0 rows
-/*!40000 ALTER TABLE `aws_topic_relation` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_topic_relation` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_users 结构
+-- Dumping structure for table panic.aws_users
 CREATE TABLE IF NOT EXISTS `aws_users` (
   `uid` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户的 UID',
   `user_name` varchar(240) DEFAULT NULL COMMENT '用户名',
@@ -988,12 +763,10 @@ CREATE TABLE IF NOT EXISTS `aws_users` (
   KEY `last_login` (`last_login`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_users 的数据：0 rows
-/*!40000 ALTER TABLE `aws_users` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_users` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_users_attrib 结构
+-- Dumping structure for table panic.aws_users_attrib
 CREATE TABLE IF NOT EXISTS `aws_users_attrib` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `uid` int(11) DEFAULT NULL COMMENT '用户UID',
@@ -1003,12 +776,10 @@ CREATE TABLE IF NOT EXISTS `aws_users_attrib` (
   KEY `uid` (`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='用户附加属性表';
 
--- 正在导出表  panic.aws_users_attrib 的数据：0 rows
-/*!40000 ALTER TABLE `aws_users_attrib` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_users_attrib` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_users_group 结构
+-- Dumping structure for table panic.aws_users_group
 CREATE TABLE IF NOT EXISTS `aws_users_group` (
   `group_id` int(11) NOT NULL AUTO_INCREMENT,
   `type` tinyint(3) DEFAULT '0' COMMENT '0-会员组 1-系统组',
@@ -1023,12 +794,10 @@ CREATE TABLE IF NOT EXISTS `aws_users_group` (
   KEY `custom` (`custom`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='用户组';
 
--- 正在导出表  panic.aws_users_group 的数据：0 rows
-/*!40000 ALTER TABLE `aws_users_group` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_users_group` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_users_notification_setting 结构
+-- Dumping structure for table panic.aws_users_notification_setting
 CREATE TABLE IF NOT EXISTS `aws_users_notification_setting` (
   `notice_setting_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `uid` int(11) NOT NULL,
@@ -1037,12 +806,10 @@ CREATE TABLE IF NOT EXISTS `aws_users_notification_setting` (
   KEY `uid` (`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='通知设定';
 
--- 正在导出表  panic.aws_users_notification_setting 的数据：0 rows
-/*!40000 ALTER TABLE `aws_users_notification_setting` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_users_notification_setting` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_user_action_history 结构
+-- Dumping structure for table panic.aws_user_action_history
 CREATE TABLE IF NOT EXISTS `aws_user_action_history` (
   `history_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `uid` int(11) NOT NULL COMMENT '用户id',
@@ -1065,12 +832,10 @@ CREATE TABLE IF NOT EXISTS `aws_user_action_history` (
   KEY `associate_with_uid` (`uid`,`associate_type`,`associate_action`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='用户操作记录';
 
--- 正在导出表  panic.aws_user_action_history 的数据：0 rows
-/*!40000 ALTER TABLE `aws_user_action_history` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_user_action_history` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_user_action_history_fresh 结构
+-- Dumping structure for table panic.aws_user_action_history_fresh
 CREATE TABLE IF NOT EXISTS `aws_user_action_history_fresh` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `history_id` int(11) NOT NULL,
@@ -1090,12 +855,10 @@ CREATE TABLE IF NOT EXISTS `aws_user_action_history_fresh` (
   KEY `anonymous` (`anonymous`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_user_action_history_fresh 的数据：0 rows
-/*!40000 ALTER TABLE `aws_user_action_history_fresh` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_user_action_history_fresh` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_user_follow 结构
+-- Dumping structure for table panic.aws_user_follow
 CREATE TABLE IF NOT EXISTS `aws_user_follow` (
   `follow_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `fans_uid` int(11) DEFAULT NULL COMMENT '关注人的UID',
@@ -1107,12 +870,10 @@ CREATE TABLE IF NOT EXISTS `aws_user_follow` (
   KEY `user_follow` (`fans_uid`,`friend_uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='用户关注表';
 
--- 正在导出表  panic.aws_user_follow 的数据：0 rows
-/*!40000 ALTER TABLE `aws_user_follow` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_user_follow` ENABLE KEYS */;
+-- Data exporting was unselected.
 
 
--- 导出  表 panic.aws_verify_apply 结构
+-- Dumping structure for table panic.aws_verify_apply
 CREATE TABLE IF NOT EXISTS `aws_verify_apply` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `uid` int(11) NOT NULL,
@@ -1128,9 +889,7 @@ CREATE TABLE IF NOT EXISTS `aws_verify_apply` (
   KEY `type` (`type`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- 正在导出表  panic.aws_verify_apply 的数据：0 rows
-/*!40000 ALTER TABLE `aws_verify_apply` DISABLE KEYS */;
-/*!40000 ALTER TABLE `aws_verify_apply` ENABLE KEYS */;
+-- Data exporting was unselected.
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
