@@ -742,7 +742,7 @@ class account_class extends AWS_MODEL
             $where[] = 'custom = ' . intval($custom);
         }
 
-        if ($users_groups = $this->fetch_all('users_group', implode(' AND ', $where), 'reputation_lower ASC'))
+        if ($users_groups = $this->fetch_all('users_group', implode(' AND ', $where), 'reputation_lower ASC, group_id ASC'))
         {
             foreach ($users_groups as $key => $val)
             {
