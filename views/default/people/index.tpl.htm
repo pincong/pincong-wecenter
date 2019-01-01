@@ -65,7 +65,9 @@
 							<h1>
 								<span class="aw-small-text">
 									<a href="people/<?php echo $this->user['data']['flagged_by']; ?>"><?php _e('管理员'); ?></a><?php _e('标记'); ?>
-									<?php if ($this->user['flagged'] == 1) { ?>
+									<?php if ($this->user['flagged'] == -1) { ?>
+										(<?php _e('观察'); ?>)
+									<?php } elseif ($this->user['flagged'] == 1) { ?>
 										(<?php _e('禁止登录'); ?>)
 									<?php } elseif ($this->user['flagged'] == 2) { ?>
 										(<?php _e('禁止登录 + 隐藏全部发言'); ?>)

@@ -171,7 +171,7 @@ class ajax extends AWS_CONTROLLER
 			{
 				if ($user_info['flagged'] == 0)
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('正式用户请先仅标记')));
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('正式用户请先标记为「观察」')));
 				}
 				else if ($user_info['flagged'] < 0 AND $this->model('account')->get_user_extra_data($uid)['flagged_by'] == $this->user_id)
 				{

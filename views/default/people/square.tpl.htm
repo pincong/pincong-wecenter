@@ -20,6 +20,7 @@
 								<p class="aw-small-text title">
 									<a href="<?php echo UF::url($val); ?>" class="aw-user-name"><?php echo UF::name($val); ?></a>
 									<?php if ($val['verified']) { ?><em class="aw-verified"><?php echo $val['verified']; ?></em><?php } ?>
+									<?php if ($val['flagged'] == -1) { ?><sup><?php _e('观察'); ?></sup><?php } ?>
 									<?php if ($val['forbidden']) { ?><sup><?php _e('封禁'); ?></sup><?php } ?>
 								</p>
 								<p class="aw-small-text signature"><?php echo UF::signature($val, $this->user_info['permission']['is_administrator']); ?></p>

@@ -18,6 +18,7 @@
 										<?php } ?>
 										</a>
 										<?php if ($val['user_info']['verified']) { ?><em class="aw-verified"><?php echo $val['user_info']['verified']; ?></em><?php } ?>
+										<?php if ($val['user_info']['flagged'] == -1) { ?><sup><?php _e('观察'); ?></sup><?php } ?>
 										<?php if ($val['user_info']['forbidden']) { ?><sup><?php _e('封禁'); ?></sup><?php } ?>
 										<?php if ($val['at_uid']) { ?> <?php _e('回复'); ?> <a class="aw-user-name" href="<?php echo UF::url($val['at_user_info']); ?>"><?php echo UF::name($val['at_user_info']); ?></a><?php } ?>
 										<!-- end 用户名 -->

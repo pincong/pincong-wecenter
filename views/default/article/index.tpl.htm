@@ -279,6 +279,7 @@
 										<?php echo UF::name($this->article_info['user_info']);?>
 									<?php } ?>
 								</a>
+								<?php if ($this->article_info['user_info']['flagged'] == -1) { ?><sup><?php _e('观察'); ?></sup><?php } ?>
 								<?php if ($this->article_info['user_info']['forbidden']) { ?><sup><?php _e('封禁'); ?></sup><?php } ?>
 								<?php if ($this->article_info['user_info']['verified']) { ?>
 									<em class="aw-verified"><?php echo $this->article_info['user_info']['verified']; ?></em>

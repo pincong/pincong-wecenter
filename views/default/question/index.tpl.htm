@@ -324,6 +324,7 @@
 										<?php echo UF::name($this->question_info['user_info']);?>
 									<?php } ?>
 								</a>
+								<?php if ($this->question_info['user_info']['flagged'] == -1) { ?><sup><?php _e('观察'); ?></sup><?php } ?>
 								<?php if ($this->question_info['user_info']['forbidden']) { ?><sup><?php _e('封禁'); ?></sup><?php } ?>
 								<?php if ($this->question_info['user_info']['verified']) { ?>
 									<em class="aw-verified"><?php echo $this->question_info['user_info']['verified']; ?></em>
