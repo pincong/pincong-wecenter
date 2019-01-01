@@ -98,7 +98,7 @@ class api extends AWS_CONTROLLER
 
 		// 1:滚动字幕 4:底端渐隐 5:顶端渐隐
 		$mode = intval($_POST['mode']);
-		if ($mode !== 4 OR $mode !== 5)
+		if ($mode !== 4 AND $mode !== 5)
 		{
 			$mode = 1;
 		}

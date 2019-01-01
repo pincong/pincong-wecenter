@@ -32,9 +32,11 @@
 	transition: opacity 0.1s linear 0s, color 0.1s linear 0s;
 	color: #A2A2A2;
 }
+.c-btn-hover,
 .c-btn:hover {
 	color: #f45a8d;
 }
+.c-btn-active,
 .c-btn:active {
 	color: #fff;
 	background-color: #00a1d8;
@@ -102,10 +104,48 @@
 	background-color: #ececec;
 }
 
+.c-loader {
+	-webkit-animation: spin 1.2s linear infinite;
+	animation: spin 1.2s linear infinite;
+	border-radius: 50%;
+	border-style: solid;
+	border-color: rgba(255,255,255,.5);
+	border-top-color: rgba(127,127,127,.5);
+	border-width: 8px;
+	width: 64px;
+	height: 64px;
+}
+@-webkit-keyframes spin {
+	0% { 
+		-webkit-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-webkit-transform: rotate(360deg);
+		-ms-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+@keyframes spin {
+	0% {
+		-webkit-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-webkit-transform: rotate(360deg);
+		-ms-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+
+
 /* end 通用组件 */
 
 
 .ab-player {
+	position: relative;
 	background: #000;
 }
 
@@ -114,8 +154,6 @@
 }
 
 .ab-video video {
-	width: 100%;
-	height: 100%;
 	background: #000;
 }
 
@@ -220,6 +258,116 @@
 		height: 240px;
 	}
 }
+
+
+
+
+.c-dlg {
+	box-sizing: border-box;
+	position: absolute;
+	padding: 10px;
+	border-radius: 5px;
+	transition: all 0.1s ease-in-out;
+	box-shadow: 0 0 10px rgba(0,0,0,.2);
+	background: rgba(255,255,255,.9);
+	z-index: 1;
+}
+
+.c-dlg-title {
+	display: block;
+	margin: 0;
+	text-align: left;
+	color: #666;
+	font-weight: bold;
+	font-size: 12px;
+}
+
+.c-dlg-btn-group {
+	display: block;
+	text-align: center;
+}
+
+.c-dlg-btn {
+	box-sizing: border-box;
+	display: inline-block;
+	border-radius: 5px;
+	border: solid 2px;
+	cursor: pointer;
+	transition: all 0.1s ease-in-out;
+	color: #a2a2a2;
+	text-align: center;
+	font-size: 10px;
+}
+
+.c-dlg-btn:hover {
+	color: #666;
+}
+
+.c-dlg-btn-group input {
+	appearance: none;
+	-webkit-appearance: none;
+	outline: none;
+	display: none
+}
+
+.c-dlg-btn-group input:checked ~ .c-dlg-btn,
+.c-dlg-btn-on {
+	color: #fff;
+	background-color: #666;
+	border-color: #666;
+}
+
+.c-dlg-btn-group input:checked ~ .c-dlg-btn:hover,
+.c-dlg-btn-on:hover {
+	color: #fff;
+}
+
+.ab-font-dlg {
+	width: 220px;
+	height: 160px;
+	left: 5px;
+	bottom: 30px;
+	visibility: hidden;
+}
+
+.ab-font-dlg .c-dlg-btn {
+	width: 60px;
+	height: 44px;
+	line-height: 64px;
+	vertical-align: middle;
+	overflow: hidden;
+	margin: 2px auto;
+}
+
+.ab-color-dlg {
+	width: 206px;
+	height: 201px;
+	left: 5px;
+	bottom: 30px;
+	padding: 0;
+	visibility: hidden;
+}
+
+.ab-color-dlg .colpick {
+	width: 100%;
+	height: 100%;
+	border: 0;
+	background: transparent;
+}
+
+.ab-loader {
+	box-sizing: border-box;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 64px;
+	height: 64px;
+	margin-left: -32px;
+	margin-top: -32px;
+	z-index: 1;
+	visibility: hidden;
+}
+
 </style>
 
 <script>
@@ -297,6 +445,7 @@ var ABP = {};
 		this.isPlaying = false;
 		this.danmakuEnabled = true;
 		this.videoLoaded = false;
+		this.danmakuColor = 0xffffff;
 		// end 初始状态
 
 		this._init();
@@ -323,52 +472,24 @@ var ABP = {};
 	};
 
 	Player.prototype.toggleLoop = function() {
-		if (!this.videoLoaded) {
-			this.emitter.emit('requireVideo', function() {
-				this._toggleLoop();
-			}.bind(this));
-		} else {
-			this._toggleLoop();
-		}
+		this._toggleLoop();
 	};
 
 	Player.prototype.toggleDanmaku = function() {
-		if (!this.videoLoaded) {
-			this.emitter.emit('requireVideo', function() {
-				this._toggleDanmaku();
-			}.bind(this));
-		} else {
-			this._toggleDanmaku();
-		}
+		this._toggleDanmaku();
 	};
 
 	Player.prototype.toggleMute = function() {
-		if (!this.videoLoaded) {
-			this.emitter.emit('requireVideo', function() {
-				this._toggleMute();
-			}.bind(this));
-		} else {
-			this._toggleMute();
-		}
+		this._toggleMute();
 	};
 
-	Player.prototype.jumpTo = function(seconds) {
+	Player.prototype.seek = function(seconds) {
 		if (!this.videoLoaded) {
 			this.emitter.emit('requireVideo', function() {
-				this._jumpTo(seconds);
+				this._seek(seconds);
 			}.bind(this));
 		} else {
-			this._jumpTo(seconds);
-		}
-	};
-
-	Player.prototype.sendDanmaku = function(text, mode, size, color) {
-		if (!this.videoLoaded) {
-			this.emitter.emit('requireVideo', function() {
-				this._sendDanmaku(text, mode, size, color);
-			}.bind(this));
-		} else {
-			this._sendDanmaku(text, mode, size, color);
+			this._seek(seconds);
 		}
 	};
 
@@ -382,6 +503,14 @@ var ABP = {};
 
 	Player.prototype.setPoster = function(url) {
 		this.video.poster = url;
+	};
+
+	Player.prototype.showLoader = function() {
+		this.$loader.css('visibility', 'visible');
+	};
+
+	Player.prototype.hideLoader = function() {
+		this.$loader.css('visibility', 'hidden');
 	};
 
 
@@ -412,6 +541,13 @@ var ABP = {};
 		this.$sendBtn = this.$$('.ab-control .ab-send-btn');
 		this.$danmakuInput = this.$$('.ab-control .ab-danmaku-input');
 
+		this.$fontBtn = this.$$('.ab-font-btn');
+		this.$colorBtn = this.$$('.ab-color-btn');
+		this.$fontDlg = this.$$('.ab-font-dlg');
+		this.$colorDlg = this.$$('.ab-color-dlg');
+
+		this.$loader = this.$$('.ab-loader');
+
 		this._bindEvents();
 	};
 
@@ -430,29 +566,40 @@ var ABP = {};
 			self.toggleMute();
 		});
 
+		this.$fontBtn.click(function() {
+			self._toggleFontDialog();
+		});
+		this.$colorBtn.click(function() {
+			self._toggleColorDialog();
+		});
+		this.$colorDlg.colpick({
+			flat: true,
+			color: 'ffffff',
+			layout:'hex',
+			onChange: function(hsb, hex) {
+				self.danmakuColor = Number('0x' + hex);
+			},
+			onSubmit: function() {
+				self._toggleColorDialog();
+			}
+		});
+
 		this.$volumeBar.click(function(e) {
 			var progress = (e.clientX - self.$volumeBar.offset().left) / self.$volumeBar.width();
 			if (progress < 0) progress = 0;
 			if (progress > 1) progress = 1;
 			self.video.volume = progress;
-			if (!self.videoLoaded) {
-				self.emitter.emit('requireVideo', function() {});
-			}
 		});
 
 		this.$seekbar.click(function(e) {
 			var progress = (e.clientX - self.$seekbar.offset().left) / self.$seekbar.width();
 			if (progress < 0) progress = 0;
 			if (progress > 1) progress = 1;
-			self.jumpTo(self.video.duration * progress);
+			self.seek(self.video.duration * progress);
 		});
 
 		this.$sendBtn.click(function() {
-			self.sendDanmaku(
-				self.$danmakuInput.val()
-				// TODO: mode, size, color
-			);
-			self.$danmakuInput.val('');
+			self._sendButtonClick();
 		});
 
 		this.video.onplaying = function() {
@@ -521,7 +668,7 @@ var ABP = {};
 		this._updateVolumeIcon();
 	};
 
-	Player.prototype._jumpTo = function(seconds) {
+	Player.prototype._seek = function(seconds) {
 		if (!isNaN(seconds)) this.video.currentTime = seconds;
 		if (this.video.paused) this.video.play();
 	};
@@ -571,7 +718,7 @@ var ABP = {};
 
 		// 1:滚动字幕 4:底端渐隐 5:顶端渐隐
 		mode = parseInt(mode);
-		if (mode !== 4 || mode !== 5) mode = 1;
+		if (mode !== 4 && mode !== 5) mode = 1;
 
 		// 18:小字号 25:中字号
 		size = parseInt(size);
@@ -609,6 +756,38 @@ var ABP = {};
 		this.cm.insert(danmaku); // 插入到时间轴
 	};
 
+
+	Player.prototype._sendButtonClick = function() {
+		if (!this.videoLoaded) return;
+		this._sendDanmaku(
+			this.$danmakuInput.val(),
+			this.$$('input[name="abp-danmaku-mode"]:checked').val(),
+			this.$$('input[name="abp-danmaku-size"]:checked').val(),
+			this.danmakuColor
+		);
+		this.$danmakuInput.val('');
+	};
+
+	Player.prototype._toggleFontDialog = function() {
+		if (this.$fontDlg.css('visibility') == 'hidden') {
+			this.$fontDlg.css('visibility', 'visible');
+			this.$fontBtn.addClass('c-btn-hover');
+		} else {
+			this.$fontDlg.css('visibility', 'hidden');
+			this.$fontBtn.removeClass('c-btn-hover');
+		}
+	};
+
+	Player.prototype._toggleColorDialog = function() {
+		if (this.$colorDlg.css('visibility') == 'hidden') {
+			this.$colorDlg.css('visibility', 'visible');
+			this.$colorBtn.addClass('c-btn-hover');
+		} else {
+			this.$colorDlg.css('visibility', 'hidden');
+			this.$colorBtn.removeClass('c-btn-hover');
+		}
+	};
+
 	// ------ end 私有方法 ------
 
 	ABP.Player = Player;
@@ -620,9 +799,11 @@ var ABP = {};
 	<div class="c-row ab-video">
 		<div class="c-cell ccl">
 			<div class="ccl-container"></div>
-			<video>Your browser does not support HTML5 video.</video>
+			<video width="100%">Your browser does not support HTML5 video.</video>
+			<div class="c-loader ab-loader"></div>
 		</div>
 	</div>
+
 	<div class="c-row c-content-height ab-control">
 		<!-- 控制条第一行 -->
 		<div class="c-table ab-control-bar">
@@ -662,8 +843,8 @@ var ABP = {};
 		<!-- 控制条第二行 -->
 		<div class="c-table ab-control-bar">
 			<div class="c-cell c-content-width"><!-- 弹幕选项按钮
-				--><span class="c-btn ab-font-btn"><i class="c-icon-font-style"></i></span><!-- 
-				--><span class="c-btn ab-color-btn"><i class="c-icon-color-mode"></i></span><!-- 
+				--><span class="c-btn ab-font-btn"><i class="c-icon-font-style"></i></span><!--
+				--><span class="c-btn ab-color-btn"><i class="c-icon-color-mode"></i></span><!--
 			--></div>
 			<div class="c-cell"><!-- 弹幕输入框 宽度自适应
 				--><input type="text" class="c-input ab-danmaku-input"><!-- 
@@ -674,4 +855,26 @@ var ABP = {};
 		</div>
 		<!-- end 控制条第二行 -->
 	</div>
+
+	<div class="c-dlg ab-font-dlg">
+		<p class="c-dlg-title">弹幕字号</p>
+		<div class="c-dlg-btn-group">
+			<label><input type="radio" value="18" name="abp-danmaku-size"><span class="c-dlg-btn">小字号</span></label>
+			<label><input type="radio" value="25" name="abp-danmaku-size" checked="checked"><span class="c-dlg-btn">中字号</span></label>
+		</div>
+		<p class="c-dlg-title">弹幕模式</p>
+		<div class="c-dlg-btn-group">
+			<label><input type="radio" value="5" name="abp-danmaku-mode"><span class="c-dlg-btn">顶端渐隐</span></label>
+			<label><input type="radio" value="1" name="abp-danmaku-mode" checked="checked"><span class="c-dlg-btn">滚动字幕</span></label>
+			<label><input type="radio" value="4" name="abp-danmaku-mode"><span class="c-dlg-btn">底端渐隐</span></label>
+		</div>
+	</div>
+
+	<div class="c-dlg ab-color-dlg"></div>
 </div>
+
+
+
+
+
+

@@ -1,8 +1,10 @@
 <?php TPL::output('global/header.tpl.htm'); ?>
 
 <link rel="stylesheet" type="text/css" href="<?php echo G_STATIC_URL; ?>/player/css/icon.css" />
-<link rel="stylesheet" type="text/css" href="<?php echo G_STATIC_URL; ?>/player/CommentCoreLibrary/css/style.css" />
-<script src="<?php echo G_STATIC_URL; ?>/player/CommentCoreLibrary/CommentCoreLibrary.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo G_STATIC_URL; ?>/player/css/CommentCoreLibrary.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo G_STATIC_URL; ?>/player/css/colpick.css" />
+<script src="<?php echo G_STATIC_URL; ?>/player/js/CommentCoreLibrary.js" type="text/javascript"></script>
+<script src="<?php echo G_STATIC_URL; ?>/player/js/colpick.js" type="text/javascript"></script>
 
 
 <div class="aw-container-wrap">
@@ -334,7 +336,7 @@ function get_video_metadata(callback) {
 	$.post(url, params + '&_post_type=ajax', function(result) {
 		busy_while_getting_metadata = false;
 
-		if (!result['rsm'] || !result['rsm']['formats']) {
+		if (!result['rsm'] || !result['rsm']['formats'] || !result['rsm']['formats'][0]) {
 			callback('error');
 			return;
 		}
@@ -385,8 +387,9 @@ $(document).ready(function () {
 			console.log('正在加载视频, 请稍候...');
 			return;
 		}
-
+		video_player.showLoader();
 		get_video_metadata(function(error, data) {
+			video_player.hideLoader();
 			if (error && !TEST_VIDEO) {
 				alert('解析视频失败');
 				return;
