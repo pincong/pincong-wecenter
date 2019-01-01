@@ -31,7 +31,7 @@
 	// causes a double line break.
 	var IE_BR_FIX = IE_VER && IE_VER < 11;
 
-	var EMOTICON_DATA_ATTR = 'data-sceditor-emoticon';
+
 
 	var getEditorCommand = sceditor.command.get;
 
@@ -517,22 +517,6 @@
 		},
 		// END_COMMAND
 
-		// START_COMMAND: Emoticons
-		emoticon: {
-			allowsEmpty: true,
-			tags: {
-				img: {
-					src: null,
-					'data-sceditor-emoticon': null
-				}
-			},
-			format: function (element, content) {
-				return attr(element, EMOTICON_DATA_ATTR) + content;
-			},
-			html: '{0}'
-		},
-		// END_COMMAND
-
 		// START_COMMAND: Horizontal Rule
 		hr: {
 			tags: {
@@ -563,10 +547,7 @@
 						return element.style ? element.style[name] : null;
 					};
 
-				// check if this is an emoticon image
-				if (attr(element, EMOTICON_DATA_ATTR)) {
-					return content;
-				}
+
 
 				//width = attr(element, 'width') || style('width');
 				//height = attr(element, 'height') || style('height');
@@ -2499,10 +2480,6 @@
 					if (typeof vChildren === 'object') {
 						isValidChild = vChildren.indexOf(tag) > -1;
 
-						// Emoticons should always be converted
-						if (is(node, 'img') && attr(node, EMOTICON_DATA_ATTR)) {
-							isValidChild = true;
-						}
 
 						// if this tag is one of the parents allowed children
 						// then set this tags allowed children to whatever it
