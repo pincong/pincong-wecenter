@@ -362,8 +362,7 @@ $(document).ready(function () {
 		get_video_metadata(function(error, formats) {
 			video_player.hideLoader();
 			if (error) return;
-			video_url = formats[0]['url'];
-			video_player.setSource(video_url);
+			video_player.setFormats(formats);
 			next();
 		});
 	});

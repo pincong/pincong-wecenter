@@ -667,7 +667,9 @@ var ABP = {};
 		this.danmakuColor = 0xffffff;
 		this.timeSeeking = 0;
 		this.duration = 0;
-		this.currentTime = 0;
+		this.playbackRate = 1.0;
+		this.formats = [];
+		this.currentFormatIndex = 0;
 		// end 初始状态
 
 		this._init();
@@ -706,23 +708,31 @@ var ABP = {};
 	};
 
 	Player.prototype.seek = function(time) {
+		// 影片已载入
+		if (this.videoLoaded) {
+			this.video.currentTime = time;
+			this.video.play();
+			return;
+		}
+
+		// 影片未载入
 		if (this.timeSeeking == time) return;
 		this.timeSeeking = time;
-		if (!this.videoLoaded) {
-			this.emitter.emit('requireVideo', function() {
-				this._seek(time);
-			}.bind(this));
-		} else {
-			this._seek(time);
-		}
+		this.emitter.emit('requireVideo', function() {});
 	};
 
 	Player.prototype.loadDanmaku = function(danmakuArray) {
 		this.cm.load(danmakuArray);
 	};
 
-	Player.prototype.setSource = function(url) {
-		this.video.src = url;
+	Player.prototype.setFormats = function(formats) {
+		if (!$.isArray(formats) || !formats.length) return;
+		this.formats = $.extend(true, [], formats);
+		if (this.currentFormatIndex >= this.formats.length) {
+			this.currentFormatIndex = this.formats.length - 1;
+		}
+		this._setFormatsUI();
+		this.video.src = this.formats[this.currentFormatIndex]['url'];
 		this.videoLoaded = false;
 	};
 
@@ -860,7 +870,7 @@ var ABP = {};
 		});
 
 		ABP.Util.bindClick(self.$$('input[name="abp-speed"]'), function() {
-			self.video.playbackRate = this.value;
+			self.video.playbackRate = self.playbackRate = this.value;
 		});
 
 		this.video.onplaying = function() {
@@ -868,6 +878,7 @@ var ABP = {};
 			self.$playIcon.attr('class', 'c-icon-pause');
 			if (self.danmakuEnabled) self.cm.start();
 			self.isPlaying = true;
+			self.video.playbackRate = self.playbackRate;
 		};
 		this.video.onpause = function() {
 			self.$playIcon.attr('class', 'c-icon-play');
@@ -879,7 +890,6 @@ var ABP = {};
 			self._updateVolumeBar();
 		};
 		this.video.ontimeupdate = function() {
-			self.currentTime = self.video.currentTime;
 			self._updateDanmakuStage();
 			self._updateSeekbar();
 			self._updateCurrentTimeLabel();
@@ -887,7 +897,11 @@ var ABP = {};
 		this.video.onloadedmetadata = function() {
 			self.videoLoaded = true;
 			self.duration = self.video.duration;
-			self.video.currentTime = self.currentTime;
+			if (self.timeSeeking) {
+				self.video.currentTime = self.timeSeeking;
+				self.timeSeeking = 0;
+				if (self.isPlaying) self.video.play();
+			}
 			self._updateDurationLabel();
 		};
 
@@ -958,12 +972,6 @@ var ABP = {};
 			this.video.muted = true;
 		}
 		this._updateVolumeIcon();
-	};
-
-	Player.prototype._seek = function(time) {
-		this.currentTime = time;
-		if (this.videoLoaded) this.video.currentTime = time;
-		if (this.video.paused) this.video.play();
 	};
 
 	Player.prototype._updateVolumeIcon = function() {
@@ -1119,6 +1127,39 @@ var ABP = {};
 			this.$settingsDlg.css('visibility', 'hidden');
 			this.$settingsBtn.removeClass('c-btn-hover');
 		}
+	};
+
+	Player.prototype._setFormatsUI = function() {
+		if (this.formats.length < 2) {
+			this.$$('.ab-quality-option-group').html('');
+			this.$$('.ab-quality-option-title').hide();
+			return;
+		}
+		var html = '', qualityName, checkedState;
+		for (var i = 0; i < this.formats.length; i++) {
+			if (i == this.currentFormatIndex)
+				checkedState = 'checked="checked"';
+			else
+				checkedState = '';
+			qualityName = $('<div>').text(this.formats[i]['quality'] || 'unknown').html(); // escape html special chars
+			html += '<label><input type="radio" value="' + i + '" name="abp-quality" ' + checkedState + '><span class="c-dlg-btn ab-quality-option">' + qualityName + '</span></label>\r\n';
+		}
+		this.$$('.ab-quality-option-group').html(html);
+		this.$$('.ab-quality-option-title').show();
+
+		var self = this;
+		ABP.Util.bindClick(self.$$('input[name="abp-quality"]'), function() {
+			self._switchFormat(parseInt(this.value));
+		});
+	};
+
+	Player.prototype._switchFormat = function(index) {
+		if (index == this.currentFormatIndex) return;
+		if (index >= this.formats.length) return;
+		this.currentFormatIndex = index;
+		this.timeSeeking = this.video.currentTime;
+		this.video.src = this.formats[this.currentFormatIndex]['url'];
+		this.videoLoaded = false;
 	};
 
 	// ------ end 私有方法 ------
