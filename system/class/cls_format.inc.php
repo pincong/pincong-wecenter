@@ -22,7 +22,7 @@ class FORMAT
 		}
 		if (!H::content_url_whitelist_check($url))
 		{
-			return "<a href=\"$url\" rel=\"nofollow noreferrer noopener\" target=\"_blank\">$url</a>";
+			return self::parse_link($url);
 		}
 		return "<img src=\"$url\" alt=\"$url\" style=\"max-width:100%\">";
 	}
@@ -35,12 +35,12 @@ class FORMAT
 		}
 		if (!H::content_url_whitelist_check($url))
 		{
-			return "<a href=\"$url\" rel=\"nofollow noreferrer noopener\" target=\"_blank\">$url</a>";
+			return self::parse_link($url);
 		}
 		return "<video controls preload=\"none\" src=\"$url\" style=\"max-width:100%\"></video>";
 	}
 
-	// TODO: 超链接黑名单
+
 	public static function parse_link($url, $title = null)
 	{
 		if ($title === null)
@@ -49,6 +49,11 @@ class FORMAT
 		}
 
 		if (stripos($url, 'https://') !== 0 && stripos($url, 'http://') !== 0)
+		{
+			return $title;
+		}
+
+		if (H::hyperlink_blacklist_check($url))
 		{
 			return $title;
 		}

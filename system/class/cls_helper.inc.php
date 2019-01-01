@@ -183,7 +183,7 @@ class H
 		return false;
 	}
 
-
+	// 命中返回 true, 未命中返回 false
 	public static function content_url_whitelist_check($url)
 	{
 		if (!$url or !get_setting('content_url_whitelist'))
@@ -192,6 +192,44 @@ class H
 		}
 
 		$whitelist = explode("\n", get_setting('content_url_whitelist'));
+
+		foreach($whitelist as $word)
+		{
+			$word = trim($word);
+
+			if (!$word)
+			{
+				continue;
+			}
+
+			if (substr($word, 0, 1) == '{' AND substr($word, -1, 1) == '}')
+			{
+				if (preg_match(substr($word, 1, -1), $url))
+				{
+					return true;
+				}
+			}
+			else
+			{
+				if (stripos($url, $word) === 0)
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	// 命中返回 true, 未命中返回 false
+	public static function hyperlink_blacklist_check($url)
+	{
+		if (!$url or !get_setting('hyperlink_blacklist'))
+		{
+			return false;
+		}
+
+		$whitelist = explode("\n", get_setting('hyperlink_blacklist'));
 
 		foreach($whitelist as $word)
 		{
