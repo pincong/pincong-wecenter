@@ -8,7 +8,6 @@
 .aw-user-setting .form-horizontal .control-group{position: relative;}
 .aw-user-setting .form-horizontal p{margin: 0;}
 .aw-user-setting .form-horizontal p span{margin-left: 10px;}
-.aw-user-setting .upload-attach{position:absolute; left:0; top:7px;width: 70px; height:25px; font-size:100px; opacity:0; filter:alpha(opacity=0);cursor:pointer;}
 /* 基本资料 */
 .aw-user-setting .mod-base{position: relative;}
 .aw-user-setting .mod-base dl{height:auto;line-height: 25px;overflow:hidden;margin:0;padding-bottom: 15px;}
