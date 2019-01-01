@@ -341,6 +341,11 @@ class ajax extends AWS_CONTROLLER
 
 	public function update_answer_action()
 	{
+		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
 		if (! $answer_info = $this->model('answer')->get_answer_by_id($_GET['answer_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('答案不存在')));
@@ -397,6 +402,8 @@ class ajax extends AWS_CONTROLLER
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个回复')));
 		}
+
+		set_user_operation_last_time_by_uid('modify', $this->user_id);
 
 		$this->model('answer')->update_answer($_GET['answer_id'], $answer_info['question_id'], $answer_content, $this->user_id);
 

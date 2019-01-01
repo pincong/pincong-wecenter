@@ -451,7 +451,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function modify_question_action()
 	{
-		if (!check_user_operation_interval_by_uid('publish', $this->user_id, get_setting('modify_content_interval')))
+		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -485,7 +485,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
 		}
 
-		set_user_operation_last_time_by_uid('publish', $this->user_id);
+		set_user_operation_last_time_by_uid('modify', $this->user_id);
 
 		if ($_POST['do_delete'])
 		{
@@ -514,7 +514,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function modify_article_action()
 	{
-		if (!check_user_operation_interval_by_uid('publish', $this->user_id, get_setting('modify_content_interval')))
+		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -548,7 +548,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
 		}
 
-		set_user_operation_last_time_by_uid('publish', $this->user_id);
+		set_user_operation_last_time_by_uid('modify', $this->user_id);
 
 		if ($_POST['do_delete'])
 		{
@@ -576,7 +576,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function modify_video_action()
 	{
-		if (!check_user_operation_interval_by_uid('publish', $this->user_id, get_setting('modify_content_interval')))
+		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
@@ -617,7 +617,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
 		}
 
-		set_user_operation_last_time_by_uid('publish', $this->user_id);
+		set_user_operation_last_time_by_uid('modify', $this->user_id);
 
 		if ($_POST['do_delete'])
 		{
