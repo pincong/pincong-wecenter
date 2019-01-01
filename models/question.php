@@ -20,6 +20,29 @@ if (!defined('IN_ANWSION'))
 
 class question_class extends AWS_MODEL
 {
+
+	/**
+	 * 记录日志
+	 * @param int $item_id 问题id
+	 * @param string $type QUESTION|QUESTION_COMMENT|ANSWER|ANSWER_COMMENT
+	 * @param string $note
+	 * @param int $uid
+	 * @param int $anonymous
+	 * @param int $child_id 回复/评论id
+	 */
+	public function log($item_id, $type, $note, $uid = 0, $anonymous = 0, $child_id = 0)
+	{
+		$this->insert('question_log', array(
+			'item_id' => intval($item_id),
+			'type' => $type,
+			'note' => $note,
+			'uid' => intval($uid),
+			'anonymous' => intval($anonymous),
+			'child_id' => intval($child_id),
+			'time' => fake_time()
+		));
+	}
+
 	public function get_focus_uid_by_question_id($question_id)
 	{
 		return $this->query_all('SELECT uid FROM ' . $this->get_table('question_focus') . ' WHERE question_id = ' . intval($question_id));

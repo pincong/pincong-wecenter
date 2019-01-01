@@ -20,6 +20,29 @@ if (!defined('IN_ANWSION'))
 
 class article_class extends AWS_MODEL
 {
+
+	/**
+	 * 记录日志
+	 * @param int $item_id 问题id
+	 * @param string $type ARTICLE|ARTICLE_COMMENT
+	 * @param string $note
+	 * @param int $uid
+	 * @param int $anonymous
+	 * @param int $child_id 回复/评论id
+	 */
+	public function log($item_id, $type, $note, $uid = 0, $anonymous = 0, $child_id = 0)
+	{
+		$this->insert('question_log', array(
+			'item_id' => intval($item_id),
+			'type' => $type,
+			'note' => $note,
+			'uid' => intval($uid),
+			'anonymous' => intval($anonymous),
+			'child_id' => intval($child_id),
+			'time' => fake_time()
+		));
+	}
+
 	public function get_article_info_by_id($article_id)
 	{
 		if (!is_digits($article_id))

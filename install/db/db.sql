@@ -890,6 +890,50 @@ CREATE TABLE IF NOT EXISTS `aws_verify_apply` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
+
+
+-- Dumping structure for table panic.aws_article_log
+CREATE TABLE IF NOT EXISTS `aws_article_log` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `item_id` int(11) DEFAULT '0',
+  `child_id` int(11) DEFAULT '0',
+  `uid` int(11) DEFAULT '0',
+  `anonymous` int(11) DEFAULT '0',
+  `type` varchar(64) DEFAULT NULL,
+  `note` varchar(128) DEFAULT NULL,
+  `time` int(10) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `item_id` (`item_id`),
+  KEY `child_id` (`child_id`),
+  KEY `uid` (`uid`),
+  KEY `anonymous` (`anonymous`),
+  KEY `type` (`type`),
+  KEY `time` (`time`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+-- Data exporting was unselected.
+
+
+-- Dumping structure for table panic.aws_question_log
+CREATE TABLE IF NOT EXISTS `aws_question_log` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `item_id` int(11) DEFAULT '0',
+  `child_id` int(11) DEFAULT '0',
+  `uid` int(11) DEFAULT '0',
+  `anonymous` int(11) DEFAULT '0',
+  `type` varchar(64) DEFAULT NULL,
+  `note` varchar(128) DEFAULT NULL,
+  `time` int(10) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `item_id` (`item_id`),
+  KEY `child_id` (`child_id`),
+  KEY `uid` (`uid`),
+  KEY `anonymous` (`anonymous`),
+  KEY `type` (`type`),
+  KEY `time` (`time`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+-- Data exporting was unselected.
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
