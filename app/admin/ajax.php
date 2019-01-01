@@ -823,7 +823,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
                     }
                 }
 
-                $update_data['avatar_file'] = fetch_salt(8); // 生成随机字符串
+                $update_data['avatar_file'] = fetch_salt(4); // 生成随机字符串
             }
 
             if ($_POST['verified'])

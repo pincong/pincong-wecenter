@@ -595,7 +595,7 @@ function is_really_writable($file)
  * @param  integer
  * @return string
  */
-function fetch_salt($length = 4)
+function fetch_salt($length = 8)
 {
 	for ($i = 0; $i < $length; $i++)
 	{

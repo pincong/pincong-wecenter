@@ -333,7 +333,7 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		$update_data['avatar_file'] = fetch_salt(8); // 生成随机字符串
+		$update_data['avatar_file'] = fetch_salt(4); // 生成随机字符串
 
 		// 更新主表
 		$this->model('account')->update_users_fields($update_data, $this->user_id);

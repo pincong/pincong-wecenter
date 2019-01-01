@@ -434,7 +434,7 @@ class account_class extends AWS_MODEL
             'salt' => $salt,
             'sex' => 0,
             'group_id' => 4,
-            'avatar_file' => fetch_salt(8), // 生成随机字符串
+            'avatar_file' => fetch_salt(4), // 生成随机字符串
             'reg_time' => fake_time()
         )))
         {
