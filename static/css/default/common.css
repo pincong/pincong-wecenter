@@ -63,8 +63,8 @@ table td{vertical-align: middle !important;}
 /*TODO: 删除*/
 .aw-padding10{padding:10px;}
 .text-color-999{font-size: 12px;color: #999;}
-.font-size-12{font-size: 12px;}
 
+.aw-small-text{font-size: 12px;color: #999;}
 .aw-deleted{color: #999;}
 
 .aw-margin-x-10{margin-left:10px;margin-right:10px;}
