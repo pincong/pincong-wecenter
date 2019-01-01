@@ -147,8 +147,9 @@
 										</a>
 										<p>
 											<a class="aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
+											<?php if ($val['user_info']['verified']) { ?><em class="aw-verified"><?php echo $val['user_info']['verified']; ?></em><?php } ?>
 											<?php if ($val['user_info']['forbidden']) { ?><span class="text-color-999">[ <?php _e('封禁'); ?> ]</span><?php } ?>
-											<?php if ($val['at_uid']) { ?> <?php _e('回复'); ?> <a href="<?php echo UF::url($val['at_user_info']); ?>"><?php echo UF::name($val['at_user_info']); ?></a><?php } ?>
+											<?php if ($val['at_uid']) { ?><?php _e('回复'); ?> <a href="<?php echo UF::url($val['at_user_info']); ?>"><?php echo UF::name($val['at_user_info']); ?></a><?php } ?>
 										</p>
 									</div>
 									<div class="mod-body">
@@ -279,7 +280,7 @@
 								<dd class="pull-left">
 									<a class="aw-user-name" href="<?php echo UF::url($this->video_info['user_info']); ?>" data-id="<?php echo $this->video_info['user_info']['uid']; ?>"><?php echo UF::name($this->video_info['user_info']);?></a>
 									<?php if ($this->video_info['user_info']['verified']) { ?>
-										<i class="icon-v<?php if ($this->video_info['user_info']['verified'] == 'enterprise') { ?> i-ve<?php } ?>" title="<?php if ($this->video_info['user_info']['verified'] == 'enterprise') { ?>企业认证<?php } else { ?>个人认证<?php } ?>"></i>
+										<em class="aw-verified"><?php echo $this->video_info['user_info']['verified']; ?></em>
 									<?php } ?>
 
 									<?php if ($this->video_info['user_info']['uid'] != $this->user_id AND $this->user_id) { ?>

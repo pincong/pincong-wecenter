@@ -19,7 +19,7 @@
 								</a>
 								<p class="text-color-999 title">
 									<a href="<?php echo UF::url($val); ?>" class="aw-user-name"><?php echo UF::name($val); ?></a>
-									<?php if ($val['verified']) { ?><i class="icon-v<?php if ($val['verified'] == 'enterprise') { ?> i-ve<?php } ?>" title="<?php if ($val['verified'] == 'enterprise') { ?><?php _e('企业认证'); ?><?php } else { ?><?php _e('个人认证'); ?><?php } ?>"></i><?php } ?>
+									<?php if ($val['verified']) { ?><em class="aw-verified"><?php echo $val['verified']; ?></em><?php } ?>
 									<?php if ($val['forbidden']) { ?><span class="text-color-999">[ <?php _e('封禁'); ?> ]</span><?php } ?>
 								</p>
 								<p class="text-color-999 signature"><?php echo UF::signature($val, $this->user_info['permission']['is_administrator']); ?></p>

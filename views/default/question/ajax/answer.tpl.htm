@@ -17,7 +17,7 @@
 				<a class="aw-user-name" href="<?php echo UF::url($this->answer_info['user_info']); ?>" data-id="<?php echo $this->answer_info['uid']; ?>"><?php echo UF::name($this->answer_info['user_info']); ?></a>
 
 				<?php if ($this->answer_info['user_info']['verified']) { ?>
-				<i class="icon-v<?php if ($this->answer_info['user_info']['verified'] == 'enterprise') { ?> i-ve<?php } ?>" title="<?php if ($this->answer_info['user_info']['verified'] == 'enterprise') { ?>企业认证<?php } else { ?>个人认证<?php } ?>"></i>
+				<em class="aw-verified"><?php echo $this->answer_info['user_info']['verified']; ?></em>
 				<?php } ?>
 				<?php if ($this->answer_info['user_info']['signature']) { ?> - <span class="text-color-999"><?php echo UF::signature($this->answer_info['user_info'], $this->user_info['permission']['is_administrator']); ?></span><?php } ?>
 			</p>

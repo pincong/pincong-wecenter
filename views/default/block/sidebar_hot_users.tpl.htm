@@ -11,7 +11,7 @@
 				<a href="<?php echo UF::url($val); ?>"><img alt="" src="<?php echo UF::avatar($val, 'mid'); ?>" /></a>
 			</dt>
 			<dd class="pull-left">
-				<a href="<?php echo UF::url($val); ?>" data-id="<?php echo $val['uid']; ?>" class="aw-user-name"><?php echo UF::name($val); ?><?php if ($val['verified']) { ?><i class="icon-v<?php if ($val['verified'] == 'enterprise') { ?> i-ve<?php } ?>" title="<?php if ($val['verified'] == 'enterprise') { ?>企业认证<?php } else { ?>个人认证<?php } ?>"></i><?php } ?>
+				<a href="<?php echo UF::url($val); ?>" data-id="<?php echo $val['uid']; ?>" class="aw-user-name"><?php echo UF::name($val); ?><?php if ($val['verified']) { ?><em class="aw-verified"><?php echo $val['verified']; ?></em><?php } ?>
 				</a>
 				<p class="signature"><?php /*echo UF::signature($val);*/ ?></p>
 				<p><?php _e('%s 次赞同', '<b>' . $val['agree_count'] . '</b>'); ?></p>

@@ -822,7 +822,7 @@ var AWS =
 					{
 						$.get(G_BASE_URL + url + _this.attr('data-id'), function(result)
 						{
-							var focus = result.focus, verified = result.verified, focusTxt;
+							var focus = result.focus, focusTxt;
 
 							if (focus == 1)
 							{
@@ -835,25 +835,18 @@ var AWS =
 								focusTxt = '关注';
 							}
 
-							if(result.verified == 'enterprise')
+							var verified_style = '';
+							var verified_title = '';
+							if (result.verified)
 							{
-								verified_enterprise = 'icon-v i-ve';
-								verified_title = '企业认证';
-							}
-							else if(result.verified == 'personal')
-							{
-								verified_enterprise = 'icon-v';
-								verified_title = '个人认证';
-							}
-							else
-							{
-								verified_enterprise = verified_title = '';
+								verified_style = 'aw-verified';
+								verified_title = result.verified;
 							}
 
 							//动态插入盒子
 							$('#aw-ajax-box').html(Hogan.compile(AW_TEMPLATE.userCard).render(
 							{
-								'verified_enterprise' : verified_enterprise,
+								'verified_style' : verified_style,
 								'verified_title' : verified_title,
 								'uid': result.uid,
 								'avatar_file': result.avatar_file,

@@ -30,7 +30,7 @@
 							</span>
 							<h1>
 								<?php echo UF::name($this->user); ?>
-								<?php if ($this->user['verified']) { ?><i class="icon-v <?php if ($this->user['verified'] == 'enterprise') { ?> i-ve<?php } ?>" title="<?php if ($this->user['verified'] == 'enterprise') { ?>企业认证<?php } else { ?>个人认证<?php } ?>"></i><?php } ?>
+								<?php if ($this->user['verified']) { ?><em class="aw-verified"><?php echo $this->user['verified']; ?></em><?php } ?>
 								<!-- 封禁 -->
 								<?php if ($this->user['forbidden'] == 2) { ?>
 									<span class="text-color-999"><?php _e('系统自动封禁'); ?></span>

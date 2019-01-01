@@ -15,8 +15,9 @@ var AW_TEMPLATE = {
 							'<img src="{{avatar_file}}" alt="" />'+
 						'</a>'+
 						'<p class="title clearfix">'+
-							'<a href="{{url}}" class="name pull-left" data-id="{{uid}}">{{user_name}}</a>'+
-							'<i class="{{verified_enterprise}} pull-left" title="{{verified_title}}"></i>'+
+							'<a href="{{url}}" class="name" data-id="{{uid}}">{{user_name}}</a>'+
+							'&nbsp;'+
+							'<em class="{{verified_style}}">{{verified_title}}</em>'+
 						'</p>'+
 						'<p class="aw-user-center-follow-meta">'+
 							'<span><i class="icon icon-prestige"></i> : <em class="aw-text-color-green">{{reputation}}</em></span>'+
