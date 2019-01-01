@@ -370,11 +370,6 @@ class core_image
 
 		if ($this->option == IMAGE_CORE_OP_TO_FILE AND $this->new_image)
 		{
-			if (file_exists($this->new_image))
-			{
-				@unlink($this->new_image);
-			}
-
 			switch ($this->image_type_index[$this->image_ext])
 			{
 				case 1:	// GIF
@@ -393,6 +388,10 @@ class core_image
 					}
 					else
 					{
+						if (file_exists($this->new_image))
+						{
+							@unlink($this->new_image);
+						}
 						$func_output($dst_img, $this->new_image);
 					}
 				break;
@@ -412,6 +411,10 @@ class core_image
 					}
 					else
 					{
+						if (file_exists($this->new_image))
+						{
+							@unlink($this->new_image);
+						}
 						$func_output($dst_img, $this->new_image, $this->quality);
 					}
 				break;
