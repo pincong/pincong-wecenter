@@ -13,6 +13,11 @@
 							<span class="pull-right operate">
 							<?php if ($this->user['uid'] != $this->user_id AND $this->user_id) { ?>
 
+								<?php if ($this->user_info['permission']['edit_user']) { ?>
+									<a href="javascript:;" class="text-color-999" onclick="AWS.User.edit_verified_title('<?php echo $this->user['uid']; ?>', '<?php echo $this->user['verified']; ?>');"><i class="icon icon-edit"></i> 头衔</a>
+									<a href="javascript:;" class="text-color-999" onclick="AWS.User.edit_signature('<?php echo $this->user['uid']; ?>', '<?php echo $this->user['signature']; ?>');"><i class="icon icon-edit"></i> 签名</a>
+								<?php } ?>
+
 								<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
 									<?php if ($this->user['forbidden']) { ?>
 									<a href="javascript:;" class="text-color-999" onclick="AWS.User.unforbid_user(<?php echo $this->user['uid']; ?>);"><i class="icon icon-forbid"></i> 解封</a>

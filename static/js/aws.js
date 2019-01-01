@@ -1499,6 +1499,30 @@ AWS.User =
 		AWS.ajax_request(G_BASE_URL + '/account/ajax/forbid_user/' , 'uid=' + uid + '&status=0');
 	},
 
+	edit_verified_title: function(uid, text)
+	{
+		AWS.dialog('textBox', {
+			title: _t('头衔'),
+			message: text
+		}, function(text)
+		{
+			text = encodeURIComponent(text.trim());
+			AWS.ajax_request(G_BASE_URL + '/account/ajax/edit_verified_title/' , 'uid=' + uid + '&text=' + text);
+		});
+	},
+
+	edit_signature: function(uid, text)
+	{
+		AWS.dialog('textBox', {
+			title: _t('签名'),
+			message: text
+		}, function(text)
+		{
+			text = encodeURIComponent(text.trim());
+			AWS.ajax_request(G_BASE_URL + '/account/ajax/edit_signature/' , 'uid=' + uid + '&text=' + text);
+		});
+	},
+
 	toggle_vote: function(selector, type, operation, item_id)
 	{
 		var $ui = $(selector).parents('.aw-vote-ui');

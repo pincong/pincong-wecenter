@@ -531,4 +531,66 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
+	public function edit_verified_title_action()
+	{
+		if (!$this->user_info['permission']['edit_user'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+		}
+
+		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
+		$text = my_trim($_POST['text']);
+		if (!$text)
+		{
+			$text = null;
+		}
+		else
+		{
+			$text = htmlspecialchars($text);
+		}
+
+		set_user_operation_last_time_by_uid('modify', $this->user_id);
+
+		$this->model('account')->update_users_fields(array(
+			'verified' => $text
+		), $_POST['uid']);
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
+	public function edit_signature_action()
+	{
+		if (!$this->user_info['permission']['edit_user'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+		}
+
+		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
+		$text = my_trim($_POST['text']);
+		if (!$text)
+		{
+			$text = null;
+		}
+		else
+		{
+			$text = htmlspecialchars($text);
+		}
+
+		set_user_operation_last_time_by_uid('modify', $this->user_id);
+
+		$this->model('account')->update_users_attrib_fields(array(
+			'signature' => $text
+		), $_POST['uid']);
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
 }
