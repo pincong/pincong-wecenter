@@ -830,9 +830,7 @@ function strip_ubb($str)
  */
 function array_random($arr)
 {
-	shuffle($arr);
-
-	return end($arr);
+	return $arr[rand(0, count($arr) - 1)];
 }
 
 /**

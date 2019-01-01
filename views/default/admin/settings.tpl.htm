@@ -503,6 +503,18 @@
                 <tr>
                     <td>
                         <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码字体列表'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="captcha_font_ids" type="text" class="form-control" value="<?php echo $this->setting['captcha_font_ids']; ?>"/>
+
+                                <div class="help-block"><?php _e('默认 1, 2, 3, 4, 5, 6, 7, 8'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码字体最小值'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <input name="captcha_fontsize_min" type="text" class="form-control" value="<?php echo $this->setting['captcha_fontsize_min']; ?>"/>

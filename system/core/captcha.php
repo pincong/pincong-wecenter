@@ -58,14 +58,16 @@ class core_captcha
 
 	public function get_font()
 	{
-		if (!$captcha_fonts = AWS_APP::cache()->get('captcha_fonts'))
+		$captcha_font_ids = get_setting('captcha_font_ids');
+		if (!$captcha_font_ids)
 		{
-			$captcha_fonts = fetch_file_lists(AWS_PATH . 'core/fonts/');
-
-			AWS_APP::cache()->set('captcha_fonts', $captcha_fonts, get_setting('cache_level_normal'));
+			$captcha_font_ids = '1, 2, 3, 4, 5, 6, 7, 8';
 		}
+		$captcha_font_ids = explode(',', $captcha_font_ids);
 
-		return array_random($captcha_fonts);
+		$font_id = intval(array_random($captcha_font_ids));
+		$base_dir = AWS_PATH . 'core/fonts/';
+		return $base_dir . $font_id . '.ttf';
 	}
 
 	public function generate()
