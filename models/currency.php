@@ -50,9 +50,7 @@ class currency_class extends AWS_MODEL
 			'time' => fake_time()
 		));
 
-		$this->update('users', array(
-			'currency' => $balance
-		), 'uid = ' . intval($uid));
+		$this->query('UPDATE ' . $this->get_table('users') . ' SET currency = currency + ' . $currency . ' WHERE uid = ' . intval($uid));
 
 		return $log_id;
 	}
