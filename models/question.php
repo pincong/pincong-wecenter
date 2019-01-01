@@ -176,10 +176,8 @@ class question_class extends AWS_MODEL
 	 *
 	 * @return boolean true|false
 	 */
-	public function save_question($question_content, $question_detail, $published_uid, $anonymous = 0, $later = 0, $from = null)
+	public function save_question($question_content, $question_detail, $published_uid, $anonymous = 0)
 	{
-		//TODO: 延迟显示
-		//$now = intval($later) ? future_time() : fake_time();
 		$now = fake_time();
 
 		$to_save_question = array(
@@ -190,19 +188,6 @@ class question_class extends AWS_MODEL
 			'published_uid' => intval($published_uid),
 			'anonymous' => intval($anonymous)
 		);
-
-		if ($from AND is_array($from))
-		{
-			foreach ($from AS $type => $from_id)
-			{
-				if (!is_digits($from_id))
-				{
-					continue;
-				}
-
-				$to_save_question[$type . '_id'] = $from_id;
-			}
-		}
 
 		$question_id = $this->insert('question', $to_save_question);
 

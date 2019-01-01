@@ -595,7 +595,7 @@ class ajax extends AWS_CONTROLLER
 		}
 		else
 		{
-			$answer_id = $this->model('publish')->publish_answer($question_info['question_id'], $answer_content, $this->user_id, $_POST['anonymous'], null, $_POST['auto_focus']);
+			$answer_id = $this->model('publish')->publish_answer($question_info['question_id'], $answer_content, $this->user_id, $_POST['anonymous'], $_POST['auto_focus']);
 
 			{
 				//$url = get_js_url('/question/' . $question_info['question_id'] . '?item_id=' . $answer_id . '&rf=false');

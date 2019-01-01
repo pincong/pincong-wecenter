@@ -1022,17 +1022,6 @@ function fake_time($timestamp = 0)
 	return intval($timestamp / 86400) * 86400 + rand($min, $max);
 }
 
-function future_time()
-{
-    //$min = intval(get_setting('random_seconds_min'));
-    //$max = intval(get_setting('random_seconds_max'));
-    //if (!$min && !$max)
-    {
-        return time();
-    }
-    //return time() + rand($min, $max);
-}
-
 function my_trim($str)
 {
 	// trim 不适用于处理多字节字符

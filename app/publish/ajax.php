@@ -240,11 +240,8 @@ class ajax extends AWS_CONTROLLER
                 $this->user_id,
                 $_POST['topics'],
                 $_POST['anonymous'],
-                null,
                 $_POST['ask_user_id'],
-                $this->user_info['permission']['create_topic'],
-                null,
-                $_POST['later']
+                $this->user_info['permission']['create_topic']
             );
 
 			$url = get_js_url('/question/' . $question_id);
@@ -360,10 +357,8 @@ class ajax extends AWS_CONTROLLER
                 $this->user_id,
                 $_POST['topics'],
                 $_POST['category_id'],
-                null,
                 $this->user_info['permission']['create_topic'],
-                $_POST['anonymous'],
-                $_POST['later']
+                $_POST['anonymous']
             );
 
 			$url = get_js_url('/article/' . $article_id);

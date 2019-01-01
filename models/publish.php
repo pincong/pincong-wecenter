@@ -20,7 +20,7 @@ if (!defined('IN_ANWSION'))
 
 class publish_class extends AWS_MODEL
 {
-	public function publish_answer($question_id, $answer_content, $uid, $anonymous = null, $attach_access_key = null, $auto_focus = true)
+	public function publish_answer($question_id, $answer_content, $uid, $anonymous = null, $auto_focus = true)
 	{
 		if (!$question_info = $this->model('question')->get_question_info_by_id($question_id))
 		{
@@ -97,9 +97,9 @@ class publish_class extends AWS_MODEL
 		return $answer_id;
 	}
 
-	public function publish_question($question_content, $question_detail, $category_id, $uid, $topics = null, $anonymous = null, $attach_access_key = null, $ask_user_id = null, $create_topic = true, $from = null, $later = null)
+	public function publish_question($question_content, $question_detail, $category_id, $uid, $topics = null, $anonymous = null, $ask_user_id = null, $create_topic = true)
 	{
-		if ($question_id = $this->model('question')->save_question($question_content, $question_detail, $uid, $anonymous, $later, $from))
+		if ($question_id = $this->model('question')->save_question($question_content, $question_detail, $uid, $anonymous))
 		{
 
             set_repeat_submission_digest($question_content);
@@ -139,42 +139,21 @@ class publish_class extends AWS_MODEL
 			// 自动关注该问题
 			$this->model('question')->add_focus_question($question_id, $uid, $anonymous, false);
 
-			//TODO: 延迟显示
-            //if (intval($later)) {
-            //    $anonymous = 1;
-            //}
-
 			// 记录日志
 			ACTION_LOG::save_action($uid, $question_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_QUESTION, $question_content, $question_detail, null, intval($anonymous));
 
 			$this->model('currency')->process($uid, 'NEW_QUESTION', get_setting('currency_system_config_new_question'), '发起问题 #' . $question_id, $question_id);
 
 			$this->model('posts')->set_posts_index($question_id, 'question');
-
-			if ($from AND is_array($from))
-			{
-				foreach ($from AS $type => $from_id)
-				{
-					if (!is_digits($from_id))
-					{
-						continue;
-					}
-
-					$this->update($type, array(
-						'question_id' => $question_id
-					), 'id = ' . $from_id);
-				}
-			}
 		}
 
 		return $question_id;
 	}
 
-	public function publish_article($title, $message, $uid, $topics = null, $category_id = null, $attach_access_key = null, $create_topic = true, $anonymous = null, $later = null)
+	public function publish_article($title, $message, $uid, $topics = null, $category_id = null, $create_topic = true, $anonymous = null)
 	{
-		//TODO: 延迟显示
-        //$now = intval($later) ? future_time() : fake_time();
-        $now = fake_time();
+		$now = fake_time();
+
 		if ($article_id = $this->insert('article', array(
 			'uid' => intval($uid),
 			'title' => htmlspecialchars($title),
@@ -201,11 +180,6 @@ class publish_class extends AWS_MODEL
 			}
 
 			$this->model('search_fulltext')->push_index('article', $title, $article_id);
-
-			//TODO: 延迟显示
-            //if (intval($later)) {
-            //    $anonymous = 1;
-            //}
 
 			// 记录日志
 			ACTION_LOG::save_action($uid, $article_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_ARTICLE, $title, $message, null, intval($anonymous));
