@@ -199,7 +199,7 @@ class Zend_Session extends Zend_Session_Abstract
     public static function setOptions(array $userOptions = array())
     {
         // set default options on first run only (before applying user settings)
-        if (!self::$_defaultOptionsSet) {
+        if (!self::$_defaultOptionsSet && !self::$_unitTestEnabled) {
             foreach (self::$_defaultOptions as $defaultOptionName => $defaultOptionValue) {
                 if (isset(self::$_defaultOptions[$defaultOptionName])) {
                     ini_set("session.$defaultOptionName", $defaultOptionValue);
@@ -216,7 +216,9 @@ class Zend_Session extends Zend_Session_Abstract
 
             // set the ini based values
             if (array_key_exists($userOptionName, self::$_defaultOptions)) {
-                ini_set("session.$userOptionName", $userOptionValue);
+                if(!self::$_sessionStarted) {
+                    ini_set("session.$userOptionName", $userOptionValue);
+                }
             }
             elseif (isset(self::$_localOptions[$userOptionName])) {
                 self::${self::$_localOptions[$userOptionName]} = $userOptionValue;
@@ -366,16 +368,17 @@ class Zend_Session extends Zend_Session_Abstract
             self::regenerateId();
             return;
         }
-
-        $cookieParams = session_get_cookie_params();
-
-        session_set_cookie_params(
-            $seconds,
-            $cookieParams['path'],
-            $cookieParams['domain'],
-            $cookieParams['secure']
-            );
-
+        
+        if (!self::sessionExists()) { // session_set_cookie_params(): Cannot change session cookie parameters when session is active
+            $cookieParams = session_get_cookie_params();
+            session_set_cookie_params(
+                    $seconds,
+                    $cookieParams['path'],
+                    $cookieParams['domain'],
+                    $cookieParams['secure']
+                );
+        }
+        
         // normally "rememberMe()" represents a security context change, so should use new session id
         self::regenerateId();
     }
@@ -532,6 +535,7 @@ class Zend_Session extends Zend_Session_Abstract
         if (!$hashBitsPerChar) {
             $hashBitsPerChar = 5; // the default value
         }
+        $pattern = '';
         switch($hashBitsPerChar) {
             case 4: $pattern = '^[0-9a-f]*$'; break;
             case 5: $pattern = '^[0-9a-v]*$'; break;
