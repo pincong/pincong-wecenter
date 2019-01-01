@@ -2,6 +2,7 @@
 
 class Services_VideoParser
 {
+
     /**
      * 根据 url 特征得到视频信息
      * 成功返回 array, 失败返回 false
@@ -32,7 +33,6 @@ class Services_VideoParser
 
     /**
      * 缩略图
-     * 目前只支持 YouTube
      *
      * @param string        $source_type
      * @param string        $source
@@ -41,13 +41,20 @@ class Services_VideoParser
      */
 	public static function get_thumb_url($source_type, $source, $size = 's')
 	{
+		static $kvps;
+		if (!$kvps)
+		{
+			$kvps = get_key_value_pairs('video_config_thumb_url_rules');
+		}
+
 		$source = trim($source);
 		if (!$source)
 		{
 			return false;
 		}
 
-		if ($source_type !== 'youtube')
+		$source_type = trim($source_type);
+		if (!$source_type)
 		{
 			return false;
 		}
@@ -55,22 +62,25 @@ class Services_VideoParser
 		switch ($size)
 		{
 			case 's':
-				$filename = 'default.jpg';
+				$key = $source_type . '@s';
 				break;
 			case 'm':
-				$filename = 'hqdefault.jpg';
+				$key = $source_type . '@m';
 				break;
 			case 'l':
-				$filename = 'maxresdefault.jpg';
+				$key = $source_type . '@l';
 				break;
+			default:
+				$key = $source_type;
 		}
 
-		if (!$filename)
+		$val = $kvps[$key];
+		if (!$val)
 		{
 			return false;
 		}
 
-		return 'https://i.ytimg.com/vi/' . $source . '/' . $filename;
+		return str_replace('{$source}', $source, $val);
 	}
 
     /**

@@ -424,7 +424,7 @@ function get_table($name)
  * @param  string
  * @return mixed
  */
-function get_setting($varname = null, $permission_check = true)
+function get_setting($varname = null)
 {
 	if (! class_exists('AWS_APP', false))
 	{
@@ -441,6 +441,41 @@ function get_setting($varname = null, $permission_check = true)
 	{
 		return $settings;
 	}
+}
+
+/**
+ * 获取全局配置项 key-value pairs
+ *
+ * e.g. "Google google.com\nFacebook facebook.com"
+ * return array("Google" => "google.com", "Facebook" => "facebook.com")
+ *
+ * @param  string
+ * @return mixed
+ */
+function get_key_value_pairs($varname, $separator = ' ')
+{
+	$result = array();
+
+	$rows = explode("\n", get_setting($varname));
+	foreach($rows as $row)
+	{
+		$row = trim($row);
+		if (!$row)
+		{
+			continue;
+		}
+
+		$array = explode($separator, $row);
+		$count = count($array);
+		if ($count < 2)
+		{
+			continue;
+		}
+
+		$result[$array[0]] = $array[$count - 1];
+	}
+
+	return $result;
 }
 
 // ------------------------------------------------------------------------
