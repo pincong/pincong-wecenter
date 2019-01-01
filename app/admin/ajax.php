@@ -746,6 +746,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			'change_category',
 			'affect_currency',
 			'edit_user',
+			'change_user_group',
 			'forbid_user',
 			'flag_user',
 			'kb_explore',

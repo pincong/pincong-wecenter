@@ -78,7 +78,7 @@ class edit extends AWS_CONTROLLER
 
 	public function change_group_action()
 	{
-		if (!$this->user_info['permission']['edit_user'])
+		if (!$this->user_info['permission']['change_user_group'])
 		{
 			HTTP::error_403();
 		}
@@ -88,13 +88,16 @@ class edit extends AWS_CONTROLLER
 			HTTP::error_404();
 		}
 
-		if ($this->user_info['permission']['is_administrator'])
+		$user_group_list = $this->model('account')->get_user_group_list(0);
+		if (!$this->user_info['permission']['is_administrator'])
 		{
-			$user_group_list = $this->model('account')->get_user_group_list(0);
-		}
-		else
-		{
-			$user_group_list = $this->model('account')->get_user_group_list(0, 1);
+			foreach ($user_group_list as $key => $val)
+			{
+				if ($val['custom'] != 1 AND $val['group_id'] != 4)
+				{
+					unset($user_group_list[$key]);
+				}
+			}
 		}
 
 		TPL::assign('user', $user);

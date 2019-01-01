@@ -13,8 +13,10 @@
 							<span class="pull-right operate">
 							<?php if ($this->user['uid'] != $this->user_id AND $this->user_id) { ?>
 
-								<?php if ($this->user_info['permission']['edit_user']) { ?>
+								<?php if ($this->user_info['permission']['change_user_group']) { ?>
 									<a href="javascript:;" class="aw-small-text" onclick="AWS.popup(G_BASE_URL + '/user/edit/change_group/uid-<?php echo $this->user['uid']; ?>');"><i class="icon icon-edit"></i> <?php _e('用户组'); ?></a>
+								<?php } ?>
+								<?php if ($this->user_info['permission']['edit_user']) { ?>
 									<a href="javascript:;" class="aw-small-text" onclick="AWS.User.edit_verified_title('<?php echo $this->user['uid']; ?>', decodeURIComponent('<?php echo rawurlencode($this->user['verified']); ?>'));"><i class="icon icon-edit"></i> <?php _e('头衔'); ?></a>
 									<a href="javascript:;" class="aw-small-text" onclick="AWS.User.edit_signature('<?php echo $this->user['uid']; ?>', decodeURIComponent('<?php echo rawurlencode($this->user['signature']); ?>'));"><i class="icon icon-edit"></i> <?php _e('签名'); ?></a>
 								<?php } ?>

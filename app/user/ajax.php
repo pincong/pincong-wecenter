@@ -249,7 +249,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function change_group_action()
 	{
-		if (!$this->user_info['permission']['edit_user'])
+		if (!$this->user_info['permission']['change_user_group'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
@@ -262,6 +262,11 @@ class ajax extends AWS_CONTROLLER
 		set_user_operation_last_time('manage', $this->user_id);
 
 		$uid = intval($_POST['uid']);
+		if ($uid == $this->user_id)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你不能对自己进行此操作')));
+		}
+
 		$user_info = $this->model('account')->get_user_info_by_uid($uid);
 
 		if (!$user_info)
@@ -281,13 +286,16 @@ class ajax extends AWS_CONTROLLER
 		$input_group_id = intval($_POST['group_id']);
 		$group_id = null;
 
-		if ($this->user_info['permission']['is_administrator'])
+		$user_group_list = $this->model('account')->get_user_group_list(0);
+		if (!$this->user_info['permission']['is_administrator'])
 		{
-			$user_group_list = $this->model('account')->get_user_group_list(0);
-		}
-		else
-		{
-			$user_group_list = $this->model('account')->get_user_group_list(0, 1);
+			foreach ($user_group_list as $key => $val)
+			{
+				if ($val['custom'] != 1 AND $val['group_id'] != 4)
+				{
+					unset($user_group_list[$key]);
+				}
+			}
 		}
 
 		foreach ($user_group_list as $key => $val)
