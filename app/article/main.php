@@ -45,8 +45,11 @@ class main extends AWS_CONTROLLER
 			HTTP::error_404();
 		}
 
-		// TODO: 后台选项
-		$replies_per_page = 100;
+		$replies_per_page = intval(get_setting('replies_per_page'));
+		if (!$replies_per_page)
+		{
+			$replies_per_page = 100;
+		}
 
 		$article_info['user_info'] = $this->model('account')->get_user_info_by_uid($article_info['uid']);
 
