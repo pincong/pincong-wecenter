@@ -57,7 +57,7 @@
 									<span class="aw-small-text"><?php _e('将于 %s 解封', date_friendly($expiration_date)); ?></span>
 									<?php } ?>
 									<br />
-									<span class="aw-small-text"><?php _e('封禁理由'); ?> : <?php echo $this->user['data']['banned_reason']; ?></span>
+									<span class="aw-small-text"><?php _e('封禁理由'); ?> : <?php echo $this->user['data']['banned_reason']; ?> <?php echo $this->user['data']['banned_detail']; ?></span>
 								<?php } ?>
 								<!-- end 封禁 -->
 							</h1>
@@ -72,7 +72,7 @@
 									<?php } elseif ($this->user['flagged'] == 3) { ?>
 										(<?php _e('禁止登录 + 替换全部发言'); ?>)
 									<?php } ?>
-									: <?php echo $this->user['data']['flagged_reason']; ?>
+									: <?php echo $this->user['data']['flagged_reason']; ?> <?php echo $this->user['data']['flagged_detail']; ?>
 								</span>
 							</h1>
 							<?php } ?>

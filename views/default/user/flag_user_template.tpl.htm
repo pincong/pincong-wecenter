@@ -17,7 +17,7 @@
 					<option value="3" <?php if ($this->user['flagged'] == 3) { ?>selected="selected"<?php } ?>><?php _e('禁止登录 + 替换全部发言'); ?></option>
 				</select>
 				<?php if ($this->banning_reason_list) { ?>
-				<div class="aw-margin-y-30">
+				<div class="aw-margin-y-10">
 					<select class="form-control" name="reason">
 						<option value=""><?php _e('请选择理由...'); ?></option>
 						<?php foreach ($this->banning_reason_list as $key => $val) { $val = htmlspecialchars($key); ?>
@@ -25,9 +25,12 @@
 						<?php } ?>
 					</select>
 				</div>
+				<div class="aw-margin-y-10">
+					<textarea name="detail" class="form-control" rows="3" placeholder="<?php _e('详情...'); ?>"><?php echo $this->user['data']['flagged_detail']; ?></textarea>
+				</div>
 				<?php } else { ?>
 				<div class="aw-margin-y-10">
-					<textarea name="reason" class="form-control" rows="4" placeholder="<?php _e('详情...'); ?>"><?php echo $this->user['data']['banned_reason']; ?></textarea>
+					<textarea name="reason" class="form-control" rows="4" placeholder="<?php _e('详情...'); ?>"><?php echo $this->user['data']['flagged_reason']; ?></textarea>
 				</div>
 				<?php } ?>
 			</div>

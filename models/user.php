@@ -360,7 +360,7 @@ class user_class extends AWS_MODEL
 
 
 
-	public function forbid_user_by_uid($uid, $status, $admin_uid = null, $reason = null)
+	public function forbid_user_by_uid($uid, $status, $admin_uid = null, $reason = null, $detail = null)
 	{
 		if (!$uid)
 		{
@@ -377,7 +377,8 @@ class user_class extends AWS_MODEL
 		{
 			$extra_data = array(
 				'banned_by' => null,
-				'banned_reason' => null
+				'banned_reason' => null,
+				'banned_detail' => null,
 			);
 		}
 		else
@@ -386,16 +387,21 @@ class user_class extends AWS_MODEL
 			{
 				$reason = htmlspecialchars($reason);
 			}
+			if ($detail)
+			{
+				$detail = htmlspecialchars($detail);
+			}
 			$extra_data = array(
 				'banned_by' => $admin_uid,
-				'banned_reason' => $reason
+				'banned_reason' => $reason,
+				'banned_detail' => $detail,
 			);
 		}
 
 		$this->model('account')->update_user_extra_data($extra_data, $uid);
 	}
 
-	public function flag_user_by_uid($uid, $status, $admin_uid = null, $reason = null)
+	public function flag_user_by_uid($uid, $status, $admin_uid = null, $reason = null, $detail = null)
 	{
 		if (!$uid)
 		{
@@ -412,7 +418,8 @@ class user_class extends AWS_MODEL
 		{
 			$extra_data = array(
 				'flagged_by' => null,
-				'flagged_reason' => null
+				'flagged_reason' => null,
+				'flagged_detail' => null,
 			);
 		}
 		else
@@ -421,9 +428,14 @@ class user_class extends AWS_MODEL
 			{
 				$reason = htmlspecialchars($reason);
 			}
+			if ($detail)
+			{
+				$detail = htmlspecialchars($detail);
+			}
 			$extra_data = array(
 				'flagged_by' => $admin_uid,
-				'flagged_reason' => $reason
+				'flagged_reason' => $reason,
+				'flagged_detail' => $detail,
 			);
 		}
 

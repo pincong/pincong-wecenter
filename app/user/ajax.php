@@ -27,6 +27,30 @@ class ajax extends AWS_CONTROLLER
 		HTTP::no_cache_header();
 	}
 
+	private function get_user_info($uid, &$user_info)
+	{
+		if ($uid == $this->user_id)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你不能对自己进行此操作')));
+		}
+
+		$user_info = $this->model('account')->get_user_info_by_uid($uid);
+
+		if (!$user_info)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('用户不存在')));
+		}
+
+		if ($this->user_info['group_id'] != 1 AND $this->user_info['group_id'] != 2 AND $this->user_info['group_id'] != 3)
+		{
+			// 普通用户不能处理系统组以及比自己声望高的用户
+			if ($user_info['group_id'] < 4 OR intval($this->user_info['reputation']) <= intval($user_info['reputation']))
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+			}
+		}
+	}
+
 	public function forbid_user_action()
 	{
 		if (!$this->user_info['permission']['forbid_user'])
@@ -47,8 +71,9 @@ class ajax extends AWS_CONTROLLER
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写理由')));
 			}
+			$detail = trim($_POST['detail']);
 			// TODO: 字数选项
-			if (cjk_strlen($reason) > 200)
+			if (cjk_strlen($reason) > 300 OR cjk_strlen($detail) > 300)
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('理由太长')));
 			}
@@ -57,20 +82,7 @@ class ajax extends AWS_CONTROLLER
 		set_user_operation_last_time('manage', $this->user_id);
 
 		$uid = intval($_POST['uid']);
-		$user_info = $this->model('account')->get_user_info_by_uid($uid);
-
-		if (!$user_info)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('用户不存在')));
-		}
-
-		if ($this->user_info['group_id'] != 1 AND $this->user_info['group_id'] != 2 AND $this->user_info['group_id'] != 3)
-		{
-			if ($user_info['group_id'] < 4 OR intval($this->user_info['reputation']) <= intval($user_info['reputation']))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
-			}
-		}
+		$this->get_user_info($uid, $user_info);
 
 		if ($status)
 		{
@@ -110,7 +122,7 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		$this->model('user')->forbid_user_by_uid($uid, $status, $this->user_id, $reason);
+		$this->model('user')->forbid_user_by_uid($uid, $status, $this->user_id, $reason, $detail);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
@@ -139,8 +151,9 @@ class ajax extends AWS_CONTROLLER
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写理由')));
 			}
+			$detail = trim($_POST['detail']);
 			// TODO: 字数选项
-			if (cjk_strlen($reason) > 200)
+			if (cjk_strlen($reason) > 300 OR cjk_strlen($detail) > 300)
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('理由太长')));
 			}
@@ -149,20 +162,7 @@ class ajax extends AWS_CONTROLLER
 		set_user_operation_last_time('manage', $this->user_id);
 
 		$uid = intval($_POST['uid']);
-		$user_info = $this->model('account')->get_user_info_by_uid($uid);
-
-		if (!$user_info)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('用户不存在')));
-		}
-
-		if ($this->user_info['group_id'] != 1 AND $this->user_info['group_id'] != 2 AND $this->user_info['group_id'] != 3)
-		{
-			if ($user_info['group_id'] < 4 OR intval($this->user_info['reputation']) <= intval($user_info['reputation']))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
-			}
-		}
+		$this->get_user_info($uid, $user_info);
 
 		if ($status > 0 AND !$this->user_info['permission']['forbid_user'])
 		{
@@ -180,7 +180,7 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		$this->model('user')->flag_user_by_uid($uid, $status, $this->user_id, $reason);
+		$this->model('user')->flag_user_by_uid($uid, $status, $this->user_id, $reason, $detail);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
@@ -262,26 +262,7 @@ class ajax extends AWS_CONTROLLER
 		set_user_operation_last_time('manage', $this->user_id);
 
 		$uid = intval($_POST['uid']);
-		if ($uid == $this->user_id)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你不能对自己进行此操作')));
-		}
-
-		$user_info = $this->model('account')->get_user_info_by_uid($uid);
-
-		if (!$user_info)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('用户不存在')));
-		}
-
-		if ($this->user_info['group_id'] != 1 AND $this->user_info['group_id'] != 2 AND $this->user_info['group_id'] != 3)
-		{
-			// 普通用户不能处理系统组以及比自己声望高的用户
-			if ($user_info['group_id'] < 4 OR intval($this->user_info['reputation']) <= intval($user_info['reputation']))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
-			}
-		}
+		$this->get_user_info($uid, $user_info);
 
 		$input_group_id = intval($_POST['group_id']);
 		$group_id = null;
