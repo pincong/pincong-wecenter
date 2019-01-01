@@ -147,7 +147,7 @@
 								<div class="aw-item" id="answer_list_<?php echo $val['id']; ?>">
 									<div class="mod-head">
 										<?php if ($val['anonymous'] == 0) { ?>
-										<a class="aw-user-img aw-border-radius-5" href="people/<?php echo $val['user_info']['url_token']; ?>">
+										<a class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>">
 											<img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" />
 										</a>
 										<?php } else { ?>
@@ -157,12 +157,12 @@
 										<?php } ?>
 										<p>
 										<?php if ($val['anonymous'] == 0) { ?>
-											<a href="people/<?php echo $val['user_info']['url_token']; ?>"><?php echo UF::name($val['user_info']); ?></a>
+											<a href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
 											<?php if ($val['user_info']['forbidden']) { ?><span class="text-color-999">[ <?php _e('封禁'); ?> ]</span><?php } ?>
 										<?php } else { ?>
 											<a class="text-color-999" href="javascript:;"><?php _e('匿名用户'); ?></a>
 										<?php } ?>
-											<?php if ($val['at_user_info']) { ?> <?php _e('回复'); ?> <a href="people/<?php echo UF::name($val['at_user_info']); ?>"><?php echo UF::name($val['at_user_info']); ?></a><?php } ?>
+											<?php if ($val['at_user_info']) { ?> <?php _e('回复'); ?> <a href="<?php echo UF::url($val['at_user_info']); ?>"><?php echo UF::name($val['at_user_info']); ?></a><?php } ?>
 										</p>
 									</div>
 									<div class="mod-body">
@@ -252,7 +252,7 @@
 						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
 						<input type="hidden" name="video_id" value="<?php echo $this->video_info['id']; ?>" />
 						<div class="mod-head">
-							<a href="people/" class="aw-user-name"><img alt="" src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" /></a>
+							<a href="<?php echo UF::url($this->user_info); ?>" class="aw-user-name"><img alt="" src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" /></a>
 						</div>
 						<div class="mod-body">
 							<textarea rows="3" name="message" id="comment_editor" class="form-control autosize" placeholder="写下你的评论..."  /></textarea>
@@ -290,10 +290,10 @@
 						<div class="mod-body">
 							<dl>
 								<dt class="pull-left aw-border-radius-5">
-									<a href="people/<?php echo $this->video_info['user_info']['url_token']; ?>"><img alt="" src="<?php echo UF::avatar($this->video_info['user_info'], 'mid'); ?>" /></a>
+									<a href="<?php echo UF::url($this->video_info['user_info']); ?>"><img alt="" src="<?php echo UF::avatar($this->video_info['user_info'], 'mid'); ?>" /></a>
 								</dt>
 								<dd class="pull-left">
-									<a class="aw-user-name" href="people/<?php echo $this->video_info['user_info']['url_token']; ?>" data-id="<?php echo $this->video_info['user_info']['uid']; ?>"><?php echo UF::name($this->video_info['user_info']);?></a>
+									<a class="aw-user-name" href="<?php echo UF::url($this->video_info['user_info']); ?>" data-id="<?php echo $this->video_info['user_info']['uid']; ?>"><?php echo UF::name($this->video_info['user_info']);?></a>
 									<?php if ($this->video_info['user_info']['verified']) { ?>
 										<i class="icon-v<?php if ($this->video_info['user_info']['verified'] == 'enterprise') { ?> i-ve<?php } ?>" title="<?php if ($this->video_info['user_info']['verified'] == 'enterprise') { ?>企业认证<?php } else { ?>个人认证<?php } ?>"></i>
 									<?php } ?>

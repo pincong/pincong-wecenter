@@ -12,7 +12,7 @@
 						<?php foreach ($this->article_list AS $key => $val) { ?>
 						<div class="aw-item">
     						<?php if ($val['anonymous'] == 0) { ?>
-							<a class="aw-user-name" href="people/<?php echo $val['user_info']['url_token']; ?>">
+							<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>">
 								<img alt="" src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" />
 							</a>
     						<?php } else { ?>

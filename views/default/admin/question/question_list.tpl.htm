@@ -46,7 +46,7 @@
 								<td><?php echo $val['focus_count']; ?></td>
 								<td><?php echo $val['view_count']; ?></td>
 								<?php /*
-								<td><a href="people/<?php echo $val['user_info']['url_token']; ?>" target="_blank"><?php echo UF::name($val['user_info']); ?></a></td>
+								<td><a href="<?php echo UF::url($val['user_info']); ?>" target="_blank"><?php echo UF::name($val['user_info']); ?></a></td>
 								*/ ?>
 								<td><?php echo date_friendly($val['add_time']); ?></td>
 								<td><?php echo date_friendly($val['update_time']); ?></td>

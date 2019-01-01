@@ -55,7 +55,7 @@
                                     <?php } ?>
                                 </td>
 
-                                <td><a href="people/<?php echo $this->users_info[$topic_info['last_edited_uid']]['url_token']; ?>" target="_blank"><?php echo UF::name($this->users_info[$topic_info['last_edited_uid']]) ?></a></td>
+                                <td><a href="<?php echo UF::url($this->users_info[$topic_info['last_edited_uid']]); ?>" target="_blank"><?php echo UF::name($this->users_info[$topic_info['last_edited_uid']]) ?></a></td>
 
                                 <td><?php echo date_friendly($topic_info['last_edited_time']); ?></td>
 

@@ -72,12 +72,11 @@
 			<div class="aw-user-nav">
 				<!-- 登陆&注册栏 -->
 				<?php if ($this->user_id) { ?>
-					<a href="people/<?php echo $this->user_info['url_token']; ?>" class="aw-user-nav-dropdown">
+					<a href="<?php echo UF::url($this->user_info); ?>" class="aw-user-nav-dropdown">
 						<img alt="" src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" />
 						<?php if ($this->user_info['inbox_unread'] != 0) {?>
 							<span class="badge badge-important"><?php echo $this->user_info['inbox_unread']?></span>
 						<?php } ?>
-
 					</a>
 					<div class="aw-dropdown dropdown-list pull-right">
 						<ul class="aw-dropdown-list">
