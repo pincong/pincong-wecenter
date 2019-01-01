@@ -918,6 +918,8 @@ blockquote {margin: 0 40px;padding: 0 15px;font-size: 14px;color: #777;border-le
 .aw-question-detail .mod-body{font-size: 15px; color:#333;}
 .aw-feed-list .mod-body{font-size: 15px; color:#333;}
 .aw-feed-list .aw-item .mod-footer .aw-comment-box .aw-comment-list {font-size: 14px;}
+.aw-side-bar {font-size: 13px;}
+.category .list > li{font-size: 13px;}
 
 .navbar-collapse {background: #499ef3;}
 
