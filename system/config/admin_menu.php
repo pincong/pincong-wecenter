@@ -60,7 +60,7 @@ $config[] = array(
 
         array(
             'id' => 'SETTINGS_VIDEO',
-            'title' => AWS_APP::lang()->_t('视频处理'),
+            'title' => AWS_APP::lang()->_t('影片处理'),
             'url' => 'admin/settings/category-video'
         )
     )

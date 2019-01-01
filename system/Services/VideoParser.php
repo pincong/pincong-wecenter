@@ -58,6 +58,33 @@ class Services_VideoParser
 		return str_replace('{$source}', $source, $val);
 	}
 
+	public static function get_iframe_url($source_type, $source)
+	{
+		static $kvps;
+		if (!$kvps)
+		{
+			$kvps = get_key_value_pairs('video_config_iframe_url_rules');
+		}
+
+		if (!$source = trim($source))
+		{
+			return false;
+		}
+		if (!$source_type = trim($source_type))
+		{
+			return false;
+		}
+
+		$val = $kvps[$source_type];
+		if (!$val)
+		{
+			return false;
+		}
+
+		return str_replace('{$source}', $source, $val);
+	}
+
+
 	public static function fetch_metadata($source_type, $source, $from_cache = true)
 	{
 		if (!$source = trim($source))
