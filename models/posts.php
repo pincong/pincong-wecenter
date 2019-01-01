@@ -31,11 +31,12 @@ class posts_class extends AWS_MODEL
 		return intval($result['update_time']);
 	}
 
-	public function set_posts_index($post_id, $post_type, $data = null)
+	// set_posts_index 现在仅在发帖/回复时调用
+	public function set_posts_index($post_id, $post_type, $post_data = null)
 	{
-		if ($data)
+		if ($post_data)
 		{
-			$result = $data;
+			$result = $post_data;
 		}
 		else
 		{
@@ -92,22 +93,25 @@ class posts_class extends AWS_MODEL
 
 				break;
 
+			default:
+				return false;
+		}
+
+
+		if (!$post_data AND get_setting('time_blurring') != 'N')
+		{
+			// 用于模糊时间的排序
+			$last_update_time = $this->get_last_update_time();
+			$update_time = intval($data['update_time']);
+			if ($last_update_time >= $update_time AND $last_update_time < $update_time + 36 * 3600) // 如果模糊的 $last_update_time 超出36小时则放弃
+			{
+				$data['update_time'] = $last_update_time + 1;
+			}
 		}
 
 		if ($posts_index = $this->fetch_all('posts_index', "post_id = " . intval($post_id) . " AND post_type = '" . $this->quote($post_type) . "'"))
 		{
 			$post_index = end($posts_index);
-
-			if (get_setting('time_blurring') != 'N')
-			{
-				// 用于模糊时间的排序
-				$last_update_time = $this->get_last_update_time();
-				$update_time = intval($data['update_time']);
-				if ($last_update_time >= $update_time AND $last_update_time < $update_time + 36 * 3600)
-				{
-					$data['update_time'] = $last_update_time + 1;
-				}
-			}
 
 			$this->update('posts_index', $data, 'id = ' . intval($post_index['id']));
 
