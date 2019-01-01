@@ -127,7 +127,7 @@
 										<?php _e('延迟显示'); ?>&nbsp;</label>
 									<?php } ?>
 
-									<?php if (!$this->question_info['question_id'] AND get_setting('anonymous_enable') == 'Y') { ?>
+									<?php if (!$this->question_info['question_id']) { ?>
 									<label><input type="checkbox" class="pull-left" value="1" name="anonymous" />
 										<?php _e('匿名'); ?></label>
 									<?php } ?>
