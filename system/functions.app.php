@@ -165,20 +165,6 @@ function get_feature_pic_url($size = null, $pic_file = null)
 	return get_setting('upload_url') . '/feature/' . $pic_file;
 }
 
-function parse_link_callback($matches)
-{
-	$url = $matches[1];
-
-	if (is_inside_url($url))
-	{
-		return '<a href="' . $url . '">' . $url . '</a>';
-	}
-	else
-	{
-		return '<a href="' . $url . '" rel="nofollow noreferrer noopener" target="_blank">' . $url . '</a>';
-	}
-}
-
 function is_inside_url($url)
 {
 	if (!$url)

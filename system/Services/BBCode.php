@@ -49,61 +49,52 @@ class Services_BBCode
 		return '<span style="text-decoration:underline;">' . $match[1] . '</span>';
 	}
 
-	private function _url_callback($match)
+	private function _h_callback($match)
 	{
-		if (stripos($match[1], 'https://') !== 0 && stripos($match[1], 'http://') !== 0)
-		{
-			return $match[1];
-		}
-		return parse_link_callback($match);
+		return "<h2>$match[1]</h2>";
 	}
 
-	private function _link_callback($match)
+	private function _url_callback($match)
 	{
-		if (stripos($match[1], 'https://') !== 0 && stripos($match[1], 'http://') !== 0)
-		{
-			return $match[2];
-		}
+		return FORMAT::parse_link($match[1]);
+	}
 
-		if (is_inside_url($match[1]))
-		{
-			return '<a href="' . $match[1] . '">' . $match[2] . '</a>';
-		}
-		else
-		{
-			return '<a href="' . $match[1] . '" rel="nofollow noreferrer noopener" target="_blank">' . $match[2] . '</a>';
-		}
+	private function _url_2_callback($match)
+	{
+		return FORMAT::parse_link($match[1], $match[2]);
 	}
 
 	private function _img_callback($match)
 	{
-		return load_class('Services_ImageUrlParser')->parse($match[1]);
+		return FORMAT::parse_image($match[1]);
 	}
 
 	private function _img_2_callback($match)
 	{
-		return load_class('Services_ImageUrlParser')->parse($match[2]);
+		return FORMAT::parse_image($match[2]);
+	}
+
+	private function _video_callback($match)
+	{
+		return FORMAT::parse_video($match[1]);
 	}
 
 	private function _list_callback($match)
 	{
 		$match[1] = preg_replace_callback("/\[\*\](.*?)\[\/\*\]/is", array(&$this, '_list_element_callback'), $match[1]);
-
-        return "<ul>" . preg_replace("/[\n\r?]/", "", $match[1]) . "</ul>";
+		return "<ul>" . preg_replace("/[\n\r?]/", "", $match[1]) . "</ul>";
 	}
 
-	private function _list_ul_callback($match)
+	private function _ul_callback($match)
 	{
 		$match[1] = preg_replace_callback("/\[li\](.*?)\[\/li\]/is", array(&$this, '_list_element_callback'), $match[1]);
-
-        return "<ul>" . preg_replace("/[\n\r?]/", "", $match[1]) . "</ul>";
+		return "<ul>" . preg_replace("/[\n\r?]/", "", $match[1]) . "</ul>";
 	}
 
-	private function _list_ol_callback($match)
+	private function _ol_callback($match)
 	{
 		$match[1] = preg_replace_callback("/\[li\](.*?)\[\/li\]/is", array(&$this, '_list_element_callback'), $match[1]);
-
-        return "<ol>" . preg_replace("/[\n\r?]/", "", $match[1]) . "</ol>";
+		return "<ol>" . preg_replace("/[\n\r?]/", "", $match[1]) . "</ol>";
 	}
 
 	private function _list_element_callback($match)
@@ -111,29 +102,24 @@ class Services_BBCode
 		return "<li>" . preg_replace("/[\n\r?]$/", "", $match[1]) . "</li>";
 	}
 
-	private function _video_callback($match)
-	{
-		return load_class('Services_VideoUrlParser')->parse($match[1]);
-	}
-
 	private function _list_advance_callback($match)
 	{
 		if ($match[1] == '1')
-        {
-            $list_type = 'ol';
-        }
-        else
-        {
-        	$list_type = 'ul';
-        }
+		{
+			$list_type = 'ol';
+		}
+		else
+		{
+			$list_type = 'ul';
+		}
 
-        $match[2] = preg_replace_callback("/\[\*\](.*?)\[\/\*\]/is", array(&$this, '_list_element_callback'), $match[2]);
+		$match[2] = preg_replace_callback("/\[\*\](.*?)\[\/\*\]/is", array(&$this, '_list_element_callback'), $match[2]);
 
-        return '<' . $list_type . '>' . preg_replace("/[\n\r?]/", "", $match[2]) . '</' . $list_type . '>';
+		return '<' . $list_type . '>' . preg_replace("/[\n\r?]/", "", $match[2]) . '</' . $list_type . '>';
 	}
 
-    public function __construct()
-    {
+	public function __construct()
+	{
 		// 最先解析 [code]
 		// Replace [code]...[/code] with <pre><code>...</code></pre>
 		$this->bbcode_table["/\[code\](.*?)\[\/code\]/is"] = '_code_callback';
@@ -143,90 +129,90 @@ class Services_BBCode
 		// 更新：当内容过长时会出现 bug 已弃用
 		//$this->bbcode_table["/\[code\](((?![\[code\]]).*?)+)\[\/code\]/is"] = '_code_callback';
 
-        $this->bbcode_table["/\[left\](.*?)\[\/left\]/is"] = '_plain_text_callback';
-        $this->bbcode_table["/\[center\](.*?)\[\/center\]/is"] = '_plain_text_callback';
-        $this->bbcode_table["/\[right\](.*?)\[\/right\]/is"] = '_plain_text_callback';
-        $this->bbcode_table["/\[justify\](.*?)\[\/justify\]/is"] = '_plain_text_callback';
-        $this->bbcode_table["/\[sub\](.*?)\[\/sub\]/is"] = '_plain_text_callback';
-        $this->bbcode_table["/\[sup\](.*?)\[\/sup\]/is"] = '_plain_text_callback';
+		$this->bbcode_table["/\[left\](.*?)\[\/left\]/is"] = '_plain_text_callback';
+		$this->bbcode_table["/\[center\](.*?)\[\/center\]/is"] = '_plain_text_callback';
+		$this->bbcode_table["/\[right\](.*?)\[\/right\]/is"] = '_plain_text_callback';
+		$this->bbcode_table["/\[justify\](.*?)\[\/justify\]/is"] = '_plain_text_callback';
+		$this->bbcode_table["/\[sub\](.*?)\[\/sub\]/is"] = '_plain_text_callback';
+		$this->bbcode_table["/\[sup\](.*?)\[\/sup\]/is"] = '_plain_text_callback';
+		$this->bbcode_table["/\[ltr\](.*?)\[\/ltr\]/is"] = '_plain_text_callback';
+		$this->bbcode_table["/\[rtl\](.*?)\[\/rtl\]/is"] = '_plain_text_callback';
 
-        $this->bbcode_table["/\[size=(.*?)\](.*?)\[\/size\]/is"] = '_plain_text_2_callback';
-        $this->bbcode_table["/\[font=(.*?)\](.*?)\[\/font\]/is"] = '_plain_text_2_callback';
-        $this->bbcode_table["/\[color=(.*?)\](.*?)\[\/color\]/is"] = '_plain_text_2_callback';
+		$this->bbcode_table["/\[size=(.*?)\](.*?)\[\/size\]/is"] = '_plain_text_2_callback';
+		$this->bbcode_table["/\[font=(.*?)\](.*?)\[\/font\]/is"] = '_plain_text_2_callback';
+		$this->bbcode_table["/\[color=(.*?)\](.*?)\[\/color\]/is"] = '_plain_text_2_callback';
 
 
-        // Replace [b]...[/b] with <strong>...</strong>
-        $this->bbcode_table["/\[b\](.*?)\[\/b\]/is"] = '_b_callback';
-        //$this->bbcode_table["/\[b\](((?![\[b\]]).*?)+)\[\/b\]/is"] = '_b_callback';
+		// Replace [b]...[/b] with <strong>...</strong>
+		$this->bbcode_table["/\[b\](.*?)\[\/b\]/is"] = '_b_callback';
 
-        // Replace [i]...[/i] with <em>...</em>
-        $this->bbcode_table["/\[i\](.*?)\[\/i\]/is"] = '_i_callback';
-        //$this->bbcode_table["/\[i\](((?![\[i\]]).*?)+)\[\/i\]/is"] = '_i_callback';
+		// Replace [i]...[/i] with <em>...</em>
+		$this->bbcode_table["/\[i\](.*?)\[\/i\]/is"] = '_i_callback';
 
-        // Replace [quote]...[/quote] with <blockquote><p>...</p></blockquote>
-        $this->bbcode_table["/\[quote\](.*?)\[\/quote\]/is"] = '_quote_callback';
-        //$this->bbcode_table["/\[quote\](((?![\[quote\]]).*?)+)\[\/quote\]/is"] = '_quote_callback';
+		// Replace [quote]...[/quote] with <blockquote><p>...</p></blockquote>
+		$this->bbcode_table["/\[quote\](.*?)\[\/quote\]/is"] = '_quote_callback';
 
-        // Replace [s] with <del>
-        $this->bbcode_table["/\[s\](.*?)\[\/s\]/is"] = '_s_callback';
-        //$this->bbcode_table["/\[s\](((?![\[s\]]).*?)+)\[\/s\]/is"] = '_s_callback';
+		// Replace [s] with <del>
+		$this->bbcode_table["/\[s\](.*?)\[\/s\]/is"] = '_s_callback';
 
-        // Replace [u]...[/u] with <span style="text-decoration:underline;">...</span>
-        $this->bbcode_table["/\[u\](.*?)\[\/u\]/is"] = '_u_callback';
-        //$this->bbcode_table["/\[u\](((?![\[s\]]).*?)+)\[\/u\]/is"] = '_u_callback';
+		// Replace [u]...[/u] with <span style="text-decoration:underline;">...</span>
+		$this->bbcode_table["/\[u\](.*?)\[\/u\]/is"] = '_u_callback';
 
-        // Replace [url]...[/url] with <a href="...">...</a>
-        $this->bbcode_table["/\[url\](.*?)\[\/url\]/is"] = '_url_callback';
+		// Replace [h] with <h2>
+		$this->bbcode_table["/\[h\](.*?)\[\/h\]/is"] = '_h_callback';
 
-        // Replace [url=http://www.google.com/]A link to google[/url] with <a href="http://www.google.com/">A link to google</a>
-        $this->bbcode_table["/\[url=(.*?)\](.*?)\[\/url\]/is"] = '_link_callback';
+		// Replace [url]...[/url] with <a href="...">...</a>
+		$this->bbcode_table["/\[url\](.*?)\[\/url\]/is"] = '_url_callback';
 
-        // Replace [img]...[/img] with <img src="..."/>
-        $this->bbcode_table["/\[img\](.*?)\[\/img\]/is"] = '_img_callback';
+		// Replace [url=http://www.google.com/]A link to google[/url] with <a href="http://www.google.com/">A link to google</a>
+		$this->bbcode_table["/\[url=(.*?)\](.*?)\[\/url\]/is"] = '_url_2_callback';
 
-        // Replace [img=...]...[/img] with <img src="..."/>
-        $this->bbcode_table["/\[img=(.*?)\](.*?)\[\/img\]/is"] = '_img_2_callback';
+		// Replace [img]...[/img] with <img src="..."/>
+		$this->bbcode_table["/\[img\](.*?)\[\/img\]/is"] = '_img_callback';
 
-        // Replace [video]...[/video] with swf video player
-        $this->bbcode_table["/\[video\](.*?)\[\/video\]/is"] = '_video_callback';
+		// Replace [img=...]...[/img] with <img src="..."/>
+		$this->bbcode_table["/\[img=(.*?)\](.*?)\[\/img\]/is"] = '_img_2_callback';
 
-        // Replace [list]...[/list] with <ul><li>...</li></ul>
-        $this->bbcode_table["/\[list\](.*?)\[\/list\]/is"] = '_list_callback';
+		// Replace [video]...[/video] with swf video player
+		$this->bbcode_table["/\[video\](.*?)\[\/video\]/is"] = '_video_callback';
 
-        // Replace [list=1|a]...[/list] with <ul|ol><li>...</li></ul|ol>
-        $this->bbcode_table["/\[list=(1|a)\](.*?)\[\/list\]/is"] = '_list_advance_callback';
+		// Replace [list]...[/list] with <ul><li>...</li></ul>
+		$this->bbcode_table["/\[list\](.*?)\[\/list\]/is"] = '_list_callback';
 
-        // Replace [ul]...[/ul] with <ul><li>...</li></ul>
-        $this->bbcode_table["/\[ul\](.*?)\[\/ul\]/is"] = '_list_ul_callback';
+		// Replace [list=1|a]...[/list] with <ul|ol><li>...</li></ul|ol>
+		$this->bbcode_table["/\[list=(1|a)\](.*?)\[\/list\]/is"] = '_list_advance_callback';
 
-        // Replace [ol]...[/ol] with <ol><li>...</li></ol>
-        $this->bbcode_table["/\[ol\](.*?)\[\/ol\]/is"] = '_list_ol_callback';
+		// Replace [ul]...[/ul] with <ul><li>...</li></ul>
+		$this->bbcode_table["/\[ul\](.*?)\[\/ul\]/is"] = '_ul_callback';
 
-        return $this;
-    }
+		// Replace [ol]...[/ol] with <ol><li>...</li></ol>
+		$this->bbcode_table["/\[ol\](.*?)\[\/ol\]/is"] = '_ol_callback';
 
-    public function parse($text, $escapeHTML = false, $nr2br = false)
-    {
-        if (! $text)
-        {
-            return false;
-        }
+		return $this;
+	}
 
-        if ($escapeHTML)
-        {
-            $text = htmlspecialchars($text);
-        }
+	public function parse($text, $escapeHTML = false, $nr2br = false)
+	{
+		if (! $text)
+		{
+			return false;
+		}
 
-        foreach ($this->bbcode_table AS $key => $val)
-        {
-            $text = preg_replace_callback($key, array(&$this, $val), $text);
-        }
+		if ($escapeHTML)
+		{
+			$text = htmlspecialchars($text);
+		}
 
-        if ($nr2br)
-        {
-            $text = nl2br($text);
-        }
+		foreach ($this->bbcode_table AS $key => $val)
+		{
+			$text = preg_replace_callback($key, array(&$this, $val), $text);
+		}
 
-        return $text;
-    }
+		if ($nr2br)
+		{
+			$text = nl2br($text);
+		}
+
+		return $text;
+	}
 }

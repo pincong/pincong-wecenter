@@ -14,45 +14,71 @@
 
 class FORMAT
 {
-	public static function parse_links($str)
+	public static function parse_image($url)
 	{
-		$str = @preg_replace_callback('/(?<!!!\[\]\(|"|\'|\)|>)(https?:\/\/[-a-zA-Z0-9@:;%_\+.~#?\&\/\/=!]+)(?!"|\'|\)|>)/i', 'parse_link_callback', $str);
-
-		$str = @preg_replace('/([a-z0-9\+_\-]+[\.]?[a-z0-9\+_\-]+@[a-z0-9\-]+\.+[a-z]{2,6}+(\.+[a-z]{2,6})?)/is', '<a href="mailto:\1">\1</a>', $str);
-
-		return $str;
+		if (stripos($url, 'https://') !== 0 && stripos($url, 'http://') !== 0)
+		{
+			return $url;
+		}
+		if (!H::content_url_whitelist_check($url))
+		{
+			return "<a href=\"$url\" rel=\"nofollow noreferrer noopener\" target=\"_blank\">$url</a>";
+		}
+		return "<img src=\"$url\" alt=\"$url\" style=\"max-width:100%\">";
 	}
 
-	public static function outside_url_exists($str)
+	public static function parse_video($url)
 	{
-		$str = strtolower($str);
-
-		if (strstr($str, 'http'))
+		if (stripos($url, 'https://') !== 0 && stripos($url, 'http://') !== 0)
 		{
-			preg_match_all('/(https?:\/\/[-a-zA-Z0-9@:;%_\+.~#?\&\/\/=!]+)/i', $str, $matches);
+			return $url;
+		}
+		if (!H::content_url_whitelist_check($url))
+		{
+			return "<a href=\"$url\" rel=\"nofollow noreferrer noopener\" target=\"_blank\">$url</a>";
+		}
+		return "<video controls preload=\"none\" src=\"$url\" style=\"max-width:100%\"></video>";
+	}
+
+	// TODO: 超链接黑名单
+	public static function parse_link($url, $title = null)
+	{
+		if ($title === null)
+		{
+			$title = $url;
+		}
+
+		if (stripos($url, 'https://') !== 0 && stripos($url, 'http://') !== 0)
+		{
+			return $title;
+		}
+
+		if (is_inside_url($url))
+		{
+			return '<a href="' . $url . '">' . $title . '</a>';
 		}
 		else
 		{
-			preg_match_all('/(www\.[-a-zA-Z0-9@:;%_\+\.~#?&\/\/=]+)/i', $str, $matches);
+			return '<a href="' . $url . '" rel="nofollow noreferrer noopener" target="_blank">' . $title . '</a>';
 		}
+	}
 
-		if ($matches)
-		{
-			foreach($matches as $key => $val)
-			{
-				if (!$val)
-				{
-					continue;
-				}
+	private static function _link_callback($matches)
+	{
+		return self::parse_link($matches[1]);
+	}
 
-				if (!is_inside_url($val[0]))
-				{
-					return true;
-				}
-			}
-		}
+	public static function parse_links($str)
+	{
+		$str = @preg_replace_callback(
+			'/(?<!!!\[\]\(|"|\'|\)|>)(https?:\/\/[-a-zA-Z0-9@:;%_\+.~#?\&\/\/=!]+)(?!"|\'|\)|>)/i',
+			array('FORMAT', '_link_callback'),
+			$str
+		);
 
-		return false;
+		//$str = @preg_replace('/([a-z0-9\+_\-]+[\.]?[a-z0-9\+_\-]+@[a-z0-9\-]+\.+[a-z]{2,6}+(\.+[a-z]{2,6})?)/is', '<a href="mailto:\1">\1</a>', $str);
+
+		return $str;
 	}
 
 	public static function parse_bbcode($text)
@@ -62,171 +88,10 @@ class FORMAT
 			return false;
 		}
 
-		//临时添加
-		//不再主动解析链接
-		//Bug: [url]https://web.archive.org/web/20170602230234/http://www.sohu.com/a/145581401_670685[/url]
-		//return self::parse_links(load_class('Services_BBCode')->parse($text));
+		// 不再主动解析链接
+		// Bug: [url]https://web.archive.org/web/20170602230234/http://www.sohu.com/a/145581401_670685[/url]
+		// return self::parse_links(load_class('Services_BBCode')->parse($text));
 		return load_class('Services_BBCode')->parse($text);
-	}
-
-	// 兼容旧版本
-	public static function parse_markdown($text)
-	{
-		return self::parse_bbcode($text);
-	}
-
-	public static function bbcode_2_markdown($text)
-	{
-		$p[] = '#\[img\]([\w]+?://[\w\#$%&~/.\-;:=,' . "'" . '?@\[\]+]*?)\[/img\]#is';
-		$p[] = '#\[img\]<a (.*?)>([\w]+?://[\w\#$%&~/.\-;:=,' . "'" . '?@\[\]+]*?)</a>\[/img\]#is';
-
-		$p[] = "#\[url\]([\w]+?://[\w\#$%&~/.\-;:=,?@\[\]+]*?)\[/url\]#is";
-		$p[] = "#\[url\]<a (.*?)>([\w]+?://[\w\#$%&~/.\-;:=,?@\[\]+]*?)</a>\[/url\]#is";
-
-		$p[] = "#\[url=([\w]+?://[\w\#$%&~/.\-;:=,?@\[\]+]*?)\]([^?\n\r\t].*?)\[/url\]#is";
-		$p[] = "#\[url=<a (.*?)>([\w]+?://[\w\#$%&~/.\-;:=,?@\[\]+]*?)</a>\]<a (.*?)>([^?\n\r\t].*?)</a>\[/url\]#is";
-		$p[] = "#\[url=<a (.*?)>([\w]+?://[\w\#$%&~/.\-;:=,?@\[\]+]*?)</a>\]([^?\n\r\t].*?)\[/url\]#is";
-
-		$p[] = "#\[url=([\w\#$%&~/.\-;:=,?@\[\]+]*?)\]([^?\n\r\t].*?)\[/url\]#is";
-		$p[] = "#\[email\]([a-z0-9&\-_.]+?@[\w\-]+\.([\w\-\.]+\.)?[\w]+)\[/email\]#si";
-		$p[] = '/\[url\]([^?].*?)\[\/url\]/i';
-		$p[] = "#\[color=(.*?)\](.*?)\[/color\]#is";
-		$p[] = "#\[size=(.*?)\](.*?)\[/size\]#is";
-		$p[] = "#\[font=(.*?)\](.*?)\[/font\]#is";
-		$p[] = '/\[pre\]([^?].*?)\[\/pre\]/i';
-		$p[] = '/\[address\]([^?].*?)\[\/address\]/i';
-		$p[] = '/\[h1\]([^?].*?)\[\/h1\]/i';
-		$p[] = '/\[h2\]([^?].*?)\[\/h2\]/i';
-		$p[] = '/\[h3\]([^?].*?)\[\/h3\]/i';
-		$p[] = "#\[code=(.*?)\](.*?)\[/code\]#is";
-		$p[] = "#\[li\](.*?)\[/li\]#is";
-
-		$r[] = '!($1)';
-		$r[] = '!($2)';
-		$r[] = '$1';
-		$r[] = '$2';
-		$r[] = '$1';
-		$r[] = '$2';
-		$r[] = '$2';
-		$r[] = '$1';
-		$r[] = '$1';
-		$r[] = '$1';
-		$r[] = '$2';
-		$r[] = '$2';
-		$r[] = '$2';
-		$r[] = '$1';
-		$r[] = '$1';
-		$r[] = '## $1';
-		$r[] = '### $1';
-		$r[] = '### $1';
-		$r[] = '{{{$2}}}';
-		$r[] = '- $1';
-
-		$text = preg_replace($p, $r, $text);
-
-		$text = str_ireplace(array('[ul]', '[ol]', '[/ul]', '[/ol]'), '', $text);
-
-		preg_match('/\[b\]/i', $text, $_m_b_open);
-		preg_match('/\[\/b\]/i', $text, $_m_b_close);
-
-		preg_match('/\[i\]/i', $text, $_m_i_open);
-		preg_match('/\[\/i\]/i', $text, $_m_i_close);
-
-		preg_match('/\[u\]/i', $text, $_m_u_open);
-		preg_match('/\[\/u\]/i', $text, $_m_u_close);
-
-		preg_match('/\[s\]/i', $text, $_m_s_open);
-		preg_match('/\[\/s\]/i', $text, $_m_s_close);
-
-		preg_match('/\[quote\]/i', $text, $_m_quote_open);
-		preg_match('/\[\/quote\]/i', $text, $_m_quote_close);
-
-		if (count($_m_b_open) == count($_m_b_close)) {
-			$text = str_ireplace("[b]\n", '[b]', $text);
-			$text = str_ireplace("\n[/b]", '[/b]', $text);
-			$text = str_ireplace('[b]', '**', $text);
-			$text = str_ireplace('[/b]', '**', $text);
-		}
-
-		if (count($_m_i_open) == count($_m_i_close)) {
-			$text = str_ireplace("[i]\n", '[i]', $text);
-			$text = str_ireplace("\n[/i]", '[/i]', $text);
-			$text = str_ireplace('[i]', '_', $text);
-			$text = str_ireplace('[/i]', '_', $text);
-		}
-
-		if (count($_m_u_open) == count($_m_u_close)) {
-			$text = str_ireplace("[u]\n", '[u]', $text);
-			$text = str_ireplace("\n[/u]", '[/u]', $text);
-			$text = str_ireplace('[u]', '', $text);
-			$text = str_ireplace('[/u]', '', $text);
-		}
-
-		if (count($_m_s_open) == count($_m_s_close)) {
-			$text = str_ireplace("[s]\n", '[s]', $text);
-			$text = str_ireplace("\n[/s]", '[/s]', $text);
-			$text = str_ireplace('[s]', '', $text);
-			$text = str_ireplace('[/s]', '', $text);
-		}
-
-		if (count($_m_quote_open) == count($_m_quote_close)) {
-			$text = str_ireplace("[quote]\n", '[quote]', $text);
-			$text = str_ireplace("\n[/quote]", '[/quote]', $text);
-			$text = str_ireplace('[quote]', '> ', $text);
-			$text = str_ireplace('[/quote]', "\n", $text);
-		}
-
-		$text = preg_replace('/\[(?![\/]?attach)[^\[\]]{1,}\]/', '', $text);
-
-		return $text;
-	}
-
-	public static function markdown_2_bbcode($text)
-	{
-		$text = htmlspecialchars_decode($text);
-
-		$text = preg_replace('/\*\*((?:(?!\*\*).)+)\*\*/', '[b]\1[/b]', $text);
-		$text = preg_replace('/\*((?:(?!\*).)+)\*/', '[i]\1[/i]', $text);
-		$text = preg_replace('/##((?:(?!##).)+)(?:##)?/', '[size=16]\1[/size]', $text);
-		$text = preg_replace('/!!\[(?:(?!\]).)*\]\(((?:(?!\)).)+)\)/', '[video]\1[/video]', $text);
-		$text = preg_replace('/!\[(?:(?!\]).)*\]\(((?:(?!\)).)+)\)/', '[img]\1[/img]', $text);
-		$text = preg_replace('/\[((?:(?!\]).)+)\]\(((?:(?!\)).)+)\)/', '[url=\2]\1[/url]', $text);
-		$text = preg_replace('/{{{(.+?)}}}/s', '[code]\1[/code]', $text);
-		$text = preg_replace('/^>((?:(?!\n\n).)+)/ms', '[quote]\1[/quote]', $text);
-
-		preg_match_all('/(^\d+\. .+\n?)+/m', $text, $num_list);
-		if ($num_list[0])
-		{
-			foreach ($num_list[0] AS $value)
-			{
-				$new_value = trim(preg_replace('/^\d+\. (.+)/m', '[*]\1[/*]', $value));
-				$text = str_replace($value, "[list=1]\n$new_value\n[/list]", $text);
-			}
-		}
-
-		preg_match_all('/(^- .+\n?)+/m', $text, $nor_list);
-		if ($nor_list[0])
-		{
-			foreach ($nor_list[0] AS $value)
-			{
-				$new_value = trim(preg_replace('/^- (.+)/m', '[*]\1[/*]', $value));
-				$text = str_replace($value, "[list]\n$new_value\n[/list]", $text);
-			}
-		}
-
-		return htmlspecialchars($text);
-	}
-
-	public static function sub_url($url, $length)
-	{
-		if (strlen($url) > $length)
-		{
-			$url = str_replace(array('%3A', '%2F'), array(':', '/'), rawurlencode($url));
-
-			$url = substr($url, 0, intval($length * 0.6)) . ' ... ' . substr($url, - intval($length * 0.1));
-		}
-
-		return $url;
 	}
 
 	public static function text($content)

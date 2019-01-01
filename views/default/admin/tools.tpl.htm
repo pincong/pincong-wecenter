@@ -157,54 +157,6 @@
             <tr>
                 <td>
                     <form action="admin/tools/init/" method="post" target="_blank">
-                        <input type="hidden" name="action" value="bbcode_to_markdown" />
-                        <div class="form-group">
-                            <span class="col-sm-3 col-xs-3 control-label middle"><?php _e('BBCode 转换'); ?>:</span>
-                            <div class="col-sm-7 col-xs-8 middle">
-                                <?php _e('此工具可以将系统内容中的 BBCode 语法转换为 Markdown 语法'); ?>
-
-                                <div class="row">
-                                    <span class="col-sm-1 mod-text-inline"><?php _e('&nbsp 每次处理数量'); ?>:</span>
-                                    <div class="col-sm-6">
-                                        <input type="text" value="500" name="per_page" class="form-control" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-2 col-xs-12">
-                                <input type="submit" class="btn btn-primary" value="<?php _e('开始处理'); ?>">
-                            </div>
-                        </div>
-                    </form>
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <form action="admin/tools/init/" method="post" target="_blank">
-                        <input type="hidden" name="action" value="markdown_to_bbcode" />
-                        <div class="form-group">
-                            <span class="col-sm-3 col-xs-3 control-label middle"><?php _e('Markdown 转换'); ?>:</span>
-                            <div class="col-sm-7 col-xs-8 middle">
-                                <?php _e('此工具可以将系统内容中的 Markdown 语法转换为 BBCode 语法'); ?>
-
-                                <div class="row">
-                                    <span class="col-sm-1 mod-text-inline"><?php _e('&nbsp 每次处理数量'); ?>:</span>
-                                    <div class="col-sm-6">
-                                        <input type="text" value="500" name="per_page" class="form-control" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-2 col-xs-12">
-                                <input type="submit" class="btn btn-primary" value="<?php _e('开始处理'); ?>">
-                            </div>
-                        </div>
-                    </form>
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <form action="admin/tools/init/" method="post" target="_blank">
                         <input type="hidden" name="action" value="blur_time" />
                         <div class="form-group">
                             <span class="col-sm-3 col-xs-3 control-label middle"><?php _e('模糊时间'); ?>:</span>
