@@ -154,33 +154,4 @@ class reputation_class extends AWS_MODEL
 		}
 	}
 
-	// 奖励活跃用户
-	public function reward_daily_active_users()
-	{
-		$reputation_above = get_setting('reward_daily_active_users_reputation');
-		if (!is_numeric($reputation_above))
-		{
-			return false;
-		}
-
-		$bonus_min = intval(get_setting('reward_daily_active_users_currency_min'));
-		$bonus_max = intval(get_setting('reward_daily_active_users_currency_max'));
-		if (!$bonus_min AND !$bonus_max)
-		{
-			return false;
-		}
-
-		$time_after = real_time() - 36 * 3600; // 36小时内的活跃用户
-
-		if ($active_users = $this->query_all("SELECT uid FROM " . $this->get_table('users') . " WHERE last_login > " . $time_after . " AND forbidden = 0 AND reputation > " . $reputation_above))
-		{
-			foreach ($active_users AS $key => $val)
-			{
-				$this->model('currency')->process($val['uid'], 'DAILY_BONUS', rand($bonus_min, $bonus_max), '签到奖励');
-			}
-		}
-
-		return true;
-	}
-
 }

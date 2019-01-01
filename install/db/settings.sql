@@ -86,8 +86,6 @@ INSERT INTO `aws_system_setting` (`varname`, `value`) VALUES
 	('expiration_user_actions', 's:2:"30";'),
 	('random_seconds_min', 's:1:"0";'),
 	('random_seconds_max', 's:1:"1";'),
-	('reward_daily_active_users_currency', 's:0:"";'),
-	('reward_daily_active_users_reputation', 's:0:"";'),
 	('currency_system_config_answer_disagreed', 's:1:"0";'),
 	('currency_system_config_disagree_answer', 's:1:"0";'),
 	('currency_system_config_answer_agreed', 's:1:"0";'),

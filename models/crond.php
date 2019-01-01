@@ -126,7 +126,6 @@ class crond_class extends AWS_MODEL
     // 每日时执行
     public function day()
     {
-		$this->model('reputation')->reward_daily_active_users();
         $this->model('answer')->calc_best_answer();
         $this->model('question')->auto_lock_question();
 
