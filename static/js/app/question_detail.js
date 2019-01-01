@@ -176,9 +176,6 @@ $(function()
 	    AWS.User.invite_user($(this),$(this).find('img').attr('src'));
 	});
 
-    //回复内容超链接新窗口打开
-    $('.markitup-box a').attr('target','_blank');
-
 });
 
 function one_click_add_topic(selector, topic_title, question_id)
