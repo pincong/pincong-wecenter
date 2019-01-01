@@ -648,22 +648,6 @@ var AWS =
 			case 'imagePreview':
 				var template = AW_TEMPLATE.ajaxData.replace('{{title}}', data.title).replace('{{data}}', '<p align="center"><img src="' + data.image + '" alt="" style="max-width:520px" /></p>');
 			break;
-
-			case 'confirm':
-				var template = Hogan.compile(AW_TEMPLATE.confirmBox).render(
-				{
-					'message': data.message
-				});
-			break;
-
-			case 'textBox':
-				var template = Hogan.compile(AW_TEMPLATE.textBox).render(
-				{
-					'title': data.title,
-					'message': data.message
-				});
-			break;
-
 		}
 
 		if (template)
@@ -687,30 +671,6 @@ var AWS =
 				case 'ajaxData':
 					$.get(data.url, function (result) {
 						$('#aw_dialog_ajax_data').html(result);
-					});
-				break;
-
-				case 'confirm':
-					$('.aw-confirm-box .yes').click(function()
-					{
-						$(".alert-box").modal('hide');
-						if (callback)
-						{
-							callback();
-						}
-						return false;
-					});
-				break;
-
-				case 'textBox':
-					$('.aw-text-box .yes').click(function()
-					{
-						$(".alert-box").modal('hide');
-						if (callback)
-						{
-							callback($('.aw-text-box textarea').val());
-						}
-						return false;
 					});
 				break;
 			}

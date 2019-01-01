@@ -104,7 +104,7 @@
 						<div class="mod-footer">
 							<?php if ($this->user_info['permission']['manage_topic']) { ?>
 							<a onclick="AWS.ajax_request(G_BASE_URL + '/topic/ajax/lock/', 'topic_id=<?php echo $this->topic_info['topic_id']; ?>');" class="btn btn-success <?php if ($this->topic_info['topic_lock']) { ?>active<?php } ?>"><?php if ($this->topic_info['topic_lock']) { ?><?php _e('解除锁定'); ?><?php } else { ?><?php _e('锁定话题'); ?><?php } ?></a>&nbsp;
-							<a onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认删除?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/topic/ajax/remove/', 'topic_id=<?php echo $this->topic_info['topic_id']; ?>');});" class="btn btn-gray"><?php _e('删除话题'); ?></a>
+							<a onclick="AWS.confirm('<?php _e('确认删除?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/topic/ajax/remove/', 'topic_id=<?php echo $this->topic_info['topic_id']; ?>');});" class="btn btn-gray"><?php _e('删除话题'); ?></a>
 							<?php } ?>
 						</div>
 					</div>
