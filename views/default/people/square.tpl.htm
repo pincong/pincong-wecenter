@@ -22,7 +22,7 @@
 									<?php if ($val['verified']) { ?><i class="icon-v<?php if ($val['verified'] == 'enterprise') { ?> i-ve<?php } ?>" title="<?php if ($val['verified'] == 'enterprise') { ?><?php _e('企业认证'); ?><?php } else { ?><?php _e('个人认证'); ?><?php } ?>"></i><?php } ?>
 									<?php if ($val['forbidden']) { ?><span class="text-color-999">[ <?php _e('封禁'); ?> ]</span><?php } ?>
 								</p>
-								<p class="text-color-999 signature"><?php echo UF::signature($val); ?></p>
+								<p class="text-color-999 signature"><?php echo UF::signature($val, $this->user_info['permission']['is_administrator']); ?></p>
 								<div class="meta">
 									<span><i class="icon icon-prestige"></i><?php _e('威望'); ?> : <b><?php echo $val['reputation']; ?></b></span>
 									<span><i class="icon icon-agree"></i><?php _e('赞同'); ?> : <b><?php echo $val['agree_count']; ?></b></span>

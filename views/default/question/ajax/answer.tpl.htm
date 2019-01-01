@@ -23,7 +23,7 @@
 					<?php if ($this->answer_info['user_info']['verified']) { ?>
 						<i class="icon-v<?php if ($this->answer_info['user_info']['verified'] == 'enterprise') { ?> i-ve<?php } ?>" title="<?php if ($this->answer_info['user_info']['verified'] == 'enterprise') { ?>企业认证<?php } else { ?>个人认证<?php } ?>"></i>
 					<?php } ?>
-					<?php if ($this->answer_info['user_info']['signature']) { ?> - <span class="text-color-999"><?php echo UF::signature($this->answer_info['user_info']); ?></span><?php } ?>
+					<?php if ($this->answer_info['user_info']['signature']) { ?> - <span class="text-color-999"><?php echo UF::signature($this->answer_info['user_info'], $this->user_info['permission']['is_administrator']); ?></span><?php } ?>
 				<?php } ?>
 			</p>
 		</div>
