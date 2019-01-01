@@ -846,7 +846,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
             if ($_POST['password'])
             {
-                $this->model('account')->update_user_password_ingore_oldpassword($_POST['password'], $user_info['uid'], fetch_salt());
+                $this->model('account')->update_user_password_ingore_oldpassword($_POST['password'], $user_info['uid']);
             }
 
             if ($_POST['user_name'] AND $_POST['user_name'] != $user_info['user_name'])

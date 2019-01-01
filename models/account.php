@@ -476,26 +476,26 @@ class account_class extends AWS_MODEL
      * @param  int
      * @param  string
      */
-    public function update_user_password($oldpassword, $password, $uid, $salt)
+    public function update_user_password($password, $uid, $oldpassword, $salt)
     {
         if (!$salt OR !$uid)
         {
             return false;
         }
 
-        $oldpassword = compile_password($oldpassword, $salt);
-
         if (! $user_info = $this->fetch_row('users', 'uid = ' . intval($uid)))
         {
             return false;
         }
+
+        $oldpassword = compile_password($oldpassword, $salt);
 
         if (!password_verify($oldpassword, $user_info['password']))
         {
             return false;
         }
 
-        return $this->update_user_password_ingore_oldpassword($password, $uid, $salt);
+        return $this->update_user_password_ingore_oldpassword($password, $uid);
     }
 
     /**
@@ -505,12 +505,14 @@ class account_class extends AWS_MODEL
      * @param  int
      * @param  string
      */
-    public function update_user_password_ingore_oldpassword($password, $uid, $salt)
+    public function update_user_password_ingore_oldpassword($password, $uid)
     {
-        if (!$salt OR !$password OR !$uid)
+        if (!$password OR !$uid)
         {
             return false;
         }
+
+        $salt = fetch_salt();
 
         $this->update('users', array(
             'password' => bcrypt_password_hash(compile_password($password, $salt)),
