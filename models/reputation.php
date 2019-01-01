@@ -83,13 +83,11 @@ class reputation_class extends AWS_MODEL
 			return false;
 		}
 
-		//if ($user_info['flagged'] > 0)
-		if ($user_info['flagged'])
+		$agree_count_delta = intval($vote);
+		if ($agree_count_delta > 0 AND $user_info['flagged'])
 		{
 			return false;
 		}
-
-		$agree_count_delta = intval($vote);
 		$reputation_delta = $agree_count_delta * floatval($reputation_factor);
 
 		$this->query('UPDATE ' . $this->get_table('users') . ' SET agree_count = agree_count + ' . $agree_count_delta . ', reputation = reputation + ' . $reputation_delta . ' WHERE uid = ' . ($uid));
