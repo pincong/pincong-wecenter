@@ -5,7 +5,7 @@
 .btn-primary:hover{background-color: #555c6c;}
 .btn-primary:active, .btn-primary:focus{background-color: #323341;}
 .form-control:focus{border-color:#404451 !important;box-shadow: none;}
-a{cursor: pointer;color: #155faa;}
+a{cursor: pointer;color: #23527c;}
 a:hover{text-decoration: none;color: #404451;}
 .aw-load-more-content:hover{background: #404451;color: #fff;}
 .aw-load-more-content:hover a, .aw-load-more-content:hover span{background-color:#404451;color: #fff;}
@@ -33,7 +33,7 @@ a:hover{text-decoration: none;color: #404451;}
 .aw-mod.side-nav ul li a.active .badge{background-color: #fff;color: #404451;}
 .aw-upload-box .upload-list li .img .icon-file{font-size: 48px;vertical-align: middle;color: #aac6e1;}
 .aw-topic-bar .tag-bar .operate .btn-group.open .btn{background-color:#404451;color: #fff;}
-.aw-comment-box .aw-comment-list a{color: #155faa;}
+.aw-comment-box .aw-comment-list a{color: #23527c;}
 .aw-invite-box .mod-footer a{display: inline-block;width: 28px;height: 24px;line-height:22px;background-color: #555c6c;text-align: center;border-radius: 4px;color: #fff;}
 .aw-article-list .aw-item h2 a:hover, .aw-article-list .aw-item .aw-mod-footer span a:hover{color: #4d8bcd;}
 .aw-article-list .aw-item .mod-footer span a:hover{color: #555c6c;}
@@ -46,3 +46,5 @@ a:hover{text-decoration: none;color: #404451;}
 .aw-first-login .mod-head ul.active, .aw-first-login .mod-head ul li.active{background: #697287;color: #fff;}
 .aw-first-login .mod-head ul li i{position:absolute;top:0;right:-16px;display: none;width: 0;height: 0;border-top: 26px solid transparent;border-left: 16px solid #697287;border-bottom: 24px solid transparent;}
 .navbar-collapse {background: #404451;}
+.aw-common-list .aw-question-content h4{font-size: 16px;font-weight: bold;}
+.aw-question-detail .mod-head h1{color: #333;font-size:21px;font-weight: bold;}
