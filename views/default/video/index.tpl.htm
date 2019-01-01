@@ -8,7 +8,7 @@
 		<div class="row">
 			<div class="aw-content-wrap clearfix">
 				<div class="col-sm-12 col-md-9 aw-main-content aw-article-content">
-					<div class="aw-mod aw-topic-bar" id="question_topic_editor" data-type="article" data-id="<?php echo $this->video_info['id']; ?>">
+					<div class="aw-mod aw-topic-bar" id="question_topic_editor" data-type="video" data-id="<?php echo $this->video_info['id']; ?>">
 						<div class="tag-bar clearfix">
 							<?php if ($this->video_topics) { ?>
 							<?php foreach($this->video_topics as $key => $val) { ?>
@@ -209,7 +209,7 @@
 
 											<?php if ($this->user_id) { ?>
 												<?php if ($val['anonymous'] == 0) { ?>
-												<a class="aw-article-comment text-color-999" data-id="<?php echo $val['user_info']['uid']; ?>"><i class="icon icon-comment"></i> <?php _e('回复'); ?></a>
+												<!--<a class="aw-article-comment text-color-999" data-id="<?php echo $val['user_info']['uid']; ?>"><i class="icon icon-comment"></i> <?php _e('回复'); ?></a>-->
 												<?php } ?>
 												<?php if ($this->user_id == $val['uid'] OR $this->user_info['permission']['edit_article']) { ?>
 												<a class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认删除?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/v/ajax/remove_comment/', 'comment_id=<?php echo $val['id']; ?>');});"><i class="icon icon-trash"></i> <?php _e('删除'); ?></a>

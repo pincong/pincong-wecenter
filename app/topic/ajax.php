@@ -446,7 +446,7 @@ class ajax extends AWS_CONTROLLER
 			case 'question':
 				if (!$question_info = $this->model('question')->get_question_info_by_id($_POST['item_id']))
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定问题不存在')));
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定项目不存在')));
 				}
 
 				if (!$this->user_info['permission']['edit_question_topic'] AND $this->user_id != $question_info['published_uid'])
@@ -464,6 +464,24 @@ class ajax extends AWS_CONTROLLER
 				if (!$this->user_info['permission']['edit_question_topic'] AND $this->user_id != $article_info['uid'])
 				{
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+				}
+			break;
+
+			case 'video':
+				if (!$video_info = $this->model('video')->get_video_info_by_id($_POST['item_id']))
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定项目不存在')));
+				}
+
+				if (!$this->user_info['permission']['edit_question_topic'] AND $this->user_id != $video_info['uid'])
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+				}
+			break;
+
+			default:
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定项目不存在')));
 				}
 			break;
 		}
@@ -485,7 +503,7 @@ class ajax extends AWS_CONTROLLER
 			case 'question':
 				if (!$question_info = $this->model('question')->get_question_info_by_id($_POST['item_id']))
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定问题不存在')));
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定项目不存在')));
 				}
 
 				if (!$this->user_info['permission']['edit_question_topic'] AND $this->user_id != $question_info['published_uid'])
@@ -503,6 +521,24 @@ class ajax extends AWS_CONTROLLER
 				if (!$this->user_info['permission']['edit_question_topic'] AND $this->user_id != $article_info['uid'])
 				{
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+				}
+			break;
+
+			case 'video':
+				if (!$video_info = $this->model('video')->get_video_info_by_id($_POST['item_id']))
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定项目不存在')));
+				}
+
+				if (!$this->user_info['permission']['edit_question_topic'] AND $this->user_id != $video_info['uid'])
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+				}
+			break;
+
+			default:
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定项目不存在')));
 				}
 			break;
 		}
@@ -539,14 +575,21 @@ class ajax extends AWS_CONTROLLER
 			case 'question':
 				if ($question_info['lock'] AND ! ($this->user_info['permission']['is_administrator'] or $this->user_info['permission']['is_moderator']))
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定问题不能添加话题')));
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定内容不能添加话题')));
 				}
 			break;
 
 			case 'article':
 				if ($article_info['lock'] AND ! ($this->user_info['permission']['is_administrator'] or $this->user_info['permission']['is_moderator']))
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定文章不能添加话题')));
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定内容不能添加话题')));
+				}
+			break;
+
+			case 'video':
+				if ($video_info['lock'] AND ! ($this->user_info['permission']['is_administrator'] or $this->user_info['permission']['is_moderator']))
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定内容不能添加话题')));
 				}
 			break;
 		}

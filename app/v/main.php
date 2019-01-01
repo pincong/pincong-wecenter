@@ -60,8 +60,6 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('video_info', $video_info);
 
-		/*
-		// 话题相关 暂不实现
 		$video_topics = $this->model('topic')->get_topics_by_item_id($video_info['id'], 'video');
 
 		if ($video_topics)
@@ -70,11 +68,10 @@ class main extends AWS_CONTROLLER
 
 			foreach ($video_topics AS $topic_info)
 			{
-				// 推荐相关
+				// 推荐相关 下文
 				//$video_topic_ids[] = $topic_info['topic_id'];
 			}
 		}
-		*/
 
 		$this->crumb($video_info['title'], '/v/' . $video_info['id']);
 

@@ -110,9 +110,13 @@ $(document).ready(function ()
 
             case 'favorite':
                 data_url = G_BASE_URL + '/favorite/ajax/remove_favorite_tag/';
-                break
+                break;
 
             case 'article':
+                data_url = G_BASE_URL + '/topic/ajax/remove_topic_relation/';
+                break;
+
+            case 'video':
                 data_url = G_BASE_URL + '/topic/ajax/remove_topic_relation/';
                 break;
         }
@@ -138,7 +142,7 @@ $(document).ready(function ()
             {
             }, 'json');
         }
-        else
+        else if (data_url)
         {
             $.post(data_url, 
             {
