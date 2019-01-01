@@ -173,9 +173,9 @@
 					<div class="aw-mod aw-replay-box">
 						<a name="answer_form"></a>
 						<?php if ($this->article_info['lock']) { ?>
-						<p align="center"><?php _e('该影片目前已经被锁定, 无法添加新评论'); ?></p>
+						<p align="center"><?php _e('该文章目前已经被锁定, 无法添加新评论'); ?></p>
 						<?php } else if (!$this->user_id) { ?>
-						<p align="center"><?php _e('要回复影片请先<a href="account/login/">登录</a>或<a href="account/register/">注册</a>'); ?></p>
+						<p align="center"><?php _e('要回复文章请先<a href="account/login/">登录</a>或<a href="account/register/">注册</a>'); ?></p>
 						<?php } else { ?>
 						<form action="publish/ajax/publish_article_comment/" onsubmit="return false;" method="post" id="answer_form" class="question_answer_form">
 						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
