@@ -40,7 +40,7 @@
 										<a href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/kb/edit/modify/id-<?php echo $val['id']; ?>');"><?php _e('编辑'); ?> </a>
 									<?php } ?>
 
-									<?php if ($val['last_uid'] == $this->user_id OR $this->user_info['permission']['kb_manage']) { ?>
+									<?php if ($this->user_info['permission']['kb_manage']) { ?>
 										<a href="<?php echo UF::url($val['last_user_info']); ?>" class="aw-color-999">
 											<?php echo UF::name($val['last_user_info']); ?>
 										</a>
