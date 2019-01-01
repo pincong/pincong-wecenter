@@ -203,6 +203,7 @@
 }
 
 .ab-video .c-cell {
+	position: relative;
 	vertical-align: middle;
 }
 
@@ -399,6 +400,18 @@
 	margin-left: -12px;
 }
 
+.ab-poster {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	z-index: 1;
+}
+
 </style>
 
 <script>
@@ -533,7 +546,11 @@ var ABP = {};
 	};
 
 	Player.prototype.setPoster = function(url) {
-		this.video.poster = url;
+		if (url) {
+			this.$poster.css('background-image', 'url(' + url + ')');
+		} else {
+			this.$poster.css('background-image', 'none');
+		}
 	};
 
 	Player.prototype.showLoader = function() {
@@ -579,6 +596,8 @@ var ABP = {};
 
 		this.$loader = this.$$('.ab-loader');
 
+		this.$poster = this.$$('.ab-poster');
+
 		this.$circlePlayBtn = this.$$('.ab-circle-play-btn');
 
 		this._bindEvents();
@@ -588,10 +607,12 @@ var ABP = {};
 		var self = this;
 		this.$playBtn.click(function() {
 			self.$circlePlayBtn.hide();
+			self.$poster.hide();
 			self.togglePlay();
 		});
 		this.$circlePlayBtn.click(function() {
 			self.$circlePlayBtn.hide();
+			self.$poster.hide();
 			self.togglePlay();
 		});
 
@@ -632,6 +653,7 @@ var ABP = {};
 
 		this.$seekbar.click(function(e) {
 			self.$circlePlayBtn.hide();
+			self.$poster.hide();
 			var progress = (e.clientX - self.$seekbar.offset().left) / self.$seekbar.width();
 			if (progress < 0) progress = 0;
 			if (progress > 1) progress = 1;
@@ -857,8 +879,9 @@ var ABP = {};
 <div class="c-table ab-player">
 	<div class="c-row ab-video">
 		<div class="c-cell ccl">
-			<div class="ccl-container"></div>
 			<video width="100%">Your browser does not support HTML5 video.</video>
+			<div class="ccl-container"></div>
+			<div class="ab-poster"></div>
 			<div class="c-loader ab-loader"></div>
 			<div class="ab-circle-play-btn">
 				<div class="ab-circle-play-btn-inner"></div>

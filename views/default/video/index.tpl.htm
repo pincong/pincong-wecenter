@@ -322,9 +322,6 @@ var VIDEO_ID = <?php echo $this->video_info['id']; ?>;
 var DANMAKU_LIST = <?php echo $this->danmaku_json; ?>;
 var video_player;
 
-var TEST_VIDEO;
-//TEST_VIDEO = '/cache/test.mp4';
-
 var busy_while_getting_metadata;
 
 function get_video_metadata(callback) {
@@ -390,14 +387,11 @@ $(document).ready(function () {
 		video_player.showLoader();
 		get_video_metadata(function(error, data) {
 			video_player.hideLoader();
-			if (error && !TEST_VIDEO) {
+			if (error) {
 				alert('解析视频失败');
 				return;
 			}
-			video_url = TEST_VIDEO;
-			if (!TEST_VIDEO) {
-				video_url = data['formats'][0]['url'];
-			}
+			video_url = data['formats'][0]['url'];
 			video_player.setSource(video_url);
 			next();
 		});
