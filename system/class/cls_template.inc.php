@@ -32,7 +32,7 @@ class TPL
 
 			self::$view = new Savant3(
 				array(
-					'template_path' => array(self::$template_path),
+					'template_path' => array(realpath(ROOT_PATH), self::$template_path),
 					//'filters' => array('Savant3_Filter_trimwhitespace', 'filter')
 				)
 			);
@@ -55,7 +55,7 @@ class TPL
 
 		if ($plugin_name)
 		{
-			$display_template_filename = '../plugins/' .$plugin_name. '/view/' . $template_filename;
+			$display_template_filename = 'plugins/' .$plugin_name. '/view/' . $template_filename;
 		}
 		else
 		{
