@@ -164,6 +164,22 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
+		if ($status > 0 AND !$this->user_info['permission']['forbid_user'])
+		{
+			$reputation_formal_user = get_setting('reputation_formal_user');
+			if (is_numeric($reputation_formal_user) AND $user_info['reputation'] >= $reputation_formal_user)
+			{
+				if ($user_info['flagged'] == 0)
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('正式用户请先仅标记')));
+				}
+				else if ($user_info['flagged'] < 0 AND $this->model('account')->get_user_extra_data($uid)['flagged_by'] == $this->user_id)
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('只有第二位管理员可以执行此操作')));
+				}
+			}
+		}
+
 		$this->model('user')->flag_user_by_uid($uid, $status, $this->user_id, $reason);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
