@@ -543,6 +543,12 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写正确的验证码')));
 		}
 
+		$video_url_info = Services_VideoParser::parse_video_url($_POST['video_webpage_url']);
+		if (!$video_url_info)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('无法识别视频来源')));
+		}
+
 		$video_title = my_trim($_POST['title']);
 		if (!$video_title)
 		{
@@ -620,17 +626,23 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请添加话题')));
 		}
 
+		// TODO: why?
 		// !注: 来路检测后面不能再放报错提示
 		if (!valid_post_hash($_POST['post_hash']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
 		}
 
-		$parser_result = array(
-			'source_type' => 'youtube',
-			'source' => 'abcdefghijk',
-			'duration' => 12345
-		);
+		// 开销大的操作放在最后
+		// 从视频网站取得元数据, 如时长
+		// 以 'https://www.youtube.com/watch?v=abcdefghijk' 为例
+		// source_type 指视频网站, 如 'youtube'
+		// source 指该视频在所在网站上的 id, 如 'abcdefghijk'
+		$parser_result = Services_VideoParser::fetch_video_metadata($video_url_info['source_type'], $video_url_info['source']);
+		if (!$parser_result)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('无法解析视频')));
+		}
 
 		set_repeat_submission_digest($video_title);
 		set_human_valid('question_valid_hour');

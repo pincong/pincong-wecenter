@@ -67,7 +67,7 @@
 						</div>
 						<div class="mod-body">
 							<div class="content markitup-box">
-								<?php echo FORMAT::html($this->video_info['message']); ?>
+								<?php echo FORMAT::text(FORMAT::parse_links($this->video_info['message'])); ?>
 							</div>
 							<div class="meta clearfix">
 								<div class="aw-article-vote pull-left<?php if (!$this->user_id OR $this->user_id == $this->video_info['uid']) { ?> disabled<?php } ?>">
