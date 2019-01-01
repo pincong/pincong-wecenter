@@ -583,13 +583,18 @@ class account_class extends AWS_MODEL
 
 		if (!$this->update('users_attrib', $update_data, 'uid = ' . intval($uid)))
 		{
-			if ($this->check_uid($uid))
+			// $this->update 并不能用来检查 users_attrib 是否存在, 如果存在但是未被更新也会返回 0
+			if (!$this->fetch_one('users_attrib', 'uid', 'uid = ' . intval($uid)))
 			{
-				$update_data['uid'] = intval($uid);
-				$this->insert('users_attrib', $update_data);
-				return true;
+				if ($this->check_uid($uid))
+				{
+					$update_data['uid'] = intval($uid);
+					$this->insert('users_attrib', $update_data);
+					return true;
+				}
+				return false;
 			}
-			return false;
+			return true;
 		}
 		return true;
     }
