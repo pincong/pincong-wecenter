@@ -20,9 +20,9 @@ if (!defined('IN_ANWSION'))
 
 class feature_class extends AWS_MODEL
 {
-	public function get_feature_list($order = 'id DESC', $page = null, $limit = null)
+	public function get_feature_list($page = null, $limit = null)
 	{
-		return $this->fetch_page('feature', null, $order, $page, $limit);
+		return $this->fetch_page('feature', null, 'sort DESC', $page, $limit);
 	}
 
 	public function get_enabled_feature_list()

@@ -34,7 +34,7 @@ class feature extends AWS_ADMIN_CONTROLLER
     {
         $this->crumb(AWS_APP::lang()->_t('功能链接'), 'admin/feature/list/');
 
-        $feature_list = $this->model('feature')->get_feature_list('sort ASC', $_GET['page'], $this->per_page);
+        $feature_list = $this->model('feature')->get_feature_list($_GET['page'], $this->per_page);
 
         TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
             'base_url' => get_js_url('/admin/feature/list/'),
