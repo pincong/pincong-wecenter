@@ -1149,7 +1149,8 @@ var AWS =
 									break;
 								}
 							}
-							$.get(G_BASE_URL + '/search/ajax/search/?type=users&q=' + encodeURIComponent($(this).val().substring(flag, ti).replace('@', '')) + '&limit=' + limit, function (result)
+							var username_part = $(this).val().substring(flag, ti);
+							$.get(G_BASE_URL + '/search/ajax/search/?type=users&q=' + encodeURIComponent(username_part.replace('@', '')) + '&limit=' + limit, function (result)
 							{
 								if ($('.aw-invite-dropdown')[0])
 								{
@@ -1170,7 +1171,9 @@ var AWS =
 
 										$('.aw-invite-dropdown li').click(function ()
 										{
-											_this.val(_this.val().substring(0, ti) + '@' + $(this).find('a').html() + " ").focus();
+											var username = $(this).find('a').html();
+											var text = _this.val();
+											_this.val(text.substring(0, ti) + '@' + username + " " + text.substring(ti + username_part.length));
 											$('.aw-invite-dropdown').detach();
 										});
 									}
