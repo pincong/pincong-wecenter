@@ -701,12 +701,14 @@ CREATE TABLE IF NOT EXISTS `aws_video_comment` (
 CREATE TABLE IF NOT EXISTS `aws_vote` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `uid` int(10) DEFAULT '0',
+  `recipient_uid` int(10) DEFAULT '0',
   `type` varchar(32) DEFAULT NULL,
   `item_id` int(10) DEFAULT '0',
   `value` tinyint(1) DEFAULT '0',
   `add_time` int(10) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
+  KEY `recipient_uid` (`recipient_uid`),
   KEY `type` (`type`),
   KEY `item_id` (`item_id`),
   KEY `add_time` (`add_time`)

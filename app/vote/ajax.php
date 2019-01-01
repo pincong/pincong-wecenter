@@ -59,6 +59,11 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能对自己发表的内容进行投票')));
 		}
 
+		if (!$this->model('vote')->check_same_user_limit($this->user_id, $item_info['uid']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能连续赞同/反对同一个用户, 请明天再试')));
+		}
+
 		set_user_operation_last_time('vote', $this->user_id);
 
 		$reputation_factor = $this->user_info['reputation_factor'];
@@ -99,6 +104,11 @@ class ajax extends AWS_CONTROLLER
 		if ($item_info['uid'] == $this->user_id)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能对自己发表的内容进行投票')));
+		}
+
+		if (!$this->model('vote')->check_same_user_limit($this->user_id, $item_info['uid']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能连续赞同/反对同一个用户, 请明天再试')));
 		}
 
 		set_user_operation_last_time('vote', $this->user_id);

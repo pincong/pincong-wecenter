@@ -272,6 +272,7 @@ class vote_class extends AWS_MODEL
 				'type' => $type,
 				'item_id' => $item_id,
 				'uid' => $uid,
+				'recipient_uid' => $item_uid,
 				'value' => 1,
 				'add_time' => fake_time()
 			));
@@ -341,6 +342,7 @@ class vote_class extends AWS_MODEL
 				'type' => $type,
 				'item_id' => $item_id,
 				'uid' => $uid,
+				'recipient_uid' => $item_uid,
 				'value' => -1,
 				'add_time' => fake_time()
 			));
@@ -389,6 +391,34 @@ class vote_class extends AWS_MODEL
 		$time_after = real_time() - 24 * 3600;
 
 		$where = "add_time > " . $time_after . " AND uid =" . $uid;
+		$count = $this->count('vote', $where);
+		if ($count >= $limit)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+
+	public function check_same_user_limit($uid, $recipient_uid)
+	{
+		$limit = intval(get_setting('same_user_votes_per_day'));
+		if (!$limit)
+		{
+			return true;
+		}
+
+		$recipient_uid = intval($recipient_uid);
+		if ($recipient_uid <= 0)
+		{
+			return true;
+		}
+
+		$uid = intval($uid);
+		$time_after = real_time() - 24 * 3600;
+
+		$where = "add_time > " . $time_after . " AND uid =" . $uid . " AND recipient_uid =" . $recipient_uid;
 		$count = $this->count('vote', $where);
 		if ($count >= $limit)
 		{
