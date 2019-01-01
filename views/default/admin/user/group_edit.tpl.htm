@@ -298,6 +298,22 @@
 				<tr>
 					<td>
 						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('封禁类型'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<select name="banning_type" class="form-control">
+									<option value=""></option>
+									<option value="permanent" <?php if ($this->group_pms['banning_type'] == 'permanent') { ?>selected="selected"<?php } ?>>永久封禁</option>
+									<option value="temporary" <?php if ($this->group_pms['banning_type'] == 'temporary') { ?>selected="selected"<?php } ?>>临时封禁</option>
+									<option value="protected" <?php if ($this->group_pms['banning_type'] == 'protected') { ?>selected="selected"<?php } ?>>禁止封禁</option>
+								</select>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('受限分类'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="restricted_categories" class="form-control" value="<?php echo $this->group_pms['restricted_categories']; ?>" />

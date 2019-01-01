@@ -602,6 +602,16 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
+		$user_group = $this->model('account')->get_user_group(
+			$user_info['group_id'],
+			$this->model('reputation')->get_reputation_group_id_by_reputation($user_info['reputation'])
+		);
+
+		if ($status AND $user_group['permission']['banning_type'] == 'protected')
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('操作失败')));
+		}
+
 		set_user_operation_last_time_by_uid('modify', $this->user_id);
 
 		$this->model('account')->forbid_user_by_uid($uid, $status, $this->user_id, $reason);

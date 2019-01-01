@@ -828,7 +828,8 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			'invite_answer',
 			'manage_topic',
 			'follow_people',
-			'restricted_categories'
+			'restricted_categories',
+			'banning_type'
         );
 
         $group_setting = array();
