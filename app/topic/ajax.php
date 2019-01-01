@@ -29,8 +29,7 @@ class ajax extends AWS_CONTROLLER
 		if ($this->user_info['permission']['visit_site'])
 		{
 			$rule_action['actions'] = array(
-				'topic_info',
-				'get_focus_users'
+				'topic_info'
 			);
 		}
 
@@ -40,11 +39,6 @@ class ajax extends AWS_CONTROLLER
 	public function setup()
 	{
 		HTTP::no_cache_header();
-	}
-
-	public function get_focus_users_action()
-	{
-		H::ajax_json_output($this->model('topic')->get_focus_users_by_topic($_GET['topic_id'], 18));
 	}
 
 	public function topic_info_action()

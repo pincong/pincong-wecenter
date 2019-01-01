@@ -8,19 +8,7 @@ $(function()
 		
 		AWS.load_list_view(G_BASE_URL + '/explore/ajax/list/post_type-article__sort_type-new__topic_id-' + CONTENTS_TOPIC_ID, $('#bp_articles_more'), $('#c_article_list'), 2);
 	}
-	
-	if ($('#focus_users').length)
-	{
-		$.get(G_BASE_URL + '/topic/ajax/get_focus_users/topic_id-' + TOPIC_ID, function (data) {
-			if (data != null)
-			{
-				$.each(data, function (i, e) {		
-					$('#focus_users').append('<a href="' + e['url'] + '"><img src="' + e['avatar_file'] + '" alt="' + e['user_name'] + '" /></a> ');
-				});
-			}
-		}, 'json');
-	}
-	
+
 	//问题添加评论
     AWS.Init.init_comment_box('.aw-add-comment');
 
