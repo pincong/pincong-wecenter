@@ -27,7 +27,6 @@ a:hover{text-decoration: none;color: #404451;}
 .aw-top-nav > nav > ul > li .dropdown-list ul li a{display:block;height: 42px;line-height: 42px;padding:0 10px;background: #555c6c;text-align: center;color: #fff;}
 .aw-top-nav > nav > ul > li .dropdown-list ul li a:hover{background: #323341;}
 .aw-feed-list .aw-item .aw-best-answer{position: absolute;right: 0;top: -14px;font-size: 12px;text-align: center;color: #666c82;}
-.aw-feed-list .more-operate > a:hover i, .aw-question-detail .more-operate a:hover i, .aw-feed-list .more-operate .btn-group > a:hover i, .aw-article-content .aw-feed-list .meta a:hover i, .aw-article-list .aw-item .mod-footer .more-operate a:hover i, .aw-question-detail .meta a:hover i{color: #404451;}
 .aw-feed-list .operate a:hover, .aw-feed-list .operate a.active{background-color: #404451;color: #fff;}
 .aw-feed-list .operate .aw-add-comment:hover, .aw-feed-list .operate .aw-add-comment.active{background-color: #404451;color: #fff;border-radius: 4px;}
 .aw-mod.side-nav ul li a.active{background-color:#404451;color: #fff;}
