@@ -61,9 +61,11 @@
 										<?php } ?>
 
 										<?php if ($this->video_info['uid'] == $this->user_id OR $this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
+											<?php if ($this->user_info['permission']['change_category']) { ?>
 											<li>
 												<a href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/content/edit/change_category/item_type-video__item_id-<?php echo $this->video_info['id']; ?>__category_id-<?php echo $this->video_info['category_id']; ?>');"><?php _e('变更分类'); ?></a>
 											</li>
+											<?php } ?>
 										<?php } ?>
 										</ul>
 									</div>
