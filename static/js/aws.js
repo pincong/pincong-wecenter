@@ -1246,10 +1246,16 @@ AWS.create_editor = function(el, max_btn)
 			return content;
 		}
 	};
+	sceditor.formats.bbcode.set('email', empty_handler);
 	sceditor.formats.bbcode.set('font', empty_handler);
 	sceditor.formats.bbcode.set('size', empty_handler);
 	sceditor.formats.bbcode.set('color', empty_handler);
 	sceditor.formats.bbcode.set('table', empty_handler);
+	sceditor.formats.bbcode.set('rtl', empty_handler);
+	sceditor.formats.bbcode.set('ltr', empty_handler);
+	sceditor.formats.bbcode.set('left', empty_handler);
+	sceditor.formats.bbcode.set('right', empty_handler);
+	sceditor.formats.bbcode.set('justify', empty_handler);
 
 	return sceditor.create(el, {
 		width: '100%',
