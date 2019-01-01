@@ -18,39 +18,23 @@ class core_captcha
 
 	public function __construct()
 	{
-		if (defined('IN_SAE'))
-		{
-			$img_dir = SAE_TMP_PATH;
-		}
-		else
-		{
-			$img_dir = ROOT_PATH . 'cache/captcha/';
-
-			if (!is_dir($img_dir))
-			{
-				@mkdir($img_dir);
-			}
-		}
-
 		$fontsize = rand_minmax(get_setting('captcha_fontsize_min'), get_setting('captcha_fontsize_max'), rand(20, 22));
 		$wordlen = rand_minmax(get_setting('captcha_wordlen_min'), get_setting('captcha_wordlen_max'), 4);
 
 		$width = rand_minmax(get_setting('captcha_width_min'), get_setting('captcha_width_max'), 100);
 		$height = rand_minmax(get_setting('captcha_height_min'), get_setting('captcha_height_max'), 40);
 
-		$this->captcha = new Zend_Captcha_Image(array(
-			'font' => $this->get_font(),
-			'imgdir' => $img_dir,
-			'fontsize' => $fontsize,
-			'width' => $width,
-			'height' => $height,
-			'wordlen' => $wordlen,
-			'session' => new Zend_Session_Namespace(G_COOKIE_PREFIX . '_Captcha'),
-			'timeout' => 600
-		));
-
 		$dot_noise = rand_minmax(get_setting('captcha_dot_noise_min'), get_setting('captcha_dot_noise_max'), rand(3, 6));
 		$line_noise = rand_minmax(get_setting('captcha_line_noise_min'), get_setting('captcha_line_noise_max'), rand(1, 2));
+
+		$this->captcha = new Services_Captcha_Image();
+
+		$this->captcha->setFont($this->get_font());
+		$this->captcha->setFontSize($fontsize);
+		$this->captcha->setWordlen($wordlen);
+
+		$this->captcha->setWidth($width);
+		$this->captcha->setHeight($height);
 
 		$this->captcha->setDotNoiseLevel($dot_noise);
 		$this->captcha->setLineNoiseLevel($line_noise);
@@ -72,27 +56,29 @@ class core_captcha
 
 	public function generate()
 	{
-		$this->captcha->generate();
+		$word = $this->captcha->generateWord();
+		AWS_APP::session()->captcha = $word;
 
 		HTTP::no_cache_header();
 
-		readfile($this->captcha->getImgDir() . $this->captcha->getId() . $this->captcha->getSuffix());
+		echo $this->captcha->generateImage($word);
 
 		die;
 	}
 
-	public function is_validate($validate_code, $generate_new = true)
+	public function is_validate($validate_code, $flush = true)
 	{
-		if (!empty($validate_code) AND strtolower($this->captcha->getWord()) == strtolower($validate_code))
+		$result = false;
+		if (!empty($validate_code) AND strtolower(AWS_APP::session()->captcha) == strtolower($validate_code))
 		{
-			if ($generate_new)
-			{
-				$this->captcha->generate();
-			}
-			
-			return true;
+			$result = true;
 		}
 
-		return false;
+		if ($flush)
+		{
+			unset(AWS_APP::session()->captcha);
+		}
+
+		return $result;
 	}
 }
