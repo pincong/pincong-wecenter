@@ -136,7 +136,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('文章不存在')));
 		}
 
-		$this->model('article')->lock_article($_POST['article_id'], !$article_info['lock']);
+		$this->model('article')->lock_article($_POST['article_id'], !$article_info['lock'], $this->user_id);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
@@ -166,7 +166,7 @@ class ajax extends AWS_CONTROLLER
 	public function remove_comment_action()
 	{
 		$comment_info = $this->model('article')->get_comment_by_id($_POST['comment_id']);
-		if (!$comment_info)
+		if (!$comment_info || !$comment_info['message'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('评论不存在')));
 		}
@@ -178,14 +178,7 @@ class ajax extends AWS_CONTROLLER
 
 		// 只清空不删除
 		// TODO: implement update_comment_action()
-		//if ($this->user_id == $comment_info['uid'])
-		{
-			$this->model('article')->update_comment($comment_info['id'], null);
-		}
-		//else
-		//{
-		//	$this->model('article')->remove_comment($comment_info['id']);
-		//}
+		$this->model('article')->remove_article_comment($comment_info, $this->user_id);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'url' => get_js_url('/article/' . $comment_info['article_id'])

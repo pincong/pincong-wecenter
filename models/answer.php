@@ -313,12 +313,17 @@ class answer_class extends AWS_MODEL
 	 *
 	 * 更新问题回复内容
 	 */
-	public function update_answer($answer_id, $question_id, $answer_content, $attach_access_key = null)
+	public function update_answer($answer_id, $question_id, $answer_content, $uid, $anonymous = null)
 	{
 		$answer_id = intval($answer_id);
 		$question_id = intval($question_id);
 
 		if (!$answer_id OR !$question_id)
+		{
+			return false;
+		}
+
+		if (!$answer_info = $this->model('answer')->get_answer_by_id($answer_id))
 		{
 			return false;
 		}
@@ -337,7 +342,14 @@ class answer_class extends AWS_MODEL
 			'update_time' => fake_time(),
 		), 'question_id = ' . intval($question_id));
 
-		return $this->update('answer', $data, 'answer_id = ' . intval($answer_id));
+		$this->update('answer', $data, 'answer_id = ' . intval($answer_id));
+
+		if ($uid == $answer_info['uid'])
+		{
+			$is_anonymous =  $answer_info['anonymous'];
+		}
+		$this->model('question')->log($question_id, 'ANSWER', '编辑回复', $uid, $is_anonymous, $answer_id);
+		return true;
 	}
 
 	public function update_answer_by_id($answer_id, $answer_info)
@@ -686,19 +698,10 @@ class answer_class extends AWS_MODEL
 		return $this->fetch_row('answer_comments', "id = " . intval($comment_id));
 	}
 
-	public function remove_comment($comment_id)
+	/*public function remove_comment($comment_id)
 	{
 		//return $this->delete('answer_comments', "id = " . intval($comment_id));
-
-		// 只清空不删除
-		// TODO: implement update_answer_comment()
-		$this->update('answer_comments', array(
-			'message' => null,
-			'time' => fake_time()
-		), "id = " . intval($comment_id));
-
-		return true;
-	}
+	}*/
 
 	public function get_answers_thanks($answer_ids, $uid)
 	{

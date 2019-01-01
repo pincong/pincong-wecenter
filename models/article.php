@@ -32,7 +32,7 @@ class article_class extends AWS_MODEL
 	 */
 	public function log($item_id, $type, $note, $uid = 0, $anonymous = 0, $child_id = 0)
 	{
-		$this->insert('question_log', array(
+		$this->insert('article_log', array(
 			'item_id' => intval($item_id),
 			'type' => $type,
 			'note' => $note,
@@ -185,6 +185,8 @@ class article_class extends AWS_MODEL
 			return false;
 		}
 
+		$this->delete('article_log', 'item_id = ' . intval($article_id));
+
 		$this->delete('article_comments', "article_id = " . intval($article_id)); // 删除关联的回复内容
 
 		$this->delete('article_vote', 'article_id = ' . intval($article_id));
@@ -206,7 +208,7 @@ class article_class extends AWS_MODEL
 		return $this->delete('article', 'id = ' . intval($article_id));
 	}
 
-	public function remove_comment($comment_id)
+	/*public function remove_comment($comment_id)
 	{
 		$comment_info = $this->get_comment_by_id($comment_id);
 
@@ -222,26 +224,19 @@ class article_class extends AWS_MODEL
 		), 'id = ' . $comment_info['article_id']);
 
 		return true;
-	}
+	}*/
 
-	public function update_comment($comment_id, $message, $at_uid = null, $anonymous = null)
+	public function remove_article_comment($comment, $uid)
 	{
-		$comment_info = $this->get_comment_by_id($comment_id);
-
-		if (!$comment_info)
-		{
-			return false;
-		}
-
-		if (isset($message))
-		{
-			$message = htmlspecialchars($message);
-		}
-
 		$this->update('article_comments', array(
-			'message' => $message,
-			'at_uid' => intval($at_uid)
-		), 'id = ' . $comment_info['id']);
+			'message' => null
+		), "id = " . $comment['id']);
+
+		if ($uid == $comment['uid'])
+		{
+			$is_anonymous =  $comment['anonymous'];
+		}
+		$this->model('article')->log($comment['article_id'], 'ARTICLE_COMMENT', '删除评论', $uid, $is_anonymous, $comment['id']);
 
 		return true;
 	}
@@ -271,6 +266,12 @@ class article_class extends AWS_MODEL
 		$this->model('search_fulltext')->push_index('article', $title, $article_info['id']);
 
 		$this->update('article', $data, 'id = ' . intval($article_id));
+
+		if ($uid == $article_info['uid'])
+		{
+			$is_anonymous =  $article_info['anonymous'];
+		}
+		$this->model('article')->log($article_id, 'ARTICLE', '编辑文章', $uid, $is_anonymous);
 
 		$this->model('posts')->set_posts_index($article_id, 'article');
 
@@ -359,11 +360,23 @@ class article_class extends AWS_MODEL
 		return $result;
 	}
 
-	public function lock_article($article_id, $lock_status = true)
+	public function lock_article($article_id, $lock_status = true, $uid = 0)
 	{
-		return $this->update('article', array(
-			'lock' => intval($lock_status)
+		$lock_status = intval($lock_status);
+		$this->update('article', array(
+			'lock' => $lock_status
 		), 'id = ' . intval($article_id));
+
+		if ($lock_status)
+		{
+			$this->model('article')->log($article_id, 'ARTICLE', '锁定文章', $uid);
+		}
+		else
+		{
+			$this->model('article')->log($article_id, 'ARTICLE', '解除锁定', $uid);
+		}
+
+		return true;
 	}
 
 	/**

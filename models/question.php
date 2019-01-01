@@ -196,18 +196,11 @@ class question_class extends AWS_MODEL
 
 		$this->update('question', $data, 'question_id = ' . intval($question_id));
 
-		$addon_data = null;
-
-		if ($question_info['question_detail'] != $question_detail)
+		if ($uid == $question_info['published_uid'])
 		{
-			$log_id = ACTION_LOG::save_action($uid, $question_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::MOD_QUESTION_DESCRI, $question_detail, $question_info['question_detail'], null, $anonymous, $addon_data);
+			$is_anonymous =  $question_info['anonymous'];
 		}
-
-		//记录日志
-		if ($question_info['question_content'] != $question_content)
-		{
-			$log_id = ACTION_LOG::save_action($uid, $question_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::MOD_QUESTION_TITLE, $question_content, $question_info['question_content'], null, null, $addon_data);
-		}
+		$this->model('question')->log($question_id, 'QUESTION', '编辑问题', $uid, $is_anonymous);
 
 		$this->model('posts')->set_posts_index($question_id, 'question');
 
@@ -222,6 +215,8 @@ class question_class extends AWS_MODEL
 		}
 
 		$this->model('answer')->remove_answers_by_question_id($question_id); // 删除关联的回复内容
+
+		$this->delete('question_log', 'item_id = ' . intval($question_id));
 
 		$this->delete('question_vote', "question_id = " . intval($question_id)); // 删除赞同
 
@@ -782,16 +777,42 @@ class question_class extends AWS_MODEL
 		return $this->fetch_row('question_comments', "id = " . intval($comment_id));
 	}
 
-	public function remove_comment($comment_id)
+	/*public function remove_comment($comment_id)
 	{
 		//return $this->delete('question_comments', "id = " . intval($comment_id));
+	}*/
 
-		// 只清空不删除
-		// TODO: implement update_question_comment()
+	// 只清空不删除
+	public function remove_question_comment($comment, $uid)
+	{
 		$this->update('question_comments', array(
-			'message' => null,
-			'time' => fake_time()
-		), "id = " . intval($comment_id));
+			'message' => null
+		), "id = " . $comment['id']);
+
+		if ($uid == $comment['uid'])
+		{
+			$is_anonymous =  $comment['anonymous'];
+		}
+		$this->model('question')->log($comment['question_id'], 'QUESTION_COMMENT', '删除评论', $uid, $is_anonymous, $comment['id']);
+
+		return true;
+	}
+
+	public function remove_answer_comment($comment, $uid)
+	{
+		$this->update('answer_comments', array(
+			'message' => null
+		), "id = " . $comment['id']);
+
+		if ($uid == $comment['uid'])
+		{
+			$is_anonymous =  $comment['anonymous'];
+		}
+
+		if ($answer = $this->fetch_row('answer', 'answer_id = ' . intval($comment['answer_id'])))
+		{
+			$this->model('question')->log($answer['question_id'], 'ANSWER_COMMENT', '删除回复评论', $uid, $is_anonymous, $comment['id']);
+		}
 
 		return true;
 	}
@@ -900,7 +921,7 @@ class question_class extends AWS_MODEL
 		{
 			if ($this->delete('redirect', 'item_id = ' . intval($item_id)))
 			{
-				return ACTION_LOG::save_action($uid, $item_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::DEL_REDIRECT_QUESTION);
+				return; //ACTION_LOG::save_action($uid, $item_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::DEL_REDIRECT_QUESTION);
 			}
 		}
 		else if ($question = $this->get_question_info_by_id($item_id))
@@ -914,7 +935,7 @@ class question_class extends AWS_MODEL
 					'uid' => intval($uid)
 				));
 
-				ACTION_LOG::save_action($uid, $item_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::REDIRECT_QUESTION, $question['question_content'], $target_id);
+				//ACTION_LOG::save_action($uid, $item_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::REDIRECT_QUESTION, $question['question_content'], $target_id);
 
 				return $redirect_id;
 			}
@@ -1027,11 +1048,23 @@ class question_class extends AWS_MODEL
 		return $topics_by_questions_ids;
 	}
 
-	public function lock_question($question_id, $lock_status = true)
+	public function lock_question($question_id, $lock_status = true, $uid = 0)
 	{
-		return $this->update('question', array(
-			'lock' => intval($lock_status)
+		$lock_status = intval($lock_status);
+		$this->update('question', array(
+			'lock' => $lock_status
 		), 'question_id = ' . intval($question_id));
+
+		if ($lock_status)
+		{
+			$this->model('question')->log($question_id, 'QUESTION', '锁定问题', $uid);
+		}
+		else
+		{
+			$this->model('question')->log($question_id, 'QUESTION', '解除锁定', $uid);
+		}
+
+		return true;
 	}
 
 	public function auto_lock_question()

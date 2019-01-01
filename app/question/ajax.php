@@ -640,7 +640,7 @@ class ajax extends AWS_CONTROLLER
 			$this->model('question')->save_last_answer($answer_info['question_id']);*/
 
 			// 只清空不删除
-			$this->model('answer')->update_answer($_GET['answer_id'], $answer_info['question_id'], null);
+			$this->model('answer')->update_answer($_GET['answer_id'], $answer_info['question_id'], null, $this->user_id);
 
 			H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 		}
@@ -674,7 +674,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经超过允许编辑的时限')));
 		}
 
-		$this->model('answer')->update_answer($_GET['answer_id'], $answer_info['question_id'], $answer_content);
+		$this->model('answer')->update_answer($_GET['answer_id'], $answer_info['question_id'], $answer_content, $this->user_id);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'target_id' => $_GET['target_id'],
@@ -778,7 +778,7 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
-	public function remove_comment_action()
+	/*public function remove_comment_action()
 	{
 		if (! in_array($_GET['type'], array(
 			'answer',
@@ -812,6 +812,46 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}*/
+
+	// 只清空不删除
+	public function remove_comment_action()
+	{
+		if (! in_array($_GET['type'], array(
+			'answer',
+			'question'
+		)))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('错误的请求')));
+		}
+
+		$comment_id = intval($_GET['comment_id']);
+		if (!$comment_id)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论不存在')));
+		}
+
+		$comment = $this->model($_GET['type'])->get_comment_by_id($comment_id);
+		if (!$comment || !$comment['message'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论不存在')));
+		}
+
+		if (! $this->user_info['permission']['is_moderator'] AND ! $this->user_info['permission']['is_administrator'] AND $this->user_id != $comment['uid'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('你没有权限删除该评论')));
+		}
+
+		if ($_GET['type'] == 'answer')
+		{
+			$this->model('question')->remove_answer_comment($comment, $this->user_id);
+		}
+		else if ($_GET['type'] == 'question')
+		{
+			$this->model('question')->remove_question_comment($comment, $this->user_id);
+		}
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
 	public function lock_action()
@@ -826,7 +866,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('问题不存在')));
 		}
 
-		$this->model('question')->lock_question($_POST['question_id'], !$question_info['lock']);
+		$this->model('question')->lock_question($_POST['question_id'], !$question_info['lock'], $this->user_id);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
