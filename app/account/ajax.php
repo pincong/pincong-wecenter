@@ -300,24 +300,24 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (get_setting('upload_enable') == 'N' AND !$this->user_info['permission']['is_administrator'])
 		{
-			echo htmlspecialchars(json_encode(array(
-				'error' => AWS_APP::lang()->_t('本站未开启上传功能'),
-			)), ENT_NOQUOTES);
-			die;
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('本站未开启上传功能')));
+		}
+
+		if (!check_user_operation_interval('profile', $this->user_id, $this->user_info['permission']['interval_modify']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 
 		if (!$this->model('avatar')->upload_avatar('aws_upload_file', $this->user_id, $error))
 		{
-			echo htmlspecialchars(json_encode(array(
-				'error' => $error,
-			)), ENT_NOQUOTES);
-			die;
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', $error));
 		}
 
-		echo htmlspecialchars(json_encode(array(
-			'success' => true,
-			'thumb' => get_setting('upload_url') . '/avatar/' . $this->model('avatar')->get_avatar_path($this->user_id, 'max')
-		)), ENT_NOQUOTES);
+		set_user_operation_last_time('profile', $this->user_id);
+
+		H::ajax_json_output(AWS_APP::RSM(array(
+			'thumb' => get_setting('upload_url') . '/avatar/' . $this->model('avatar')->get_avatar_path($this->user_id, 'max') . '?' . rand(1, 999)
+		), 1, null));
 	}
 
 

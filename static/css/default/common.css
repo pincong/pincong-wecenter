@@ -377,23 +377,6 @@ a.aw-load-more-content{display: block;}
 .aw-mod.people-sort .mod-body{position: relative;}
 .aw-mod.people-sort .mod-body .icon-down{position: absolute;right: 8px;top: 10px;}
 
-/* 附件上传 */
-#upload-form{position: relative;width: 0;height: 0;opacity: 0;filter:alpha(opacity=0);}
-#upload-form .file-input{position:absolute;top:-7px;left:-12px;width: 80px;height: 34px;filter:alpha(opacity=0);cursor: pointer;}
-.aw-upload-box #upload-form .file-input{position:absolute;top:-7px;left:-12px;width: 80px;height: 34px;filter:alpha(opacity=0);}
-.aw-upload-box .upload-list{width:694px;height: auto;overflow: hidden;}
-.aw-upload-box .upload-list li{position:relative;float: left;width: 216px;height: 115px;padding:15px 15px 15px 110px;margin:15px 15px 0 0;background: #f5faff;border:1px solid #dcedfa;border-radius: 5px;}
-.aw-upload-box .upload-list li .img{position:absolute;left:10px;top:10px;width: 90px;height: 90px;background: url('img/ajax-loader.gif') center center no-repeat;text-align: center;line-height: 90px;border-radius: 5px;}
-.aw-upload-box .upload-list li .img.error, .aw-upload-box .upload-list li .img.file{background: none;}
-.aw-upload-box .upload-list li .img .icon-file{font-size: 48px;vertical-align: middle;color: #aac6e1;}
-.aw-upload-box .upload-list li .img .icon-delete{font-size: 24px;color: #ff6464;vertical-align: middle;}
-.aw-upload-box .upload-list li .content p{margin:0;line-height: 16px;}
-.aw-upload-box .upload-list li .title{height: 34px;overflow:hidden;word-wrap:break-word;font-size:12px;color: #666;}
-.aw-upload-box .upload-list li .size{margin-bottom:10px !important;font-size: 12px;color: #999;}
-.aw-upload-box .upload-list li .meta a{margin-right:5px;font-size: 13px;}
-.aw-upload-box .upload-list li.error{border-color: #ff6464;}
-.aw-upload-box .upload-list li.error .size{color: #ff6464;}
-
 /* 问题详情页 */
 .aw-notopic-sort{margin:20px 20px 0;padding:5px 10px;background-color: #fafafa;font-size: 12px;}
 .aw-notopic-sort .topic-tag .text{margin:0 3px;}
@@ -642,15 +625,11 @@ blockquote {margin: 0;padding: 0 10px;font-size: 15px;color: #777;border-left: 4
 .aw-mod-topic-edit-box{padding:20px;}
 .aw-mod-topic-edit-box > .mod-head{position: relative;margin:0 0 30px 0;padding:0 0 0 60px;}
 .aw-mod-topic-edit-box .aw-topic-bar{margin:0 0 0 10px;}
-.aw-mod-topic-edit-box .mod-head .file-input{width: 50px;height: 20px;left: 0 !important;top: 30px !important;}
-.aw-mod-topic-edit-box .mod-head .submit{display: none;}
 .aw-mod-topic-edit-box .mod-head h3{font-size: 20px;line-height: 20px;}
 .aw-mod-topic-edit-box .mod-head .img{position: absolute;left: 0;top: 0;width:50px;height:50px;text-align: center;}
 .aw-mod-topic-edit-box .mod-head .img .mask{position:absolute;bottom:0;display: block;width: 50px;height: 20px;background: #000;opacity: 0.7;filter:alpha(opacity=70);border-radius: 0 0 4px 4px;}
 .aw-mod-topic-edit-box .mod-head .img b{position: absolute;bottom: 0;display: block;width:50px;text-align: center;color: #fff;font-weight: normal;font-size: 12px;}
 .aw-mod-topic-edit-box .mod-head .img .icon-edit{position: relative;top: 1px;margin:0;}
-.aw-mod-topic-edit-box .mod-head .img form{z-index:1;}
-.aw-mod-topic-edit-box .mod-head .img form .file-input{left: 0 !important;top: 20px !important;width: 20px;height: 20px;}
 .aw-mod-topic-edit-box .mod-footer{position:relative;height:auto;overflow:hidden;margin-top:20px;}
 .aw-mod.new-topic .aw-topic-bar{margin:0;}
 /* 话题管理页面 */
@@ -840,7 +819,6 @@ blockquote {margin: 0;padding: 0 10px;font-size: 15px;color: #777;border-left: 4
 .aw-first-login .aw-complete-data{overflow: hidden;margin:0 0 0;padding:30px;}
 .aw-first-login .aw-complete-data .side-bar{width: 100px;margin-right: 30px;}
 .aw-first-login .aw-complete-data .side-bar img{margin-bottom: 10px;}
-.aw-first-login .aw-complete-data .side-bar .file-input{left: -12px;top: -4px;width: 70px;height: 24px;}
 .aw-first-login .aw-complete-data input[type="text"]{width: 300px;}
 .aw-first-login .aw-complete-data .form-horizontal{margin-top: 10px;}
 .aw-first-login .aw-complete-data .col-sm-10{padding-left: 0;}

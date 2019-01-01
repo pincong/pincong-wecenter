@@ -116,13 +116,18 @@
         </div>
     </div>
 
+<script type="text/javascript" src="<?php echo G_STATIC_URL; ?>/js/imageuploader.js"></script>
 <script type="text/javascript">
 $(document).ready(function () {
     <?php if ($this->nav_menu_list) { ?>
     <?php foreach($this->nav_menu_list as $key => $val) { ?>
         <?php if ($val['title']) { ?>
-        var fileUpload_<?php echo $val['id']; ?> = new FileUpload('avatar', $('#aw-nav-menu-img-upload-<?php echo $val['id']; ?>'), $('#aw-nav-menu-img-<?php echo $val['id']; ?>'), G_BASE_URL + '/admin/ajax/nav_menu_upload/<?php echo $val['id']; ?>', {'multiple' : false});
-
+		new ImageUploader({
+			url: G_BASE_URL + '/admin/ajax/nav_menu_upload/<?php echo $val['id']; ?>',
+			field_name: 'aws_upload_file',
+			upload_button: $('#aw-nav-menu-img-upload-<?php echo $val['id']; ?>'),
+			image_container: $('#aw-nav-menu-img-<?php echo $val['id']; ?>'),
+		});
         <?php } ?>
     <?php } ?>
     <?php } ?>
