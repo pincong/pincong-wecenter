@@ -78,9 +78,6 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		// 导航
-		TPL::assign('content_nav_menu', $this->model('menu')->get_nav_menu_list());
-
 		TPL::assign('item_list', $item_list);
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(

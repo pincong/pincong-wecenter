@@ -1,8 +1,6 @@
 <?php TPL::include('global/header.tpl.htm'); ?>
 
 <div class="aw-container-wrap">
-	<?php TPL::include('block/content_nav_menu.tpl.htm'); ?>
-
 	<div class="container">
 		<div class="row">
 			<div class="aw-content-wrap clearfix">
@@ -12,9 +10,9 @@
 						<?php foreach ($this->item_list AS $key => $val) { ?>
 						<div class="aw-item aw-padding-x-20">
 							<div class="mod-head">
-								<a class="aw-size-20 aw-color-333" href="kb/<?php echo $val['id']; ?>"><?php echo $val['id']; ?>. <?php echo $val['title']; ?></a>
+								<a class="aw-size-20" href="kb/<?php echo $val['id']; ?>"><?php echo $val['id']; ?>. <?php echo $val['title']; ?></a>
 							</div>
-							<div class="mod-body aw-padding-x-20">
+							<div class="mod-body aw-padding-x-20 aw-padding-y-10">
 								<div class="aw-size-16 aw-color-000">
 									<?php echo nl2br($val['message']); ?>
 								</div>
