@@ -95,7 +95,8 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
         }
 
-        if ($_POST['do_delete'] AND !$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
+		// TODO: 只清空不删除
+        if ($_POST['do_delete'] AND !$this->user_info['permission']['is_administrator']) // AND !$this->user_info['permission']['is_moderator'])
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有删除问题的权限')));
         }
@@ -431,7 +432,8 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
         }
 
-        if ($_POST['do_delete'] AND !$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
+		// TODO: 只清空不删除
+        if ($_POST['do_delete'] AND !$this->user_info['permission']['is_administrator']) // AND !$this->user_info['permission']['is_moderator'])
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有删除文章的权限')));
         }

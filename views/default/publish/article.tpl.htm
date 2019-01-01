@@ -118,7 +118,7 @@
 							<div class="mod-footer clearfix">
 								<a href="currency/rule/" target="_blank">[<?php _e(get_setting('currency_rule_name')); ?>]</a>
 								<span class="aw-anonymity">
-									<?php if ($this->article_info['id'] AND ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'])) { ?>
+									<?php if ($this->article_info['id'] AND ($this->user_info['permission']['is_administrator'] /*OR $this->user_info['permission']['is_moderator']*/)) { ?>
 									<label><input type="checkbox" class="pull-left" value="1" name="do_delete" />
 										<?php _e('删除文章'); ?>&nbsp;</label>
 									<?php } ?>

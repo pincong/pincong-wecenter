@@ -138,7 +138,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function remove_article_action()
 	{
-		if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
+		if (!$this->user_info['permission']['is_administrator'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有删除文章的权限')));
 		}
