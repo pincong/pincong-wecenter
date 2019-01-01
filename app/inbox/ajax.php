@@ -56,12 +56,12 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能给自己发私信')));
 		}
 
-		if ($recipient_user['forbidden'])
+		if ($recipient_user['forbidden'] AND !$this->user_info['permission']['is_administrator'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对方的账号已经被禁止登录')));
 		}
 
-		if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
+		if (!$this->user_info['permission']['is_administrator'])
 		{
 			$recipient_user_group = $this->model('account')->get_user_group_by_user_info($recipient_user);
 			if (!$recipient_user_group['permission']['receive_pm'])
