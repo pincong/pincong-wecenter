@@ -141,11 +141,6 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请不要重复提交')));
         }
 
-		if (! $_GET['answer_id'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('回复不存在')));
-		}
-
 		$comment_length_min = intval(get_setting('comment_length_min'));
 		if ($comment_length_min AND cjk_strlen($message) < $comment_length_min)
 		{
@@ -158,8 +153,21 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得超过 %s 字', $comment_length_max)));
 		}
 
+		if (!$this->model('answer')->check_comment_limit_rate($this->user_id, $this->user_info['permission']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日评论回复已经达到上限')));
+		}
+
 		$answer_info = $this->model('answer')->get_answer_by_id($_GET['answer_id']);
+		if (!$answer_info)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('回复不存在')));
+		}
 		$question_info = $this->model('question')->get_question_info_by_id($answer_info['question_id']);
+		if (!$question_info)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('问题不存在')));
+		}
 
 		if ($question_info['lock'])
 		{
@@ -222,18 +230,6 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请不要重复提交')));
         }
 
-		if (! $_GET['question_id'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('问题不存在')));
-		}
-
-		$question_info = $this->model('question')->get_question_info_by_id($_GET['question_id']);
-
-		if ($question_info['lock'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能评论锁定的问题')));
-		}
-
 		$comment_length_min = intval(get_setting('comment_length_min'));
 		if ($comment_length_min AND cjk_strlen($message) < $comment_length_min)
 		{
@@ -244,6 +240,22 @@ class ajax extends AWS_CONTROLLER
 		if ($comment_length_max AND cjk_strlen($message) > $comment_length_max)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得超过 %s 字', $comment_length_max)));
+		}
+
+		if (!$this->model('question')->check_comment_limit_rate($this->user_id, $this->user_info['permission']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日评论问题已经达到上限')));
+		}
+
+		$question_info = $this->model('question')->get_question_info_by_id($_GET['question_id']);
+		if (!$question_info)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('问题不存在')));
+		}
+
+		if ($question_info['lock'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能评论锁定的问题')));
 		}
 
         set_repeat_submission_digest($message);
