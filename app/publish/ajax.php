@@ -99,11 +99,6 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 
-		if ($_POST['anonymous'] AND !$this->user_info['permission']['post_anonymously'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能匿名')));
-		}
-
 		$_POST['later'] = intval($_POST['later']);
 		if ($_POST['later'])
 		{
@@ -127,6 +122,11 @@ class ajax extends AWS_CONTROLLER
 	private function validate_thread($act, $type)
 	{
 		$this->do_validate();
+
+		if ($_POST['anonymous'] AND !$this->user_info['permission']['post_anonymously'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能匿名')));
+		}
 
 		$_POST['title'] = trim($_POST['title']);
 		if (!$_POST['title'])
@@ -205,6 +205,11 @@ class ajax extends AWS_CONTROLLER
 	private function validate_reply($act, $parent_type)
 	{
 		$this->do_validate();
+
+		if ($_POST['anonymous'] AND !$this->user_info['permission']['reply_anonymously'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能匿名')));
+		}
 
 		$_POST['message'] = trim($_POST['message']);
 		if (!$_POST['message'])

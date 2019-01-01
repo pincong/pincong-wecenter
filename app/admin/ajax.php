@@ -743,6 +743,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			'vote_agree',
 			'vote_disagree',
 			'post_anonymously',
+			'reply_anonymously',
 			'post_later',
 			'send_pm',
 			'receive_pm',

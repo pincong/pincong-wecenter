@@ -65,7 +65,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
 
-		if ($_POST['anonymous'])// AND !$this->user_info['permission']['post_anonymously'])
+		if ($_POST['anonymous'])// AND !$this->user_info['permission']['reply_anonymously'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能匿名')));
 		}
@@ -142,7 +142,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
 
-		if ($_POST['anonymous'])// AND !$this->user_info['permission']['post_anonymously'])
+		if ($_POST['anonymous'])// AND !$this->user_info['permission']['reply_anonymously'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能匿名')));
 		}

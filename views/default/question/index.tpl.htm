@@ -257,7 +257,7 @@
 						<div class="mod-head">
 							<a href="<?php echo UF::url($this->user_info); ?>" class="aw-user-name"><img alt="" src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" /></a>
 							<p>
-								<?php if ($this->user_info['permission']['post_anonymously']) { ?>
+								<?php if ($this->user_info['permission']['reply_anonymously']) { ?>
 								<label class="pull-right">
 									<input type="checkbox" value="1" name="anonymous" /> <?php _e('匿名回复'); ?>
 								</label>
