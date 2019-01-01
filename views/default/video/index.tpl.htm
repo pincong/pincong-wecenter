@@ -38,7 +38,7 @@
 												<?php } ?>
 											</li>
 
-											<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
+										<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
 											<li>
 												<?php if ($this->video_info['lock']) { ?>
 												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unlock/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>');"><?php _e('取消锁定'); ?></a>
@@ -46,15 +46,15 @@
 												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/lock/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>');"><?php _e('锁定'); ?></a>
 												<?php } ?>
 											</li>
-											<?php } ?>
+										<?php } ?>
 
-											<?php if ($this->user_info['permission']['is_administrator']) { ?>
+										<?php if ($this->user_info['permission']['is_administrator']) { ?>
 											<li>
 												<a href="javascript:;" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认删除?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/v/ajax/remove_video/', 'video_id=<?php echo $this->video_info['id']; ?>');});"><?php _e('删除影片'); ?></a>
 											</li>
-											<?php } ?>
+										<?php } ?>
 
-											<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
+										<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
 											<li>
 												<?php if ($this->video_info['recommend']) { ?>
 												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unrecommend/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>');"><?php _e('取消推荐'); ?></a>
@@ -62,8 +62,15 @@
 												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/recommend/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>');"><?php _e('推荐'); ?></a>
 												<?php } ?>
 											</li>
-											<?php } ?>
+										<?php } ?>
 
+										<?php if ($this->video_info['uid'] == $this->user_id OR $this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
+											<?php if (get_setting('category_enable') != 'N') { ?>
+											<li>
+												<a href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/content/edit/change_category/item_type-video__item_id-<?php echo $this->video_info['id']; ?>__category_id-<?php echo $this->video_info['category_id']; ?>');"><?php _e('变更分类'); ?></a>
+											</li>
+											<?php } ?>
+										<?php } ?>
 										</ul>
 									</div>
 								</div>

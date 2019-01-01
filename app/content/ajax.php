@@ -51,6 +51,41 @@ class ajax extends AWS_CONTROLLER
 		TPL::output('content/ajax/log');
 	}
 
+	public function change_category_action()
+	{
+		if (!$category_id = intval($_POST['category_id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('分类不存在')));
+		}
+
+		if (!$this->model('category')->check_user_permission($category_id, $this->user_info['permission']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你的等级还不能在这个分类发言')));
+		}
+
+		if (!$this->model('category')->category_exists($category_id))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('分类不存在')));
+		}
+
+		if (!$item_info = $this->model('content')->get_thread_info_by_id($_POST['item_type'], $_POST['item_id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
+		}
+
+		if ($item_info['uid'] != $this->user_id AND !$this->user_info['permission']['is_moderator'] AND !$this->user_info['permission']['is_administrator'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
+		}
+
+		if ($item_info['category_id'] != $category_id)
+		{
+			$this->model('content')->change_category($_POST['item_type'], $_POST['item_id'], $category_id, $item_info['category_id'], $this->user_id);
+		}
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
 	public function lock_action()
 	{
 		if (!$this->user_info['permission']['is_moderator'] AND !$this->user_info['permission']['is_administrator'])

@@ -201,6 +201,30 @@ class content_class extends AWS_MODEL
 	}
 
 
+	public function change_category($item_type, $item_id, $category_id, $old_category_id, $uid)
+	{
+		if (!$this->check_thread_type($item_type))
+		{
+			return false;
+		}
+
+		$where = 'id = ' . intval($item_id);
+		// TODO
+		if ($item_type == 'question')
+		{
+			$where = 'question_id = ' . intval($item_id);
+		}
+		$this->update($item_type, array('category_id' => intval($category_id)), $where);
+
+		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
+		$this->update('posts_index', array('category_id' => intval($category_id)), $where);
+
+		$this->model('content')->log($item_type, $item_id, '变更分类', $uid, 'category', $old_category_id);
+
+		return true;
+	}
+
+
 	public function lock($item_type, $item_id, $uid)
 	{
 		if (!$this->check_thread_type($item_type))
