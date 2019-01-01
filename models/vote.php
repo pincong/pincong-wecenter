@@ -218,44 +218,56 @@ class vote_class extends AWS_MODEL
 				$factor = $bonus_factor / 2 * (1 + $sigmoid) * $factor;
 			}
 			$factor = round($factor, 6);
+			if (is_infinite($factor))
+			{
+				$factor = 0;
+			}
 		}
 		return $factor;
 	}
 
 	private function increase_count_and_reputation(&$type, $item_id, $uid, $item_uid, $factor)
 	{
-		$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + 1 WHERE id = ' . ($item_id);
+		$factor = $this->get_bonus_factor($type, $item_id, $factor);
+
 		// TODO: question_id 字段改名
 		if ($type == 'question')
 		{
-			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + 1 WHERE question_id = ' . ($item_id);
+			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + 1, reputation = reputation + ' . ($factor) . ' WHERE question_id = ' . ($item_id);
 		}
 		// TODO: answer_id 字段改名
 		elseif ($type == 'answer')
 		{
-			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + 1 WHERE answer_id = ' . ($item_id);
+			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + 1, reputation = reputation + ' . ($factor) . ' WHERE answer_id = ' . ($item_id);
+		}
+		else
+		{
+			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + 1, reputation = reputation + ' . ($factor) . ' WHERE id = ' . ($item_id);
 		}
 		$this->query($sql);
-		$factor = $this->get_bonus_factor($type, $item_id, $factor);
 		$factor = $this->calc_upvote_reputation_factor($uid, $factor);
 		$this->model('reputation')->increase_agree_count_and_reputation($item_uid, 1, $factor);
 	}
 
 	private function decrease_count_and_reputation(&$type, $item_id, $uid, $item_uid, $factor)
 	{
-		$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count - 1 WHERE id = ' . ($item_id);
+		$factor = $this->get_bonus_factor($type, $item_id, $factor);
+
 		// TODO: question_id 字段改名
 		if ($type == 'question')
 		{
-			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count - 1 WHERE question_id = ' . ($item_id);
+			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count - 1, reputation = reputation - ' . ($factor) . ' WHERE question_id = ' . ($item_id);
 		}
 		// TODO: answer_id 字段改名
 		elseif ($type == 'answer')
 		{
-			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count - 1 WHERE answer_id = ' . ($item_id);
+			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count - 1, reputation = reputation - ' . ($factor) . ' WHERE answer_id = ' . ($item_id);
+		}
+		else
+		{
+			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count - 1, reputation = reputation - ' . ($factor) . ' WHERE id = ' . ($item_id);
 		}
 		$this->query($sql);
-		$factor = $this->get_bonus_factor($type, $item_id, $factor);
 		$factor = $this->calc_downvote_reputation_factor($uid, $factor);
 		$this->model('reputation')->increase_agree_count_and_reputation($item_uid, -1, $factor);
 	}

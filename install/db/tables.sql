@@ -12,12 +12,14 @@ CREATE TABLE IF NOT EXISTS `aws_answer` (
   `answer_content` text COMMENT '回答内容',
   `add_time` int(10) DEFAULT '0' COMMENT '添加时间',
   `agree_count` int(11) DEFAULT '0' COMMENT '支持人数',
+  `reputation` float DEFAULT '0',
   `uid` int(11) DEFAULT '0' COMMENT '回答问题用户ID',
   `comment_count` int(11) DEFAULT '0' COMMENT '评论总数',
   `fold` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`answer_id`),
   KEY `question_id` (`question_id`),
   KEY `agree_count` (`agree_count`),
+  KEY `reputation` (`reputation`),
   KEY `add_time` (`add_time`),
   KEY `uid` (`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='回答';
@@ -51,6 +53,7 @@ CREATE TABLE IF NOT EXISTS `aws_article` (
   `add_time` int(10) DEFAULT '0',
   `lock` int(1) DEFAULT '0',
   `agree_count` int(10) DEFAULT '0',
+  `reputation` float DEFAULT '0',
   `title_fulltext` text,
   `category_id` int(10) DEFAULT '0',
   `recommend` tinyint(1) DEFAULT '0',
@@ -64,6 +67,7 @@ CREATE TABLE IF NOT EXISTS `aws_article` (
   KEY `add_time` (`add_time`),
   KEY `lock` (`lock`),
   KEY `agree_count` (`agree_count`),
+  KEY `reputation` (`reputation`),
   KEY `category_id` (`category_id`),
   KEY `recommend` (`recommend`),
   KEY `sort` (`sort`),
@@ -83,12 +87,14 @@ CREATE TABLE IF NOT EXISTS `aws_article_comment` (
   `add_time` int(10) DEFAULT '0',
   `at_uid` int(10) DEFAULT NULL,
   `agree_count` int(10) DEFAULT '0',
+  `reputation` float DEFAULT '0',
   `fold` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
   KEY `article_id` (`article_id`),
   KEY `add_time` (`add_time`),
-  KEY `agree_count` (`agree_count`)
+  KEY `agree_count` (`agree_count`),
+  KEY `reputation` (`reputation`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
@@ -302,6 +308,7 @@ CREATE TABLE IF NOT EXISTS `aws_question` (
   `comment_count` int(11) DEFAULT '0' COMMENT '评论数',
   `category_id` int(11) DEFAULT '0' COMMENT '分类 ID',
   `agree_count` int(11) DEFAULT '0' COMMENT '回复赞同数总和',
+  `reputation` float DEFAULT '0',
   `lock` tinyint(1) DEFAULT '0' COMMENT '是否锁定',
   `question_content_fulltext` text,
   `recommend` tinyint(1) DEFAULT '0',
@@ -314,6 +321,7 @@ CREATE TABLE IF NOT EXISTS `aws_question` (
   KEY `uid` (`uid`),
   KEY `answer_count` (`answer_count`),
   KEY `agree_count` (`agree_count`),
+  KEY `reputation` (`reputation`),
   KEY `question_content` (`question_content`),
   KEY `lock` (`lock`),
   KEY `recommend` (`recommend`),
@@ -653,6 +661,7 @@ CREATE TABLE IF NOT EXISTS `aws_video` (
   `comment_count` int(10) DEFAULT '0',
   `view_count` int(10) DEFAULT '0',
   `agree_count` int(10) DEFAULT '0',
+  `reputation` float DEFAULT '0',
   `lock` int(1) DEFAULT '0',
   `title_fulltext` text,
   `category_id` int(10) DEFAULT '0',
@@ -667,6 +676,7 @@ CREATE TABLE IF NOT EXISTS `aws_video` (
   KEY `comment_count` (`comment_count`),
   KEY `view_count` (`view_count`),
   KEY `agree_count` (`agree_count`),
+  KEY `reputation` (`reputation`),
   KEY `lock` (`lock`),
   KEY `category_id` (`category_id`),
   KEY `recommend` (`recommend`),
@@ -688,12 +698,14 @@ CREATE TABLE IF NOT EXISTS `aws_video_comment` (
   `add_time` int(10) DEFAULT '0',
   `at_uid` int(10) DEFAULT NULL,
   `agree_count` int(10) DEFAULT '0',
+  `reputation` float DEFAULT '0',
   `fold` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
   KEY `video_id` (`video_id`),
   KEY `add_time` (`add_time`),
-  KEY `agree_count` (`agree_count`)
+  KEY `agree_count` (`agree_count`),
+  KEY `reputation` (`reputation`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --

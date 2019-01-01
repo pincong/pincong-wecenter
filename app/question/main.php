@@ -74,7 +74,7 @@ class main extends AWS_CONTROLLER
 		else
 		{
 			//$answer_order_by = "agree_count " . $sort . ", add_time ASC";
-			$answer_order_by = "agree_count " . $sort . ", answer_id ASC";
+			$answer_order_by = "reputation " . $sort . ", agree_count " . $sort . ", answer_id ASC";
 		}
 
 		$item_id = intval($_GET['item_id']);
