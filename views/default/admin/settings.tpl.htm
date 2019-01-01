@@ -532,6 +532,44 @@
                 <tr>
                     <td>
                         <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('全局登录尝试次数'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="limit_global_login_attempts" type="text" class="form-control" value="<?php echo $this->setting['limit_global_login_attempts']; ?>"/>
+
+                                <div class="help-block"><?php _e('多次登录失败自动开启验证码, 填写 0 则不启用'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('全局登录尝试次数间隔时间'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="limit_global_login_attempts_interval" type="text" class="form-control" value="<?php echo $this->setting['limit_global_login_attempts_interval']; ?>"/>
+
+                                <div class="help-block"><?php _e('单位: 分钟'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('删除过期登录失败记录'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="expiration_failed_login_attempts" type="text" class="form-control" value="<?php echo $this->setting['expiration_failed_login_attempts']; ?>"/>
+
+                                <div class="help-block"><?php _e('单位'); ?>: 天, <?php _e('填写 0 则不启用'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('删除过期私信'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <input name="expiration_private_messages" type="text" class="form-control" value="<?php echo $this->setting['expiration_private_messages']; ?>"/>

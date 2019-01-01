@@ -40,7 +40,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
         }
 
         {
-            $user_info = $this->model('account')->check_login($this->user_info['user_name'], $_POST['password']);
+            $user_info = $this->model('login')->check_login($this->user_info['user_name'], $_POST['password']);
         }
 
         if ($user_info['uid'])

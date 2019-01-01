@@ -95,7 +95,7 @@ class main extends AWS_CONTROLLER
 		TPL::import_css('css/register.css');
 
 		// md5 password...
-		TPL::import_js('js/md5.js');
+		//TPL::import_js('js/md5.js');
 
 		if ($_GET['url'])
 		{
@@ -103,9 +103,10 @@ class main extends AWS_CONTROLLER
 		}
 		else
 		{
-			$return_url = htmlspecialchars($_SERVER['HTTP_REFERER']);
+			$return_url = '/'; //htmlspecialchars($_SERVER['HTTP_REFERER']);
 		}
 
+		TPL::assign('captcha_required', $this->model('login')->is_captcha_required());
 		TPL::assign('return_url', $return_url);
 
 		TPL::output("account/login");

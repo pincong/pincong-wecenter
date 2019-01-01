@@ -164,14 +164,27 @@ class ajax extends AWS_CONTROLLER
 
 	public function login_process_action()
 	{
-		// 检查验证码
-		if (!AWS_APP::captcha()->is_validate($_POST['seccode_verify']) AND get_setting('login_seccode') == 'Y')
+		if (!$_POST['user_name'] OR !$_POST['password'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请填写正确的验证码')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的帐号或密码')));
+		}
+
+		// 检查验证码
+		if ($this->model('login')->is_captcha_required())
+		{
+			if ($_POST['captcha_enabled'] == '0')
+			{
+				//H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请刷新页面重试')));
+				H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+			}
+			if (!AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请填写正确的验证码')));
+			}
 		}
 
 
-		$user_info = $this->model('account')->check_login($_POST['user_name'], $_POST['password']);
+		$user_info = $this->model('login')->check_login($_POST['user_name'], $_POST['password']);
 
 		if (is_null($user_info))
 		{
