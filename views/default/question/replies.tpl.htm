@@ -13,9 +13,9 @@
 
 											<!-- 用户名 -->
 											<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>" data-id="<?php echo $val['uid']; ?>"><?php echo UF::name($val['user_info']); ?></a>
-											<?php if ($val['user_info']['forbidden']) { ?><span class="aw-small-text">[ <?php _e('封禁'); ?> ]</span><?php } ?>
+											<?php if ($val['user_info']['forbidden']) { ?><sup><?php _e('封禁'); ?></sup><?php } ?>
 											<?php if ($val['user_info']['verified']) { ?><em class="aw-verified"><?php echo $val['user_info']['verified']; ?></em><?php } ?>
-											<?php if ($val['user_info']['signature']) { ?> - <span class="aw-small-text"><?php echo UF::signature($val['user_info'], $this->user_info['permission']['is_administrator']); ?></span><?php } ?>
+											<span class="aw-small-text"><?php echo UF::signature($val['user_info'], $this->user_info['permission']['is_administrator']); ?></span>
 											<!-- end 用户名 -->
 										</div>
 									</div>

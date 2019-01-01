@@ -62,7 +62,7 @@
 								<?php } ?>
 								<!-- end 封禁 -->
 							</h1>
-							<?php if ($this->user['flagged'] AND $this->user_info['permission']['flag_user']) { ?>
+							<?php if ($this->user['flagged'] /*AND $this->user_info['permission']['flag_user']*/) { ?>
 							<h1>
 								<span class="aw-small-text">
 									<a href="people/<?php echo $this->user['data']['flagged_by']; ?>"><?php _e('管理员'); ?></a><?php _e('标记'); ?>

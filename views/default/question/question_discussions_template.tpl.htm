@@ -17,7 +17,7 @@
 
 				<a href="<?php echo UF::url($val['user_info']); ?>" class="aw-user-name author" data-id="<?php echo $val['uid']; ?>"><?php echo UF::name($val['user_info']); ?></a>
 
-			<?php if ($val['user_info']['forbidden']) { ?><span class="aw-small-text">[ <?php _e('封禁'); ?> ]</span><?php } ?> • <span><?php echo date_friendly($val['add_time']); ?></span>
+			<?php if ($val['user_info']['forbidden']) { ?><sup><?php _e('封禁'); ?></sup><?php } ?> • <span><?php echo date_friendly($val['add_time']); ?></span>
 			</p>
 			<p class="clearfix">
 				<?php echo CF::reply_simple($val['user_info'], 'question_discussion_' . $val['id'], $val['message']); ?>

@@ -87,7 +87,8 @@ class AWS_CONTROLLER
 		{
 			$this->model('account')->logout();
 
-			HTTP::redirect('/');
+			//HTTP::redirect('/');
+			H::redirect_msg(AWS_APP::lang()->_t('抱歉, 你的账号已经被禁止登录'), '/');
 		}
 		else
 		{
