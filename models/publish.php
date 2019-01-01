@@ -297,7 +297,11 @@ class publish_class extends AWS_MODEL
 		// 记录用户动态
 		$this->model('activity')->log('answer', $item_id, '回答了问题', $data['uid']);
 
-		$this->model('currency')->process($parent_info['uid'], 'QUESTION_REPLIED', get_setting('currency_system_config_question_replied'), '问题收到回应', $data['parent_id'], 'question');
+		// TODO: 防止匿名回复刷代币
+		if ($data['permission_affect_currency'] AND $data['uid'] != $parent_info['uid'])
+		{
+			$this->model('currency')->process($parent_info['uid'], 'QUESTION_REPLIED', get_setting('currency_system_config_question_replied'), '问题收到回应', $data['parent_id'], 'question');
+		}
 		return $item_id;
 	}
 
@@ -368,7 +372,11 @@ class publish_class extends AWS_MODEL
 		// 记录用户动态
 		$this->model('activity')->log('article_comment', $item_id, '评论了文章', $data['uid']);
 
-		$this->model('currency')->process($parent_info['uid'], 'ARTICLE_REPLIED', get_setting('currency_system_config_article_replied'), '文章收到回应', $data['parent_id'], 'article');
+		// TODO: 防止匿名回复刷代币
+		if ($data['permission_affect_currency'] AND $data['uid'] != $parent_info['uid'])
+		{
+			$this->model('currency')->process($parent_info['uid'], 'ARTICLE_REPLIED', get_setting('currency_system_config_article_replied'), '文章收到回应', $data['parent_id'], 'article');
+		}
 		return $item_id;
 	}
 
@@ -447,7 +455,11 @@ class publish_class extends AWS_MODEL
 		// 记录用户动态
 		$this->model('activity')->log('video_comment', $item_id, '评论了影片', $data['uid']);
 
-		$this->model('currency')->process($parent_info['uid'], 'VIDEO_REPLIED', get_setting('currency_system_config_video_replied'), '影片收到回应', $data['parent_id'], 'video');
+		// TODO: 防止匿名回复刷代币
+		if ($data['permission_affect_currency'] AND $data['uid'] != $parent_info['uid'])
+		{
+			$this->model('currency')->process($parent_info['uid'], 'VIDEO_REPLIED', get_setting('currency_system_config_video_replied'), '影片收到回应', $data['parent_id'], 'video');
+		}
 		return $item_id;
 	}
 

@@ -728,6 +728,7 @@ class ajax extends AWS_CONTROLLER
 			'message' => $_POST['message'],
 			'uid' => $publish_uid,
 			'auto_focus' => $auto_focus,
+			'permission_affect_currency' => $this->user_info['permission']['affect_currency'],
 		), $this->user_id, $_POST['later']);
 
 		if ($_POST['later'])
@@ -805,6 +806,7 @@ class ajax extends AWS_CONTROLLER
 			'message' => $_POST['message'],
 			'uid' => $publish_uid,
 			'at_uid' => $_POST['at_uid'],
+			'permission_affect_currency' => $this->user_info['permission']['affect_currency'],
 		), $this->user_id, $_POST['later']);
 
 		if ($_POST['later'])
@@ -881,6 +883,7 @@ class ajax extends AWS_CONTROLLER
 			'message' => $_POST['message'],
 			'uid' => $publish_uid,
 			'at_uid' => $_POST['at_uid'],
+			'permission_affect_currency' => $this->user_info['permission']['affect_currency'],
 		), $this->user_id, $_POST['later']);
 
 		if ($_POST['later'])
