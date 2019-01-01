@@ -127,4 +127,4 @@ if (file_exists(AWS_PATH . 'config.inc.php'))
 
 load_class('core_autoload');
 
-date_default_timezone_set('Etc/GMT-8');
+date_default_timezone_set('UTC');

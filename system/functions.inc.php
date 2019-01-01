@@ -322,6 +322,8 @@ function jsonp_encode($json = array(), $callback = 'jsoncallback')
 
 function date_friendly($timestamp)
 {
+	$timestamp = $timestamp + intval(get_setting('time_difference'));
+
 	if (get_setting('time_style') == 'N')
 	{
 		return date('Y-m-d', $timestamp);
