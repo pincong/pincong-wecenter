@@ -632,6 +632,9 @@ class ajax extends AWS_CONTROLLER
 
 		$this->model('answer')->update_answer($_GET['answer_id'], $answer_info['question_id'], $answer_content, $this->user_id);
 
+		// 删除回复邀请, 如果有
+		$this->model('question')->answer_question_invite($answer_info['question_id'], $this->user_id);
+
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'target_id' => $_GET['target_id'],
 			'display_id' => $_GET['display_id']

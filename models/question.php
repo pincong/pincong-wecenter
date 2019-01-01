@@ -553,18 +553,12 @@ class question_class extends AWS_MODEL
 	}
 
 	/**
-	 * 接收者回复邀请的问题
+	 * 删除回复邀请
 	 * @param unknown_type $question_invite_id
 	 * @param unknown_type $recipients_uid
 	 */
 	public function answer_question_invite($question_id, $recipients_uid)
 	{
-		if (!$question_info = $this->model('question')->get_question_info_by_id($question_id))
-		{
-			return false;
-		}
-
-		// TODO: 如何处理重复邀请?
 		$this->delete('question_invite', 'question_id = ' . intval($question_id) . ' AND recipients_uid = ' . intval($recipients_uid));
 
 		$this->model('account')->update_question_invite_count($recipients_uid);
