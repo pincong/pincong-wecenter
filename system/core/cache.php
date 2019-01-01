@@ -47,8 +47,10 @@ class core_cache
 
 	public function __construct()
 	{
-		$this->groupPrefix = G_COOKIE_HASH_KEY . $this->groupPrefix;
-		$this->cachePrefix = G_COOKIE_HASH_KEY . $this->cachePrefix;
+		$file_name_prefix = substr(md5(G_COOKIE_HASH_KEY), 0, 6);
+
+		$this->groupPrefix = $file_name_prefix . $this->groupPrefix;
+		$this->cachePrefix = $file_name_prefix . $this->cachePrefix;
 
 		if (defined('IN_SAE'))
 		{
@@ -67,7 +69,7 @@ class core_cache
 				'cache_dir' => realpath($cache_dir),
 				'hashed_directory_level' => 1,
 				'read_control_type' => 'adler32',
-				'file_name_prefix' => substr(md5(G_SECUKEY), 0, 6)
+				'file_name_prefix' => $file_name_prefix
 			);
 		}
 
