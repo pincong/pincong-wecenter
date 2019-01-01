@@ -99,25 +99,6 @@ var AW_TEMPLATE = {
 			'</form>'+
 		'</div>',
 
-	'favoriteBox' :
-		'<div class="modal fade alert-box aw-tips-box">'+
-			'<div class="modal-dialog">'+
-				'<div class="modal-content">'+
-					'<form id="favorite_form" action="' + G_BASE_URL + '/favorite/ajax/add_favorite/" method="post" onsubmit="return false;">'+
-						'<input type="hidden" name="item_id" value="{{item_id}}" />'+
-						'<input type="hidden" name="item_type" value="{{item_type}}" />'+
-						'<div class="modal-header">'+
-							'<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>'+
-							'<h3 class="modal-title" id="myModalLabel">' + _t('提示信息') + '</h3>'+
-						'</div>'+
-						'<div class="modal-body">'+
-							'<p>' + _t('已收藏') + '</p>'+
-						'</div>'+
-					'</form>'+
-				'</div>'+
-			'</div>'+
-		'</div>',
-
 	'questionRedirect' :
 		'<div class="modal fade alert-box aw-question-redirect-box">'+
 			'<div class="modal-dialog">'+

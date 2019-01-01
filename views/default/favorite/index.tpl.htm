@@ -12,46 +12,59 @@
 						<div class="mod-body">
 
 							<div class="aw-feed-list">
-								<?php if (sizeof ($this->list) > 0) { ?>
 								<?php foreach ($this->list AS $key => $val) { ?>
 								<div class="aw-item">
 									<div class="mod-head">
 										<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" data-id="<?php echo $val['user_info']['uid']; ?>" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 										<p class="text-color-999">
-											<?php if ($val['last_action_str']) { ?><?php echo $val['last_action_str']; ?> • <?php echo date_friendly($val['add_time']); ?><?php } ?>
-										</p>
-										<h4><a href="<?php echo $val['link']; ?>"><?php echo $val['title']; ?></a></h4>
-									</div>
-									<div class="mod-body">
-										<?php if ($val['answer_info']) { ?>
-										<p class="text-color-999">
-											<a class="aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a><?php if ($val['user_info']['signature']) { ?> - <?php echo UF::signature($val['user_info']); ?><?php } ?>
+											<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
+											•
+											<?php echo date_friendly($val['item']['add_time']); ?>
+											<?php echo $val['type']; ?>
 										</p>
 
-										<!-- 评论内容 -->
+										<?php if ($val['type'] == 'answer') { ?>
+										<!-- 回答 -->
+										<h4>
+											<a href="question/<?php echo $val['item']['question_info']['question_id']; ?>?rf=false&single=1&answer_id=<?php echo $val['item']['answer_id']; ?>"><?php if (!$val['item']['question_info']['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['item']['question_info']['question_content']; ?><?php } ?></a>
+										</h4>
 										<div class="content">
-											<div id="detail_<?php echo md5($val['item_id'] . $val['item_type']); ?>">
-												<?php echo cjk_substr(strip_ubb($val['answer_info']['answer_content']), 0, 130, 'UTF-8', '...'); ?>
-												<?php if (cjk_strlen($val['answer_info']['answer_content']) > 130) { ?>
-												<a href="javascript:;" class="showMore" onclick="AWS.content_switcher($('#detail_<?php echo md5($val['item_id'] . $val['item_type']); ?>'), $('#detail_more_<?php echo md5($val['item_id'] . $val['item_type']); ?>'));"><?php _e('显示全部'); ?> »</a>
+											<div id="detail_<?php echo $val['item_id']; ?>">
+												<?php echo cjk_substr(strip_ubb($val['item']['answer_content']), 0, 130, 'UTF-8', '...'); ?>
+												<?php if (cjk_strlen($val['item']['answer_content']) > 130) { ?>
+												<a href="javascript:;" class="showMore" onclick="AWS.content_switcher($('#detail_<?php echo $val['item_id']; ?>'), $('#detail_more_<?php echo $val['item_id']; ?>'));"><?php _e('显示全部'); ?> »</a>
 												<?php } ?>
 											</div>
-
-											<div id="detail_more_<?php echo md5($val['item_id'] . $val['item_type']); ?>" class="collapse">
-												<?php echo nl2br(strip_ubb($val['answer_info']['answer_content'])); ?>
+											<div id="detail_more_<?php echo $val['item_id']; ?>" class="collapse">
+												<?php echo nl2br(strip_ubb($val['item']['answer_content'])); ?>
 											</div>
 										</div>
-										<!-- end 评论内容 -->
+										<!-- end 回答 -->
+										<?php } else if ($val['type'] == 'question') { ?>
+										<!-- 问题 -->
+										<h4>
+											<a href="question/<?php echo $val['item']['question_id']; ?>?rf=false"><?php if (!$val['item']['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['item']['question_content']; ?><?php } ?></a>
+										</h4>
+										<!-- end 问题 -->
+										<?php } else if ($val['type'] == 'article') { ?>
+										<!-- 文章 -->
+										<h4>
+											<a href="article/<?php echo $val['item']['id']; ?>?rf=false"><?php if (!$val['item']['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['item']['title']; ?><?php } ?></a>
+										</h4>
+										<!-- end 文章 -->
+										<?php } else if ($val['type'] == 'video') { ?>
+										<!-- 影片 -->
+										<h4>
+											<a href="video/<?php echo $val['item']['id']; ?>?rf=false"><?php if (!$val['item']['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['item']['title']; ?><?php } ?></a>
+										</h4>
+										<!-- end 影片 -->
 										<?php } ?>
+
 									</div>
 									<div class="mod-footer">
-										<a class="pull-right text-color-999" onclick="AWS.ajax_request(G_BASE_URL + '/favorite/ajax/remove_favorite_item/', 'item_type=<?php echo $val['item_type']; ?>&item_id=<?php echo $val['item_id']; ?>');"><?php _e('取消收藏'); ?></a>
-
-										<div class="aw-topic-bar" data-type="favorite" data-item-type="<?php echo $val['item_type']; ?>" data-id="<?php echo $val['item_id']; ?>">
-										</div>
+										<a class="pull-right text-color-999" onclick="AWS.ajax_request(G_BASE_URL + '/favorite/ajax/remove_favorite_item/', 'item_type=<?php echo $val['type']; ?>&item_id=<?php echo $val['item_id']; ?>');"><?php _e('取消收藏'); ?></a>
 									</div>
 								</div>
-								<?php } ?>
 								<?php } ?>
 							</div>
 						</div>

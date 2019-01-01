@@ -489,6 +489,7 @@ var AWS =
 		});
 	},
 
+	// 提交表单并跳转
 	submit_form: function(url, data, method, target)
 	{
 		data = data || {};
@@ -570,15 +571,6 @@ var AWS =
 				});
 			break;
 
-
-			case 'favorite':
-				var template = Hogan.compile(AW_TEMPLATE.favoriteBox).render(
-				{
-					 'item_id': data.item_id,
-					 'item_type': data.item_type
-				});
-			break;
-
 			case 'inbox':
 				var template = Hogan.compile(AW_TEMPLATE.inbox).render(
 				{
@@ -637,16 +629,6 @@ var AWS =
 						$('.alert-box #quick_publish input.form-control').val($(this).text());
 						$(this).parents('.aw-dropdown').hide();
 					});
-				break;
-
-				case 'favorite':
-					$.post(G_BASE_URL + '/favorite/ajax/add_favorite/', {
-						'item_id' : $('#favorite_form input[name="item_id"]').val(),
-						'item_type' : $('#favorite_form input[name="item_type"]').val()
-					}, function (result)
-					{
-
-					}, 'json');
 				break;
 
 				case 'ajaxData':
@@ -1609,6 +1591,14 @@ AWS.User =
 	ask_user: function(ask_user_id, ask_user_name)
 	{
 		AWS.submit_form(G_BASE_URL + '/publish/', {ask_user_id: ask_user_id, ask_user_name: ask_user_name});
+	},
+
+	add_favorite: function(item_type, item_id)
+	{
+		AWS.ajax_request(G_BASE_URL + '/favorite/ajax/add_favorite/', {
+			'item_id' : item_id,
+			'item_type' : item_type
+		}, 1);
 	},
 }
 
