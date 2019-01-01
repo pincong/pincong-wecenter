@@ -711,6 +711,7 @@ CREATE TABLE IF NOT EXISTS `aws_vote` (
   KEY `recipient_uid` (`recipient_uid`),
   KEY `type` (`type`),
   KEY `item_id` (`item_id`),
+  KEY `value` (`value`),
   KEY `add_time` (`add_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 

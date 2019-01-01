@@ -401,9 +401,17 @@ class vote_class extends AWS_MODEL
 	}
 
 
-	public function check_same_user_limit($uid, $recipient_uid)
+	public function check_same_user_limit($uid, $recipient_uid, $value)
 	{
-		$limit = intval(get_setting('same_user_votes_per_day'));
+		if ($value == 1)
+		{
+			$limit = intval(get_setting('same_user_upvotes_per_day'));
+		}
+		elseif ($value == -1)
+		{
+			$limit = intval(get_setting('same_user_downvotes_per_day'));
+		}
+
 		if (!$limit)
 		{
 			return true;
@@ -418,7 +426,7 @@ class vote_class extends AWS_MODEL
 		$uid = intval($uid);
 		$time_after = real_time() - 24 * 3600;
 
-		$where = "add_time > " . $time_after . " AND uid =" . $uid . " AND recipient_uid =" . $recipient_uid;
+		$where = "add_time > " . $time_after . " AND uid =" . $uid . " AND recipient_uid =" . $recipient_uid . " AND value =" . $value;
 		$count = $this->count('vote', $where);
 		if ($count >= $limit)
 		{
