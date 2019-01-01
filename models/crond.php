@@ -89,16 +89,6 @@ class crond_class extends AWS_MODEL
     {
         @unlink(TEMP_PATH . 'plugins_table.php');
         @unlink(TEMP_PATH . 'plugins_model.php');
-
-        if ($this->model('reputation')->calculate(AWS_APP::cache()->get('reputation_calculate_start'), 100))
-        {
-            AWS_APP::cache()->set('reputation_calculate_start', (intval(AWS_APP::cache()->get('reputation_calculate_start')) + 100), 604800);
-        }
-        else
-        {
-            AWS_APP::cache()->set('reputation_calculate_start', 0, 604800);
-        }
-
     }
 
     // 每五分钟执行
