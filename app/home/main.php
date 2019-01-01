@@ -54,7 +54,7 @@ class main extends AWS_CONTROLLER
 
 			TPL::assign('sidebar_recommend_users_topics', $recommend_users_topics);
 		}
-
+/*
 		// 边栏热门用户
 		if (TPL::is_output('block/sidebar_hot_users.tpl.htm', 'home/index'))
 		{
@@ -62,7 +62,7 @@ class main extends AWS_CONTROLLER
 
 			TPL::assign('sidebar_hot_users', $sidebar_hot_users);
 		}
-
+*/
 		$this->crumb(AWS_APP::lang()->_t('动态'), '/home/');
 
 		TPL::import_js('js/app/index.js');

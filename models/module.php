@@ -56,7 +56,11 @@ class module_class extends AWS_MODEL
 
 	public function sidebar_hot_topics($category_id = 0)
 	{
-		return $this->model('topic')->get_hot_topics($category_id, 5, 'week');
+		$num = intval(get_setting('recommend_users_number'));
+		if ($num)
+		{
+			return $this->model('topic')->get_hot_topics($category_id, $num, 'week');
+		}
 	}
 
 	public function sidebar_hot_users($uid = 0, $limit = 5)
