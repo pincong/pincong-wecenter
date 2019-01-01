@@ -95,6 +95,10 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
+		// 弹幕, 暂时直接在页面输出
+		$danmaku = $this->model('danmaku')->get_danmaku_list_by_video_id($video_info['id'], 1, 5000);
+		TPL::assign('danmaku_json', json_encode($danmaku));
+
 		$this->model('video')->update_view_count($video_info['id']);
 
 		TPL::assign('comments', $comments);

@@ -897,7 +897,7 @@ CREATE TABLE IF NOT EXISTS `aws_video` (
   `message` text,
   `source_type` varchar(32) DEFAULT NULL,
   `source` text,
-  `duration` int(10) DEFAULT '0',
+  `duration` int(10) DEFAULT '0' COMMENT '时长 秒',
   `comment_count` int(10) DEFAULT '0',
   `danmaku_count` int(10) DEFAULT '0',
   `view_count` int(10) DEFAULT '0',
@@ -948,6 +948,32 @@ CREATE TABLE IF NOT EXISTS `aws_video_comments` (
   KEY `add_time` (`add_time`),
   KEY `agree_count` (`agree_count`),
   KEY `anonymous` (`anonymous`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+-- Data exporting was unselected.
+
+
+-- Dumping structure for table panic.aws_video_danmaku
+CREATE TABLE IF NOT EXISTS `aws_video_danmaku` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `uid` int(10) DEFAULT '0',
+  `video_id` int(10) DEFAULT '0',
+  `add_time` int(10) DEFAULT '0',
+  `agree_count` int(10) DEFAULT '0',
+  `anonymous` tinyint(1) DEFAULT '0',
+  `stime` int(10) DEFAULT '0' COMMENT '出现时间 毫秒',
+  `mode` int(10) DEFAULT '0',
+  `size` int(10) DEFAULT '0',
+  `color` int(10) DEFAULT '0',
+  `text` text,
+  `extra_data` text COMMENT '预留',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `video_id` (`video_id`),
+  KEY `add_time` (`add_time`),
+  KEY `agree_count` (`agree_count`),
+  KEY `anonymous` (`anonymous`),
+  KEY `stime` (`stime`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.

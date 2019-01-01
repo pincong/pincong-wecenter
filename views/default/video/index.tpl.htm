@@ -321,50 +321,93 @@
 
 <script type="text/javascript">
 var VIDEO_ID = <?php echo $this->video_info['id']; ?>;
-var DANMAKU_LIST = [];
+var DANMAKU_LIST = <?php echo $this->danmaku_json; ?>;
 var video_player;
 
 var TEST_VIDEO;
 //TEST_VIDEO = '/cache/test.mp4';
 
+var busy_while_getting_metadata;
+
 function get_video_metadata(callback) {
+	if (busy_while_getting_metadata) return true;
+	busy_while_getting_metadata = true;
+
 	var url = G_BASE_URL + '/v/api/get_video_metadata/';
 	var params = 'video_id=' + VIDEO_ID;
 	$.post(url, params + '&_post_type=ajax', function(result) {
+		busy_while_getting_metadata = false;
+
 		if (!result['rsm'] || !result['rsm']['formats']) {
 			callback('error');
 			return;
 		}
 		callback(null, result['rsm']);
 	}, 'json').error(function(error) {
+		busy_while_getting_metadata = false;
+
+		callback('error');
+	});
+}
+
+var busy_while_sending_danmaku;
+
+function send_danmaku(danmaku, callback) {
+	if (busy_while_sending_danmaku) return true;
+	busy_while_sending_danmaku = true;
+
+	var url = G_BASE_URL + '/v/api/save_danmaku/';
+	var params = {
+		_post_type: 'ajax',
+		video_id: VIDEO_ID,
+		stime: danmaku.stime,
+		text: danmaku.text,
+		mode: danmaku.mode,
+		size: danmaku.size,
+		color: danmaku.color
+	};
+
+	$.post(url, params, function(result) {
+		busy_while_sending_danmaku = false;
+		callback(null, result);
+	}, 'json').error(function(error) {
+		busy_while_sending_danmaku = false;
 		callback('error');
 	});
 }
 
 
-
 $(document).ready(function () {
-	var $html5_video = $('.ab-player .ab-video video');
-	$html5_video.attr('poster', '<?php echo $this->video_info['thumb_url']; ?>');
+	var video_url;
+	var video_player = new ABP.Player('.ab-player');
+	video_player.setPoster('<?php echo $this->video_info['thumb_url']; ?>');
+	video_player.loadDanmaku(DANMAKU_LIST);
 
-	$('.ab-player .ab-play-btn').click(function() {
-		if (video_player)
+	// 产生交互, 但是视频还没有载入
+	video_player.on('requireVideo', function(next) {
+		if (video_url) {
+			console.log('正在加载视频, 请稍候...');
 			return;
+		}
+
 		get_video_metadata(function(error, data) {
 			if (error && !TEST_VIDEO) {
 				alert('解析视频失败');
 				return;
 			}
-			var video = $html5_video[0];
-			var source = document.createElement('source');
-			source.src = TEST_VIDEO;
+			video_url = TEST_VIDEO;
 			if (!TEST_VIDEO) {
-				source.src = data['formats'][0]['url'];
+				video_url = data['formats'][0]['url'];
 			}
-			video.appendChild(source);
-			video_player = new ABP.Player('.ab-player');
-			video_player.loadDanmaku(DANMAKU_LIST);
-			video_player.togglePlay();
+			video_player.setSource(video_url);
+			next();
+		});
+	});
+
+	// 发送弹幕按钮被点击
+	video_player.on('sendDanmaku', function(danmaku, next) {
+		return send_danmaku(danmaku, function(error, result) {
+			next();
 		});
 	});
 

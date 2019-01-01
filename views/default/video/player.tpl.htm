@@ -224,6 +224,33 @@
 
 <script>
 var ABP = {};
+
+(function() {
+	'use strict';
+	function Emitter(scope) {
+		this.events = {};
+		this.scope = scope;
+	};
+
+	Emitter.prototype.on = function(eventName, listenerFunction) {
+		this.events[eventName] = listenerFunction;
+	};
+
+	Emitter.prototype.off = function(eventName) {
+		delete this.events[eventName];
+	};
+
+	Emitter.prototype.emit = function(eventName) {
+		var listenerFunction = this.events[eventName];
+		if (listenerFunction) {
+			var args = [].slice.call(arguments, 1);
+			return listenerFunction.apply(this.scope, args);
+		}
+	};
+
+	ABP.Emitter = Emitter;
+})();
+
 (function() {
 	'use strict';
 	var Util = {};
@@ -262,14 +289,105 @@ var ABP = {};
 		this.cm.init();
 		// end 弹幕管理器初始化
 
+		// 事件发射器
+		this.emitter = new ABP.Emitter(this);
+		// end 事件发射器
+
 		// 初始状态
 		this.isPlaying = false;
 		this.danmakuEnabled = true;
+		this.videoLoaded = false;
 		// end 初始状态
-		this.init();
+
+		this._init();
 	};
 
-	Player.prototype.init = function() {
+	// 添加/覆盖事件
+	Player.prototype.on = function(eventName, listenerFunction) {
+		this.emitter.on(eventName, listenerFunction);
+	};
+
+	// 移除事件
+	Player.prototype.off = function(eventName) {
+		this.emitter.off(eventName);
+	};
+
+	Player.prototype.togglePlay = function() {
+		if (!this.videoLoaded) {
+			this.emitter.emit('requireVideo', function() {
+				this._togglePlay();
+			}.bind(this));
+		} else {
+			this._togglePlay();
+		}
+	};
+
+	Player.prototype.toggleLoop = function() {
+		if (!this.videoLoaded) {
+			this.emitter.emit('requireVideo', function() {
+				this._toggleLoop();
+			}.bind(this));
+		} else {
+			this._toggleLoop();
+		}
+	};
+
+	Player.prototype.toggleDanmaku = function() {
+		if (!this.videoLoaded) {
+			this.emitter.emit('requireVideo', function() {
+				this._toggleDanmaku();
+			}.bind(this));
+		} else {
+			this._toggleDanmaku();
+		}
+	};
+
+	Player.prototype.toggleMute = function() {
+		if (!this.videoLoaded) {
+			this.emitter.emit('requireVideo', function() {
+				this._toggleMute();
+			}.bind(this));
+		} else {
+			this._toggleMute();
+		}
+	};
+
+	Player.prototype.jumpTo = function(seconds) {
+		if (!this.videoLoaded) {
+			this.emitter.emit('requireVideo', function() {
+				this._jumpTo(seconds);
+			}.bind(this));
+		} else {
+			this._jumpTo(seconds);
+		}
+	};
+
+	Player.prototype.sendDanmaku = function(text, mode, size, color) {
+		if (!this.videoLoaded) {
+			this.emitter.emit('requireVideo', function() {
+				this._sendDanmaku(text, mode, size, color);
+			}.bind(this));
+		} else {
+			this._sendDanmaku(text, mode, size, color);
+		}
+	};
+
+	Player.prototype.loadDanmaku = function(danmakuArray) {
+		this.cm.load(danmakuArray);
+	};
+
+	Player.prototype.setSource = function(url) {
+		this.video.src = url;
+	};
+
+	Player.prototype.setPoster = function(url) {
+		this.video.poster = url;
+	};
+
+
+	// ------ 私有方法 ------
+
+	Player.prototype._init = function() {
 		this.$playBtn = this.$$('.ab-control .ab-play-btn');
 		this.$playIcon = this.$playBtn.children('i');
 
@@ -281,8 +399,8 @@ var ABP = {};
 		this.$volumeIcon = this.$volumeBtn.children('i');
 		this.$volumeBar = this.$$('.ab-control .ab-volume-bar');
 		this.$volumeProgress = this.$volumeBar.children('div');
-		this.updateVolumeIcon();
-		this.updateVolumeBar();
+		this._updateVolumeIcon();
+		this._updateVolumeBar();
 
 		this.$seekbar = this.$$('.ab-control .ab-seekbar');
 		this.$seekbarProgress = this.$seekbar.children('div');
@@ -294,10 +412,10 @@ var ABP = {};
 		this.$sendBtn = this.$$('.ab-control .ab-send-btn');
 		this.$danmakuInput = this.$$('.ab-control .ab-danmaku-input');
 
-		this.bindEvents();
+		this._bindEvents();
 	};
 
-	Player.prototype.bindEvents = function() {
+	Player.prototype._bindEvents = function() {
 		var self = this;
 		this.$playBtn.click(function() {
 			self.togglePlay();
@@ -317,14 +435,16 @@ var ABP = {};
 			if (progress < 0) progress = 0;
 			if (progress > 1) progress = 1;
 			self.video.volume = progress;
+			if (!self.videoLoaded) {
+				self.emitter.emit('requireVideo', function() {});
+			}
 		});
 
 		this.$seekbar.click(function(e) {
 			var progress = (e.clientX - self.$seekbar.offset().left) / self.$seekbar.width();
 			if (progress < 0) progress = 0;
 			if (progress > 1) progress = 1;
-			self.video.currentTime = self.video.duration * progress;
-			if (self.video.paused) self.video.play();
+			self.jumpTo(self.video.duration * progress);
 		});
 
 		this.$sendBtn.click(function() {
@@ -346,21 +466,22 @@ var ABP = {};
 			self.isPlaying = false;
 		};
 		this.video.onvolumechange = function() {
-			self.updateVolumeIcon();
-			self.updateVolumeBar();
+			self._updateVolumeIcon();
+			self._updateVolumeBar();
 		};
 		this.video.ontimeupdate = function() {
-			self.updateDanmakuStage();
-			self.updateSeekbar();
-			self.updateCurrentTimeLabel();
+			self._updateDanmakuStage();
+			self._updateSeekbar();
+			self._updateCurrentTimeLabel();
 		};
 		this.video.onloadedmetadata = function() {
-			self.updateSeekbar();
-			self.updateDurationLabel();
+			self.videoLoaded = true;
+			self._updateSeekbar();
+			self._updateDurationLabel();
 		};
 	};
 
-	Player.prototype.togglePlay = function() {
+	Player.prototype._togglePlay = function() {
 		if (this.isPlaying) {
 			this.video.pause();
 		} else {
@@ -368,7 +489,7 @@ var ABP = {};
 		}
 	};
 
-	Player.prototype.toggleLoop = function() {
+	Player.prototype._toggleLoop = function() {
 		if (this.video.loop) {
 			this.$loopBtn.removeClass('c-btn-on');
 			this.video.loop = false;
@@ -378,7 +499,7 @@ var ABP = {};
 		}
 	};
 
-	Player.prototype.toggleDanmaku = function() {
+	Player.prototype._toggleDanmaku = function() {
 		if (this.danmakuEnabled) {
 			this.cm.stop();
 			this.cm.clear();
@@ -391,16 +512,21 @@ var ABP = {};
 		}
 	};
 
-	Player.prototype.toggleMute = function() {
+	Player.prototype._toggleMute = function() {
 		if (this.video.muted) {
 			this.video.muted = false;
 		} else {
 			this.video.muted = true;
 		}
-		this.updateVolumeIcon();
+		this._updateVolumeIcon();
 	};
 
-	Player.prototype.updateVolumeIcon = function() {
+	Player.prototype._jumpTo = function(seconds) {
+		if (!isNaN(seconds)) this.video.currentTime = seconds;
+		if (this.video.paused) this.video.play();
+	};
+
+	Player.prototype._updateVolumeIcon = function() {
 		if (this.video.muted) {
 			this.$volumeIcon.attr('class', 'c-icon-volume-mute');
 		}
@@ -418,32 +544,28 @@ var ABP = {};
 		}
 	};
 
-	Player.prototype.updateVolumeBar = function() {
+	Player.prototype._updateVolumeBar = function() {
 		this.$volumeProgress.css('width', (this.video.volume * 100) + '%');
 	};
 
-	Player.prototype.updateSeekbar = function() {
+	Player.prototype._updateSeekbar = function() {
 		var width = (this.video.currentTime / this.video.duration * 100) + '%';
 		this.$seekbarProgress.css('width', width);
 	};
 
-	Player.prototype.updateCurrentTimeLabel = function() {
+	Player.prototype._updateCurrentTimeLabel = function() {
 		this.$currentTimeLabel.text(ABP.Util.formatTime(this.video.currentTime));
 	};
 
-	Player.prototype.updateDurationLabel = function() {
+	Player.prototype._updateDurationLabel = function() {
 		this.$durationLabel.text(ABP.Util.formatTime(this.video.duration));
 	};
 
-	Player.prototype.updateDanmakuStage = function() {
+	Player.prototype._updateDanmakuStage = function() {
 		this.cm.time(Math.floor(this.video.currentTime * 1000));
 	};
 
-	Player.prototype.loadDanmaku = function(danmakuArray) {
-		this.cm.load(danmakuArray);
-	};
-
-	Player.prototype.sendDanmaku = function(text, mode, size, color) {
+	Player.prototype._sendDanmaku = function(text, mode, size, color) {
 		text = text.trim();
 		if (!text) return;
 
@@ -464,14 +586,30 @@ var ABP = {};
 			mode: mode,
 			size: size,
 			color: color,
-			border: true
+			stime: Math.floor(this.video.currentTime * 1000)
 		}
-		this.cm.send(danmaku); // 仅显示
 
-		danmaku.stime = Math.floor(this.video.currentTime * 1000);
+		// 如果 emit 'sendDanmaku' 返回 true 则直接取消, 不显示也不插入
+		var cancelled = this.emitter.emit('sendDanmaku', danmaku, function() {
+			if (cancelled) return;
+			this._insertDanmaku(danmaku); // 回调之后才真正插入到时间轴
+		}.bind(this));
+
+		if (cancelled) return;
+		this._presentDanmaku(danmaku); // 立刻显示刚才的弹幕, 此时还不会插入到时间轴
+	};
+
+	Player.prototype._presentDanmaku = function(danmaku) {
+		danmaku.border = true;
+		this.cm.send(danmaku); // 仅显示
+	};
+
+	Player.prototype._insertDanmaku = function(danmaku) {
 		danmaku.border = false;
 		this.cm.insert(danmaku); // 插入到时间轴
 	};
+
+	// ------ end 私有方法 ------
 
 	ABP.Player = Player;
 })();
