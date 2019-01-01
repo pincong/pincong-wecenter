@@ -81,10 +81,6 @@ class currency_class extends AWS_MODEL
 				case 'QUESTION_ANSWER':
 				case 'INVITE_ANSWER':
 				case 'ANSWER_INVITE':
-				case 'MOVE_UP_QUESTION':
-				case 'QUESTION_MOVED_UP':
-				case 'MOVE_DOWN_QUESTION':
-				case 'QUESTION_MOVED_DOWN':
 				case 'AGREE_QUESTION':
 				case 'QUESTION_AGREED':
 				case 'DISAGREE_QUESTION':
@@ -101,10 +97,6 @@ class currency_class extends AWS_MODEL
 				break;
 
 				case 'NEW_ARTICLE':
-				case 'MOVE_UP_ARTICLE':
-				case 'ARTICLE_MOVED_UP':
-				case 'MOVE_DOWN_ARTICLE':
-				case 'ARTICLE_MOVED_DOWN':
 				case 'AGREE_ARTICLE':
 				case 'ARTICLE_AGREED':
 				case 'DISAGREE_ARTICLE':
@@ -155,10 +147,6 @@ class currency_class extends AWS_MODEL
 				case 'ANSWER_QUESTION':
 				case 'QUESTION_ANSWER':
 				case 'INVITE_ANSWER':
-				case 'MOVE_UP_QUESTION':
-				case 'QUESTION_MOVED_UP':
-				case 'MOVE_DOWN_QUESTION':
-				case 'QUESTION_MOVED_DOWN':
 				case 'AGREE_QUESTION':
 				case 'QUESTION_AGREED':
 				case 'DISAGREE_QUESTION':
@@ -194,10 +182,6 @@ class currency_class extends AWS_MODEL
 				case 'NEW_ARTICLE':
 				case 'COMMENT_ARTICLE':
 				case 'ARTICLE_COMMENTED':
-				case 'MOVE_UP_ARTICLE':
-				case 'ARTICLE_MOVED_UP':
-				case 'MOVE_DOWN_ARTICLE':
-				case 'ARTICLE_MOVED_DOWN':
 				case 'AGREE_ARTICLE':
 				case 'ARTICLE_AGREED':
 				case 'DISAGREE_ARTICLE':

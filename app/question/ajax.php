@@ -867,11 +867,6 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
 
-		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_move_up_question'))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
-		}
-
 		if (!$this->model('posts')->bump_post($this->user_id, $_POST['question_id'], 'question'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('问题不存在')));
@@ -885,11 +880,6 @@ class ajax extends AWS_CONTROLLER
 		if (!$this->user_info['permission']['bump_sink'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
-		}
-
-		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_move_down_question'))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
 		}
 
 		if (!$this->model('posts')->sink_post($this->user_id, $_POST['question_id'], 'question'))
