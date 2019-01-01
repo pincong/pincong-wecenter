@@ -917,26 +917,6 @@ class question_class extends AWS_MODEL
 		return $this->shutdown_update('question', array('last_answer' => intval($answer_id)), 'question_id = ' . intval($question_id));
 	}
 
-	public function calc_popular_value($question_id)
-	{
-		if (!$question_info = $this->fetch_row('question', 'question_id = ' . intval($question_id)))
-		{
-			return false;
-		}
-
-		if ($question_info['popular_value_update'] > time() - 300)
-		{
-			return false;
-		}
-
-		$popular_value = log($question_info['view_count'], 10) + $question_info['focus_count'] + $question_info['agree_count'];
-
-		return $this->shutdown_update('question', array(
-			'popular_value' => $popular_value,
-			'popular_value_update' => time()
-		), 'question_id = ' . intval($question_id));
-	}
-
 	/**
 	 *
 	 * 根据问题ID,得到相关联的话题标题信息

@@ -120,7 +120,6 @@ class main extends AWS_CONTROLLER
 
 		if ($_GET['column'] != 'log')
 		{
-			$this->model('question')->calc_popular_value($question_info['question_id']);
 			$this->model('question')->update_views($question_info['question_id']);
 
 			if (is_digits($_GET['uid']))

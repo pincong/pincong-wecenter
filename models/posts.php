@@ -57,7 +57,6 @@ class posts_class extends AWS_MODEL
 					'is_recommend' => $result['is_recommend'],
 					'view_count' => $result['view_count'],
 					'anonymous' => $result['anonymous'],
-					'popular_value' => $result['popular_value'],
 					'uid' => $result['published_uid'],
 					'lock' => $result['lock'],
 					'agree_count' => $result['agree_count'],
@@ -265,7 +264,7 @@ class posts_class extends AWS_MODEL
 		//TODO: 延迟显示
         //$where[] = 'add_time <= ' . real_time();
 
-		$posts_index = $this->fetch_page('posts_index', implode(' AND ', $where), 'popular_value DESC', $page, $per_page);
+		$posts_index = $this->fetch_page('posts_index', implode(' AND ', $where), 'answer_count DESC', $page, $per_page);
 
 		$this->posts_list_total = $this->found_rows();
 
