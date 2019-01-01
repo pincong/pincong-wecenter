@@ -217,7 +217,7 @@ class question_class extends AWS_MODEL
 
 		$this->delete('question_log', 'item_id = ' . intval($question_id));
 
-		$this->delete('question_comments', 'question_id = ' . intval($question_id)); // 删除评论
+		$this->delete('question_discussion', 'question_id = ' . intval($question_id)); // 删除评论
 
 		$this->delete('question_focus', 'question_id = ' . intval($question_id));
 
@@ -646,9 +646,9 @@ class question_class extends AWS_MODEL
 		return $content;
 	}
 
-	public function update_question_comments_count($question_id)
+	public function update_question_discussion_count($question_id)
 	{
-		$count = $this->count('question_comments', 'question_id = ' . intval($question_id));
+		$count = $this->count('question_discussion', 'question_id = ' . intval($question_id));
 
 		$this->shutdown_update('question', array(
 			'comment_count' => $count
@@ -677,7 +677,7 @@ class question_class extends AWS_MODEL
 		), "post_id = " . intval($question_id) . " AND post_type = 'question'" );
 	}
 
-	public function insert_question_comment($question_id, $uid, $message, $anonymous = 0)
+	public function insert_question_discussion($question_id, $uid, $message, $anonymous = 0)
 	{
 		if (!$question_info = $this->model('question')->get_question_info_by_id($question_id))
 		{
@@ -686,7 +686,7 @@ class question_class extends AWS_MODEL
 
 		$message = $this->model('question')->parse_at_user($message, false, false, true);
 
-		$comment_id = $this->insert('question_comments', array(
+		$comment_id = $this->insert('question_discussion', array(
 			'uid' => intval($uid),
 			'question_id' => intval($question_id),
 			'message' => htmlspecialchars($message),
@@ -724,30 +724,30 @@ class question_class extends AWS_MODEL
 			}
 		}
 
-		$this->update_question_comments_count($question_id);
+		$this->update_question_discussion_count($question_id);
 
 		return $comment_id;
 	}
 
-	public function get_question_comments($question_id)
+	public function get_question_discussions($question_id)
 	{
-		return $this->fetch_all('question_comments', 'question_id = ' . intval($question_id), "id ASC");
+		return $this->fetch_all('question_discussion', 'question_id = ' . intval($question_id), "id ASC");
 	}
 
-	public function get_comment_by_id($comment_id)
+	public function get_question_discussion_by_id($comment_id)
 	{
-		return $this->fetch_row('question_comments', "id = " . intval($comment_id));
+		return $this->fetch_row('question_discussion', "id = " . intval($comment_id));
 	}
 
-	/*public function remove_comment($comment_id)
+	/*public function remove_question_discussion($comment_id)
 	{
-		//return $this->delete('question_comments', "id = " . intval($comment_id));
+		//return $this->delete('question_discussion', "id = " . intval($comment_id));
 	}*/
 
 	// 只清空不删除
-	public function remove_question_comment($comment, $uid)
+	public function remove_question_discussion($comment, $uid)
 	{
-		$this->update('question_comments', array(
+		$this->update('question_discussion', array(
 			'message' => null
 		), "id = " . $comment['id']);
 
@@ -760,9 +760,9 @@ class question_class extends AWS_MODEL
 		return true;
 	}
 
-	public function remove_answer_comment($comment, $uid)
+	public function remove_answer_discussion($comment, $uid)
 	{
-		$this->update('answer_comments', array(
+		$this->update('answer_discussion', array(
 			'message' => null
 		), "id = " . $comment['id']);
 

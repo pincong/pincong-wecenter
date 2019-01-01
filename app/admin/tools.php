@@ -146,7 +146,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 
 
 			case 'answer':
-				$next_table = 'question_comments';
+				$next_table = 'question_discussion';
 
 				if ($list = AWS_APP::model()->fetch_page($table, null, 'answer_id ASC', $_GET['page'], $_GET['per_page']))
 				{
@@ -166,8 +166,8 @@ class tools extends AWS_ADMIN_CONTROLLER
 			break;
 
 
-			case 'question_comments':
-				$next_table = 'answer_comments';
+			case 'question_discussion':
+				$next_table = 'answer_discussion';
 
 				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', $_GET['page'], $_GET['per_page']))
 				{
@@ -187,7 +187,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 			break;
 
 
-			case 'answer_comments':
+			case 'answer_discussion':
 				$next_table = 'article';
 
 				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', $_GET['page'], $_GET['per_page']))

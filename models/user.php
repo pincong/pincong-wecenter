@@ -68,9 +68,9 @@ class user_class extends AWS_MODEL
 			$update_tables[] = 'answer';
 			$update_tables[] = 'article';
 
-			$delete_tables[] = 'answer_comments';
+			$delete_tables[] = 'answer_discussion';
 			$delete_tables[] = 'article_comment';
-			$delete_tables[] = 'question_comments';
+			$delete_tables[] = 'question_discussion';
 
 			if ($inbox_dialog = $this->fetch_all('inbox_dialog', 'recipient_uid = ' . intval($uid) . ' OR sender_uid = ' . intval($uid)))
 			{
@@ -84,10 +84,10 @@ class user_class extends AWS_MODEL
 		else
 		{
 			$update_tables[] = 'answer';
-			$update_tables[] = 'answer_comments';
+			$update_tables[] = 'answer_discussion';
 			$update_tables[] = 'article';
 			$update_tables[] = 'article_comment';
-			$update_tables[] = 'question_comments';
+			$update_tables[] = 'question_discussion';
 			$delete_tables[] = 'inbox';
 
 			$this->update('question', array(

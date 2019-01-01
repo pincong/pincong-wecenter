@@ -73,12 +73,12 @@ class publish_class extends AWS_MODEL
 				$this->real_publish_video_comment($data);
 				break;
 
-			case 'question_comment':
-				//$this->real_publish_question_comment($data);
+			case 'question_discussion':
+				//$this->real_publish_question_discussion($data);
 				break;
 
-			case 'answer_comment':
-				//$this->real_publish_answer_comment($data);
+			case 'answer_discussion':
+				//$this->real_publish_answer_discussion($data);
 				break;
 		}
 	}

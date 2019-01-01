@@ -189,7 +189,7 @@ class ratelimit_class extends AWS_MODEL
 	}
 
 
-	public function check_question_comment($uid, $limit)
+	public function check_question_discussion($uid, $limit)
 	{
 		$limit = intval($limit);
 		if (!$limit)
@@ -201,7 +201,7 @@ class ratelimit_class extends AWS_MODEL
 		$time_after = real_time() - 24 * 3600;
 
 		$where = "time > " . $time_after . " AND uid =" . $uid;
-		$count = $this->count('question_comments', $where);
+		$count = $this->count('question_discussion', $where);
 		if ($count >= $limit)
 		{
 			return false;
@@ -210,7 +210,7 @@ class ratelimit_class extends AWS_MODEL
 		return true;
 	}
 
-	public function check_answer_comment($uid, $limit)
+	public function check_answer_discussion($uid, $limit)
 	{
 		$limit = intval($limit);
 		if (!$limit)
@@ -222,7 +222,7 @@ class ratelimit_class extends AWS_MODEL
 		$time_after = real_time() - 24 * 3600;
 
 		$where = "time > " . $time_after . " AND uid =" . $uid;
-		$count = $this->count('answer_comments', $where);
+		$count = $this->count('answer_discussion', $where);
 		if ($count >= $limit)
 		{
 			return false;

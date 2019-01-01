@@ -26,8 +26,8 @@ CREATE TABLE IF NOT EXISTS `aws_answer` (
 -- Data exporting was unselected.
 
 
--- Dumping structure for table panic.aws_answer_comments
-CREATE TABLE IF NOT EXISTS `aws_answer_comments` (
+-- Dumping structure for table panic.aws_answer_discussion
+CREATE TABLE IF NOT EXISTS `aws_answer_discussion` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `answer_id` int(11) DEFAULT '0',
   `uid` int(11) DEFAULT '0',
@@ -370,8 +370,8 @@ CREATE TABLE IF NOT EXISTS `aws_question` (
 -- Data exporting was unselected.
 
 
--- Dumping structure for table panic.aws_question_comments
-CREATE TABLE IF NOT EXISTS `aws_question_comments` (
+-- Dumping structure for table panic.aws_question_discussion
+CREATE TABLE IF NOT EXISTS `aws_question_discussion` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `question_id` int(11) DEFAULT '0',
   `uid` int(11) DEFAULT '0',

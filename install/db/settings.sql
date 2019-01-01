@@ -73,7 +73,7 @@ INSERT INTO `aws_system_setting` (`varname`, `value`) VALUES
 	('new_user_notification_setting', 'a:0:{}'),
 	('question_topics_limit', 's:1:"3";'),
 	('new_question_force_add_topic', 's:1:"N";'),
-	('unfold_question_comments', 's:1:"N";'),
+	('unfold_comments', 's:1:"N";'),
 	('admin_notifications', 'a:2:{s:17:"register_approval";s:1:"0";s:15:"verify_approval";s:1:"0";}'),
 	('currency_system_config_question_disagreed', 's:1:"0";'),
 	('currency_system_config_agree_answer', 's:1:"0";'),

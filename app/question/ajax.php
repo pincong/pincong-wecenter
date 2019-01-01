@@ -26,8 +26,8 @@ class ajax extends AWS_CONTROLLER
 		$rule_action['rule_type'] = 'white';
 
 		$rule_action['actions'] = array(
-			'get_question_comments',
-			'get_answer_comments',
+			'get_question_discussions',
+			'get_answer_discussions',
 			'log',
 			'get_focus_users',
 			'get_answer_users'
@@ -42,7 +42,7 @@ class ajax extends AWS_CONTROLLER
 	}
 
 
-	public function save_answer_comment_action()
+	public function save_answer_discussion_action()
 	{
 		if (!$this->user_info['permission']['publish_comment'])
 		{
@@ -82,7 +82,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得超过 %s 字', $comment_length_max)));
 		}
 
-		if (!$this->model('ratelimit')->check_answer_comment($this->user_id, $this->user_info['permission']['comment_limit_per_day']))
+		if (!$this->model('ratelimit')->check_answer_discussion($this->user_id, $this->user_info['permission']['comment_limit_per_day']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日评论回复已经达到上限')));
 		}
@@ -106,7 +106,7 @@ class ajax extends AWS_CONTROLLER
         set_repeat_submission_digest($message);
 		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
 
-		$this->model('answer')->insert_answer_comment($_GET['answer_id'], $this->user_id, $message, $_POST['anonymous']);
+		$this->model('answer')->insert_answer_discussion($_GET['answer_id'], $this->user_id, $message, $_POST['anonymous']);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'item_id' => intval($_GET['answer_id']),
@@ -114,7 +114,7 @@ class ajax extends AWS_CONTROLLER
 		), 1, null));
 	}
 
-	public function save_question_comment_action()
+	public function save_question_discussion_action()
 	{
 		if (!$this->user_info['permission']['publish_comment'])
 		{
@@ -154,7 +154,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得超过 %s 字', $comment_length_max)));
 		}
 
-		if (!$this->model('ratelimit')->check_question_comment($this->user_id, $this->user_info['permission']['comment_limit_per_day']))
+		if (!$this->model('ratelimit')->check_question_discussion($this->user_id, $this->user_info['permission']['comment_limit_per_day']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日评论问题已经达到上限')));
 		}
@@ -173,7 +173,7 @@ class ajax extends AWS_CONTROLLER
         set_repeat_submission_digest($message);
 		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
 
-		$this->model('question')->insert_question_comment($_GET['question_id'], $this->user_id, $message, $_POST['anonymous']);
+		$this->model('question')->insert_question_discussion($_GET['question_id'], $this->user_id, $message, $_POST['anonymous']);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'item_id' => intval($_GET['question_id']),
@@ -260,9 +260,9 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
-	public function get_answer_comments_action()
+	public function get_answer_discussions_action()
 	{
-		$comments = $this->model('answer')->get_answer_comments($_GET['answer_id']);
+		$comments = $this->model('answer')->get_answer_discussions($_GET['answer_id']);
 
 		$user_infos = $this->model('account')->get_user_info_by_uids(fetch_array_value($comments, 'uid'));
 
@@ -283,9 +283,9 @@ class ajax extends AWS_CONTROLLER
 		}
 	}
 
-	public function get_question_comments_action()
+	public function get_question_discussions_action()
 	{
-		$comments = $this->model('question')->get_question_comments($_GET['question_id']);
+		$comments = $this->model('question')->get_question_discussions($_GET['question_id']);
 
 		$user_infos = $this->model('account')->get_user_info_by_uids(fetch_array_value($comments, 'uid'));
 
@@ -502,42 +502,6 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
-	/*public function remove_comment_action()
-	{
-		if (! in_array($_GET['type'], array(
-			'answer',
-			'question'
-		)))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('错误的请求')));
-		}
-
-		if (! $_GET['comment_id'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论不存在')));
-		}
-
-		$comment = $this->model($_GET['type'])->get_comment_by_id($_GET['comment_id']);
-
-		if (! $this->user_info['permission']['edit_question'] AND $this->user_id != $comment['uid'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('你没有权限删除该评论')));
-		}
-
-		$this->model($_GET['type'])->remove_comment($_GET['comment_id']);
-
-		if ($_GET['type'] == 'answer')
-		{
-			$this->model('answer')->update_answer_comments_count($comment['answer_id']);
-		}
-		else if ($_GET['type'] == 'question')
-		{
-			$this->model('question')->update_question_comments_count($comment['question_id']);
-		}
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}*/
-
 	// 只清空不删除
 	public function remove_comment_action()
 	{
@@ -555,7 +519,14 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论不存在')));
 		}
 
-		$comment = $this->model($_GET['type'])->get_comment_by_id($comment_id);
+		if ($_GET['type'] == 'answer')
+		{
+			$comment = $this->model('answer')->get_answer_discussion_by_id($comment_id);
+		}
+		else if ($_GET['type'] == 'question')
+		{
+			$comment = $this->model('question')->get_question_discussion_by_id($comment_id);
+		}
 		if (!$comment || !$comment['message'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论不存在')));
@@ -568,11 +539,11 @@ class ajax extends AWS_CONTROLLER
 
 		if ($_GET['type'] == 'answer')
 		{
-			$this->model('question')->remove_answer_comment($comment, $this->user_id);
+			$this->model('question')->remove_answer_discussion($comment, $this->user_id);
 		}
 		else if ($_GET['type'] == 'question')
 		{
-			$this->model('question')->remove_question_comment($comment, $this->user_id);
+			$this->model('question')->remove_question_discussion($comment, $this->user_id);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));

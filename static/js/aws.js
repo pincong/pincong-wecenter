@@ -475,7 +475,15 @@ var AWS =
 	{
 		$('#aw-comment-box-' + type_name + '-' + element_id + ' .aw-comment-list').html('<p align="center" class="aw-padding10"><i class="aw-loading"></i></p>');
 
-		$.get(G_BASE_URL + '/question/ajax/get_' + type_name + '_comments/' + type_name + '_id-' + item_id, function (data)
+		if (type_name == 'question')
+		{
+			var ajax_url = G_BASE_URL + '/question/ajax/get_question_discussions/question_id-' + item_id;
+		}
+		else if (type_name == 'answer')
+		{
+			ajax_url = G_BASE_URL + '/question/ajax/get_answer_discussions/answer_id-' + item_id;
+		}
+		$.get(ajax_url, function (data)
 		{
 			$('#aw-comment-box-' + type_name + '-' + element_id + ' .aw-comment-list').html(data);
 		});
@@ -2246,13 +2254,13 @@ AWS.Init =
 				switch ($(this).attr('data-type'))
 				{
 					case 'question':
-						var comment_form_action = G_BASE_URL + '/question/ajax/save_question_comment/question_id-' + $(this).attr('data-id');
-						var comment_data_url = G_BASE_URL + '/question/ajax/get_question_comments/question_id-' + $(this).attr('data-id');
+						var comment_form_action = G_BASE_URL + '/question/ajax/save_question_discussion/question_id-' + $(this).attr('data-id');
+						var comment_data_url = G_BASE_URL + '/question/ajax/get_question_discussions/question_id-' + $(this).attr('data-id');
 						break;
 
 					case 'answer':
-						var comment_form_action = G_BASE_URL + '/question/ajax/save_answer_comment/answer_id-' + $(this).attr('data-id');
-						var comment_data_url = G_BASE_URL + '/question/ajax/get_answer_comments/answer_id-' + $(this).attr('data-id');
+						var comment_form_action = G_BASE_URL + '/question/ajax/save_answer_discussion/answer_id-' + $(this).attr('data-id');
+						var comment_data_url = G_BASE_URL + '/question/ajax/get_answer_discussions/answer_id-' + $(this).attr('data-id');
 						break;
 				}
 

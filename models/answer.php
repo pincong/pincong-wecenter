@@ -201,7 +201,7 @@ class answer_class extends AWS_MODEL
 	{
 		if ($answer_info = $this->model('answer')->get_answer_by_id($answer_id))
 		{
-			$this->delete('answer_comments', 'answer_id = ' . intval($answer_id));	// 删除评论
+			$this->delete('answer_discussion', 'answer_id = ' . intval($answer_id));	// 删除评论
 
 			ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_ANSWER . ' AND associate_id = ' . intval($answer_id));
 			ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action = ' . ACTION_LOG::ANSWER_QUESTION . ' AND associate_attached = ' . intval($answer_id));
@@ -258,16 +258,16 @@ class answer_class extends AWS_MODEL
 		return $result;
 	}
 
-	public function update_answer_comments_count($answer_id)
+	public function update_answer_discussion_count($answer_id)
 	{
-		$count = $this->count('answer_comments', "answer_id = " . intval($answer_id));
+		$count = $this->count('answer_discussion', "answer_id = " . intval($answer_id));
 
 		$this->shutdown_update('answer', array(
 			'comment_count' => $count
 		), "answer_id = " . intval($answer_id));
 	}
 
-	public function insert_answer_comment($answer_id, $uid, $message, $anonymous = 0)
+	public function insert_answer_discussion($answer_id, $uid, $message, $anonymous = 0)
 	{
 		if (!$answer_info = $this->model('answer')->get_answer_by_id($answer_id))
 		{
@@ -281,7 +281,7 @@ class answer_class extends AWS_MODEL
 
 		$message = $this->model('question')->parse_at_user($message, false, false, true);
 
-		$comment_id = $this->insert('answer_comments', array(
+		$comment_id = $this->insert('answer_discussion', array(
 			'uid' => intval($uid),
 			'answer_id' => intval($answer_id),
 			'message' => htmlspecialchars($message),
@@ -319,24 +319,24 @@ class answer_class extends AWS_MODEL
 			}
 		}
 
-		$this->update_answer_comments_count($answer_id);
+		$this->update_answer_discussion_count($answer_id);
 
 		return $comment_id;
 	}
 
-	public function get_answer_comments($answer_id)
+	public function get_answer_discussions($answer_id)
 	{
-		return $this->fetch_all('answer_comments', "answer_id = " . intval($answer_id), "id ASC");
+		return $this->fetch_all('answer_discussion', "answer_id = " . intval($answer_id), "id ASC");
 	}
 
-	public function get_comment_by_id($comment_id)
+	public function get_answer_discussion_by_id($comment_id)
 	{
-		return $this->fetch_row('answer_comments', "id = " . intval($comment_id));
+		return $this->fetch_row('answer_discussion', "id = " . intval($comment_id));
 	}
 
-	/*public function remove_comment($comment_id)
+	/*public function remove_answer_discussion($comment_id)
 	{
-		//return $this->delete('answer_comments', "id = " . intval($comment_id));
+		//return $this->delete('answer_discussion', "id = " . intval($comment_id));
 	}*/
 
 	public function set_best_answer($answer_id, $uid = null)
