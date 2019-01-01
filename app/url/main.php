@@ -30,7 +30,7 @@ class main extends AWS_CONTROLLER
 
 	public function img_action()
 	{
-		if (!$_GET['id'])
+		if (!$_GET['id'] OR !H::content_url_whitelist_check($_GET['id']))
 		{
 			die;
 		}
