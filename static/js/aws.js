@@ -1250,6 +1250,7 @@ AWS.init_answer_editor = function()
 // 创建编辑器
 AWS.create_editor = function(el, max_btn)
 {
+	if (!el) return;
 	if (G_ADVANCED_EDITOR_ENABLE != 'Y') return;
 
 	var empty_handler = {
