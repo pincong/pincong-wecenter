@@ -29,14 +29,22 @@
 <?php if (get_setting('search_engine_url')) { ?>
 <script type="text/javascript">
 $(document).ready(function () {
-	$('#global_search_btns').click(function() {
+	var do_search = function() {
 		var url = "<?php echo get_setting('search_engine_url'); ?>";
 		var query = $('#aw-search-query').val().trim();
 		if (!query) return;
 		query = encodeURIComponent(query);
 		url = url.replace('%s', query);
 		window.location = url;
+	};
+
+	$('.navbar-search').submit(function(event) {
+		event.preventDefault();
+		do_search();
+		return false;
 	});
+
+	$('#global_search_btns').click(do_search);
 });
 </script>
 <?php } ?>
