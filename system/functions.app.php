@@ -23,7 +23,7 @@
  */
 
 // 防止重复提交
-function check_repeat_submission($text)
+function check_repeat_submission(&$text)
 {
     if (isset(AWS_APP::session()->repeat_submission_digest))
     {
@@ -33,7 +33,7 @@ function check_repeat_submission($text)
     return TRUE;
 }
 
-function set_repeat_submission_digest($text)
+function set_repeat_submission_digest(&$text)
 {
     AWS_APP::session()->repeat_submission_digest = md5($text);
 }
