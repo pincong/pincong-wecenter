@@ -4,6 +4,16 @@ class Services_BBCode
 {
 	protected $bbcode_table = array();
 
+	private function _plain_text_callback($match)
+	{
+		return $match[1];
+	}
+
+	private function _plain_text_2_callback($match)
+	{
+		return $match[2];
+	}
+
 	private function _code_callback($match)
 	{
 		return "<pre>" . str_replace('[', '<span>[</span>', $match[1]) . "</pre>";
@@ -24,9 +34,9 @@ class Services_BBCode
 		return "<blockquote><p>$match[1]</p></blockquote>";
 	}
 
-	private function _size_callback($match)
+	private function _center_callback($match)
 	{
-		return "<span style=\"font-size:$match[1]px\">$match[2]</span>";
+		return "<center>$match[1]</center>";
 	}
 
 	private function _s_callback($match)
@@ -68,6 +78,11 @@ class Services_BBCode
 	private function _img_callback($match)
 	{
 		return load_class('Services_ImageUrlParser')->parse($match[1]);
+	}
+
+	private function _img_2_callback($match)
+	{
+		return load_class('Services_ImageUrlParser')->parse($match[2]);
 	}
 
 	private function _list_callback($match)
@@ -119,6 +134,15 @@ class Services_BBCode
 
     public function __construct()
     {
+        $this->bbcode_table["/\[left\](.*?)\[\/left\]/is"] = '_plain_text_callback';
+        $this->bbcode_table["/\[center\](.*?)\[\/center\]/is"] = '_plain_text_callback';
+        $this->bbcode_table["/\[right\](.*?)\[\/right\]/is"] = '_plain_text_callback';
+        $this->bbcode_table["/\[justify\](.*?)\[\/justify\]/is"] = '_plain_text_callback';
+
+        $this->bbcode_table["/\[size=(.*?)\](.*?)\[\/size\]/is"] = '_plain_text_2_callback';
+        $this->bbcode_table["/\[font=(.*?)\](.*?)\[\/font\]/is"] = '_plain_text_2_callback';
+        $this->bbcode_table["/\[color=(.*?)\](.*?)\[\/color\]/is"] = '_plain_text_2_callback';
+
 	    // Replace [code]...[/code] with <pre><code>...</code></pre>
         $this->bbcode_table["/\[code\](.*?)\[\/code\]/is"] = '_code_callback';
 
@@ -131,21 +155,11 @@ class Services_BBCode
         // Replace [quote]...[/quote] with <blockquote><p>...</p></blockquote>
         $this->bbcode_table["/\[quote\](.*?)\[\/quote\]/is"] = '_quote_callback';
 
-        // Replace [size=30]...[/size] with <span style="font-size:30%">...</span>
-        $this->bbcode_table["/\[size=(\d+)\](.*?)\[\/size\]/is"] = '_size_callback';
-
         // Replace [s] with <del>
         $this->bbcode_table["/\[s\](.*?)\[\/s\]/is"] = '_s_callback';
 
         // Replace [u]...[/u] with <span style="text-decoration:underline;">...</span>
         $this->bbcode_table["/\[u\](.*?)\[\/u\]/is"] = '_u_callback';
-
-        // Replace [color=somecolor]...[/color] with <span style="color:somecolor">...</span>
-        /*$this->bbcode_table["/\[color=([#a-z0-9]+)\](.*?)\[\/color\]/is"] = function ($match)
-        {
-            return '<span style="color:' . $match[1] . ';">' . $match[2] . '</span>';
-        };*/
-
 
         // Replace [url]...[/url] with <a href="...">...</a>
         $this->bbcode_table["/\[url\](.*?)\[\/url\]/is"] = '_url_callback';
@@ -155,6 +169,9 @@ class Services_BBCode
 
         // Replace [img]...[/img] with <img src="..."/>
         $this->bbcode_table["/\[img\](.*?)\[\/img\]/is"] = '_img_callback';
+
+        // Replace [img=...]...[/img] with <img src="..."/>
+        $this->bbcode_table["/\[img=(.*?)\](.*?)\[\/img\]/is"] = '_img_2_callback';
 
         // Replace [video]...[/video] with swf video player
         $this->bbcode_table["/\[video\](.*?)\[\/video\]/is"] = '_video_callback';
