@@ -143,19 +143,19 @@ class H
 	 */
 	public static function sensitive_word_exists($content)
 	{
-		return content_contains('sensitive_words', $content);
+		return content_contains('sensitive_words', $content, true);
 	}
 
 	// 命中返回 true, 未命中返回 false
 	public static function content_url_whitelist_check($content_url)
 	{
-		return content_contains('content_url_whitelist', $content_url, true);
+		return content_contains('content_url_whitelist', $content_url);
 	}
 
 	// 命中返回 true, 未命中返回 false
 	public static function hyperlink_blacklist_check($hyperlink)
 	{
-		return content_contains('hyperlink_blacklist', $hyperlink, true);
+		return content_contains('hyperlink_blacklist', $hyperlink);
 	}
 
 }
