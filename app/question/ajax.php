@@ -105,7 +105,7 @@ class ajax extends AWS_CONTROLLER
         set_repeat_submission_digest($message);
 		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
 
-		$this->model('answer')->insert_answer_discussion($_GET['answer_id'], $this->user_id, $message, $_POST['anonymous']);
+		$this->model('answer')->insert_answer_discussion($_GET['answer_id'], $this->user_id, $message);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'item_id' => intval($_GET['answer_id']),
@@ -172,7 +172,7 @@ class ajax extends AWS_CONTROLLER
         set_repeat_submission_digest($message);
 		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
 
-		$this->model('question')->insert_question_discussion($_GET['question_id'], $this->user_id, $message, $_POST['anonymous']);
+		$this->model('question')->insert_question_discussion($_GET['question_id'], $this->user_id, $message);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'item_id' => intval($_GET['question_id']),
@@ -189,19 +189,12 @@ class ajax extends AWS_CONTROLLER
 
 			foreach($focus_users_info as $key => $val)
 			{
-				if ($val['uid'] == $question_info['published_uid'] and $question_info['anonymous'] == 1)
-				{
-					continue;
-				}
-				else
-				{
-					$focus_users[$key] = array(
-						'uid' => $val['uid'],
-						'user_name' => $val['user_name'],
-						'avatar_file' => UF::avatar($val, 'mid'),
-						'url' => get_js_url('/people/' . $val['url_token'])
-					);
-				}
+				$focus_users[$key] = array(
+					'uid' => $val['uid'],
+					'user_name' => $val['user_name'],
+					'avatar_file' => UF::avatar($val, 'mid'),
+					'url' => get_js_url('/people/' . $val['url_token'])
+				);
 			}
 		}
 

@@ -217,8 +217,6 @@ class notify_class extends AWS_MODEL
 			$tmp_data['read_flag'] = $notify['read_flag'];
 			$tmp_data['add_time'] = $notify['add_time'];
 
-			$tmp_data['anonymous'] = $data['anonymous'];
-
 			if ($data['from_uid'])
 			{
 				$user_info = $user_infos[$data['from_uid']];
@@ -496,11 +494,6 @@ class notify_class extends AWS_MODEL
 					{
 						$column_log = true;
 					}
-
-					if ($ex_notify['data']['anonymous'])
-					{
-						$anonymous = true;
-					}
 				}
 
 				if (! $rf)
@@ -546,7 +539,7 @@ class notify_class extends AWS_MODEL
 				}
 
 				$tmp_data['users'][$uid] = array(
-					'username' => $anonymous ? AWS_APP::lang()->_t('匿名用户') : $user_infos[$uid]['user_name'],
+					'username' => $user_infos[$uid]['user_name'],
 					'url' => $url
 				);
 			}
@@ -900,82 +893,37 @@ class notify_class extends AWS_MODEL
 						break;
 
 					case self::TYPE_NEW_ANSWER:
-						if ($val['anonymous'])
-						{
-							$data[$key]['message'] = AWS_APP::lang()->_t('匿名用户');
-						}
-						else
-						{
-							$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a>';
-						}
-
+						$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a>';
 						$data[$key]['message'] .= ' ' . AWS_APP::lang()->_t('回复了问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a>';
 
 						break;
 
 					case self::TYPE_ARTICLE_NEW_COMMENT:
-						if ($val['anonymous'])
-						{
-							$data[$key]['message'] = AWS_APP::lang()->_t('匿名用户');
-						}
-						else
-						{
-							$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a>';
-						}
+						$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a>';
 						$data[$key]['message'] .= ' ' . AWS_APP::lang()->_t('评论了文章') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a>';
 
 						break;
 
 					case self::TYPE_QUESTION_COMMENT_AT_ME:
-						if ($val['anonymous'])
-						{
-							$data[$key]['message'] = AWS_APP::lang()->_t('匿名用户');
-						}
-						else
-						{
-							$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a>';
-						}
+						$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a>';
 						$data[$key]['message'] .= ' ' . AWS_APP::lang()->_t('在问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a> ' . AWS_APP::lang()->_t('中的评论提到了你');
 
 						break;
 
 					case self::TYPE_ARTICLE_COMMENT_AT_ME:
-						if ($val['anonymous'])
-						{
-							$data[$key]['message'] = AWS_APP::lang()->_t('匿名用户');
-						}
-						else
-						{
-							$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a>';
-						}
+						$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a>';
 						$data[$key]['message'] .= ' ' . AWS_APP::lang()->_t('在文章') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a> ' . AWS_APP::lang()->_t('评论中回复了你');
 
 						break;
 
 					case self::TYPE_ANSWER_AT_ME:
-						if ($val['anonymous'])
-						{
-							$data[$key]['message'] = AWS_APP::lang()->_t('匿名用户');
-						}
-						else
-						{
-							$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a>';
-						}
-
+						$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a>';
 						$data[$key]['message'] .= ' ' . AWS_APP::lang()->_t('在问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a> ' . AWS_APP::lang()->_t('中的回答提到了你');
 
 						break;
 
 					case self::TYPE_ANSWER_COMMENT_AT_ME:
-						if ($val['anonymous'])
-						{
-							$data[$key]['message'] = AWS_APP::lang()->_t('匿名用户');
-						}
-						else
-						{
-							$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a>';
-						}
-
+						$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a>';
 						$data[$key]['message'] .= ' ' . AWS_APP::lang()->_t('在问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a> ' . AWS_APP::lang()->_t('回答评论中提到了你');
 					break;
 
@@ -985,27 +933,13 @@ class notify_class extends AWS_MODEL
 						break;
 
 					case self::TYPE_ANSWER_COMMENT:
-						if ($val['anonymous'])
-						{
-							$data[$key]['message'] = AWS_APP::lang()->_t('匿名用户');
-						}
-						else
-						{
-							$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a>';
-						}
+						$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a>';
 						$data[$key]['message'] .= ' ' . AWS_APP::lang()->_t('评论了你在问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a> ' . AWS_APP::lang()->_t('中的回复');
 
 						break;
 
 					case self::TYPE_QUESTION_COMMENT:
-						if ($val['anonymous'])
-						{
-							$data[$key]['message'] = AWS_APP::lang()->_t('匿名用户');
-						}
-						else
-						{
-							$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a>';
-						}
+						$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a>';
 						$data[$key]['message'] .= ' ' . AWS_APP::lang()->_t('评论了你发起的问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a>';
 
 						break;

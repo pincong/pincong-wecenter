@@ -54,7 +54,7 @@ class ACTION_LOG
 
 
 
-	public static function associate_fresh_action($history_id, $associate_id, $associate_type, $associate_action, $uid, $anonymous, $add_time)
+	public static function associate_fresh_action($history_id, $associate_id, $associate_type, $associate_action, $uid, $ignore, $add_time)
 	{
 		// 删除相同用户关联 ID 下相同动作的旧动态
 		AWS_APP::model()->delete('user_action_history_fresh', 'associate_id = ' . intval($associate_id) . ' AND associate_type = ' . intval($associate_type) . ' AND uid = ' . intval($uid));
@@ -77,12 +77,11 @@ class ACTION_LOG
 			'associate_type' => intval($associate_type),
 			'associate_action' => intval($associate_action),
 			'uid' => intval($uid),
-			'anonymous' => intval($anonymous),
 			'add_time' => $add_time
 		));
 	}
 
-	public static function save_action($uid, $associate_id, $action_type, $action_id, $action_content = null, $action_attch = null, $add_time = null, $anonymous = null, $addon_data = null)
+	public static function save_action($uid, $associate_id, $action_type, $action_id, $action_content = null, $action_attch = null, $add_time = null, $ignore = null, $addon_data = null)
 	{
 		if (!$uid OR !$associate_id)
 		{
@@ -110,11 +109,10 @@ class ACTION_LOG
 			'associate_action' => $action_id,
 			'associate_id' => $associate_id,
 			'associate_attached' => $action_attch_insert,
-			'add_time' => $add_time,
-			'anonymous' => intval($anonymous),
+			'add_time' => $add_time
 		));
 
-		self::associate_fresh_action($history_id, $associate_id, $action_type, $action_id, $uid, $anonymous, $add_time);
+		self::associate_fresh_action($history_id, $associate_id, $action_type, $action_id, $uid, $ignore, $add_time);
 
 		return $history_id;
 	}
@@ -188,7 +186,7 @@ class ACTION_LOG
 		), 'history_id = ' . intval($history_id));
 	}
 
-	public static function get_action_by_where($where = null, $limit = 20, $show_anonymous = false, $order = 'add_time DESC')
+	public static function get_action_by_where($where = null, $limit = 20, $ignore = false, $order = 'add_time DESC')
 	{
 		if (! $where)
 		{
@@ -196,11 +194,6 @@ class ACTION_LOG
 		}
 
 		$where = '(' . $where . ') AND fold_status = 0';
-
-		if (!$show_anonymous)
-		{
-			$where = '(' . $where . ') AND anonymous = 0';
-		}
 
 		if ($user_action_history = AWS_APP::model()->fetch_all('user_action_history', $where, $order, $limit))
 		{
@@ -214,16 +207,11 @@ class ACTION_LOG
 		return $user_action_history;
 	}
 
-	public static function get_actions_fresh_by_where($where = null, $limit = 20, $show_anonymous = false)
+	public static function get_actions_fresh_by_where($where = null, $limit = 20, $ignore = false)
 	{
 		if (!$where)
 		{
 			return false;
-		}
-
-		if (!$show_anonymous)
-		{
-			$where = '(' . $where . ') AND anonymous = 0';
 		}
 
 		if ($action_history = AWS_APP::model()->query_all("SELECT history_id FROM " . get_table('user_action_history_fresh') . " WHERE " . $where . " ORDER BY add_time DESC", $limit))
@@ -272,10 +260,6 @@ class ACTION_LOG
 				if ($associate_topic_info)
 				{
 					$action_string = '<a href="' . $user_profile_url . '" ' . $user_link_attr . '>' . $user_name . '</a> 在 <a href="' . $topic_url . '" ' . $topic_link_attr . '>' . $associate_topic_info['topic_title'] . '</a> ' . AWS_APP::lang()->_t('话题发起了一个问题');
-				}
-				else if ($associate_question_info['anonymous'])
-				{
-					$action_string = AWS_APP::lang()->_t('匿名用户') . ' ' . AWS_APP::lang()->_t('发起了问题');
 				}
 				else
 				{

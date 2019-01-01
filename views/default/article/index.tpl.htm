@@ -142,22 +142,12 @@
 								<?php if ($val['user_info']['forbidden'] AND !$this->user_info['permission']['is_administrator']) $val['fold'] = 1; ?>
 								<div class="aw-item" id="answer_list_<?php echo $val['id']; ?>">
 									<div class="mod-head">
-										<?php if ($val['anonymous'] == 0) { ?>
 										<a class="aw-user-img aw-border-radius-5" data-id="<?php echo $val['user_info']['uid']; ?>" href="<?php echo UF::url($val['user_info']); ?>">
 											<img src="<?php echo UF::avatar($val['user_info'], 'mid', $this->user_info['permission']['is_administrator']); ?>" alt="" />
 										</a>
-										<?php } else { ?>
-										<a class="aw-user-img aw-border-radius-5" href="javascript:;">
-											<img src="<?php echo G_STATIC_URL; ?>/common/avatar-max-img.png" alt="<?php _e('匿名用户'); ?>" title="<?php _e('匿名用户'); ?>" />
-										</a>
-										<?php } ?>
 										<p>
-										<?php if ($val['anonymous'] == 0) { ?>
 											<a class="aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
 											<?php if ($val['user_info']['forbidden']) { ?><span class="text-color-999">[ <?php _e('封禁'); ?> ]</span><?php } ?>
-										<?php } else { ?>
-											<a class="text-color-999" href="javascript:;"><?php _e('匿名用户'); ?></a>
-										<?php } ?>
 											<?php if ($val['at_uid']) { ?> <?php _e('回复'); ?> <a href="<?php echo UF::url($val['at_user_info']); ?>"><?php echo UF::name($val['at_user_info']); ?></a><?php } ?>
 										</p>
 									</div>
@@ -206,9 +196,7 @@
 											&nbsp;&nbsp;
 
 											<?php if ($this->user_id) { ?>
-												<?php if ($val['anonymous'] == 0) { ?>
 												<a class="aw-article-comment text-color-999" data-id="<?php echo $val['user_info']['uid']; ?>"><i class="icon icon-comment"></i> <?php _e('回复'); ?></a>
-												<?php } ?>
 												<?php if ($this->user_id == $val['uid'] OR $this->user_info['permission']['edit_article']) { ?>
 												<a class="text-color-999" href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/publish/edit/article_comment/id-<?php echo $val['id']; ?>');"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
 												<?php } ?>
@@ -278,7 +266,6 @@
 				<!-- 侧边栏 -->
 				<div class="col-sm-12 col-md-3 aw-side-bar">
 					<!-- 发起人 -->
-					<?php if ($this->article_info['anonymous'] == 0) { ?>
 					<div class="aw-mod user-detail">
 						<div class="mod-head">
 							<h3><?php _e('发起人'); ?></h3>
@@ -305,7 +292,6 @@
 
 						</div>
 					</div>
-					<?php } ?>
 					<!-- end 发起人 -->
 
 					<?php if ($this->recommend_posts) { ?>

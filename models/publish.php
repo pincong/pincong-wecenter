@@ -141,8 +141,7 @@ class publish_class extends AWS_MODEL
 
 			$this->model('notify')->send($data['uid'], $data['ask_user_id'], notify_class::TYPE_INVITE_QUESTION, notify_class::CATEGORY_QUESTION, $item_id, array(
 				'from_uid' => $data['uid'],
-				'question_id' => $item_id,
-				'anonymous' => 0
+				'question_id' => $item_id
 			));
 		}
 
@@ -263,8 +262,7 @@ class publish_class extends AWS_MODEL
 					$this->model('notify')->send($data['uid'], $user_id, notify_class::TYPE_ANSWER_AT_ME, notify_class::CATEGORY_QUESTION, $data['parent_id'], array(
 						'from_uid' => $data['uid'],
 						'question_id' => $data['parent_id'],
-						'item_id' => $item_id,
-						'anonymous' => 0
+						'item_id' => $item_id
 					));
 				}
 			}
@@ -290,8 +288,7 @@ class publish_class extends AWS_MODEL
 					$this->model('notify')->send($data['uid'], $focus_user['uid'], notify_class::TYPE_NEW_ANSWER, notify_class::CATEGORY_QUESTION, $data['parent_id'], array(
 						'question_id' => $data['parent_id'],
 						'from_uid' => $data['uid'],
-						'item_id' => $item_id,
-						'anonymous' => 0
+						'item_id' => $item_id
 					));
 				}
 			}
@@ -340,8 +337,7 @@ class publish_class extends AWS_MODEL
 			$this->model('notify')->send($data['uid'], $data['at_uid'], notify_class::TYPE_ARTICLE_COMMENT_AT_ME, notify_class::CATEGORY_ARTICLE, $data['parent_id'], array(
 				'from_uid' => $data['uid'],
 				'article_id' => $data['parent_id'],
-				'item_id' => $item_id,
-				'anonymous' => 0
+				'item_id' => $item_id
 			));
 		}
 
@@ -354,8 +350,7 @@ class publish_class extends AWS_MODEL
 					$this->model('notify')->send($data['uid'], $user_id, notify_class::TYPE_ARTICLE_COMMENT_AT_ME, notify_class::CATEGORY_ARTICLE, $data['parent_id'], array(
 						'from_uid' => $data['uid'],
 						'article_id' => $data['parent_id'],
-						'item_id' => $item_id,
-						'anonymous' => 0
+						'item_id' => $item_id
 					));
 				}
 			}
@@ -366,8 +361,7 @@ class publish_class extends AWS_MODEL
 			$this->model('notify')->send($data['uid'], $parent_info['uid'], notify_class::TYPE_ARTICLE_NEW_COMMENT, notify_class::CATEGORY_ARTICLE, $data['parent_id'], array(
 				'from_uid' => $data['uid'],
 				'article_id' => $data['parent_id'],
-				'item_id' => $item_id,
-				'anonymous' => 0
+				'item_id' => $item_id
 			));
 		}
 
@@ -414,8 +408,7 @@ class publish_class extends AWS_MODEL
 			$this->model('notify')->send($data['uid'], $data['at_uid'], notify_class::TYPE_VIDEO_COMMENT_AT_ME, notify_class::CATEGORY_VIDEO, $data['parent_id'], array(
 				'from_uid' => $data['uid'],
 				'video_id' => $data['parent_id'],
-				'item_id' => $item_id,
-				'anonymous' => 0
+				'item_id' => $item_id
 			));
 			*/
 		}
@@ -431,8 +424,7 @@ class publish_class extends AWS_MODEL
 					$this->model('notify')->send($data['uid'], $user_id, notify_class::TYPE_VIDEO_COMMENT_AT_ME, notify_class::CATEGORY_VIDEO, $data['parent_id'], array(
 						'from_uid' => $data['uid'],
 						'video_id' => $data['parent_id'],
-						'item_id' => $item_id,
-						'anonymous' => 0
+						'item_id' => $item_id
 					));
 					*/
 				}
@@ -446,8 +438,7 @@ class publish_class extends AWS_MODEL
 			$this->model('notify')->send($data['uid'], $parent_info['uid'], notify_class::TYPE_VIDEO_NEW_COMMENT, notify_class::CATEGORY_VIDEO, $data['parent_id'], array(
 				'from_uid' => $data['uid'],
 				'video_id' => $data['parent_id'],
-				'item_id' => $item_id,
-				'anonymous' => 0
+				'item_id' => $item_id
 			));
 			*/
 		}

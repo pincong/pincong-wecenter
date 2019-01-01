@@ -14,13 +14,11 @@ CREATE TABLE IF NOT EXISTS `aws_answer` (
   `agree_count` int(11) DEFAULT '0' COMMENT '支持人数',
   `uid` int(11) DEFAULT '0' COMMENT '回答问题用户ID',
   `comment_count` int(11) DEFAULT '0' COMMENT '评论总数',
-  `anonymous` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`answer_id`),
   KEY `question_id` (`question_id`),
   KEY `agree_count` (`agree_count`),
   KEY `add_time` (`add_time`),
-  KEY `uid` (`uid`),
-  KEY `anonymous` (`anonymous`)
+  KEY `uid` (`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='回答';
 
 --
@@ -33,11 +31,9 @@ CREATE TABLE IF NOT EXISTS `aws_answer_discussion` (
   `uid` int(11) DEFAULT '0',
   `message` text,
   `add_time` int(10) DEFAULT '0',
-  `anonymous` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `answer_id` (`answer_id`),
-  KEY `add_time` (`add_time`),
-  KEY `anonymous` (`anonymous`)
+  KEY `add_time` (`add_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
@@ -59,7 +55,6 @@ CREATE TABLE IF NOT EXISTS `aws_article` (
   `is_recommend` tinyint(1) DEFAULT '0',
   `sort` tinyint(2) DEFAULT '0',
   `update_time` int(10) DEFAULT '0',
-  `anonymous` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
   KEY `comments` (`comments`),
@@ -71,7 +66,6 @@ CREATE TABLE IF NOT EXISTS `aws_article` (
   KEY `is_recommend` (`is_recommend`),
   KEY `sort` (`sort`),
   KEY `update_time` (`update_time`),
-  KEY `anonymous` (`anonymous`),
   FULLTEXT KEY `title_fulltext` (`title_fulltext`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
@@ -87,13 +81,11 @@ CREATE TABLE IF NOT EXISTS `aws_article_comment` (
   `add_time` int(10) DEFAULT '0',
   `at_uid` int(10) DEFAULT NULL,
   `agree_count` int(10) DEFAULT '0',
-  `anonymous` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
   KEY `article_id` (`article_id`),
   KEY `add_time` (`add_time`),
-  KEY `agree_count` (`agree_count`),
-  KEY `anonymous` (`anonymous`)
+  KEY `agree_count` (`agree_count`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
@@ -287,7 +279,6 @@ CREATE TABLE IF NOT EXISTS `aws_posts_index` (
   `category_id` int(10) DEFAULT '0',
   `is_recommend` tinyint(1) DEFAULT '0',
   `view_count` int(10) DEFAULT '0',
-  `anonymous` tinyint(1) DEFAULT '0',
   `uid` int(10) DEFAULT '0',
   `lock` tinyint(1) DEFAULT '0',
   `agree_count` int(10) DEFAULT '0',
@@ -299,7 +290,6 @@ CREATE TABLE IF NOT EXISTS `aws_posts_index` (
   KEY `update_time` (`update_time`),
   KEY `category_id` (`category_id`),
   KEY `is_recommend` (`is_recommend`),
-  KEY `anonymous` (`anonymous`),
   KEY `uid` (`uid`),
   KEY `lock` (`lock`),
   KEY `agree_count` (`agree_count`),
@@ -327,7 +317,6 @@ CREATE TABLE IF NOT EXISTS `aws_question` (
   `best_answer` int(11) DEFAULT '0' COMMENT '最佳回复 ID',
   `last_answer` int(11) DEFAULT '0' COMMENT '最后回答 ID',
   `lock` tinyint(1) DEFAULT '0' COMMENT '是否锁定',
-  `anonymous` tinyint(1) DEFAULT '0',
   `question_content_fulltext` text,
   `is_recommend` tinyint(1) DEFAULT '0',
   `sort` tinyint(2) DEFAULT '0',
@@ -340,7 +329,6 @@ CREATE TABLE IF NOT EXISTS `aws_question` (
   KEY `agree_count` (`agree_count`),
   KEY `question_content` (`question_content`),
   KEY `lock` (`lock`),
-  KEY `anonymous` (`anonymous`),
   KEY `best_answer` (`best_answer`),
   KEY `is_recommend` (`is_recommend`),
   KEY `sort` (`sort`),
@@ -357,11 +345,9 @@ CREATE TABLE IF NOT EXISTS `aws_question_discussion` (
   `uid` int(11) DEFAULT '0',
   `message` text,
   `add_time` int(10) DEFAULT '0',
-  `anonymous` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `question_id` (`question_id`),
-  KEY `add_time` (`add_time`),
-  KEY `anonymous` (`anonymous`)
+  KEY `add_time` (`add_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
@@ -649,13 +635,11 @@ CREATE TABLE IF NOT EXISTS `aws_user_action_history` (
   `associate_id` int(11) DEFAULT '0' COMMENT '关联ID',
   `add_time` int(10) DEFAULT '0' COMMENT '添加时间',
   `associate_attached` int(11) DEFAULT '0',
-  `anonymous` tinyint(1) DEFAULT '0' COMMENT '是否匿名',
   `fold_status` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`history_id`),
   KEY `add_time` (`add_time`),
   KEY `uid` (`uid`),
   KEY `associate_id` (`associate_id`),
-  KEY `anonymous` (`anonymous`),
   KEY `fold_status` (`fold_status`),
   KEY `associate` (`associate_type`,`associate_action`),
   KEY `associate_attached` (`associate_attached`),
@@ -675,15 +659,13 @@ CREATE TABLE IF NOT EXISTS `aws_user_action_history_fresh` (
   `associate_action` smallint(3) DEFAULT '0',
   `add_time` int(10) DEFAULT '0',
   `uid` int(10) DEFAULT '0',
-  `anonymous` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `associate` (`associate_type`,`associate_action`),
   KEY `add_time` (`add_time`),
   KEY `uid` (`uid`),
   KEY `history_id` (`history_id`),
   KEY `associate_with_id` (`id`,`associate_type`,`associate_action`),
-  KEY `associate_with_uid` (`uid`,`associate_type`,`associate_action`),
-  KEY `anonymous` (`anonymous`)
+  KEY `associate_with_uid` (`uid`,`associate_type`,`associate_action`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
@@ -783,7 +765,6 @@ CREATE TABLE IF NOT EXISTS `aws_video` (
   `sort` tinyint(2) DEFAULT '0',
   `add_time` int(10) DEFAULT '0',
   `update_time` int(10) DEFAULT '0',
-  `anonymous` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
   KEY `duration` (`duration`),
@@ -797,7 +778,6 @@ CREATE TABLE IF NOT EXISTS `aws_video` (
   KEY `sort` (`sort`),
   KEY `add_time` (`add_time`),
   KEY `update_time` (`update_time`),
-  KEY `anonymous` (`anonymous`),
   FULLTEXT KEY `title_fulltext` (`title_fulltext`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
@@ -813,13 +793,11 @@ CREATE TABLE IF NOT EXISTS `aws_video_comment` (
   `add_time` int(10) DEFAULT '0',
   `at_uid` int(10) DEFAULT NULL,
   `agree_count` int(10) DEFAULT '0',
-  `anonymous` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
   KEY `video_id` (`video_id`),
   KEY `add_time` (`add_time`),
-  KEY `agree_count` (`agree_count`),
-  KEY `anonymous` (`anonymous`)
+  KEY `agree_count` (`agree_count`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
@@ -832,19 +810,16 @@ CREATE TABLE IF NOT EXISTS `aws_video_danmaku` (
   `video_id` int(10) DEFAULT '0',
   `add_time` int(10) DEFAULT '0',
   `agree_count` int(10) DEFAULT '0',
-  `anonymous` tinyint(1) DEFAULT '0',
   `stime` int(10) DEFAULT '0' COMMENT '出现时间 毫秒',
   `mode` int(10) DEFAULT '0',
   `size` int(10) DEFAULT '0',
   `color` int(10) DEFAULT '0',
-  `text` text,
-  `extra_data` text COMMENT '预留',
+  `text` text
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
   KEY `video_id` (`video_id`),
   KEY `add_time` (`add_time`),
   KEY `agree_count` (`agree_count`),
-  KEY `anonymous` (`anonymous`),
   KEY `stime` (`stime`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 

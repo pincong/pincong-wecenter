@@ -1,7 +1,7 @@
 <?php if ($this->posts_list) { ?>
 <?php foreach($this->posts_list as $key => $val) { ?>
 <div class="aw-item <?php if ($val['question_id']) { ?><?php if ($val['answer_count'] == 0) { ?>active<?php } ?><?php } else {?>article<?php } ?>" data-topic-id="<?php foreach ($val['topics'] AS $k => $v) { ?><?php echo $v['topic_id']; ?>,<?php } ?>">
-	<?php if ($val['anonymous'] == 0) { ?><a class="aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>" href="<?php echo UF::url($val['user_info']); ?>" rel="nofollow"><img src="<?php echo UF::avatar($val['user_info'], 'max', $this->user_info['permission']['is_administrator']); ?>" alt="" /><?php if ($val['user_info']['verified']) { ?><?php if ($val['user_info']['verified'] == 'personal') { ?><i class="icon icon-v"></i><?php } else { ?><i class="icon icon-v i-ve"></i><?php } ?><?php } ?></a><?php } else { ?><a class="aw-user-name" href="javascript:;"><img src="<?php echo G_STATIC_URL; ?>/common/avatar-max-img.png" alt="<?php _e('匿名用户'); ?>" title="<?php _e('匿名用户'); ?>" /></a><?php } ?>
+	<a class="aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>" href="<?php echo UF::url($val['user_info']); ?>" rel="nofollow"><img src="<?php echo UF::avatar($val['user_info'], 'max', $this->user_info['permission']['is_administrator']); ?>" alt="" /><?php if ($val['user_info']['verified']) { ?><?php if ($val['user_info']['verified'] == 'personal') { ?><i class="icon icon-v"></i><?php } else { ?><i class="icon icon-v i-ve"></i><?php } ?><?php } ?></a>
 	<div class="aw-question-content">
 		<h4>
 			<?php if ($val['post_type'] == 'question') { ?>
@@ -31,38 +31,20 @@
 			<?php } ?>
 
 		<?php if ($val['post_type'] == 'question') { ?>
-			<?php if ($val['answer_count'] > 0 AND !$val['answer_info']['user_info']['forbidden']) { ?>
-				<?php if ($val['answer_info']['anonymous']) { ?>
-				<a href="javascript:;" class="aw-user-name"><?php _e('匿名用户'); ?></a>
-				<?php } else { ?>
+			<?php if ($val['answer_count'] > 0) { ?>
 				<a href="<?php echo UF::url($val['answer_info']['user_info']); ?>" class="aw-user-name" data-id="<?php echo $val['answer_info']['user_info']['uid']; ?>"><?php echo UF::name($val['answer_info']['user_info']); ?></a>
-				<?php } ?>
-				<span class="text-color-999"><?php _e('回复了问题'); ?> • <?php _e('%s 个回复', $val['answer_count']); ?> • <?php _e('%s 次浏览', $val['view_count']); ?> • <?php echo date_friendly($val['update_time']); ?>
-				</span>
+				<span class="text-color-999"><?php _e('回复了问题'); ?> • <?php _e('%s 个回复', $val['answer_count']); ?> • <?php _e('%s 次浏览', $val['view_count']); ?> • <?php echo date_friendly($val['update_time']); ?></span>
 			<?php } else { ?>
-				<?php if ($val['anonymous'] == 0) { ?>
 				<a href="<?php echo UF::url($val['user_info']); ?>" class="aw-user-name"><?php echo UF::name($val['user_info']); ?></a>
-				<?php } else { ?>
-				<a href="javascript:;" class="aw-user-name" data-id=""><?php _e('匿名用户'); ?></a>
-				<?php } ?>
-				<span class="text-color-999"><?php _e('发起了问题'); ?> • <?php _e('%s 个回复', $val['answer_count']); ?> • <?php _e('%s 次浏览', $val['view_count']); ?> • <?php echo date_friendly($val['add_time']); ?>
-				</span>
+				<span class="text-color-999"><?php _e('发起了问题'); ?> • <?php _e('%s 个回复', $val['answer_count']); ?> • <?php _e('%s 次浏览', $val['view_count']); ?> • <?php echo date_friendly($val['add_time']); ?></span>
 			<?php } ?>
 
 		<?php } elseif ($val['post_type'] == 'article') { ?>
-			<?php if ($val['anonymous'] == 0) { ?>
 				<a href="<?php echo UF::url($val['user_info']); ?>" class="aw-user-name"><?php echo UF::name($val['user_info']); ?></a>
-			<?php } else { ?>
-				<a href="javascript:;" class="aw-user-name" data-id=""><?php _e('匿名用户'); ?></a>
-			<?php } ?>
 				<span class="text-color-999"><?php _e('发表了文章'); ?> • <?php _e('%s 个评论', $val['comments']); ?> • <?php _e('%s 次浏览', $val['views']); ?> • <?php echo date_friendly($val['add_time']); ?></span>
 
 		<?php } elseif ($val['post_type'] == 'video') { ?>
-			<?php if ($val['anonymous'] == 0) { ?>
 				<a href="<?php echo UF::url($val['user_info']); ?>" class="aw-user-name"><?php echo UF::name($val['user_info']); ?></a>
-			<?php } else { ?>
-				<a href="javascript:;" class="aw-user-name" data-id=""><?php _e('匿名用户'); ?></a>
-			<?php } ?>
 				<span class="text-color-999"><?php _e('投稿了影片'); ?> • <?php _e('%s 条弹幕', $val['danmaku_count']); ?> • <?php _e('%s 个评论', $val['comment_count']); ?> • <?php _e('%s 次观看', $val['view_count']); ?> • <?php echo date_friendly($val['add_time']); ?></span>
 		<?php } ?>
 

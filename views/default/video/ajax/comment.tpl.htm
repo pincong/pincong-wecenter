@@ -1,21 +1,11 @@
 <div class="aw-item" id="answer_list_<?php echo $this->comment_info['id']; ?>">
 	<div class="mod-head">
-		<?php if ($this->comment_info['anonymous'] == 0) { ?>
 		<a class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($this->comment_info['user_info']); ?>">
 			<img src="<?php echo UF::avatar($this->comment_info['user_info'], 'mid', $this->user_info['permission']['is_administrator']); ?>" alt="" />
 		</a>
-		<?php } else { ?>
-		<a class="aw-user-img aw-border-radius-5" href="javascript:;">
-			<img src="<?php echo G_STATIC_URL; ?>/common/avatar-max-img.png" alt="<?php _e('匿名用户'); ?>" title="<?php _e('匿名用户'); ?>" />
-		</a>
-		<?php } ?>
 
 		<p>
-			<?php if ($this->comment_info['anonymous'] == 0) { ?>
 			<a href="<?php echo UF::url($this->comment_info['user_info']); ?>"><?php echo UF::name($this->comment_info['user_info']); ?></a>
-			<?php } else { ?>
-			<a class="text-color-999" href="javascript:;"><?php _e('匿名用户'); ?></a>
-			<?php } ?>
 			<?php if ($this->comment_info['at_user_info']) { ?> <?php _e('回复'); ?> <a href="<?php echo UF::url($this->comment_info['at_user_info']); ?>"><?php echo UF::name($this->comment_info['at_user_info']); ?></a><?php } ?>
 		</p>
 	</div>
@@ -49,9 +39,7 @@
 			&nbsp;&nbsp;
 
 			<?php if ($this->user_id) { ?>
-				<?php if ($this->comment_info['anonymous'] == 0) { ?>
 				<!--<a class="aw-article-comment text-color-999" data-id="<?php echo $this->comment_info['user_info']['uid']; ?>"><i class="icon icon-comment"></i> <?php _e('回复'); ?></a>-->
-				<?php } ?>
 				<?php if ($this->user_id == $this->comment_info['user_info']['uid'] OR $this->user_info['permission']['edit_video']) { ?>
 				<a class="text-color-999" href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/publish/edit/video_comment/id-<?php echo $this->comment_info['id']; ?>');"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
 				<?php } ?>

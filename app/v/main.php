@@ -110,8 +110,6 @@ class main extends AWS_CONTROLLER
 		{
 			unset($danmaku[$key]['uid']);
 			unset($danmaku[$key]['video_id']);
-			unset($danmaku[$key]['extra_data']);
-			unset($danmaku[$key]['anonymous']);
 			unset($danmaku[$key]['add_time']);
 			unset($danmaku[$key]['agree_count']);
 			$danmaku[$key]['stime'] = intval($val['stime']);

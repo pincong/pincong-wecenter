@@ -242,13 +242,6 @@ class actions_class extends AWS_MODEL
 					// 处理回复
 					if ($action_list[$key]['answer_info']['answer_id'])
 					{
-						if ($action_list[$key]['answer_info']['anonymous'] AND $val['associate_action'] == ACTION_LOG::ANSWER_QUESTION)
-						{
-							unset($action_list[$key]);
-
-							continue;
-						}
-
 						$final_list_answer_ids[] = $action_list[$key]['answer_info']['answer_id'];
 					}
 
@@ -316,12 +309,7 @@ class actions_class extends AWS_MODEL
 			$where[] = "(associate_type = " . ACTION_LOG::CATEGORY_QUESTION . " AND uid = " . intval($uid) . " AND associate_action IN(" . $this->quote($associate_action) . "))";
 		}
 
-		if ($this_uid == $uid)
-		{
-			$show_anonymous = true;
-		}
-
-		$action_list = ACTION_LOG::get_action_by_where(implode($where, ' OR '), $limit, $show_anonymous);
+		$action_list = ACTION_LOG::get_action_by_where(implode($where, ' OR '), $limit, 0);
 
 		// 重组信息
 		foreach ($action_list as $key => $val)

@@ -224,7 +224,7 @@ class answer_class extends AWS_MODEL
 	}
 
 
-	public function insert_answer_discussion($answer_id, $uid, $message, $anonymous = 0)
+	public function insert_answer_discussion($answer_id, $uid, $message)
 	{
 		if (!$answer_info = $this->model('answer')->get_answer_by_id($answer_id))
 		{
@@ -242,7 +242,6 @@ class answer_class extends AWS_MODEL
 			'uid' => intval($uid),
 			'answer_id' => intval($answer_id),
 			'message' => htmlspecialchars($message),
-			'anonymous' => intval($anonymous),
 			'add_time' => fake_time()
 		));
 
@@ -252,8 +251,7 @@ class answer_class extends AWS_MODEL
 				'from_uid' => $uid,
 				'question_id' => $answer_info['question_id'],
 				'item_id' => $answer_info['answer_id'],
-				'comment_id' => $comment_id,
-				'anonymous' => intval($anonymous)
+				'comment_id' => $comment_id
 			));
 
 		}
@@ -268,8 +266,7 @@ class answer_class extends AWS_MODEL
 						'from_uid' => $uid,
 						'question_id' => $answer_info['question_id'],
 						'item_id' => $answer_info['answer_id'],
-						'comment_id' => $comment_id,
-						'anonymous' => intval($anonymous)
+						'comment_id' => $comment_id
 					));
 
 				}

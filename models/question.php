@@ -606,7 +606,7 @@ class question_class extends AWS_MODEL
 	}
 
 
-	public function insert_question_discussion($question_id, $uid, $message, $anonymous = 0)
+	public function insert_question_discussion($question_id, $uid, $message)
 	{
 		if (!$question_info = $this->model('question')->get_question_info_by_id($question_id))
 		{
@@ -619,7 +619,6 @@ class question_class extends AWS_MODEL
 			'uid' => intval($uid),
 			'question_id' => intval($question_id),
 			'message' => htmlspecialchars($message),
-			'anonymous' => intval($anonymous),
 			'add_time' => fake_time()
 		));
 
@@ -628,8 +627,7 @@ class question_class extends AWS_MODEL
 			$this->model('notify')->send($uid, $question_info['published_uid'], notify_class::TYPE_QUESTION_COMMENT, notify_class::CATEGORY_QUESTION, $question_info['question_id'], array(
 				'from_uid' => $uid,
 				'question_id' => $question_info['question_id'],
-				'comment_id' => $comment_id,
-				'anonymous' => intval($anonymous)
+				'comment_id' => $comment_id
 			));
 
 		}
@@ -646,8 +644,7 @@ class question_class extends AWS_MODEL
 				$this->model('notify')->send($uid, $user_id, notify_class::TYPE_QUESTION_COMMENT_AT_ME, notify_class::CATEGORY_QUESTION, $question_info['question_id'], array(
 					'from_uid' => $uid,
 					'question_id' => $question_info['question_id'],
-					'comment_id' => $comment_id,
-					'anonymous' => intval($anonymous)
+					'comment_id' => $comment_id
 				));
 
 			}
@@ -881,7 +878,7 @@ class question_class extends AWS_MODEL
 			$published_uid = $question_info['published_uid'];
 		}
 
-		if ($answer_users = $this->query_all("SELECT DISTINCT uid FROM " . get_table('answer') . " WHERE question_id = " . intval($question_id) . " AND uid <> " . intval($published_uid) . " AND anonymous = 0 ORDER BY agree_count DESC LIMIT " . intval($limit)))
+		if ($answer_users = $this->query_all("SELECT DISTINCT uid FROM " . get_table('answer') . " WHERE question_id = " . intval($question_id) . " AND uid <> " . intval($published_uid) . " ORDER BY agree_count DESC LIMIT " . intval($limit)))
 		{
 			foreach ($answer_users AS $key => $val)
 			{

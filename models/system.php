@@ -365,7 +365,7 @@ class system_class extends AWS_MODEL
 		{
 			if ($val['fold_status'] == 0)
 			{
-				ACTION_LOG::associate_fresh_action($val['history_id'], $val['associate_id'], $val['associate_type'], $val['associate_action'], $val['uid'], $val['anonymous'], $val['add_time']);
+				ACTION_LOG::associate_fresh_action($val['history_id'], $val['associate_id'], $val['associate_type'], $val['associate_action'], $val['uid'], 0, $val['add_time']);
 			}
 		}
 

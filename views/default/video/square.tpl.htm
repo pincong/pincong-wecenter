@@ -11,15 +11,9 @@
 						<?php if ($this->video_list) { ?>
 						<?php foreach ($this->video_list AS $key => $val) { ?>
 						<div class="aw-item">
-    						<?php if ($val['anonymous'] == 0) { ?>
 							<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>">
 								<img alt="" src="<?php echo UF::avatar($val['user_info'], 'mid', $this->user_info['permission']['is_administrator']); ?>" />
 							</a>
-    						<?php } else { ?>
-							<a class="aw-user-name" href="javascript:;">
-								<img src="<?php echo G_STATIC_URL; ?>/common/avatar-max-img.png" alt="<?php _e('匿名用户'); ?>" title="<?php _e('匿名用户'); ?>" />
-							</a>
-    						<?php } ?>
 							<div class="aw-content">
 								<div class="mod-body">
 									<h2><a href="v/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['title']; ?><?php } ?></a></h2>
@@ -35,7 +29,7 @@
 								</div>
 								<div class="mod-footer clearfix">
 									<span class="pull-right more-operate text-color-999">
-										<?php if ($val['anonymous'] == 0) { ?><?php echo UF::name($val['user_info']); ?><?php } else { ?><?php _e('匿名用户'); ?><?php } ?> 发表于 : <?php echo date_friendly($val['add_time']); ?>
+										<?php echo UF::name($val['user_info']); ?> 发表于 : <?php echo date_friendly($val['add_time']); ?>
 
 										<a class="text-color-999" href="v/<?php echo $val['id']; ?>"><i class="icon icon-comment"></i> <?php _e('评论'); ?> (<?php echo $val['comment_count']; ?>)</a>
 									</span>
