@@ -94,7 +94,8 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请填写正确的验证码')));
 		}
 
-		if (!check_user_operation_interval_by_uid('register', 0, get_setting('register_interval')))
+		$register_interval = rand_minmax(get_setting('register_interval_min'), get_setting('register_interval_max'), get_setting('register_interval'));
+		if (!check_user_operation_interval_by_uid('register', 0, $register_interval))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('本站已开启注册频率限制, 请稍后再试')));
 		}
