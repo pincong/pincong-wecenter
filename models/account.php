@@ -89,7 +89,12 @@ class account_class extends AWS_MODEL
 
     public function check_uid($uid)
     {
-        return $this->fetch_one('users', 'uid', 'uid = ' . intval($uid));
+		$uid = intval($uid);
+		if ($uid <= 0)
+		{
+			return false;
+		}
+        return $this->fetch_one('users', 'uid', 'uid = ' . ($uid));
     }
 
     /**
@@ -247,9 +252,15 @@ class account_class extends AWS_MODEL
 				{
 					$user_info[$key] = $val;
 				}
+
 				if ($user_info['extra_data'])
 				{
 					$user_info['extra_data'] = unserialize($user_info['extra_data']);
+				}
+
+				if (!is_array($user_info['extra_data']))
+				{
+					$user_info['extra_data'] = array();
 				}
 			}
 		}
@@ -356,9 +367,15 @@ class account_class extends AWS_MODEL
                     {
                         $result[$val['uid']][$attrib_key] = $attrib_val;
                     }
+
 					if ($result[$val['uid']]['extra_data'])
 					{
 						$result[$val['uid']]['extra_data'] = unserialize($result[$val['uid']]['extra_data']);
+					}
+
+					if (!is_array($result[$val['uid']]['extra_data']))
+					{
+						$result[$val['uid']]['extra_data'] = array();
 					}
                 }
             }
@@ -518,20 +535,41 @@ class account_class extends AWS_MODEL
      *
      * @param array
      * @param uid
-     * @return void
+     * @return boolean
      */
     public function update_users_attrib_fields($update_data, $uid)
     {
-		if ($update_data['extra_data'])
+		if (isset($update_data['extra_data']) AND $update_data['extra_data'] !== null)
 		{
-			$update_data['extra_data'] = serialize($update_data['extra_data']);
+			if (is_array($update_data['extra_data']))
+			{
+				if (count($update_data['extra_data']) > 0)
+				{
+					$update_data['extra_data'] = serialize($update_data['extra_data']);
+				}
+				else
+				{
+					// 如果是空数组就直接设为 null
+					$update_data['extra_data'] = null;
+				}
+			}
+			else
+			{
+				unset($update_data['extra_data']);
+			}
 		}
-		if ($this->update('users_attrib', $update_data, 'uid = ' . intval($uid)))
+
+		if (!$this->update('users_attrib', $update_data, 'uid = ' . intval($uid)))
 		{
-			return;
+			if ($this->check_uid($uid))
+			{
+				$update_data['uid'] = intval($uid);
+				$this->insert('users_attrib', $update_data);
+				return true;
+			}
+			return false;
 		}
-		$update_data['uid'] = intval($uid);
-		$this->insert('users_attrib', $update_data);
+		return true;
     }
 
     /**
@@ -546,6 +584,11 @@ class account_class extends AWS_MODEL
 		$user_attrib = $this->fetch_row('users_attrib', 'uid = ' . intval($uid));
 		if (!$user_attrib)
 		{
+			if ($this->check_uid($uid))
+			{
+				return array();
+			}
+			// uid 不存在
 			return false;
 		}
 
