@@ -175,6 +175,46 @@ class vote_class extends AWS_MODEL
 	}
 
 
+	private function get_bonus_factor(&$type, $item_id, $factor)
+	{
+		$bonus_factor = get_setting('bonus_factor');
+		if (!is_numeric($bonus_factor))
+		{
+			return $factor;
+		}
+
+		$bonus_max_count = intval(get_setting('bonus_max_count'));
+		$bonus_min_count = intval(get_setting('bonus_min_count'));
+
+		$item_info = $this->model('content')->get_item_info_by_id($type, $item_id);
+
+		// TODO: question, answer 字段改名以避免特殊处理
+		if ($type == 'question')
+		{
+			$word_count = strlen($item_info['question_detail']);
+		}
+		elseif ($type == 'answer')
+		{
+			$word_count = strlen($item_info['answer_content']);
+		}
+		else
+		{
+			$word_count = strlen($item_info['message']);
+		}
+
+		// 字数 = 字节数 / 3
+		$word_count = intval($word_count / 3);
+
+		// factor设定
+		if ($word_count > $bonus_min_count)
+		{
+			$sigmoid = 1 / (1 + exp(-6 * (($word_count - $bonus_min_count) / $bonus_max_count - 0.5))) ;
+			$factor = $bonus_factor / 2 * (1 + $sigmoid) * $factor;
+			$factor = round($factor, 6);
+		}
+		return $factor;
+	}
+
 	private function increase_count_and_reputation(&$type, $item_id, $uid, $item_uid, $factor)
 	{
 		$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + 1 WHERE id = ' . ($item_id);
@@ -189,6 +229,7 @@ class vote_class extends AWS_MODEL
 			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + 1 WHERE answer_id = ' . ($item_id);
 		}
 		$this->query($sql);
+		$factor = $this->get_bonus_factor($type, $item_id, $factor);
 		$factor = $this->calc_upvote_reputation_factor($uid, $factor);
 		$this->model('reputation')->increase_agree_count_and_reputation($item_uid, 1, $factor);
 	}
@@ -207,6 +248,7 @@ class vote_class extends AWS_MODEL
 			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count - 1 WHERE answer_id = ' . ($item_id);
 		}
 		$this->query($sql);
+		$factor = $this->get_bonus_factor($type, $item_id, $factor);
 		$factor = $this->calc_downvote_reputation_factor($uid, $factor);
 		$this->model('reputation')->increase_agree_count_and_reputation($item_uid, -1, $factor);
 	}
