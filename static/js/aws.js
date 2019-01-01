@@ -394,6 +394,103 @@ var AWS =
 		}
 	},
 
+	submit: function(form_el, btn_el, callback)
+	{
+		// 若有编辑器的话就从编辑器更新内容再提交
+		if (G_ADVANCED_EDITOR_ENABLE == 'Y')
+		{
+			form_el.find('textarea').each(function()
+			{
+				if (this._sceditor)
+				{
+					this._sceditor.updateOriginal();
+				}
+			});
+		}
+
+		AWS.loading('show');
+
+		if (btn_el)
+		{
+			btn_el.addClass('disabled');
+		}
+
+		var custom_data = {
+			_post_type: 'ajax'
+		};
+
+		form_el.ajaxSubmit(
+		{
+			dataType: 'json',
+			data: custom_data,
+			success: function (result)
+			{
+				AWS.loading('hide');
+				if (btn_el)
+				{
+					btn_el.removeClass('disabled');
+				}
+				if (!result)
+				{
+					alert(_t('未知错误'));
+					callback && callback('error');
+					return;
+				}
+				if (result.errno == 1) // success
+				{
+					if (callback)
+					{
+						form_el.find('textarea').each(function()
+						{
+							this.val('');;
+						});
+						form_el.find('input:​text').each(function()
+						{
+							this.val('');;
+						});
+						callback(null, result.rsm);
+						return;
+					}
+					if (result.rsm && result.rsm.url)
+					{
+						window.location = decodeURIComponent(result.rsm.url);
+					}
+					else
+					{
+						window.location.reload();
+					}
+				}
+				else
+				{
+					AWS.alert(result.err);
+					callback && callback('error');
+				}
+			},
+			error: function (error)
+			{
+				console.log(error);
+				AWS.loading('hide');
+				if (btn_el)
+				{
+					btn_el.removeClass('disabled');
+				}
+				if ($.trim(error.responseText) != '')
+				{
+					alert(_t('发生错误, 返回的信息:') + ' ' + error.responseText);
+				}
+				else if (error.status == 0)
+				{
+					alert(_t('网络连接异常'));
+				}
+				else if (error.status == 500)
+				{
+					alert(_t('内部服务器错误'));
+				}
+				callback && callback('error');
+			}
+		});
+	},
+
 	// 加载更多
 	load_list_view: function(url, selector, container, start_page, callback)
 	{
