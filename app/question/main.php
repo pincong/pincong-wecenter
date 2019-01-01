@@ -113,7 +113,7 @@ class main extends AWS_CONTROLLER
 
 		if ($question_info['category_id'] AND get_setting('category_enable') == 'Y')
 		{
-			$question_info['category_info'] = $this->model('system')->get_category_info($question_info['category_id']);
+			$question_info['category_info'] = $this->model('category')->get_category_info($question_info['category_id']);
 		}
 
 		$question_info['user_info'] = $this->model('account')->get_user_info_by_uid($question_info['published_uid'], true);
@@ -398,7 +398,7 @@ class main extends AWS_CONTROLLER
 
 		if ($_GET['category'])
 		{
-			$category_info = $this->model('system')->get_category_info($_GET['category']);
+			$category_info = $this->model('category')->get_category_info($_GET['category']);
 		}
 
 		if ($category_info)

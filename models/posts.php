@@ -399,7 +399,7 @@ class posts_class extends AWS_MODEL
 
 			if (get_setting('category_enable') == 'Y')
 			{
-				$explore_list_data[$key]['category_info'] = $this->model('system')->get_category_info($data['category_id']);
+				$explore_list_data[$key]['category_info'] = $this->model('category')->get_category_info($data['category_id']);
 			}
 
 			$explore_list_data[$key]['topics'] = $topic_infos[$data['post_type']][$data['post_id']];

@@ -199,7 +199,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
             $category_id = $this->model('category')->add_category($_POST['title'], $_POST['group_id']);
         }
 
-        $category = $this->model('system')->get_category_info($category_id);
+        $category = $this->model('category')->get_category_info($category_id);
 
         $this->model('category')->update_category_info($category_id, $_POST['title'], $_POST['group_id'], $_POST['description']);
 
@@ -361,7 +361,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
         {
             case 'category' :
                 $type_id = intval($_POST['type_id']);
-                $category = $this->model('system')->get_category_info($type_id);
+                $category = $this->model('category')->get_category_info($type_id);
                 $title = $category['title'];
             break;
 

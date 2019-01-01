@@ -20,50 +20,10 @@ if (!defined('IN_ANWSION'))
 
 class system_class extends AWS_MODEL
 {
-	public function fetch_category_data()
-	{
-		$order = 'sort DESC, id ASC';
-
-		static $category_all;
-
-		if (!$category_all)
-		{
-			$category_all = $this->fetch_all('category', '', $order);
-
-			if (!$category_all)
-			{
-				$category_all = array();
-			}
-		}
-
-		return $category_all;
-	}
-
-	/* 获取分类数组 */
-	public function fetch_category()
-	{
-		$category_list = array();
-
-		$category_all = $this->fetch_category_data();
-
-		foreach ($category_all AS $key => $val)
-		{
-			$category_list[$val['id']] = array(
-				'id' => $val['id'],
-				'title' => $val['title'],
-				//'description' => $val['description'],
-				//'group_id' => $val['group_id'],
-				'sort' => $val['sort']
-			);
-		}
-
-		return $category_list;
-	}
-
 	/* 获取分类 HTML 数据 */
 	public function build_category_html($selected_id = 0)
 	{
-		if (!$category_list = $this->fetch_category())
+		if (!$category_list = $this->model('category')->get_category_list())
 		{
 			return false;
 		}
@@ -81,61 +41,6 @@ class system_class extends AWS_MODEL
 		}
 
 		return $html;
-	}
-
-	/* 获取分类 JSON 数据 */
-	public function build_category_json()
-	{
-		if (!$category_list = $this->fetch_category())
-		{
-			return false;
-		}
-
-		foreach ($category_list AS $category_id => $val)
-		{
-			$data[] = array(
-				'id' => $category_id,
-				'title' => $val['title'],
-				//'description' => $val['description'],
-				//'group_id' => $val['group_id'],
-				'sort' => $val['sort']
-			);
-		}
-
-		return json_encode($data);
-	}
-
-	/* 获取数组信息 */
-	public function get_category_info($category_id)
-	{
-		static $all_category;
-
-		if (!$all_category)
-		{
-			if ($all_category_query = $this->fetch_all('category'))
-			{
-				foreach ($all_category_query AS $key => $val)
-				{
-					$all_category[$val['id']] = $val;
-				}
-			}
-		}
-
-		return $all_category[$category_id];
-	}
-
-	public function get_category_list()
-	{
-		$category_list = array();
-
-		$category_all = $this->fetch_all('category', '', 'id ASC');
-
-		foreach($category_all as $key => $val)
-		{
-			$category_list[$val['id']] = $val;
-		}
-
-		return $category_list;
 	}
 
 

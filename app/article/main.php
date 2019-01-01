@@ -146,7 +146,7 @@ class main extends AWS_CONTROLLER
 
 		if ($_GET['category'])
 		{
-			$category_info = $this->model('system')->get_category_info($_GET['category']);
+			$category_info = $this->model('category')->get_category_info($_GET['category']);
 		}
 
 		$article_list = $this->model('article')->get_article_list($category_info['id'], $_GET['page'], get_setting('contents_per_page'), 'add_time DESC');
