@@ -106,34 +106,24 @@ class Services_VideoParser
 		}
 
 		parse_str($body, $output);
-		if (!isset($output['player_response']))
+		if (!isset($output['url_encoded_fmt_stream_map']))
 		{
 			return false;
 		}
 
-		$body = json_decode($output['player_response'], true);
-		if (!is_array($body))
+		$formats = explode(',', $output['url_encoded_fmt_stream_map']);
+		foreach ($formats AS $key => $val)
 		{
-			return false;
+			parse_str($val, $formats[$key]);
 		}
 
-		if (!isset($body['videoDetails']))
-		{
-			return false;
-		}
-
-		if (!isset($body['streamingData']) OR !is_array($body['streamingData']['formats']))
-		{
-			return false;
-		}
-
-		// TODO: 整理 $body['streamingData']['formats']
+		// TODO: 整理 $formats
 		return array(
 			'source_type' => 'youtube',
-			'source' => $body['videoDetails']['videoId'],
-			'title' => $body['videoDetails']['title'],
-			'duration' => intval($body['videoDetails']['lengthSeconds']),
-			'formats' => $body['streamingData']['formats']
+			'source' => $output['video_id'],
+			'title' => $output['title'],
+			'duration' => intval($output['length_seconds']),
+			'formats' => $formats
 		);
 	}
 
