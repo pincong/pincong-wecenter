@@ -104,6 +104,10 @@ var AW_TEMPLATE = {
 				'</div>'+
 				'<div class="mod-footer">'+
 					'<a href="javascript:;" onclick="AWS.ajax_post($(this).parents(\'form\'));" class="btn btn-normal btn-success pull-right btn-submit">' + _t('回复') + '</a>'+
+					'<label class="pull-right">'+
+						'<input type="checkbox" value="1" name="anonymous" />' + _t('匿名回复') +
+						'&nbsp;'+
+					'</label>'+
 				'</div>'+
 			'</form>'+
 		'</div>',
