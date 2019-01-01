@@ -55,6 +55,15 @@ class FORMAT
 			return $title;
 		}
 
+		if (H::hyperlink_whitelist_check($url))
+		{
+			if (is_inside_url($url))
+			{
+				return '<a href="' . $url . '">' . $title . '</a>';
+			}
+			return '<a href="' . $url . '" rel="nofollow noreferrer noopener" target="_blank">' . $title . '</a>';
+		}
+
 		if (H::hyperlink_blacklist_check($url))
 		{
 			return $title;
@@ -64,10 +73,7 @@ class FORMAT
 		{
 			return '<a href="' . $url . '">' . $title . '</a>';
 		}
-		else
-		{
-			return '<a href="' . $url . '" rel="nofollow noreferrer noopener" target="_blank">' . $title . '</a>';
-		}
+		return '<a href="url/link/' . safe_urlencode($url) . '" target="_blank">' . $title . '</a>';
 	}
 
 	private static function _link_callback($matches)

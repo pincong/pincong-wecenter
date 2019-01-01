@@ -136,4 +136,10 @@ class H
 		return content_contains('hyperlink_blacklist', $hyperlink);
 	}
 
+	// 命中返回 true, 未命中返回 false
+	public static function hyperlink_whitelist_check($hyperlink)
+	{
+		return content_contains('hyperlink_whitelist', $hyperlink);
+	}
+
 }

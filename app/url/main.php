@@ -37,4 +37,14 @@ class main extends AWS_CONTROLLER
 		TPL::assign('url', htmlspecialchars($_GET['id']));
 		TPL::output('url/img');
 	}
+
+	public function link_action()
+	{
+		if (!$_GET['id'] OR is_inside_url($_GET['id']))
+		{
+			die;
+		}
+		TPL::assign('url', htmlspecialchars($_GET['id']));
+		TPL::output('url/link');
+	}
 }
