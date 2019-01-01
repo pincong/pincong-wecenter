@@ -68,7 +68,7 @@
                         </div>
                         <div class="mod-body">
                             <div class="content markitup-box">
-                                <?php echo $this->article_info['message']; ?>
+                                <?php echo FORMAT::html($this->article_info['message']); ?>
                             </div>
                             <div class="meta clearfix">
 								<div class="aw-article-vote pull-left<?php if (!$this->user_id OR $this->user_id == $this->article_info['uid']) { ?> disabled<?php } ?>">

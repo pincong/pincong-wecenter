@@ -103,7 +103,7 @@
 						</div>
 						<div class="mod-body">
 							<div class="content markitup-box">
-								<?php echo $this->question_info['question_detail']; ?>
+								<?php echo FORMAT::html($this->question_info['question_detail']); ?>
 							</div>
 						</div>
 						<div class="mod-footer">
@@ -274,7 +274,7 @@
 										<?php if (!$val['answer_content']) { ?>
 											<i class="text-color-999"><?php _e('已删除'); ?></i>
 										<?php } else { ?>
-											<?php echo $val['answer_content']; ?>
+											<?php echo FORMAT::html($val['answer_content']); ?>
 										<?php } ?>
 										</div>
 									<?php } else { ?>
@@ -282,7 +282,7 @@
 										<?php if (!$val['answer_content']) { ?>
 											<i class="text-color-999"><?php _e('已删除'); ?></i>
 										<?php } else { ?>
-											<?php echo $val['answer_content']; ?>
+											<?php echo FORMAT::html($val['answer_content']); ?>
 										<?php } ?>
 										</div>
 									<?php } ?>

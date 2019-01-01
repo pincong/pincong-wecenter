@@ -42,7 +42,7 @@
 		<?php if (!$this->answer_info['answer_content']) { ?>
 			<i class="text-color-999"><?php _e('已删除'); ?></i>
 		<?php } else { ?>
-			<?php echo $this->answer_info['answer_content']; ?>
+			<?php echo FORMAT::html($this->answer_info['answer_content']); ?>
 		<?php } ?>
 		</div>
 		<!-- end 内容 -->

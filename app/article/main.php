@@ -47,8 +47,6 @@ class main extends AWS_CONTROLLER
 
 		$article_info['user_info'] = $this->model('account')->get_user_info_by_uid($article_info['uid'], true);
 
-		$article_info['message'] = nl2br(FORMAT::parse_bbcode($article_info['message']));
-
 		if ($this->user_id)
 		{
 			$article_info['vote_info'] = $this->model('article')->get_article_vote_by_id('article', $article_info['id'], null, $this->user_id);
