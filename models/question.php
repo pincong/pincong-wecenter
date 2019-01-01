@@ -186,10 +186,6 @@ class question_class extends AWS_MODEL
 
 		if ($question_id)
 		{
-			$this->shutdown_update('users', array(
-				'question_count' => $this->count('question', 'published_uid = ' . intval($published_uid))
-			), 'uid = ' . intval($published_uid));
-
 			$this->model('search_fulltext')->push_index('question', $question_content, $question_id);
 		}
 
@@ -259,10 +255,6 @@ class question_class extends AWS_MODEL
 		ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION .  ' AND associate_action = ' . ACTION_LOG::ANSWER_QUESTION . ' AND associate_attached = ' . intval($question_id));	// 删除动作
 
 		$this->model('notify')->delete_notify('model_type = 1 AND source_id = ' . intval($question_id));	// 删除相关的通知
-
-		$this->shutdown_update('users', array(
-			'question_count' => $this->count('question', 'published_uid = ' . intval($question_info['published_uid']))
-		), 'uid = ' . intval($question_info['published_uid']));
 
 		$this->delete('redirect', "item_id = " . intval($question_id) . " OR target_id = " . intval($question_id));
 

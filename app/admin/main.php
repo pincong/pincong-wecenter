@@ -38,7 +38,6 @@ class main extends AWS_ADMIN_CONTROLLER
         TPL::assign('users_count', $this->model('system')->count('users'));
         TPL::assign('question_count', $this->model('system')->count('question'));
         TPL::assign('answer_count', $this->model('system')->count('answer'));
-        TPL::assign('question_count', $this->model('system')->count('question'));
         TPL::assign('question_no_answer_count', $this->model('system')->count('question', 'answer_count = 0'));
         TPL::assign('best_answer_count', $this->model('system')->count('question', 'best_answer > 0'));
         TPL::assign('topic_count', $this->model('system')->count('topic'));

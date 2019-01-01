@@ -253,14 +253,6 @@ class video_class extends AWS_MODEL
 
 		$this->model('posts')->remove_posts_index($video_id, 'video');
 
-		/*
-		// 没有 video_count 字段 不实现
-		// TODO: 移除 users 表 article_count, question_count, answer_count
-		$this->shutdown_update('users', array(
-			'video_count' => $this->count('video', 'uid = ' . intval($uid))
-		), 'uid = ' . intval($uid));
-		*/
-
 		return $this->delete('video', 'id = ' . intval($video_id));
 	}
 

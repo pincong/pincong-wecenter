@@ -408,13 +408,6 @@ class publish_class extends AWS_MODEL
 
 			$this->model('posts')->set_posts_index($video_id, 'video');
 
-			/*
-			// 不实现
-			// TODO: 砍掉 article_count
-			$this->shutdown_update('users', array(
-				'video_count' => $this->count('video', 'uid = ' . intval($uid))
-			), 'uid = ' . intval($uid));
-			*/
 		}
 
 		return $video_id;
