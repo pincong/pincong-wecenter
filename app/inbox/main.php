@@ -78,22 +78,17 @@ class main extends AWS_CONTROLLER
 			{
 				if ($value['recipient_uid'] == $this->user_id AND $value['recipient_count']) // 当前处于接收用户
 				{
-					$data[$key]['user_name'] = $users_info[$value['sender_uid']]['user_name'];
-					$data[$key]['url_token'] = $users_info[$value['sender_uid']]['url_token'];
+					$data[$key]['user_info'] = $users_info[$value['sender_uid']];
 
 					$data[$key]['unread'] = $value['recipient_unread'];
 					$data[$key]['count'] = $value['recipient_count'];
-
-					$data[$key]['uid'] = $value['sender_uid'];
 				}
 				else if ($value['sender_uid'] == $this->user_id AND $value['sender_count']) // 当前处于发送用户
 				{
-					$data[$key]['user_name'] = $users_info[$value['recipient_uid']]['user_name'];
-					$data[$key]['url_token'] = $users_info[$value['recipient_uid']]['url_token'];
+					$data[$key]['user_info'] = $users_info[$value['recipient_uid']];
 
 					$data[$key]['unread'] = $value['sender_unread'];
 					$data[$key]['count'] = $value['sender_count'];
-					$data[$key]['uid'] = $value['recipient_uid'];
 				}
 
 				$data[$key]['last_message'] = $last_message[$value['id']];
@@ -165,9 +160,6 @@ class main extends AWS_CONTROLLER
 				else
 				{
 					$list[$key]['message'] = FORMAT::parse_links($val['message']);
-
-					$list[$key]['user_name'] = $recipient_user['user_name'];
-					$list[$key]['url_token'] = $recipient_user['url_token'];
 				}
 			}
 		}
