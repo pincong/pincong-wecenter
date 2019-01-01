@@ -978,6 +978,10 @@ class ajax extends AWS_ADMIN_CONTROLLER
             'is_administrator',
             'is_moderator',
             'publish_question',
+			'answer_question',
+			'publish_article',
+			'comment_article',
+			'publish_comment',
             'publish_approval',
             'publish_approval_time',
             'edit_question',
@@ -1003,7 +1007,9 @@ class ajax extends AWS_ADMIN_CONTROLLER
             'publish_article',
             'edit_article',
             'edit_question_topic',
-            'publish_comment'
+			'bump_sink',
+			'agree_disagree',
+			'thank_user'
         );
 
         $group_setting = array();
