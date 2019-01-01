@@ -605,7 +605,8 @@ function get_login_cookie_hash($user_name, $password, $salt, $uid)
 {
 	$password = compile_password($password, $salt);
 
-	$auth_hash_key = md5(G_COOKIE_HASH_KEY . $_SERVER['HTTP_USER_AGENT']);
+	//$auth_hash_key = AWS_APP::crypt()->new_key(md5(G_COOKIE_HASH_KEY . $_SERVER['HTTP_USER_AGENT']));
+	$auth_hash_key = null;
 
 	return AWS_APP::crypt()->encode(json_encode(array(
 		'uid' => $uid,
