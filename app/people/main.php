@@ -110,33 +110,35 @@ class main extends AWS_CONTROLLER
 			$base_url .= 'group_id-' . $group_id;
 		}
 
-		if (intval($_GET['forbidden']))
+		$is_forbidden = intval($_GET['forbidden']);
+		$is_flagged = intval($_GET['flagged']);
+		if ($is_forbidden OR $is_flagged)
 		{
-			$where[] = 'forbidden <> 0';
 			$order = 'user_update_time ASC, uid ASC';
-			if ($base_url)
+
+			if ($is_forbidden)
 			{
-				$base_url .= '__';
+				$where[] = 'forbidden <> 0';
+				if ($base_url)
+				{
+					$base_url .= '__';
+				}
+				$base_url .= 'forbidden-1';
 			}
-			$base_url .= 'forbidden-1';
+
+			if ($is_flagged)
+			{
+				$where[] = 'flagged <> 0';
+				if ($base_url)
+				{
+					$base_url .= '__';
+				}
+				$base_url .= 'flagged-1';
+			}
 		}
 		else
 		{
 			$where[] = 'forbidden = 0';
-		}
-
-		if (intval($_GET['flagged']))
-		{
-			$where[] = 'flagged <> 0';
-			$order = 'user_update_time ASC, uid ASC';
-			if ($base_url)
-			{
-				$base_url .= '__';
-			}
-			$base_url .= 'flagged-1';
-		}
-		else
-		{
 			$where[] = 'flagged = 0';
 		}
 
