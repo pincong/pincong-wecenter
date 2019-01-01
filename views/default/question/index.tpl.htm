@@ -207,19 +207,18 @@
 										<!-- end 最佳回答 -->
 										<?php } ?>
 										<a class="anchor" name="answer_<?php echo $val['answer_id']; ?>"></a>
-										<!-- 用户头像 -->
-										<a class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>" data-id="<?php echo $val['uid']; ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid', $this->user_info['permission']['is_administrator']); ?>" alt="" /></a>
-										<!-- end 用户头像 -->
-										<div class="title">
-											<p>
-												<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>" data-id="<?php echo $val['uid']; ?>"><?php echo UF::name($val['user_info']); ?></a>
-												<?php if ($val['user_info']['forbidden']) { ?><span class="text-color-999">[ <?php _e('封禁'); ?> ]</span><?php } ?>
 
-												<?php if ($val['user_info']['verified']) { ?>
-													<em class="aw-verified"><?php echo $val['user_info']['verified']; ?></em>
-												<?php } ?>
-												<?php if ($val['user_info']['signature']) { ?> - <span class="text-color-999"><?php echo UF::signature($val['user_info'], $this->user_info['permission']['is_administrator']); ?></span><?php } ?>
-											</p>
+										<div class="title">
+											<!-- 用户头像 -->
+											<a class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>" data-id="<?php echo $val['uid']; ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid', $this->user_info['permission']['is_administrator']); ?>" alt="" /></a>
+											<!-- end 用户头像 -->
+
+											<!-- 用户名 -->
+											<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>" data-id="<?php echo $val['uid']; ?>"><?php echo UF::name($val['user_info']); ?></a>
+											<?php if ($val['user_info']['forbidden']) { ?><span class="text-color-999">[ <?php _e('封禁'); ?> ]</span><?php } ?>
+											<?php if ($val['user_info']['verified']) { ?><em class="aw-verified"><?php echo $val['user_info']['verified']; ?></em><?php } ?>
+											<?php if ($val['user_info']['signature']) { ?> - <span class="text-color-999"><?php echo UF::signature($val['user_info'], $this->user_info['permission']['is_administrator']); ?></span><?php } ?>
+											<!-- end 用户名 -->
 										</div>
 									</div>
 									<div class="mod-body clearfix">

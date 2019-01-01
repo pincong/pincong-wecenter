@@ -1,13 +1,14 @@
 <div class="aw-item" id="answer_list_<?php echo $this->comment_info['id']; ?>">
 	<div class="mod-head">
+		<!-- 用户头像 -->
 		<a class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($this->comment_info['user_info']); ?>">
 			<img src="<?php echo UF::avatar($this->comment_info['user_info'], 'mid', $this->user_info['permission']['is_administrator']); ?>" alt="" />
 		</a>
-
-		<p>
-			<a href="<?php echo UF::url($this->comment_info['user_info']); ?>"><?php echo UF::name($this->comment_info['user_info']); ?></a>
-			<?php if ($this->comment_info['at_user_info']) { ?> <?php _e('回复'); ?> <a href="<?php echo UF::url($this->comment_info['at_user_info']); ?>"><?php echo UF::name($this->comment_info['at_user_info']); ?></a><?php } ?>
-		</p>
+		<!-- end 用户头像 -->
+		<!-- 用户名 -->
+		<a class="aw-user-name" href="<?php echo UF::url($this->comment_info['user_info']); ?>"><?php echo UF::name($this->comment_info['user_info']); ?></a>
+		<?php if ($this->comment_info['at_user_info']) { ?> <?php _e('回复'); ?> <a class="aw-user-name" href="<?php echo UF::url($this->comment_info['at_user_info']); ?>"><?php echo UF::name($this->comment_info['at_user_info']); ?></a><?php } ?>
+		<!-- end 用户名 -->
 	</div>
 	<div class="mod-body">
 	<?php if (!$this->comment_info['message']) { ?>
