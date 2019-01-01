@@ -14,9 +14,14 @@
 								2. <?php _e('关注热门话题'); ?>
 								<i></i>
 							</li>
+							<?php if ($this->user_info['permission']['follow_people']) { ?>
 							<li>
 								3. <?php _e('关注热门用户'); ?>
 							</li>
+							<?php } else { ?>
+							<li>
+							</li>
+							<?php } ?>
 						</ul>
 					</div>
 					<div class="mod-body">
@@ -84,9 +89,14 @@
 								2. <?php _e('关注热门话题'); ?>
 								<i></i>
 							</li>
+							<?php if ($this->user_info['permission']['follow_people']) { ?>
 							<li>
 								3. <?php _e('关注热门用户'); ?>
 							</li>
+							<?php } else { ?>
+							<li class="active">
+							</li>
+							<?php } ?>
 						</ul>
 					</div>
 					<div class="mod-body">
@@ -97,7 +107,11 @@
 					</div>
 					<div class="mod-footer">
 						<a class="pull-left" onclick="welcome_step('finish');">跳过资料填写</a>
+						<?php if ($this->user_info['permission']['follow_people']) { ?>
 						<a class="btn btn-large btn-success pull-right" onclick="welcome_step('3');"><?php _e('下一步'); ?></a>
+						<?php } else { ?>
+						<a class="btn btn-large btn-success pull-right" onclick="welcome_step('finish');"><?php _e('完成'); ?></a>
+						<?php } ?>
 						<a class="btn btn-large btn-success pull-right" onclick="$('.aw-first-login.first').show();$('.aw-first-login.second').hide();"><?php _e('上一步'); ?></a>
 					</div>
 
