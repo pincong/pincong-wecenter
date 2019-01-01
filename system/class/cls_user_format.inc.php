@@ -14,15 +14,8 @@
 
 class UF
 {
-	/**
-	 * 获取头像地址
-	 *
-	 * 举个例子：$uid=12345，那么头像路径很可能(根据您部署的上传文件夹而定)会被存储为/uploads/000/01/23/45_avatar_min.jpg
-	 *
-	 * @param  int
-	 * @param  string
-	 * @return string
-	 */
+	// 获取头像地址
+	// 举个例子：$uid=12345，那么头像路径很可能(根据您部署的上传文件夹而定)会被存储为/uploads/000/01/23/45_avatar_min.jpg
 	public static function avatar(&$user_info, $size = 'min', $show_forbidden = true)
 	{
 		$all_size = array('min', 'mid', 'max');
@@ -52,7 +45,7 @@ class UF
 		}
 	}
 
-	public static function signature(&$user_info, $show_forbidden = false)
+	public static function signature(&$user_info, $show_forbidden = true)
 	{
 		if (!$user_info OR (!$show_forbidden AND $user_info['forbidden']))
 		{
@@ -61,7 +54,7 @@ class UF
 		return $user_info['signature'];
 	}
 
-	public static function user_name(&$user_info)
+	public static function name(&$user_info)
 	{
 		if (!$user_info)
 		{
@@ -70,7 +63,7 @@ class UF
 		return $user_info['user_name'];
 	}
 
-	public static function url_token(&$user_info)
+	public static function url(&$user_info)
 	{
 		if (!$user_info)
 		{

@@ -521,6 +521,7 @@ class topic_class extends AWS_MODEL
 
 		foreach ($topics as $key => $val)
 		{
+			// TODO: 何处用到?
 			$topics[$key]['focus_users'] = $follow_users_array[$topic_id_focus_uid[$val['topic_id']]];
 
 			if (!$val['url_token'])

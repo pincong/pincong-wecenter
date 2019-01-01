@@ -35,7 +35,7 @@
 								</div>
 								<div class="mod-footer clearfix">
 									<span class="pull-right more-operate text-color-999">
-										<?php if ($val['anonymous'] == 0) { ?><?php echo $val['user_info']['user_name']; ?><?php } else { ?><?php _e('匿名用户'); ?><?php } ?> 发表于 : <?php echo date_friendly($val['add_time']); ?>
+										<?php if ($val['anonymous'] == 0) { ?><?php echo UF::name($val['user_info']); ?><?php } else { ?><?php _e('匿名用户'); ?><?php } ?> 发表于 : <?php echo date_friendly($val['add_time']); ?>
 
 										<a class="text-color-999" href="article/<?php echo $val['id']; ?>"><i class="icon icon-comment"></i> <?php _e('评论'); ?> (<?php echo $val['comments']; ?>)</a>
 									</span>

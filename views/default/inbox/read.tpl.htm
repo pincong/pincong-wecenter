@@ -9,7 +9,7 @@
 						<div class="mod-head common-head">
 							<h2>
 								<a href="inbox/" class="pull-right"><?php _e('返回私信列表'); ?> »</a>
-								<?php _e('私信对话'); ?>：<?php echo $this->recipient_user['user_name']; ?>
+								<?php _e('私信对话'); ?>：<?php echo UF::name($this->recipient_user); ?>
 							</h2>
 						</div>
 						<div class="mod-body">
@@ -17,7 +17,7 @@
 							<form action="inbox/ajax/send/" method="post" id="recipient_form">
 								<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
 								<input type="hidden" name="dialog_id" value="<?php echo $this->dialog_id; ?>" />
-								<input type="hidden" name="recipient" value="<?php echo $this->recipient_user['user_name']; ?>" />
+								<input type="hidden" name="recipient" value="<?php echo UF::name($this->recipient_user); ?>" />
 								<a href="people/<?php echo $this->user_info['url_token']; ?>" data-id="<?php echo $this->user_info['uid']; ?>" class="aw-user-img aw-border-radius-5"><img src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" alt="" /></a>
 								<textarea rows="3" class="form-control message" placeholder="<?php _e('想要对ta说点什么'); ?>?" type="text" name="message" /></textarea>
 								<p>
@@ -35,7 +35,7 @@
 								<li<?php if ($val['uid'] == $this->user_id) { ?> class="active"<?php } ?>>
 									<a href="people/<?php if ($val['uid'] == $this->user_id) { ?><?php echo $this->user_info['url_token']; ?><?php } else { ?><?php echo $val['url_token']; ?><?php } ?>" data-id="<?php echo $val['uid']; ?>" class="aw-user-img aw-border-radius-5"><img src="<?php echo UF::avatar($val, 'mid'); ?>" alt="" /></a>
 									<div class="aw-item">
-										<p><a href="people/<?php if ($val['uid'] == $this->user_id) { ?><?php echo $this->user_info['url_token']; ?><?php } else { ?><?php echo $val['url_token']; ?><?php } ?>"><?php if ($val['uid'] == $this->user_id) { ?><?php _e('我'); ?><?php } else { ?><?php echo $val['user_name']; ?><?php } ?></a>: <?php echo nl2br($val['message']); ?></p>
+										<p><a href="people/<?php if ($val['uid'] == $this->user_id) { ?><?php echo $this->user_info['url_token']; ?><?php } else { ?><?php echo $val['url_token']; ?><?php } ?>"><?php if ($val['uid'] == $this->user_id) { ?><?php _e('我'); ?><?php } else { ?><?php echo UF::name($val); ?><?php } ?></a>: <?php echo nl2br($val['message']); ?></p>
 										<p class="text-color-999">
 											<?php if ($val['uid'] != $this->user_id) { ?><span class="pull-right aw-replay"><a href="javascript:;" onclick="$.scrollTo(($('#recipient_form').offset()['top']) - 20, 600, {queue:true});$('.message').focus();"><?php _e('回复'); ?></a></span><?php } ?>
 											<?php echo date_friendly($val['add_time']); ?><?php if ($val['receipt'] AND $val['uid'] == $this->user_id) { ?> (<?php _e('对方于 %s 已读', date_friendly($val['receipt'])); ?>)<?php } ?>

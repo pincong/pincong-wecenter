@@ -47,7 +47,7 @@
 
             <div class="form-group">
                 <label><?php _e('用户名'); ?></label>
-                <input type="text" class="form-control" placeholder="<?php _e('用户名'); ?>" value="<?php echo $this->user_info['user_name']; ?>" disabled="disabled" />
+                <input type="text" class="form-control" placeholder="<?php _e('用户名'); ?>" value="<?php echo UF::name($this->user_info); ?>" disabled="disabled" />
                 <i class="icon icon-user"></i>
             </div>
             <div class="form-group">

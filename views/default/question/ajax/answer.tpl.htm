@@ -15,7 +15,7 @@
 		<div class="title">
 			<p>
 				<?php if ($this->answer_info['anonymous'] == 0) { ?>
-					<a class="aw-user-name" href="people/<?php echo $this->answer_info['user_info']['url_token']; ?>" data-id="<?php echo $this->answer_info['uid']; ?>"><?php echo $this->answer_info['user_info']['user_name']; ?></a>
+					<a class="aw-user-name" href="people/<?php echo $this->answer_info['user_info']['url_token']; ?>" data-id="<?php echo $this->answer_info['uid']; ?>"><?php echo UF::name($this->answer_info['user_info']); ?></a>
 				<?php } else { ?>
 					<a class="aw-user-name" href="javascript:;"><?php _e('匿名用户'); ?></a>
 				<?php } ?>
@@ -24,14 +24,6 @@
 						<i class="icon-v<?php if ($this->answer_info['user_info']['verified'] == 'enterprise') { ?> i-ve<?php } ?>" title="<?php if ($this->answer_info['user_info']['verified'] == 'enterprise') { ?>企业认证<?php } else { ?>个人认证<?php } ?>"></i>
 					<?php } ?>
 					<?php if ($this->answer_info['user_info']['signature']) { ?> - <span class="text-color-999"><?php echo $this->answer_info['user_info']['signature']; ?></span><?php } ?>
-				<?php } ?>
-			</p>
-			<p class="text-color-999 aw-agree-by<?php if (sizeof($this->answer_info['agree_users']) == 0) { ?> collapse<?php } ?>">
-				<?php _e('赞同来自'); ?>:
-
-				<?php if ($this->answer_info['agree_users']) { ?>
-				<?php $count = 0; foreach($this->answer_info['agree_users'] AS $uid => $user) { ?>
-				<?php if ($count > 0) { ?><em<?php if ($count >= 5) { ?> class="collapse"<?php } ?>>、</em><?php } ?><a href="people/<?php echo $user['url_token']; ?>" data-id="<?php echo $user['uid']; ?>" class="aw-user-name<?php if ($count >= 5) { ?> collapse<?php } ?>"><?php echo $user['user_name']; ?></a><?php $count++; } ?><?php } ?><?php if (count($this->answer_info['agree_users']) > 5) { ?><a href="javascript:;" class="aw-agree-by-show" onclick="$(this).parents('.aw-agree-by').find('em,a').removeClass('collapse'); $(this).remove();"><?php _e('更多'); ?> »</a>
 				<?php } ?>
 			</p>
 		</div>
@@ -54,10 +46,10 @@
 			<!-- 投票栏 -->
 			<span class="operate">
 			<?php if ($this->user_id AND $this->user_id != $this->answer_info['user_info']['uid']) { ?>
-				<a href="javascript:;" class="agree<?php if ($this->answer_info['agree_status'] == 1) { ?> active<?php } ?>" onclick="AWS.User.agree_vote(this, '<?php echo $this->user_info['user_name']; ?>', <?php echo $this->answer_info['answer_id']; ?>);">
+				<a href="javascript:;" class="agree<?php if ($this->answer_info['agree_status'] == 1) { ?> active<?php } ?>" onclick="AWS.User.agree_vote(this, '<?php echo UF::name($this->user_info); ?>', <?php echo $this->answer_info['answer_id']; ?>);">
 					<i class="icon icon-agree"></i> <b class="count"><?php echo $this->answer_info['agree_count']; ?></b>
 				</a>
-				<a href="javascript:;" class="disagree<?php if ($this->answer_info['agree_status'] == -1) { ?>active<?php } ?>" onclick="AWS.User.disagree_vote(this, '<?php echo $this->user_info['user_name']; ?>', <?php echo $this->answer_info['answer_id']; ?>);">
+				<a href="javascript:;" class="disagree<?php if ($this->answer_info['agree_status'] == -1) { ?>active<?php } ?>" onclick="AWS.User.disagree_vote(this, '<?php echo UF::name($this->user_info); ?>', <?php echo $this->answer_info['answer_id']; ?>);">
 					<i class="icon icon-disagree"></i>
 				</a>
 			<?php } else { ?>

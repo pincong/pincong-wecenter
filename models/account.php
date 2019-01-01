@@ -1050,6 +1050,7 @@ class account_class extends AWS_MODEL
 
                 if ($users_ids_recommend[$val['uid']]['type'] == 'friend')
                 {
+					// TODO: 何处用到?
                     $users_list[$key]['friend_users'] = $follow_users_info[$users_ids_recommend[$val['uid']]['fans_uid']];
                 }
                 else if ($users_ids_recommend[$val['uid']]['type'] == 'topic')

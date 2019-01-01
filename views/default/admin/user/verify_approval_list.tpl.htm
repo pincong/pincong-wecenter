@@ -31,7 +31,7 @@
 						<?php foreach ($this->approval_list AS $key => $val) { ?>
 						<tr>
 							<?php if ($_GET['status'] != 1) { ?><td><input type="checkbox" class="approval_ids" name="approval_ids[]" value="<?php echo $val['id']; ?>"></td><?php } ?>
-							<td><a href="people/<?php echo $this->users_info[$val['uid']]['url_token']; ?>" target="_blank"><?php echo $this->users_info[$val['uid']]['user_name']; ?></a></td>
+							<td><a href="people/<?php echo $this->users_info[$val['uid']]['url_token']; ?>" target="_blank"><?php echo UF::name($this->users_info[$val['uid']]); ?></a></td>
 							<td><?php echo $val['name']; ?></td>
 							<td><?php if ($val['type'] == 'enterprise') { ?><?php _e('机构认证'); ?><?php } else { ?><?php _e('个人认证'); ?><?php } ?></td>
 							<td><?php echo $val['reason']; ?></td>
