@@ -235,7 +235,8 @@ class question_class extends AWS_MODEL
 		}
 		$this->model('question')->log($question_id, 'QUESTION', '编辑问题', $uid, $is_anonymous);
 
-		$this->model('posts')->set_posts_index($question_id, 'question');
+		// TODO: 修改分类
+		//$this->model('posts')->set_posts_index($question_id, 'question');
 
 		return true;
 	}
