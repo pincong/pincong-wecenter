@@ -1243,13 +1243,15 @@ AWS.init_answer_editor = function()
 	if (G_ADVANCED_EDITOR_ENABLE == 'Y')
 	{
 		// 初始化编辑器
-		AWS.create_editor('editor_reply');
+		AWS.create_editor(document.getElementById('editor_reply'));
 	}
 }
 
 // 创建编辑器
-AWS.create_editor = function(element_id, max_btn)
+AWS.create_editor = function(el, max_btn)
 {
+	if (G_ADVANCED_EDITOR_ENABLE != 'Y') return;
+
 	var empty_handler = {
 		format: function (element, content) {
 			return content;
@@ -1263,7 +1265,7 @@ AWS.create_editor = function(element_id, max_btn)
 	sceditor.formats.bbcode.set('color', empty_handler);
 	sceditor.formats.bbcode.set('table', empty_handler);
 
-	return sceditor.create(document.getElementById(element_id), {
+	return sceditor.create(el, {
 		width: '100%',
 		resizeEnabled: false,
 		emoticonsEnabled: false,

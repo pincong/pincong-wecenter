@@ -59,8 +59,10 @@
 			<!-- 可显示/隐藏的操作box -->
 			<div class="more-operate">
 				<?php if ($this->user_id) { ?>
-					<?php if ($this->user_info['permission']['edit_question'] OR $this->answer_info['uid'] == $this->user_id) { ?>
-					<a class="text-color-999" href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/publish/edit/answer/id-<?php echo $this->answer_info['answer_id']; ?>', AWS.init_answer_editor);"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
+					<?php if ($this->answer_info['uid'] == $this->user_id) { // 高级编辑器 ?>
+						<a class="text-color-999" href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/publish/edit/answer/id-<?php echo $this->answer_info['answer_id']; ?>', AWS.init_answer_editor);"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
+					<?php } elseif ($this->user_info['permission']['edit_question']) { // 纯文本编辑器 ?>
+						<a class="text-color-999" href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/publish/edit/answer/id-<?php echo $this->answer_info['answer_id']; ?>');"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
 					<?php } ?>
 
 					<a href="javascript:;" onclick="AWS.User.add_favorite('answer', '<?php echo $this->answer_info['answer_id']; ?>');" class="text-color-999"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>

@@ -153,13 +153,12 @@
 var CATEGORY_ID = <?php echo $this->question_info['category_id']; ?>;
 
 $(document).ready(function () {
-	if (G_ADVANCED_EDITOR_ENABLE == 'Y')
-	{
-		// 初始化编辑器
-		AWS.create_editor('wmd-input', true);
-	}
-
 	AWS.init_later_time_helper($('#later_time_input'), $('#later_time_label'));
+	<?php if (!$this->question_info['uid'] OR $this->question_info['uid'] == $this->user_id) { ?>
+		// 初始化编辑器
+		AWS.create_editor(document.getElementById('wmd-input'), true);
+	<?php } ?>
+
 });
 </script>
 

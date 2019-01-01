@@ -53,7 +53,7 @@
 									<div class="mod-head">
 										<div class="wmd-panel">
 											<textarea class="wmd-input form-control autosize editor" id="wmd-input" rows="15" name="message"><?php echo $this->article_info['message']; ?></textarea>
-								        </div>
+										</div>
 									</div>
 									<div class="mod-body">
 										<?php if (get_setting('image_upload_link')) { ?><a class="pull-right" href="<?php echo get_setting('image_upload_link'); ?>" rel="nofollow noreferrer noopener" target="_blank"><?php _e('上传图片'); ?></a><?php } ?>
@@ -148,13 +148,12 @@
 var CATEGORY_ID = <?php echo $this->article_info['category_id']; ?>;
 
 $(document).ready(function () {
-	if (G_ADVANCED_EDITOR_ENABLE == 'Y')
-	{
-		// 初始化编辑器
-		AWS.create_editor('wmd-input', true);
-	}
-
 	AWS.init_later_time_helper($('#later_time_input'), $('#later_time_label'));
+	<?php if (!$this->article_info['uid'] OR $this->article_info['uid'] == $this->user_id) { ?>
+		// 初始化编辑器
+		AWS.create_editor(document.getElementById('wmd-input'), true);
+	<?php } ?>
+
 });
 </script>
 
