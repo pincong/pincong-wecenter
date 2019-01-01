@@ -88,7 +88,7 @@ class ajax extends AWS_CONTROLLER
 		
 		
 
-		if (!$this->model('publish')->check_article_comment_limit_rate())
+		if (!$this->model('publish')->check_article_comment_limit_rate($this->user_id))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天的文章评论已经达到上限')));
 		}

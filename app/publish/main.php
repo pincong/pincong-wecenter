@@ -74,7 +74,7 @@ class main extends AWS_CONTROLLER
 				H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name')), '/currency/rule/');
 			}
 
-			if (!$this->model('publish')->check_question_limit_rate())
+			if (!$this->model('publish')->check_question_limit_rate($this->user_id))
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('你今天发布的问题已经达到上限'));
 			}
@@ -150,7 +150,7 @@ class main extends AWS_CONTROLLER
 				H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name')), '/currency/rule/');
 			}
 
-			if (!$this->model('publish')->check_article_limit_rate())
+			if (!$this->model('publish')->check_article_limit_rate($this->user_id))
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('你今天发布的文章已经达到上限'));
 			}
