@@ -46,18 +46,25 @@ class TPL
 		return self::$view;
 	}
 
-	public static function output($template_filename, $display = true)
+	public static function output($template_filename, $display = true, $plugin_name = null)
 	{
 		if (!strstr($template_filename, self::$template_ext))
 		{
 			$template_filename .= self::$template_ext;
 		}
 
-		$display_template_filename = 'default/' . $template_filename;
+		if ($plugin_name)
+		{
+			$display_template_filename = '../plugins/' .$plugin_name. '/view/' . $template_filename;
+		}
+		else
+		{
+			$display_template_filename = 'default/' . $template_filename;
+		}
 
 		if (self::$in_app)
 		{
-			if (get_setting('ui_style') != 'default')
+			if (!$plugin_name AND get_setting('ui_style') != 'default')
 			{
 				$custom_template_filename =  get_setting('ui_style') . '/' . $template_filename;
 
