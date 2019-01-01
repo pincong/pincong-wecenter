@@ -201,7 +201,7 @@ class activity_class extends AWS_MODEL
 		return $list;
 	}
 
-	public static function delete_expired_data()
+	public function delete_expired_data()
 	{
 		$days = intval(get_setting('expiration_user_actions'));
 		if (!$days)
