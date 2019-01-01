@@ -114,7 +114,7 @@ class posts_class extends AWS_MODEL
 
 	public function get_posts_list($post_type, $page = 1, $per_page = 10, $sort = null, $topic_ids = null, $category_id = null, $answer_count = null, $day = 30, $is_recommend = false)
 	{
-		$order_key = 'add_time DESC';
+		$order_key = 'add_time DESC, id DESC';
 
 		switch ($sort)
 		{
@@ -129,7 +129,7 @@ class posts_class extends AWS_MODEL
 				break;
 
 			case 'new' :
-				$order_key = 'update_time DESC';
+				$order_key = 'update_time DESC, id DESC';
 
 				break;
 		}
