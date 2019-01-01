@@ -99,6 +99,11 @@ class reputation_class extends AWS_MODEL
 			return false;
 		}
 
+		if ($user_info['flagged'])
+		{
+			return false;
+		}
+
 		$agree_count_delta = intval($vote);
 		$reputation_delta = $agree_count_delta * intval($reputation_factor);
 

@@ -204,6 +204,13 @@ class ajax extends AWS_CONTROLLER
 				), 1, null));
 			}
 
+			if ($user_info['flagged'])
+			{
+				H::ajax_json_output(AWS_APP::RSM(array(
+					'url' => get_js_url('/')
+				), 1, null));
+			}
+
 			if (get_setting('site_close') == 'Y' AND $user_info['group_id'] != 1)
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, -1, get_setting('close_notice')));
