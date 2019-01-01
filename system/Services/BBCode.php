@@ -138,6 +138,8 @@ class Services_BBCode
         $this->bbcode_table["/\[center\](.*?)\[\/center\]/is"] = '_plain_text_callback';
         $this->bbcode_table["/\[right\](.*?)\[\/right\]/is"] = '_plain_text_callback';
         $this->bbcode_table["/\[justify\](.*?)\[\/justify\]/is"] = '_plain_text_callback';
+        $this->bbcode_table["/\[sub\](.*?)\[\/sub\]/is"] = '_plain_text_callback';
+        $this->bbcode_table["/\[sup\](.*?)\[\/sup\]/is"] = '_plain_text_callback';
 
         $this->bbcode_table["/\[size=(.*?)\](.*?)\[\/size\]/is"] = '_plain_text_2_callback';
         $this->bbcode_table["/\[font=(.*?)\](.*?)\[\/font\]/is"] = '_plain_text_2_callback';
