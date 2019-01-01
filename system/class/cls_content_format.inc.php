@@ -14,12 +14,21 @@
 
 class CF
 {
-	private static function &deleted()
+	private static function &txt_deleted()
 	{
 		static $text;
 		if (!isset($text))
 		{
 			$text = '<s class="aw-deleted">' . AWS_APP::lang()->_t('已删除') . '</s>';
+		}
+		return $text;
+	}
+	private static function &txt_hidden()
+	{
+		static $text;
+		if (!isset($text))
+		{
+			$text = '<i class="aw-deleted">' . AWS_APP::lang()->_t('已隐藏') . '</i>';
 		}
 		return $text;
 	}
@@ -111,7 +120,7 @@ class CF
 	{
 		if ($user_info['flagged'] == 2)
 		{
-			return self::deleted();
+			return self::txt_hidden();
 		}
 
 		if ($kb = self::get_kb($user_info, $key))
@@ -120,7 +129,7 @@ class CF
 		}
 		if (!isset($string))
 		{
-			return self::deleted();
+			return self::txt_deleted();
 		}
 		return $string;
 	}
@@ -166,7 +175,7 @@ class CF
 
 		if (!isset($string))
 		{
-			return self::deleted();
+			return self::txt_deleted();
 		}
 		return nl2br(FORMAT::parse_bbcode($string));
 	}
@@ -182,7 +191,7 @@ class CF
 
 		if (!isset($string))
 		{
-			return self::deleted();
+			return self::txt_deleted();
 		}
 		return nl2br(FORMAT::parse_links($string));
 	}
