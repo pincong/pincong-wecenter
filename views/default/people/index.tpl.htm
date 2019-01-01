@@ -8,7 +8,7 @@
                     <!-- 用户数据内容 -->
                     <div class="aw-mod aw-user-detail-box">
                         <div class="mod-head">
-                            <img src="<?php echo UF::avatar($this->user, 'max'); ?>" alt="<?php echo UF::name($this->user); ?>" />
+                            <img src="<?php echo UF::avatar($this->user, 'max', $this->user_info['permission']['is_administrator']); ?>" alt="<?php echo UF::name($this->user); ?>" />
                             <span class="pull-right operate">
                             <?php if ($this->user['uid'] != $this->user_id AND $this->user_id) { ?>
 
@@ -336,7 +336,7 @@
                             <?php if ($this->friends_list) { ?>
                             <p>
                                 <?php foreach ($this->friends_list AS $key => $val) { ?>
-                                    <a class="aw-user-name" data-id="<?php echo $val['uid']; ?>" href="<?php echo UF::url($val); ?>"><img src="<?php echo UF::avatar($val, 'mid'); ?>" alt="" /></a>
+                                    <a class="aw-user-name" data-id="<?php echo $val['uid']; ?>" href="<?php echo UF::url($val); ?>"><img src="<?php echo UF::avatar($val, 'mid', $this->user_info['permission']['is_administrator']); ?>" alt="" /></a>
                                 <?php } ?>
                             </p>
                             <?php } ?>
@@ -352,7 +352,7 @@
                             <?php if ($this->fans_list) { ?>
                             <p>
                                 <?php foreach ($this->fans_list AS $key => $val) { ?>
-                                    <a class="aw-user-name" data-id="<?php echo $val['uid']; ?>" href="<?php echo UF::url($val); ?>"><img src="<?php echo UF::avatar($val, 'mid'); ?>" alt=""></a>
+                                    <a class="aw-user-name" data-id="<?php echo $val['uid']; ?>" href="<?php echo UF::url($val); ?>"><img src="<?php echo UF::avatar($val, 'mid', $this->user_info['permission']['is_administrator']); ?>" alt=""></a>
                                 <?php } ?>
                             </p>
                             <?php } ?>

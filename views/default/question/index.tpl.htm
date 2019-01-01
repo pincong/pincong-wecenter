@@ -155,7 +155,7 @@
 									<?php _e('已邀请'); ?>:
 									<?php if ($this->invite_users) { ?>
 									<?php foreach($this->invite_users as $key => $val) { ?>
-										<a class="text-color-999 invite-list-user" data-id="<?php echo $val['uid']; ?>" href="<?php echo UF::url($val); ?>" data-id="<?php echo $val['uid']; ?>" data-original-title="<?php echo UF::name($val); ?>" data-placement="bottom" data-toggle="tooltip"><img src="<?php echo UF::avatar($val, 'mid'); ?>" /></a>
+										<a class="text-color-999 invite-list-user" data-id="<?php echo $val['uid']; ?>" href="<?php echo UF::url($val); ?>" data-id="<?php echo $val['uid']; ?>" data-original-title="<?php echo UF::name($val); ?>" data-placement="bottom" data-toggle="tooltip"><img src="<?php echo UF::avatar($val, 'mid', $this->user_info['permission']['is_administrator']); ?>" /></a>
 									<?php } ?>
 									<?php } ?>
 								</div>
@@ -165,7 +165,7 @@
 								<ul>
 									<?php foreach ($this->helpful_users AS $key => $val) { ?>
 										<li>
-											<a class="aw-user-img pull-left" data-id="<?php echo $val['user_info']['uid']; ?>" href="<?php echo UF::url($val['user_info']); ?>"><img class="img" alt="" src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" /></a>
+											<a class="aw-user-img pull-left" data-id="<?php echo $val['user_info']['uid']; ?>" href="<?php echo UF::url($val['user_info']); ?>"><img class="img" alt="" src="<?php echo UF::avatar($val['user_info'], 'mid', $this->user_info['permission']['is_administrator']); ?>" /></a>
 											<div class="main">
 												<?php if ($val['has_invite']) { ?>
 													<a class="pull-right btn btn-mini btn-success active" data-value="<?php echo UF::name($val['user_info']); ?>" data-id="<?php echo $val['user_info']['uid']; ?>" onclick="AWS.User.disinvite_user($(this))"><?php _e('取消邀请'); ?></a>
@@ -238,7 +238,7 @@
 										<?php } ?>
 										<a class="anchor" name="answer_<?php echo $val['answer_id']; ?>"></a>
 										<!-- 用户头像 -->
-										<?php if ($val['anonymous'] == 0) { ?><a class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>" data-id="<?php echo $val['uid']; ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a><?php } else { ?><a class="aw-user-img aw-border-radius-5" href="javascript:;"><img src="<?php echo G_STATIC_URL; ?>/common/avatar-mid-img.png" alt="<?php _e('匿名用户'); ?>" /></a><?php } ?>
+										<?php if ($val['anonymous'] == 0) { ?><a class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>" data-id="<?php echo $val['uid']; ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid', $this->user_info['permission']['is_administrator']); ?>" alt="" /></a><?php } else { ?><a class="aw-user-img aw-border-radius-5" href="javascript:;"><img src="<?php echo G_STATIC_URL; ?>/common/avatar-mid-img.png" alt="<?php _e('匿名用户'); ?>" /></a><?php } ?>
 										<!-- end 用户头像 -->
 										<div class="title">
 											<p>
@@ -425,7 +425,7 @@
 						<div class="mod-body">
 							<dl>
 								<dt class="pull-left aw-border-radius-5">
-									<a href="<?php echo UF::url($this->question_info['user_info']); ?>"><img alt="" src="<?php echo UF::avatar($this->question_info['user_info'], 'mid'); ?>" /></a>
+									<a href="<?php echo UF::url($this->question_info['user_info']); ?>"><img alt="" src="<?php echo UF::avatar($this->question_info['user_info'], 'mid', $this->user_info['permission']['is_administrator']); ?>" /></a>
 								</dt>
 								<dd class="pull-left">
 									<a class="aw-user-name" href="<?php echo UF::url($this->question_info['user_info']); ?>" data-id="<?php echo $this->question_info['user_info']['uid']; ?>"><?php echo UF::name($this->question_info['user_info']);?></a>

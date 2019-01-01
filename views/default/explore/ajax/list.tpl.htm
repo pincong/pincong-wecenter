@@ -1,7 +1,7 @@
 <?php if ($this->posts_list) { ?>
 <?php foreach($this->posts_list as $key => $val) { ?>
 <div class="aw-item <?php if ($val['question_id']) { ?><?php if ($val['answer_count'] == 0) { ?>active<?php } ?><?php } else {?>article<?php } ?>" data-topic-id="<?php foreach ($val['topics'] AS $k => $v) { ?><?php echo $v['topic_id']; ?>,<?php } ?>">
-	<?php if ($val['anonymous'] == 0) { ?><a class="aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>" href="<?php echo UF::url($val['user_info']); ?>" rel="nofollow"><img src="<?php echo UF::avatar($val['user_info'], 'max'); ?>" alt="" /><?php if ($val['user_info']['verified']) { ?><?php if ($val['user_info']['verified'] == 'personal') { ?><i class="icon icon-v"></i><?php } else { ?><i class="icon icon-v i-ve"></i><?php } ?><?php } ?></a><?php } else { ?><a class="aw-user-name" href="javascript:;"><img src="<?php echo G_STATIC_URL; ?>/common/avatar-max-img.png" alt="<?php _e('匿名用户'); ?>" title="<?php _e('匿名用户'); ?>" /></a><?php } ?>
+	<?php if ($val['anonymous'] == 0) { ?><a class="aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>" href="<?php echo UF::url($val['user_info']); ?>" rel="nofollow"><img src="<?php echo UF::avatar($val['user_info'], 'max', $this->user_info['permission']['is_administrator']); ?>" alt="" /><?php if ($val['user_info']['verified']) { ?><?php if ($val['user_info']['verified'] == 'personal') { ?><i class="icon icon-v"></i><?php } else { ?><i class="icon icon-v i-ve"></i><?php } ?><?php } ?></a><?php } else { ?><a class="aw-user-name" href="javascript:;"><img src="<?php echo G_STATIC_URL; ?>/common/avatar-max-img.png" alt="<?php _e('匿名用户'); ?>" title="<?php _e('匿名用户'); ?>" /></a><?php } ?>
 	<div class="aw-question-content">
 		<h4>
 			<?php if ($val['post_type'] == 'question') { ?>
@@ -17,7 +17,7 @@
 		<div class="pull-right hidden-xs contribute">
 			<span class="pull-right text-color-999"><?php _e('贡献'); ?></span>
 			<?php foreach ($val['answer_users'] AS $answer_user) { ?>
-			<a class="aw-user-name" data-id="<?php echo $answer_user['uid']; ?>" href="<?php echo UF::url($answer_user); ?>" rel="nofollow"><img src="<?php echo UF::avatar($answer_user, 'mid'); ?>" alt="" /></a>
+			<a class="aw-user-name" data-id="<?php echo $answer_user['uid']; ?>" href="<?php echo UF::url($answer_user); ?>" rel="nofollow"><img src="<?php echo UF::avatar($answer_user, 'mid', $this->user_info['permission']['is_administrator']); ?>" alt="" /></a>
 			<?php } ?>
 		</div>
 		<?php } else if ($val['question_id']) { ?>

@@ -15,7 +15,7 @@
 							<div class="aw-item">
 								<span class="aw-user-sort-count aw-border-radius-5<?php if (($key + 1 + ((intval($_GET['page']) - 1) * get_setting('contents_per_page'))) <= 3) { ?> active<?php } ?>"><i class="icon icon-flag"></i> <em><?php if (($key + 1 + ((intval($_GET['page']) - 1) * get_setting('contents_per_page'))) < 99) { echo ($key + 1 + ((intval($_GET['page']) - 1) * get_setting('contents_per_page'))); } else { echo '*'; }; ?></em></span>
 								<a class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val); ?>">
-									<img alt="" src="<?php echo UF::avatar($val, 'mid'); ?>" />
+									<img alt="" src="<?php echo UF::avatar($val, 'mid', $this->user_info['permission']['is_administrator']); ?>" />
 								</a>
 								<p class="text-color-999 title">
 									<a href="<?php echo UF::url($val); ?>" class="aw-user-name"><?php echo UF::name($val); ?></a>

@@ -13,7 +13,7 @@
 						<div class="aw-item">
     						<?php if ($val['anonymous'] == 0) { ?>
 							<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>">
-								<img alt="" src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" />
+								<img alt="" src="<?php echo UF::avatar($val['user_info'], 'mid', $this->user_info['permission']['is_administrator']); ?>" />
 							</a>
     						<?php } else { ?>
 							<a class="aw-user-name" href="javascript:;">

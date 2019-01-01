@@ -139,7 +139,7 @@
 									<div class="mod-head">
 										<?php if ($val['anonymous'] == 0) { ?>
 										<a class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>">
-											<img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" />
+											<img src="<?php echo UF::avatar($val['user_info'], 'mid', $this->user_info['permission']['is_administrator']); ?>" alt="" />
 										</a>
 										<?php } else { ?>
 										<a class="aw-user-img aw-border-radius-5" href="javascript:;">
@@ -281,7 +281,7 @@
 						<div class="mod-body">
 							<dl>
 								<dt class="pull-left aw-border-radius-5">
-									<a href="<?php echo UF::url($this->article_info['user_info']); ?>"><img alt="" src="<?php echo UF::avatar($this->article_info['user_info'], 'mid'); ?>" /></a>
+									<a href="<?php echo UF::url($this->article_info['user_info']); ?>"><img alt="" src="<?php echo UF::avatar($this->article_info['user_info'], 'mid', $this->user_info['permission']['is_administrator']); ?>" /></a>
 								</dt>
 								<dd class="pull-left">
 									<a class="aw-user-name" href="<?php echo UF::url($this->article_info['user_info']); ?>" data-id="<?php echo $this->article_info['user_info']['uid']; ?>"><?php echo UF::name($this->article_info['user_info']);?></a>

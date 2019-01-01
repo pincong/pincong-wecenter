@@ -10,7 +10,7 @@
 		<?php } ?>
 		<a class="anchor" name="answer_<?php echo $this->answer_info['answer_id']; ?>"></a>
 		<!-- 用户头像 -->
-		<?php if ($this->answer_info['anonymous'] == 0) { ?><a class="aw-user-img aw-border-radius-5 pull-right" href="<?php echo UF::url($this->answer_info['user_info']); ?>" data-id="<?php echo $this->answer_info['uid']; ?>"><img src="<?php echo UF::avatar($this->answer_info['user_info'], 'mid'); ?>" alt="" /></a><?php } else { ?><a class="aw-user-img aw-border-radius-5 pull-right" href="javascript:;"><img src="<?php echo G_STATIC_URL; ?>/common/avatar-mid-img.png" alt="<?php _e('匿名用户'); ?>" /></a><?php } ?>
+		<?php if ($this->answer_info['anonymous'] == 0) { ?><a class="aw-user-img aw-border-radius-5 pull-right" href="<?php echo UF::url($this->answer_info['user_info']); ?>" data-id="<?php echo $this->answer_info['uid']; ?>"><img src="<?php echo UF::avatar($this->answer_info['user_info'], 'mid', $this->user_info['permission']['is_administrator']); ?>" alt="" /></a><?php } else { ?><a class="aw-user-img aw-border-radius-5 pull-right" href="javascript:;"><img src="<?php echo G_STATIC_URL; ?>/common/avatar-mid-img.png" alt="<?php _e('匿名用户'); ?>" /></a><?php } ?>
 		<!-- end 用户头像 -->
 		<div class="title">
 			<p>

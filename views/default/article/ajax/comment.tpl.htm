@@ -2,7 +2,7 @@
 	<div class="mod-head">
 		<?php if ($this->comment_info['anonymous'] == 0) { ?>
 		<a class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($this->comment_info['user_info']); ?>">
-			<img src="<?php echo UF::avatar($this->comment_info['user_info'], 'mid'); ?>" alt="" />
+			<img src="<?php echo UF::avatar($this->comment_info['user_info'], 'mid', $this->user_info['permission']['is_administrator']); ?>" alt="" />
 		</a>
 		<?php } else { ?>
 		<a class="aw-user-img aw-border-radius-5" href="javascript:;">
