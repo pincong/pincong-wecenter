@@ -104,10 +104,7 @@ class question_class extends AWS_MODEL
 			return $questions[$question_id];
 		}
 
-		//TODO: 延迟显示
-        //$and = ' AND add_time <= ' . real_time();
-		$and = '';
-		if ($question = $this->fetch_row('question', 'question_id = ' . intval($question_id) . $and))
+		if ($question = $this->fetch_row('question', 'question_id = ' . intval($question_id)))
 		{
 			if (-$question['agree_count'] >= get_setting('question_downvote_fold'))
 			{
@@ -129,11 +126,7 @@ class question_class extends AWS_MODEL
 
 		array_walk_recursive($question_ids, 'intval_string');
 
-		//TODO: 延迟显示
-        //$and = ' AND add_time <= ' . real_time();
-		$and = '';
-
-		if ($questions_list = $this->fetch_all('question', "question_id IN(" . implode(',', $question_ids) . ")" . $and))
+		if ($questions_list = $this->fetch_all('question', "question_id IN(" . implode(',', $question_ids) . ")"))
 		{
 			$question_downvote_fold = get_setting('question_downvote_fold');
 			foreach ($questions_list AS $key => $val)
@@ -423,10 +416,7 @@ class question_class extends AWS_MODEL
 
 		if ($question_ids)
 		{
-			//TODO: 延迟显示
-            //$and = ' AND add_time <= ' . real_time();
-			$and = '';
-			return $this->fetch_all('question', "question_id IN(" . implode(',', $question_ids) . ")" . $and, 'add_time DESC');
+			return $this->fetch_all('question', "question_id IN(" . implode(',', $question_ids) . ")", 'add_time DESC');
 		}
 	}
 
