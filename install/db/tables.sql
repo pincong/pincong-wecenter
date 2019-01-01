@@ -768,7 +768,7 @@ CREATE TABLE IF NOT EXISTS `aws_video_danmaku` (
   `mode` int(10) DEFAULT '0',
   `size` int(10) DEFAULT '0',
   `color` int(10) DEFAULT '0',
-  `text` text
+  `text` text,
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
   KEY `video_id` (`video_id`),
