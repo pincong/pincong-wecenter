@@ -114,40 +114,6 @@ class answer_class extends AWS_MODEL
 
 	/**
 	 *
-	 * 保存问题回复内容
-	 */
-	public function save_answer($question_id, $answer_content, $uid, $anonymous = 0)
-	{
-		if (!$question_info = $this->model('question')->get_question_info_by_id($question_id))
-		{
-			return false;
-		}
-
-        $now = fake_time();
-
-		if (!$answer_id = $this->insert('answer', array(
-			'question_id' => $question_info['question_id'],
-			'answer_content' => htmlspecialchars($answer_content),
-			'add_time' => $now,
-			'uid' => intval($uid),
-			'category_id' => $question_info['category_id'],
-			'anonymous' => intval($anonymous)
-		)))
-		{
-			return false;
-		}
-
-		$this->update('question', array(
-			'update_time' => $now,
-		), 'question_id = ' . intval($question_id));
-
-		$this->model('question')->update_answer_count($question_id);
-
-		return $answer_id;
-	}
-
-	/**
-	 *
 	 * 更新问题回复内容
 	 */
 	public function update_answer($answer_id, $question_id, $answer_content, $uid, $anonymous = null)

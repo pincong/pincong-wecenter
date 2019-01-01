@@ -69,8 +69,8 @@ class vote_class extends AWS_MODEL
 
 		if (!$this->model('currency')->fetch_log($uid, $type_agree, $item_id))
 		{
-			$this->model('currency')->process($uid, $type_agree, get_setting('currency_system_config_agree'), $note_agree, $item_id);
-			$this->model('currency')->process($item_uid, $type_item_agreed, get_setting('currency_system_config_agreed'), $note_item_agreed, $item_id);
+			$this->model('currency')->process($uid, $type_agree, get_setting('currency_system_config_agree'), $note_agree, $item_id, $type);
+			$this->model('currency')->process($item_uid, $type_item_agreed, get_setting('currency_system_config_agreed'), $note_item_agreed, $item_id, $type);
 		}
 	}
 
@@ -123,8 +123,8 @@ class vote_class extends AWS_MODEL
 
 		if (!$this->model('currency')->fetch_log($uid, $type_disagree, $item_id))
 		{
-			$this->model('currency')->process($uid, $type_disagree, get_setting('currency_system_config_disagree'), $note_disagree, $item_id);
-			$this->model('currency')->process($item_uid, $type_item_disagreed, get_setting('currency_system_config_disagreed'), $note_item_disagreed, $item_id);
+			$this->model('currency')->process($uid, $type_disagree, get_setting('currency_system_config_disagree'), $note_disagree, $item_id, $type);
+			$this->model('currency')->process($item_uid, $type_item_disagreed, get_setting('currency_system_config_disagreed'), $note_item_disagreed, $item_id, $type);
 		}
 	}
 

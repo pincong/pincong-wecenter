@@ -35,6 +35,7 @@ class ajax extends AWS_CONTROLLER
 		HTTP::no_cache_header();
 	}
 
+	// TODO: 删除
 	public function fetch_question_category_action()
 	{
 		if (get_setting('category_enable') != 'Y')
@@ -90,9 +91,9 @@ class ajax extends AWS_CONTROLLER
 
 		$_POST['message'] = my_trim($_POST['message']);
 		// TODO: 在管理后台添加字数选项
-		if (cjk_strlen($_POST['message']) > 50000)
+		if (cjk_strlen($_POST['message']) > 20000)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容字数不得多于 50000 字')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容字数不得多于 20000 字')));
 		}
 
 		if ($_POST['topics'])
@@ -182,7 +183,11 @@ class ajax extends AWS_CONTROLLER
 
 		if ($_POST['anonymous'])
 		{
-			$anonymous_uid = $this->get_anonymous_uid('question');
+			$publish_uid = $this->get_anonymous_uid('question');
+		}
+		else
+		{
+			$publish_uid = $this->user_id;
 		}
 
 		// !注: 来路检测后面不能再放报错提示
@@ -193,43 +198,28 @@ class ajax extends AWS_CONTROLLER
 
 		set_repeat_submission_digest($_POST['title']);
 
+		$question_id = $this->model('publish')->publish_question(array(
+			'title' => $_POST['title'],
+			'message' => $_POST['message'],
+			'category_id' => $_POST['category_id'],
+			'uid' => $publish_uid,
+			'topics' => $_POST['topics'],
+			'permission_create_topic' => $this->user_info['permission']['create_topic'],
+			'ask_user_id' => $_POST['ask_user_id'],
+			'auto_focus' => !$_POST['anonymous'],
+		), $this->user_id, $_POST['later']);
+
 		if ($_POST['later'])
 		{
 			// 延迟显示
-			$this->model('publish')->schedule(
-				'question',
-				real_time() + $_POST['later'] * 60 + rand(-30, 30),
-				$_POST['title'],
-				$_POST['message'],
-				$this->user_id,
-				$_POST['anonymous'],
-				$_POST['category_id'],
-				array(
-					'topics' => $_POST['topics'],
-					'ask_user_id' => $_POST['ask_user_id'],
-					'permission_create_topic' => $this->user_info['permission']['create_topic']
-				)
-			);
-
-			$url = get_js_url('/publish/delay_display/');
-		}
-		else
-		{
-			$question_id = $this->model('publish')->publish_question(
-				$_POST['title'],
-				$_POST['message'],
-				$_POST['category_id'],
-				$this->user_id,
-				$_POST['topics'],
-				$_POST['anonymous'],
-				$_POST['ask_user_id'],
-				$this->user_info['permission']['create_topic']
-			);
-
-			$url = get_js_url('/question/' . $question_id);
+			H::ajax_json_output(AWS_APP::RSM(array(
+				'url' => get_js_url('/publish/delay_display/')
+			), 1, null));
 		}
 
-		H::ajax_json_output(AWS_APP::RSM(array('url' => $url), 1, null));
+		H::ajax_json_output(AWS_APP::RSM(array(
+			'url' => get_js_url('/question/' . $question_id)
+		), 1, null));
 	}
 
 
@@ -254,7 +244,11 @@ class ajax extends AWS_CONTROLLER
 
 		if ($_POST['anonymous'])
 		{
-			$anonymous_uid = $this->get_anonymous_uid('article');
+			$publish_uid = $this->get_anonymous_uid('article');
+		}
+		else
+		{
+			$publish_uid = $this->user_id;
 		}
 
 		// !注: 来路检测后面不能再放报错提示
@@ -265,41 +259,26 @@ class ajax extends AWS_CONTROLLER
 
 		set_repeat_submission_digest($_POST['title']);
 
+		$article_id = $this->model('publish')->publish_article(array(
+			'title' => $_POST['title'],
+			'message' => $_POST['message'],
+			'category_id' => $_POST['category_id'],
+			'uid' => $publish_uid,
+			'topics' => $_POST['topics'],
+			'permission_create_topic' => $this->user_info['permission']['create_topic'],
+		), $this->user_id, $_POST['later']);
+
 		if ($_POST['later'])
 		{
 			// 延迟显示
-			$this->model('publish')->schedule(
-				'article',
-				real_time() + $_POST['later'] * 60 + rand(-30, 30),
-				$_POST['title'],
-				$_POST['message'],
-				$this->user_id,
-				$_POST['anonymous'],
-				$_POST['category_id'],
-				array(
-					'topics' => $_POST['topics'],
-					'permission_create_topic' => $this->user_info['permission']['create_topic']
-				)
-			);
-
-			$url = get_js_url('/publish/delay_display/');
-		}
-		else
-		{
-			$article_id = $this->model('publish')->publish_article(
-				$_POST['title'],
-				$_POST['message'],
-				$this->user_id,
-				$_POST['topics'],
-				$_POST['category_id'],
-				$this->user_info['permission']['create_topic'],
-				$_POST['anonymous']
-			);
-
-			$url = get_js_url('/article/' . $article_id);
+			H::ajax_json_output(AWS_APP::RSM(array(
+				'url' => get_js_url('/publish/delay_display/')
+			), 1, null));
 		}
 
-		H::ajax_json_output(AWS_APP::RSM(array('url' => $url), 1, null));
+		H::ajax_json_output(AWS_APP::RSM(array(
+			'url' => get_js_url('/article/' . $article_id)
+		), 1, null));
 	}
 
 
@@ -330,7 +309,11 @@ class ajax extends AWS_CONTROLLER
 
 		if ($_POST['anonymous'])
 		{
-			$anonymous_uid = $this->get_anonymous_uid('video');
+			$publish_uid = $this->get_anonymous_uid('video');
+		}
+		else
+		{
+			$publish_uid = $this->user_id;
 		}
 
 		// TODO: why?
@@ -353,47 +336,29 @@ class ajax extends AWS_CONTROLLER
 
 		set_repeat_submission_digest($_POST['title']);
 
+		$video_id = $this->model('publish')->publish_video(array(
+			'title' => $_POST['title'],
+			'message' => $_POST['message'],
+			'category_id' => $_POST['category_id'],
+			'uid' => $publish_uid,
+			'topics' => $_POST['topics'],
+			'permission_create_topic' => $this->user_info['permission']['create_topic'],
+			'source_type' => $parser_result['source_type'],
+			'source' => $parser_result['source'],
+			'duration' => $parser_result['duration'],
+		), $this->user_id, $_POST['later']);
+
 		if ($_POST['later'])
 		{
 			// 延迟显示
-			$this->model('publish')->schedule(
-				'video',
-				real_time() + $_POST['later'] * 60 + rand(-30, 30),
-				$_POST['title'],
-				$_POST['message'],
-				$this->user_id,
-				$_POST['anonymous'],
-				$_POST['category_id'],
-				array(
-					'topics' => $_POST['topics'],
-					'permission_create_topic' => $this->user_info['permission']['create_topic'],
-					'source_type' => $parser_result['source_type'],
-					'source' => $parser_result['source'],
-					'duration' => $parser_result['duration']
-				)
-			);
-
-			$url = get_js_url('/publish/delay_display/');
-		}
-		else
-		{
-			$video_id = $this->model('publish')->publish_video(
-				$_POST['title'],
-				$_POST['message'],
-				$this->user_id,
-				$parser_result['source_type'],
-				$parser_result['source'],
-				$parser_result['duration'],
-				$_POST['topics'],
-				$_POST['category_id'],
-				$this->user_info['permission']['create_topic'],
-				$_POST['anonymous']
-			);
-
-			$url = get_js_url('/v/' . $video_id);
+			H::ajax_json_output(AWS_APP::RSM(array(
+				'url' => get_js_url('/publish/delay_display/')
+			), 1, null));
 		}
 
-		H::ajax_json_output(AWS_APP::RSM(array('url' => $url), 1, null));
+		H::ajax_json_output(AWS_APP::RSM(array(
+			'url' => get_js_url('/v/' . $video_id)
+		), 1, null));
 	}
 
 

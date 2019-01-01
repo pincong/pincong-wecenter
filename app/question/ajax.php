@@ -41,6 +41,26 @@ class ajax extends AWS_CONTROLLER
 		HTTP::no_cache_header();
 	}
 
+	private function get_anonymous_uid($type)
+	{
+		if (!$anonymous_uid = $this->model('anonymous')->get_anonymous_uid())
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('本站未开启匿名功能')));
+		}
+
+		if (!$this->model('anonymous')->check_rate_limit($type, $anonymous_uid))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日匿名额度已经用完')));
+		}
+
+		if (!$this->model('anonymous')->check_spam($anonymous_uid))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('检测到滥用行为, 匿名功能暂时关闭')));
+		}
+
+		return $anonymous_uid;
+	}
+
 	// TODO: 何处用到?
 	public function fetch_answer_data_action()
 	{
@@ -357,9 +377,14 @@ class ajax extends AWS_CONTROLLER
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能延迟回复')));
 			}
 
-			if ($later < 10 OR $later > 1440)
+			if ($later < 10)
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('延迟时间只能在 10 ~ 1400 分钟之间')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('延迟时间不能小于 10 分钟')));
+			}
+
+			if ($later > 1440 AND !$this->user_info['permission']['post_anonymously'])
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('延迟时间不能大于 1440 分钟')));
 			}
 		}
 
@@ -427,6 +452,17 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('回复内容字数不得多于 %s 字', $answer_length_max)));
 		}
 
+		if ($_POST['anonymous'])
+		{
+			$publish_uid = $this->get_anonymous_uid('answer');
+			$auto_focus = false;
+		}
+		else
+		{
+			$publish_uid = $this->user_id;
+			$auto_focus = $_POST['auto_focus'];
+		}
+
 		// !注: 来路检测后面不能再放报错提示
 		if (! valid_post_hash($_POST['post_hash']))
 		{
@@ -435,51 +471,28 @@ class ajax extends AWS_CONTROLLER
 
 		set_repeat_submission_digest($answer_content);
 
+		$answer_id = $this->model('publish')->publish_answer(array(
+			'parent_id' => $question_info['question_id'],
+			'message' => $answer_content,
+			'uid' => $publish_uid,
+			'auto_focus' => $auto_focus,
+		), $this->user_id, $later);
+
 		if ($later)
 		{
 			// 延迟显示
-			$this->model('publish')->schedule(
-				'answer',
-				real_time() + $later * 60 + rand(-30, 30),
-				null,
-				$answer_content,
-				$this->user_id,
-				$_POST['anonymous'],
-				$question_info['question_id'],
-				array(
-					'auto_focus' => $_POST['auto_focus'],
-					'permission_bring_thread_to_top' => $this->user_info['permission']['bring_thread_to_top']
-				)
-			);
-
-			$url = get_js_url('/publish/delay_display/');
-		}
-		else
-		{
-			$answer_id = $this->model('publish')->publish_answer(
-				$question_info['question_id'],
-				$answer_content,
-				$this->user_id,
-				$_POST['anonymous'],
-				$_POST['auto_focus'],
-				$this->user_info['permission']['bring_thread_to_top']
-			);
-		}
-
-		if ($url)
-		{
-			H::ajax_json_output(AWS_APP::RSM(array('url' => $url), 1, null));
-		}
-		else
-		{
-			$answer_info = $this->model('answer')->get_answer_by_id($answer_id);
-			$answer_info['user_info'] = $this->user_info;
-			$answer_info['answer_content'] = $this->model('question')->parse_at_user($answer_info['answer_content']);
-			TPL::assign('answer_info', $answer_info);
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'ajax_html' => TPL::output('question/ajax/answer', false)
+				'url' => get_js_url('/publish/delay_display/')
 			), 1, null));
 		}
+
+		$answer_info = $this->model('answer')->get_answer_by_id($answer_id);
+		$answer_info['user_info'] = $this->user_info;
+		$answer_info['answer_content'] = $this->model('question')->parse_at_user($answer_info['answer_content']);
+		TPL::assign('answer_info', $answer_info);
+		H::ajax_json_output(AWS_APP::RSM(array(
+			'ajax_html' => TPL::output('question/ajax/answer', false)
+		), 1, null));
 	}
 
 	public function update_answer_action()

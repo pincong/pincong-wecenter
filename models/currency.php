@@ -20,7 +20,7 @@ if (!defined('IN_ANWSION'))
 
 class currency_class extends AWS_MODEL
 {
-	public function process($uid, $action, $currency, $note = '', $item_id = null)
+	public function process($uid, $action, $currency, $note = '', $item_id = null, $item_type = null, $anonymous = false)
 	{
 		if (!$uid OR $uid == -1)
 		{
@@ -38,17 +38,23 @@ class currency_class extends AWS_MODEL
 		{
 			return false;
 		}
-		$balance = intval($user_info['currency']) + $currency;
 
-		$log_id = $this->insert('currency_log', array(
-			'uid' => intval($uid),
-			'action' => $action,
-			'currency' => $currency,
-			'balance' => $balance,
-			'note' => $note,
-			'item_id' => intval($item_id),
-			'time' => fake_time()
-		));
+		$log_id = 0;
+		if (!$anonymous)
+		{
+			$balance = intval($user_info['currency']) + $currency;
+
+			$log_id = $this->insert('currency_log', array(
+				'uid' => intval($uid),
+				'action' => $action,
+				'currency' => $currency,
+				'balance' => $balance,
+				'note' => $note,
+				'item_id' => intval($item_id),
+				'item_type' => $item_type,
+				'time' => fake_time()
+			));
+		}
 
 		$this->query('UPDATE ' . $this->get_table('users') . ' SET currency = currency + ' . $currency . ' WHERE uid = ' . intval($uid));
 
@@ -74,136 +80,124 @@ class currency_class extends AWS_MODEL
 
 		foreach ($parse_items AS $log_id => $item)
 		{
-			switch ($item['action'])
+			switch ($item['item_type'])
 			{
-				case 'NEW_QUESTION':
-				case 'ANSWER_QUESTION':
-				case 'QUESTION_ANSWER':
-				case 'INVITE_ANSWER':
-				case 'ANSWER_INVITE':
-				case 'AGREE_QUESTION':
-				case 'QUESTION_AGREED':
-				case 'DISAGREE_QUESTION':
-				case 'QUESTION_DISAGREED':
+				case 'question':
 					$question_ids[] = $item['item_id'];
 				break;
 
-				case 'BEST_ANSWER':
-				case 'AGREE_ANSWER':
-				case 'ANSWER_AGREED':
-				case 'DISAGREE_ANSWER':
-				case 'ANSWER_DISAGREED':
-					$answer_ids[] = $item['item_id'];
-				break;
-
-				case 'NEW_ARTICLE':
-				case 'AGREE_ARTICLE':
-				case 'ARTICLE_AGREED':
-				case 'DISAGREE_ARTICLE':
-				case 'ARTICLE_DISAGREED':
+				case 'article':
 					$article_ids[] = $item['item_id'];
 				break;
 
-				case 'AGREE_ARTICLE_COMMENT':
-				case 'ARTICLE_COMMENT_AGREED':
-				case 'DISAGREE_ARTICLE_COMMENT':
-				case 'ARTICLE_COMMENT_DISAGREED':
+				case 'video':
+					$video_ids[] = $item['item_id'];
+				break;
+
+				case 'answer':
+					$answer_ids[] = $item['item_id'];
+				break;
+
+				case 'article_comment':
 					$article_comment_ids[] = $item['item_id'];
+				break;
+
+				case 'video_comment':
+					$video_comment_ids[] = $item['item_id'];
 				break;
 			}
 		}
 
 		if ($question_ids)
 		{
-			$questions_info = $this->model('question')->get_question_info_by_ids($question_ids);
-		}
-
-		if ($answer_ids)
-		{
-			$answers_info = $this->model('answer')->get_answers_by_ids($answer_ids);
+			$questions = $this->model('question')->get_question_info_by_ids($question_ids);
 		}
 
 		if ($article_ids)
 		{
-			$articles_info = $this->model('article')->get_article_info_by_ids($article_ids);
+			$articles = $this->model('article')->get_article_info_by_ids($article_ids);
+		}
+
+		if ($video_ids)
+		{
+			$videos = $this->model('video')->get_video_info_by_ids($video_ids);
+		}
+
+		if ($answer_ids)
+		{
+			$answers = $this->model('answer')->get_answers_by_ids($answer_ids);
 		}
 
 		if ($article_comment_ids)
 		{
-			$article_comments_info = $this->model('article')->get_comments_by_ids($article_comment_ids);
+			$article_comments = $this->model('article')->get_comments_by_ids($article_comment_ids);
+		}
+
+		if ($video_comment_ids)
+		{
+			$video_comments = $this->model('video')->get_comments_by_ids($video_comment_ids);
 		}
 
 		foreach ($parse_items AS $log_id => $item)
 		{
-			if (!$item['item_id'])
+			switch ($item['item_type'])
 			{
-				continue;
-			}
-
-			switch ($item['action'])
-			{
-				case 'NEW_QUESTION':
-				case 'ANSWER_INVITE':
-				case 'ANSWER_QUESTION':
-				case 'QUESTION_ANSWER':
-				case 'INVITE_ANSWER':
-				case 'AGREE_QUESTION':
-				case 'QUESTION_AGREED':
-				case 'DISAGREE_QUESTION':
-				case 'QUESTION_DISAGREED':
-					if ($questions_info[$item['item_id']])
+				case 'question':
+					if ($questions[$item['item_id']])
 					{
 						$result[$log_id] = array(
-							'title' => '问题: ' . $questions_info[$item['item_id']]['question_content'],
+							'title' => $questions[$item['item_id']]['question_content'],
 							'url' => get_js_url('/question/' . $item['item_id'])
 						);
 					}
-
 				break;
 
-				case 'BEST_ANSWER':
-				case 'AGREE_ANSWER':
-				case 'ANSWER_AGREED':
-				case 'DISAGREE_ANSWER':
-				case 'ANSWER_DISAGREED':
-				case 'AGREE_ANSWER':
-				case 'ANSWER_AGREED':
-				case 'DISAGREE_ANSWER':
-				case 'ANSWER_DISAGREED':
-					if ($answers_info[$item['item_id']])
+				case 'article':
+					if ($articles[$item['item_id']])
 					{
 						$result[$log_id] = array(
-							'title' => '答案: ' . cjk_substr($answers_info[$item['item_id']]['answer_content'], 0, 24, 'UTF-8', '...'),
-							'url' => get_js_url('/question/id-' . $answers_info[$item['item_id']]['question_id'] . '__answer_id-' . $item['item_id'] . '__single-TRUE')
-						);
-					}
-				break;
-
-				case 'NEW_ARTICLE':
-				case 'COMMENT_ARTICLE':
-				case 'ARTICLE_COMMENTED':
-				case 'AGREE_ARTICLE':
-				case 'ARTICLE_AGREED':
-				case 'DISAGREE_ARTICLE':
-				case 'ARTICLE_DISAGREED':
-					if ($articles_info[$item['item_id']])
-					{
-						$result[$log_id] = array(
-							'title' => '文章: ' . $articles_info[$item['item_id']]['title'],
+							'title' => $articles[$item['item_id']]['title'],
 							'url' => get_js_url('/article/' . $item['item_id'])
 						);
 					}
 				break;
 
-				case 'AGREE_ARTICLE_COMMENT':
-				case 'ARTICLE_COMMENT_AGREED':
-				case 'DISAGREE_ARTICLE_COMMENT':
-				case 'ARTICLE_COMMENT_DISAGREED':
-					if ($article_comments_info[$item['item_id']])
+				case 'video':
+					if ($videos[$item['item_id']])
 					{
 						$result[$log_id] = array(
-							'title' => '文章评论: ' . cjk_substr($article_comments_info[$item['item_id']]['message'], 0, 24, 'UTF-8', '...'),
-							'url' => get_js_url('/article/' . $article_comments_info[$item['item_id']]['article_id'])
+							'title' => $videos[$item['item_id']]['title'],
+							'url' => get_js_url('/v/' . $item['item_id'])
+						);
+					}
+				break;
+
+				case 'answer':
+					if ($answers[$item['item_id']])
+					{
+						$result[$log_id] = array(
+							'title' => cjk_substr($answers[$item['item_id']]['answer_content'], 0, 24, 'UTF-8', '...'),
+							'url' => get_js_url('/question/' . $answers[$item['item_id']]['question_id'])
+						);
+					}
+				break;
+
+				case 'article_comment':
+					if ($article_comments[$item['item_id']])
+					{
+						$result[$log_id] = array(
+							'title' => cjk_substr($article_comments[$item['item_id']]['message'], 0, 24, 'UTF-8', '...'),
+							'url' => get_js_url('/article/' . $article_comments[$item['item_id']]['article_id'])
+						);
+					}
+				break;
+
+				case 'video_comment':
+					if ($video_comments[$item['item_id']])
+					{
+						$result[$log_id] = array(
+							'title' => cjk_substr($video_comments[$item['item_id']]['message'], 0, 24, 'UTF-8', '...'),
+							'url' => get_js_url('/v/' . $video_comments[$item['item_id']]['video_id'])
 						);
 					}
 				break;

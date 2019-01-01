@@ -93,13 +93,12 @@ class question_class extends AWS_MODEL
 			return false;
 		}
 
-		$title = htmlspecialchars($title);
 		$category_id = intval($category_id);
 
 		$this->model('search_fulltext')->push_index('question', $title, $item_info['id']);
 
 		$this->update('question', array(
-			'question_content' => $title,
+			'question_content' => htmlspecialchars($title),
 			'question_detail' => htmlspecialchars($message),
 			'category_id' => $category_id,
 		), 'question_id = ' . intval($id));
@@ -206,36 +205,6 @@ class question_class extends AWS_MODEL
 		return true;
 	}
 
-	/**
-	 *
-	 * 增加问题内容
-	 * @param string $question_content //问题内容
-	 * @param string $question_detail  //问题说明
-	 *
-	 * @return boolean true|false
-	 */
-	public function save_question($question_content, $question_detail, $published_uid, $anonymous = 0)
-	{
-		$now = fake_time();
-
-		$to_save_question = array(
-			'question_content' => htmlspecialchars($question_content),
-			'question_detail' => htmlspecialchars($question_detail),
-			'add_time' => $now,
-			'update_time' => $now,
-			'published_uid' => intval($published_uid),
-			'anonymous' => intval($anonymous)
-		);
-
-		$question_id = $this->insert('question', $to_save_question);
-
-		if ($question_id)
-		{
-			$this->model('search_fulltext')->push_index('question', $question_content, $question_id);
-		}
-
-		return $question_id;
-	}
 
 	public function remove_question($question_id)
 	{
@@ -270,7 +239,7 @@ class question_class extends AWS_MODEL
 
 	}
 
-	public function add_focus_question($question_id, $uid, $anonymous = 0, $save_action = true)
+	public function add_focus_question($question_id, $uid)
 	{
 		if (!$question_id OR !$uid)
 		{
@@ -287,12 +256,6 @@ class question_class extends AWS_MODEL
 			{
 				$this->update_focus_count($question_id);
 			}
-
-			// 记录日志
-			/*if ($save_action)
-			{
-				ACTION_LOG::save_action($uid, $question_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_REQUESTION_FOCUS, '', '', null, intval($anonymous));
-			}*/
 
 			return 'add';
 		}

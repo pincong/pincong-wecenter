@@ -14,7 +14,6 @@ CREATE TABLE IF NOT EXISTS `aws_answer` (
   `agree_count` int(11) DEFAULT '0' COMMENT '支持人数',
   `uid` int(11) DEFAULT '0' COMMENT '回答问题用户ID',
   `comment_count` int(11) DEFAULT '0' COMMENT '评论总数',
-  `category_id` int(11) DEFAULT '0' COMMENT '分类id',
   `anonymous` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`answer_id`),
   KEY `question_id` (`question_id`),
@@ -39,22 +38,6 @@ CREATE TABLE IF NOT EXISTS `aws_answer_comments` (
   KEY `answer_id` (`answer_id`),
   KEY `time` (`time`),
   KEY `anonymous` (`anonymous`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
--- Data exporting was unselected.
-
-
--- Dumping structure for table panic.aws_answer_vote
-CREATE TABLE IF NOT EXISTS `aws_answer_vote` (
-  `voter_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自动ID',
-  `answer_id` int(11) DEFAULT '0' COMMENT '回复id',
-  `vote_uid` int(11) DEFAULT '0' COMMENT '用户ID',
-  `add_time` int(10) DEFAULT '0' COMMENT '添加时间',
-  `vote_value` tinyint(4) DEFAULT '0' COMMENT '-1反对 1 支持',
-  `reputation_factor` int(10) DEFAULT '0',
-  PRIMARY KEY (`voter_id`),
-  KEY `answer_id` (`answer_id`),
-  KEY `vote_value` (`vote_value`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
@@ -113,25 +96,6 @@ CREATE TABLE IF NOT EXISTS `aws_article_comment` (
   KEY `add_time` (`add_time`),
   KEY `agree_count` (`agree_count`),
   KEY `anonymous` (`anonymous`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
--- Data exporting was unselected.
-
-
--- Dumping structure for table panic.aws_article_vote
-CREATE TABLE IF NOT EXISTS `aws_article_vote` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `uid` int(10) DEFAULT '0',
-  `type` varchar(16) DEFAULT NULL,
-  `item_id` int(10) DEFAULT '0',
-  `rating` tinyint(1) DEFAULT '0',
-  `time` int(10) DEFAULT '0',
-  `reputation_factor` int(10) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `uid` (`uid`),
-  KEY `type` (`type`),
-  KEY `item_id` (`item_id`),
-  KEY `time` (`time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
@@ -251,6 +215,7 @@ CREATE TABLE IF NOT EXISTS `aws_currency_log` (
   `note` varchar(128) DEFAULT NULL,
   `balance` int(11) DEFAULT '0',
   `item_id` int(11) DEFAULT '0',
+  `item_type` varchar(32) DEFAULT NULL,
   `time` int(10) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
@@ -450,22 +415,6 @@ CREATE TABLE IF NOT EXISTS `aws_question_invite` (
   KEY `recipients_uid` (`recipients_uid`),
   KEY `add_time` (`add_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='邀请问答';
-
--- Data exporting was unselected.
-
-
--- Dumping structure for table panic.aws_question_vote
-CREATE TABLE IF NOT EXISTS `aws_question_vote` (
-  `voter_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自动ID',
-  `question_id` int(11) DEFAULT '0' COMMENT '问题id',
-  `vote_uid` int(11) DEFAULT '0' COMMENT '用户ID',
-  `add_time` int(10) DEFAULT '0' COMMENT '添加时间',
-  `vote_value` tinyint(4) DEFAULT '0' COMMENT '-1反对 1 支持',
-  `reputation_factor` int(10) DEFAULT '0',
-  PRIMARY KEY (`voter_id`),
-  KEY `question_id` (`question_id`),
-  KEY `vote_value` (`vote_value`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
 
@@ -798,17 +747,11 @@ CREATE TABLE IF NOT EXISTS `aws_scheduled_posts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(32) DEFAULT NULL,
   `uid` int(11) DEFAULT '0',
-  `anonymous` int(11) DEFAULT '0',
-  `parent_id` int(11) DEFAULT '0',
   `time` int(10) DEFAULT '0',
-  `title` varchar(240) DEFAULT NULL,
-  `message` text,
-  `extra_data` text,
+  `data` text,
   PRIMARY KEY (`id`),
   KEY `type` (`type`),
   KEY `uid` (`uid`),
-  KEY `anonymous` (`anonymous`),
-  KEY `parent_id` (`parent_id`),
   KEY `time` (`time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 

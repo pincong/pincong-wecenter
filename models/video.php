@@ -93,13 +93,12 @@ class video_class extends AWS_MODEL
 			return false;
 		}
 
-		$title = htmlspecialchars($title);
 		$category_id = intval($category_id);
 
 		//$this->model('search_fulltext')->push_index('video', $title, $item_info['id']);
 
 		$this->update('video', array(
-			'title' => $title,
+			'title' => htmlspecialchars($title),
 			'message' => htmlspecialchars($message),
 			'category_id' => $category_id,
 		), 'id = ' . intval($id));

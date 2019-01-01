@@ -33,6 +33,26 @@ class ajax extends AWS_CONTROLLER
 		return $rule_action;
 	}
 
+	private function get_anonymous_uid($type)
+	{
+		if (!$anonymous_uid = $this->model('anonymous')->get_anonymous_uid())
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('本站未开启匿名功能')));
+		}
+
+		if (!$this->model('anonymous')->check_rate_limit($type, $anonymous_uid))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日匿名额度已经用完')));
+		}
+
+		if (!$this->model('anonymous')->check_spam($anonymous_uid))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('检测到滥用行为, 匿名功能暂时关闭')));
+		}
+
+		return $anonymous_uid;
+	}
+
 	public function setup()
 	{
 		HTTP::no_cache_header();
@@ -58,9 +78,14 @@ class ajax extends AWS_CONTROLLER
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能延迟回复')));
 			}
 
-			if ($later < 10 OR $later > 1440)
+			if ($later < 10)
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('延迟时间只能在 10 ~ 1400 分钟之间')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('延迟时间不能小于 10 分钟')));
+			}
+
+			if ($later > 1440 AND !$this->user_info['permission']['post_anonymously'])
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('延迟时间不能大于 1440 分钟')));
 			}
 		}
 
@@ -108,6 +133,15 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得超过 %s 字', $comment_length_max)));
 		}
 
+		if ($_POST['anonymous'])
+		{
+			$publish_uid = $this->get_anonymous_uid('video_comment');
+		}
+		else
+		{
+			$publish_uid = $this->user_id;
+		}
+
 		// !注: 来路检测后面不能再放报错提示
 		if (! valid_post_hash($_POST['post_hash']))
 		{
@@ -116,50 +150,27 @@ class ajax extends AWS_CONTROLLER
 
 		set_repeat_submission_digest($message);
 
+		$comment_id = $this->model('publish')->publish_video_comment(array(
+			'parent_id' => $video_info['id'],
+			'message' => $message,
+			'uid' => $publish_uid,
+			'at_uid' => $_POST['at_uid'],
+		), $this->user_id, $later);
+
 		if ($later)
 		{
 			// 延迟显示
-			$this->model('publish')->schedule(
-				'video_comment',
-				real_time() + $later * 60 + rand(-30, 30),
-				null,
-				$message,
-				$this->user_id,
-				$_POST['anonymous'],
-				$video_info['id'],
-				array(
-					'at_uid' => $_POST['at_uid'],
-					'permission_bring_thread_to_top' => $this->user_info['permission']['bring_thread_to_top']
-				)
-			);
-
-			$url = get_js_url('/publish/delay_display/');
-		}
-		else
-		{
-			$comment_id = $this->model('publish')->publish_video_comment(
-				$video_info['id'],
-				$message,
-				$this->user_id,
-				$_POST['at_uid'],
-				$_POST['anonymous'],
-				$this->user_info['permission']['bring_thread_to_top']
-			);
-		}
-
-		if ($url)
-		{
-			H::ajax_json_output(AWS_APP::RSM(array('url' => $url), 1, null));
-		}
-		else
-		{
-			$comment_info = $this->model('video')->get_comment_by_id($comment_id);
-			$comment_info['message'] = $this->model('question')->parse_at_user($comment_info['message']);
-			TPL::assign('comment_info', $comment_info);
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'ajax_html' => TPL::output('video/ajax/comment', false)
+				'url' => get_js_url('/publish/delay_display/')
 			), 1, null));
 		}
+
+		$comment_info = $this->model('video')->get_comment_by_id($comment_id);
+		$comment_info['message'] = $this->model('question')->parse_at_user($comment_info['message']);
+		TPL::assign('comment_info', $comment_info);
+		H::ajax_json_output(AWS_APP::RSM(array(
+			'ajax_html' => TPL::output('video/ajax/comment', false)
+		), 1, null));
 	}
 
 	public function lock_action()

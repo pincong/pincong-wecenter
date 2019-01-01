@@ -30,7 +30,7 @@ class message_class extends AWS_MODEL
 		return $this->key;
 	}
 
-	public function encrypt($message)
+	public function encrypt(&$message)
 	{
 		if (!$message)
 		{
@@ -39,7 +39,7 @@ class message_class extends AWS_MODEL
 		return AWS_APP::crypt()->encode($message, $this->get_key());
 	}
 
-	public function decrypt($message)
+	public function decrypt(&$message)
 	{
 		if (!$message)
 		{
