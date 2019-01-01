@@ -5,7 +5,7 @@
 	<div class="aw-question-content">
 		<h4>
 			<?php if ($val['question_id']) { ?>
-			<a href="question/<?php echo $val['question_id']; ?>"><?php echo $val['question_content']; ?></a>
+			<a href="question/<?php echo $val['question_id']; ?>"><?php if (!$val['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['question_content']; ?><?php } ?></a>
 			<?php } else { ?>
 			<a href="article/<?php echo $val['id']; ?>"><?php echo $val['title']; ?></a>
 			<?php } ?>

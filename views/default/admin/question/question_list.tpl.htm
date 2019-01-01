@@ -39,7 +39,7 @@
 							<?php foreach ($this->list AS $key => $val) { ?>
 							<tr>
 								<td><input type="checkbox" name="question_ids[]" value="<?php echo $val['question_id']; ?>"></td>
-								<td><a href="question/<?php echo $val['question_id']; ?>" target="_blank"><?php echo $val['question_content']; ?></a></td>
+								<td><a href="question/<?php echo $val['question_id']; ?>" target="_blank"><?php if (!$val['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['question_content']; ?><?php } ?></a></td>
 								<td><?php if ($val['answer_count']) { ?><?php echo $val['answer_count']; ?><?php } else { ?>0<?php } ?></td>
 								<td><?php echo $val['focus_count']; ?></td>
 								<td><?php echo $val['view_count']; ?></td>

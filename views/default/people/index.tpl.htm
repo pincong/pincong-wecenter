@@ -100,7 +100,7 @@
                                                 <?php foreach ($this->user_actions_questions AS $key => $val) { ?>
                                                 <div class="aw-item">
                                                     <div class="mod-head">
-                                                        <h4><a href="question/<?php echo $val['question_info']['question_id']; ?>"><?php echo $val['question_info']['question_content']; ?></a></h4>
+                                                        <h4><a href="question/<?php echo $val['question_info']['question_id']; ?>"><?php if (!$val['question_info']['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['question_info']['question_content']; ?><?php } ?></a></h4>
                                                     </div>
                                                     <div class="mod-body">
                                                         <span class="aw-border-radius-5 count pull-left"><i class="icon icon-reply"></i><?php echo $val['question_info']['answer_count']; ?></span>
@@ -129,7 +129,7 @@
                                                     <p>
                                                         <span class="pull-right text-color-999"><?php echo date_friendly($val['add_time'], 604800, 'Y-m-d'); ?></span>
                                                         <em class="pull-left"><?php echo $val['last_action_str']; ?>,</em>
-                                                        <a class="aw-hide-txt" href="question/<?php echo $val['question_info']['question_id']; ?>"><?php echo $val['question_info']['question_content']; ?></a>
+                                                        <a class="aw-hide-txt" href="question/<?php echo $val['question_info']['question_id']; ?>"><?php if (!$val['question_info']['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['question_info']['question_content']; ?><?php } ?></a>
                                                     </p>
                                                 </li>
                                                 <?php } ?>

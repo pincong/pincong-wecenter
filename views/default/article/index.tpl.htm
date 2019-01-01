@@ -308,7 +308,7 @@
                         <div class="mod-body font-size-12">
                             <ul>
                                 <?php foreach($this->question_related_list AS $key => $val) { ?>
-                                <li><a href="question/<?php echo $val['question_id']; ?>"><?php echo $val['question_content']; ?></a></li>
+                                <li><a href="question/<?php echo $val['question_id']; ?>"><?php if (!$val['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['question_content']; ?><?php } ?></a></li>
                                 <?php } ?>
                             </ul>
                         </div>

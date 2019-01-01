@@ -77,7 +77,7 @@
 													<?php foreach ($this->topic_recommend_list AS $key => $val) { ?>
 													<li>
 														<?php if ($val['question_id']) { ?>
-														<a href="question/<?php echo $val['question_id']; ?>"><?php echo $val['question_content']; ?></a>
+														<a href="question/<?php echo $val['question_id']; ?>"><?php if (!$val['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['question_content']; ?><?php } ?></a>
 														<span class="pull-right text-color-999"><?php _e('% 个回复', $val['comment_count']); ?></span>
 														<?php } else { ?>
 														<a href="article/<?php echo $val['id']; ?>"><?php echo $val['title']; ?></a>
