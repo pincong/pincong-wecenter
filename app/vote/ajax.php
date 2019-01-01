@@ -61,7 +61,7 @@ class ajax extends AWS_CONTROLLER
 
 		set_user_operation_last_time('vote', $this->user_id);
 
-		$reputation_factor = $this->model('reputation')->get_reputation_factor_by_reputation($this->user_info['reputation']);
+		$reputation_factor = $this->user_info['reputation_factor'];
 
 		$this->model('vote')->agree($_POST['type'], $_POST['item_id'], $this->user_id, $item_info['uid'], $reputation_factor);
 
@@ -103,7 +103,7 @@ class ajax extends AWS_CONTROLLER
 
 		set_user_operation_last_time('vote', $this->user_id);
 
-		$reputation_factor = $this->model('reputation')->get_reputation_factor_by_reputation($this->user_info['reputation']);
+		$reputation_factor = $this->user_info['reputation_factor'];
 
 		$this->model('vote')->disagree($_POST['type'], $_POST['item_id'], $this->user_id, $item_info['uid'], $reputation_factor);
 

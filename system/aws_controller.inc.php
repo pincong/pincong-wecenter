@@ -73,6 +73,7 @@ class AWS_CONTROLLER
 
 		$this->user_info['group_name'] = $user_group['group_name'];
 		$this->user_info['permission'] = $user_group['permission'];
+		$this->user_info['reputation_factor'] = $user_group['reputation_factor'];
 
 		AWS_APP::session()->permission = $this->user_info['permission'];
 

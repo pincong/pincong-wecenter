@@ -575,7 +575,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
                     H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入用户组名称')));
                 }
 
-                if ($val['reputation_factor'])
+                /*if ($val['reputation_factor'])
                 {
                     if (!is_digits($val['reputation_factor']) || floatval($val['reputation_factor']) < 0)
                     {
@@ -588,7 +588,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
                     //}
 
                     $val['reputation_factor'] = floatval($val['reputation_factor']);
-                }
+                }*/
 
                 $this->model('account')->update_user_group_data($key, $val);
             }
