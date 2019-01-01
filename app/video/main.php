@@ -48,6 +48,9 @@ class main extends AWS_CONTROLLER
 			HTTP::error_404();
 		}
 
+		// TODO: 后台选项
+		$replies_per_page = 100;
+
 		$video_info['user_info'] = $this->model('account')->get_user_info_by_uid($video_info['uid']);
 
 		$video_info['thumb_url'] = Services_VideoParser::get_thumb_url($video_info['source_type'], $video_info['source'], 'l');
@@ -83,7 +86,7 @@ class main extends AWS_CONTROLLER
 		}
 		else
 		{
-			$comments = $this->model('video')->get_comments($video_info['id'], $_GET['page'], 100);
+			$comments = $this->model('video')->get_comments($video_info['id'], $_GET['page'], $replies_per_page);
 		}
 
 		if ($comments AND $this->user_id)
@@ -128,7 +131,7 @@ class main extends AWS_CONTROLLER
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
 			'base_url' => get_js_url('/video/id-' . $video_info['id']),
 			'total_rows' => $video_info['comment_count'],
-			'per_page' => 100
+			'per_page' => $replies_per_page
 		))->create_links());
 
 		TPL::set_meta('keywords', implode(',', $this->model('system')->analysis_keyword($video_info['title'])));

@@ -18,6 +18,8 @@ if (!defined('IN_ANWSION'))
 	die;
 }
 
+// TODO: 看不懂了, 重写吧
+
 class notify_class extends AWS_MODEL
 {
 	//=========模型类别:model_type===================================================
@@ -324,7 +326,7 @@ class notify_class extends AWS_MODEL
 
 									asort($answer_ids);
 
-									$querys[] = 'item_id=' . implode(',', $answer_ids) . '#!answer_' . array_pop($answer_ids);
+									$querys[] = 'answer_ids=' . implode(',', $answer_ids);
 								}
 
 								$tmp_data['extend_details'] = $this->format_extend_detail($notify['extend_details'], $user_infos);
@@ -340,7 +342,6 @@ class notify_class extends AWS_MODEL
 
 										break;
 
-									// TODO: comment_unfold 无效
 									case self::TYPE_QUESTION_COMMENT:
 									case self::TYPE_QUESTION_COMMENT_AT_ME:
 										$querys[] = 'comment_unfold=question';
@@ -354,7 +355,7 @@ class notify_class extends AWS_MODEL
 
 								if ($data['item_id'])
 								{
-									$querys[] = 'item_id=' . $data['item_id'] . '&answer_id=' . $data['item_id'] . '&single=TRUE#!answer_' . $data['item_id'];
+									$querys[] = 'answer_ids=' . $data['item_id'];
 								}
 							}
 
@@ -473,7 +474,7 @@ class notify_class extends AWS_MODEL
 
 					asort($answer_ids);
 
-					$querys[] = 'item_id=' . implode(',', $answer_ids) . '#!answer_' . array_pop($answer_ids);
+					$querys[] = 'answer_ids=' . implode(',', $answer_ids);
 				}
 
 				if ($ex_notify['action_type'] == self::TYPE_ARTICLE_NEW_COMMENT OR $ex_notify['action_type'] == self::TYPE_ARTICLE_COMMENT_AT_ME)

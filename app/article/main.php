@@ -45,6 +45,9 @@ class main extends AWS_CONTROLLER
 			HTTP::error_404();
 		}
 
+		// TODO: 后台选项
+		$replies_per_page = 100;
+
 		$article_info['user_info'] = $this->model('account')->get_user_info_by_uid($article_info['uid']);
 
 		if ($this->user_id)
@@ -75,7 +78,7 @@ class main extends AWS_CONTROLLER
 		}
 		else
 		{
-			$comments = $this->model('article')->get_comments($article_info['id'], $_GET['page'], 100);
+			$comments = $this->model('article')->get_comments($article_info['id'], $_GET['page'], $replies_per_page);
 		}
 
 		if ($comments AND $this->user_id)
@@ -113,7 +116,7 @@ class main extends AWS_CONTROLLER
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
 			'base_url' => get_js_url('/article/id-' . $article_info['id']),
 			'total_rows' => $article_info['comments'],
-			'per_page' => 100
+			'per_page' => $replies_per_page
 		))->create_links());
 
 		TPL::set_meta('keywords', implode(',', $this->model('system')->analysis_keyword($article_info['title'])));

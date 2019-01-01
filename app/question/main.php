@@ -47,7 +47,10 @@ class main extends AWS_CONTROLLER
 			HTTP::error_404();
 		}
 
-		if (! $_GET['sort'] or $_GET['sort'] != 'ASC')
+		// TODO: 后台选项
+		$replies_per_page = 100;
+
+		if (! $_GET['sort'] OR $_GET['sort'] != 'ASC')
 		{
 			$sort = 'DESC';
 		}
@@ -56,42 +59,11 @@ class main extends AWS_CONTROLLER
 			$sort = 'ASC';
 		}
 
-
-		if ($question_info['category_id'] AND get_setting('category_enable') != 'N')
-		{
-			$question_info['category_info'] = $this->model('category')->get_category_info($question_info['category_id']);
-		}
-
 		$question_info['user_info'] = $this->model('account')->get_user_info_by_uid($question_info['uid']);
-
 
 		$this->model('content')->update_view_count('question', $question_info['question_id'], session_id());
 
-		if (is_digits($_GET['uid']))
-		{
-			$answer_list_where[] = 'uid = ' . intval($_GET['uid']);
-			$answer_count_where = 'uid = ' . intval($_GET['uid']);
-		}
-		else if ($_GET['uid'] == 'focus' and $this->user_id)
-		{
-			if ($friends = $this->model('follow')->get_user_friends($this->user_id, 100))
-			{
-				foreach ($friends as $key => $val)
-				{
-					$follow_uids[] = $val['uid'];
-				}
-			}
-			else
-			{
-				$follow_uids[] = 0;
-			}
-
-			$answer_list_where[] = 'uid IN(' . implode($follow_uids, ',') . ')';
-			$answer_count_where = 'uid IN(' . implode($follow_uids, ',') . ')';
-			//$answer_order_by = 'add_time ASC';
-			$answer_order_by = 'answer_id ASC';
-		}
-		else if ($_GET['sort_key'] == 'add_time')
+		if ($_GET['sort_key'] == 'add_time')
 		{
 			//$answer_order_by = "add_time " . $sort;
 			$answer_order_by = "answer_id " . $sort;
@@ -102,27 +74,14 @@ class main extends AWS_CONTROLLER
 			$answer_order_by = "agree_count " . $sort . ", answer_id ASC";
 		}
 
-		if ($answer_count_where)
+		$item_id = intval($_GET['item_id']);
+		if ($item_id > 0)
 		{
-			$answer_count = $this->model('answer')->get_answer_count_by_question_id($question_info['question_id'], $answer_count_where);
+			$answer_list = $this->model('answer')->get_answer_list_by_question_id($question_info['question_id'], 1, 'answer_id = ' . $item_id);
 		}
 		else
 		{
-			$answer_count = $question_info['answer_count'];
-		}
-
-		if (isset($_GET['answer_id']) and (! $this->user_id OR $_GET['single']))
-		{
-			$answer_list = $this->model('answer')->get_answer_list_by_question_id($question_info['question_id'], 1, 'answer_id = ' . intval($_GET['answer_id']));
-		}
-		else
-		{
-			if ($answer_list_where)
-			{
-				$answer_list_where = implode(' AND ', $answer_list_where);
-			}
-
-			$answer_list = $this->model('answer')->get_answer_list_by_question_id($question_info['question_id'], calc_page_limit($_GET['page'], 100), $answer_list_where, $answer_order_by);
+			$answer_list = $this->model('answer')->get_answer_list_by_question_id($question_info['question_id'], calc_page_limit($_GET['page'], $replies_per_page), null, $answer_order_by);
 		}
 
 		if (! is_array($answer_list))
@@ -169,7 +128,7 @@ class main extends AWS_CONTROLLER
 		}
 
 		TPL::assign('answers', $answers);
-		TPL::assign('answer_count', $answer_count);
+		TPL::assign('answer_count', $question_info['answer_count']);
 
 
 		if ($this->user_id)
@@ -211,15 +170,11 @@ class main extends AWS_CONTROLLER
 		$page_title = CF::page_title($question_info['user_info'], 'question_' . $question_info['question_id'], $question_info['question_content']);
 		$this->crumb($page_title, '/question/' . $question_info['question_id']);
 
-		// TODO: 未登录也显示分页链接
-		if ($this->user_id)
-		{
-			TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-				'base_url' => get_js_url('/question/id-' . $question_info['question_id'] . '__sort_key-' . $_GET['sort_key'] . '__sort-' . $_GET['sort'] . '__uid-' . $_GET['uid']),
-				'total_rows' => $answer_count,
-				'per_page' => 100
-			))->create_links());
-		}
+		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
+			'base_url' => get_js_url('/question/id-' . $question_info['question_id'] . '__sort_key-' . $_GET['sort_key'] . '__sort-' . $_GET['sort']),
+			'total_rows' => $answer_count,
+			'per_page' => $replies_per_page
+		))->create_links());
 
 		TPL::set_meta('keywords', implode(',', $this->model('system')->analysis_keyword($question_info['question_content'])));
 

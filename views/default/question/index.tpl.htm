@@ -187,15 +187,37 @@
 					<div class="aw-mod">
 						<div class="mod-head">
 							<ul class="nav nav-tabs aw-nav-tabs active">
-								<?php if ($_GET['single']) { ?>
-								<!--<li><a href="question/<?php echo $this->question_info['question_id']; ?>"><?php _e('全部回答'); ?></a></li>-->
-								<?php } else if (($this->answer_count OR $_GET['uid']) AND $this->user_id) { ?>
-								<li<?php if ($_GET['uid'] == 'focus') { ?> class="active"<?php } ?>><a href="question/<?php echo $this->question_info['question_id']; ?>?uid=focus"><?php _e('关注的人'); ?></a></li>
-								<li<?php if ($_GET['sort_key'] == 'add_time') { ?> class="active"<?php } ?>><a href="question/<?php echo $this->question_info['question_id']; ?>?sort_key=add_time&sort=<?php if (($_GET['sort_key'] == 'add_time') && $_GET['sort'] == 'ASC') { ?>DESC<?php } else { ?>ASC<?php } ?>"><?php _e('时间'); ?><?php if (($_GET['sort_key'] == 'add_time') && $_GET['sort'] == 'DESC') { ?> <i class="icon icon-down"></i><?php } else { ?> <i class="icon icon-up"></i><?php } ?></a></li>
-								<li<?php if ((!$_GET['uid'] && !$_GET['sort_key']) || $_GET['sort_key'] == 'agree_count') { ?> class="active"<?php } ?>><a href="question/<?php echo $this->question_info['question_id']; ?>&sort_key=agree_count&sort=DESC"><?php _e('票数'); ?></a></li>
+							<?php if (!$_GET['item_id'] AND $this->answer_count) { ?>
+								<?php if ($_GET['sort_key'] == 'add_time') { ?>
+									<li class="active">
+									<?php if ($_GET['sort'] == 'ASC') { ?>
+										<a href="question/id-<?php echo $this->question_info['question_id']; ?>__sort_key-add_time__sort-DESC"><?php _e('时间'); ?> <i class="icon icon-up"></i></a>
+									<?php } else { ?>
+										<a href="question/id-<?php echo $this->question_info['question_id']; ?>__sort_key-add_time__sort-ASC"><?php _e('时间'); ?> <i class="icon icon-down"></i></a>
+									<?php } ?>
+									</li>
+								<?php } else { ?>
+									<li>
+										<a href="question/id-<?php echo $this->question_info['question_id']; ?>__sort_key-add_time__sort-ASC"><?php _e('时间'); ?></a>
+									</li>
 								<?php } ?>
 
-								<h2 class="hidden-xs"><?php if ($_GET['single']) { ?><?php _e('查看单个回答'); ?><?php } else { ?><?php _e('%s 个回复', $this->answer_count); ?><?php } ?></h2>
+								<?php if (!$_GET['sort_key'] OR $_GET['sort_key'] == 'agree_count') { ?>
+									<li class="active">
+									<?php if ($_GET['sort'] == 'ASC') { ?>
+										<a href="question/id-<?php echo $this->question_info['question_id']; ?>__sort_key-agree_count__sort-DESC"><?php _e('票数'); ?> <i class="icon icon-up"></i></a>
+									<?php } else { ?>
+										<a href="question/id-<?php echo $this->question_info['question_id']; ?>__sort_key-agree_count__sort-ASC"><?php _e('票数'); ?> <i class="icon icon-down"></i></a>
+									<?php } ?>
+									</li>
+								<?php } else { ?>
+									<li>
+										<a href="question/id-<?php echo $this->question_info['question_id']; ?>__sort_key-agree_count__sort-DESC"><?php _e('票数'); ?></a>
+									</li>
+								<?php } ?>
+							<?php } ?>
+
+								<h2><?php _e('%s 个回复', $this->answer_count); ?></h2>
 							</ul>
 						</div>
 						<div class="mod-body aw-feed-list aw-replies">
@@ -204,7 +226,7 @@
 						<div class="mod-body aw-feed-list aw-replies-fold">
 						</div>
 						<div class="mod-footer">
-							<?php if ($_GET['single']) { ?>
+							<?php if ($_GET['item_id']) { ?>
 								<a href="question/<?php echo $this->question_info['question_id']; ?>" class="aw-load-more-content">
 									<span><?php _e('查看全部回答'); ?></span>
 								</a>
@@ -375,11 +397,24 @@ $(document).ready(function () {
 		}
 	});
 
-	//问题页添加评论
+	// 问题页添加评论
 	AWS.Init.init_comment_box('.aw-add-comment');
 
+	AWS.init_later_time_helper($('#later_time_input'), $('#later_time_label'));
+	// 初始化编辑器
+	AWS.create_editor(document.getElementById('wmd-input'), true);
+
+	<?php if ($_GET['comment_unfold'] == 'question') { ?>
+	// 展开问题评论
+	if ($('.aw-question-detail').find('.aw-add-comment').data('comment-count') > 0)
+	{
+		$('.aw-question-detail').find('.aw-add-comment').click();
+	}
+	<?php } ?>
+
+	<?php if ($_GET['answer_ids']) { ?>
 	//回复高亮
-	var answer_ids = '<?php echo addslashes($_GET['item_id']); ?>'.split(',');
+	var answer_ids = '<?php echo addslashes($_GET['answer_ids']); ?>'.split(',');
 	$.each(answer_ids, function (i, answer_id) {
 		if (answer_id && $('#answer_list_' + answer_id).attr('id'))
 		{
@@ -391,10 +426,7 @@ $(document).ready(function () {
 			AWS.hightlight($('#answer_list_' + answer_id), 'active');
 		}
 	});
-
-	AWS.init_later_time_helper($('#later_time_input'), $('#later_time_label'));
-	// 初始化编辑器
-	AWS.create_editor(document.getElementById('wmd-input'), true);
+	<?php } ?>
 });
 </script>
 
