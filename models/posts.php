@@ -550,6 +550,10 @@ class posts_class extends AWS_MODEL
 			case 'article':
 				$this->model('article')->log($post_id, 'ARTICLE', '提升文章', $uid);
 				break;
+
+			case 'video':
+				$this->model('video')->log($post_id, 'VIDEO', '提升投稿', $uid);
+				break;
 		}
 
 		return true;
@@ -573,6 +577,10 @@ class posts_class extends AWS_MODEL
 
 			case 'article':
 				$this->model('article')->log($post_id, 'ARTICLE', '下沉文章', $uid);
+				break;
+
+			case 'video':
+				$this->model('video')->log($post_id, 'VIDEO', '下沉投稿', $uid);
 				break;
 		}
 

@@ -1,0 +1,61 @@
+<div class="aw-item" id="answer_list_<?php echo $this->comment_info['id']; ?>">
+	<div class="mod-head">
+		<?php if ($this->comment_info['anonymous'] == 0) { ?>
+		<a class="aw-user-img aw-border-radius-5" href="people/<?php echo $this->comment_info['user_info']['url_token']; ?>">
+			<img src="<?php echo get_avatar_url($this->comment_info['uid'], 'mid'); ?>" alt="<?php echo $this->comment_info['user_info']['user_name']; ?>" />
+		</a>
+		<?php } else { ?>
+		<a class="aw-user-img aw-border-radius-5" href="javascript:;">
+			<img src="<?php echo G_STATIC_URL; ?>/common/avatar-max-img.png" alt="<?php _e('匿名用户'); ?>" title="<?php _e('匿名用户'); ?>" />
+		</a>
+		<?php } ?>
+
+		<p>
+			<?php if ($this->comment_info['anonymous'] == 0) { ?>
+			<a href="people/<?php echo $this->comment_info['user_info']['url_token']; ?>"><?php echo $this->comment_info['user_info']['user_name']; ?></a>
+			<?php } else { ?>
+			<a class="text-color-999" href="javascript:;"><?php _e('匿名用户'); ?></a>
+			<?php } ?>
+			<?php if ($this->comment_info['at_user_info']) { ?> <?php _e('回复'); ?> <a href="people/<?php echo $this->comment_info['at_user_info']['url_token']; ?>"><?php echo $this->comment_info['at_user_info']['user_name']; ?></a><?php } ?>
+		</p>
+	</div>
+	<div class="mod-body">
+	<?php if (!$this->comment_info['message']) { ?>
+		<i class="text-color-999"><?php _e('已删除'); ?></i>
+	<?php } else { ?>
+		<?php echo FORMAT::html($this->comment_info['message']); ?>
+	<?php } ?>
+	</div>
+	<div class="mod-footer">
+		<div class="meta">
+			<span class="pull-right text-color-999"><?php echo date_friendly($this->comment_info['add_time']); ?></span>
+
+			<span class="operate">
+			<?php if ($this->user_id AND $this->user_id != $this->comment_info['uid']) { ?>
+				<a href="javascript:;" class="agree<?php if ($this->comment_info['vote_info']['rating'] == 1) { ?> active<?php } ?>" onclick="AWS.User.video_comment_vote_agree($(this), <?php echo $this->comment_info['id']; ?>)">
+					<i class="icon icon-agree"></i> <b class="count"><?php echo $this->comment_info['agree_count']; ?></b>
+				</a>
+
+				<a href="javascript:;" class="disagree<?php if ($this->comment_info['vote_info']['rating'] == -1) { ?> active<?php } ?>" onclick="AWS.User.video_comment_vote_disagree($(this), <?php echo $this->comment_info['id']; ?>)">
+					<i class="icon icon-disagree"></i>
+				</a>
+			<?php } else { ?>
+				<a href="javascript:;" class="agree disabled">
+					<i class="icon icon-agree"></i> <b class="count"><?php echo $this->comment_info['agree_count']; ?></b>
+				</a>
+			<?php } ?>
+			</span>
+
+			&nbsp;&nbsp;
+
+			<?php if ($this->user_id) { ?>
+				<?php if ($this->comment_info['anonymous'] == 0) { ?>
+				<a class="aw-article-comment text-color-999" data-id="<?php echo $this->comment_info['user_info']['uid']; ?>"><i class="icon icon-comment"></i> <?php _e('回复'); ?></a>
+				<?php } ?>
+				<?php if ($this->user_id == $this->comment_info['user_info']['uid'] OR $this->user_info['permission']['edit_video']) { ?>
+				<a class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认删除?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/v/ajax/remove_comment/', 'comment_id=<?php echo $this->comment_info['id']; ?>');});"><i class="icon icon-trash"></i> <?php _e('删除'); ?></a>
+				<?php } ?>
+			<?php } ?>
+		</div>
+	</div>
+</div>

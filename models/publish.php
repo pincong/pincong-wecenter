@@ -73,7 +73,7 @@ class publish_class extends AWS_MODEL
 				break;
 
 			case 'video':
-				$this->publish_article(
+				$this->publish_video(
 					$item['title'],
 					$item['message'],
 					$item['uid'],
@@ -84,6 +84,17 @@ class publish_class extends AWS_MODEL
 					$item['parent_id'], // category_id
 					$item['extra_data']['permission_create_topic'],
 					$item['anonymous']
+				);
+				break;
+
+			case 'video_comment':
+				$this->publish_video_comment(
+					$item['parent_id'], // video_id
+					$item['message'],
+					$item['uid'],
+					$item['extra_data']['at_uid'],
+					$item['anonymous'],
+					$item['extra_data']['permission_bring_thread_to_top']
 				);
 				break;
 		}
@@ -298,6 +309,7 @@ class publish_class extends AWS_MODEL
 			'anonymous' => intval($anonymous)
 		));
 
+		// TODO: comments 字段改为 comment_count
 		$this->update('article', array(
 			'comments' => $this->count('article_comments', 'article_id = ' . intval($article_id)),
 			'update_time' => $now
@@ -392,7 +404,7 @@ class publish_class extends AWS_MODEL
 			//ACTION_LOG::save_action($uid, $video_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_VIDEO, $title, $message, null, intval($anonymous));
 			*/
 
-			$this->model('currency')->process($uid, 'NEW_ARTICLE', get_setting('currency_system_config_new_video'), '发起投稿 #' . $video_id, $video_id);
+			$this->model('currency')->process($uid, 'NEW_VIDEO', get_setting('currency_system_config_new_article'), '发起投稿 #' . $video_id, $video_id);
 
 			$this->model('posts')->set_posts_index($video_id, 'video');
 
@@ -407,6 +419,93 @@ class publish_class extends AWS_MODEL
 
 		return $video_id;
 	}
+
+	public function publish_video_comment($video_id, $message, $uid, $at_uid = null, $anonymous = null, $bring_to_top = true)
+	{
+		if (!$video_info = $this->model('video')->get_video_info_by_id($video_id))
+		{
+			return false;
+		}
+		$video_id = $video_info['id'];
+		$now = fake_time();
+
+		$comment_id = $this->insert('video_comments', array(
+			'uid' => intval($uid),
+			'video_id' => intval($video_id),
+			'message' => htmlspecialchars($message),
+			'add_time' => $now,
+			'at_uid' => intval($at_uid),
+			'anonymous' => intval($anonymous)
+		));
+
+		$this->update('video', array(
+			'comment_count' => $this->count('video_comments', 'video_id = ' . intval($video_id)),
+			'update_time' => $now
+		), 'id = ' . intval($video_id));
+
+		if ($at_uid AND $at_uid != $uid)
+		{
+			/*
+			// 通知 暂不实现
+			$this->model('notify')->send($uid, $at_uid, notify_class::TYPE_VIDEO_COMMENT_AT_ME, notify_class::CATEGORY_VIDEO, $video_id, array(
+				'from_uid' => $uid,
+				'video_id' => $video_id,
+				'item_id' => $comment_id,
+				'anonymous' => intval($anonymous)
+			));
+			*/
+		}
+
+		if ($at_users = $this->model('question')->parse_at_user($message, false, true))
+		{
+			foreach ($at_users as $user_id)
+			{
+				if ($user_id != $uid)
+				{
+					/*
+					// 通知 暂不实现
+					$this->model('notify')->send($uid, $user_id, notify_class::TYPE_VIDEO_COMMENT_AT_ME, notify_class::CATEGORY_VIDEO, $video_id, array(
+						'from_uid' => $uid,
+						'video_id' => $video_id,
+						'item_id' => $comment_id,
+						'anonymous' => intval($anonymous)
+					));
+					*/
+				}
+			}
+		}
+
+		if ($video_info['uid'] != $uid)
+		{
+			/*
+			// 通知 暂不实现
+			$this->model('notify')->send($uid, $video_info['uid'], notify_class::TYPE_VIDEO_NEW_COMMENT, notify_class::CATEGORY_VIDEO, $video_id, array(
+				'from_uid' => $uid,
+				'video_id' => $video_id,
+				'item_id' => $comment_id,
+				'anonymous' => intval($anonymous)
+			));
+			*/
+		}
+
+		/*
+		// 记录日志 暂不实现
+		ACTION_LOG::save_action($uid, $video_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_COMMENT_VIDEO, $message, $comment_id, null, intval($anonymous));
+		*/
+
+		if ($video_info['uid'] != $uid AND !$this->model('currency')->fetch_log($uid, 'COMMENT_VIDEO', $video_id))
+		{
+			$this->model('currency')->process($uid, 'COMMENT_VIDEO', get_setting('currency_system_config_comment_article'), '评论投稿 #' . $video_id, $video_id);
+
+			$this->model('currency')->process($video_info['uid'], 'VIDEO_COMMENTED', get_setting('currency_system_config_article_commented'), '投稿被评论 #' . $video_id, $video_id);
+		}
+
+		$this->model('posts')->set_posts_index($video_id, 'video', null, $bring_to_top);
+
+		return $comment_id;
+	}
+
+
 
 
 	public function check_answer_limit_rate($uid, $user_permission)

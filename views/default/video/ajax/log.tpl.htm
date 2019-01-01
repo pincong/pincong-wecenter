@@ -1,0 +1,21 @@
+<?php if ($this->list) { ?>
+<?php foreach($this->list AS $key => $val) { ?>
+<li>
+	<p>
+		<?php echo nl2br($val['note']); ?>
+		<?php if ($val['child_id']) { ?>
+			#<?php echo $val['child_id']; ?>
+		<?php } ?>
+	</p>
+	<p class="text-color-999">
+	<?php if (!$val['anonymous']) { ?>
+		<a href="people/<?php echo $val['user_info']['url_token']; ?>"><?php echo $val['user_info']['user_name']; ?></a>
+	<?php } else { ?>
+		匿名用户
+	<?php } ?>
+		•
+		<?php echo date_friendly($val['time']); ?>
+	</p>
+</li>
+<?php } ?>
+<?php } ?>
