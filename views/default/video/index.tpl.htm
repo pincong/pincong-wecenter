@@ -104,7 +104,7 @@
 						<div class="mod-body">
 							<?php if ($this->video_info['source_type']) { ?>
 							<div>
-								<?php TPL::include('video/player.tpl.htm'); ?>
+								<?php TPL::include('video/player_iframe.tpl.htm'); ?>
 							</div>
 							<?php } ?>
 							<div class="content markitup-box">
@@ -304,6 +304,7 @@ $(document).ready(function () {
 		}
 	});
 
+/*
 	var video_url;
 	var video_player = new ABP.Player('.ab-player');
 	video_player.setPoster('<?php echo $this->video_info['thumb_url']; ?>');
@@ -334,7 +335,7 @@ $(document).ready(function () {
 		return send_danmaku(danmaku, next);
 	<?php } ?>
 	});
-
+*/
 
 	AWS.at_user_lists('#wmd-input');
 	AWS.Init.init_article_comment_box($('.aw-article-comment'));

@@ -1,0 +1,24 @@
+<style>
+/* 保持 16:9 纵横比 */
+.ab-video {
+	position: relative;
+	width: 100%;
+	padding-top: 56.25%;
+	height: 0px;
+}
+
+.ab-video iframe {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background: #000;
+}
+</style>
+
+<div class="ab-player">
+	<div class="ab-video">
+		<iframe src="<?php echo $this->video_info['thumb_url']; ?>" frameborder="0"></iframe>
+	</div>
+</div>
