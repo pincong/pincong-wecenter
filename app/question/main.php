@@ -291,7 +291,6 @@ class main extends AWS_CONTROLLER
 		TPL::assign('question_topics', $question_topics);
 
 		TPL::assign('question_related_list', $this->model('question')->get_related_question_list($question_info['question_id'], $question_info['question_content']));
-		TPL::assign('question_related_links', $this->model('related')->get_related_links('question', $question_info['question_id']));
 
 		if ($this->user_id)
 		{

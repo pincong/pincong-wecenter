@@ -176,22 +176,6 @@ $(function()
 	    AWS.User.invite_user($(this),$(this).find('img').attr('src'));
 	});
 
-	//相关链接按钮
-	$('.aw-question-detail .aw-add-question-related').click(function()
-	{
-		$('.aw-question-detail .aw-comment-box, .aw-question-detail .aw-invite-box').hide();
-    	if ($('.aw-question-detail .aw-question-related-box').is(':visible'))
-    	{
-    		$('.aw-question-detail .aw-question-related-box').fadeOut();
-    	}
-    	else
-    	{
-    		/*给邀请三角形定位*/
-    		$('.aw-question-detail .aw-question-related-box .i-dropdown-triangle').css('left', $(this).position().left + 14);
-    		$('.aw-question-detail .aw-question-related-box').fadeIn();
-    	}
-	});
-
     //回复内容超链接新窗口打开
     $('.markitup-box a').attr('target','_blank');
 

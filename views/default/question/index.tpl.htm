@@ -103,21 +103,6 @@
 							<div class="content markitup-box">
 								<?php echo $this->question_info['question_detail']; ?>
 							</div>
-
-							<?php if ($this->question_related_links) { ?>
-							<div class="aw-mod aw-question-related-list">
-								<div class="mod-head">
-									<h3><i class="icon icon-bind"></i> <?php _e('相关链接'); ?> : </h3>
-								</div>
-								<div class="mod-body">
-									<ul>
-										<?php foreach ($this->question_related_links AS $key => $val) { ?>
-										<li><a href="<?php echo $val['link']; ?>" rel="nofollow" target="_blank"><?php echo $val['link']; ?></a> &nbsp; <?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'] OR $this->user_id == $this->question_info['published_uid']) { ?><a class="text-color-999" onclick="AWS.ajax_request(G_BASE_URL + '/publish/ajax/remove_related_link/', 'item_id=<?php echo $this->question_info['question_id']; ?>&id=<?php echo $val['id']; ?>');">删除</a><?php } ?></li>
-										<?php } ?>
-									</ul>
-								</div>
-							</div>
-							<?php } ?>
 						</div>
 						<div class="mod-footer">
 							<div class="clearfix aw-article-vote<?php if (!$this->user_id OR $this->user_id == $this->question_info['publish_uid']) { ?> disabled<?php } ?>">
@@ -139,9 +124,6 @@
 
 								<?php if ((!$this->question_info['lock'] AND ($this->question_info['published_uid'] == $this->user_id OR $this->user_info['permission']['edit_question'])) OR $this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?><a class="text-color-999" href="publish/<?php echo $this->question_info['question_id']; ?>"><i class="icon icon-edit"></i><?php _e('编辑'); ?></a><?php } ?>
 
-								<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'] OR $this->user_id == $this->question_info['published_uid']) { ?>
-								<a class="text-color-999 aw-add-question-related hidden-xs"><i class="icon icon-bind"></i> <?php _e('相关链接'); ?></a>
-								<?php } ?>
 								<div class="pull-right more-operate">
 									<?php if ($this->user_id) { ?>
 									<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认提升?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/question/ajax/bump/', 'question_id=<?php echo $this->question_info['question_id']; ?>');});"><i class="icon icon-up"></i><?php _e('提升'); ?></a>
@@ -206,21 +188,6 @@
 							<?php } ?>
 						</div>
 						<!-- end 站内邀请 -->
-						<!-- 相关链接 -->
-						<div class="aw-question-related-box collapse">
-							<form action="publish/ajax/save_related_link/" method="post" onsubmit="return false" id="related_link_form">
-								<div class="mod-head">
-									<h2><?php _e('与内容相关的链接'); ?></h2>
-								</div>
-								<div class="mod-body clearfix">
-									<input type="hidden" name="item_id" value="<?php echo $this->question_info['question_id']; ?>" />
-									<input type="text" class="form-control pull-left" name="link" value="" />
-
-									<a onclick="AWS.ajax_post($('#related_link_form'));" class="pull-left btn btn-success"><?php _e('提交'); ?></a>
-								</div>
-							</form>
-						</div>
-						<!-- end 相关链接 -->
 					</div>
 
 					<?php if ($_GET['column'] == 'log') { ?>

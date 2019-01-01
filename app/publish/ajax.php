@@ -475,48 +475,4 @@ class ajax extends AWS_CONTROLLER
         ), 1, null));
     }
 
-    public function save_related_link_action()
-    {
-        if (!$question_info = $this->model('question')->get_question_info_by_id($_POST['item_id']))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
-        }
-
-        if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
-        {
-            if ($question_info['published_uid'] != $this->user_id)
-            {
-                H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限执行该操作')));
-            }
-        }
-
-        if (substr($_POST['link'], 0, 7) != 'http://' AND substr($_POST['link'], 0, 8) != 'https://')
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('链接格式不正确')));
-        }
-
-        $this->model('related')->add_related_link($this->user_id, 'question', $_POST['item_id'], $_POST['link']);
-
-        H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-    }
-
-    public function remove_related_link_action()
-    {
-        if (!$question_info = $this->model('question')->get_question_info_by_id($_POST['item_id']))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
-        }
-
-        if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
-        {
-            if ($question_info['published_uid'] != $this->user_id)
-            {
-                H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限执行该操作')));
-            }
-        }
-
-        $this->model('related')->remove_related_link($_POST['id'], $_POST['item_id']);
-
-        H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-    }
 }
