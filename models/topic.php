@@ -87,33 +87,6 @@ class topic_class extends AWS_MODEL
 		return $topic_ids;
 	}
 
-	public function get_sized_file($size = null, $pic_file = null)
-	{
-		if (! $pic_file)
-		{
-			return false;
-		}
-
-		$original_file = str_replace('_' . AWS_APP::config()->get('image')->topic_thumbnail['min']['w'] . '_' . AWS_APP::config()->get('image')->topic_thumbnail['min']['h'] . '.', '.', $pic_file);
-
-		if (! $size)
-		{
-			return $original_file;
-		}
-
-		// Fix date() bug
-		if (!file_exists(get_setting('upload_dir') . '/topic/' . $original_file))
-		{
-			$dir_info = explode('/', $original_file);
-
-			$dir_date = intval($dir_info[0]);
-
-			$original_file = ($dir_date + 1) . '/' . basename($original_file);
-		}
-
-		return str_replace('.', '_' . AWS_APP::config()->get('image')->topic_thumbnail[$size]['w'] . '_' . AWS_APP::config()->get('image')->topic_thumbnail[$size]['h'] . '.', $original_file);
-	}
-
 	/**
 	 *
 	 * 得到单条话题内容
@@ -439,13 +412,10 @@ class topic_class extends AWS_MODEL
 
 			if ($topic_info['topic_pic'])
 			{
-				foreach (AWS_APP::config()->get('image')->topic_thumbnail as $size)
+				foreach (AWS_APP::config()->get('image')->topic_thumbnail as $key => $val)
 				{
-					@unlink(get_setting('upload_dir') . '/topic/' . str_replace(AWS_APP::config()->get('image')->topic_thumbnail['min']['w'] . '_' . AWS_APP::config()->get('image')->topic_thumbnail['min']['h'], $size['w'] . '_' . $size['h'], $topic_info['topic_pic']));
-
+					@unlink(get_setting('upload_dir') . '/topic/' . $this->get_topic_path($topic_id, $key));
 				}
-
-				@unlink(get_setting('upload_dir') . '/topic/' . str_replace('_' . AWS_APP::config()->get('image')->topic_thumbnail['min']['w'] . '_' . AWS_APP::config()->get('image')->topic_thumbnail['min']['h'], '', $topic_info['topic_pic']));
 			}
 
 			$this->delete('topic_focus', 'topic_id = ' . intval($topic_id));

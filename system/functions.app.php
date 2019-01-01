@@ -96,25 +96,21 @@ function set_user_operation_last_time_by_uid($op_name, $uid)
 }
 
 
-/**
- * 获取主题图片指定尺寸的完整url地址
- * @param  string $size
- * @param  string $pic_file 某一尺寸的图片文件名
- * @return string           取出主题图片或主题默认图片的完整url地址
- */
-function get_topic_pic_url($size = null, $pic_file = null)
+// 获取主题图片指定尺寸的完整url地址
+function get_topic_pic_url(&$topic_info, $size = 'min')
 {
-	if ($sized_file = AWS_APP::model('topic')->get_sized_file($size, $pic_file))
+	$all_size = array('min', 'mid', 'max');
+	$size = in_array($size, $all_size) ? $size : $all_size[0];
+
+	$default = G_STATIC_URL . '/common/topic-' . $size . '-img.png';
+
+	if (!$topic_info OR is_null($topic_info['topic_pic']))
 	{
-		return get_setting('upload_url') . '/topic/' . $sized_file;
+		return $default;
 	}
 
-	if (! $size)
-	{
-		return G_STATIC_URL . '/common/topic-max-img.png';
-	}
-
-	return G_STATIC_URL . '/common/topic-' . $size . '-img.png';
+	$filename = '/topic/' . AWS_APP::model('topic')->get_image_path($topic_info['topic_id'], $size);
+	return get_setting('upload_url') . $filename . '?' . $topic_info['topic_pic']; // $topic_info['topic_pic'] 随机字符串用于避免 CDN 缓存
 }
 
 function is_inside_url($url)

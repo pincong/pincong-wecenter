@@ -60,7 +60,7 @@ class ajax extends AWS_CONTROLLER
 			$topic_info['focus'] = $this->model('topic')->has_focus_topic($this->user_id, $topic_info['topic_id']);
 		}
 
-		$topic_info['topic_pic'] = get_topic_pic_url('mid', $topic_info['topic_pic']);
+		$topic_info['topic_pic'] = get_topic_pic_url($topic_info, 'mid');
 		$topic_info['url'] = get_js_url('/topic/' . $topic_info['url_token']);
 
 		H::ajax_json_output($topic_info);
