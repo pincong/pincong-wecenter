@@ -20,12 +20,12 @@ if (!defined('IN_ANWSION'))
 
 class category_class extends AWS_MODEL
 {
-	public function update_category_info($category_id, $title, $group_id, $url_token)
+	public function update_category_info($category_id, $title, $group_id, $description = null)
 	{
 		return $this->update('category', array(
 			'title' => htmlspecialchars($title),
 			//'group_id' => intval($group_id),
-			'url_token' => $url_token
+			'description' => $description
 		), 'id = ' . intval($category_id));
 	}
 
@@ -70,11 +70,6 @@ class category_class extends AWS_MODEL
 		{
 			return true;
 		}
-	}
-
-	public function check_url_token($url_token, $category_id)
-	{
-		return $this->count('category', "url_token = '" . $this->quote($url_token) . "' AND id != " . intval($category_id));
 	}
 
 	public function move_contents($from_id, $target_id)

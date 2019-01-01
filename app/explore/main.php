@@ -47,14 +47,7 @@ class main extends AWS_CONTROLLER
 
 		if ($_GET['category'])
 		{
-			if (is_digits($_GET['category']))
-			{
-				$category_info = $this->model('system')->get_category_info($_GET['category']);
-			}
-			else
-			{
-				$category_info = $this->model('system')->get_category_info_by_url_token($_GET['category']);
-			}
+			$category_info = $this->model('system')->get_category_info($_GET['category']);
 		}
 
 		if ($category_info)

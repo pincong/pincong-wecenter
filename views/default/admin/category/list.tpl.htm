@@ -16,7 +16,8 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th><?php _e('分类标题'); ?></th>
+                        <th><?php _e('ID'); ?></th>
+                        <th><?php _e('标题'); ?></th>
                         <th><?php _e('排序'); ?></th>
                         <th><?php _e('操作'); ?></th>
                     </tr>
@@ -26,12 +27,13 @@
                     <?php foreach ($this->list AS $key => $val) { ?>
                     <tr>
                         <td>
-                            <a href="explore/category-<?php echo ($val['url_token']) ? $val['url_token'] : $val['id']; ?>"><?php echo $val['title']; ?></a>
+                            <span><?php echo $val['id']; ?></span>
                         </td>
                         <td>
-                            <div class="col-sm-6 clo-xs-12 col-lg-offset-3">
-                                <input type="text" class="form-control sort-action" name="category[<?php echo $val['id']; ?>][sort]" value="<?php echo $val['sort']; ?>" />
-                            </div>
+                            <a href="explore/category-<?php echo $val['id']; ?>"><?php echo $val['title']; ?></a>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control sort-action" name="category[<?php echo $val['id']; ?>][sort]" value="<?php echo $val['sort']; ?>" />
                         </td>
                         <td >
                             <a href="admin/category/edit/category_id-<?php echo $val['id']; ?>" data-toggle="tooltip" class="icon icon-edit md-tip" title="<?php _e('编辑'); ?>"></a>

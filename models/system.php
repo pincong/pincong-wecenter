@@ -53,8 +53,7 @@ class system_class extends AWS_MODEL
 				'title' => $val['title'],
 				//'description' => $val['description'],
 				//'group_id' => $val['group_id'],
-				'sort' => $val['sort'],
-				'url_token' => $val['url_token']
+				'sort' => $val['sort']
 			);
 		}
 
@@ -99,8 +98,7 @@ class system_class extends AWS_MODEL
 				'title' => $val['title'],
 				//'description' => $val['description'],
 				//'group_id' => $val['group_id'],
-				'sort' => $val['sort'],
-				'url_token' => $val['url_token']
+				'sort' => $val['sort']
 			);
 		}
 
@@ -118,41 +116,12 @@ class system_class extends AWS_MODEL
 			{
 				foreach ($all_category_query AS $key => $val)
 				{
-					if (!$val['url_token'])
-					{
-						$val['url_token'] = $val['id'];
-					}
-
 					$all_category[$val['id']] = $val;
 				}
 			}
 		}
 
 		return $all_category[$category_id];
-	}
-
-	/* 获取数组信息 */
-	public function get_category_info_by_url_token($url_token)
-	{
-		static $all_category;
-
-		if (!$all_category)
-		{
-			if ($all_category_query = $this->fetch_all('category'))
-			{
-				foreach ($all_category_query AS $key => $val)
-				{
-					if (!$val['url_token'])
-					{
-						$val['url_token'] = $val['id'];
-					}
-
-					$all_category[$val['url_token']] = $val;
-				}
-			}
-		}
-
-		return $all_category[$url_token];
 	}
 
 	public function get_category_list()
@@ -163,11 +132,6 @@ class system_class extends AWS_MODEL
 
 		foreach($category_all as $key => $val)
 		{
-			if (!$val['url_token'])
-			{
-				$val['url_token'] = $val['id'];
-			}
-
 			$category_list[$val['id']] = $val;
 		}
 

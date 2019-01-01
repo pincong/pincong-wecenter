@@ -190,24 +190,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入分类名称')));
         }
 
-        if ($_POST['url_token'])
-        {
-            if (!preg_match("/^(?!__)[a-zA-Z0-9_]+$/i", $_POST['url_token']))
-            {
-                H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('分类别名只允许输入英文或数字')));
-            }
-
-            if (preg_match("/^[\d]+$/i", $_POST['url_token']) AND ($_POST['category_id'] != $_POST['url_token']))
-            {
-                H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('分类别名不可以全为数字')));
-            }
-
-            if ($this->model('category')->check_url_token($_POST['url_token'], $_POST['category_id']))
-            {
-                H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('分类别名已经被占用请更换一个')));
-            }
-        }
-
         if ($_POST['category_id'])
         {
             $category_id = intval($_POST['category_id']);
@@ -219,7 +201,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
         $category = $this->model('system')->get_category_info($category_id);
 
-        $this->model('category')->update_category_info($category_id, $_POST['title'], $_POST['group_id'], $_POST['url_token']);
+        $this->model('category')->update_category_info($category_id, $_POST['title'], $_POST['group_id'], $_POST['description']);
 
         H::ajax_json_output(AWS_APP::RSM(array(
             'url' => get_js_url('/admin/category/list/')

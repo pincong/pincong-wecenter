@@ -73,9 +73,9 @@ class menu_class extends AWS_MODEL
 				switch ($val['type'])
 				{
 					case 'category':
-						{
-							$nav_menu_data[$key]['link'] = $url_prefix . 'category-' . $category_info[$val['type_id']]['url_token'];
-						}
+					{
+						$nav_menu_data[$key]['link'] = $url_prefix . 'category-' . $category_info[$val['type_id']]['id'];
+					}
 					break;
 				}
 

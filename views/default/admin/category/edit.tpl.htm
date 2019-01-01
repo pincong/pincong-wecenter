@@ -15,9 +15,9 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('分类标题'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('ID'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
-								<input class="form-control" type="text" name="title" value="<?php echo $this->category['title']; ?>" />
+								<span class="col-sm-1 mod-text-inline"><?php echo $this->category['id']; ?></span>
 							</div>
 						</div>
 					</td>
@@ -25,16 +25,14 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('分类别名'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('分类标题'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
-								<span class="col-sm-1 mod-text-inline">/explore/category-</span>
-								<div class="col-xs-11 col-sm-8 pull-right nopadding">
-									<input type="text" name="url_token" class="form-control" value="<?php echo $this->category['url_token']; ?>" />
-								</div>
+								<input class="form-control" type="text" name="title" value="<?php echo $this->category['title']; ?>" />
 							</div>
 						</div>
 					</td>
 				</tr>
+
 				<tr>
 					<td>
 						<div class="form-group">
@@ -48,6 +46,18 @@
 						</div>
 					</td>
 				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('简介'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<textarea class="form-control" name="description"  rows="5"><?php echo $this->category['description']; ?></textarea>
+							</div>
+						</div>
+					</td>
+				</tr>
+
 				<tfoot>
 				<tr>
 					<td>
