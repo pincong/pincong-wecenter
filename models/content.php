@@ -47,6 +47,36 @@ class content_class extends AWS_MODEL
 		return false;
 	}
 
+	public function get_thread_info_by_id($type, $item_id)
+	{
+		$item_id = intval($item_id);
+		if (!$item_id OR !$this->check_thread_type($type))
+		{
+			return false;
+		}
+
+		$where = 'id = ' . ($item_id);
+		// TODO: question_id 字段改为 id 以避免特殊处理
+		if ($type == 'question')
+		{
+			$where = 'question_id = ' . ($item_id);
+		}
+
+		$item_info = $this->fetch_row($type, $where);
+		// TODO: published_uid 字段改为 uid 以避免特殊处理
+		if ($item_info)
+		{
+			if ($type == 'question')
+			{
+				$item_info['id'] = $item_info['question_id'];
+				$item_info['uid'] = $item_info['published_uid'];
+			}
+		}
+
+		return $item_info;
+	}
+
+
 	public function get_item_info_by_id($type, $item_id)
 	{
 		$item_id = intval($item_id);
@@ -169,4 +199,159 @@ class content_class extends AWS_MODEL
 		}
 		$this->delete('content_log', 'time < ' . $time_before);
 	}
+
+
+	public function lock($item_type, $item_id, $uid)
+	{
+		if (!$this->check_thread_type($item_type))
+		{
+			return false;
+		}
+
+		$where = 'id = ' . intval($item_id);
+		// TODO
+		if ($item_type == 'question')
+		{
+			$where = 'question_id = ' . intval($item_id);
+		}
+		$this->update($item_type, array('lock' => 1), $where);
+
+		$this->model('content')->log($item_type, $item_id, '锁定', $uid);
+
+		return true;
+	}
+
+	public function unlock($item_type, $item_id, $uid)
+	{
+		if (!$this->check_thread_type($item_type))
+		{
+			return false;
+		}
+
+		$where = 'id = ' . intval($item_id);
+		// TODO
+		if ($item_type == 'question')
+		{
+			$where = 'question_id = ' . intval($item_id);
+		}
+		$this->update($item_type, array('lock' => 0), $where);
+
+		$this->model('content')->log($item_type, $item_id, '取消锁定', $uid);
+
+		return true;
+	}
+
+
+	public function bump($item_type, $item_id, $uid)
+	{
+		if (!$this->check_thread_type($item_type))
+		{
+			return false;
+		}
+
+		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
+
+		$this->update('posts_index', array(
+			'update_time' => $this->model('posts')->get_last_update_time()
+		), $where);
+
+		$this->model('content')->log($item_type, $item_id, '提升', $uid);
+
+		return true;
+	}
+
+	public function sink($item_type, $item_id, $uid)
+	{
+		if (!$this->check_thread_type($item_type))
+		{
+			return false;
+		}
+
+		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
+
+		$this->update('posts_index', array(
+			'update_time' => $this->model('posts')->get_last_update_time() - (7 * 24 * 3600)
+		), $where);
+
+		$this->model('content')->log($item_type, $item_id, '下沉', $uid);
+
+		return true;
+	}
+
+	public function recommend($item_type, $item_id, $uid)
+	{
+		if (!$this->check_thread_type($item_type))
+		{
+			return false;
+		}
+
+		$where = 'id = ' . intval($item_id);
+		// TODO
+		if ($item_type == 'question')
+		{
+			$where = 'question_id = ' . intval($item_id);
+		}
+		$this->update($item_type, array('is_recommend' => 1), $where);
+
+		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
+		$this->update('posts_index', array('is_recommend' => 1), $where);
+
+		$this->model('content')->log($item_type, $item_id, '推荐', $uid);
+	}
+
+	public function unrecommend($item_type, $item_id, $uid)
+	{
+		if (!$this->check_thread_type($item_type))
+		{
+			return false;
+		}
+
+		$where = 'id = ' . intval($item_id);
+		// TODO
+		if ($item_type == 'question')
+		{
+			$where = 'question_id = ' . intval($item_id);
+		}
+		$this->update($item_type, array('is_recommend' => 0), $where);
+
+		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
+		$this->update('posts_index', array('is_recommend' => 0), $where);
+
+		$this->model('content')->log($item_type, $item_id, '取消推荐', $uid);
+	}
+
+
+	public function update_view_count($item_type, $item_id, $session_id)
+	{
+		if (!$this->check_thread_type($item_type))
+		{
+			return false;
+		}
+
+		$key = 'update_view_count_' . $item_type . '_' . intval($item_id) . '_' . md5($session_id);
+		if (AWS_APP::cache()->get($key))
+		{
+			return false;
+		}
+
+		AWS_APP::cache()->set($key, time(), 60);
+
+		// TODO: 统一字段名称避免特殊处理
+		//$this->shutdown_query("UPDATE " . $this->get_table($item_type) . " SET view_count = view_count + 1 WHERE id = " . intval($item_id));
+		if ($item_type == 'question')
+		{
+			$this->shutdown_query("UPDATE " . $this->get_table('question') . " SET view_count = view_count + 1 WHERE question_id = " . intval($item_id));
+		}
+		elseif ($item_type == 'article')
+		{
+			$this->shutdown_query("UPDATE " . $this->get_table('article') . " SET views = views + 1 WHERE id = " . intval($item_id));
+		}
+		elseif ($item_type == 'video')
+		{
+			$this->shutdown_query("UPDATE " . $this->get_table('video') . " SET view_count = view_count + 1 WHERE id = " . intval($item_id));
+		}
+
+		return true;
+	}
+
 }

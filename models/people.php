@@ -20,14 +20,15 @@ if (!defined('IN_ANWSION'))
 
 class people_class extends AWS_MODEL
 {
-	public function update_view_count($uid)
+	public function update_view_count($uid, $session_id)
 	{
-		if (AWS_APP::cache()->get('update_view_count_people_' . md5(session_id()) . '_' . intval($uid)))
+		$key = 'update_view_count_people_' . intval($uid) . '_' . md5($session_id);
+		if (AWS_APP::cache()->get($key))
 		{
 			return false;
 		}
 
-		AWS_APP::cache()->set('update_view_count_people_' . md5(session_id()) . '_' . intval($uid), time(), get_setting('cache_level_normal'));
+		AWS_APP::cache()->set($key, time(), get_setting('cache_level_normal'));
 
 		return $this->query('UPDATE ' . $this->get_table('users') . ' SET views_count = views_count + 1 WHERE uid = ' . intval($uid));
 	}

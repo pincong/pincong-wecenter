@@ -539,34 +539,4 @@ class posts_class extends AWS_MODEL
 		return true;
 	}
 
-	public function bump_post($uid, $post_id, $post_type)
-	{
-		$post_id = intval($post_id);
-
-		$where = "post_id = " . ($post_id) . " AND post_type = '" . $this->quote($post_type) . "'";
-
-		$this->update('posts_index', array(
-			'update_time' => $this->get_last_update_time()
-		), $where);
-
-		$this->model('content')->log($post_type, $post_id, '提升', $uid);
-
-		return true;
-	}
-
-	public function sink_post($uid, $post_id, $post_type)
-	{
-		$post_id = intval($post_id);
-
-		$where = "post_id = " . ($post_id) . " AND post_type = '" . $this->quote($post_type) . "'";
-
-		$this->update('posts_index', array(
-			'update_time' => $this->get_last_update_time() - (7 * 24 * 3600)
-		), $where);
-
-		$this->model('content')->log($post_type, $post_id, '下沉', $uid);
-
-		return true;
-	}
-
 }

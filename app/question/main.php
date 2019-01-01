@@ -120,7 +120,7 @@ class main extends AWS_CONTROLLER
 
 		if ($_GET['column'] != 'log')
 		{
-			$this->model('question')->update_view_count($question_info['question_id']);
+			$this->model('content')->update_view_count('question', $question_info['question_id'], session_id());
 
 			if (is_digits($_GET['uid']))
 			{

@@ -142,25 +142,6 @@ class question_class extends AWS_MODEL
 		return $result;
 	}
 
-	/**
-	 * 增加问题浏览次数记录
-	 * @param int $question_id
-	 */
-	public function update_view_count($question_id)
-	{
-		if (AWS_APP::cache()->get('update_view_count_question_' . md5(session_id()) . '_' . intval($question_id)))
-		{
-			return false;
-		}
-
-		AWS_APP::cache()->set('update_view_count_question_' . md5(session_id()) . '_' . intval($question_id), time(), 60);
-
-		$this->shutdown_query("UPDATE " . $this->get_table('question') . " SET view_count = view_count + 1 WHERE question_id = " . intval($question_id));
-
-		return true;
-	}
-
-
 	public function remove_question($question_id)
 	{
 		if (!$question_info = $this->get_question_info_by_id($question_id))
@@ -591,28 +572,6 @@ class question_class extends AWS_MODEL
 	}
 
 
-	public function set_recommend($question_id)
-	{
-		$this->update('question', array(
-			'is_recommend' => 1
-		), 'question_id = ' . intval($question_id));
-
-		$this->update('posts_index', array(
-			'is_recommend' => 1
-		), "post_id = " . intval($question_id) . " AND post_type = 'question'" );
-	}
-
-	public function unset_recommend($question_id)
-	{
-		$this->update('question', array(
-			'is_recommend' => 0
-		), 'question_id = ' . intval($question_id));
-
-		$this->update('posts_index', array(
-			'is_recommend' => 0
-		), "post_id = " . intval($question_id) . " AND post_type = 'question'" );
-	}
-
 	public function insert_question_discussion($question_id, $uid, $message, $anonymous = 0)
 	{
 		if (!$question_info = $this->model('question')->get_question_info_by_id($question_id))
@@ -824,25 +783,6 @@ class question_class extends AWS_MODEL
 		}
 
 		return $topics_by_questions_ids;
-	}
-
-	public function lock_question($question_id, $lock_status = true, $uid = 0)
-	{
-		$lock_status = intval($lock_status);
-		$this->update('question', array(
-			'lock' => $lock_status
-		), 'question_id = ' . intval($question_id));
-
-		if ($lock_status)
-		{
-			$this->model('content')->log('question', $question_id, '锁定问题', $uid);
-		}
-		else
-		{
-			$this->model('content')->log('question', $question_id, '解除锁定', $uid);
-		}
-
-		return true;
 	}
 
 	public function get_related_topics($question_content)

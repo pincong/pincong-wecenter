@@ -40,7 +40,11 @@
 
 											<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
 											<li>
-												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/v/ajax/lock/', 'video_id=<?php echo $this->video_info['id']; ?>');"><?php if ($this->video_info['lock']) { ?><?php _e('解除锁定'); ?><?php } else { ?><?php _e('锁定影片'); ?><?php } ?></a>
+												<?php if ($this->video_info['lock']) { ?>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unlock/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>');"><?php _e('取消锁定'); ?></a>
+												<?php } else { ?>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/lock/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>');"><?php _e('锁定'); ?></a>
+												<?php } ?>
 											</li>
 											<?php } ?>
 
@@ -52,7 +56,11 @@
 
 											<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
 											<li>
-												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/v/ajax/set_recommend/', 'action=<?php if ($this->video_info['is_recommend']) { ?>un<?php } ?>set&video_id=<?php echo $this->video_info['id']; ?>');"><?php if ($this->video_info['is_recommend']) { ?><?php _e('取消推荐'); ?><?php } else { ?><?php _e('推荐影片'); ?><?php } ?></a>
+												<?php if ($this->video_info['is_recommend']) { ?>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unrecommend/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>');"><?php _e('取消推荐'); ?></a>
+												<?php } else { ?>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/recommend/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>');"><?php _e('推荐'); ?></a>
+												<?php } ?>
 											</li>
 											<li>
 												<a href="javascript:;" onclick="AWS.dialog('recommend', {'type': 'video', 'item_id': <?php echo $this->video_info['id']; ?>, 'focus_id': <?php if ($this->video_info['chapter_id']) { echo $this->video_info['chapter_id']; } else { ?>''<?php } ?>});"><?php _e('添加到帮助中心'); ?></a>
@@ -96,8 +104,8 @@
 
 								<span class="pull-right  more-operate">
 									<?php if ($this->user_id) { ?>
-									<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认提升?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/v/ajax/bump/', 'video_id=<?php echo $this->video_info['id']; ?>', true);});"><i class="icon icon-up"></i> <?php _e('提升'); ?></a>
-									<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认下沉?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/v/ajax/sink/', 'video_id=<?php echo $this->video_info['id']; ?>', true);});"><i class="icon icon-down"></i> <?php _e('下沉'); ?></a>
+									<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认提升?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/content/ajax/bump/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>', true);});"><i class="icon icon-up"></i> <?php _e('提升'); ?></a>
+									<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认下沉?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/content/ajax/sink/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>', true);});"><i class="icon icon-down"></i> <?php _e('下沉'); ?></a>
 									<?php } ?>
 
 									<?php if ($this->video_info['uid'] == $this->user_id OR $this->user_info['permission']['edit_video']) { ?>
@@ -403,7 +411,7 @@ $(document).ready(function () {
 
 	if ($('#c_log_list').attr('id'))
 	{
-		AWS.load_list_view(G_BASE_URL + '/v/ajax/log/id-<?php echo $this->video_info['id']; ?>', $('#bp_log_more'), $('#c_log_list'), 1);
+		AWS.load_list_view(G_BASE_URL + '/content/ajax/list_logs/item_type-video__item_id-<?php echo $this->video_info['id']; ?>', $('#bp_log_more'), $('#c_log_list'), 1);
 	}
 	else
 	{

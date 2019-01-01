@@ -33,7 +33,11 @@
 
 											<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
 											<li>
-												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/article/ajax/lock/', 'article_id=<?php echo $this->article_info['id']; ?>');"><?php if ($this->article_info['lock']) { ?><?php _e('解除锁定'); ?><?php } else { ?><?php _e('锁定文章'); ?><?php } ?></a>
+												<?php if ($this->article_info['lock']) { ?>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unlock/', 'item_type=article&item_id=<?php echo $this->article_info['id']; ?>');"><?php _e('取消锁定'); ?></a>
+												<?php } else { ?>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/lock/', 'item_type=article&item_id=<?php echo $this->article_info['id']; ?>');"><?php _e('锁定'); ?></a>
+												<?php } ?>
 											</li>
 											<?php } ?>
 
@@ -45,7 +49,11 @@
 
 											<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
 											<li>
-												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/article/ajax/set_recommend/', 'action=<?php if ($this->article_info['is_recommend']) { ?>un<?php } ?>set&article_id=<?php echo $this->article_info['id']; ?>');"><?php if ($this->article_info['is_recommend']) { ?><?php _e('取消推荐'); ?><?php } else { ?><?php _e('推荐文章'); ?><?php } ?></a>
+												<?php if ($this->article_info['is_recommend']) { ?>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unrecommend/', 'item_type=article&item_id=<?php echo $this->article_info['id']; ?>');"><?php _e('取消推荐'); ?></a>
+												<?php } else { ?>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/recommend/', 'item_type=article&item_id=<?php echo $this->article_info['id']; ?>');"><?php _e('推荐'); ?></a>
+												<?php } ?>
 											</li>
 											<li>
 												<a href="javascript:;" onclick="AWS.dialog('recommend', {'type': 'article', 'item_id': <?php echo $this->article_info['id']; ?>, 'focus_id': <?php if ($this->article_info['chapter_id']) { echo $this->article_info['chapter_id']; } else { ?>''<?php } ?>});"><?php _e('添加到帮助中心'); ?></a>
@@ -85,8 +93,8 @@
 
 								<span class="pull-right  more-operate">
 									<?php if ($this->user_id) { ?>
-									<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认提升?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/article/ajax/bump/', 'article_id=<?php echo $this->article_info['id']; ?>', true);});"><i class="icon icon-up"></i> <?php _e('提升'); ?></a>
-									<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认下沉?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/article/ajax/sink/', 'article_id=<?php echo $this->article_info['id']; ?>', true);});"><i class="icon icon-down"></i> <?php _e('下沉'); ?></a>
+									<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认提升?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/content/ajax/bump/', 'item_type=article&item_id=<?php echo $this->article_info['id']; ?>', true);});"><i class="icon icon-up"></i> <?php _e('提升'); ?></a>
+									<a href="javascript:;" class="text-color-999" onclick="AWS.dialog('confirm', {'message' : '<?php _e('确认下沉?'); ?>'}, function(){AWS.ajax_request(G_BASE_URL + '/content/ajax/sink/', 'item_type=article&item_id=<?php echo $this->article_info['id']; ?>', true);});"><i class="icon icon-down"></i> <?php _e('下沉'); ?></a>
 									<?php } ?>
 
 									<?php if ($this->article_info['uid'] == $this->user_id OR $this->user_info['permission']['edit_article']) { ?>
@@ -353,7 +361,7 @@
 $(document).ready(function () {
 	if ($('#c_log_list').attr('id'))
 	{
-		AWS.load_list_view(G_BASE_URL + '/article/ajax/log/id-<?php echo $this->article_info['id']; ?>', $('#bp_log_more'), $('#c_log_list'), 1);
+		AWS.load_list_view(G_BASE_URL + '/content/ajax/list_logs/item_type-question__item_id-<?php echo $this->article_info['id']; ?>', $('#bp_log_more'), $('#c_log_list'), 1);
 	}
 	else
 	{

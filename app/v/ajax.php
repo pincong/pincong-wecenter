@@ -26,8 +26,7 @@ class ajax extends AWS_CONTROLLER
 		$rule_action['rule_type'] = 'white';
 
 		$rule_action['actions'] = array(
-			'list',
-			'log'
+			'list'
 		);
 
 		return $rule_action;
@@ -36,24 +35,6 @@ class ajax extends AWS_CONTROLLER
 	public function setup()
 	{
 		HTTP::no_cache_header();
-	}
-
-
-	public function lock_action()
-	{
-		if (!$this->user_info['permission']['is_moderator'] AND !$this->user_info['permission']['is_administrator'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
-		}
-
-		if (! $video_info = $this->model('video')->get_video_info_by_id($_POST['video_id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('影片不存在')));
-		}
-
-		$this->model('video')->lock_video($_POST['video_id'], !$video_info['lock'], $this->user_id);
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
 	// 彻底删除不留痕迹
@@ -99,73 +80,6 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'url' => get_js_url('/v/' . $comment_info['video_id'])
 		), 1, null));
-	}
-
-	public function log_action()
-	{
-		if (! $video_info = $this->model('video')->get_video_info_by_id($_GET['id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('指定影片不存在')));
-		}
-
-		$log_list = $this->model('content')->list_logs('video', $_GET['id'], $_GET['page'], get_setting('contents_per_page'));
-
-		TPL::assign('video_info', $video_info);
-
-		TPL::assign('list', $log_list);
-
-		TPL::output('video/ajax/log');
-	}
-
-	public function set_recommend_action()
-	{
-		if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有设置推荐的权限')));
-		}
-
-		switch ($_POST['action'])
-		{
-			case 'set':
-				$this->model('video')->set_recommend($_POST['video_id']);
-			break;
-
-			case 'unset':
-				$this->model('video')->unset_recommend($_POST['video_id']);
-			break;
-		}
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
-
-	public function bump_action()
-	{
-		if (!$this->user_info['permission']['bump_sink'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
-		}
-
-		if (!$this->model('posts')->bump_post($this->user_id, $_POST['video_id'], 'video'))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('影片不存在')));
-		}
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
-
-	public function sink_action()
-	{
-		if (!$this->user_info['permission']['bump_sink'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
-		}
-
-		if (!$this->model('posts')->sink_post($this->user_id, $_POST['video_id'], 'video'))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('影片不存在')));
-		}
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
 }

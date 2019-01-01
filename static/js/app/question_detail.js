@@ -8,7 +8,7 @@ $(function()
 
 	if ($('#c_log_list').attr('id'))
 	{
-		AWS.load_list_view(G_BASE_URL + '/question/ajax/log/id-' + QUESTION_ID, $('#bp_log_more'), $('#c_log_list'), 1);
+		AWS.load_list_view(G_BASE_URL + '/content/ajax/list_logs/item_type-question__item_id-' + QUESTION_ID, $('#bp_log_more'), $('#c_log_list'), 1);
 	}
 	else
 	{

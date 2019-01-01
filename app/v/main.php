@@ -121,7 +121,7 @@ class main extends AWS_CONTROLLER
 		}
 		TPL::assign('danmaku_json', json_encode($danmaku));
 
-		$this->model('video')->update_view_count($video_info['id']);
+		$this->model('content')->update_view_count('video', $video_info['id'], session_id());
 
 		TPL::assign('comments', $comments);
 		TPL::assign('comment_count', $video_info['comment_count']);

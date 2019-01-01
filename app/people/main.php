@@ -70,7 +70,7 @@ class main extends AWS_CONTROLLER
 			HTTP::redirect('/people/' . $user['url_token']);
 		}
 
-		$this->model('people')->update_view_count($user['uid']);
+		$this->model('people')->update_view_count($user['uid'], session_id());
 
 		TPL::assign('user', $user);
 

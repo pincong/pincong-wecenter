@@ -28,7 +28,6 @@ class ajax extends AWS_CONTROLLER
 		$rule_action['actions'] = array(
 			'get_question_discussions',
 			'get_answer_discussions',
-			'log',
 			'get_focus_users',
 			'get_answer_users'
 		);
@@ -416,21 +415,6 @@ class ajax extends AWS_CONTROLLER
 		), 1, null));
 	}
 
-	public function log_action()
-	{
-		if (! $question_info = $this->model('question')->get_question_info_by_id($_GET['id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('指定问题不存在')));
-		}
-
-		$log_list = $this->model('content')->list_logs('question', $_GET['id'], $_GET['page'], get_setting('contents_per_page'));
-
-		TPL::assign('question_info', $question_info);
-
-		TPL::assign('list', $log_list);
-
-		TPL::output('question/ajax/log');
-	}
 
 	// TODO: 重定向功能单独整理出来并支持文章和影片
 	public function redirect_action()
@@ -493,27 +477,6 @@ class ajax extends AWS_CONTROLLER
 		), 1, null));
 	}
 
-	public function set_recommend_action()
-	{
-		if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有设置推荐的权限')));
-		}
-
-		switch ($_POST['action'])
-		{
-			case 'set':
-				$this->model('question')->set_recommend($_POST['question_id']);
-			break;
-
-			case 'unset':
-				$this->model('question')->unset_recommend($_POST['question_id']);
-			break;
-		}
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
-
 	// 只清空不删除
 	public function remove_comment_action()
 	{
@@ -561,23 +524,6 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
-	public function lock_action()
-	{
-		if (! $this->user_info['permission']['is_moderator'] AND ! $this->user_info['permission']['is_administrator'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('你没有权限进行此操作')));
-		}
-
-		if (! $question_info = $this->model('question')->get_question_info_by_id($_POST['question_id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('问题不存在')));
-		}
-
-		$this->model('question')->lock_question($_POST['question_id'], !$question_info['lock'], $this->user_id);
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
-
 	public function set_best_answer_action()
 	{
 		if (! $this->user_info['permission']['is_moderator'] AND ! $this->user_info['permission']['is_administrator'])
@@ -602,36 +548,6 @@ class ajax extends AWS_CONTROLLER
 		else
 		{
 			$this->model('answer')->set_best_answer($_POST['answer_id'], $this->user_id);
-		}
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
-
-	public function bump_action()
-	{
-		if (!$this->user_info['permission']['bump_sink'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
-		}
-
-		if (!$this->model('posts')->bump_post($this->user_id, $_POST['question_id'], 'question'))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('问题不存在')));
-		}
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
-
-	public function sink_action()
-	{
-		if (!$this->user_info['permission']['bump_sink'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
-		}
-
-		if (!$this->model('posts')->sink_post($this->user_id, $_POST['question_id'], 'question'))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('问题不存在')));
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));

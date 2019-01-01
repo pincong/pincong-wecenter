@@ -8,11 +8,7 @@
 		<?php } ?>
 	</p>
 	<p class="text-color-999">
-	<?php if (!$val['anonymous']) { ?>
 		<a href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
-	<?php } else { ?>
-		匿名用户
-	<?php } ?>
 		•
 		<?php echo date_friendly($val['time']); ?>
 	</p>
