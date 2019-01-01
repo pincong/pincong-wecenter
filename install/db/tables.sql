@@ -316,7 +316,6 @@ CREATE TABLE IF NOT EXISTS `aws_question` (
   `comment_count` int(11) DEFAULT '0' COMMENT '评论数',
   `category_id` int(11) DEFAULT '0' COMMENT '分类 ID',
   `agree_count` int(11) DEFAULT '0' COMMENT '回复赞同数总和',
-  `best_answer` int(11) DEFAULT '0' COMMENT '最佳回复 ID',
   `last_answer` int(11) DEFAULT '0' COMMENT '最后回答 ID',
   `lock` tinyint(1) DEFAULT '0' COMMENT '是否锁定',
   `question_content_fulltext` text,
@@ -331,7 +330,6 @@ CREATE TABLE IF NOT EXISTS `aws_question` (
   KEY `agree_count` (`agree_count`),
   KEY `question_content` (`question_content`),
   KEY `lock` (`lock`),
-  KEY `best_answer` (`best_answer`),
   KEY `recommend` (`recommend`),
   KEY `sort` (`sort`),
   FULLTEXT KEY `question_content_fulltext` (`question_content_fulltext`)

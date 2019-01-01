@@ -288,42 +288,4 @@ class answer_class extends AWS_MODEL
 		//return $this->delete('answer_discussion', "id = " . intval($comment_id));
 	}*/
 
-	public function set_best_answer($answer_id, $uid = null)
-	{
-		if (!$answer_info = $this->get_answer_by_id($answer_id))
-		{
-			return false;
-		}
-
-		$this->shutdown_update('question', array(
-			'best_answer' => $answer_info['answer_id']
-		), 'question_id = ' . $answer_info['question_id']);
-
-		if ($uid)
-		{
-			$this->model('content')->log('question', $answer_info['question_id'], '设置最佳回复', $uid, 'answer', $answer_id);
-		}
-
-		return true;
-	}
-
-	public function unset_best_answer($answer_id, $uid = null)
-	{
-		if (!$answer_info = $this->get_answer_by_id($answer_id))
-		{
-			return false;
-		}
-
-		$this->shutdown_update('question', array(
-			'best_answer' => 0
-		), 'question_id = ' . $answer_info['question_id']);
-
-		if ($uid)
-		{
-			$this->model('content')->log('question', $answer_info['question_id'], '取消最佳回复', $uid, 'answer', $answer_id);
-		}
-
-		return true;
-	}
-
 }

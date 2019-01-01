@@ -169,9 +169,6 @@ class main extends AWS_CONTROLLER
 			$answer_list = $this->model('answer')->get_answer_list_by_question_id($question_info['question_id'], calc_page_limit($_GET['page'], 100), $answer_list_where, $answer_order_by);
 		}
 
-		// 最佳回复预留
-		$answers[0] = '';
-
 		if (! is_array($answer_list))
 		{
 			$answer_list = array();
@@ -184,11 +181,6 @@ class main extends AWS_CONTROLLER
 		{
 			$answer_ids[] = $answer['answer_id'];
 			$answer_uids[] = $answer['uid'];
-		}
-
-		if (!in_array($question_info['best_answer'], $answer_ids) AND intval($_GET['page']) < 2)
-		{
-			$answer_list = array_merge($this->model('answer')->get_answer_list_by_question_id($question_info['question_id'], 1, 'answer_id = ' . $question_info['best_answer']), $answer_list);
 		}
 
 		if ($this->user_id)
@@ -205,19 +197,7 @@ class main extends AWS_CONTROLLER
 				$answer['vote_value'] = $answer_vote_values[$answer['answer_id']];
 			}
 
-			if ($question_info['best_answer'] == $answer['answer_id'] AND intval($_GET['page']) < 2)
-			{
-				$answers[0] = $answer;
-			}
-			else
-			{
-				$answers[] = $answer;
-			}
-		}
-
-		if (! $answers[0])
-		{
-			unset($answers[0]);
+			$answers[] = $answer;
 		}
 
 		if (get_setting('answer_unique') == 'Y')

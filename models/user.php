@@ -85,7 +85,6 @@ class user_class extends AWS_MODEL
 			// TODO: rename column answer_id to id
 			$this->delete('answer_discussion', 'answer_id = ' . $val['answer_id']);
 
-			//$this->update('question', array('best_answer' => 0), 'best_answer = ' . $val['answer_id']);
 			//$this->update('question', array('last_answer' => 0), 'last_answer = ' . $val['answer_id']);
 		}
 

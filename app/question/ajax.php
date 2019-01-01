@@ -431,40 +431,5 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
-	public function set_best_answer_action()
-	{
-		if (! $this->user_info['permission']['edit_any_post'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('你没有权限进行此操作')));
-		}
-
-		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
-		if (!$answer_info = $this->model('answer')->get_answer_by_id($_POST['answer_id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('回答不存在')));
-		}
-
-		if (! $question_info = $this->model('question')->get_question_info_by_id($answer_info['question_id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('问题不存在')));
-		}
-
-		set_user_operation_last_time_by_uid('modify', $this->user_id);
-
-		if ($question_info['best_answer'])
-		{
-			$this->model('answer')->unset_best_answer($_POST['answer_id'], $this->user_id);
-		}
-		else
-		{
-			$this->model('answer')->set_best_answer($_POST['answer_id'], $this->user_id);
-		}
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
 
 }

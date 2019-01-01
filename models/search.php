@@ -193,7 +193,6 @@ class search_class extends AWS_MODEL
 			$name = $result_info['question_content'];
 
 			$detail = array(
-				'best_answer' => $result_info['best_answer'],	// 最佳回复 ID
 				'answer_count' => $result_info['answer_count'],	// 回复数
 				'comment_count' => $result_info['comment_count'],
 				'focus_count' => $result_info['focus_count'],
