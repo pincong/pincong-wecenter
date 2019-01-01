@@ -57,8 +57,6 @@ class category_class extends AWS_MODEL
 			}
 		}
 
-		$this->delete('reputation_category', 'category_id = ' . intval($category_id));
-
 		$this->delete('nav_menu', "type = 'category' AND type_id = " . intval($category_id));
 
 		return $this->delete('category', 'id = ' . intval($category_id));

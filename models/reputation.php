@@ -20,18 +20,6 @@ if (!defined('IN_ANWSION'))
 
 class reputation_class extends AWS_MODEL
 {
-	public function get_reputation_topic($uids)
-	{
-		if (!is_array($uids))
-		{
-			return false;
-		}
-
-		array_walk_recursive($uids, 'intval_string');
-
-		return $this->fetch_all('reputation_topic', 'uid IN(' . implode(',', $uids) . ')', 'topic_count DESC');
-	}
-
 	public function calculate_by_uid($uid)
 	{
 		if (!$user_info = $this->model('account')->get_user_info_by_uid($uid))
@@ -392,15 +380,4 @@ class reputation_class extends AWS_MODEL
 		return $this->sum('reputation_topic', 'agree_count', 'uid = ' . intval($uid) . ' AND topic_id IN(' . implode(',', $topic_ids) . ')');
 	}
 
-	public function calculate_thanks_count($uid, $topic_ids)
-	{
-		if (!is_array($topic_ids))
-		{
-			return false;
-		}
-
-		array_walk_recursive($topic_ids, 'intval_string');
-
-		return $this->sum('reputation_topic', 'thanks_count', 'uid = ' . intval($uid) . ' AND topic_id IN(' . implode(',', $topic_ids) . ')');
-	}
 }

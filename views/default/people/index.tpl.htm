@@ -40,25 +40,6 @@
                                 <span><i class="icon icon-agree"></i> <?php _e('赞同'); ?> : <em class="aw-text-color-orange"><?php echo $this->user['agree_count']; ?></em></span>
                                 <span><i class="icon icon-score"></i> <?php _e('%s', get_setting('integral_name')); ?> : <em class="aw-text-color-orange"><?php echo $this->user['integral']; ?></em></span>
                             </div>
-                            <?php if ($this->reputation_topics) { ?>
-                            <!-- 擅长话题 -->
-                            <div class="good-at-topics clearfix">
-                                <h2><?php _e('擅长话题'); ?></h2>
-                                <ul>
-                                    <?php foreach ($this->reputation_topics AS $key => $val) { ?>
-                                    <li>
-                                        <span class="topic-tag">
-                                            <a href="topic/<?php echo $val['url_token']; ?>" class="text" data-id="<?php echo $val['topic_id']; ?>"><?php echo $val['topic_title']; ?></a>
-                                        </span>
-                                        <span>
-                                            <i class="icon icon-agree"></i> <?php echo $val['agree_count']; ?>
-                                        </span>
-                                    </li>
-                                    <?php } ?>
-                                </ul>
-                            </div>
-                            <!-- end 擅长话题 -->
-                            <?php } ?>
 
                         </div>
                         <div class="mod-footer">
@@ -297,23 +278,6 @@
                                         </dd>
                                     </dl>
 
-                                    <?php if ($this->reputation_topics) { ?>
-                                    <dl>
-                                        <dt><span><?php _e('擅长话题'); ?>:</span></dt>
-                                        <dd class="aw-user-center-details-good-topic">
-                                            <?php foreach ($this->reputation_topics AS $key => $val) { ?>
-                                            <div>
-                                                <span class="topic-tag">
-                                                    <a href="topic/<?php echo $val['url_token']; ?>" class="text" data-id="<?php echo $val['topic_id']; ?>"><?php echo $val['topic_title']; ?></a>
-                                                </span>
-                                                <span>
-                                                    <i class="icon icon-agree"></i> <?php echo $val['agree_count']; ?>
-                                                </span>
-                                            </div>
-                                            <?php } ?>
-                                        </dd>
-                                    </dl>
-                                    <?php } ?>
                                     </div>
                                 </div>
                             </div>

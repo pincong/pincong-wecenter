@@ -80,8 +80,6 @@ class main extends AWS_CONTROLLER
 
 		TPL::import_css('css/user.css');
 
-		TPL::assign('reputation_topics', $this->model('people')->get_user_reputation_topic($user['uid'], $user['reputation'], 12));
-
 		TPL::assign('fans_list', $this->model('follow')->get_user_fans($user['uid'], 5));
 		TPL::assign('friends_list', $this->model('follow')->get_user_friends($user['uid'], 5));
 		TPL::assign('focus_topics', $this->model('topic')->get_focus_topic_list($user['uid'], 10));
@@ -157,16 +155,6 @@ class main extends AWS_CONTROLLER
 				}
 
 				$uids[] = $val['uid'];
-			}
-
-			if (!$_GET['topic_id'])
-			{
-				$reputation_topics = $this->model('people')->get_users_reputation_topic($reputation_users_ids, $users_reputations, 5);
-
-				foreach ($users_list as $key => $val)
-				{
-					$users_list[$key]['reputation_topics'] = $reputation_topics[$val['uid']];
-				}
 			}
 
 			if ($uids AND $this->user_id)

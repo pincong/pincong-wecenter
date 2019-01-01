@@ -79,8 +79,6 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		TPL::assign('reputation_topics', $this->model('people')->get_user_reputation_topic($article_info['user_info']['uid'], $user['reputation'], 5));
-
 		$this->crumb($article_info['title'], '/article/' . $article_info['id']);
 
 		TPL::assign('human_valid', human_valid('answer_valid_hour'));

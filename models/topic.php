@@ -450,7 +450,6 @@ class topic_class extends AWS_MODEL
 			$this->delete('topic_relation', 'topic_id = ' . intval($topic_id));
 			$this->delete('feature_topic', 'topic_id = ' . intval($topic_id));
 			$this->delete('related_topic', 'topic_id = ' . intval($topic_id) . ' OR related_id = ' . intval($topic_id));
-			$this->delete('reputation_topic', ' topic_id = ' . intval($topic_id));
 			$this->delete('topic', 'topic_id = ' . intval($topic_id));
 
 			$this->update('topic', array(
@@ -596,7 +595,9 @@ class topic_class extends AWS_MODEL
 
 	public function get_best_answer_users_by_topic_id($topic_id, $limit)
 	{
-		if ($helpful_users = AWS_APP::cache()->get('helpful_users_' . md5($topic_id . '_' . $limit)))
+		//临时添加
+		return false;
+		/*if ($helpful_users = AWS_APP::cache()->get('helpful_users_' . md5($topic_id . '_' . $limit)))
 		{
 			return $helpful_users;
 		}
@@ -621,12 +622,14 @@ class topic_class extends AWS_MODEL
 
 		AWS_APP::cache()->set('helpful_users_' . md5($topic_id . '_' . $limit), $helpful_users, get_setting('cache_level_normal'));
 
-		return $helpful_users;
+		return $helpful_users;*/
 	}
 
 	public function get_helpful_users_by_topic_ids($topic_ids, $limit = 10, $experience_limit = 1)
 	{
-		if (!is_array($topic_ids))
+		//临时添加
+		return false;
+		/*if (!is_array($topic_ids))
 		{
 			return false;
 		}
@@ -732,7 +735,7 @@ class topic_class extends AWS_MODEL
 
 		AWS_APP::cache()->set('helpful_users_' . md5(implode('_', $topic_ids) . '_' . $limit . '_' . $experience_limit), $helpful_users, get_setting('cache_level_low'));
 
-		return $helpful_users;
+		return $helpful_users;*/
 	}
 
 	/**
