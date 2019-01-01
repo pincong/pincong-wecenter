@@ -20,7 +20,7 @@ if (!defined('IN_ANWSION'))
 
 class vote_class extends AWS_MODEL
 {
-	private function process_currency_agree(&$type, $item_id, $uid, $item_uid)
+	private function process_currency_agree(&$type, $item_id, $uid, $item_uid, $affect_currency)
 	{
 		switch ($type)
 		{
@@ -70,11 +70,14 @@ class vote_class extends AWS_MODEL
 		if (!$this->model('currency')->fetch_log($uid, $type_agree, $item_id))
 		{
 			$this->model('currency')->process($uid, $type_agree, get_setting('currency_system_config_agree'), $note_agree, $item_id, $type);
-			$this->model('currency')->process($item_uid, $type_item_agreed, get_setting('currency_system_config_agreed'), $note_item_agreed, $item_id, $type);
+			if ($affect_currency)
+			{
+				$this->model('currency')->process($item_uid, $type_item_agreed, get_setting('currency_system_config_agreed'), $note_item_agreed, $item_id, $type);
+			}
 		}
 	}
 
-	private function process_currency_disagree(&$type, $item_id, $uid, $item_uid)
+	private function process_currency_disagree(&$type, $item_id, $uid, $item_uid, $affect_currency)
 	{
 		switch ($type)
 		{
@@ -124,7 +127,10 @@ class vote_class extends AWS_MODEL
 		if (!$this->model('currency')->fetch_log($uid, $type_disagree, $item_id))
 		{
 			$this->model('currency')->process($uid, $type_disagree, get_setting('currency_system_config_disagree'), $note_disagree, $item_id, $type);
-			$this->model('currency')->process($item_uid, $type_item_disagreed, get_setting('currency_system_config_disagreed'), $note_item_disagreed, $item_id, $type);
+			if ($affect_currency)
+			{
+				$this->model('currency')->process($item_uid, $type_item_disagreed, get_setting('currency_system_config_disagreed'), $note_item_disagreed, $item_id, $type);
+			}
 		}
 	}
 
@@ -190,10 +196,11 @@ class vote_class extends AWS_MODEL
 	 * @param int $uid         //投票用户ID
 	 * @param int $item_uid    //被投票用户ID
 	 * @param int $factor      //威望系数
+	 * @param boolean $affect_currency //是否影响被投票用户游戏币
 	 *
 	 * @return boolean true|false
 	 */
-	public function agree($type, $item_id, $uid, $item_uid, $factor)
+	public function agree($type, $item_id, $uid, $item_uid, $factor, $affect_currency)
 	{
 		if (!$this->model('content')->check_item_type($type))
 		{
@@ -219,7 +226,7 @@ class vote_class extends AWS_MODEL
 			));
 
 			$this->increase_count_and_reputation($type, $item_id, $uid, $item_uid, $factor);
-			$this->process_currency_agree($type, $item_id, $uid, $item_uid);
+			$this->process_currency_agree($type, $item_id, $uid, $item_uid, $affect_currency);
 			return true;
 		}
 
@@ -229,7 +236,7 @@ class vote_class extends AWS_MODEL
 		{
 			$this->increase_vote_value($vote_info['id']);
 			$this->increase_count_and_reputation($type, $item_id, $uid, $item_uid, $factor);
-			$this->process_currency_agree($type, $item_id, $uid, $item_uid);
+			$this->process_currency_agree($type, $item_id, $uid, $item_uid, $affect_currency);
 		}
 		elseif ($vote_value > 0) // 已赞同 则减1
 		{
@@ -258,10 +265,11 @@ class vote_class extends AWS_MODEL
 	 * @param int $uid         //投票用户ID
 	 * @param int $item_uid    //被投票用户ID
 	 * @param int $factor      //威望系数
+	 * @param boolean $affect_currency //是否影响被投票用户游戏币
 	 *
 	 * @return boolean true|false
 	 */
-	public function disagree($type, $item_id, $uid, $item_uid, $factor)
+	public function disagree($type, $item_id, $uid, $item_uid, $factor, $affect_currency)
 	{
 		if (!$this->model('content')->check_item_type($type))
 		{
@@ -287,7 +295,7 @@ class vote_class extends AWS_MODEL
 			));
 
 			$this->decrease_count_and_reputation($type, $item_id, $uid, $item_uid, $factor);
-			$this->process_currency_disagree($type, $item_id, $uid, $item_uid);
+			$this->process_currency_disagree($type, $item_id, $uid, $item_uid, $affect_currency);
 			return true;
 		}
 
@@ -297,7 +305,7 @@ class vote_class extends AWS_MODEL
 		{
 			$this->decrease_vote_value($vote_info['id']);
 			$this->decrease_count_and_reputation($type, $item_id, $uid, $item_uid, $factor);
-			$this->process_currency_disagree($type, $item_id, $uid, $item_uid);
+			$this->process_currency_disagree($type, $item_id, $uid, $item_uid, $affect_currency);
 		}
 		elseif ($vote_value > 0) // 已赞同 则减1
 		{

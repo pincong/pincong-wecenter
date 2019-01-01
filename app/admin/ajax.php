@@ -754,6 +754,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			'restricted_categories',
 			'banning_type',
 			'change_category',
+			'affect_currency',
 			'edit_user',
 			'forbid_user',
 			'flag_user',
