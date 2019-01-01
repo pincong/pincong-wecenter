@@ -5,6 +5,7 @@
 		<div class="row">
 			<div class="aw-content-wrap clearfix">
 				<div class="col-sm-12 col-md-9 aw-main-content">
+				<!-- main-content -->
 					<!-- 用户数据内容 -->
 					<div class="aw-mod aw-user-detail-box">
 						<div class="mod-head">
@@ -55,25 +56,23 @@
 							<p class="aw-user-flag">
 							</p>
 						</div>
-						<div class="mod-body">
-							<div class="meta">
-								<span><i class="icon icon-prestige"></i> <?php _e(get_setting('reputation_name')); ?> : <em class="aw-text-color-green"><?php echo $this->user['reputation']; ?></em></span>
-								<span><i class="icon icon-agree"></i> <?php _e('赞同'); ?> : <em class="aw-text-color-orange"><?php echo $this->user['agree_count']; ?></em></span>
+
+						<div class="mod-body clearfix">
+							<div>
+								<span><i class="icon icon-prestige"></i> <?php _e(get_setting('reputation_name')); ?> : <b><?php echo $this->user['reputation']; ?></b></span>
+								<span><i class="icon icon-agree"></i> <?php _e('赞同'); ?> : <b><?php echo $this->user['agree_count']; ?></b></span>
 								<?php if($this->user_info['permission']['is_administrator'] OR $this->user['uid'] == $this->user_id) { ?>
-								<span><i class="icon"></i> <?php _e(get_setting('currency_name')); ?> : <em class="aw-text-color-orange"><?php echo $this->user['currency']; ?></em> <?php _e(get_setting('currency_unit')); ?></span>
+								<span><i class="icon"></i> <?php _e(get_setting('currency_name')); ?> : <b><?php echo $this->user['currency']; ?></b> <?php _e(get_setting('currency_unit')); ?></span>
 								<?php } ?>
 							</div>
-
 						</div>
-						<div class="mod-footer">
+
+						<div class="mod-footer clearfix">
 							<ul class="nav nav-tabs aw-nav-tabs">
-								<li class="active"><a href="#overview" id="page_overview" data-toggle="tab"><?php _e('概述'); ?></a></li>
-								<li><a href="#questions" id="page_questions" data-toggle="tab"><?php _e('发问'); ?></a></li>
+								<li class="active"><a href="#questions" id="page_questions" data-toggle="tab"><?php _e('发问'); ?></a></li>
 								<li><a href="#answers" id="page_answers" data-toggle="tab"><?php _e('回复'); ?></a></li>
 								<li><a href="#articles" id="page_articles" data-toggle="tab"><?php _e('文章'); ?></a></li>
 								<li><a href="#focus" id="page_focus" data-toggle="tab"><?php _e('关注'); ?></a></li>
-								<li><a href="#actions" id="page_actions" data-toggle="tab"><?php _e('动态'); ?></a></li>
-								<li><a href="#detail" id="page_detail" data-toggle="tab"><?php _e('详细资料'); ?></a></li>
 								<?php if ($this->user_id == $this->user['uid']) { ?>
 								<li><a href="#currency" id="page_currency" data-toggle="tab"><?php _e('我的%s', get_setting('currency_name')); ?></a></li>
 								<?php } ?>
@@ -84,86 +83,9 @@
 
 					<div class="aw-user-center-tab">
 						<div class="tab-content">
-							<div class="tab-pane active" id="overview">
-								<!-- 回复 -->
-								<div class="aw-mod">
-									<div class="mod-head">
-										<h3><a class="pull-right aw-more-content" href="javascript:;" onclick="$('#page_answers').click();"><?php _e('更多'); ?> »</a><?php _e('回复'); ?></h3>
-									</div>
-									<div class="mod-body">
-										<div class="aw-profile-answer-list">
-											<?php if ($this->user_actions_answers) { ?>
-												<?php foreach ($this->user_actions_answers AS $key => $val) { ?>
-												<div class="aw-item">
-													<div class="mod-head">
-														<h4><a href="<?php echo $val['link']; ?>"><?php echo $val['title']; ?></a></h4>
-													</div>
-													<div class="mod-body">
-														<span class="aw-border-radius-5 count pull-left"><i class="icon icon-agree"></i> <?php echo $val['answer_info']['agree_count']; ?></span>
-														<p class="aw-hide-txt"><?php echo cjk_substr($val['answer_info']['answer_content'], 0, 130, 'UTF-8', '...'); ?></p>
-													</div>
-												</div>
-												<?php } ?>
-											<?php } else { ?>
-											<p class="padding10 text-center"><?php _e('没有内容'); ?></p>
-											<?php } ?>
-										</div>
-									</div>
-								</div>
-								<!-- end 回复 -->
+						<!-- tabs -->
 
-								<!-- 发问 -->
-								<div class="aw-mod">
-									<div class="mod-head">
-										<h3><a class="pull-right aw-more-content" href="javascript:;" onclick="$('#page_questions').click();"><?php _e('更多'); ?> »</a><?php _e('发问'); ?></h3>
-									</div>
-									<div class="mod-body">
-										<div class="aw-profile-publish-list">
-											<?php if ($this->user_actions_questions) { ?>
-												<?php foreach ($this->user_actions_questions AS $key => $val) { ?>
-												<div class="aw-item">
-													<div class="mod-head">
-														<h4><a href="question/<?php echo $val['question_info']['question_id']; ?>"><?php if (!$val['question_info']['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['question_info']['question_content']; ?><?php } ?></a></h4>
-													</div>
-													<div class="mod-body">
-														<span class="aw-border-radius-5 count pull-left"><i class="icon icon-reply"></i> <?php echo $val['question_info']['answer_count']; ?></span>
-														<p class="aw-hide-txt"><?php _e('%s 次浏览', $val['question_info']['view_count']); ?> • <?php _e('%s 个关注', $val['question_info']['focus_count']); ?> &nbsp; • <?php echo date_friendly($val['add_time']); ?></p>
-													</div>
-												</div>
-												<?php } ?>
-											<?php } else { ?>
-											<p class="padding10 text-center"><?php _e('没有内容'); ?></p>
-											<?php } ?>
-										</div>
-									</div>
-								</div>
-								<!-- end 发问 -->
-
-								<!-- 最新动态 -->
-								<div class="aw-mod">
-									<div class="mod-head">
-										<h3><a class="pull-right aw-more-content" href="javascript:;" onclick="$('#page_actions').click();"><?php _e('更多'); ?> »</a><?php _e('动态'); ?></h3>
-									</div>
-									<div class="mod-body">
-										<ul>
-											<?php if ($this->user_actions_answers) { ?>
-												<?php foreach ($this->user_actions_answers AS $key => $val) { ?>
-												<li>
-													<p>
-														<span class="pull-right text-color-999"><?php echo date_friendly($val['add_time']); ?></span>
-														<em class="pull-left"><?php echo $val['last_action_str']; ?>,</em>
-														<a class="aw-hide-txt" href="question/<?php echo $val['question_info']['question_id']; ?>"><?php if (!$val['question_info']['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['question_info']['question_content']; ?><?php } ?></a>
-													</p>
-												</li>
-												<?php } ?>
-											<?php } else { ?>
-											<p class="padding10 text-center"><?php _e('没有内容'); ?></p>
-											<?php } ?>
-										</ul>
-									</div>
-								</div>
-							</div>
-							<div class="tab-pane" id="questions">
+							<div class="tab-pane active" id="questions">
 								<div class="aw-mod">
 									<div class="mod-head">
 										<h3><?php _e('发问'); ?></h3>
@@ -180,6 +102,7 @@
 									</div>
 								</div>
 							</div>
+
 							<div class="tab-pane" id="answers">
 								<div class="aw-mod">
 									<div class="mod-head">
@@ -197,6 +120,7 @@
 									</div>
 								</div>
 							</div>
+
 							<div class="tab-pane" id="articles">
 								<div class="aw-mod">
 									<div class="mod-head">
@@ -214,6 +138,7 @@
 									</div>
 								</div>
 							</div>
+
 							<div class="tab-pane" id="focus">
 								<!-- 自定义切换 -->
 								<div class="aw-mod">
@@ -267,42 +192,7 @@
 								</div>
 								<!-- end 自定义切换 -->
 							</div>
-							<div class="tab-pane" id="actions">
-								<div class="aw-mod">
-									<div class="mod-head">
-										<h3><?php _e('最新动态'); ?></h3>
-									</div>
-									<div class="mod-body">
-										<div id="contents_user_actions"></div>
-									</div>
-									<div class="mod-footer">
-										<!-- 加载更多内容 -->
-										<a class="aw-load-more-content" id="bp_user_actions_more">
-											<span><?php _e('更多'); ?></span>
-										</a>
-										<!-- end 加载更多内容 -->
-									</div>
-								</div>
-							</div>
-							<div class="tab-pane" id="detail">
-								<div class="aw-mod">
-									<div class="mod-head">
-										<h3><?php _e('详细资料'); ?></h3>
-									</div>
-									<div class="mod-body aw-user-center-details">
-									<dl>
-										<dt><span><?php _e('个人成就'); ?>:</span></dt>
-										<dd>
-											<p class="meta">
-												<span><i class="icon icon-prestige"></i> <?php _e(get_setting('reputation_name')); ?>: <em class="aw-text-color-green"><?php echo $this->user['reputation']; ?></em></span>
-												<span><i class="icon icon-agree"></i> <?php _e('赞同'); ?>: <em class="aw-text-color-orange"><?php echo $this->user['agree_count']; ?></em></span>
-											</p>
-										</dd>
-									</dl>
 
-									</div>
-								</div>
-							</div>
 							<?php if ($this->user_id == $this->user['uid']) { ?>
 							<div class="tab-pane" id="currency">
 								<div class="aw-mod">
@@ -334,8 +224,11 @@
 								</div>
 							</div>
 							<?php } ?>
+
+						<!-- end tabs -->
 						</div>
 					</div>
+				<!-- end main-content -->
 				</div>
 
 				<!-- 侧边栏 -->
@@ -404,19 +297,32 @@
 </div>
 
 <script type="text/javascript">
-	var PEOPLE_USER_ID = '<?php echo $this->user['uid']; ?>';
+var PEOPLE_USER_ID = '<?php echo $this->user['uid']; ?>';
 
-	var ACTIVITY_ACTIONS = '<?php echo implode(',', array(
-		ACTION_LOG::ADD_QUESTION,
-		ACTION_LOG::ANSWER_QUESTION,
-		ACTION_LOG::ADD_REQUESTION_FOCUS,
-		ACTION_LOG::ADD_AGREE,
-		ACTION_LOG::ADD_ARTICLE,
-		ACTION_LOG::ADD_AGREE_ARTICLE,
-		ACTION_LOG::ADD_COMMENT_ARTICLE
-	)); ?>';
+$(document).ready(function () {
+	AWS.load_list_view(G_BASE_URL + '/people/ajax/user_actions/uid-' + PEOPLE_USER_ID + '__actions-201', $('#bp_user_actions_answers_more'), $('#contents_user_actions_answers'));
+	AWS.load_list_view(G_BASE_URL + '/people/ajax/user_actions/uid-' + PEOPLE_USER_ID + '__actions-101', $('#bp_user_actions_questions_more'), $('#contents_user_actions_questions'));
+	AWS.load_list_view(G_BASE_URL + '/people/ajax/user_actions/uid-' + PEOPLE_USER_ID + '__actions-501', $('#bp_user_actions_articles_more'), $('#contents_user_actions_articles'));
+	AWS.load_list_view(G_BASE_URL + '/people/ajax/follows/type-follows__uid-' + PEOPLE_USER_ID, $('#bp_user_follows_more'), $('#contents_user_follows'));
+	AWS.load_list_view(G_BASE_URL + '/people/ajax/follows/type-fans__uid-' + PEOPLE_USER_ID, $('#bp_user_fans_more'), $('#contents_user_fans'));
+	AWS.load_list_view(G_BASE_URL + '/people/ajax/topics/uid-' + PEOPLE_USER_ID, $('#bp_user_topics_more'), $('#contents_user_topics'));
+	<?php if ($this->user_id == $this->user['uid']) { ?>
+	AWS.load_list_view(G_BASE_URL + '/account/ajax/currency_log/', $('#bp_user_currency'), $('#contents_user_currency'));
+	<?php } ?>
+
+	if (window.location.hash)
+	{
+		if (document.getElementById(window.location.hash.replace('#', '')))
+		{
+			document.getElementById(window.location.hash.replace('#', '')).click();
+		}
+	}
+
+	$('.aw-tabs li').click(function() {
+		$(this).addClass('active').siblings().removeClass('active');
+		$('#focus .aw-user-center-follow-mod').eq($(this).index()).show().siblings().hide();
+	});
+});
 </script>
-
-<script type="text/javascript" src="<?php echo G_STATIC_URL; ?>/js/app/people.js"></script>
 
 <?php TPL::output('global/footer.tpl.htm'); ?>
