@@ -84,11 +84,6 @@ class ajax extends AWS_CONTROLLER
 
         $question_detail = my_trim($_POST['question_detail']);
 
-        if (!$this->user_info['permission']['publish_url'] AND FORMAT::outside_url_exists($question_detail))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在的用户组不允许发布站外链接')));
-        }
-
         if (human_valid('question_valid_hour') AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写正确的验证码')));
@@ -195,10 +190,6 @@ class ajax extends AWS_CONTROLLER
         }
 
         $question_detail = my_trim($_POST['question_detail']);
-        if (!$this->user_info['permission']['publish_url'] AND FORMAT::outside_url_exists($question_detail))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在的用户组不允许发布站外链接')));
-        }
 
         if (human_valid('question_valid_hour') AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
         {
@@ -313,10 +304,6 @@ class ajax extends AWS_CONTROLLER
         }
 
         $article_content = my_trim($_POST['message']);
-        if (!$this->user_info['permission']['publish_url'] AND FORMAT::outside_url_exists($article_content))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在的用户组不允许发布站外链接')));
-        }
 
         if (human_valid('question_valid_hour') AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
         {
@@ -432,11 +419,6 @@ class ajax extends AWS_CONTROLLER
         }
 
         $article_content = my_trim($_POST['message']);
-
-        if (!$this->user_info['permission']['publish_url'] AND FORMAT::outside_url_exists($article_content))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在的用户组不允许发布站外链接')));
-        }
 
         if (human_valid('question_valid_hour') AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
         {

@@ -179,11 +179,6 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能评论锁定的问题')));
 		}
 
-		if (! $this->user_info['permission']['publish_url'] AND FORMAT::outside_url_exists($message))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在的用户组不允许发布站外链接')));
-		}
-
 		$this->model('answer')->insert_answer_comment($_GET['answer_id'], $this->user_id, $message, $_POST['anonymous']);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
@@ -565,11 +560,6 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('回复内容字数不得多于 %s 字', $answer_length_max)));
 		}
 
-		if (! $this->user_info['permission']['publish_url'] AND FORMAT::outside_url_exists($answer_content))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在的用户组不允许发布站外链接')));
-		}
-
 		if (human_valid('answer_valid_hour') and ! AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写正确的验证码')));
@@ -657,11 +647,6 @@ class ajax extends AWS_CONTROLLER
 		if ($answer_length_max AND cjk_strlen($answer_content) > $answer_length_max)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('回复内容字数不得多于 %s 字', $answer_length_max)));
-		}
-
-		if (! $this->user_info['permission']['publish_url'] AND FORMAT::outside_url_exists($answer_content))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在的用户组不允许发布站外链接')));
 		}
 
 		if ($answer_info['uid'] != $this->user_id and ! $this->user_info['permission']['is_administrator'] and ! $this->user_info['permission']['is_moderator'])
