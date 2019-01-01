@@ -56,11 +56,6 @@ class main extends AWS_CONTROLLER
 			$sort = 'ASC';
 		}
 
-		if (get_setting('unfold_comments') == 'Y')
-		{
-			$_GET['comment_unfold'] = 'all';
-		}
-
 		$question_info['redirect'] = $this->model('question')->get_redirect($question_info['question_id']);
 
 		if ($question_info['redirect']['target_id'])

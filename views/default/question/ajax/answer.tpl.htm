@@ -53,7 +53,7 @@
 			</span>
 			<!-- end 投票栏 -->
 			<span class="operate">
-				<a class="aw-add-comment" data-id="<?php echo $this->answer_info['answer_id']; ?>" data-type="answer" data-comment-count="<?php echo $this->answer_info['comment_count']; ?>" data-first-click="<?php if ($this->answer_info['comment_count'] == 0) {?>hide<?php }?>" href="javascript:;"><i class="icon icon-comment"></i> <?php if ($this->answer_info['comment_count']) { ?><?php echo $this->answer_info['comment_count']; ?><?php } else { ?>0<?php } ?></a>
+				<a class="aw-add-comment" data-id="<?php echo $this->answer_info['answer_id']; ?>" data-type="answer" href="javascript:;"><i class="icon icon-comment"></i> <?php if ($this->answer_info['comment_count']) { ?><?php echo $this->answer_info['comment_count']; ?><?php } else { ?>0<?php } ?></a>
 			</span>
 
 			<!-- 可显示/隐藏的操作box -->

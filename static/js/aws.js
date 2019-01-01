@@ -2149,14 +2149,6 @@ AWS.Init =
 		$(document).on('click', selector, function ()
 		{
 			$(this).parents('.aw-question-detail').find('.aw-invite-box, .aw-question-related-box').hide();
-			if (typeof COMMENT_UNFOLD != 'undefined')
-			{
-				if (COMMENT_UNFOLD == 'all' && $(this).attr('data-comment-count') == 0 && $(this).attr('data-first-click') == 'hide')
-				{
-					$(this).removeAttr('data-first-click');
-					return false;
-				}
-			}
 
 			if (!$(this).attr('data-type') || !$(this).attr('data-id'))
 			{
