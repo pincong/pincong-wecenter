@@ -138,7 +138,7 @@ class ajax extends AWS_CONTROLLER
 		if ($type == 'question' AND get_setting('question_ends_with_question') == 'Y')
 		{
 			$question_mark = cjk_substr($_POST['title'], $title_length - 1, 1);
-			if ($question_mark != '？' AND $question_mark != '?')
+			if ($question_mark != '？' AND $question_mark != '?' AND $question_mark != '¿')
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('提问请以问号结尾')));
 			}
