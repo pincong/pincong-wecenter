@@ -645,7 +645,6 @@ CREATE TABLE IF NOT EXISTS `aws_users` (
   `fans_count` int(10) DEFAULT '0' COMMENT '粉丝数',
   `friend_count` int(10) DEFAULT '0' COMMENT '观众数',
   `invite_count` int(10) DEFAULT '0' COMMENT '邀请我回答数量',
-  `answer_count` int(10) DEFAULT '0' COMMENT '回答数量',
   `topic_focus_count` int(10) DEFAULT '0' COMMENT '关注话题数量',
   `group_id` int(10) DEFAULT '4' COMMENT '用户组',
   `forbidden` tinyint(1) DEFAULT '0' COMMENT '是否禁止用户',
@@ -666,7 +665,6 @@ CREATE TABLE IF NOT EXISTS `aws_users` (
   KEY `forbidden` (`forbidden`),
   KEY `currency` (`currency`),
   KEY `verified` (`verified`),
-  KEY `answer_count` (`answer_count`),
   KEY `last_login` (`last_login`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 

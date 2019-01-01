@@ -301,10 +301,6 @@ class answer_class extends AWS_MODEL
 
 		$this->model('question')->update_answer_count($question_id);
 
-		$this->shutdown_update('users', array(
-			'answer_count' => $this->count('answer', 'uid = ' . intval($uid))
-		), 'uid = ' . intval($uid));
-
 		return $answer_id;
 	}
 

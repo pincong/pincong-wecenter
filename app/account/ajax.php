@@ -273,7 +273,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$users_list)
 		{
-			$users_list = $this->model('account')->get_users_list("answer_count > 5 AND last_login > " . (time() - (60 * 60 * 24 * 7)), 6, true, true, 'RAND()');
+			$users_list = $this->model('account')->get_users_list("reputation > 5 AND last_login > " . (time() - (60 * 60 * 24 * 7)), 6, true, true, 'RAND()');
 		}
 
 		if ($users_list)
