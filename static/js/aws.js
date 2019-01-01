@@ -339,7 +339,7 @@ var AWS =
 
 						if (result.rsm.ajax_html)
 						{
-							$('.aw-feed-list').append(result.rsm.ajax_html);
+							$('.aw-replies').append(result.rsm.ajax_html);
 
 							$('.aw-comment-box-btn .btn-success, .btn-reply').removeClass('disabled');
 
@@ -371,7 +371,7 @@ var AWS =
 
 						if (result.rsm.ajax_html)
 						{
-							$('.aw-feed-list').append(result.rsm.ajax_html);
+							$('.aw-replies').append(result.rsm.ajax_html);
 
 							$('.aw-comment-box-btn .btn-success, .btn-reply').removeClass('disabled');
 
