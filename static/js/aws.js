@@ -513,10 +513,8 @@ var AWS =
 	// 警告弹窗
 	alert: function (text)
 	{
-		if ($('.alert-box').length)
-		{
-			$('.alert-box').remove();
-		}
+		$('.alert-box').remove();
+		$('.modal-backdrop').remove();
 
 		$('#aw-ajax-box').append(Hogan.compile(AW_TEMPLATE.alertBox).render(
 		{
@@ -529,10 +527,8 @@ var AWS =
 	popup: function (url, callback)
 	{
 		$.get(url, function (template) {
-			if ($('.alert-box').length)
-			{
-				$('.alert-box').remove();
-			}
+			$('.alert-box').remove();
+			$('.modal-backdrop').remove();
 
 			$('#aw-ajax-box').html(template).show();
 
@@ -598,10 +594,8 @@ var AWS =
 
 		if (template)
 		{
-			if ($('.alert-box').length)
-			{
-				$('.alert-box').remove();
-			}
+			$('.alert-box').remove();
+			$('.modal-backdrop').remove();
 
 			$('#aw-ajax-box').html(template).show();
 
