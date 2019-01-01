@@ -79,12 +79,12 @@ class AWS_APP
 			{
 				if ((! $access_rule['actions']) OR (! in_array(load_class('core_uri')->action, $access_rule['actions'])))
 				{
-					self::login();
+					self::login($access_rule['redirect']);
 				}
 			}
 			else if (isset($access_rule['actions']) AND in_array(load_class('core_uri')->action, $access_rule['actions']))	// 非白就是黑名单
 			{
-				self::login();
+				self::login($access_rule['redirect']);
 			}
 
 		}
@@ -254,11 +254,15 @@ class AWS_APP
 	 *
 	 * 检查用户登录状态并带领用户进入相关操作
 	 */
-	public static function login()
+	public static function login($redirect = true)
 	{
 		if (! AWS_APP::user()->get_info('uid'))
 		{
-			if ($_POST['_post_type'] == 'ajax')
+			if ($redirect === false) // null 也跳转
+			{
+				HTTP::error_403();
+			}
+			elseif ($_POST['_post_type'] == 'ajax')
 			{
 				H::ajax_json_output(self::RSM(null, -1, AWS_APP::lang()->_t('会话超时, 请重新登录')));
 			}

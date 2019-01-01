@@ -505,6 +505,25 @@ var AWS =
 		$(".alert-box").modal('show');
 	},
 
+	popup: function (url, callback)
+	{
+		$.get(url, function (template) {
+			if ($('.alert-box').length)
+			{
+				$('.alert-box').remove();
+			}
+
+			$('#aw-ajax-box').html(template).show();
+
+			if (callback)
+			{
+				callback();
+			}
+
+			$(".alert-box").modal('show');
+		});
+	},
+
 	/**
 	 *	公共弹窗
 	 *	publish     : 发起
@@ -1377,6 +1396,16 @@ AWS.init_later_time_helper = function($input, $label)
 		}
 		$label.text(time);
 	});
+}
+
+
+AWS.init_answer_editor = function()
+{
+	if (G_ADVANCED_EDITOR_ENABLE == 'Y')
+	{
+		// 初始化编辑器
+		AWS.create_editor('editor_reply');
+	}
 }
 
 // 创建编辑器

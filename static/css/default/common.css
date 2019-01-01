@@ -816,9 +816,8 @@ blockquote {margin: 0 40px;padding: 0 15px;font-size: 14px;color: #777;border-le
 .aw-publish-box .aw-topic-bar{margin: 0;}
 .aw-publish-box .dropdown, .aw-question-drodpwon, .aw-inbox form{position: relative;}
 /* 评论修改box */
-.aw-edit-comment-box .cke_inner{border:1px solid #ddd;border-radius: 3px 3px 0 0;}
 .aw-edit-comment-box .modal-dialog{width:745px;}
-.aw-edit-comment-box .modal-body textarea{margin:0;border-radius: 10px 10px 0 0;}
+.aw-edit-comment-box .modal-body textarea{margin:0;}
 .aw-edit-comment-box .aw-file-upload-box{padding:20px;border:1px solid #ccc;border-top: none;border-radius: 0 0 3px 3px;}
 .aw-edit-comment-box .modal-footer label{margin-left:5px;}
 /* 回复收藏box */

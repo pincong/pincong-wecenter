@@ -66,6 +66,21 @@ class HTTP
 		return setcookie(G_COOKIE_PREFIX . $name, $value, $expire, $path, $domain, $secure, $httponly);
 	}
 
+	public static function error_403()
+	{
+		if ($_POST['_post_type'] == 'ajax')
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, 'HTTP/1.1 403 Forbidden'));
+		}
+		else
+		{
+			header('HTTP/1.1 403 Forbidden');
+
+			TPL::output('global/error_403');
+			exit;
+		}
+	}
+
 	public static function error_404()
 	{
 		if ($_POST['_post_type'] == 'ajax')
