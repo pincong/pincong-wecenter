@@ -158,11 +158,6 @@ ul,ol{padding:0;list-style:none;}
 .aw-content-wrap .tab-content .help-block{clear:both;overflow:hidden;margin:0;padding:10px 10px 10px 5px;text-align:left;font-size:12px;line-height:1.8em;}
 .aw-content-wrap .tab-content .help-block a{padding:0 5px;color:#3276b1;font-size:12px;}
 
-/*wechat 页面 左侧菜单区域*/
-.mod-wechat-btn{margin-top: 0;}
-.aw-content-wrap .mod-wechat-sava{margin-left:2px;text-align:center;}
-.aw-content-wrap .mod-wechat-sava input{margin-right:10px;}
-.email-protocol{margin-top: 7px}
 /*nav-menu 页面 左侧菜单区域*/
 .aw-content-wrap .mod-set-head a{margin:9px;}
 .aw-content-wrap .mod-set-head h3{margin:0;height:40px;background:#F4F4F4;color:#333;text-indent:10px;font-weight:400;font-size:14px;line-height:40px;}
@@ -187,64 +182,22 @@ ul,ol{padding:0;list-style:none;}
 .aw-question-list li,.aw-article-list li{overflow: hidden;margin-bottom: 5px;}
 .aw-article-list a,.aw-question-list a{display:block;max-width:600px;}
 
-/*微信菜单页面*/
-.chat-symbol{padding:0;line-height:34px;}
-.aw-wechat-dropdown-box{position:relative;width:230px;height:34px;line-height:34px;}
-.aw-wechat-dropdown-box input{padding-right:30px!important;}
-.aw-wechat-dropdown-box .icon-down{position:absolute;top:5px;right:5px;z-index:2;background:transparent;color:#666;font-size:16px;cursor:pointer;}
-.aw-wechat-dropdown-box span{position:relative;z-index:3;}
-.aw-wechat-dropdown-box .input-bg{position:absolute;left:0;z-index:1;width:100%;height:34px;border:1px solid #ccc;border-radius:5px;background-color:#fff;}
-.aw-wechat-dropdown-box .dropdown-menu{padding:10px;width:64%;}
-.aw-wechat-dropdown-box .dropdown-menu .mod{box-shadow: none;}
-.aw-wechat-dropdown-box .dropdown-menu .mod > .mod-head{margin:0;height:34px;border:none;background:transparent;}
-.aw-wechat-dropdown-box .dropdown-menu.subtract-two{width:138%;}
-.aw-wechat-dropdown-box .dropdown-menu.all{width:360%;}
-.aw-wechat-dropdown-box .dropdown-menu.all.subtract-two{width:243%;}
-.aw-wechat-dropdown-box .dropdown-menu .mod{float:right;overflow:hidden;margin:0 10px;width:126px;}
-.aw-wechat-dropdown-box .dropdown-menu .mod .divider,.aw-wechat-dropdown-box .dropdown-menu > .mod-body{overflow:hidden;margin:9px 0;height:1px;background-color:#E5E5E5;}
-.aw-wechat-dropdown-box .dropdown-menu ul li{height:26px;line-height:26px;}
-.aw-wechat-dropdown-box .dropdown-menu ul.control-height{overflow-y:auto;max-height:182px;}
-.aw-wechat-dropdown-box .dropdown-menu ul li a{display:block;clear:both;overflow:hidden;padding:3px 20px;max-width:126px;color:#333;text-align:left;text-overflow:ellipsis;white-space:nowrap;font-weight:400;line-height:1.42857;}
-.aw-wechat-dropdown-box .dropdown-menu ul li a:hover,.aw-wechat-dropdown-box .dropdown-menu ul li.active a{background-color:#428BCA;color:#FFF;text-decoration:none;}
-.aw-wechat-dropdown-box .dropdown-menu > .mod-footer{padding-top:10px;border-top:1px solid #E5E5E5;}
-.aw-wechat-dropdown-box .dropdown-menu > .mod-footer li a{display:inline;}
-.aw-wechat-dropdown-box .ajax-upload,.aw-wechat-dropdown-box .ajax-look{position:absolute;top:4px;right:-30px;}
-.aw-wechat-dropdown-box .ajax-look{right:-60px;}
-.aw-content-wrap .mod-weibo-reply li{margin-top: 10px;}
-.aw-content-wrap .mod-weibo-reply li .reply-name,.aw-admin-weibo-publish .push-name ,.aw-admin-email .push-name{display: inline-block;min-width: 180px;}
-.wechat1,.wechat{min-height:inherit;height: auto;}
-.wechat1{margin-top:20px}
-.wechat{margin-top: 0;}
-#import .control-label{line-height: 35px}
-#import .col-xs-8 {margin-top: 13px;}
-#import .col-xs-8  label{margin-right: 10px;}
-#option_last_active .col-xs-8{margin-top: 0}
-/*preview/action-edit  限制附件*/
-.aw-upload-img-list  ul{margin-top: -30px;}
-.aw-upload-img-list img{max-width: 200px;min-height: 150px;max-height: 150px;display: block;margin: 0 auto;}
-.aw-upload-img-list li{text-align: center;display: inline-block;margin: 30px 15px 0 30px;width: 20%;height: 150px;}
-.aw-upload-img-list .btn{margin-top: 15px;}
-.aw-upload-file-list li{display: inline-block;margin: 0px 20px 10px 20px}
+
 /*编辑用户资料*/
 #remove_user_form label{margin-right:15px;}
 #currency_form span.mod-category-foot{padding:0;text-align:right;line-height:35px;}
 #currency_form .col-sm-6{line-height:35px;}
 
-/*微信消息群发*/
 .mod-file{position:relative;display:inline-block;overflow:hidden;vertical-align:middle;cursor:pointer;*display:inline;*zoom:1;}
 .mod-file .mod-input-file{ position:absolute; top:0;right:0; height:100%;opacity:0;-ms-filter:"alpha(opacity=0)";filter:alpha(opacity=0);cursor:pointer;_font-size:100px; _font-size:12px;_zoom:10;_height:auto;}
 .filetext{padding-top: 10px;}
+
 /* 弹窗 */
 .aw-category-move-box .modal-dialog{width:350px;}
 .aw-topic-edit-note-box img{max-width:530px;}
 .aw-topic-edit-note-box #aw_dialog_ajax_data{overflow-y:scroll;max-height:450px;}
 
-/* 微信多账号下拉菜单 */
-.dropdown #dropdownMenu1 .caret{margin-left:5px;}
-.dropdown ul.weixin-dropdown-menu{min-width:100px;}
 
-/*群发消息*/
-#msg_details .msg-que li,#msg_details .msg-arc li{margin-bottom: 10px;}
 /*日期选择控件*/
 .date_selector,.date_selector *{margin:0;padding:0;width:auto;height:auto;border:none;background:none;text-align:left;text-decoration:none;cursor:pointer;}
 .date_selector{position:absolute;z-index:100000;display:none;margin:-1px 0 0;padding:10px;border:1px solid #ccc;background:#fbfbfb;-webkit-box-shadow:0 0 5px #aaa;-moz-box-shadow:0 0 5px #aaa;box-shadow:0 0 5px #aaa;}
@@ -286,7 +239,7 @@ ul,ol{padding:0;list-style:none;}
 .aw-dropdown .aw-dropdown-list li.user a img{width: 25px;height: 25px;margin-right: 5px;}
 .aw-dropdown .aw-dropdown-list li.user a span{display:inline-block;max-width:180px;margin-left:10px;color: #999;vertical-align: top;}
 .aw-dropdown-box{position:relative;}
-.aw-wechat-send-message .aw-dropdown-list{overflow-y:scroll;margin-bottom:0;max-height:330px;}
+
 .aw-publish-title{position: relative;border:1px solid #ccc;border-radius: 5px;}
 .aw-publish-title input{width:90%;height:32px;float:left;border:none;box-shadow: none;}
 .aw-publish-title .dropdown.open .aw-dropdown{display: block;}
@@ -294,10 +247,7 @@ ul,ol{padding:0;list-style:none;}
 .aw-publish-title .dropdown .dropdown-toggle .icon-down{background: transparent;color: #b7b7b7;}
 .aw-publish-title .dropdown i{margin:0;}
 .aw-publish-title .aw-dropdown .aw-dropdown-list a{display:block;padding:5px 10px;max-width: 400px;}
-/* 开放平台设置 */
-.aw-admin-weibo-publish .img,.aw-admin-weibo-answer li img,.aw-admin-email li img{margin-right: 10px;width: 24px;}
 
-.aw-admin-weibo-publish .btn{margin-left: 5px;}
 
 /* iCheck plugin */
 .icheckbox_square-blue,
@@ -325,7 +275,7 @@ label,.aw-content-wrap .mod-title,.aw-article-list b,.aw-question-list b{font-we
 .aw-side ul li i,.aw-content-wrap .md-tip{margin:0 1px;}
 .aw-content-wrap .mod-padding,.aw-content-wrap .mod-site-url,.aw-content-wrap .aw-nav-menu ul{padding-left:0;}
 .aw-content-wrap .mod-table-foot .clpadding,.aw-content-wrap tfoot .mod-category-foot{padding:0;line-height:35px;}
-.aw-content-wrap .mod-head h3,.aw-content-wrap .mod-page,.aw-message-box form,.aw-wechat-dropdown-box .dropdown-menu > .mod-footer ul{margin:0;}
+.aw-content-wrap .mod-head h3,.aw-content-wrap .mod-page,.aw-message-box form{margin:0;}
 .aw-content-wrap .editor,.aw-content-wrap .mod-foot-center td{text-align:center;}
 .ps-container:hover .ps-scrollbar-x-rail,.ps-container.hover .ps-scrollbar-x-rail,.ps-container:hover .ps-scrollbar-y-rail,.ps-container.hover .ps-scrollbar-y-rail{opacity:.6;filter:alpha(opacity=60);}
 .ps-container.ie6 .ps-scrollbar-x,.ps-container.ie6 .ps-scrollbar-y{font-size:0;}

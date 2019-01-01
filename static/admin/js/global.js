@@ -106,30 +106,6 @@ $(function () {
     });
 
 
-    //微博发布用户
-    $('.aw-admin-weibo-answer .search-input').bind("keydown", function()
-    {
-        if (window.event && window.event.keyCode == 13)
-        {
-            return false;
-        }
-    });
-
-    // 微博提问用户删除
-    $(document).on('click', '.aw-admin-weibo-publish .delete', function()
-    {
-        $('.aw-admin-weibo-publish').find('.search-input').val('').show();
-
-        $(this).parents('li').detach();
-    });
-
-    // 微博接收用户删除
-    $(document).on('click', '.aw-admin-weibo-answer li .delete', function()
-    {
-        $(this).parent().detach();
-
-        weiboPost($(this));
-    });
 
 
     // 概述页面，新增话题数，点击排序
@@ -205,31 +181,3 @@ function subjectData(type)
     }, 'json');
 }
 
-function weiboPost(obj)
-{
-    $.post(G_BASE_URL + '/admin/ajax/weibo_batch/', {'uid': obj.attr('data-id'), 'action':obj.attr('data-actions')}, function (result)
-    {
-        if (result.errno == -1)
-        {
-            AWS.alert(result.err);
-
-             $('.mod-weibo-reply li:last').detach();
-        }
-        else if (result.errno == 1)
-        {
-            if(result.rsm != null)
-            {
-                if (result.rsm.staus == 'bound')
-                {
-                    $('.mod-weibo-reply li:last .btn-primary').text('更新 Access Token');
-                }
-                else
-                {
-                   $('.mod-weibo-reply li:last .btn-primary').text('绑定微博');
-                }
-            }
-
-            $(".alert-box").modal('hide');
-        }
-    }, 'json');
-};
