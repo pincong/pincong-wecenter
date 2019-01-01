@@ -71,9 +71,9 @@ class reputation_class extends AWS_MODEL
 	}
 
 	// 增加用户赞同数和威望
-	// 如果满足封禁条件则自动封禁
 	public function increase_agree_count_and_reputation($uid, $vote, $reputation_factor)
 	{
+		$uid = intval($uid);
 		if (!$uid OR $uid == -1)
 		{
 			return false;
@@ -85,17 +85,27 @@ class reputation_class extends AWS_MODEL
 			return false;
 		}
 
-		$agree_count = intval($user_info['agree_count'] + intval($vote));
-		$reputation = intval($user_info['reputation'] + intval($vote * $reputation_factor));
+		$agree_count_delta = intval($vote);
+		$reputation_delta = $agree_count_delta * intval($reputation_factor);
 
-		$fields = array(
-			'agree_count' => $agree_count,
-			'reputation' => $reputation,
-			'reputation_update_time' => fake_time()
-		);
+		$this->query('UPDATE ' . $this->get_table('users') . ' SET agree_count = agree_count + ' . $agree_count_delta . ', reputation = reputation + ' . $reputation_delta . ' WHERE uid = ' . ($uid));
 
-		// 自动封禁/解封, $user_info['forbidden'] == 2 表示被系统自动封禁
-		if ((!$user_info['forbidden'] OR $user_info['forbidden'] == 2) AND $user_info['group_id'] == 4)
+		// 如果是普通会员则落实自动封禁功能
+		if ($user_info['group_id'] == 4)
+		{
+			$agree_count = $user_info['agree_count'] + $agree_count_delta;
+			$reputation = $user_info['reputation'] + $reputation_delta;
+			$this->auto_forbid_user($uid, $user_info['forbidden'], $agree_count, $reputation);
+		}
+
+		return true;
+	}
+
+	// 如果满足封禁条件则自动封禁
+	public function auto_forbid_user($uid, $forbidden, $agree_count, $reputation)
+	{
+		// 自动封禁/解封, $forbidden == 2 表示已被系统自动封禁
+		if (!$forbidden OR $forbidden == 2)
 		{
 			$auto_banning_agree_count = get_setting('auto_banning_agree_count');
 			$auto_banning_reputation = get_setting('auto_banning_reputation');
@@ -105,16 +115,16 @@ class reputation_class extends AWS_MODEL
 				if ( (is_numeric($auto_banning_agree_count) AND $auto_banning_agree_count >= $agree_count)
 					AND (is_numeric($auto_banning_reputation) AND $auto_banning_reputation >= $reputation) )
 				{
-					if (!$user_info['forbidden']) // 满足封禁条件且未被封禁的用户
+					if (!$forbidden) // 满足封禁条件且未被封禁的用户
 					{
-						$fields['forbidden'] = 2;
+						$fields = array('forbidden' => 2);
 					}
 				}
 				else
 				{
-					if ($user_info['forbidden'] == 2) // 不满足封禁条件已被封禁的用户
+					if ($forbidden == 2) // 不满足封禁条件已被封禁的用户
 					{
-						$fields['forbidden'] = 0;
+						$fields = array('forbidden' => 0);
 					}
 				}
 			}
@@ -123,45 +133,26 @@ class reputation_class extends AWS_MODEL
 				if ( (is_numeric($auto_banning_agree_count) AND $auto_banning_agree_count >= $agree_count)
 					OR (is_numeric($auto_banning_reputation) AND $auto_banning_reputation >= $reputation) )
 				{
-					if (!$user_info['forbidden']) // 满足封禁条件且未被封禁的用户
+					if (!$forbidden) // 满足封禁条件且未被封禁的用户
 					{
-						$fields['forbidden'] = 2;
+						$fields = array('forbidden' => 2);
 					}
 				}
 				else
 				{
-					if ($user_info['forbidden'] == 2) // 不满足封禁条件已被封禁的用户
+					if ($forbidden == 2) // 不满足封禁条件已被封禁的用户
 					{
-						$fields['forbidden'] = 0;
+						$fields = array('forbidden' => 0);
 					}
 				}
 			}
 		}
 
-		$this->update('users', $fields, 'uid = ' . intval($uid));
-	}
-
-	public function calculate_by_uid($uid)
-	{
-		// TODO 根据每个问题/回答/文章/评论的赞同数计算威望
-	}
-
-	// 重新计算用户威望
-	public function calculate($start = 0, $limit = 100)
-	{
-		if ($users_list = $this->query_all('SELECT uid FROM ' . get_table('users') . ' ORDER BY uid ASC', intval($start) . ',' . intval($limit)))
+		if ($fields)
 		{
-			foreach ($users_list as $key => $val)
-			{
-				$this->calculate_by_uid($val['uid']);
-			}
-
-			return true;
+			$this->update('users', $fields, 'uid = ' . intval($uid));
 		}
-
-		return false;
 	}
-
 
 	// 奖励活跃用户
 	public function reward_daily_active_users()
@@ -187,5 +178,26 @@ class reputation_class extends AWS_MODEL
 		return true;
 	}
 
+
+	public function calculate_by_uid($uid)
+	{
+		// TODO 根据每个问题/回答/文章/评论的赞同数计算威望
+	}
+
+	// 重新计算用户威望
+	public function calculate($start = 0, $limit = 100)
+	{
+		if ($users_list = $this->query_all('SELECT uid FROM ' . get_table('users') . ' ORDER BY uid ASC', intval($start) . ',' . intval($limit)))
+		{
+			foreach ($users_list as $key => $val)
+			{
+				$this->calculate_by_uid($val['uid']);
+			}
+
+			return true;
+		}
+
+		return false;
+	}
 
 }
