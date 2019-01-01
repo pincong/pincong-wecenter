@@ -187,35 +187,6 @@ class user extends AWS_ADMIN_CONTROLLER
     }
 
 
-    public function verify_approval_list_action()
-    {
-        $approval_list = $this->model('verify')->approval_list($_GET['page'], $_GET['status'], $this->per_page);
-
-        $total_rows = $this->model('verify')->found_rows();
-
-        foreach ($approval_list AS $key => $val)
-        {
-            if (!$uids[$val['uid']])
-            {
-                $uids[$val['uid']] = $val['uid'];
-            }
-        }
-
-        TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-            'base_url' => get_js_url('/admin/user/verify_approval_list/status-' . $_GET['status']),
-            'total_rows' => $total_rows,
-            'per_page' => $this->per_page
-        ))->create_links());
-
-        $this->crumb(AWS_APP::lang()->_t('认证审核'), 'admin/user/verify_approval_list/');
-
-        TPL::assign('users_info', $this->model('account')->get_user_info_by_uids($uids));
-        TPL::assign('approval_list', $approval_list);
-        TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(401));
-
-        TPL::output('admin/user/verify_approval_list');
-    }
-
     public function register_approval_list_action()
     {
         if (get_setting('register_valid_type') != 'approval')
@@ -239,23 +210,6 @@ class user extends AWS_ADMIN_CONTROLLER
         TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(408));
 
         TPL::output('admin/user/register_approval_list');
-    }
-
-    public function verify_approval_edit_action()
-    {
-        if (!$verify_apply = $this->model('verify')->fetch_apply($_GET['id']))
-        {
-            H::redirect_msg(AWS_APP::lang()->_t('审核认证不存在'), '/admin/user/register_approval_list/');
-        }
-
-        TPL::assign('verify_apply', $verify_apply);
-        TPL::assign('user', $this->model('account')->get_user_info_by_uid($_GET['id']));
-
-        TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(401));
-
-        $this->crumb(AWS_APP::lang()->_t('编辑认证审核资料'), 'admin/user/verify_approval_list/');
-
-        TPL::output('admin/user/verify_approval_edit');
     }
 
     public function currency_log_action()

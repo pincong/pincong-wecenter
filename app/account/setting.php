@@ -73,12 +73,4 @@ class setting extends AWS_CONTROLLER
 		TPL::output('account/setting/security');
 	}
 
-	public function verify_action()
-	{
-		$this->crumb(AWS_APP::lang()->_t('申请认证'), '/account/setting/verify/');
-
-		TPL::assign('verify_apply', $this->model('verify')->fetch_apply($this->user_id));
-
-		TPL::output('account/setting/verify');
-	}
 }

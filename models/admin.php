@@ -72,9 +72,7 @@ class admin_class extends AWS_MODEL
 
         $admin_notifications = array(
                                 // 注册审核
-                                'register_approval' => $this->count('users', 'group_id = 3'),
-                                // 认证审核
-                                'verify_approval' => $this->count('verify_apply', 'status = 0')
+                                'register_approval' => $this->count('users', 'group_id = 3')
                             );
 
 
@@ -102,14 +100,6 @@ class admin_class extends AWS_MODEL
             $notifications_texts[] = array(
                                             'url' => 'admin/user/register_approval_list/',
                                             'text' => AWS_APP::lang()->_t('有 %s 个新用户待审核', $notifications['register_approval'])
-                                        );
-        }
-
-        if ($notifications['verify_approval'])
-        {
-            $notifications_texts[] = array(
-                                            'url' => 'admin/user/verify_approval_list/',
-                                            'text' => AWS_APP::lang()->_t('有 %s 个认证申请待审核', $notifications['verify_approval'])
                                         );
         }
 

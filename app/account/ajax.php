@@ -463,21 +463,7 @@ class ajax extends AWS_CONTROLLER
 		}
 	}
 
-	public function verify_action()
-	{
-		if (get_setting('id_verification_disabled') == 'Y')
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('认证功能已经关闭')));
-		}
-
-		if ($this->is_post() AND !$this->user_info['verified'])
-		{
-			$this->model('verify')->add_apply($this->user_id, $_POST['name'], $_POST['reason'],$_POST['type']);
-		}
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
-
+	// TODO: 何处用到
 	public function clean_user_recommend_cache_action()
 	{
 		AWS_APP::cache()->delete('user_recommend_' . $this->user_id);

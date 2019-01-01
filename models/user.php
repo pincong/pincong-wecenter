@@ -234,7 +234,6 @@ class user_class extends AWS_MODEL
 		$this->delete('favorite', 'uid = ' . ($uid));
 		$this->delete('question_focus', 'uid = ' . ($uid));
 		$this->delete('topic_focus', 'uid = ' . ($uid));
-		$this->delete('verify_apply', 'uid = ' . ($uid));
 
 		$this->delete('question_invite', 'sender_uid = ' . ($uid) . ' OR recipients_uid = ' . ($uid));
 		$this->delete('user_follow', 'fans_uid = ' . ($uid) . ' OR friend_uid = ' . ($uid));

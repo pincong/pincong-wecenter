@@ -924,26 +924,13 @@ class ajax extends AWS_ADMIN_CONTROLLER
                 $update_data['avatar_file'] = $this->model('account')->get_avatar($user_info['uid'], null, 1) . basename($thumb_file['min']);
             }
 
-            $verify_apply = $this->model('verify')->fetch_apply($user_info['uid']);
-
-            if ($verify_apply)
+            if ($_POST['verified'])
             {
-                $update_data['verified'] = $_POST['verified'];
-
-                if (!$update_data['verified'])
-                {
-                    $this->model('verify')->decline_verify($user_info['uid']);
-                }
-                else if ($update_data['verified'] != $verify_apply['type'])
-                {
-                    $this->model('verify')->update_apply($user_info['uid'], null, null, null, null, $update_data['verified']);
-                }
+                $update_data['verified'] = htmlspecialchars($_POST['verified']);
             }
-            else if ($_POST['verified'])
+            else
             {
-                $verified_id = $this->model('verify')->add_apply($user_info['uid'], null, null, $_POST['verified']);
-
-                $this->model('verify')->approval_verify($verified_id);
+                $update_data['verified'] = null;
             }
 
             $update_data['forbidden'] = intval($_POST['forbidden']);
@@ -1083,41 +1070,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
                     {
                         $this->model('user')->delete_user_by_uid($approval_uid);
                     }
-                }
-            break;
-        }
-
-        H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-    }
-
-    public function save_verify_approval_action()
-    {
-        if ($_POST['uid'])
-        {
-            $this->model('verify')->update_apply($_POST['uid'], $_POST['name'], $_POST['reason']);
-        }
-
-        H::ajax_json_output(AWS_APP::RSM(array(
-            'url' => get_js_url('/admin/user/verify_approval_list/')
-        ), 1, null));
-    }
-
-    public function verify_approval_manage_action()
-    {
-        if (!is_array($_POST['approval_ids']))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择条目进行操作')));
-        }
-
-        switch ($_POST['batch_type'])
-        {
-            case 'approval':
-            case 'decline':
-                $func = $_POST['batch_type'] . '_verify';
-
-                foreach ($_POST['approval_ids'] AS $approval_id)
-                {
-                    $this->model('verify')->$func($approval_id);
                 }
             break;
         }

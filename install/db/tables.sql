@@ -641,25 +641,6 @@ CREATE TABLE IF NOT EXISTS `aws_user_follow` (
 
 
 --
-CREATE TABLE IF NOT EXISTS `aws_verify_apply` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `uid` int(11) DEFAULT '0',
-  `reason` varchar(240) DEFAULT NULL,
-  `time` int(10) DEFAULT '0',
-  `name` varchar(240) DEFAULT NULL,
-  `status` tinyint(1) DEFAULT '0',
-  `type` varchar(16) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `uid` (`uid`),
-  KEY `time` (`time`),
-  KEY `name` (`name`,`status`),
-  KEY `type` (`type`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
---
-
-
---
 CREATE TABLE IF NOT EXISTS `aws_scheduled_posts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(32) DEFAULT NULL,

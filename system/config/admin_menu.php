@@ -113,12 +113,6 @@ $config[] = array(
     'cname' => 'report',
     'children' => array(
         array(
-            'id' => 401,
-            'title' => AWS_APP::lang()->_t('认证审核'),
-            'url' => 'admin/user/verify_approval_list/'
-        ),
-
-        array(
             'id' => 408,
             'title' => AWS_APP::lang()->_t('注册审核'),
             'url' => 'admin/user/register_approval_list/'
