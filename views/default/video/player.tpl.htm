@@ -50,7 +50,7 @@
 	box-sizing: border-box;
 	cursor: pointer;
 	position: relative;
-	overflow: hidden;
+	//overflow: hidden;
 	border-radius: 6px;
 	height: 6px;
 	background: #949494;
@@ -65,6 +65,32 @@
 }
 .c-slider-fill-dark {
 	background: #007bb1;
+}
+
+.c-slider-fill-dark::before {
+	position: absolute;
+	top: -3px;
+	right: -6px;
+	width: 12px;
+	height: 12px;
+	background-color: #fff;
+	border-radius: 12px;
+	box-shadow: 0 0 1px rgba(0,0,0,.5);
+	content: "";
+	cursor: pointer;
+}
+
+.c-slider-fill-dark::after {
+	position: absolute;
+	top: 0;
+	right: -3px;
+	width: 6px;
+	height: 6px;
+	background-color: #009fd6;
+	border-radius: 6px;
+	box-shadow: 0 0 1px rgba(0,0,0,.5);
+	content: "";
+	cursor: pointer;
 }
 
 .c-input {
@@ -756,6 +782,9 @@ var ABP = {};
 		ABP.Util.bindClick(self.$seekbar, function(e) {
 			self._seekbarClick(e);
 		});
+		self.seekbarDrag.on('move', function(e) {
+			self._seekbarDrag(e);
+		});
 		self.seekbarDrag.on('end', function(e) {
 			self._seekbarClick(e);
 		});
@@ -940,19 +969,28 @@ var ABP = {};
 	};
 
 	Player.prototype._volumeBarClick = function(e) {
-		var progress = (ABP.Util.eventX(e) - this.$volumeBar.offset().left) / this.$volumeBar.width();
-		if (progress < 0) progress = 0;
-		if (progress > 1) progress = 1;
-		this.video.volume = progress;
+		this.video.volume = this._calcProgress(e, this.$volumeBar);
 	};
 
 	Player.prototype._seekbarClick = function(e) {
 		this.$circlePlayBtn.hide();
 		this.$poster.hide();
-		var progress = (ABP.Util.eventX(e) - this.$seekbar.offset().left) / this.$seekbar.width();
+		var progress = this._calcProgress(e, this.$seekbar);
+		this.$seekbarProgress.css('width', (progress * 100) + '%');
+		this.seek(this.duration * progress);
+	};
+
+	Player.prototype._seekbarDrag = function(e) {
+		if (this.videoLoaded) this.video.pause();
+		var progress = this._calcProgress(e, this.$seekbar);
+		this.$seekbarProgress.css('width', (progress * 100) + '%');
+	};
+
+	Player.prototype._calcProgress = function(e, $bar) {
+		var progress = (ABP.Util.eventX(e) - $bar.offset().left) / $bar.width();
 		if (progress < 0) progress = 0;
 		if (progress > 1) progress = 1;
-		this.seek(this.duration * progress);
+		return progress;
 	};
 
 	Player.prototype._sendButtonClick = function() {
