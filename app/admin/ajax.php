@@ -1101,7 +1101,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
                 {
                     if ($user_info = $this->model('account')->get_user_info_by_uid($approval_uid))
                     {
-                        $this->model('system')->remove_user_by_uid($approval_uid, true);
+                        $this->model('user')->delete_user_by_uid($approval_uid);
                     }
                 }
             break;
@@ -1167,7 +1167,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
                 H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不允许删除管理员用户组用户')));
             }
 
-            $this->model('system')->remove_user_by_uid($_POST['uid'], $_POST['remove_user_data']);
+            $this->model('user')->delete_user_by_uid($_POST['uid']);
         }
 
         H::ajax_json_output(AWS_APP::RSM(array(
@@ -1195,7 +1195,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
                     continue;
                 }
 
-                $this->model('system')->remove_user_by_uid($uid, true);
+                $this->model('user')->delete_user_by_uid($uid);
             }
             else
             {

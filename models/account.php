@@ -234,17 +234,10 @@ class account_class extends AWS_MODEL
      */
     public function get_user_info_by_uid($uid, $attrib = false, $cache_result = true)
     {
-        if (! $uid)
+        $uid = intval($uid);
+        if ($uid <= 0)
         {
             return false;
-        }
-
-        if ($uid == -1)
-        {
-            return array(
-                'uid' => -1,
-                'user_name' => AWS_APP::lang()->_t('[已注销]'),
-            );
         }
 
         if ($cache_result)
@@ -261,14 +254,14 @@ class account_class extends AWS_MODEL
             }
         }
 
-        if (! $user_info = $this->fetch_row('users', 'uid = ' . intval($uid)))
+        if (! $user_info = $this->fetch_row('users', 'uid = ' . $uid))
         {
             return false;
         }
 
 		if ($attrib)
 		{
-			if ($user_attrib = $this->fetch_row('users_attrib', 'uid = ' . intval($uid)))
+			if ($user_attrib = $this->fetch_row('users_attrib', 'uid = ' . $uid))
 			{
 				foreach ($user_attrib AS $key => $val)
 				{
@@ -322,17 +315,6 @@ class account_class extends AWS_MODEL
 
         $uids = array_unique($uids);
 
-        if (sizeof($uids) == 1)
-        {
-            if ($one_user_info = $this->get_user_info_by_uid(end($uids), $attrib))
-            {
-                return array(
-                    end($uids) => $one_user_info
-                );
-            }
-
-        }
-
         static $users_info;
 
         if ($users_info[implode('_', $uids) . '_attrib'])
@@ -348,9 +330,7 @@ class account_class extends AWS_MODEL
         {
             foreach ($user_info as $key => $val)
             {
-                {
-                    $val['url_token'] = urlencode($val['user_name']);
-                }
+                $val['url_token'] = urlencode($val['user_name']);
 
                 unset($val['password'], $val['salt']);
 
@@ -361,14 +341,7 @@ class account_class extends AWS_MODEL
 
             foreach ($uids AS $uid)
             {
-                if ($uid == -1)
-                {
-                    $result['-1'] = array(
-                        'uid' => -1,
-                        'user_name' => AWS_APP::lang()->_t('[已注销]'),
-                    );
-                }
-                else if ($data[$uid])
+                if ($data[$uid])
                 {
                     $result[$uid] = $data[$uid];
                 }
