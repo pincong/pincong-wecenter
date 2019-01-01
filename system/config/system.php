@@ -1,3 +1,3 @@
 <?php
 
-$config['debug'] = false;	// 网站 Debug 模式
+$config['debug'] = G_DEBUG;	// 网站 Debug 模式

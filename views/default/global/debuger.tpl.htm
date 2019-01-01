@@ -1,4 +1,4 @@
-<?php if (AWS_APP::config()->get('system')->debug) { ?>
+<?php if (AWS_APP::config()->get('system')->debug AND $this->user_info['permission']['debug']) { ?>
 <div class="well clearfix" style="margin: 20px;">
 	<b style="font-weight: bold; color: red;">Debug messages:</b><br >
 	<br /><p><b style="font-weight: bold;">Template:</b> <?php echo $this->template_name; ?></p>

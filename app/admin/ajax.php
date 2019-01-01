@@ -737,7 +737,8 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			'restricted_categories',
 			'banning_type',
 			'change_category',
-			'edit_user'
+			'edit_user',
+			'debug'
         );
 
         $group_setting = array();
