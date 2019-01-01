@@ -366,10 +366,15 @@ class vote_class extends AWS_MODEL
 			return false;
 		}
 
+		$vote_values = array();
+		if (count($item_ids) < 1)
+		{
+			return $vote_values;
+		}
+
 		$where = "`type` = '" . ($type) . "' AND uid = " . ($uid) . " AND item_id IN(" . implode(',', $item_ids) . ")";
 		$sql = "SELECT item_id, value FROM " . get_table('vote') . " WHERE " . $where;
 		$rows = $this->query_all($sql);
-		$vote_values = array();
 		if (!$rows)
 		{
 			return $vote_values;
