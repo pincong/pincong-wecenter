@@ -86,16 +86,16 @@ class H
 	 * @param unknown_type $content
 	 * @return mixed
 	 */
-	public static function &sensitive_words_replace(&$content)
+	public static function sensitive_words_replace(&$content)
 	{
 		if (!$content)
 		{
-			return $content;
+			return;
 		}
 
 		if (!$sensitive_words_replacement = get_setting('sensitive_words_replacement'))
 		{
-			return $content;
+			return;
 		}
 
 		$sensitive_words = get_key_value_pairs('sensitive_words', '<>', true);
@@ -120,10 +120,8 @@ class H
 
 		if (isset($regex_array))
 		{
-			preg_replace($regex_array, $replacement_array, $content);
+			$content = preg_replace($regex_array, $replacement_array, $content);
 		}
-
-		return $content;
 	}
 
 	// 命中返回 true, 未命中返回 false
