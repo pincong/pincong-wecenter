@@ -820,6 +820,28 @@ CREATE TABLE IF NOT EXISTS `aws_verify_apply` (
 -- Data exporting was unselected.
 
 
+-- Dumping structure for table panic.aws_scheduled_posts
+CREATE TABLE IF NOT EXISTS `aws_scheduled_posts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(32) DEFAULT NULL,
+  `uid` int(11) DEFAULT '0',
+  `anonymous` int(11) DEFAULT '0',
+  `parent_id` int(11) DEFAULT '0',
+  `time` int(10) DEFAULT '0',
+  `title` varchar(240) DEFAULT NULL,
+  `message` text,
+  `extra_data` text,
+  PRIMARY KEY (`id`),
+  KEY `type` (`type`),
+  KEY `uid` (`uid`),
+  KEY `anonymous` (`anonymous`),
+  KEY `parent_id` (`parent_id`),
+  KEY `time` (`time`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+-- Data exporting was unselected.
+
+
 -- Dumping structure for table panic.aws_article_log
 CREATE TABLE IF NOT EXISTS `aws_article_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -864,26 +886,92 @@ CREATE TABLE IF NOT EXISTS `aws_question_log` (
 -- Data exporting was unselected.
 
 
--- Dumping structure for table panic.aws_scheduled_posts
-CREATE TABLE IF NOT EXISTS `aws_scheduled_posts` (
+-- Dumping structure for table panic.aws_video_log
+CREATE TABLE IF NOT EXISTS `aws_video_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `type` varchar(32) DEFAULT NULL,
+  `item_id` int(11) DEFAULT '0',
+  `child_id` int(11) DEFAULT '0',
   `uid` int(11) DEFAULT '0',
   `anonymous` int(11) DEFAULT '0',
-  `parent_id` int(11) DEFAULT '0',
+  `type` varchar(64) DEFAULT NULL,
+  `note` varchar(128) DEFAULT NULL,
   `time` int(10) DEFAULT '0',
-  `title` varchar(240) DEFAULT NULL,
-  `message` text,
-  `extra_data` text,
   PRIMARY KEY (`id`),
-  KEY `type` (`type`),
+  KEY `item_id` (`item_id`),
+  KEY `child_id` (`child_id`),
   KEY `uid` (`uid`),
   KEY `anonymous` (`anonymous`),
-  KEY `parent_id` (`parent_id`),
+  KEY `type` (`type`),
   KEY `time` (`time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 -- Data exporting was unselected.
+
+
+-- Dumping structure for table panic.aws_video
+CREATE TABLE IF NOT EXISTS `aws_video` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `uid` int(10) DEFAULT '0',
+  `title` varchar(240) DEFAULT NULL,
+  `message` text,
+  `source_type` varchar(32) DEFAULT NULL,
+  `source` text,
+  `duration` int(10) DEFAULT '0',
+  `comment_count` int(10) DEFAULT '0',
+  `danmaku_count` int(10) DEFAULT '0',
+  `view_count` int(10) DEFAULT '0',
+  `agree_count` int(10) DEFAULT '0',
+  `lock` int(1) DEFAULT '0',
+  `title_fulltext` text,
+  `category_id` int(10) DEFAULT '0',
+  `is_recommend` tinyint(1) DEFAULT '0',
+  `chapter_id` int(10) DEFAULT NULL,
+  `sort` tinyint(2) DEFAULT '0',
+  `add_time` int(10) DEFAULT '0',
+  `update_time` int(10) DEFAULT '0',
+  `anonymous` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `duration` (`duration`),
+  KEY `comment_count` (`comment_count`),
+  KEY `danmaku_count` (`danmaku_count`),
+  KEY `view_count` (`view_count`),
+  KEY `agree_count` (`agree_count`),
+  KEY `lock` (`lock`),
+  KEY `category_id` (`category_id`),
+  KEY `is_recommend` (`is_recommend`),
+  KEY `chapter_id` (`chapter_id`),
+  KEY `sort` (`sort`),
+  KEY `add_time` (`add_time`),
+  KEY `update_time` (`update_time`),
+  KEY `anonymous` (`anonymous`),
+  FULLTEXT KEY `title_fulltext` (`title_fulltext`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+-- Data exporting was unselected.
+
+
+-- Dumping structure for table panic.aws_video_comments
+CREATE TABLE IF NOT EXISTS `aws_video_comments` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `uid` int(10) DEFAULT '0',
+  `video_id` int(10) DEFAULT '0',
+  `message` text,
+  `add_time` int(10) DEFAULT '0',
+  `at_uid` int(10) DEFAULT NULL,
+  `agree_count` int(10) DEFAULT '0',
+  `anonymous` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `video_id` (`video_id`),
+  KEY `add_time` (`add_time`),
+  KEY `agree_count` (`agree_count`),
+  KEY `anonymous` (`anonymous`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+-- Data exporting was unselected.
+
+
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
