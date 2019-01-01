@@ -65,6 +65,8 @@ table td{vertical-align: middle !important;}
 .text-color-999{font-size: 12px;color: #999;}
 .font-size-12{font-size: 12px;}
 
+.aw-deleted{color: #999;}
+
 .aw-margin-x-10{margin-left:10px;margin-right:10px;}
 .aw-margin-x-20{margin-left:20px;margin-right:20px;}
 .aw-margin-x-30{margin-left:30px;margin-right:30px;}

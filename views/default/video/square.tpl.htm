@@ -16,7 +16,11 @@
 							</a>
 							<div class="aw-content">
 								<div class="mod-body">
-									<h2><a href="video/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['title']; ?><?php } ?></a></h2>
+									<h2>
+										<a href="video/<?php echo $val['id']; ?>">
+											<?php echo CF::title($val['user_info'], 'video_' . $val['id'], $val['title']); ?>
+										</a>
+									</h2>
 									<div class="aw-topic-bar">
 										<div class="tag-bar clearfix">
 											<?php foreach($this->video_topics[$val['id']] as $topic_key => $topic_val) { ?>
@@ -54,7 +58,7 @@
 						<div class="mod-body">
 							<ul>
 								<?php foreach($this->hot_videos AS $key => $val) { ?>
-								<li><a href="video/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['title']; ?><?php } ?></a></li>
+								<li><a href="video/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['title']; ?><?php } ?></a></li>
 								<?php } ?>
 							</ul>
 						</div>

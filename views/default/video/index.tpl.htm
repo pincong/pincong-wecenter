@@ -94,7 +94,9 @@
 					</div>
 					<div class="aw-mod aw-question-detail">
 						<div class="mod-head">
-							<h1><?php if (!$this->video_info['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $this->video_info['title']; ?><?php } ?></h1>
+							<h1>
+								<?php echo CF::title($this->video_info['user_info'], 'video_' . $this->video_info['id'], $this->video_info['title']); ?>
+							</h1>
 						</div>
 						<div class="mod-body">
 							<?php if ($this->video_info['source_type']) { ?>
@@ -103,7 +105,7 @@
 							</div>
 							<?php } ?>
 							<div class="content markitup-box">
-								<?php echo FORMAT::text(FORMAT::parse_links($this->video_info['message'])); ?>
+								<?php echo CF::body_simple($this->video_info['user_info'], 'video_' . $this->video_info['id'], $this->video_info['message']); ?>
 							</div>
 							<div class="meta clearfix">
 								<div class="aw-vote-ui aw-article-vote pull-left<?php if (!$this->user_id OR $this->user_id == $this->video_info['uid']) { ?> disabled<?php } ?>">

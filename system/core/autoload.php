@@ -20,6 +20,7 @@ class core_autoload
 		'TPL'				=> 'class/cls_template.inc.php',
 		'FORMAT'			=> 'class/cls_format.inc.php',
 		'UF'				=> 'class/cls_user_format.inc.php',
+		'CF'				=> 'class/cls_content_format.inc.php',
 		'HTTP'				=> 'class/cls_http.inc.php',
 		'H'					=> 'class/cls_helper.inc.php',
 	);

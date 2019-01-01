@@ -73,7 +73,8 @@ class FORMAT
 		return self::parse_link($matches[1]);
 	}
 
-	public static function parse_links($str)
+	// 注意是引用
+	public static function &parse_links(&$str)
 	{
 		$str = @preg_replace_callback(
 			'/(?<!!!\[\]\(|"|\'|\)|>)(https?:\/\/[-a-zA-Z0-9@:;%_\+.~#?\&\/\/=!]+)(?!"|\'|\)|>)/i',
@@ -86,27 +87,18 @@ class FORMAT
 		return $str;
 	}
 
-	public static function parse_bbcode($text)
+	// 注意是引用
+	public static function &parse_bbcode(&$text)
 	{
 		if (!$text)
 		{
-			return false;
+			return '';
 		}
 
 		// 不再主动解析链接
 		// Bug: [url]https://web.archive.org/web/20170602230234/http://www.sohu.com/a/145581401_670685[/url]
 		// return self::parse_links(load_class('Services_BBCode')->parse($text));
 		return load_class('Services_BBCode')->parse($text);
-	}
-
-	public static function text($content)
-	{
-		return nl2br($content);
-	}
-
-	public static function html($content)
-	{
-		return nl2br(self::parse_bbcode($content));
 	}
 
 }

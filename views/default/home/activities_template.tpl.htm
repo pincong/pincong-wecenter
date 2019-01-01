@@ -15,7 +15,7 @@
 			<?php _e('%s 个回复', $val['item']['answer_count']); ?>
 		</p>
 		<h4>
-			<a href="question/<?php echo $val['item']['question_id']; ?>"><?php if (!$val['item']['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['item']['question_content']; ?><?php } ?></a>
+			<a href="question/<?php echo $val['item']['question_id']; ?>"><?php if (!$val['item']['question_content']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['item']['question_content']; ?><?php } ?></a>
 		</h4>
 	</div>
 </div>
@@ -34,7 +34,7 @@
 			<?php echo date_friendly($val['time']); ?>
 		</p>
 		<h4>
-			<a href="question/<?php echo $val['item']['question_info']['question_id']; ?>"><?php if (!$val['item']['question_info']['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['item']['question_info']['question_content']; ?><?php } ?></a>
+			<a href="question/<?php echo $val['item']['question_info']['question_id']; ?>"><?php if (!$val['item']['question_info']['question_content']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['item']['question_info']['question_content']; ?><?php } ?></a>
 		</h4>
 	</div>
 	<div class="mod-body clearfix">
@@ -66,7 +66,7 @@
 			<?php _e('%s 个评论', $val['item']['comments']); ?>
 		</p>
 		<h4>
-			<a href="article/<?php echo $val['item']['id']; ?>"><?php if (!$val['item']['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['item']['title']; ?><?php } ?></a>
+			<a href="article/<?php echo $val['item']['id']; ?>"><?php if (!$val['item']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['item']['title']; ?><?php } ?></a>
 		</h4>
 	</div>
 </div>
@@ -85,7 +85,7 @@
 			<?php echo date_friendly($val['time']); ?>
 		</p>
 		<h4>
-			<a href="article/<?php echo $val['item']['article_info']['id']; ?>"><?php if (!$val['item']['article_info']['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['item']['article_info']['title']; ?><?php } ?></a>
+			<a href="article/<?php echo $val['item']['article_info']['id']; ?>"><?php if (!$val['item']['article_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['item']['article_info']['title']; ?><?php } ?></a>
 		</h4>
 	</div>
 	<div class="mod-body clearfix">
@@ -117,7 +117,7 @@
 			<?php _e('%s 个评论', $val['item']['comment_count']); ?>
 		</p>
 		<h4>
-			<a href="video/<?php echo $val['item']['id']; ?>"><?php if (!$val['item']['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['item']['title']; ?><?php } ?></a>
+			<a href="video/<?php echo $val['item']['id']; ?>"><?php if (!$val['item']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['item']['title']; ?><?php } ?></a>
 		</h4>
 	</div>
 </div>
@@ -136,7 +136,7 @@
 			<?php echo date_friendly($val['time']); ?>
 		</p>
 		<h4>
-			<a href="video/<?php echo $val['item']['video_info']['id']; ?>"><?php if (!$val['item']['video_info']['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['item']['video_info']['title']; ?><?php } ?></a>
+			<a href="video/<?php echo $val['item']['video_info']['id']; ?>"><?php if (!$val['item']['video_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['item']['video_info']['title']; ?><?php } ?></a>
 		</h4>
 	</div>
 	<div class="mod-body clearfix">

@@ -1063,7 +1063,7 @@ function unserialize_array(&$string)
 {
 	if (isset($string))
 	{
-		$result = unserialize($string);
+		@$result = unserialize($string);
 		if (!is_array($result))
 		{
 			return array();
@@ -1090,4 +1090,14 @@ function is_valid_timezone($timezone)
 	}
 	@$tz = timezone_open($timezone);
 	return $tz !== false;
+}
+
+function checksum($string) {
+	$i = crc32($string);
+	if (0 > $i)
+	{
+		// Implicitly casts i as float, and corrects this sign.
+		$i += 0x100000000;
+	}
+	return $i;
 }

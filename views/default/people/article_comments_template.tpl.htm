@@ -4,14 +4,14 @@
 	<div class="aw-mod">
 		<div class="mod-head">
 			<h4 class="aw-hide-txt">
-				<a href="article/<?php echo $val['article_id']; ?>"><?php if (!$val['article_info']['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['article_info']['title']; ?><?php } ?></a>
+				<a href="article/<?php echo $val['article_id']; ?>"><?php if (!$val['article_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['article_info']['title']; ?><?php } ?></a>
 			</h4>
 		</div>
 		<div class="mod-body">
 			<span class="aw-border-radius-5 count pull-left"><i class="icon icon-agree"></i> <?php echo $val['agree_count']; ?></span>
 			<p class="text-color-999">
 			<?php if (!$val['message']) { ?>
-				<i class="text-color-999"><?php _e('已删除'); ?></i>
+				<s class="aw-deleted"><?php _e('已删除'); ?></s>
 			<?php } else { ?>
 				<?php echo cjk_substr($val['message'], 0, 200, 'UTF-8', '...'); ?>
 			<?php } ?>

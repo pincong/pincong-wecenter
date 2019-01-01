@@ -22,19 +22,11 @@
 											<a href="javascript:;" class="aw-load-more-content" onclick="$(this).parent().parent().children('.markitup-box').toggle();"><?php _e('内容被折叠'); ?></a>
 										</div>
 										<div class="markitup-box collapse">
-										<?php if (!$val['message']) { ?>
-											<i class="text-color-999"><?php _e('已删除'); ?></i>
-										<?php } else { ?>
-											<?php echo FORMAT::html($val['message']); ?>
-										<?php } ?>
+											<?php echo CF::reply($val['user_info'], 'article_comment_' . $val['id'], $val['message']); ?>
 										</div>
 									<?php } else { ?>
 										<div class="markitup-box">
-										<?php if (!$val['message']) { ?>
-											<i class="text-color-999"><?php _e('已删除'); ?></i>
-										<?php } else { ?>
-											<?php echo FORMAT::html($val['message']); ?>
-										<?php } ?>
+											<?php echo CF::reply($val['user_info'], 'article_comment_' . $val['id'], $val['message']); ?>
 										</div>
 									<?php } ?>
 									</div>

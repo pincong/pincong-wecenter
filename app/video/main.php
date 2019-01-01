@@ -73,7 +73,8 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		$this->crumb($video_info['title'], '/video/' . $video_info['id']);
+		$page_title = CF::page_title($video_info['user_info'], 'video_' . $video_info['id'], $video_info['title']);
+		$this->crumb($page_title, '/video/' . $video_info['id']);
 
 		if ($_GET['item_id'])
 		{

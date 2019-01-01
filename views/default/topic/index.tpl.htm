@@ -114,7 +114,7 @@
 
 								<div class="tab-pane" id="about">
 									<div class="aw-topic-detail-about text-color-666 markitup-box">
-										<?php echo FORMAT::html($this->topic_info['topic_description']); ?>
+										<?php echo nl2br(FORMAT::parse_bbcode($this->topic_info['topic_description'])); ?>
 									</div>
 								</div>
 							</div>

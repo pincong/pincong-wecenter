@@ -20,6 +20,16 @@ if (!defined('IN_ANWSION'))
 class kb_class extends AWS_MODEL
 {
 
+	public function size()
+	{
+		static $count;
+		if (!isset($count))
+		{
+			$count = $this->count('knowledge');
+		}
+		return $count;
+	}
+
 	public function list($page, $per_page)
 	{
 		return $this->fetch_page('knowledge', null, 'id ASC', $page, $per_page);
@@ -27,23 +37,7 @@ class kb_class extends AWS_MODEL
 
 	public function get($id)
 	{
-		$id = intval($id);
-		if ($id <= 0)
-		{
-			return false;
-		}
-
-		static $array;
-
-		if (!$array[$id])
-		{
-			if ($item = $this->fetch_row('knowledge', 'id = ' . $id))
-			{
-				$array[$id] = $item;
-			}
-		}
-
-		return $array[$id];
+		return $this->fetch_row('knowledge', 'id = ' . intval($id));
 	}
 
 	public function add(&$title, &$message, $uid, $last_uid)

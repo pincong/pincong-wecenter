@@ -5,11 +5,17 @@
 	<div class="aw-question-content">
 		<h4>
 			<?php if ($val['post_type'] == 'question') { ?>
-			<a href="question/<?php echo $val['question_id']; ?>"><?php if (!$val['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['question_content']; ?><?php } ?></a>
+			<a href="question/<?php echo $val['question_id']; ?>">
+				<?php echo CF::title($val['user_info'], 'question_' . $val['question_id'], $val['question_content']); ?>
+			</a>
 			<?php } elseif ($val['post_type'] == 'article') { ?>
-			<a href="article/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['title']; ?><?php } ?></a>
+			<a href="article/<?php echo $val['id']; ?>">
+				<?php echo CF::title($val['user_info'], 'article_' . $val['id'], $val['title']); ?>
+			</a>
 			<?php } elseif ($val['post_type'] == 'video') { ?>
-			<a href="video/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['title']; ?><?php } ?></a>
+			<a href="video/<?php echo $val['id']; ?>">
+				<?php echo CF::title($val['user_info'], 'video_' . $val['id'], $val['title']); ?>
+			</a>
 			<?php } ?>
 		</h4>
 		<!-- 贡献 -->

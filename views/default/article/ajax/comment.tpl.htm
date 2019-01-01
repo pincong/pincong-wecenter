@@ -11,11 +11,7 @@
 		<!-- end 用户名 -->
 	</div>
 	<div class="mod-body">
-	<?php if (!$this->comment_info['message']) { ?>
-		<i class="text-color-999"><?php _e('已删除'); ?></i>
-	<?php } else { ?>
-		<?php echo FORMAT::html($this->comment_info['message']); ?>
-	<?php } ?>
+		<?php echo CF::reply($this->comment_info['user_info'], 'article_comment_' . $this->comment_info['id'], $this->comment_info['message']); ?>
 	</div>
 	<div class="mod-footer">
 		<div class="meta">

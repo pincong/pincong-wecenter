@@ -152,7 +152,7 @@ class main extends AWS_CONTROLLER
 				}
 				else
 				{
-					$list[$key]['message'] = FORMAT::parse_links($val['message']);
+					$list[$key]['message'] = $val['message'];
 				}
 			}
 		}

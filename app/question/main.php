@@ -208,7 +208,8 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		$this->crumb($question_info['question_content'], '/question/' . $question_info['question_id']);
+		$page_title = CF::page_title($question_info['user_info'], 'question_' . $question_info['question_id'], $question_info['question_content']);
+		$this->crumb($page_title, '/question/' . $question_info['question_id']);
 
 		// TODO: 未登录也显示分页链接
 		if ($this->user_id)

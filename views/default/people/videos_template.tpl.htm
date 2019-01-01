@@ -4,7 +4,7 @@
 	<div class="aw-mod">
 		<div class="mod-head">
 			<h4 class="aw-hide-txt">
-				<a href="video/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['title']; ?><?php } ?></a>
+				<a href="video/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['title']; ?><?php } ?></a>
 			</h4>
 		</div>
 		<div class="mod-body">

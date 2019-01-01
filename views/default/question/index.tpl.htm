@@ -109,11 +109,13 @@
 					<!-- end 话题bar -->
 					<div class="aw-mod aw-question-detail aw-item">
 						<div class="mod-head">
-							<h1><?php if (!$this->question_info['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $this->question_info['question_content']; ?><?php } ?></h1>
+							<h1>
+								<?php echo CF::title($this->question_info['user_info'], 'question_' . $this->question_info['question_id'], $this->question_info['question_content']); ?>
+							</h1>
 						</div>
 						<div class="mod-body">
 							<div class="content markitup-box">
-								<?php echo FORMAT::html($this->question_info['question_detail']); ?>
+								<?php echo CF::body($this->question_info['user_info'], 'question_' . $this->question_info['question_id'], $this->question_info['question_detail']); ?>
 							</div>
 						</div>
 						<div class="mod-footer">
@@ -308,9 +310,9 @@
 								<?php foreach($this->recommend_posts AS $key => $val) { ?>
 								<li>
 									<?php if ($val['question_id']) { ?>
-									<a href="question/<?php echo $val['question_id']; ?>"><?php if (!$val['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['question_content']; ?><?php } ?></a>
+									<a href="question/<?php echo $val['question_id']; ?>"><?php if (!$val['question_content']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['question_content']; ?><?php } ?></a>
 									<?php } else { ?>
-									<a href="article/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['title']; ?><?php } ?></a>
+									<a href="article/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['title']; ?><?php } ?></a>
 									<?php } ?>
 								</li>
 								<?php } ?>
@@ -329,7 +331,7 @@
 						<div class="mod-body font-size-12">
 							<ul>
 								<?php foreach($this->question_related_list AS $key => $val) { ?>
-								<li><a href="question/<?php echo $val['question_id']; ?>"><?php if (!$val['question_content']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['question_content']; ?><?php } ?></a></li>
+								<li><a href="question/<?php echo $val['question_id']; ?>"><?php if (!$val['question_content']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['question_content']; ?><?php } ?></a></li>
 								<?php } ?>
 							</ul>
 						</div>

@@ -16,12 +16,12 @@
 							</div>
 							<div class="mod-body aw-padding-x-20">
 								<div class="aw-size-16 aw-color-000">
-									<?php echo FORMAT::text($val['message']); ?>
+									<?php echo nl2br($val['message']); ?>
 								</div>
 							</div>
 							<div class="mod-footer clearfix">
 								<div class="aw-color-666">
-									<i><?php echo FORMAT::text(FORMAT::parse_links($val['remarks'])); ?></i>
+									<i><?php echo nl2br(FORMAT::parse_links($val['remarks'])); ?></i>
 								</div>
 								<span class="aw-size-12 aw-color-999">
 									<a href="<?php echo UF::url($val['user_info']); ?>" class="aw-color-999"><?php echo UF::name($val['user_info']); ?></a>

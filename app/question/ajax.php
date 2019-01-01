@@ -255,7 +255,7 @@ class ajax extends AWS_CONTROLLER
 
 		foreach ($comments as $key => $val)
 		{
-			$comments[$key]['message'] = FORMAT::parse_links($this->model('question')->parse_at_user($comments[$key]['message']));
+			$comments[$key]['message'] = $this->model('question')->parse_at_user($comments[$key]['message']);
 			$comments[$key]['user_info'] = $user_infos[$val['uid']];
 		}
 
@@ -265,7 +265,7 @@ class ajax extends AWS_CONTROLLER
 		TPL::assign('answer_info', $answer_info);
 		TPL::assign('comments', $comments);
 
-		TPL::output("question/ajax/comments");
+		TPL::output("question/answer_discussions_template");
 	}
 
 	public function get_question_discussions_action()
@@ -276,7 +276,7 @@ class ajax extends AWS_CONTROLLER
 
 		foreach ($comments as $key => $val)
 		{
-			$comments[$key]['message'] = FORMAT::parse_links($this->model('question')->parse_at_user($comments[$key]['message']));
+			$comments[$key]['message'] = $this->model('question')->parse_at_user($comments[$key]['message']);
 			$comments[$key]['user_info'] = $user_infos[$val['uid']];
 		}
 
@@ -284,7 +284,7 @@ class ajax extends AWS_CONTROLLER
 
 		TPL::assign('comments', $comments);
 
-		TPL::output("question/ajax/comments");
+		TPL::output("question/question_discussions_template");
 	}
 
 	public function cancel_question_invite_action()
