@@ -1008,13 +1008,13 @@ function real_time()
 
 function fake_time()
 {
-    $min = intval(get_setting('random_seconds_min'));
-    $max = intval(get_setting('random_seconds_max'));
-    if (!$min && !$max)
-    {
-        return time();
-    }
-    return time() + rand($min, $max);
+	if (get_setting('time_blurring') == 'N')
+	{
+		return time();
+	}
+	$min = intval(get_setting('random_seconds_min'));
+	$max = intval(get_setting('random_seconds_max'));
+	return intval(time() / 86400) * 86400 + rand($min, $max);
 }
 
 function future_time()
