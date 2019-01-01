@@ -181,8 +181,8 @@ class user_class extends AWS_MODEL
 	{
 		// TODO: 需要彻底删除?
 		$this->update('question', array(
-			'published_uid' => '-1'
-		), 'published_uid = ' . intval($uid));
+			'uid' => '-1'
+		), 'uid = ' . intval($uid));
 	}
 
 

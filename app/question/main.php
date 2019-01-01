@@ -111,7 +111,7 @@ class main extends AWS_CONTROLLER
 			$question_info['category_info'] = $this->model('category')->get_category_info($question_info['category_id']);
 		}
 
-		$question_info['user_info'] = $this->model('account')->get_user_info_by_uid($question_info['published_uid'], true);
+		$question_info['user_info'] = $this->model('account')->get_user_info_by_uid($question_info['uid'], true);
 
 
 		$this->model('content')->update_view_count('question', $question_info['question_id'], session_id());
@@ -256,7 +256,7 @@ class main extends AWS_CONTROLLER
 		{
 			TPL::assign('invite_users', $this->model('question')->get_invite_users($question_info['question_id']));
 
-			TPL::assign('user_follow_check', $this->model('follow')->user_follow_check($this->user_id, $question_info['published_uid']));
+			TPL::assign('user_follow_check', $this->model('follow')->user_follow_check($this->user_id, $question_info['uid']));
 
 			$question_info['vote_value'] = $this->model('vote')->get_user_vote_value_by_id('question', $question_info['question_id'], $this->user_id);
 		}
@@ -427,7 +427,7 @@ class main extends AWS_CONTROLLER
 			{
 				if ($val['answer_count'])
 				{
-					$question_list[$key]['answer_users'] = $this->model('question')->get_answer_users_by_question_id($val['question_id'], 2, $val['published_uid']);
+					$question_list[$key]['answer_users'] = $this->model('question')->get_answer_users_by_question_id($val['question_id'], 2, $val['uid']);
 				}
 			}
 		}

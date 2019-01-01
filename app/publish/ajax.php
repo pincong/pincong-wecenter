@@ -467,7 +467,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->user_info['permission']['edit_question'])
 		{
-			if ($question_info['published_uid'] != $this->user_id)
+			if ($question_info['uid'] != $this->user_id)
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个问题')));
 			}
@@ -695,7 +695,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		// 判断是否是问题发起者
-		if (get_setting('answer_self_question') == 'N' AND $question_info['published_uid'] == $this->user_id)
+		if (get_setting('answer_self_question') == 'N' AND $question_info['uid'] == $this->user_id)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能回复自己发布的问题，你可以修改问题内容')));
 		}

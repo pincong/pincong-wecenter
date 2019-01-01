@@ -45,7 +45,7 @@
 							</span>
 							<?php } ?>
 
-							<?php if ($this->user_id AND ($this->user_info['permission']['edit_topic'] OR $this->user_id == $this->question_info['published_uid'])) { ?><span class="icon-inverse aw-edit-topic"<?php if (sizeof($this->question_topics) == 0) { ?> style="display:none"<?php } ?>><i class="icon icon-edit"></i></span><?php } ?>
+							<?php if ($this->user_id AND ($this->user_info['permission']['edit_topic'] OR $this->user_id == $this->question_info['uid'])) { ?><span class="icon-inverse aw-edit-topic"<?php if (sizeof($this->question_topics) == 0) { ?> style="display:none"<?php } ?>><i class="icon icon-edit"></i></span><?php } ?>
 
 							<div class="operate clearfix">
 								<!-- 下拉菜单 -->
@@ -88,7 +88,7 @@
 												<?php } ?>
 											</li>
 										<?php } ?>
-										<?php if ($this->question_info['published_uid'] == $this->user_id OR $this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
+										<?php if ($this->question_info['uid'] == $this->user_id OR $this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
 											<?php if (get_setting('category_enable') != 'N') { ?>
 											<li>
 												<a href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/content/edit/change_category/item_type-question__item_id-<?php echo $this->question_info['question_id']; ?>__category_id-<?php echo $this->question_info['category_id']; ?>');"><?php _e('变更分类'); ?></a>
@@ -139,7 +139,7 @@
 								<a class="text-color-999 aw-invite-replay"><i class="icon icon-invite"></i> <?php _e('邀请'); ?> <?php if (sizeof($this->invite_users) > 0){ ?><em class="badge badge-info"><?php echo count($this->invite_users); ?></em><?php } ?></a>
 								<?php } ?>
 
-								<?php if ($this->question_info['published_uid'] == $this->user_id OR $this->user_info['permission']['edit_question']) { ?><a class="text-color-999" href="publish/<?php echo $this->question_info['question_id']; ?>"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a><?php } ?>
+								<?php if ($this->question_info['uid'] == $this->user_id OR $this->user_info['permission']['edit_question']) { ?><a class="text-color-999" href="publish/<?php echo $this->question_info['question_id']; ?>"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a><?php } ?>
 
 								<div class="pull-right more-operate">
 									<?php if ($this->user_id) { ?>
@@ -347,7 +347,7 @@
 						<p align="center"><?php _e('要回复问题请先<a href="account/login/">登录</a>或<a href="account/register/">注册</a>'); ?></p>
 						<?php } else if ($this->user_answered) { ?>
 						<p align="center"><?php _e('一个问题只能回复一次'); ?></p>
-						<?php } else if ((get_setting('answer_self_question') == 'N') && ($this->user_id == $this->question_info['published_uid'])) { ?>
+						<?php } else if ((get_setting('answer_self_question') == 'N') && ($this->user_id == $this->question_info['uid'])) { ?>
 						<p align="center"><?php _e('不能回复自己发布的问题, 你可以修改问题内容'); ?></p>
 						<?php } else { ?>
 						<form action="publish/ajax/publish_answer/" onsubmit="return false;" method="post" id="answer_form" class="question_answer_form">

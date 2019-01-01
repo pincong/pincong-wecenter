@@ -617,9 +617,9 @@ class question_class extends AWS_MODEL
 			'add_time' => fake_time()
 		));
 
-		if ($question_info['published_uid'] != $uid)
+		if ($question_info['uid'] != $uid)
 		{
-			$this->model('notify')->send($uid, $question_info['published_uid'], notify_class::TYPE_QUESTION_COMMENT, notify_class::CATEGORY_QUESTION, $question_info['question_id'], array(
+			$this->model('notify')->send($uid, $question_info['uid'], notify_class::TYPE_QUESTION_COMMENT, notify_class::CATEGORY_QUESTION, $question_info['question_id'], array(
 				'from_uid' => $uid,
 				'question_id' => $question_info['question_id'],
 				'comment_id' => $comment_id
@@ -631,7 +631,7 @@ class question_class extends AWS_MODEL
 		{
 			foreach ($at_users as $user_id)
 			{
-				if ($user_id == $question_info['published_uid'])
+				if ($user_id == $question_info['uid'])
 				{
 					continue;
 				}
@@ -856,24 +856,24 @@ class question_class extends AWS_MODEL
 		return $topics;
 	}
 
-	public function get_answer_users_by_question_id($question_id, $limit = 5, $published_uid = null)
+	public function get_answer_users_by_question_id($question_id, $limit = 5, $uid = null)
 	{
-		if ($result = AWS_APP::cache()->get('answer_users_by_question_id_' . md5($question_id . $limit . $published_uid)))
+		if ($result = AWS_APP::cache()->get('answer_users_by_question_id_' . md5($question_id . $limit . $uid)))
 		{
 			return $result;
 		}
 
-		if (!$published_uid)
+		if (!$uid)
 		{
 			if (!$question_info = $this->get_question_info_by_id($question_id))
 			{
 				return false;
 			}
 
-			$published_uid = $question_info['published_uid'];
+			$uid = $question_info['uid'];
 		}
 
-		if ($answer_users = $this->query_all("SELECT DISTINCT uid FROM " . get_table('answer') . " WHERE question_id = " . intval($question_id) . " AND uid <> " . intval($published_uid) . " ORDER BY agree_count DESC LIMIT " . intval($limit)))
+		if ($answer_users = $this->query_all("SELECT DISTINCT uid FROM " . get_table('answer') . " WHERE question_id = " . intval($question_id) . " AND uid <> " . intval($uid) . " ORDER BY agree_count DESC LIMIT " . intval($limit)))
 		{
 			foreach ($answer_users AS $key => $val)
 			{
@@ -882,7 +882,7 @@ class question_class extends AWS_MODEL
 
 			$result = $this->model('account')->get_user_info_by_uids($answer_uids);
 
-			AWS_APP::cache()->set('answer_users_by_question_id_' . md5($question_id . $limit . $published_uid), $result, get_setting('cache_level_normal'));
+			AWS_APP::cache()->set('answer_users_by_question_id_' . md5($question_id . $limit . $uid), $result, get_setting('cache_level_normal'));
 		}
 
 		return $result;

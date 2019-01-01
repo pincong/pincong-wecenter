@@ -65,12 +65,12 @@ class ajax extends AWS_CONTROLLER
 
 				foreach ($result as $key => $val)
 				{
-					if (! $user_info_list[$val['published_uid']])
+					if (! $user_info_list[$val['uid']])
 					{
-						$user_info_list[$val['published_uid']] = $this->model('account')->get_user_info_by_uid($val['published_uid'], true);
+						$user_info_list[$val['uid']] = $this->model('account')->get_user_info_by_uid($val['uid'], true);
 					}
 
-					$data[$key]['user_info'] = $user_info_list[$val['published_uid']];
+					$data[$key]['user_info'] = $user_info_list[$val['uid']];
 
 					$data[$key]['associate_type'] = 1;
 

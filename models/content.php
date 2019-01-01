@@ -63,13 +63,12 @@ class content_class extends AWS_MODEL
 		}
 
 		$item_info = $this->fetch_row($type, $where);
-		// TODO: published_uid 字段改为 uid 以避免特殊处理
+		// TODO: id
 		if ($item_info)
 		{
 			if ($type == 'question')
 			{
 				$item_info['id'] = $item_info['question_id'];
-				$item_info['uid'] = $item_info['published_uid'];
 			}
 		}
 
@@ -97,13 +96,12 @@ class content_class extends AWS_MODEL
 		}
 
 		$item_info = $this->fetch_row($type, $where);
-		// TODO: published_uid 字段改为 uid 以避免特殊处理
+		// TODO: id
 		if ($item_info)
 		{
 			if ($type == 'question')
 			{
 				$item_info['id'] = $item_info['question_id'];
-				$item_info['uid'] = $item_info['published_uid'];
 			}
 			elseif ($type == 'answer')
 			{

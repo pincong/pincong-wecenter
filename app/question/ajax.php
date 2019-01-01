@@ -391,9 +391,9 @@ class ajax extends AWS_CONTROLLER
 
 		if ($question_info = $this->model('question')->get_question_info_by_id($_POST['question_id']))
 		{
-			if ($this->user_id != $question_info['published_uid'])
+			if ($this->user_id != $question_info['uid'])
 			{
-				$this->model('account')->send_delete_message($question_info['published_uid'], $question_info['question_content'], $question_info['question_detail']);
+				$this->model('account')->send_delete_message($question_info['uid'], $question_info['question_content'], $question_info['question_detail']);
 			}
 
 			$this->model('question')->remove_question($question_info['question_id']);

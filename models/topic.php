@@ -946,7 +946,7 @@ class topic_class extends AWS_MODEL
 				{
 					$questions_info[$key]['associate_action'] = ACTION_LOG::ANSWER_QUESTION;
 
-					$action_list_uids[$val['published_uid']] = $val['published_uid'];
+					$action_list_uids[$val['uid']] = $val['uid'];
 				}
 			}
 

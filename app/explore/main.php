@@ -116,7 +116,7 @@ class main extends AWS_CONTROLLER
 			{
 				if ($val['answer_count'])
 				{
-					$posts_list[$key]['answer_users'] = $this->model('question')->get_answer_users_by_question_id($val['question_id'], 2, $val['published_uid']);
+					$posts_list[$key]['answer_users'] = $this->model('question')->get_answer_users_by_question_id($val['question_id'], 2, $val['uid']);
 				}
 			}
 		}

@@ -74,7 +74,7 @@ class question extends AWS_ADMIN_CONTROLLER
 		{
 			$user_info = $this->model('account')->get_user_info_by_username($_GET['user_name']);
 
-			$where[] = 'published_uid = ' . intval($user_info['uid']);
+			$where[] = 'uid = ' . intval($user_info['uid']);
 		}
 
 		if ($_GET['answer_count_min'])
@@ -98,7 +98,7 @@ class question extends AWS_ADMIN_CONTROLLER
 
 			foreach ($question_list AS $key => $val)
 			{
-				$question_list_uids[$val['published_uid']] = $val['published_uid'];
+				$question_list_uids[$val['uid']] = $val['uid'];
 			}
 
 			if ($question_list_uids)
@@ -108,7 +108,7 @@ class question extends AWS_ADMIN_CONTROLLER
 
 			foreach ($question_list AS $key => $val)
 			{
-				$question_list[$key]['user_info'] = $question_list_user_infos[$val['published_uid']];
+				$question_list[$key]['user_info'] = $question_list_user_infos[$val['uid']];
 			}
 		}
 

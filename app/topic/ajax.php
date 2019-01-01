@@ -451,7 +451,7 @@ class ajax extends AWS_CONTROLLER
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定项目不存在')));
 				}
 
-				if (!$this->user_info['permission']['edit_question_topic'] AND $this->user_id != $question_info['published_uid'])
+				if (!$this->user_info['permission']['edit_question_topic'] AND $this->user_id != $question_info['uid'])
 				{
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 				}
@@ -513,7 +513,7 @@ class ajax extends AWS_CONTROLLER
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定项目不存在')));
 				}
 
-				if (!$this->user_info['permission']['edit_question_topic'] AND $this->user_id != $question_info['published_uid'])
+				if (!$this->user_info['permission']['edit_question_topic'] AND $this->user_id != $question_info['uid'])
 				{
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 				}
