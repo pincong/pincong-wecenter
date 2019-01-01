@@ -103,7 +103,7 @@ class user extends AWS_ADMIN_CONTROLLER
 
         $this->crumb(AWS_APP::lang()->_t('会员列表'), "admin/user/list/");
 
-        TPL::assign('mem_group', $this->model('account')->get_user_group_list(1));
+        TPL::assign('member_group', $this->model('account')->get_user_group_list(1));
         TPL::assign('system_group', $this->model('account')->get_user_group_list(0));
         TPL::assign('total_rows', $total_rows);
         TPL::assign('list', $user_list);
@@ -121,7 +121,7 @@ class user extends AWS_ADMIN_CONTROLLER
             H::redirect_msg(AWS_APP::lang()->_t('你没有访问权限, 请重新登录'), '/');
         }
 
-        TPL::assign('mem_group', $this->model('account')->get_user_group_list(1));
+        TPL::assign('member_group', $this->model('account')->get_user_group_list(1));
         TPL::assign('system_group', $this->model('account')->get_user_group_list(0, 0));
         TPL::assign('custom_group', $this->model('account')->get_user_group_list(0, 1));
         TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(403));
@@ -164,7 +164,7 @@ class user extends AWS_ADMIN_CONTROLLER
 
         $user['recovery_code'] = $this->model('active')->calc_user_recovery_code($user['uid']);
 
-		TPL::assign('mem_group', $this->model('account')->get_user_group_by_id(
+		TPL::assign('member_group', $this->model('account')->get_user_group_by_id(
 			$this->model('reputation')->get_reputation_group_id_by_reputation($user['reputation'])
 		));
 
