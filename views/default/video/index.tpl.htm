@@ -343,7 +343,7 @@ function get_video_metadata(callback) {
 var busy_while_sending_danmaku;
 
 function send_danmaku(danmaku, next) {
-	if (busy_while_sending_danmaku) return true; // cancle
+	if (busy_while_sending_danmaku) return true; // cancel
 	busy_while_sending_danmaku = true;
 
 	var url = G_BASE_URL + '/v/api/save_danmaku/';
@@ -389,7 +389,7 @@ $(document).ready(function () {
 	video_player.on('sendDanmaku', function(danmaku, next) {
 	<?php if (!$this->user_id) { ?>
 		AWS.alert('登录后才能发送弹幕');
-		return true; // cancle
+		return true; // 取消下一步操作
 	<?php } else { ?>
 		return send_danmaku(danmaku, next);
 	<?php } ?>

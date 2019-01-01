@@ -463,7 +463,99 @@ var ABP = {};
 		return Util.intPad(parseInt(time / 60), 2) + ':' + Util.intPad(parseInt(time % 60), 2);
 	};
 
+	Util.isTouchDevice = function() {
+		return 'ontouchstart' in window;
+	};
+
+	Util.bindClick = function($element, listener) {
+		if (Util.isTouchDevice()) {
+			$element.on('touchend', listener);
+		} else {
+			$element.on('click', listener);
+		}
+	};
+
+	Util.bindDragStart = function($element, listener) {
+		if (Util.isTouchDevice()) {
+			$element.on('touchstart', listener);
+		} else {
+			$element.on('mousedown', listener);
+		}
+	};
+
+	Util.bindDragMove = function($element, listener) {
+		if (Util.isTouchDevice()) {
+			$element.on('touchmove', listener);
+		} else {
+			$el.on('mousemove', listener);
+		}
+	};
+
+	Util.bindDragEnd = function($element, listener) {
+		if (Util.isTouchDevice()) {
+			$element.on('touchend', listener);
+		} else {
+			$element.on('mouseup', listener);
+		}
+	};
+
+	Util.eventX = function(e) {
+		if (e.pageX) return e.pageX;
+		if (e.originalEvent.touches && e.originalEvent.touches[0]) return e.originalEvent.touches[0].pageX;
+		if (e.originalEvent.changedTouches && e.originalEvent.changedTouches[0]) return e.originalEvent.changedTouches[0].pageX;
+	};
+
+	Util.eventY = function(e) {
+		if (e.pageY) return e.pageY;
+		if (e.originalEvent.touches && e.originalEvent.touches[0]) return e.originalEvent.touches[0].pageY;
+		if (e.originalEvent.changedTouches && e.originalEvent.changedTouches[0]) return e.originalEvent.changedTouches[0].pageY;
+	};
+
 	ABP.Util = Util;
+})();
+
+(function() {
+	'use strict';
+	function Drag($element) {
+		this.$element = $element;
+		this.$document = $(document);
+		this.dragging = false;
+
+		this.emitter = new ABP.Emitter(this);
+
+		var self = this;
+		ABP.Util.bindDragStart(self.$element, function(e) {
+			e.preventDefault();
+			self.dragging = true;
+			console.log('start');
+			self.emitter.emit('start', e);
+		});
+		ABP.Util.bindDragMove(self.$document, function(e) {
+			if (!self.dragging) return;
+			e.preventDefault();
+			console.log('move');
+			self.emitter.emit('move', e);
+		});
+		ABP.Util.bindDragEnd(self.$document, function(e) {
+			if (!self.dragging) return;
+			e.preventDefault();
+			self.dragging = false;
+			console.log('end');
+			self.emitter.emit('end', e);
+		});
+	};
+
+	// 添加/覆盖事件
+	Drag.prototype.on = function(eventName, listenerFunction) {
+		this.emitter.on(eventName, listenerFunction);
+	};
+
+	// 移除事件
+	Drag.prototype.off = function(eventName) {
+		this.emitter.off(eventName);
+	};
+
+	ABP.Drag = Drag;
 })();
 
 (function() {
@@ -575,11 +667,13 @@ var ABP = {};
 		this.$volumeBtn = this.$$('.ab-control .ab-volume-btn');
 		this.$volumeIcon = this.$volumeBtn.children('i');
 		this.$volumeBar = this.$$('.ab-control .ab-volume-bar');
+		this.volumeBarDrag = new ABP.Drag(this.$volumeBar);
 		this.$volumeProgress = this.$volumeBar.children('div');
 		this._updateVolumeIcon();
 		this._updateVolumeBar();
 
 		this.$seekbar = this.$$('.ab-control .ab-seekbar');
+		this.seekbarDrag = new ABP.Drag(this.$seekbar);
 		this.$seekbarProgress = this.$seekbar.children('div');
 
 		this.$timeLabel = this.$$('.ab-control .ab-time-label');
@@ -605,31 +699,31 @@ var ABP = {};
 
 	Player.prototype._bindEvents = function() {
 		var self = this;
-		this.$playBtn.click(function() {
+		ABP.Util.bindClick(self.$playBtn, function() {
 			self.$circlePlayBtn.hide();
 			self.$poster.hide();
 			self.togglePlay();
 		});
-		this.$circlePlayBtn.click(function() {
+		ABP.Util.bindClick(self.$circlePlayBtn, function() {
 			self.$circlePlayBtn.hide();
 			self.$poster.hide();
 			self.togglePlay();
 		});
 
-		this.$loopBtn.click(function() {
+		ABP.Util.bindClick(self.$loopBtn, function() {
 			self.toggleLoop();
 		});
-		this.$danmakuBtn.click(function() {
+		ABP.Util.bindClick(self.$danmakuBtn, function() {
 			self.toggleDanmaku();
 		});
-		this.$volumeBtn.click(function() {
+		ABP.Util.bindClick(self.$volumeBtn, function() {
 			self.toggleMute();
 		});
 
-		this.$fontBtn.click(function() {
+		ABP.Util.bindClick(self.$fontBtn, function() {
 			self._toggleFontDialog();
 		});
-		this.$colorBtn.click(function() {
+		ABP.Util.bindClick(self.$colorBtn, function() {
 			self._toggleColorDialog();
 		});
 		this.$colorDlg.colpick({
@@ -644,23 +738,21 @@ var ABP = {};
 			}
 		});
 
-		this.$volumeBar.click(function(e) {
-			var progress = (e.clientX - self.$volumeBar.offset().left) / self.$volumeBar.width();
-			if (progress < 0) progress = 0;
-			if (progress > 1) progress = 1;
-			self.video.volume = progress;
+		ABP.Util.bindClick(self.$volumeBar, function(e) {
+			self._volumeBarClick(e);
+		});
+		self.volumeBarDrag.on('move', function(e) {
+			self._volumeBarClick(e);
 		});
 
-		this.$seekbar.click(function(e) {
-			self.$circlePlayBtn.hide();
-			self.$poster.hide();
-			var progress = (e.clientX - self.$seekbar.offset().left) / self.$seekbar.width();
-			if (progress < 0) progress = 0;
-			if (progress > 1) progress = 1;
-			self.seek(self.video.duration * progress);
+		ABP.Util.bindClick(self.$seekbar, function(e) {
+			self._seekbarClick(e);
+		});
+		self.seekbarDrag.on('move', function(e) {
+			self._seekbarClick(e);
 		});
 
-		this.$sendBtn.click(function() {
+		ABP.Util.bindClick(self.$sendBtn, function() {
 			self._sendButtonClick();
 		});
 
@@ -749,8 +841,8 @@ var ABP = {};
 		this._updateVolumeIcon();
 	};
 
-	Player.prototype._seek = function(seconds) {
-		if (!isNaN(seconds)) this.video.currentTime = seconds;
+	Player.prototype._seek = function(time) {
+		if (!isNaN(time)) this.video.currentTime = time;
 		if (this.video.paused) this.video.play();
 	};
 
@@ -817,7 +909,7 @@ var ABP = {};
 			stime: Math.floor(this.video.currentTime * 1000)
 		}
 
-		// 如果 emit 'sendDanmaku' 返回 true 则直接取消, 不显示也不插入
+		// 如果 emit 'sendDanmaku' 返回 true 则不显示
 		var cancelled = this.emitter.emit('sendDanmaku', danmaku, function() {
 			this._insertDanmaku(danmaku); // 回调之后才真正插入到时间轴
 		}.bind(this));
@@ -836,6 +928,21 @@ var ABP = {};
 		this.cm.insert(danmaku); // 插入到时间轴
 	};
 
+	Player.prototype._volumeBarClick = function(e) {
+		var progress = (ABP.Util.eventX(e) - this.$volumeBar.offset().left) / this.$volumeBar.width();
+		if (progress < 0) progress = 0;
+		if (progress > 1) progress = 1;
+		this.video.volume = progress;
+	};
+
+	Player.prototype._seekbarClick = function(e) {
+		this.$circlePlayBtn.hide();
+		this.$poster.hide();
+		var progress = (ABP.Util.eventX(e) - this.$seekbar.offset().left) / this.$seekbar.width();
+		if (progress < 0) progress = 0;
+		if (progress > 1) progress = 1;
+		this.seek(this.video.duration * progress);
+	};
 
 	Player.prototype._sendButtonClick = function() {
 		if (!this.videoLoaded) return;
