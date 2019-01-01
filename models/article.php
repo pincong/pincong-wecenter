@@ -659,7 +659,10 @@ class article_class extends AWS_MODEL
 			'is_recommend' => 1
 		), 'id = ' . intval($article_id));
 
-		$this->model('posts')->set_posts_index($article_id, 'article');
+		//$this->model('posts')->set_posts_index($article_id, 'article');
+		$this->update('posts_index', array(
+			'is_recommend' => 1
+		), "post_id = " . intval($article_id) . " AND post_type = 'article'" );
 	}
 
 	public function unset_recommend($article_id)
@@ -668,7 +671,10 @@ class article_class extends AWS_MODEL
 			'is_recommend' => 0
 		), 'id = ' . intval($article_id));
 
-		$this->model('posts')->set_posts_index($article_id, 'article');
+		//$this->model('posts')->set_posts_index($article_id, 'article');
+		$this->update('posts_index', array(
+			'is_recommend' => 0
+		), "post_id = " . intval($article_id) . " AND post_type = 'article'" );
 	}
 
 	public function get_article_thanks($article_id, $uid)

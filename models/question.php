@@ -715,7 +715,10 @@ class question_class extends AWS_MODEL
 			'is_recommend' => 1
 		), 'question_id = ' . intval($question_id));
 
-		$this->model('posts')->set_posts_index($question_id, 'question');
+		//$this->model('posts')->set_posts_index($question_id, 'question');
+		$this->update('posts_index', array(
+			'is_recommend' => 1
+		), "post_id = " . intval($question_id) . " AND post_type = 'question'" );
 	}
 
 	public function unset_recommend($question_id)
@@ -724,7 +727,10 @@ class question_class extends AWS_MODEL
 			'is_recommend' => 0
 		), 'question_id = ' . intval($question_id));
 
-		$this->model('posts')->set_posts_index($question_id, 'question');
+		//$this->model('posts')->set_posts_index($question_id, 'question');
+		$this->update('posts_index', array(
+			'is_recommend' => 0
+		), "post_id = " . intval($question_id) . " AND post_type = 'question'" );
 	}
 
 	public function insert_question_comment($question_id, $uid, $message, $anonymous = 0)

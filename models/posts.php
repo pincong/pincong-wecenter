@@ -68,7 +68,7 @@ class posts_class extends AWS_MODEL
 			case 'article':
 				$data = array(
 					'add_time' => $result['add_time'],
-					'update_time' => $result['update_time'],        // $result['add_time']
+					'update_time' => $result['update_time'],
 					'category_id' => $result['category_id'],
 					'view_count' => $result['views'],
 					'anonymous' => $result['anonymous'],
@@ -86,6 +86,12 @@ class posts_class extends AWS_MODEL
 		if ($posts_index = $this->fetch_all('posts_index', "post_id = " . intval($post_id) . " AND post_type = '" . $this->quote($post_type) . "'"))
 		{
 			$post_index = end($posts_index);
+
+			// 用于置顶帖子和模糊时间的排序
+			if ($post_index['update_time'] >= $data['update_time'])
+			{
+				$data['update_time'] = intval($post_index['update_time']) + 1;
+			}
 
 			$this->update('posts_index', $data, 'id = ' . intval($post_index['id']));
 
