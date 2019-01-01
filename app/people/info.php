@@ -35,6 +35,8 @@ class info extends AWS_CONTROLLER
 			$rule_action['actions'][] = 'video_comments';
 			$rule_action['actions'][] = 'followers';
 			$rule_action['actions'][] = 'topics';
+			$rule_action['actions'][] = 'received_votes';
+			$rule_action['actions'][] = 'sent_votes';
 		}
 
 		$rule_action['redirect'] = false; // 不跳转到登录页面直接输出403
