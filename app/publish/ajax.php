@@ -158,114 +158,6 @@ class ajax extends AWS_CONTROLLER
         exit(htmlspecialchars(json_encode($output), ENT_NOQUOTES));
     }
 
-    public function article_attach_edit_list_action()
-    {
-        if (! $article_info = $this->model('article')->get_article_info_by_id($_POST['article_id']))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('无法获取附件列表')));
-        }
-
-        if ($article_info['uid'] != $this->user_id AND !$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个附件列表')));
-        }
-
-        if ($article_attach = $this->model('publish')->get_attach('article', $_POST['article_id']))
-        {
-            foreach ($article_attach as $attach_id => $val)
-            {
-                $article_attach[$attach_id]['class_name'] = $this->model('publish')->get_file_class($val['file_name']);
-
-                $article_attach[$attach_id]['delete_link'] = get_js_url('/publish/ajax/remove_attach/attach_id-' . AWS_APP::crypt()->encode(json_encode(array(
-                    'attach_id' => $attach_id,
-                    'access_key' => $val['access_key']
-                ))));
-
-                $article_attach[$attach_id]['attach_id'] = $attach_id;
-                $article_attach[$attach_id]['attach_tag'] = 'attach';
-            }
-        }
-
-        H::ajax_json_output(AWS_APP::RSM(array(
-            'attachs' => $article_attach
-        ), 1, null));
-    }
-
-    public function question_attach_edit_list_action()
-    {
-        if (! $question_info = $this->model('question')->get_question_info_by_id($_POST['question_id']))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('无法获取附件列表')));
-        }
-
-        if ($question_info['published_uid'] != $this->user_id AND !$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个附件列表')));
-        }
-
-        if ($question_attach = $this->model('publish')->get_attach('question', $_POST['question_id']))
-        {
-            foreach ($question_attach as $attach_id => $val)
-            {
-                $question_attach[$attach_id]['class_name'] = $this->model('publish')->get_file_class($val['file_name']);
-
-                $question_attach[$attach_id]['delete_link'] = get_js_url('/publish/ajax/remove_attach/attach_id-' . AWS_APP::crypt()->encode(json_encode(array(
-                    'attach_id' => $attach_id,
-                    'access_key' => $val['access_key']
-                ))));
-
-                $question_attach[$attach_id]['attach_id'] = $attach_id;
-                $question_attach[$attach_id]['attach_tag'] = 'attach';
-            }
-        }
-
-        H::ajax_json_output(AWS_APP::RSM(array(
-            'attachs' => $question_attach
-        ), 1, null));
-    }
-
-    public function answer_attach_edit_list_action()
-    {
-        if (!$answer_info = $this->model('answer')->get_answer_by_id($_POST['answer_id']))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('回复不存在')));
-        }
-
-        if ($answer_info['uid'] != $this->user_id AND !$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个附件列表')));
-        }
-
-        if ($answer_attach = $this->model('publish')->get_attach('answer', $_POST['answer_id']))
-        {
-            foreach ($answer_attach as $attach_id => $val)
-            {
-                $answer_attach[$attach_id]['class_name'] = $this->model('publish')->get_file_class($val['file_name']);
-                $answer_attach[$attach_id]['delete_link'] = get_js_url('/publish/ajax/remove_attach/attach_id-' . AWS_APP::crypt()->encode(json_encode(array(
-                    'attach_id' => $attach_id,
-                    'access_key' => $val['access_key']
-                ))));
-
-                $answer_attach[$attach_id]['attach_id'] = $attach_id;
-                $answer_attach[$attach_id]['attach_tag'] = 'attach';
-            }
-        }
-
-        H::ajax_json_output(AWS_APP::RSM(array(
-            'attachs' => $answer_attach
-        ), 1, null));
-    }
-
-    public function remove_attach_action()
-    {
-        if ($attach_info = json_decode(AWS_APP::crypt()->decode($_GET['attach_id']), true))
-        {
-            $this->model('publish')->remove_attach($attach_info['attach_id'], $attach_info['access_key']);
-        }
-
-        H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-    }
-
     public function modify_question_action()
     {
         if (!$question_info = $this->model('question')->get_question_info_by_id($_POST['question_id']))
@@ -308,11 +200,6 @@ class ajax extends AWS_CONTROLLER
         if (!$this->user_info['permission']['publish_url'] AND FORMAT::outside_url_exists($question_detail))
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在的用户组不允许发布站外链接')));
-        }
-
-        if (!$this->model('publish')->insert_attach_is_self_upload($question_detail, $_POST['attach_ids']))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('只允许插入当前页面上传的附件')));
         }
 
         if (human_valid('question_valid_hour') AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
@@ -469,12 +356,6 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请为问题添加话题')));
         }
 
-        if (!$this->model('publish')->insert_attach_is_self_upload($question_detail, $_POST['attach_ids']))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('只允许插入当前页面上传的附件')));
-        }
-
-
         // !注: 来路检测后面不能再放报错提示
         if (!valid_post_hash($_POST['post_hash']))
         {
@@ -575,11 +456,6 @@ class ajax extends AWS_CONTROLLER
         if (!$this->user_info['permission']['publish_url'] AND FORMAT::outside_url_exists($article_content))
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在的用户组不允许发布站外链接')));
-        }
-
-        if (!$this->model('publish')->insert_attach_is_self_upload($article_content, $_POST['attach_ids']))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('只允许插入当前页面上传的附件')));
         }
 
         if (human_valid('question_valid_hour') AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
@@ -726,11 +602,6 @@ class ajax extends AWS_CONTROLLER
         if (human_valid('question_valid_hour') AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
         {
             H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写正确的验证码')));
-        }
-
-        if (!$this->model('publish')->insert_attach_is_self_upload($article_content, $_POST['attach_ids']))
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('只允许插入当前页面上传的附件')));
         }
 
         // !注: 来路检测后面不能再放报错提示
