@@ -183,12 +183,12 @@ class main extends AWS_CONTROLLER
 		{
 			if (!$video_info = $this->model('video')->get_video_info_by_id($id))
 			{
-				H::redirect_msg(AWS_APP::lang()->_t('指定投稿不存在'));
+				H::redirect_msg(AWS_APP::lang()->_t('指定影片不存在'));
 			}
 
 			if (!$this->user_info['permission']['edit_video'] AND $video_info['uid'] != $this->user_id)
 			{
-				H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑这个投稿'), '/video/' . $video_info['id']);
+				H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑这个影片'), '/video/' . $video_info['id']);
 			}
 		}
 		else if (!$this->user_info['permission']['publish_video'])
@@ -220,7 +220,7 @@ class main extends AWS_CONTROLLER
 
 			if (!$this->model('ratelimit')->check_video($this->user_id, $this->user_info['permission']['thread_limit_per_day']))
 			{
-				H::redirect_msg(AWS_APP::lang()->_t('你今天发布的投稿已经达到上限'));
+				H::redirect_msg(AWS_APP::lang()->_t('你今天投稿的影片已经达到上限'));
 			}
 		}
 

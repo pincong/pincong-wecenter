@@ -560,7 +560,7 @@ class posts_class extends AWS_MODEL
 				break;
 
 			case 'video':
-				$this->model('video')->log($post_id, 'VIDEO', '提升投稿', $uid);
+				$this->model('video')->log($post_id, 'VIDEO', '提升影片', $uid);
 				break;
 		}
 
@@ -588,7 +588,7 @@ class posts_class extends AWS_MODEL
 				break;
 
 			case 'video':
-				$this->model('video')->log($post_id, 'VIDEO', '下沉投稿', $uid);
+				$this->model('video')->log($post_id, 'VIDEO', '下沉影片', $uid);
 				break;
 		}
 

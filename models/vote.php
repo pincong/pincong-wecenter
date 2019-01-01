@@ -55,15 +55,15 @@ class vote_class extends AWS_MODEL
 			case 'video':
 				$type_agree = 'AGREE_VIDEO';
 				$type_item_agreed = 'VIDEO_AGREED';
-				$note_agree = '赞同投稿 #' . $item_id;
-				$note_item_agreed = '投稿被赞同 #' . $item_id;
+				$note_agree = '赞同影片 #' . $item_id;
+				$note_item_agreed = '影片被赞同 #' . $item_id;
 				break;
 
 			case 'video_comment':
 				$type_agree = 'AGREE_VIDEO_COMMENT';
 				$type_item_agreed = 'VIDEO_COMMENT_AGREED';
-				$note_agree = '赞同投稿评论 #' . $item_id;
-				$note_item_agreed = '投稿评论被赞同 #' . $item_id;
+				$note_agree = '赞同影片评论 #' . $item_id;
+				$note_item_agreed = '影片评论被赞同 #' . $item_id;
 				break;
 		}
 
@@ -109,15 +109,15 @@ class vote_class extends AWS_MODEL
 			case 'video':
 				$type_disagree = 'DISAGREE_VIDEO';
 				$type_item_disagreed = 'VIDEO_DISAGREED';
-				$note_disagree = '反对投稿 #' . $item_id;
-				$note_item_disagreed = '投稿被反对 #' . $item_id;
+				$note_disagree = '反对影片 #' . $item_id;
+				$note_item_disagreed = '影片被反对 #' . $item_id;
 				break;
 
 			case 'video_comment':
 				$type_disagree = 'DISAGREE_VIDEO_COMMENT';
 				$type_item_disagreed = 'VIDEO_COMMENT_DISAGREED';
-				$note_disagree = '反对投稿评论 #' . $item_id;
-				$note_item_disagreed = '投稿评论被反对 #' . $item_id;
+				$note_disagree = '反对影片评论 #' . $item_id;
+				$note_item_disagreed = '影片评论被反对 #' . $item_id;
 				break;
 		}
 

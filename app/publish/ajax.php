@@ -224,7 +224,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$metadata)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('视频接口故障')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('影片接口故障')));
 		}
 
 		if ($metadata['error'])
@@ -238,7 +238,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$metadata['source_type'] OR !$metadata['source'] OR !$metadata['duration'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('无法解析视频')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('无法解析影片')));
 		}
 	}
 
@@ -381,7 +381,7 @@ class ajax extends AWS_CONTROLLER
 		$web_url = my_trim($_POST['web_url']);
 		if (!Services_VideoParser::check_url($web_url))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('无法识别视频来源')));
+			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('无法识别影片来源')));
 		}
 
 		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_new_video'))
@@ -391,7 +391,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->model('ratelimit')->check_video($this->user_id, $this->user_info['permission']['thread_limit_per_day']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天发布的投稿已经达到上限')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天影片的影片已经达到上限')));
 		}
 
 		$this->do_validate();
@@ -413,10 +413,10 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		// 开销大的操作放在最后
-		// 从视频网站取得元数据, 如时长
+		// 从影片网站取得元数据, 如时长
 		// 以 'https://www.youtube.com/watch?v=abcdefghijk' 为例
-		// $metadata['source_type'] 指视频网站, 如 'youtube'
-		// $metadata['source'] 指该视频在所在网站上的 id, 如 'abcdefghijk'
+		// $metadata['source_type'] 指影片网站, 如 'youtube'
+		// $metadata['source'] 指该影片在所在网站上的 id, 如 'abcdefghijk'
 		$metadata = Services_VideoParser::fetch_metadata_by_url($web_url);
 		$this->validate_video_metadata($metadata);
 
@@ -583,19 +583,19 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$video_info = $this->model('video')->get_video_info_by_id($_POST['video_id']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('投稿不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('影片不存在')));
 		}
 
 		if ($video_info['lock'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('投稿已锁定, 不能编辑')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('影片已锁定, 不能编辑')));
 		}
 
 		if (!$this->user_info['permission']['edit_video'])
 		{
 			if ($video_info['uid'] != $this->user_id)
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个投稿')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个影片')));
 			}
 		}
 
@@ -605,7 +605,7 @@ class ajax extends AWS_CONTROLLER
 			$modify_source = !!$web_url;
 			if ($modify_source AND !Services_VideoParser::check_url($web_url))
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('无法识别视频来源')));
+				H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('无法识别影片来源')));
 			}
 
 			$this->do_validate('modify');
@@ -843,19 +843,19 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->model('ratelimit')->check_video_comment($this->user_id, $this->user_info['permission']['reply_limit_per_day']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天的投稿评论已经达到上限')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天的影片评论已经达到上限')));
 		}
 
 		$this->do_validate_reply();
 
 		if (!$video_info = $this->model('video')->get_video_info_by_id($_POST['video_id']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定投稿不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定影片不存在')));
 		}
 
 		if ($video_info['lock'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的投稿不能回复')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的影片不能回复')));
 		}
 
 		if ($_POST['anonymous'])

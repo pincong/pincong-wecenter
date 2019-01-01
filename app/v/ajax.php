@@ -48,7 +48,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (! $video_info = $this->model('video')->get_video_info_by_id($_POST['video_id']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('投稿不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('影片不存在')));
 		}
 
 		$this->model('video')->lock_video($_POST['video_id'], !$video_info['lock'], $this->user_id);
@@ -61,7 +61,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['is_administrator'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有删除投稿的权限')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有删除影片的权限')));
 		}
 
 		if ($video_info = $this->model('video')->get_video_info_by_id($_POST['video_id']))
@@ -105,7 +105,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (! $video_info = $this->model('video')->get_video_info_by_id($_GET['id']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('指定投稿不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('指定影片不存在')));
 		}
 
 		$log_list = $this->model('video')->list_logs($_GET['id'], (intval($_GET['page']) * get_setting('contents_per_page')) . ', ' . get_setting('contents_per_page'));
@@ -147,7 +147,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->model('posts')->bump_post($this->user_id, $_POST['video_id'], 'video'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('投稿不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('影片不存在')));
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
@@ -162,7 +162,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->model('posts')->sink_post($this->user_id, $_POST['video_id'], 'video'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('投稿不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('影片不存在')));
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));

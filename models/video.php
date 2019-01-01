@@ -111,7 +111,7 @@ class video_class extends AWS_MODEL
 		{
 			$is_anonymous =  $item_info['anonymous'];
 		}
-		$this->model('video')->log($id, 'VIDEO', '编辑投稿', $uid, $is_anonymous);
+		$this->model('video')->log($id, 'VIDEO', '编辑影片', $uid, $is_anonymous);
 
 		return true;
 	}
@@ -134,7 +134,7 @@ class video_class extends AWS_MODEL
 		{
 			$is_anonymous =  $item_info['anonymous'];
 		}
-		$this->model('video')->log($id, 'VIDEO', '删除投稿', $uid, $is_anonymous);
+		$this->model('video')->log($id, 'VIDEO', '删除影片', $uid, $is_anonymous);
 
 		return true;
 	}
@@ -429,7 +429,7 @@ class video_class extends AWS_MODEL
 
 		if ($lock_status)
 		{
-			$this->model('video')->log($video_id, 'VIDEO', '锁定投稿', $uid);
+			$this->model('video')->log($video_id, 'VIDEO', '锁定影片', $uid);
 		}
 		else
 		{

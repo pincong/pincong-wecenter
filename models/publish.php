@@ -457,7 +457,7 @@ class publish_class extends AWS_MODEL
 		ACTION_LOG::save_action($data['uid'], $data['parent_id'], ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_COMMENT_VIDEO, null, $item_id);
 		*/
 
-		$this->model('currency')->process($parent_info['uid'], 'VIDEO_REPLIED', get_setting('currency_system_config_video_replied'), '投稿收到回应', $data['parent_id'], 'video');
+		$this->model('currency')->process($parent_info['uid'], 'VIDEO_REPLIED', get_setting('currency_system_config_video_replied'), '影片收到回应', $data['parent_id'], 'video');
 		return $item_id;
 	}
 
@@ -506,7 +506,7 @@ class publish_class extends AWS_MODEL
 		}
 
 		$is_anonymous = ($real_uid != $data['uid']);
-		$this->model('currency')->process($real_uid, 'NEW_VIDEO', get_setting('currency_system_config_new_video'), '发起投稿', null, null, $is_anonymous);
+		$this->model('currency')->process($real_uid, 'NEW_VIDEO', get_setting('currency_system_config_new_video'), '投稿影片', null, null, $is_anonymous);
 		return $item_id;
 	}
 
@@ -555,7 +555,7 @@ class publish_class extends AWS_MODEL
 		}
 
 		$is_anonymous = ($real_uid != $data['uid']);
-		$this->model('currency')->process($real_uid, 'REPLY_VIDEO', get_setting('currency_system_config_reply_video'), '回应投稿', $data['parent_id'], 'video', $is_anonymous);
+		$this->model('currency')->process($real_uid, 'REPLY_VIDEO', get_setting('currency_system_config_reply_video'), '回应影片', $data['parent_id'], 'video', $is_anonymous);
 		return $item_id;
 	}
 

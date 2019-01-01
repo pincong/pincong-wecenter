@@ -35,7 +35,7 @@ class main extends AWS_CONTROLLER
 	public function index_action()
 	{
 
-		$this->crumb(AWS_APP::lang()->_t('投稿'), '/video/');
+		$this->crumb(AWS_APP::lang()->_t('影片'), '/video/');
 
 		if ($_GET['category'])
 		{

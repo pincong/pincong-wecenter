@@ -41,13 +41,13 @@ class api extends AWS_CONTROLLER
 	{
 		if (!$video_info = $this->model('video')->get_video_info_by_id($_POST['video_id']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('投稿不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('影片不存在')));
 		}
 
 		$metadata = Services_VideoParser::fetch_metadata($video_info['source_type'], $video_info['source']);
 		if (!$metadata)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('视频接口故障')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('影片接口故障')));
 		}
 
 		if ($metadata['error'])
@@ -72,7 +72,7 @@ class api extends AWS_CONTROLLER
 
 		if (!$video_info = $this->model('video')->get_video_info_by_id($_POST['video_id']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('投稿不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('影片不存在')));
 		}
 
 		$stime = intval($_POST['stime']); // 毫秒
