@@ -861,68 +861,7 @@ class account_class extends AWS_MODEL
         return $this->count('users', $where);
     }
 
-    /**
-     * 获取头像地址
-     *
-     * 举个例子：$uid=12345，那么头像路径很可能(根据您部署的上传文件夹而定)会被存储为/uploads/000/01/23/45_avatar_min.jpg
-     *
-     * @param  int
-     * @param  string
-     * @param  int
-     * @return string
-     */
-    public function get_avatar($uid, $size = 'min', $return_type = 0)
-    {
-        $size = in_array($size, array(
-            'max',
-            'mid',
-            'min',
-            '50',
-            '150',
-            'big',
-            'middle',
-            'small'
-        )) ? $size : 'real';
 
-        $uid = abs(intval($uid));
-        $uid = sprintf('%\'09d', $uid);
-        $dir1 = substr($uid, 0, 3);
-        $dir2 = substr($uid, 3, 2);
-        $dir3 = substr($uid, 5, 2);
-
-        if ($return_type == 1)
-        {
-            return $dir1 . '/' . $dir2 . '/' . $dir3 . '/';
-        }
-
-        if ($return_type == 2)
-        {
-            return substr($uid, -2) . '_avatar_' . $size . '.jpg';
-        }
-
-        return $dir1 . '/' . $dir2 . '/' . $dir3 . '/' . substr($uid, -2) . '_avatar_' . $size . '.jpg';
-    }
-
-    /**
-     * 删除用户头像
-     *
-     * @param int
-     * @return boolean
-     */
-    public function delete_avatar($uid)
-    {
-        if (!$uid)
-        {
-            return false;
-        }
-
-        foreach(AWS_APP::config()->get('image')->avatar_thumbnail as $key => $val)
-        {
-            @unlink(get_setting('upload_dir') . '/avatar/' . $this->get_avatar($uid, $key, 1) . $this->get_avatar($uid, $key, 2));
-        }
-
-        return $this->update_users_fields(array('avatar_file' => null), $uid);
-    }
 
     public function add_user_group($group_name, $group_type, $reputation_lower = 0, $reputation_higer = 0, $reputation_factor = 0)
     {

@@ -306,10 +306,10 @@ class ajax extends AWS_CONTROLLER
 
 		AWS_APP::upload()->initialize(array(
 			'allowed_types' => get_setting('allowed_upload_types'),
-			'upload_path' => get_setting('upload_dir') . '/avatar/' . $this->model('account')->get_avatar($this->user_id, '', 1),
+			'upload_path' => get_setting('upload_dir') . '/avatar/' . $this->model('avatar')->get_avatar_dir($this->user_id),
 			'is_image' => TRUE,
 			'max_size' => get_setting('upload_size_limit'),
-			'file_name' => $this->model('account')->get_avatar($this->user_id, '', 2),
+			'file_name' => $this->model('avatar')->get_avatar_filename($this->user_id, 'real'),
 			'encrypt_name' => FALSE
 		))->do_upload('aws_upload_file');
 
@@ -340,12 +340,10 @@ class ajax extends AWS_CONTROLLER
 		{
 			foreach(AWS_APP::config()->get('image')->avatar_thumbnail AS $key => $val)
 			{
-				$thumb_file[$key] = $upload_data['file_path'] . $this->model('account')->get_avatar($this->user_id, $key, 2);
-
 				AWS_APP::image()->initialize(array(
 					'quality' => 90,
 					'source_image' => $upload_data['full_path'],
-					'new_image' => $thumb_file[$key],
+					'new_image' => $upload_data['file_path'] . $this->model('avatar')->get_avatar_filename($this->user_id, $key),
 					'width' => $val['w'],
 					'height' => $val['h']
 				))->resize();
@@ -359,7 +357,7 @@ class ajax extends AWS_CONTROLLER
 
 		echo htmlspecialchars(json_encode(array(
 			'success' => true,
-			'thumb' => get_setting('upload_url') . '/avatar/' . $this->model('account')->get_avatar($this->user_id, null, 1) . basename($thumb_file['max'])
+			'thumb' => get_setting('upload_url') . '/avatar/' . $this->model('avatar')->get_avatar_path($this->user_id, 'max')
 		)), ENT_NOQUOTES);
 	}
 

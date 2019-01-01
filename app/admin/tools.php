@@ -337,7 +337,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 		{
 			foreach ($users as $key => $val)
 			{
-				$path = get_setting('upload_dir') . '/avatar/' . $this->model('account')->get_avatar($val['uid'], 'min', 0);
+				$path = get_setting('upload_dir') . '/avatar/' . $this->model('avatar')->get_avatar_path($val['uid'], 'min');
 				if (file_exists($path))
 				{
 					$this->model('account')->update_users_fields(array(

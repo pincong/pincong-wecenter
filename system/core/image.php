@@ -63,12 +63,9 @@ class core_image
 
 	public function initialize($config = array())
 	{
-		if (!defined('IN_SAE'))
+		if (class_exists('Imagick', false))
 		{
-			if (class_exists('Imagick', false))
-			{
-				$this->image_library = 'imagemagick';
-			}
+			$this->image_library = 'imagemagick';
 		}
 
 		if (sizeof($config) > 0)
@@ -205,7 +202,15 @@ class core_image
 
 		if ($this->option == IMAGE_CORE_OP_TO_FILE AND $this->new_image)
 		{
-			file_put_contents($this->new_image, $im->getimageblob());
+			if (Services_RemoteStorage::is_enabled())
+			{
+				$content = $im->getimageblob();
+				Services_RemoteStorage::put($this->new_image, $content);
+			}
+			else
+			{
+				file_put_contents($this->new_image, $im->getimageblob());
+			}
 		}
 		else if ($this->option == IMAGE_CORE_OP_OUTPUT)
 		{
@@ -362,25 +367,18 @@ class core_image
 				@unlink($this->new_image);
 			}
 
-			if (defined('IN_SAE'))
-			{
-				$this->new_image = str_replace(get_setting('upload_dir'), '', $this->new_image);
-
-				$sae_storage = new SaeStorage();
-			}
-
 			switch ($this->image_type_index[$this->image_ext])
 			{
-				case 1:
-				case 3:
-					if (defined('IN_SAE'))
+				case 1:	// GIF
+				case 3:	// PNG
+					if (Services_RemoteStorage::is_enabled())
 					{
 						ob_start();
-
 						$func_output($dst_img);
-						$sae_storage->write('uploads', $this->new_image, ob_get_contents());
-
+						$content = ob_get_contents();
 						ob_end_clean();
+
+						Services_RemoteStorage::put($this->new_image, $content);
 					}
 					else
 					{
@@ -389,14 +387,14 @@ class core_image
 				break;
 
 				case 2:	// JPEG
-					if (defined('IN_SAE'))
+					if (Services_RemoteStorage::is_enabled())
 					{
 						ob_start();
-
 						$func_output($dst_img, null, $this->quality);
-						$sae_storage->write('uploads', $this->new_image, ob_get_contents());
-
+						$content = ob_get_contents();
 						ob_end_clean();
+
+						Services_RemoteStorage::put($this->new_image, $content);
 					}
 					else
 					{
