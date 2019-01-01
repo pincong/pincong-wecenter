@@ -99,10 +99,12 @@ class account_class extends AWS_MODEL
 
     /**
      * 用户登录验证
+     * 用户名或密码错误返回 false
+     * 超过尝试次数返回 null
      *
      * @param string
      * @param string
-     * @return array
+     * @return mixed
      */
     public function check_login($user_name, $password)
     {
@@ -111,19 +113,39 @@ class account_class extends AWS_MODEL
             return false;
         }
 
-        $user_info = $this->get_user_info_by_username($user_name);
+        $user_info = $this->get_user_info_by_username($user_name, true);
 
         if (! $user_info)
         {
             return false;
         }
 
+		$max_attempts = intval(get_setting('limit_login_attempts'));
+		$attempts_interval = intval(get_setting('limit_login_attempts_interval')) * 60;
+
+		$failed_login_count = intval($user_info['extra_data']['failed_login_count']);
+		$failed_login_time = intval($user_info['extra_data']['failed_login_time']);
+
+		if ($max_attempts AND $failed_login_count >= $max_attempts AND $failed_login_time + $attempts_interval >= real_time())
+		{
+			return null;
+		}
+
         if (! $this->check_password($password, $user_info['password'], $user_info['salt']))
         {
+			$this->update_users_attrib_extra_data(array(
+				'failed_login_count' => $failed_login_count + 1,
+				'failed_login_time' => real_time()
+			), $user_info['uid']);
+			// TODO: 给用户发送警告
             return false;
         }
         else
         {
+			$this->update_users_attrib_extra_data(array(
+				'failed_login_count' => null,
+				'failed_login_time' => null
+			), $user_info['uid']);
             return $user_info;
         }
 

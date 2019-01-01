@@ -186,11 +186,15 @@ class ajax extends AWS_CONTROLLER
 
 		$user_info = $this->model('account')->check_login($_POST['user_name'], $_POST['password']);
 
-		if (! $user_info)
+		if (is_null($user_info))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('该账号连续多次尝试登录失败, 为了安全起见, 该账号 %s 分钟内禁止登录', get_setting('limit_login_attempts_interval'))));
+		}
+		elseif (!$user_info)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的帐号或密码')));
 		}
-		else
+		
 		{
 			if ($user_info['forbidden'])
 			{
