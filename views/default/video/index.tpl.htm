@@ -267,8 +267,12 @@
 							</label>
 
 							<label class="pull-right">
-								<input class="pull-right form-control" type="text" name="later" placeholder="<?php _e('分钟'); ?>" /> <?php _e('延迟显示'); ?>&nbsp;
+								<input id="later_time_input" class="pull-right form-control" type="text" name="later" placeholder="<?php _e('分钟'); ?>" />
 							</label>
+
+							<label class="pull-right">&nbsp;<?php _e('延迟显示'); ?>&nbsp;</label>
+
+							<label id="later_time_label" class="pull-right"></label>
 
 						</div>
 						</form>
@@ -406,6 +410,8 @@ $(document).ready(function () {
 		AWS.at_user_lists('#wmd-input');
 		AWS.Init.init_article_comment_box($('.aw-article-comment'));
 	}
+
+	AWS.init_later_time_helper($('#later_time_input'), $('#later_time_label'));
 });
 </script>
 

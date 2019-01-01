@@ -1354,6 +1354,31 @@ var AWS =
 	}
 }
 
+AWS.format_date = function(timestamp)
+{
+	var d = new Date(timestamp);
+	return d.getFullYear() + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2) + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+}
+
+// 计算延迟显示
+AWS.init_later_time_helper = function($input, $label)
+{
+	if (!$input.length || !$label.length)
+	{
+		return;
+	}
+	$input.on('input change', function(e)
+	{
+		var time = '';
+		var minutes = parseInt($input.val());
+		if (minutes && minutes > 0) {
+			time = Date.now() + minutes * 60 * 1000;
+			time = AWS.format_date(time);
+		}
+		$label.text(time);
+	});
+}
+
 // 创建编辑器
 AWS.create_editor = function(element_id, max_btn)
 {

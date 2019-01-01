@@ -388,8 +388,9 @@
 								</div>
 								<div class="mod-body clearfix">
 									<div class="aw-auth-img clearfix">
-										<input name="later" class="form-control pull-right" type="text" placeholder="<?php _e('分钟'); ?>" />
-										<label class="pull-right"><?php _e('延迟显示'); ?></label>
+										<input id="later_time_input" name="later" class="form-control pull-right" type="text" placeholder="<?php _e('分钟'); ?>" />
+										<label class="pull-right">&nbsp;<?php _e('延迟显示'); ?></label>
+										<label id="later_time_label" class="pull-right"></label>
 									</div>
 
 									<a href="javascript:;" onclick="AWS.ajax_post($('#answer_form'), AWS.ajax_processer, 'reply_question');" class="btn btn-normal btn-success pull-right btn-reply"><?php _e('回复'); ?></a>
@@ -505,6 +506,10 @@
 	var QUESTION_ID = <?php echo $this->question_info['question_id'];?>;
 	var USER_ANSWERED = '<?php echo $this->user_answered; ?>';
 	var ANSWER_TYPE = 'answer';
+
+$(document).ready(function () {
+	AWS.init_later_time_helper($('#later_time_input'), $('#later_time_label'));
+});
 </script>
 
 <script type="text/javascript" src="<?php echo G_STATIC_URL; ?>/js/app/question_detail.js"></script>

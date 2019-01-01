@@ -110,8 +110,9 @@
 
 								<?php if (!$this->video_info['id']) { ?>
 								<div class="aw-auth-img clearfix">
-									<input name="later" class="form-control pull-right" type="text" placeholder="<?php _e('分钟'); ?>" />
-									<label class="pull-right"><?php _e('延迟显示'); ?></label>
+									<input id="later_time_input" name="later" class="form-control pull-right" type="text" placeholder="<?php _e('分钟'); ?>" />
+									<label class="pull-right">&nbsp;<?php _e('延迟显示'); ?></label>
+									<label id="later_time_label" class="pull-right"></label>
 								</div>
 								<?php } ?>
 
@@ -156,7 +157,11 @@
 </div>
 
 <script type="text/javascript">
-	var CATEGORY_ID = <?php echo $this->video_info['category_id']; ?>;
+var CATEGORY_ID = <?php echo $this->video_info['category_id']; ?>;
+
+$(document).ready(function () {
+	AWS.init_later_time_helper($('#later_time_input'), $('#later_time_label'));
+});
 </script>
 
 <?php TPL::output('global/footer.tpl.htm'); ?>
