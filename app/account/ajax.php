@@ -301,59 +301,19 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (get_setting('upload_enable') == 'N' AND !$this->user_info['permission']['is_administrator'])
 		{
-			die("{'error':'本站未开启上传功能'}");
+			echo htmlspecialchars(json_encode(array(
+				'error' => AWS_APP::lang()->_t('本站未开启上传功能'),
+			)), ENT_NOQUOTES);
+			die;
 		}
 
-		AWS_APP::upload()->initialize(array(
-			'allowed_types' => get_setting('allowed_upload_types'),
-			'upload_path' => get_setting('upload_dir') . '/avatar/' . $this->model('avatar')->get_avatar_dir($this->user_id),
-			'is_image' => TRUE,
-			'max_size' => get_setting('upload_size_limit'),
-			'file_name' => $this->model('avatar')->get_avatar_filename($this->user_id, 'real'),
-			'encrypt_name' => FALSE
-		))->do_upload('aws_upload_file');
-
-		if (AWS_APP::upload()->get_error())
+		if (!$this->model('avatar')->upload_avatar('aws_upload_file', $this->user_id, $error))
 		{
-			switch (AWS_APP::upload()->get_error())
-            {
-                default:
-                    die("{'error':'错误代码: " . AWS_APP::upload()->get_error() . "'}");
-                break;
-
-                case 'upload_invalid_filetype':
-                    die("{'error':'文件类型无效'}");
-                break;
-
-                case 'upload_invalid_filesize':
-                    die("{'error':'文件尺寸过大, 最大允许尺寸为 " . get_setting('upload_size_limit') . " KB'}");
-                break;
-            }
+			echo htmlspecialchars(json_encode(array(
+				'error' => $error,
+			)), ENT_NOQUOTES);
+			die;
 		}
-
-		if (! $upload_data = AWS_APP::upload()->data())
-        {
-            die("{'error':'上传失败, 请与管理员联系'}");
-        }
-
-		if ($upload_data['is_image'] == 1)
-		{
-			foreach(AWS_APP::config()->get('image')->avatar_thumbnail AS $key => $val)
-			{
-				AWS_APP::image()->initialize(array(
-					'quality' => 90,
-					'source_image' => $upload_data['full_path'],
-					'new_image' => $upload_data['file_path'] . $this->model('avatar')->get_avatar_filename($this->user_id, $key),
-					'width' => $val['w'],
-					'height' => $val['h']
-				))->resize();
-			}
-		}
-
-		$update_data['avatar_file'] = fetch_salt(4); // 生成随机字符串
-
-		// 更新主表
-		$this->model('account')->update_users_fields($update_data, $this->user_id);
 
 		echo htmlspecialchars(json_encode(array(
 			'success' => true,

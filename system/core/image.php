@@ -119,6 +119,8 @@ class core_image
 
 	private function imageProcessImageMagick()
 	{
+		$result = true;
+
 		$this->source_image_w = $this->image_info[0];
 		$this->source_image_h = $this->image_info[1];
 
@@ -205,7 +207,11 @@ class core_image
 			if (Services_RemoteStorage::is_enabled())
 			{
 				$content = $im->getimageblob();
-				Services_RemoteStorage::put($this->new_image, $content);
+				$response = Services_RemoteStorage::put($this->new_image, $content);
+				if (!$response OR $response['status_code'] != 200)
+				{
+					$result = false;
+				}
 			}
 			else
 			{
@@ -222,11 +228,13 @@ class core_image
 			die;
 		}
 
-		return TRUE;
+		return $result;
 	}
 
 	private function imageProcessGD()
 	{
+		$result = true;
+
 		$func_output = 'image' . $this->image_type[$this->image_type_index[$this->image_ext]];
 
 		if (!function_exists($func_output))
@@ -378,7 +386,11 @@ class core_image
 						$content = ob_get_contents();
 						ob_end_clean();
 
-						Services_RemoteStorage::put($this->new_image, $content);
+						$response = Services_RemoteStorage::put($this->new_image, $content);
+						if (!$response OR $response['status_code'] != 200)
+						{
+							$result = false;
+						}
 					}
 					else
 					{
@@ -394,7 +406,11 @@ class core_image
 						$content = ob_get_contents();
 						ob_end_clean();
 
-						Services_RemoteStorage::put($this->new_image, $content);
+						$response = Services_RemoteStorage::put($this->new_image, $content);
+						if (!$response OR $response['status_code'] != 200)
+						{
+							$result = false;
+						}
 					}
 					else
 					{
@@ -430,6 +446,6 @@ class core_image
 		@imagedestroy($im);
 		@imagedestroy($dst_img);
 
-		return TRUE;
+		return $result;
 	}
 }

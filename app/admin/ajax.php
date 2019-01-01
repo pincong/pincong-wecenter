@@ -776,53 +776,10 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
             if ($_FILES['user_avatar']['name'])
             {
-                AWS_APP::upload()->initialize(array(
-                    'allowed_types' => get_setting('allowed_upload_types'),
-                    'upload_path' => get_setting('upload_dir') . '/avatar/' . $this->model('avatar')->get_avatar_dir($user_info['uid']),
-                    'is_image' => TRUE,
-                    'max_size' => get_setting('upload_size_limit'),
-                    'file_name' => $this->model('avatar')->get_avatar_filename($user_info['uid'], 'real'),
-                    'encrypt_name' => FALSE
-                ))->do_upload('user_avatar');
-
-                if (AWS_APP::upload()->get_error())
+                if (!$this->model('avatar')->upload_avatar('user_avatar', $user_info['uid'], $error))
                 {
-                    switch (AWS_APP::upload()->get_error())
-                    {
-                        default:
-                            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('错误代码') . ': ' . AWS_APP::upload()->get_error()));
-                        break;
-
-                        case 'upload_invalid_filetype':
-                            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('文件类型无效')));
-                        break;
-
-                        case 'upload_invalid_filesize':
-                            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('文件尺寸过大, 最大允许尺寸为 %s KB', get_setting('upload_size_limit'))));
-                        break;
-                    }
+                    H::ajax_json_output(AWS_APP::RSM(null, -1, $error));
                 }
-
-                if (! $upload_data = AWS_APP::upload()->data())
-                {
-                    H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('上传失败, 请与管理员联系')));
-                }
-
-                if ($upload_data['is_image'] == 1)
-                {
-                    foreach(AWS_APP::config()->get('image')->avatar_thumbnail AS $key => $val)
-                    {
-                        AWS_APP::image()->initialize(array(
-                            'quality' => 90,
-                            'source_image' => $upload_data['full_path'],
-                            'new_image' => $upload_data['file_path'] . $this->model('avatar')->get_avatar_filename($user_info['uid'], $key),
-                            'width' => $val['w'],
-                            'height' => $val['h']
-                        ))->resize();
-                    }
-                }
-
-                $update_data['avatar_file'] = fetch_salt(4); // 生成随机字符串
             }
 
             if ($_POST['verified'])

@@ -59,19 +59,94 @@ class avatar_class extends AWS_MODEL
      * @param int
      * @return boolean
      */
-    public function delete_avatar($uid)
-    {
-        if (!$uid)
-        {
-            return false;
-        }
+	public function delete_avatar($uid)
+	{
+		$uid = intval($uid);
+		if ($uid <= 0)
+		{
+			return false;
+		}
 
-        foreach(AWS_APP::config()->get('image')->avatar_thumbnail as $key => $val)
-        {
-            @unlink(get_setting('upload_dir') . '/avatar/' . $this->get_avatar_path($uid, $key));
-        }
+		foreach(AWS_APP::config()->get('image')->avatar_thumbnail as $key => $val)
+		{
+			@unlink(get_setting('upload_dir') . '/avatar/' . $this->get_avatar_path($uid, $key));
+		}
 
-        return $this->model('account')->update_users_fields(array('avatar_file' => null), $uid);
-    }
+		return $this->model('account')->update_users_fields(array('avatar_file' => null), $uid);
+	}
+
+
+    /**
+     * 上用户头像
+     *
+     * @param int
+     * @param string reference
+     * @return boolean
+     */
+	public function upload_avatar($field, $uid, &$error)
+	{
+		$uid = intval($uid);
+		if ($uid <= 0)
+		{
+			return false;
+		}
+
+		AWS_APP::upload()->initialize(array(
+			'allowed_types' => get_setting('allowed_upload_types'),
+			'upload_path' => get_setting('upload_dir') . '/avatar/' . $this->get_avatar_dir($uid),
+			'is_image' => TRUE,
+			'max_size' => get_setting('upload_size_limit'),
+			'file_name' => $this->model('avatar')->get_avatar_filename($uid, 'real'),
+			'encrypt_name' => FALSE
+		))->do_upload($field);
+
+		if (AWS_APP::upload()->get_error())
+		{
+			switch (AWS_APP::upload()->get_error())
+			{
+				case 'upload_invalid_filetype':
+					$error = AWS_APP::lang()->_t('文件类型无效');
+					return false;
+
+				case 'upload_invalid_filesize':
+					$error = AWS_APP::lang()->_t('文件尺寸过大, 最大允许尺寸为 %s KB', get_setting('upload_size_limit'));
+					return false;
+
+				default:
+					$error = AWS_APP::lang()->_t('错误代码: %s', AWS_APP::upload()->get_error());
+					return false;
+			}
+		}
+
+		if (! $upload_data = AWS_APP::upload()->data())
+		{
+			$error = AWS_APP::lang()->_t('上传失败');
+			return false;
+		}
+
+		foreach(AWS_APP::config()->get('image')->avatar_thumbnail AS $key => $val)
+		{
+			$result = AWS_APP::image()->initialize(array(
+				'quality' => 90,
+				'source_image' => $upload_data['full_path'],
+				'new_image' => $upload_data['file_path'] . $this->get_avatar_filename($uid, $key),
+				'width' => $val['w'],
+				'height' => $val['h']
+			))->resize();
+
+			if ($result == false)
+			{
+				$error = AWS_APP::lang()->_t('保存失败');
+				return false;
+			}
+		}
+
+		$update_data['avatar_file'] = fetch_salt(4); // 生成随机字符串
+
+		// 更新主表
+		$this->model('account')->update_users_fields($update_data, $uid);
+
+		return true;
+	}
 
 }
