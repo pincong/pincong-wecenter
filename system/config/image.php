@@ -30,13 +30,3 @@ $config['topic_thumbnail'] = array(
 	)
 );
 
-$config['chapter_thumbnail'] = array(
-	'min' => array(
-		"w" => 32,
-		"h" => 32
-	),
-	'max' => array(
-		"w" => 50,
-		"h" => 50
-	)
-);

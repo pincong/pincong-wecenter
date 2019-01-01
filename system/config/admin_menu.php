@@ -153,12 +153,6 @@ $config[] = array(
             'id' => 308,
             'title' => AWS_APP::lang()->_t('页面管理'),
             'url' => 'admin/page/'
-        ),
-
-        array(
-            'id' => 305,
-            'title' => AWS_APP::lang()->_t('帮助中心'),
-            'url' => 'admin/help/list/'
         )
     )
 );

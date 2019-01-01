@@ -597,10 +597,6 @@ var AWS =
 				});
 			break;
 
-			case 'recommend':
-				var template = Hogan.compile(AW_TEMPLATE.recommend).render();
-			break;
-
 			case 'textBox':
 				var template = Hogan.compile(AW_TEMPLATE.textBox).render(
 				{
@@ -708,79 +704,6 @@ var AWS =
 
 						return false;
 					});
-				break;
-
-				case 'recommend':
-					$.get(G_BASE_URL + '/help/ajax/list/', function (result)
-					{
-						if (result && result != 0)
-						{
-							var html = '';
-
-							$.each(result, function (i, e)
-							{
-								html += '<li class="aw-border-radius-5"><img class="aw-border-radius-5" src="' + e.icon + '"><a data-id="' + e.id + '" class="aw-hide-txt">' + e.title + '</a><i class="icon icon-followed"></i></li>'
-							});
-
-							$('.aw-recommend-box ul').append(html);
-
-							$.each($('.aw-recommend-box ul li'), function (i, e)
-							{
-								if (data.focus_id == $(this).find('a').attr('data-id'))
-								{
-									$(this).addClass('active');
-								}
-							});
-
-							$(document).on('click', '.aw-recommend-box ul li a', function()
-							{
-								var _this = $(this), url = G_BASE_URL + '/help/ajax/add_data/', removeClass = false;
-
-								if ($(this).parents('li').hasClass('active'))
-								{
-									url =  G_BASE_URL + '/help/ajax/remove_data/';
-
-									removeClass = true;
-								}
-
-								$.post(url,
-								{
-									'item_id' : data.item_id,
-									'id' : _this.attr('data-id'),
-									'title' : _this.text(),
-									'type' : data.type
-								}, function (result)
-								{
-									if (result.errno == 1)
-									{
-										if (removeClass)
-										{
-											_this.parents('li').removeClass('active');
-										}
-										else
-										{
-											$('.aw-recommend-box ul li').removeClass('active');
-
-											_this.parents('li').addClass('active');
-										}
-									}
-								}, 'json');
-							});
-						}
-						else
-						{
-							$('.error_message').html(_t('请先去后台创建好章节'));
-
-							if ($('.error_message').css('display') != 'none')
-							{
-								AWS.shake($('.error_message'));
-							}
-							else
-							{
-								$('.error_message').fadeIn();
-							}
-						}
-					}, 'json');
 				break;
 
 				case 'textBox':

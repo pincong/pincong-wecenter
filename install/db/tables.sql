@@ -57,7 +57,6 @@ CREATE TABLE IF NOT EXISTS `aws_article` (
   `title_fulltext` text,
   `category_id` int(10) DEFAULT '0',
   `is_recommend` tinyint(1) DEFAULT '0',
-  `chapter_id` int(10) DEFAULT NULL,
   `sort` tinyint(2) DEFAULT '0',
   `update_time` int(10) DEFAULT '0',
   `anonymous` tinyint(1) DEFAULT '0',
@@ -70,7 +69,6 @@ CREATE TABLE IF NOT EXISTS `aws_article` (
   KEY `agree_count` (`agree_count`),
   KEY `category_id` (`category_id`),
   KEY `is_recommend` (`is_recommend`),
-  KEY `chapter_id` (`chapter_id`),
   KEY `sort` (`sort`),
   KEY `update_time` (`update_time`),
   KEY `anonymous` (`anonymous`),
@@ -143,22 +141,6 @@ CREATE TABLE IF NOT EXISTS `aws_feature` (
   KEY `enabled` (`enabled`),
   KEY `sort` (`sort`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
---
-
-
---
-CREATE TABLE IF NOT EXISTS `aws_help_chapter` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `title` varchar(240) DEFAULT NULL,
-  `description` text,
-  `url_token` varchar(32) DEFAULT NULL,
-  `sort` tinyint(2) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `title` (`title`),
-  KEY `url_token` (`url_token`),
-  KEY `sort` (`sort`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='帮助中心';
 
 --
 
@@ -348,7 +330,6 @@ CREATE TABLE IF NOT EXISTS `aws_question` (
   `anonymous` tinyint(1) DEFAULT '0',
   `question_content_fulltext` text,
   `is_recommend` tinyint(1) DEFAULT '0',
-  `chapter_id` int(10) DEFAULT NULL,
   `sort` tinyint(2) DEFAULT '0',
   PRIMARY KEY (`question_id`),
   KEY `category_id` (`category_id`),
@@ -362,7 +343,6 @@ CREATE TABLE IF NOT EXISTS `aws_question` (
   KEY `anonymous` (`anonymous`),
   KEY `best_answer` (`best_answer`),
   KEY `is_recommend` (`is_recommend`),
-  KEY `chapter_id` (`chapter_id`),
   KEY `sort` (`sort`),
   FULLTEXT KEY `question_content_fulltext` (`question_content_fulltext`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='问题列表';
@@ -800,7 +780,6 @@ CREATE TABLE IF NOT EXISTS `aws_video` (
   `title_fulltext` text,
   `category_id` int(10) DEFAULT '0',
   `is_recommend` tinyint(1) DEFAULT '0',
-  `chapter_id` int(10) DEFAULT NULL,
   `sort` tinyint(2) DEFAULT '0',
   `add_time` int(10) DEFAULT '0',
   `update_time` int(10) DEFAULT '0',
@@ -815,7 +794,6 @@ CREATE TABLE IF NOT EXISTS `aws_video` (
   KEY `lock` (`lock`),
   KEY `category_id` (`category_id`),
   KEY `is_recommend` (`is_recommend`),
-  KEY `chapter_id` (`chapter_id`),
   KEY `sort` (`sort`),
   KEY `add_time` (`add_time`),
   KEY `update_time` (`update_time`),

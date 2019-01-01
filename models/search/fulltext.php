@@ -101,7 +101,7 @@ class search_fulltext_class extends AWS_MODEL
 
 		if ($recommend)
 		{
-			$where[] = '(`is_recommend` = "1" OR `chapter_id` IS NOT NULL)';
+			$where[] = '(`is_recommend` = "1")';
 		}
 
 		if ($where)
@@ -150,7 +150,7 @@ class search_fulltext_class extends AWS_MODEL
 
 		if ($recommend)
 		{
-			$where[] = '(`is_recommend` = "1" OR `chapter_id` IS NOT NULL)';
+			$where[] = '(`is_recommend` = "1")';
 		}
 
 		if ($where)

@@ -62,9 +62,6 @@
 												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/recommend/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>');"><?php _e('推荐'); ?></a>
 												<?php } ?>
 											</li>
-											<li>
-												<a href="javascript:;" onclick="AWS.dialog('recommend', {'type': 'video', 'item_id': <?php echo $this->video_info['id']; ?>, 'focus_id': <?php if ($this->video_info['chapter_id']) { echo $this->video_info['chapter_id']; } else { ?>''<?php } ?>});"><?php _e('添加到帮助中心'); ?></a>
-											</li>
 											<?php } ?>
 
 										</ul>

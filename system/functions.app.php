@@ -176,20 +176,6 @@ function import_editor_static_files()
 	TPL::import_js('editor/sceditor/formats/bbcode.js');
 }
 
-function get_chapter_icon_url($id, $size = 'max', $default = true)
-{
-	if (file_exists(get_setting('upload_dir') . '/chapter/' . $id . '-' . $size . '.jpg'))
-	{
-		return get_setting('upload_url') . '/chapter/' . $id . '-' . $size . '.jpg';
-	}
-	else if ($default)
-	{
-		return G_STATIC_URL . '/common/help-chapter-' . $size . '-img.png';
-	}
-
-	return false;
-}
-
 function base64_url_encode($param)
 {
 	if (!is_array($param))
