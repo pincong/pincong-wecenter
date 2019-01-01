@@ -54,26 +54,6 @@ function welcome_step(step)
 			});
 		break;
 
-		case '2':
-			$('#welcome_topics_list').html('<p style="padding: 15px 0" align="center"><img src="' + G_STATIC_URL + '/common/loading_b.gif" alt="" /></p>');
-
-			$('.aw-first-login').hide().siblings().eq(1).show();
-
-			$.get(G_BASE_URL + '/home/info/welcome_get_topics/', function (result) {
-				$('#welcome_topics_list').html(result);
-			});
-		break;
-
-		case '3':
-			$('#welcome_users_list').html('<p style="padding: 15px 0" align="center"><img src="' + G_STATIC_URL + '/common/loading_b.gif" alt="" /></p>');
-
-			$('.aw-first-login').hide().siblings().eq(2).show();
-
-			$.get(G_BASE_URL + '/home/info/welcome_get_users/', function (result) {
-				$('#welcome_users_list').html(result);
-			});
-		break;
-
 		case 'finish':
 			$('#aw-ajax-box').html('');
 			$('.modal-backdrop').detach();

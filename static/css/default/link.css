@@ -4,8 +4,7 @@
 .category dl dd span,
 .aw-side-bar dd,
 .aw-question-edit .aw-mod-body .pull-right,
-.aw-question-tags a,
-.aw-first-login .aw-mod-head ul li.active em {
+.aw-question-tags a {
 	color:#999;
 }
 .aw-text-color-666,
@@ -21,10 +20,7 @@
 	color:#666;
 }
 h1, h2, h3{color: #333;}
-.aw-nav-main li a,
-.aw-first-login .aw-mod-head ul li em {
-	color:#fff;
-}
+.aw-nav-main li a{color:#fff;}
 .aw-text-color-red{color:red;}
 .aw-placeholder{color: #999 !important;}
 .alert-danger, .alert-error{color:#B94A48;}

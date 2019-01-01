@@ -43,8 +43,7 @@ a:hover{text-decoration: none;color: #404451;}
 .aw-mod-search-result .aw-item .icon-bestbg{margin-right: 5px;font-size: 15px;color: #666c82;}
 .aw-recommend-box ul li i {display: none;position: absolute;right: 0;top: 7px;width: 24px;height: 24px;color: #404451;;text-align: center;line-height: 24px;border-radius: 12px;font-size: 20px;}
 .aw-favorite-tag-list ul li i{display:none;position: absolute;right: 10px;top: 14px;width:24px;height:24px;background-color: #404451;color: #fff;text-align: center;line-height: 24px;border-radius: 12px;font-size: 20px;}
-.aw-first-login .mod-head ul.active, .aw-first-login .mod-head ul li.active{background: #697287;color: #fff;}
-.aw-first-login .mod-head ul li i{position:absolute;top:0;right:-16px;display: none;width: 0;height: 0;border-top: 26px solid transparent;border-left: 16px solid #697287;border-bottom: 24px solid transparent;}
+.aw-first-login .mod-head ul{background: #697287;color: #fff;}
 .navbar-collapse {background: #404451;}
 .aw-common-list .aw-question-content h4{font-size: 15px;font-weight: bold;}
 .aw-question-detail .mod-head h1{color: #333;font-size:19px;font-weight: bold;}
