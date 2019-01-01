@@ -28,7 +28,9 @@
                                 <th><?php _e('文章标题'); ?></th>
                                 <th><?php _e('评论'); ?></th>
                                 <th><?php _e('浏览'); ?></th>
+								<?php /*
                                 <th><?php _e('作者'); ?></th>
+								*/ ?>
                                 <th><?php _e('发布时间'); ?></th>
                                 <th><?php _e('操作'); ?></th>
                             </tr>
@@ -40,7 +42,9 @@
                                 <td><a href="article/<?php echo $val['id']; ?>" target="_blank"><?php if (!$val['title']) { ?><i class="text-color-999"><?php _e('已删除'); ?></i><?php } else { ?><?php echo $val['title']; ?><?php } ?></a></td>
                                 <td><?php echo $val['comments']; ?></td>
                                 <td><?php echo $val['views']; ?></td>
+								<?php /*
                                 <td><a href="people/<?php echo $val['user_info']['url_token']; ?>" target="_blank"><?php echo $val['user_info']['user_name']; ?></a></td>
+								*/ ?>
                                 <td><?php echo date_friendly($val['add_time']); ?></td>
                                 <td><a href="publish/article/<?php echo $val['id']; ?>" target="_blank" class="icon icon-edit md-tip" title="编辑"></a></td>
                             </tr>
