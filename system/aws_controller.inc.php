@@ -310,7 +310,7 @@ class AWS_ADMIN_CONTROLLER extends AWS_CONTROLLER
 
 		if ($admin_info['uid'])
 		{
-			if ($admin_info['uid'] != $this->user_id OR !AWS_APP::session()->permission['is_administrator'] AND !AWS_APP::session()->permission['is_moderator'])
+			if ($admin_info['uid'] != $this->user_id OR !AWS_APP::session()->permission['is_administrator'])
 			{
 				unset(AWS_APP::session()->admin_login);
 
