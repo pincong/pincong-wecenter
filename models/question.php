@@ -315,10 +315,10 @@ class question_class extends AWS_MODEL
 			}
 
 			// 记录日志
-			if ($save_action)
+			/*if ($save_action)
 			{
 				ACTION_LOG::save_action($uid, $question_id, ACTION_LOG::CATEGORY_QUESTION, ACTION_LOG::ADD_REQUESTION_FOCUS, '', '', null, intval($anonymous));
-			}
+			}*/
 
 			return 'add';
 		}
@@ -348,7 +348,7 @@ class question_class extends AWS_MODEL
 			return false;
 		}
 
-		ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action = ' . ACTION_LOG::ADD_REQUESTION_FOCUS . ' AND uid = ' . intval($uid) . ' AND associate_id = ' . intval($question_id));
+		//ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action = ' . ACTION_LOG::ADD_REQUESTION_FOCUS . ' AND uid = ' . intval($uid) . ' AND associate_id = ' . intval($question_id));
 
 		return $this->delete('question_focus', 'question_id = ' . intval($question_id) . " AND uid = " . intval($uid));
 	}

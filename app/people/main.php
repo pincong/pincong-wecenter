@@ -89,8 +89,8 @@ class main extends AWS_CONTROLLER
 		TPL::assign('user_actions', $this->model('actions')->get_user_actions($user['uid'], 5, implode(',', array(
 			ACTION_LOG::ADD_QUESTION,
 			ACTION_LOG::ANSWER_QUESTION,
-			ACTION_LOG::ADD_REQUESTION_FOCUS,
-			ACTION_LOG::ADD_AGREE,
+			//ACTION_LOG::ADD_REQUESTION_FOCUS,
+			//ACTION_LOG::ADD_AGREE,
 			ACTION_LOG::ADD_ARTICLE
 		)), $this->user_id));
 

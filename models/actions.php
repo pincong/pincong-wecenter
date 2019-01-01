@@ -75,14 +75,14 @@ class actions_class extends AWS_MODEL
 			$where_in[] = "(uid IN (" . implode(',', $user_follow_uids) . ") AND associate_action IN(" . ACTION_LOG::ADD_AGREE_ARTICLE .", " . ACTION_LOG::ADD_COMMENT_ARTICLE . ") AND uid <> " . $uid . ")";
 
 			// 添加问题关注
-			if ($user_focus_questions_ids)
+			/*if ($user_focus_questions_ids)
 			{
 				$where_in[] = "(uid IN (" . implode(',', $user_follow_uids) . ") AND associate_action = " . ACTION_LOG::ADD_REQUESTION_FOCUS . " AND associate_id NOT IN (" . implode(',', $user_focus_questions_ids) . "))";
 			}
 			else
 			{
 				$where_in[] = "(uid IN (" . implode(',', $user_follow_uids) . ") AND associate_action = " . ACTION_LOG::ADD_REQUESTION_FOCUS . ")";
-			}
+			}*/
 		}
 		else
 		{
