@@ -946,9 +946,50 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('反对数量达到多少个时折叠评论');?>:</span>
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('反对数量达到多少个时折叠文章评论');?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <input name="comment_downvote_fold" type="text" class="form-control" value="<?php echo $this->setting['comment_downvote_fold']; ?>"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('用户每天问题上限');?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="question_limit_per_day" type="text" class="form-control" value="<?php echo $this->setting['question_limit_per_day']; ?>"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('用户每天回复上限');?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="answer_limit_per_day" type="text" class="form-control" value="<?php echo $this->setting['answer_limit_per_day']; ?>"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('用户每天文章上限');?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="article_limit_per_day" type="text" class="form-control" value="<?php echo $this->setting['article_limit_per_day']; ?>"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('用户每天文章评论上限');?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="article_comment_limit_per_day" type="text" class="form-control" value="<?php echo $this->setting['comment_limit_per_day']; ?>"/>
                             </div>
                         </div>
                     </td>
