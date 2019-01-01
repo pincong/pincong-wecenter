@@ -286,7 +286,7 @@ class answer_class extends AWS_MODEL
 			'answer_id' => intval($answer_id),
 			'message' => htmlspecialchars($message),
 			'anonymous' => intval($anonymous),
-			'time' => fake_time()
+			'add_time' => fake_time()
 		));
 
 		if ($answer_info['uid'] != $uid)

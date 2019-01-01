@@ -200,7 +200,7 @@ class ratelimit_class extends AWS_MODEL
 		$uid = intval($uid);
 		$time_after = real_time() - 24 * 3600;
 
-		$where = "time > " . $time_after . " AND uid =" . $uid;
+		$where = "add_time > " . $time_after . " AND uid =" . $uid;
 		$count = $this->count('question_discussion', $where);
 		if ($count >= $limit)
 		{
@@ -221,7 +221,7 @@ class ratelimit_class extends AWS_MODEL
 		$uid = intval($uid);
 		$time_after = real_time() - 24 * 3600;
 
-		$where = "time > " . $time_after . " AND uid =" . $uid;
+		$where = "add_time > " . $time_after . " AND uid =" . $uid;
 		$count = $this->count('answer_discussion', $where);
 		if ($count >= $limit)
 		{

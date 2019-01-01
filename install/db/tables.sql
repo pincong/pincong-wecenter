@@ -32,11 +32,11 @@ CREATE TABLE IF NOT EXISTS `aws_answer_discussion` (
   `answer_id` int(11) DEFAULT '0',
   `uid` int(11) DEFAULT '0',
   `message` text,
-  `time` int(10) DEFAULT '0',
+  `add_time` int(10) DEFAULT '0',
   `anonymous` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `answer_id` (`answer_id`),
-  KEY `time` (`time`),
+  KEY `add_time` (`add_time`),
   KEY `anonymous` (`anonymous`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
@@ -376,11 +376,11 @@ CREATE TABLE IF NOT EXISTS `aws_question_discussion` (
   `question_id` int(11) DEFAULT '0',
   `uid` int(11) DEFAULT '0',
   `message` text,
-  `time` int(10) DEFAULT '0',
+  `add_time` int(10) DEFAULT '0',
   `anonymous` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `question_id` (`question_id`),
-  KEY `time` (`time`),
+  KEY `add_time` (`add_time`),
   KEY `anonymous` (`anonymous`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 

@@ -691,7 +691,7 @@ class question_class extends AWS_MODEL
 			'question_id' => intval($question_id),
 			'message' => htmlspecialchars($message),
 			'anonymous' => intval($anonymous),
-			'time' => fake_time()
+			'add_time' => fake_time()
 		));
 
 		if ($question_info['published_uid'] != $uid)

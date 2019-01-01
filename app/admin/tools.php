@@ -174,7 +174,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 					foreach ($list as $key => $val)
 					{
 						AWS_APP::model()->update($table, array(
-							'time' => fake_time($val['time'])
+							'add_time' => fake_time($val['add_time'])
 						), 'id = ' . intval($val['id']));
 					}
 
@@ -195,7 +195,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 					foreach ($list as $key => $val)
 					{
 						AWS_APP::model()->update($table, array(
-							'time' => fake_time($val['time'])
+							'add_time' => fake_time($val['add_time'])
 						), 'id = ' . intval($val['id']));
 					}
 
