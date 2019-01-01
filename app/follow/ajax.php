@@ -49,11 +49,13 @@ class ajax extends AWS_CONTROLLER
 
 			$action = 'add';
 
-			$this->model('follow')->user_follow_add($this->user_id, $_POST['uid']);
+			if ($this->model('follow')->user_follow_add($this->user_id, $_POST['uid']))
+			{
+				$this->model('notify')->send($this->user_id, $_POST['uid'], notify_class::TYPE_PEOPLE_FOCUS, notify_class::CATEGORY_PEOPLE, $this->user_id, array(
+					'from_uid' => $this->user_id
+				));
+			}
 
-			$this->model('notify')->send($this->user_id, $_POST['uid'], notify_class::TYPE_PEOPLE_FOCUS, notify_class::CATEGORY_PEOPLE, $this->user_id, array(
-				'from_uid' => $this->user_id
-			));
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
