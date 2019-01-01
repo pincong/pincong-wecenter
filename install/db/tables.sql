@@ -627,51 +627,6 @@ CREATE TABLE IF NOT EXISTS `aws_users_notification_setting` (
 
 
 --
-CREATE TABLE IF NOT EXISTS `aws_user_action_history` (
-  `history_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `uid` int(11) DEFAULT '0' COMMENT '用户id',
-  `associate_type` tinyint(1) DEFAULT '0' COMMENT '关联类型: 1 问题 2 回答 3 评论 4 话题',
-  `associate_action` smallint(3) DEFAULT '0' COMMENT '操作类型',
-  `associate_id` int(11) DEFAULT '0' COMMENT '关联ID',
-  `add_time` int(10) DEFAULT '0' COMMENT '添加时间',
-  `associate_attached` int(11) DEFAULT '0',
-  `fold_status` tinyint(1) DEFAULT '0',
-  PRIMARY KEY (`history_id`),
-  KEY `add_time` (`add_time`),
-  KEY `uid` (`uid`),
-  KEY `associate_id` (`associate_id`),
-  KEY `fold_status` (`fold_status`),
-  KEY `associate` (`associate_type`,`associate_action`),
-  KEY `associate_attached` (`associate_attached`),
-  KEY `associate_with_id` (`associate_id`,`associate_type`,`associate_action`),
-  KEY `associate_with_uid` (`uid`,`associate_type`,`associate_action`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='用户操作记录';
-
---
-
-
---
-CREATE TABLE IF NOT EXISTS `aws_user_action_history_fresh` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `history_id` int(11) DEFAULT '0',
-  `associate_id` int(11) DEFAULT '0',
-  `associate_type` tinyint(1) DEFAULT '0',
-  `associate_action` smallint(3) DEFAULT '0',
-  `add_time` int(10) DEFAULT '0',
-  `uid` int(10) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `associate` (`associate_type`,`associate_action`),
-  KEY `add_time` (`add_time`),
-  KEY `uid` (`uid`),
-  KEY `history_id` (`history_id`),
-  KEY `associate_with_id` (`id`,`associate_type`,`associate_action`),
-  KEY `associate_with_uid` (`uid`,`associate_type`,`associate_action`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
---
-
-
---
 CREATE TABLE IF NOT EXISTS `aws_user_follow` (
   `follow_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `fans_uid` int(11) DEFAULT '0' COMMENT '关注人的UID',

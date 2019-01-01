@@ -22,7 +22,6 @@ class core_autoload
 		'UF'				=> 'class/cls_user_format.inc.php',
 		'HTTP'				=> 'class/cls_http.inc.php',
 		'H'					=> 'class/cls_helper.inc.php',
-		'ACTION_LOG'		=> 'class/cls_action_log_class.inc.php',
 	);
 
 	public function __construct()

@@ -140,7 +140,7 @@ class favorite_class extends AWS_MODEL
 
 					$favorite_list_data[$key]['article_info'] = $article_infos[$data['item_id']];
 
-					$favorite_list_data[$key]['last_action_str'] = ACTION_LOG::format_action_data(ACTION_LOG::ADD_ARTICLE, $data['uid'], $users_info[$data['uid']]['user_name']);
+					//$favorite_list_data[$key]['last_action_str'] = ACTION_LOG::format_action_data(ACTION_LOG::ADD_ARTICLE, $data['uid'], $users_info[$data['uid']]['user_name']);
 
 					$favorite_list_data[$key]['user_info'] = $users_info[$article_infos[$data['item_id']]['uid']];
 				break;

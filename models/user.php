@@ -244,7 +244,7 @@ class user_class extends AWS_MODEL
 		$this->update('topic_relation', array('uid' => '-1'), 'uid = ' . ($uid));
 
 		$this->model('notify')->delete_notify('sender_uid = ' . ($uid) . ' OR recipient_uid = ' . ($uid));
-		ACTION_LOG::delete_action_history('uid = ' . ($uid));
+		//ACTION_LOG::delete_action_history('uid = ' . ($uid));
 
 		$this->delete_private_messages($uid);
 

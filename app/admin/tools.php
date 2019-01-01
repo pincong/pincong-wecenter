@@ -89,18 +89,6 @@ class tools extends AWS_ADMIN_CONTROLLER
         }
     }
 
-    public function update_fresh_actions_action()
-    {
-        if ($this->model('system')->update_associate_fresh_action($_GET['page'], $_GET['per_page']))
-        {
-            H::redirect_msg(AWS_APP::lang()->_t('正在更新最新动态') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/update_fresh_actions/page-' . ($_GET['page'] + 1) . '__per_page-' . $_GET['per_page']);
-        }
-        else
-        {
-            H::redirect_msg(AWS_APP::lang()->_t('最新动态更新完成'), '/admin/tools/');
-        }
-    }
-
     public function update_topic_discuss_count_action()
     {
         if ($this->model('system')->update_topic_discuss_count($_GET['page'], $_GET['per_page']))
