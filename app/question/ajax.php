@@ -689,17 +689,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('指定问题不存在')));
 		}
 
-		$log_list = ACTION_LOG::get_action_by_event_id($_GET['id'], (intval($_GET['page']) * get_setting('contents_per_page')) . ', ' . get_setting('contents_per_page'), ACTION_LOG::CATEGORY_QUESTION, implode(',', array(
-			ACTION_LOG::ADD_QUESTION,
-			ACTION_LOG::MOD_QUESTION_TITLE,
-			ACTION_LOG::MOD_QUESTION_DESCRI,
-			ACTION_LOG::REDIRECT_QUESTION,
-			ACTION_LOG::MOD_QUESTION_CATEGORY,
-			ACTION_LOG::DEL_REDIRECT_QUESTION
-		)));
-
-		//处理日志记录
-		$log_list = $this->model('question')->analysis_log($log_list, $question_info['published_uid'], $question_info['anonymous']);
+		$log_list = $this->model('question')->list_logs($_GET['id'], (intval($_GET['page']) * get_setting('contents_per_page')) . ', ' . get_setting('contents_per_page'));
 
 		TPL::assign('question_info', $question_info);
 

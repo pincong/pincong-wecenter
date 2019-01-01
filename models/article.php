@@ -43,6 +43,48 @@ class article_class extends AWS_MODEL
 		));
 	}
 
+	/**
+	 *
+	 * 根据 item_id, 得到日志列表
+	 *
+	 * @param int     $item_id
+	 * @param int     $limit
+	 *
+	 * @return array
+	 */
+	public function list_logs($item_id, $limit = 20)
+	{
+		$log_list = $this->fetch_all('article_log', 'item_id = ' . intval($item_id), 'id DESC', $limit);
+		if (!$log_list)
+		{
+			return false;
+		}
+
+		foreach ($log_list AS $key => $log)
+		{
+			if (!$log['anonymous'])
+			{
+				$user_ids[] = $log['uid'];
+			}
+		}
+
+		if ($user_ids)
+		{
+			$users = $this->model('account')->get_user_info_by_uids($user_ids);
+		}
+		else
+		{
+			$users = array();
+		}
+
+		foreach ($log_list as $key => $log)
+		{
+			$log_list[$key]['user_info'] = $users[$log['uid']];
+		}
+
+		return $log_list;
+	}
+
 	public function get_article_info_by_id($article_id)
 	{
 		if (!is_digits($article_id))

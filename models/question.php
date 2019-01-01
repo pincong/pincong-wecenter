@@ -43,6 +43,48 @@ class question_class extends AWS_MODEL
 		));
 	}
 
+	/**
+	 *
+	 * 根据 item_id, 得到日志列表
+	 *
+	 * @param int     $item_id
+	 * @param int     $limit
+	 *
+	 * @return array
+	 */
+	public function list_logs($item_id, $limit = 20)
+	{
+		$log_list = $this->fetch_all('question_log', 'item_id = ' . intval($item_id), 'id DESC', $limit);
+		if (!$log_list)
+		{
+			return false;
+		}
+
+		foreach ($log_list AS $key => $log)
+		{
+			if (!$log['anonymous'])
+			{
+				$user_ids[] = $log['uid'];
+			}
+		}
+
+		if ($user_ids)
+		{
+			$users = $this->model('account')->get_user_info_by_uids($user_ids);
+		}
+		else
+		{
+			$users = array();
+		}
+
+		foreach ($log_list as $key => $log)
+		{
+			$log_list[$key]['user_info'] = $users[$log['uid']];
+		}
+
+		return $log_list;
+	}
+
 	public function get_focus_uid_by_question_id($question_id)
 	{
 		return $this->query_all('SELECT uid FROM ' . $this->get_table('question_focus') . ' WHERE question_id = ' . intval($question_id));
@@ -815,99 +857,6 @@ class question_class extends AWS_MODEL
 		}
 
 		return true;
-	}
-
-	/**
-	 * 处理话题日志
-	 * @param array $log_list
-	 *
-	 * @return array
-	 */
-	public function analysis_log($log_list, $published_uid = 0, $anonymous = 0)
-	{
-		if (!$log_list)
-		{
-			return $log_list;
-		}
-
-		foreach ($log_list as $key => $log)
-		{
-			$log_user_ids[] = $log['uid'];
-		}
-
-		if ($log_user_ids)
-		{
-			$log_users_info = $this->model('account')->get_user_info_by_uids($log_user_ids);
-		}
-
-		foreach ($log_list as $key => $log)
-		{
-			$title_list = null;
-			$user_info = $log_users_info[$log['uid']];
-			$user_name = $user_info['user_name'];
-			$user_url = 'people/' . $user_info['url_token'];
-
-			if ($published_uid == $log['uid'] AND $anonymous)
-			{
-				$user_name_string = '匿名用户';
-			}
-			else
-			{
-				$user_name_string = '<a href="' . $user_url . '">' . $user_name . '</a>';
-			}
-
-			switch ($log['associate_action'])
-			{
-				case ACTION_LOG::ADD_QUESTION :
-					$title_list = $user_name_string . ' 添加了该问题'; // </p><p>' . $log['associate_content'] . '</p><p>' . $log['associate_attached'] . '';
-					break;
-
-				case ACTION_LOG::MOD_QUESTION_TITLE : //修改问题标题
-
-					$title_list = $user_name_string . ' 修改了问题标题';
-
-					break;
-
-				case ACTION_LOG::MOD_QUESTION_DESCRI : //修改问题
-
-					$title_list = $user_name_string . ' 修改了问题内容';
-
-					break;
-
-				case ACTION_LOG::MOD_QUESTION_CATEGORY : //修改分类
-
-
-					$title_list = $user_name_string . ' 修改了该问题的分类 <p><a href="explore/category-' . $log['associate_attached'] . '">' . $log['associate_content'] . '</a>';
-
-					break;
-
-				case ACTION_LOG::REDIRECT_QUESTION : //问题重定向
-
-					$question_info = $this->get_question_info_by_id($log['associate_attached']);
-
-					if ($question_info)
-					{
-						$title_list = $user_name_string . ' 将问题重定向至：<a href="question/' . $log['associate_attached'] . '">' . $question_info['question_content'] . '</a>';
-					}
-
-					break;
-
-				case ACTION_LOG::DEL_REDIRECT_QUESTION : //取消问题重定向
-
-
-					$title_list = $user_name_string . ' 取消了问题重定向 ';
-
-					break;
-			}
-
-			$data_list[] = ($title_list) ? array(
-				'title' => $title_list,
-				'add_time' => date_friendly($log['add_time']),
-				'log_id' => sprintf('%06s', $log['history_id'])
-			) : '';
-		}
-
-		return $data_list;
 	}
 
 	public function redirect($uid, $item_id, $target_id = NULL)

@@ -26,7 +26,8 @@ class ajax extends AWS_CONTROLLER
 		$rule_action['rule_type'] = 'white';
 
 		$rule_action['actions'] = array(
-			'list'
+			'list',
+			'log'
 		);
 
 		return $rule_action;
@@ -183,6 +184,22 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'url' => get_js_url('/article/' . $comment_info['article_id'])
 		), 1, null));
+	}
+
+	public function log_action()
+	{
+		if (! $article_info = $this->model('article')->get_article_info_by_id($_GET['id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('指定文章不存在')));
+		}
+
+		$log_list = $this->model('article')->list_logs($_GET['id'], (intval($_GET['page']) * get_setting('contents_per_page')) . ', ' . get_setting('contents_per_page'));
+
+		TPL::assign('article_info', $article_info);
+
+		TPL::assign('list', $log_list);
+
+		TPL::output('article/ajax/log');
 	}
 
 	public function article_vote_action()
