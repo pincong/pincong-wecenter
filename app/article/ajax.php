@@ -39,6 +39,11 @@ class ajax extends AWS_CONTROLLER
 
 	public function save_comment_action()
 	{
+		if (!$this->user_info['permission']['comment_article'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+		}
+
 		$message = my_trim($_POST['message']);
 
 		if (! $message)
@@ -200,6 +205,11 @@ class ajax extends AWS_CONTROLLER
 
 	public function article_vote_action()
 	{
+		if (!$this->user_info['permission']['agree_disagree'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+		}
+
 		$rating = intval($_POST['rating']);
 		if ($rating !== 1 AND $rating !== -1)
 		{
@@ -276,6 +286,11 @@ class ajax extends AWS_CONTROLLER
 
 	public function article_thanks_action()
 	{
+		if (!$this->user_info['permission']['thank_user'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+		}
+
 		if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_thanks'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_name'))));
@@ -312,6 +327,11 @@ class ajax extends AWS_CONTROLLER
 
 	public function bump_action()
 	{
+		if (!$this->user_info['permission']['bump_sink'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+		}
+
 		if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_move_up_question'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_name'))));
@@ -327,6 +347,11 @@ class ajax extends AWS_CONTROLLER
 
 	public function sink_action()
 	{
+		if (!$this->user_info['permission']['bump_sink'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+		}
+
 		if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_move_down_question'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('integral_name'))));

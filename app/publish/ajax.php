@@ -384,6 +384,11 @@ class ajax extends AWS_CONTROLLER
 
     public function publish_question_action()
     {
+        if (!$this->user_info['permission']['publish_question'])
+        {
+            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+        }
+
         $question_content = my_trim($_POST['question_content']);
         if (!$question_content)
         {
@@ -393,11 +398,6 @@ class ajax extends AWS_CONTROLLER
         if (!check_repeat_submission($question_content))
         {
             H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请不要重复提交')));
-        }
-
-        if (!$this->user_info['permission']['publish_question'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限发布问题')));
         }
 
         if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_new_question'))
@@ -535,6 +535,11 @@ class ajax extends AWS_CONTROLLER
 
     public function publish_article_action()
     {
+        if (!$this->user_info['permission']['publish_article'])
+        {
+            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你所在用户组没有权限进行此操作')));
+        }
+
         $article_title = my_trim($_POST['title']);
         if (!$article_title)
         {
@@ -544,11 +549,6 @@ class ajax extends AWS_CONTROLLER
         if (!check_repeat_submission($article_title))
         {
             H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请不要重复提交')));
-        }
-
-        if (!$this->user_info['permission']['publish_article'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限发布文章')));
         }
 
         if (!$this->model('integral')->check_balance_for_operation($this->user_info['integral'], 'integral_system_config_new_article'))

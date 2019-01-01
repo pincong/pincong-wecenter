@@ -48,7 +48,7 @@ class main extends AWS_CONTROLLER
 		}
 		else if (!$this->user_info['permission']['publish_question'])
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('你所在用户组没有权限发布问题'));
+			H::redirect_msg(AWS_APP::lang()->_t('你所在用户组没有权限进行此操作'));
 		}
 		else if ($this->is_post() AND $_POST['question_detail'])
 		{
@@ -126,7 +126,7 @@ class main extends AWS_CONTROLLER
 		}
 		else if (!$this->user_info['permission']['publish_article'])
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('你所在用户组没有权限发布文章'));
+			H::redirect_msg(AWS_APP::lang()->_t('你所在用户组没有权限进行此操作'));
 		}
 		else if ($this->is_post() AND $_POST['message'])
 		{
