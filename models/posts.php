@@ -183,7 +183,8 @@ class posts_class extends AWS_MODEL
 				$where[] = "post_type = '" . $this->quote($post_type) . "'";
 			}
 
-            $where[] = 'add_time <= ' . real_time();
+			//TODO: 延迟显示
+            //$where[] = 'add_time <= ' . real_time();
 
 			$posts_index = $this->fetch_page('posts_index', implode(' AND ', $where), $order_key, $page, $per_page);
 
@@ -261,7 +262,8 @@ class posts_class extends AWS_MODEL
 			}
 		}
 
-        $where[] = 'add_time <= ' . real_time();
+		//TODO: 延迟显示
+        //$where[] = 'add_time <= ' . real_time();
 
 		$posts_index = $this->fetch_page('posts_index', implode(' AND ', $where), 'popular_value DESC', $page, $per_page);
 
@@ -435,7 +437,8 @@ class posts_class extends AWS_MODEL
 
 		if (!$result = AWS_APP::cache()->get($result_cache_key))
 		{
-            $where[] = 'add_time <= ' . real_time();
+			//TODO: 延迟显示
+            //$where[] = 'add_time <= ' . real_time();
 
 			if ($result = $this->fetch_page('posts_index', implode(' AND ', $where), $order_by, $page, $per_page))
 			{

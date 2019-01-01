@@ -96,7 +96,9 @@ class article_class extends AWS_MODEL
 
 		if (!$articles[$article_id])
 		{
-            $and = ' AND add_time <= ' . real_time();
+			//TODO: 延迟显示
+            //$and = ' AND add_time <= ' . real_time();
+			$and = '';
 			if ($article = $this->fetch_row('article', 'id = ' . $article_id . $and))
 			{
 				if (-$article['votes'] >= get_setting('article_downvote_fold'))
@@ -120,7 +122,9 @@ class article_class extends AWS_MODEL
 
 		array_walk_recursive($article_ids, 'intval_string');
 
-        $and = ' AND add_time <= ' . real_time();
+		//TODO: 延迟显示
+        //$and = ' AND add_time <= ' . real_time();
+		$and = '';
 
 		if ($articles_list = $this->fetch_all('article', 'id IN(' . implode(',', $article_ids) . ')' . $and))
 		{
@@ -334,7 +338,8 @@ class article_class extends AWS_MODEL
 			$where[] = 'add_time > ' . (fake_time() - $day * 24 * 60 * 60);
 		}
 
-        $where[] = 'add_time <= ' . real_time();
+		//TODO: 延迟显示
+        //$where[] = 'add_time <= ' . real_time();
 
 		return $this->fetch_page('article', implode(' AND ', $where), $order_by, $page, $per_page);
 	}
@@ -380,7 +385,8 @@ class article_class extends AWS_MODEL
 			$where[] = "id IN (" . implode(',', $article_ids) . ")";
 		}
 
-        $where[] = 'add_time <= ' . real_time();
+		//TODO: 延迟显示
+        //$where[] = 'add_time <= ' . real_time();
 
 		if (!$result)
 		{

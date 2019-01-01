@@ -127,7 +127,11 @@
 										<?php _e('删除文章'); ?>&nbsp;</label>
 									<?php } ?>
 
-									<?php if (!$this->article_info['id']) { ?>
+									<?php 
+									//TODO: 延迟显示
+									//if (!$this->article_info['id']) { 
+									if (0) { 
+									?>
 									<label><input type="checkbox" class="pull-left" value="1" name="later" />
 										<?php _e('延迟显示'); ?>&nbsp;</label>
 									<?php } ?>
