@@ -255,7 +255,7 @@ class message_class extends AWS_MODEL
 
 	public function removed_message_clean()
 	{
-		$this->delete('inbox', 'sender_remove = 1 AND recipient_receipt = 1');
+		$this->delete('inbox', 'sender_remove = 1 AND recipient_remove = 1');
 		$this->delete('inbox_dialog', 'sender_count = 0 AND recipient_count = 0');
 	}
 
