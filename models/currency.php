@@ -22,6 +22,11 @@ class currency_class extends AWS_MODEL
 {
 	public function process($uid, $action, $currency, $note = '', $item_id = null)
 	{
+		if (!$uid OR $uid == -1)
+		{
+			return false;
+		}
+
 		$currency = intval($currency);
 		if ($currency == 0)
 		{

@@ -74,6 +74,11 @@ class reputation_class extends AWS_MODEL
 	// 如果满足封禁条件则自动封禁
 	public function increase_agree_count_and_reputation($uid, $vote, $reputation_factor)
 	{
+		if (!$uid OR $uid == -1)
+		{
+			return false;
+		}
+
 		$user_info = $this->model('account')->get_user_info_by_uid($uid);
 		if (!$user_info)
 		{
