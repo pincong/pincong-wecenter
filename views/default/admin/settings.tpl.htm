@@ -158,6 +158,20 @@
                         </div>
                     </td>
                 </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label"><?php _e('注册时间间隔限制'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input type="text" class="form-control" name="register_interval" value="<?php echo $this->setting['register_interval']; ?>" />
+
+                                <span class="help-block"><?php _e('每隔多少秒允许注册一个账号'); ?></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
                 <tr>
                     <td>
                         <div class="form-group">

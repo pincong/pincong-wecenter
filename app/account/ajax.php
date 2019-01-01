@@ -88,6 +88,11 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1,  AWS_APP::lang()->_t('两次输入的密码不一致')));
 		}
 
+		if (!check_user_operation_interval_by_uid('register', 0, get_setting('register_interval')))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('本站已开启注册频率限制, 请稍后再试')));
+		}
+
 		// 检查验证码
 		if (!AWS_APP::captcha()->is_validate($_POST['seccode_verify']) AND get_setting('register_seccode') == 'Y')
 		{
@@ -114,6 +119,8 @@ class ajax extends AWS_CONTROLLER
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('注册失败')));
 		}
+
+		set_user_operation_last_time_by_uid('register', 0);
 
 		if (isset($_POST['sex']))
 		{
