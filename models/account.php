@@ -413,6 +413,62 @@ class account_class extends AWS_MODEL
     }
 
     /**
+     * 获取用户表 settings 字段
+     *
+     * @param array
+     * @param uid
+     * @return mixed	成功返回 array, 失败返回 false
+     */
+    public function get_user_settings($uid)
+    {
+		$user_info = $this->fetch_row('users', 'uid = ' . intval($uid));
+		if (!$user_info)
+		{
+			// uid 不存在
+			return false;
+		}
+
+		return unserialize_array($user_info['settings']);
+    }
+
+    /**
+     * 更新用户表 settings 字段
+     *
+     * @param array
+     * @param uid
+     * @return void
+     */
+    public function update_user_settings($data, $uid)
+    {
+		if (!is_array($data))
+		{
+			return;
+		}
+
+		$settings = $this->get_user_settings($uid);
+		if (!is_array($settings))
+		{
+			return;
+		}
+
+		// 覆盖或刪除原有的
+		foreach ($data AS $key => $val)
+		{
+			if ($val === null)
+			{
+				unset($settings[$key]);
+			}
+			else
+			{
+				$settings[$key] = $val;
+			}
+		}
+
+		$this->update_user_fields(array('settings' => serialize_array($settings)), $uid);
+    }
+
+
+    /**
      * 更改用户密码
      *
      * @param  string
@@ -776,11 +832,15 @@ class account_class extends AWS_MODEL
 		$this->update_user_extra_data($extra_data, $uid);
     }
 
-    public function set_default_timezone($time_zone, $uid)
+    public function set_default_timezone($timezone, $uid)
     {
-        return $this->update('users', array(
-            'default_timezone' => htmlspecialchars($time_zone)
-        ), 'uid = ' . intval($uid));
+		if (!is_valid_timezone($timezone))
+		{
+			$timezone = null;
+		}
+		$this->update_user_settings(array(
+			'timezone' => $timezone
+		), $uid);
     }
 
     public function save_recent_topics($uid, $topic_title)

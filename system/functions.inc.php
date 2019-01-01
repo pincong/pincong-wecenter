@@ -1082,3 +1082,12 @@ function serialize_array(&$array)
 	return null;
 }
 
+function is_valid_timezone($timezone)
+{
+	if (!$timezone)
+	{
+		return false;
+	}
+	@$tz = timezone_open($timezone);
+	return $tz !== false;
+}

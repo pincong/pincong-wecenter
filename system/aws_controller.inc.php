@@ -40,6 +40,9 @@ class AWS_CONTROLLER
 				$this->model('reputation')->get_reputation_group_id_by_reputation($this->user_info['reputation'])
 			);
 
+			$user_settings = unserialize_array($this->user_info['settings']);
+			$this->user_info['default_timezone'] = $user_settings['timezone'];
+
 			if ($this->user_info['default_timezone'])
 			{
 				date_default_timezone_set($this->user_info['default_timezone']);
