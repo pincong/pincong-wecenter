@@ -922,39 +922,6 @@
                 <tr>
                     <td>
                         <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('系统自动选出最佳回复时间'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
-                                <input name="best_answer_day" type="text" class="form-control" value="<?php echo $this->setting['best_answer_day']; ?>"/>
-
-                                <div class="help-block"><?php _e('单位'); ?>: 天, <?php _e('填写 0 则不启用'); ?></div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('参与自动选出最佳回复的问题最小回复数'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
-                                <input name="best_answer_min_count" type="text" class="form-control" value="<?php echo $this->setting['best_answer_min_count']; ?>"/>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('参与自动选出最佳回复的最小赞同数'); ?>:</span>
-                            <div class="col-sm-5 col-xs-8">
-                                <input name="best_agree_min_count" type="text" class="form-control" value="<?php echo $this->setting['best_agree_min_count']; ?>"/>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('敏感词列表'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <textarea class="form-control textarea" rows="5" name="sensitive_words"><?php echo $this->setting['sensitive_words']; ?></textarea>

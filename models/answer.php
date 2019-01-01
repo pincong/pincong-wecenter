@@ -736,28 +736,4 @@ class answer_class extends AWS_MODEL
 		return true;
 	}
 
-	public function calc_best_answer()
-	{
-		if (!$best_answer_day = intval(get_setting('best_answer_day')))
-		{
-			return false;
-		}
-
-		$start_time = fake_time() - $best_answer_day * 3600 * 24;
-
-		if ($questions = $this->query_all("SELECT question_id FROM " . $this->get_table('question') . " WHERE add_time < " . $start_time . " AND best_answer = 0 AND answer_count > " . get_setting('best_answer_min_count')))
-		{
-			foreach ($questions AS $key => $val)
-			{
-				$best_answer = $this->fetch_row('answer', 'question_id = ' . intval($val['question_id']), 'agree_count DESC');
-
-				if ($best_answer['agree_count'] > get_setting('best_agree_min_count'))
-				{
-					$this->set_best_answer($best_answer['answer_id']);
-				}
-			}
-		}
-
-		return true;
-	}
 }
