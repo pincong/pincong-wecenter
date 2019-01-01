@@ -32,19 +32,11 @@ class ajax extends AWS_CONTROLLER
 		return $rule_action;
 	}
 
-	// TODO: json?
 	public function list_action()
 	{
 		$topic_ids = explode(',', $_GET['topic_id']);
 
-		if ($_GET['per_page'])
-		{
-			$per_page = intval($_GET['per_page']);
-		}
-		else
-		{
-			$per_page = get_setting('contents_per_page');
-		}
+		$per_page = get_setting('contents_per_page');
 
 		$posts_list = $this->model('posts')->get_posts_list($_GET['post_type'], $_GET['page'], $per_page, $_GET['sort_type'], $topic_ids, $_GET['category'], $_GET['answer_count'], $_GET['day'], $_GET['recommend']);
 
