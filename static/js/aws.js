@@ -595,10 +595,11 @@ var AWS =
 						$('.aw-publish-box .modal-title').html('向 ' + data.ask_user_name + ' 提问');
 					}
 
-					if ($('#aw-search-query').val() && $('#aw-search-query').val() != $('#aw-search-query').attr('placeholder'))
-					{
-						$('#quick_publish_question_content').val($('#aw-search-query').val());
-					}
+					// TODO: remove #aw-search-query
+					//if ($('#aw-search-query').val() && $('#aw-search-query').val() != $('#aw-search-query').attr('placeholder'))
+					//{
+					//	$('#quick_publish_question_content').val($('#aw-search-query').val());
+					//}
 
 					AWS.Init.init_topic_edit_box('#quick_publish .aw-edit-topic');
 

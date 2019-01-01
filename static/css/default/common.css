@@ -226,7 +226,7 @@ a.aw-load-more-content{display: block;}
 .aw-user-nav .dropdown-list ul li a i{vertical-align:-2px;margin-right: 5px;font-size: 16px;}
 .aw-search-box{margin:10px 0;}
 .aw-search-box input{width: 230px;height: 32px;padding-right:30px;border:none;}
-.aw-search-box #global_search_btns{position: absolute;right: 5px;top: 6px;font-size: 18px;color: #999;}
+.aw-search-box .aw-search-btn{position: absolute;right: 5px;top: 6px;font-size: 18px;color: #999;}
 .aw-search-box .aw-dropdown{width: 355px;}
 .aw-search-box .aw-dropdown p{height: 38px;line-height: 38px;margin:0;padding:0 10px;font-weight: normal;border-bottom: 1px solid #f0f0f0;}
 .aw-search-box .aw-dropdown p.search{display: none;}
@@ -905,7 +905,7 @@ blockquote {margin: 0 40px;padding: 0 15px;font-size: 14px;color: #777;border-le
 .aw-help-center .mod-body .aw-item h3 a {color: #333;}
 .aw-help-center .mod-body .aw-item ul {list-style-type: disc;padding-left: 5px;line-height: 25px;overflow: hidden; }
 .aw-help-center .mod-body .aw-item ul li {margin: 5px 0;list-style-position: inside;}
-.aw-help-center .aw-search-box #global_search_btns {top: 7px;}
+.aw-help-center .aw-search-box .aw-search-btn {top: 7px;}
 .aw-help-center .aw-search-box {float:  none;margin: 35px auto 0;width: 90%;max-width: 500px;border: 8px solid #f5f5f5;}
 .aw-help-center .aw-search-box input {width:100%;border:1px solid #e6e6e6;}
 .aw-help-list {padding: 20px;}

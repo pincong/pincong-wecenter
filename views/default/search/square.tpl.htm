@@ -1,0 +1,62 @@
+<?php TPL::output('global/header.tpl.htm'); ?>
+
+<div class="aw-container-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="col-sm-12 col-md-12 aw-main-content">
+					<div class="aw-mod aw-help-center">
+						<div class="mod-head">
+							<br>
+							<br>
+							<h2><i class="icon icon-search"></i> <?php _e('搜索'); ?></h2>
+							<form id="search_form">
+
+							<div class="aw-search-box aw-border-radius-5">
+								<input class="form-control aw-border-radius-5" type="text" name="search_query" placeholder="<?php _e('输入关键字进行搜索'); ?>" autocomplete="off" />
+								<span class="aw-search-btn" title="<?php _e('搜索'); ?>"><i class="icon icon-search"></i></span>
+							</div>
+
+							<div style="text-align:center">
+							<?php $search_engine_index = 0; ?>
+							<?php foreach ($this->search_engine_list AS $key => $val) { ?>
+								<label><input type="radio" value="<?php echo $val; ?>" name="search_engine_url" <?php if ($search_engine_index == 0) { ?>checked="checked" <?php } ?>/>&nbsp;<?php echo $key; ?>&nbsp;</label>
+								<?php $search_engine_index++; ?>
+							<?php } ?>
+							</div>
+
+							</form>
+							<br>
+							<br>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+	var $search_form = $('#search_form');
+
+	var do_search = function() {
+		var $url = $search_form.find('input[name="search_engine_url"]:checked');
+		if (!$url.length) return;
+		var query = $search_form.find('input[name="search_query"]').val().trim();
+		if (!query) return;
+		query = encodeURIComponent(query);
+		window.location = $url.val().replace('%s', query);
+	};
+
+	$search_form.submit(function(event) {
+		event.preventDefault();
+		do_search();
+		return false;
+	});
+
+	$search_form.find('.aw-search-btn').click(do_search);
+});
+</script>
+
+<?php TPL::output('global/footer.tpl.htm'); ?>

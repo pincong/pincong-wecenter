@@ -24,7 +24,7 @@ class main extends AWS_CONTROLLER
 	{
 		$rule_action['rule_type'] = "white";
 
-		if ($this->user_info['permission']['search_avail'] AND $this->user_info['permission']['visit_site'])
+		if (/*$this->user_info['permission']['search_avail'] AND*/ $this->user_info['permission']['visit_site'])
 		{
 			$rule_action['rule_type'] = "black"; //'black'黑名单,黑名单中的检查  'white'白名单,白名单以外的检查
 		}
@@ -43,7 +43,10 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		if ($_POST['q'])
+		die;
+		// TODO: 站内搜索
+		// $this->user_info['permission']['search_avail']
+		/*if ($_POST['q'])
 		{
 			$url = '/search/q-' . base64_encode($_POST['q']);
 
@@ -67,6 +70,13 @@ class main extends AWS_CONTROLLER
 		TPL::assign('keyword', $keyword);
 		TPL::assign('split_keyword', implode(' ', $this->model('system')->analysis_keyword($keyword)));
 
-		TPL::output('search/index');
+		TPL::output('search/index');*/
+	}
+
+	public function index_square_action()
+	{
+		TPL::assign('search_engine_list', get_key_value_pairs('search_engine_list'));
+
+		TPL::output('search/square');
 	}
 }
