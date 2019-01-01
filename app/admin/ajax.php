@@ -849,7 +849,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
                 H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入用户名')));
             }
 
-            if ($this->model('account')->check_username($_POST['user_name']))
+            if ($this->model('account')->username_exists($_POST['user_name']))
             {
                 H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名已经存在')));
             }

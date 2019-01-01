@@ -23,7 +23,7 @@ class anonymous_class extends AWS_MODEL
 	public function get_anonymous_uid()
 	{
 		$uid = intval(get_setting('anonymous_uid'));
-		if ($this->model('account')->check_uid($uid))
+		if ($this->model('account')->uid_exists($uid))
 		{
 			return $uid;
 		}

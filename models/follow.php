@@ -27,7 +27,7 @@ class follow_class extends AWS_MODEL
 			return false;
 		}
 
-		if (! $this->model('account')->check_uid($fans_uid) OR ! $this->model('account')->check_uid($friend_uid))
+		if (! $this->model('account')->uid_exists($fans_uid) OR ! $this->model('account')->uid_exists($friend_uid))
 		{
 			return false;
 		}

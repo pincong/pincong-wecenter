@@ -36,48 +36,11 @@ class account_class extends AWS_MODEL
      * @param string
      * @return boolean
      */
-    public function check_username($user_name)
+    public function username_exists($user_name)
     {
     	$user_name = trim($user_name);
 
         return $this->fetch_one('users', 'uid', "user_name = '" . $this->quote($user_name) . "'");
-    }
-
-    /**
-     * 检查用户名中是否包含敏感词或用户信息保留字
-     *
-     * @param string
-     * @return boolean
-     */
-    public function check_username_sensitive_words($user_name)
-    {
-        if (H::sensitive_word_exists($user_name))
-        {
-            return true;
-        }
-
-        if (!get_setting('censoruser'))
-        {
-            return false;
-        }
-
-        if ($censorusers = explode("\n", get_setting('censoruser')))
-        {
-            foreach ($censorusers as $name)
-            {
-                if (!$name = trim($name))
-                {
-                    continue;
-                }
-
-                if (preg_match('/(' . $name . ')/is', $user_name))
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -87,7 +50,7 @@ class account_class extends AWS_MODEL
      * @return boolean
      */
 
-    public function check_uid($uid)
+    public function uid_exists($uid)
     {
 		$uid = intval($uid);
 		if ($uid <= 0)
@@ -368,7 +331,7 @@ class account_class extends AWS_MODEL
             return false;
         }
 
-        if ($this->check_username($user_name))
+        if ($this->username_exists($user_name))
         {
             return false;
         }
@@ -503,7 +466,7 @@ class account_class extends AWS_MODEL
 			// $this->update 并不能用来检查 users_attrib 是否存在, 如果存在但是未被更新也会返回 0
 			if (!$this->fetch_one('users_attrib', 'uid', 'uid = ' . intval($uid)))
 			{
-				if ($this->check_uid($uid))
+				if ($this->uid_exists($uid))
 				{
 					$update_data['uid'] = intval($uid);
 					$this->insert('users_attrib', $update_data);
@@ -528,7 +491,7 @@ class account_class extends AWS_MODEL
 		$user_attrib = $this->fetch_row('users_attrib', 'uid = ' . intval($uid));
 		if (!$user_attrib)
 		{
-			if ($this->check_uid($uid))
+			if ($this->uid_exists($uid))
 			{
 				return array();
 			}
@@ -743,59 +706,6 @@ class account_class extends AWS_MODEL
         {
             unset(AWS_APP::session()->permission);
         }
-    }
-
-    public function check_username_char($user_name)
-    {
-        if (is_digits($user_name))
-        {
-            return AWS_APP::lang()->_t('用户名不能为纯数字');
-        }
-
-        if (strstr($user_name, '-') OR strstr($user_name, '.') OR strstr($user_name, '/') OR strstr($user_name, '%') OR strstr($user_name, '__'))
-        {
-            return AWS_APP::lang()->_t('用户名不能包含 - / . % 与连续的下划线');
-        }
-
-        $length = strlen(convert_encoding($user_name, 'UTF-8', 'GB2312'));
-
-        $length_min = intval(get_setting('username_length_min'));
-        $length_max = intval(get_setting('username_length_max'));
-
-        if ($length < $length_min || $length > $length_max)
-        {
-            $flag = true;
-        }
-
-        switch(get_setting('username_rule'))
-        {
-            default:
-
-            break;
-
-            case 1:
-                if (!preg_match('/^[\x{4e00}-\x{9fa5}_a-zA-Z0-9]+$/u', $user_name) OR $flag)
-                {
-                    return AWS_APP::lang()->_t('请输入大于 %s 字节的用户名, 允许汉字、字母与数字', ($length_min . ' - ' . $length_max));
-                }
-            break;
-
-            case 2:
-                if (!preg_match("/^[a-zA-Z0-9_]+$/i", $user_name) OR $flag)
-                {
-                    return AWS_APP::lang()->_t('请输入 %s 个字母、数字或下划线', ($length_min . ' - ' . $length_max));
-                }
-            break;
-
-            case 3:
-                if (!preg_match("/^[\x{4e00}-\x{9fa5}]+$/u", $user_name) OR $flag)
-                {
-                    return AWS_APP::lang()->_t('请输入 %s 个汉字', (ceil($length_min / 2) . ' - ' . floor($length_max / 2)));
-                }
-            break;
-        }
-
-        return false;
     }
 
     public function get_users_list($where = null, $limit = 10, $attrib = false, $exclude_self = true, $orderby = 'uid DESC')
