@@ -70,7 +70,11 @@
 <script type="text/javascript">
 	$(function()
 	{
-		var editor = CKEDITOR.replace( 'wmd-input' );
+		if (G_ADVANCED_EDITOR_ENABLE == 'Y')
+		{
+			// 初始化编辑器
+			AWS.create_editor('wmd-input');
+		}
 
 		if ($('#topic_pic_uploader').length)
 		{

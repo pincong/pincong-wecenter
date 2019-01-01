@@ -1,7 +1,5 @@
 var COMMENT_UNFOLD;
 var QUESTION_ID;
-var EDITOR;
-var EDITOR_CALLBACK;
 
 $(function()
 {
@@ -20,7 +18,8 @@ $(function()
 		{
 			if (G_ADVANCED_EDITOR_ENABLE == 'Y')
 			{
-				EDITOR = CKEDITOR.replace( 'wmd-input');
+				// 初始化编辑器
+				AWS.create_editor('wmd-input', true);
 			}
 		}
 

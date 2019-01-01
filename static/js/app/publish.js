@@ -13,11 +13,11 @@ $(function()
         ITEM_ID = '';
     }
 
-    // 判断是否开启ck编辑器
+    // 判断是否开启高级编辑器
 	if (G_ADVANCED_EDITOR_ENABLE == 'Y')
 	{
 		// 初始化编辑器
-		var editor = CKEDITOR.replace( 'wmd-input' );
+		AWS.create_editor('wmd-input', true);
 	}
 
     AWS.Dropdown.bind_dropdown_list($('.aw-mod-publish #question_contents'), 'publish');

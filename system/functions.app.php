@@ -217,8 +217,10 @@ function is_inside_url($url)
 
 function import_editor_static_files()
 {
-	TPL::import_js('js/editor/ckeditor/ckeditor.js');
-	TPL::import_js('js/editor/ckeditor/adapters/jquery.js');
+	TPL::import_css('editor/sceditor/themes/square.css');
+	TPL::import_js('editor/sceditor/sceditor.js');
+	TPL::import_js('editor/sceditor/icons/material.js');
+	TPL::import_js('editor/sceditor/formats/bbcode.js');
 }
 
 function get_chapter_icon_url($id, $size = 'max', $default = true)

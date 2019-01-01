@@ -131,12 +131,16 @@ var AWS =
 
 	ajax_post: function(formEl, processer, type) // 表单对象，用 jQuery 获取，回调函数名
 	{
-		// 若有编辑器的话就更新编辑器内容再提交
-		if (typeof CKEDITOR != 'undefined')
+		// 若有编辑器的话就从编辑器更新内容再提交
+		if (G_ADVANCED_EDITOR_ENABLE == 'Y')
 		{
-			for ( instance in CKEDITOR.instances ) {
-				CKEDITOR.instances[instance].updateElement();
-			}
+			formEl.find('textarea').each(function()
+			{
+				if (this._sceditor)
+				{
+					this._sceditor.updateOriginal();
+				}
+			});
 		}
 
 		if (typeof (processer) != 'function')
@@ -155,12 +159,6 @@ var AWS =
 			AWS.loading('show');
 
 			$('.btn-reply').addClass('disabled');
-
-			// 删除草稿绑定事件
-			if (EDITOR != undefined)
-			{
-				EDITOR.removeListener('blur', EDITOR_CALLBACK);
-			}
 		}
 
 		var custom_data = {
@@ -651,7 +649,11 @@ var AWS =
 					{
 						$('#editor_reply').html(result.answer_content.replace('&amp;', '&'));
 
-						var editor = CKEDITOR.replace( 'editor_reply' );
+						if (G_ADVANCED_EDITOR_ENABLE == 'Y')
+						{
+							// 初始化编辑器
+							AWS.create_editor('editor_reply');
+						}
 
 					}, 'json');
 				break;
@@ -1301,6 +1303,21 @@ var AWS =
 		}
 	}
 }
+
+// 创建编辑器
+AWS.create_editor = function(element_id, max_btn)
+{
+	return sceditor.create(document.getElementById(element_id), {
+		emoticonsEnabled: false,
+		format: 'bbcode',
+		icons: 'material',
+		style: G_STATIC_URL + '/editor/sceditor/themes/content/default.css',
+		toolbar: 'bold,italic,underline,strike|' +
+			'bulletlist,orderedlist|' +
+			'code,quote|image,link,unlink|' +
+			'source' + (max_btn ? '|maximize' : '')
+	});
+};
 
 // 全局变量
 AWS.G =
