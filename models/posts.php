@@ -513,6 +513,7 @@ class posts_class extends AWS_MODEL
                 {
                     $this->model('currency')->process($result['uid'], 'QUESTION_MOVED_UP', get_setting('currency_system_config_question_moved_up'), '问题被提升 #' . $post_id, $post_id);
                 }
+				$this->model('question')->log($post_id, 'QUESTION', '提升问题', $uid);
                 break;
 
             case 'article':
@@ -521,6 +522,7 @@ class posts_class extends AWS_MODEL
                 {
                     $this->model('currency')->process($result['uid'], 'ARTICLE_MOVED_UP', get_setting('currency_system_config_question_moved_up'), '文章被提升 #' . $post_id, $post_id);
                 }
+				$this->model('article')->log($post_id, 'ARTICLE', '提升文章', $uid);
                 break;
         }
 
@@ -558,6 +560,7 @@ class posts_class extends AWS_MODEL
                 {
                     $this->model('currency')->process($result['uid'], 'QUESTION_MOVED_DOWN', get_setting('currency_system_config_question_moved_down'), '问题被下沉 #' . $post_id, $post_id);
                 }
+				$this->model('question')->log($post_id, 'QUESTION', '下沉问题', $uid);
                 break;
 
             case 'article':
@@ -566,6 +569,7 @@ class posts_class extends AWS_MODEL
                 {
                     $this->model('currency')->process($result['uid'], 'ARTICLE_MOVED_DOWN', get_setting('currency_system_config_question_moved_down'), '文章被下沉 #' . $post_id, $post_id);
                 }
+				$this->model('article')->log($post_id, 'ARTICLE', '下沉文章', $uid);
                 break;
         }
 
