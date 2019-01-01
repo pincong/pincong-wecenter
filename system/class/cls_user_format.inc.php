@@ -23,7 +23,7 @@ class UF
 
 		$default = G_STATIC_URL . '/common/avatar-' . $size . '-img.png';
 
-		if (!$user_info OR (!$show_forbidden AND $user_info['forbidden']))
+		if (!$user_info OR is_null($user_info['avatar_file']) OR (!$show_forbidden AND $user_info['forbidden']))
 		{
 			return $default;
 		}

@@ -434,7 +434,7 @@ class account_class extends AWS_MODEL
             'salt' => $salt,
             'sex' => 0,
             'group_id' => 4,
-            'avatar_file' => fetch_salt(4), // 生成随机字符串
+            'avatar_file' => null, // 无头像
             'reg_time' => fake_time()
         )))
         {
@@ -974,7 +974,7 @@ class account_class extends AWS_MODEL
             @unlink(get_setting('upload_dir') . '/avatar/' . $this->get_avatar($uid, $key, 1) . $this->get_avatar($uid, $key, 2));
         }
 
-        return $this->update_users_fields(array('avatar_file' => ''), $uid);
+        return $this->update_users_fields(array('avatar_file' => null), $uid);
     }
 
     public function add_user_group($group_name, $group_type, $reputation_lower = 0, $reputation_higer = 0, $reputation_factor = 0)
