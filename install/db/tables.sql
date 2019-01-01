@@ -650,7 +650,6 @@ CREATE TABLE IF NOT EXISTS `aws_video` (
   `source` text,
   `duration` int(10) DEFAULT '0' COMMENT '时长 秒',
   `comment_count` int(10) DEFAULT '0',
-  `danmaku_count` int(10) DEFAULT '0',
   `view_count` int(10) DEFAULT '0',
   `agree_count` int(10) DEFAULT '0',
   `lock` int(1) DEFAULT '0',
@@ -664,7 +663,6 @@ CREATE TABLE IF NOT EXISTS `aws_video` (
   KEY `uid` (`uid`),
   KEY `duration` (`duration`),
   KEY `comment_count` (`comment_count`),
-  KEY `danmaku_count` (`danmaku_count`),
   KEY `view_count` (`view_count`),
   KEY `agree_count` (`agree_count`),
   KEY `lock` (`lock`),
@@ -694,29 +692,6 @@ CREATE TABLE IF NOT EXISTS `aws_video_comment` (
   KEY `video_id` (`video_id`),
   KEY `add_time` (`add_time`),
   KEY `agree_count` (`agree_count`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
---
-
-
---
-CREATE TABLE IF NOT EXISTS `aws_video_danmaku` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `uid` int(10) DEFAULT '0',
-  `video_id` int(10) DEFAULT '0',
-  `add_time` int(10) DEFAULT '0',
-  `agree_count` int(10) DEFAULT '0',
-  `stime` int(10) DEFAULT '0' COMMENT '出现时间 毫秒',
-  `mode` int(10) DEFAULT '0',
-  `size` int(10) DEFAULT '0',
-  `color` int(10) DEFAULT '0',
-  `text` text,
-  PRIMARY KEY (`id`),
-  KEY `uid` (`uid`),
-  KEY `video_id` (`video_id`),
-  KEY `add_time` (`add_time`),
-  KEY `agree_count` (`agree_count`),
-  KEY `stime` (`stime`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --

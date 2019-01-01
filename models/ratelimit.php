@@ -231,25 +231,4 @@ class ratelimit_class extends AWS_MODEL
 		return true;
 	}
 
-	public function check_video_danmaku($uid, $limit)
-	{
-		$limit = intval($limit);
-		if (!$limit)
-		{
-			return true;
-		}
-
-		$uid = intval($uid);
-		$time_after = real_time() - 24 * 3600;
-
-		$where = "add_time > " . $time_after . " AND uid =" . $uid;
-		$count = $this->count('video_danmaku', $where);
-		if ($count >= $limit)
-		{
-			return false;
-		}
-
-		return true;
-	}
-
 }

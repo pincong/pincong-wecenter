@@ -162,7 +162,7 @@ class content_class extends AWS_MODEL
 	 * @param int $item_id
 	 * @param string $note
 	 * @param int $uid
-	 * @param string $child_type question|question_discussion|answer|answer_discussion|article|article_comment|video|video_danmaku|video_comment
+	 * @param string $child_type question|question_discussion|answer|answer_discussion|article|article_comment|video|video_comment
 	 * @param int $child_id
 	 */
 	public function log($item_type, $item_id, $note, $uid = 0, $child_type = null, $child_id = 0)

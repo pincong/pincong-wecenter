@@ -151,30 +151,6 @@ class user_class extends AWS_MODEL
 		$this->update('video_comment', array('at_uid' => '-1'), 'at_uid = ' . ($uid));
 	}
 
-	public function delete_video_danmakus($uid)
-	{
-		$video_danmakus = $this->fetch_all('video_danmaku', 'uid = ' . intval($uid));
-		if (!$video_danmakus)
-		{
-			return;
-		}
-
-		$this->delete('video_danmaku', 'uid = ' . intval($uid));
-
-		foreach ($video_danmakus AS $key => $val)
-		{
-			$video_ids[$val['video_id']] = $val['video_id'];
-		}
-
-		if ($video_ids)
-		{
-			foreach ($video_ids AS $key => $val)
-			{
-				$this->model('video')->update_video_danmaku_count($key);
-			}
-		}
-	}
-
 
 	public function delete_questions($uid)
 	{
@@ -258,7 +234,6 @@ class user_class extends AWS_MODEL
 
 		$this->delete_videos($uid);
 		$this->delete_video_comments($uid);
-		$this->delete_video_danmakus($uid);
 	}
 
 	public function delete_user_by_uid($uid)

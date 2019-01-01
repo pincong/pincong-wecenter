@@ -21,7 +21,7 @@ class activity_class extends AWS_MODEL
 {
 	/**
 	 * 记录用户动态
-	 * @param string $item_type question|question_discussion|answer|answer_discussion|article|article_comment|video|video_danmaku|video_comment
+	 * @param string $item_type question|question_discussion|answer|answer_discussion|article|article_comment|video|video_comment
 	 * @param int $item_id
 	 * @param string $note
 	 * @param int $uid

@@ -51,7 +51,7 @@
 
 		<?php } elseif ($val['post_type'] == 'video') { ?>
 				<a href="<?php echo UF::url($val['user_info']); ?>" class="aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>"><?php echo UF::name($val['user_info']); ?></a>
-				<span class="aw-small-text"><?php _e('投稿了影片'); ?> • <?php _e('%s 条弹幕', $val['danmaku_count']); ?> • <?php _e('%s 个评论', $val['comment_count']); ?> • <?php _e('%s 次观看', $val['view_count']); ?> • <?php echo date_friendly($val['add_time']); ?></span>
+				<span class="aw-small-text"><?php _e('投稿了影片'); ?> • <?php _e('%s 个评论', $val['comment_count']); ?> • <?php _e('%s 次观看', $val['view_count']); ?> • <?php echo date_friendly($val['add_time']); ?></span>
 		<?php } ?>
 
 			<span class="aw-small-text related-topic collapse"> • 来自相关话题</span>

@@ -110,21 +110,6 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		// 弹幕, 暂时直接在页面输出
-		$danmaku = $this->model('danmaku')->get_danmaku_list_by_video_id($video_info['id'], 1, 5000);
-		foreach ($danmaku as $key => $val)
-		{
-			unset($danmaku[$key]['uid']);
-			unset($danmaku[$key]['video_id']);
-			unset($danmaku[$key]['add_time']);
-			unset($danmaku[$key]['agree_count']);
-			$danmaku[$key]['stime'] = intval($val['stime']);
-			$danmaku[$key]['mode'] = intval($val['mode']);
-			$danmaku[$key]['size'] = intval($val['size']);
-			$danmaku[$key]['color'] = intval($val['color']);
-		}
-		TPL::assign('danmaku_json', json_encode($danmaku));
-
 		$this->model('content')->update_view_count('video', $video_info['id'], session_id());
 
 		TPL::assign('comments', $comments);

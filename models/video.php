@@ -181,19 +181,6 @@ class video_class extends AWS_MODEL
 		), 'id = ' . ($video_id));
 	}
 
-	public function update_video_danmaku_count($video_id)
-	{
-		$video_id = intval($video_id);
-		if (!$video_id)
-		{
-			return false;
-		}
-
-		return $this->update('video', array(
-			'danmaku_count' => $this->count('video_danmaku', 'video_id = ' . ($video_id))
-		), 'id = ' . ($video_id));
-	}
-
 
 	public function get_video_info_by_id($video_id)
 	{
@@ -324,8 +311,6 @@ class video_class extends AWS_MODEL
 		$this->delete('video_log', 'item_id = ' . intval($video_id));
 
 		$this->delete('video_comment', "video_id = " . intval($video_id)); // 删除关联的回复内容
-
-		$this->delete('video_danmaku', 'video_id = ' . intval($video_id));
 
 		$this->delete('topic_relation', "`type` = 'video' AND item_id = " . intval($video_id));		// 删除话题关联
 

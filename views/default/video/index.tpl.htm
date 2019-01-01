@@ -249,53 +249,7 @@
 	</div>
 </div>
 
-<?php if ($this->video_info['source_type']) { ?>
 <script type="text/javascript">
-var VIDEO_ID = <?php echo $this->video_info['id']; ?>;
-var DANMAKU_LIST = <?php echo $this->danmaku_json; ?>;
-
-var busy_while_getting_metadata;
-
-function get_video_metadata(callback) {
-	if (busy_while_getting_metadata) return true;
-	busy_while_getting_metadata = true;
-
-	var url = G_BASE_URL + '/video/api/get_video_metadata/';
-	var params = 'video_id=' + VIDEO_ID;
-	AWS.ajax_rsm(url, params, function(error, result) {
-		busy_while_getting_metadata = false;
-
-		if (error || !result || !result['formats'] || !result['formats'][0]) {
-			callback('error');
-			return;
-		}
-		callback(null, result['formats']);
-	});
-}
-
-var busy_while_sending_danmaku;
-
-function send_danmaku(danmaku, next) {
-	if (busy_while_sending_danmaku) return true; // cancel
-	busy_while_sending_danmaku = true;
-
-	var url = G_BASE_URL + '/video/api/save_danmaku/';
-	var params = {
-		video_id: VIDEO_ID,
-		stime: danmaku.stime,
-		text: danmaku.text,
-		mode: danmaku.mode,
-		size: danmaku.size,
-		color: danmaku.color
-	};
-	AWS.ajax_rsm(url, params, function(error, result) {
-		busy_while_sending_danmaku = false;
-		if (error) return;
-		next();
-	});
-}
-
-
 $(document).ready(function () {
 	var folded_replies = $('.aw-replies-fold');
 	$.each($('.aw-replies .aw-item'), function (i, e) {
@@ -304,45 +258,11 @@ $(document).ready(function () {
 		}
 	});
 
-/*
-	var video_url;
-	var video_player = new ABP.Player('.ab-player');
-	video_player.setPoster('<?php echo $this->video_info['thumb_url']; ?>');
-	video_player.setDuration(<?php echo $this->video_info['duration']; ?>);
-	video_player.loadDanmaku(DANMAKU_LIST);
-
-	// 产生交互, 但是影片还没有载入
-	video_player.on('requireVideo', function(next) {
-		if (video_url) {
-			console.log('正在加载影片, 请稍候...');
-			return;
-		}
-		video_player.showLoader();
-		get_video_metadata(function(error, formats) {
-			video_player.hideLoader();
-			if (error) return;
-			video_player.setFormats(formats);
-			next();
-		});
-	});
-
-	// 发送弹幕按钮被点击
-	video_player.on('sendDanmaku', function(danmaku, next) {
-	<?php if (!$this->user_id) { ?>
-		AWS.alert('登录后才能发送弹幕');
-		return true; // 取消下一步操作
-	<?php } else { ?>
-		return send_danmaku(danmaku, next);
-	<?php } ?>
-	});
-*/
-
 	AWS.at_user_lists('#wmd-input');
 	AWS.Init.init_article_comment_box($('.aw-article-comment'));
 
 	AWS.init_later_time_helper($('#later_time_input'), $('#later_time_label'));
 });
 </script>
-<?php } ?>
 
 <?php TPL::include('global/footer.tpl.htm'); ?>
