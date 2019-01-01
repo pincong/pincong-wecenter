@@ -112,11 +112,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
             $_POST['censoruser'] = trim($_POST['censoruser']);
         }
 
-        if ($_POST['report_reason'])
-        {
-            $_POST['report_reason'] = trim($_POST['report_reason']);
-        }
-
         if ($_POST['sensitive_words'])
         {
             $_POST['sensitive_words'] = trim($_POST['sensitive_words']);
@@ -682,38 +677,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
                 H::ajax_json_output(AWS_APP::RSM(null, 1, null));
             break;
         }
-    }
-
-    public function report_manage_action()
-    {
-        if (! $_POST['report_ids'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择内容进行操作')));
-        }
-
-        if (! $_POST['action_type'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择操作类型')));
-        }
-
-        if ($_POST['action_type'] == 'delete')
-        {
-            foreach ($_POST['report_ids'] as $val)
-            {
-                $this->model('question')->delete_report($val);
-            }
-        }
-        else if ($_POST['action_type'] == 'handle')
-        {
-            foreach ($_POST['report_ids'] as $val)
-            {
-                $this->model('question')->update_report($val, array(
-                    'status' => 1
-                ));
-            }
-        }
-
-        H::ajax_json_output(AWS_APP::RSM(null, 1, null));
     }
 
     public function lock_topic_action()

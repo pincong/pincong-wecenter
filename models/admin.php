@@ -71,15 +71,10 @@ class admin_class extends AWS_MODEL
         }
 
         $admin_notifications = array(
-                                // 用户举报
-                                'user_report' => $this->count('report', 'status = 0'),
-
                                 // 注册审核
                                 'register_approval' => $this->count('users', 'group_id = 3'),
-
                                 // 认证审核
-                                'verify_approval' => $this->count('verify_apply', 'status = 0'),
-
+                                'verify_approval' => $this->count('verify_apply', 'status = 0')
                             );
 
 
@@ -100,14 +95,6 @@ class admin_class extends AWS_MODEL
         if (!$notifications)
         {
             return false;
-        }
-
-        if ($notifications['user_report'])
-        {
-            $notifications_texts[] = array(
-                                            'url' => 'admin/question/report_list/',
-                                            'text' => AWS_APP::lang()->_t('有 %s 个用户举报待查看', $notifications['user_report'])
-                                        );
         }
 
         if (get_setting('register_valid_type') == 'approval' AND $notifications['register_approval'])

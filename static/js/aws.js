@@ -461,7 +461,6 @@ var AWS =
 	 *	commentEdit : 评论编辑
 	 *  favorite    : 评论添加收藏
 	 *	inbox       : 私信
-	 *  report      : 举报问题
 	 */
 	dialog: function (type, data, callback)
 	{
@@ -510,14 +509,6 @@ var AWS =
 				var template = Hogan.compile(AW_TEMPLATE.inbox).render(
 				{
 					'recipient': data
-				});
-			break;
-
-			case 'report':
-				var template = Hogan.compile(AW_TEMPLATE.reportBox).render(
-				{
-					'item_type': data.item_type,
-					'item_id': data.item_id
 				});
 			break;
 
@@ -635,13 +626,6 @@ var AWS =
 					{
 
 					}, 'json');
-				break;
-
-				case 'report':
-					$('.aw-report-box select option').click(function ()
-					{
-						$('.aw-report-box textarea').text($(this).attr('value'));
-					});
 				break;
 
 				case 'commentEdit':

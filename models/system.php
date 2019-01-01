@@ -453,7 +453,6 @@ class system_class extends AWS_MODEL
 			'favorite',
 			'integral_log',
 			'question_focus',
-			'report',
 			'related_links',
 			'topic_focus',
 			'users_attrib',

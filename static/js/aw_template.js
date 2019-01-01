@@ -286,30 +286,6 @@ var AW_TEMPLATE = {
 			'</ul>'+
 		'</div>',
 
-	'reportBox' :
-			'<div class="modal fade alert-box aw-share-box aw-share-box-message aw-report-box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'+
-				'<div class="modal-dialog">'+
-					'<div class="modal-content">'+
-						'<div class="modal-header">'+
-							'<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>'+
-							'<h3 class="modal-title" id="myModalLabel">' + _t('举报问题') + '</h3>'+
-						'</div>'+
-						'<form id="quick_publish" method="post" action="' + G_BASE_URL + '/question/ajax/save_report/">'+
-							'<input type="hidden" name="type" value="{{item_type}}" />'+
-							'<input type="hidden" name="target_id" value="{{item_id}}" />'+
-							'<div class="modal-body">'+
-								'<div class="alert alert-danger collapse error_message"><i class="icon icon-delete"></i> <em></em></div>'+
-								'<textarea class="form-control" name="reason" rows="5" placeholder="' + _t('请填写举报理由') + '..."></textarea>'+
-							'</div>'+
-							'<div class="modal-footer">'+
-								'<a data-dismiss="modal" aria-hidden="true" class="text-color-999">' + _t('取消') + '</a>'+
-								'<button class="btn btn-large btn-success" onclick="AWS.ajax_post($(\'#quick_publish\'), AWS.ajax_processer, \'error_message\');return false;">' + _t('提交') + '</button>'+
-							'</div>'+
-						'</form>'+
-					'</div>'+
-				'</div>'+
-			'</div>',
-
 	'recommend' :
 		'<div class="modal fade alert-box aw-recommend-box">'+
 			'<div class="modal-dialog">'+

@@ -536,10 +536,6 @@ class ajax extends AWS_CONTROLLER
 		if ($this->is_post() AND !$this->user_info['verified'])
 		{
 			$this->model('verify')->add_apply($this->user_id, $_POST['name'], $_POST['reason'],$_POST['type']);
-
-			//$recipient_uid = get_setting('report_message_uid') ? get_setting('report_message_uid') : 1;
-
-			//$this->model('message')->send_message($this->user_id, $recipient_uid, AWS_APP::lang()->_t('有新的认证请求, 请登录后台查看处理: %s', get_js_url('/admin/user/verify_approval_list/')));
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
