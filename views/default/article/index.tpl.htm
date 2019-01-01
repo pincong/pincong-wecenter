@@ -53,7 +53,7 @@
 											</li>
 										<?php } ?>
 
-										<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
+										<?php if ($this->user_info['permission']['pin_post']) { ?>
 											<li>
 												<?php if ($this->article_info['sort']) { ?>
 												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unpin/', 'item_type=article&item_id=<?php echo $this->article_info['id']; ?>');"><?php _e('取消置顶'); ?></a>

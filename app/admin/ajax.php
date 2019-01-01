@@ -717,6 +717,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			'user_vote_limit_per_day',
 			'publish_article',
             'edit_question_topic',
+			'pin_post',
 			'bump_sink',
 			'vote_agree',
 			'vote_disagree',

@@ -246,7 +246,7 @@ class ajax extends AWS_CONTROLLER
 	// 置顶
 	public function pin_action()
 	{
-		if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
+		if (!$this->user_info['permission']['pin_post'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有设置置顶的权限')));
 		}
@@ -275,7 +275,7 @@ class ajax extends AWS_CONTROLLER
 	// 取消置顶
 	public function unpin_action()
 	{
-		if (!$this->user_info['permission']['is_administrator'] AND !$this->user_info['permission']['is_moderator'])
+		if (!$this->user_info['permission']['pin_post'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有设置置顶的权限')));
 		}
