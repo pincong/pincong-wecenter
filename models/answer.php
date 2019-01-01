@@ -47,7 +47,7 @@ class answer_class extends AWS_MODEL
 		{
 			if (-$answer['agree_count'] >= get_setting('downvote_fold'))
 			{
-				$answer['fold'] = 2;
+				$answer['fold'] = -2;
 			}
 
 			$answers[$answer_id] = $answer;
@@ -99,7 +99,7 @@ class answer_class extends AWS_MODEL
 			{
 				if (-$val['agree_count'] >= $downvote_fold)
 				{
-					$answer_list[$key]['fold'] = 2;
+					$answer_list[$key]['fold'] = -2;
 				}
 
 				$uids[] = $val['uid'];

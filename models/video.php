@@ -241,7 +241,7 @@ class video_class extends AWS_MODEL
 
 			if (-$comment['agree_count'] >= get_setting('downvote_fold'))
 			{
-				$comment['fold'] = 2;
+				$comment['fold'] = -2;
 			}
 		}
 
@@ -278,7 +278,7 @@ class video_class extends AWS_MODEL
 			{
 				if (-$val['agree_count'] >= $downvote_fold)
 				{
-					$comments[$key]['fold'] = 2;
+					$comments[$key]['fold'] = -2;
 				}
 
 				$comment_uids[$val['uid']] = $val['uid'];

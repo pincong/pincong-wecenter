@@ -138,7 +138,7 @@
 							<?php if ($this->comments) { ?>
 
 								<?php foreach ($this->comments AS $key => $val) { ?>
-								<?php if ($val['user_info']['forbidden'] AND !$this->user_info['permission']['is_administrator']) $val['fold'] = -1; ?>
+								<?php if ($val['user_info']['forbidden']) $val['fold'] = -1; ?>
 								<div class="aw-item" id="answer_list_<?php echo $val['id']; ?>">
 									<div class="mod-head">
 										<!-- 用户头像 -->
@@ -156,8 +156,8 @@
 									<div class="mod-body">
 									<?php if ($val['fold']) { ?>
 										<div class="aw-load-more-content">
-											<span class="text-color-999 aw-alert-box text-color-999" href="javascript:;" tabindex="-1" onclick="AWS.User.why_fold();"><?php _e('为什么被折叠?'); ?></span>
-											<a href="javascript:;" class="aw-load-more-content" onclick="$(this).parent().parent().children('.markitup-box').toggle();"><?php _e('评论被折叠'); ?></a>
+											<span class="text-color-999 aw-alert-box text-color-999" href="javascript:;" tabindex="-1" onclick="AWS.User.why_fold(<?php echo $val['fold']; ?>);"><?php _e('为什么被折叠?'); ?></span>
+											<a href="javascript:;" class="aw-load-more-content" onclick="$(this).parent().parent().children('.markitup-box').toggle();"><?php _e('内容被折叠'); ?></a>
 										</div>
 										<div class="markitup-box collapse">
 										<?php if (!$val['message']) { ?>
