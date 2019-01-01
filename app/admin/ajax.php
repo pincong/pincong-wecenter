@@ -79,34 +79,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
             $_POST['img_url'] = rtrim(trim($_POST['img_url']), '\/');
         }
 
-        if ($_POST['request_route_custom'])
-        {
-            $_POST['request_route_custom'] = trim($_POST['request_route_custom']);
-
-            if ($request_routes = explode("\n", $_POST['request_route_custom']))
-            {
-                foreach ($request_routes as $key => $val)
-                {
-                    if (! strstr($val, '==='))
-                    {
-                        continue;
-                    }
-
-                    list($m, $n) = explode('===', $val);
-
-                    if (substr($n, 0, 1) != '/' OR substr($m, 0, 1) != '/')
-                    {
-                        H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('URL 自定义路由规则 URL 必须以 / 开头')));
-                    }
-
-                    if (strstr($m, '/admin') OR strstr($n, '/admin'))
-                    {
-                        H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('URL 自定义路由规则不允许设置 /admin 路由')));
-                    }
-                }
-            }
-        }
-
         if ($_POST['_set_notification_settings'])
         {
             if ($notify_actions = $this->model('notify')->notify_action_details)

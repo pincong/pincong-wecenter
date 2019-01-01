@@ -366,38 +366,6 @@ function get_js_url($url)
 	if (substr($url, 0, 1) == '/')
 	{
 		$url = substr($url, 1);
-
-		if (get_setting('url_rewrite_enable') == 'Y' AND $request_routes = get_request_route())
-		{
-			if (strstr($url, '?'))
-			{
-				$request_uri = explode('?', $url);
-
-				$query_string = $request_uri[1];
-
-				$url = $request_uri[0];
-			}
-			else
-			{
-				unset($query_string);
-			}
-
-			foreach ($request_routes as $key => $val)
-			{
-				if (preg_match('/^' . $val[0] . '$/', $url))
-				{
-					$url = preg_replace('/^' . $val[0] . '$/', $val[1], $url);
-
-					break;
-				}
-			}
-
-			if ($query_string)
-			{
-				$url .= '?' . $query_string;
-			}
-		}
-
 		$url = base_url() . '/' . ((get_setting('url_rewrite_enable') != 'Y') ? G_INDEX_SCRIPT : '') . $url;
 	}
 
@@ -471,67 +439,6 @@ function new_post_hash()
 	return AWS_APP::form()->new_post_hash();
 }
 
-/**
- * 构造或解析路由规则后得到的请求地址数组
- *
- * 返回二维数组, 二位数组, 每个规则占据一条, 被处理的地址通过下标 0 返回, 处理后的地址通过下标 1 返回
- *
- * @param  boolean
- * @return array
- */
-function get_request_route($positive = true)
-{
-	if (!$route_data = get_setting('request_route_custom'))
-	{
-		return false;
-	}
-
-	if ($request_routes = explode("\n", $route_data))
-	{
-		$routes = array();
-
-		$replace_array = array("(:any)" => "([^\"'&#\?\/]+[&#\?\/]*[^\"'&#\?\/]*)", "(:num)" => "([0-9]+)");
-
-		foreach ($request_routes as $key => $val)
-		{
-			$val = trim($val);
-
-			if (!$val)
-			{
-				continue;
-			}
-
-			if ($positive)
-			{
-				list($pattern, $replace) = explode('===', $val);
-			}
-			else
-			{
-				list($replace, $pattern) = explode('===', $val);
-			}
-
-			if (substr($pattern, 0, 1) == '/' and $pattern != '/')
-			{
-				$pattern = substr($pattern, 1);
-			}
-
-			if (substr($replace, 0, 1) == '/' and $replace != '/')
-			{
-				$replace = substr($replace, 1);
-			}
-
-			$pattern = addcslashes($pattern, "/\.?");
-
-			$pattern = str_replace(array_keys($replace_array), array_values($replace_array), $pattern);
-
-			$replace = str_replace(array_keys($replace_array), "\$1", $replace);
-
-			$routes[] = array($pattern, $replace);
-		}
-
-		return $routes;
-	}
-}
 
 /**
  * 格式化输出相应的语言

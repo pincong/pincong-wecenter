@@ -98,11 +98,6 @@ class core_uri
 			$request_main = str_replace($base_script . '/', '', $request_main);
 		}
 
-		if (count($requests) == 1)
-		{
-			$request_main = $this->_parse_uri($request_main);
-		}
-
 		$this->request_main = $request_main;
 	}
 
@@ -316,27 +311,5 @@ class core_uri
 		
 		return $this;
 	}
-	
-	private function _parse_uri($request_main)
-	{
-		if (get_setting('url_rewrite_enable') == 'Y' AND $request_routes = get_request_route(false))
-		{
-			if (!$request_main)
-			{
-				$request_main = '/';
-			}
 
-			foreach($request_routes as $key => $val)
-			{
-				if (preg_match('/^' . $val[0] . '/', $request_main))
-				{
-					$request_main = preg_replace('/^' . $val[0] . '/', $val[1], $request_main);
-
-					return $request_main;
-				}
-			}
-		}
-
-		return $request_main;
-	}
 }
