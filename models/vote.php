@@ -149,6 +149,7 @@ class vote_class extends AWS_MODEL
 			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + 1 WHERE answer_id = ' . ($item_id);
 		}
 		$this->query($sql);
+		$factor = $this->calc_upvote_reputation_factor($uid, $factor);
 		$this->model('reputation')->increase_agree_count_and_reputation($item_uid, 1, $factor);
 	}
 
@@ -166,7 +167,57 @@ class vote_class extends AWS_MODEL
 			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count - 1 WHERE answer_id = ' . ($item_id);
 		}
 		$this->query($sql);
+		$factor = $this->calc_downvote_reputation_factor($uid, $factor);
 		$this->model('reputation')->increase_agree_count_and_reputation($item_uid, -1, $factor);
+	}
+
+	private function calc_upvote_reputation_factor($uid, $factor)
+	{
+		$arg = get_setting('reputation_dynamic_weight_agree');
+		if (is_numeric($arg))
+		{
+			$factor = $this->calc_dynamic_reputation_factor($factor, $arg, $this->get_user_upvotes_last_week($uid));
+		}
+		return $factor;
+	}
+
+	private function calc_downvote_reputation_factor($uid, $factor)
+	{
+		$arg = get_setting('reputation_dynamic_weight_disagree');
+		if (is_numeric($arg))
+		{
+			$factor = $this->calc_dynamic_reputation_factor($factor, $arg, $this->get_user_downvotes_last_week($uid));
+		}
+		return $factor;
+	}
+
+	private function calc_dynamic_reputation_factor($factor, $arg, $total)
+	{
+		if ($total > 0)
+		{
+			$factor = $factor * round(exp(-floatval($arg) * $total), 6);
+			if (is_infinite($factor))
+			{
+				$factor = 0;
+			}
+		}
+		return $factor;
+	}
+
+	private function get_user_upvotes_last_week($uid)
+	{
+		$time_after = real_time() - 24 * 3600 * 7;
+
+		$where = "add_time > " . $time_after . " AND value > 0 AND uid =" . intval($uid);
+		return intval($this->count('vote', $where));
+	}
+
+	private function get_user_downvotes_last_week($uid)
+	{
+		$time_after = real_time() - 24 * 3600 * 7;
+
+		$where = "add_time > " . $time_after . " AND value < 0 AND uid =" . intval($uid);
+		return intval($this->count('vote', $where));
 	}
 
 	private function increase_vote_value($id)
