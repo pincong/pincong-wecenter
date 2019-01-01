@@ -746,7 +746,7 @@ class core_upload {
             $this->upload_path = str_replace("\\", "/", realpath($this->upload_path));
         }
 
-        if (!defined('IN_SAE'))
+        //if (!defined('IN_SAE'))
         {
             if ( ! is_dir($this->upload_path))
             {

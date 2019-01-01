@@ -32,8 +32,8 @@ class Services_RemoteStorage
 	private static function request($method, &$filename, &$content)
 	{
 		if ($method == 'PUT')
-			file_put_contents($filename, $content);
-		return '{"status_code": 200}';
+			file_put_contents(get_setting('upload_dir').$filename, $content);
+		return json_decode('{"status_code": 200}', true);
 	}
 
 }

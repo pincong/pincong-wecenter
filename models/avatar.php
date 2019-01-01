@@ -91,12 +91,16 @@ class avatar_class extends AWS_MODEL
 			return false;
 		}
 
+		$local_upload_dir = get_setting('upload_dir');
+		$save_dir = $local_upload_dir . '/avatar/' . $this->get_avatar_dir($uid);
+		$filename = $this->model('avatar')->get_avatar_filename($uid, 'real');
+
 		AWS_APP::upload()->initialize(array(
 			'allowed_types' => get_setting('allowed_upload_types'),
-			'upload_path' => get_setting('upload_dir') . '/avatar/' . $this->get_avatar_dir($uid),
+			'upload_path' => $save_dir,
 			'is_image' => TRUE,
 			'max_size' => get_setting('upload_size_limit'),
-			'file_name' => $this->model('avatar')->get_avatar_filename($uid, 'real'),
+			'file_name' => $filename,
 			'encrypt_name' => FALSE
 		))->do_upload($field);
 
@@ -127,9 +131,10 @@ class avatar_class extends AWS_MODEL
 		foreach(AWS_APP::config()->get('image')->avatar_thumbnail AS $key => $val)
 		{
 			$result = AWS_APP::image()->initialize(array(
+				'local_upload_dir' => $local_upload_dir,
 				'quality' => 90,
-				'source_image' => $upload_data['full_path'],
-				'new_image' => $upload_data['file_path'] . $this->get_avatar_filename($uid, $key),
+				'source_image' => $save_dir . $filename,
+				'new_image' => $save_dir . $this->get_avatar_filename($uid, $key),
 				'width' => $val['w'],
 				'height' => $val['h']
 			))->resize();

@@ -33,6 +33,7 @@ class core_image
 	var $width;
 	var $height;
 	var $quality = 90;
+	var $local_upload_dir = '';
 
 	var $option = IMAGE_CORE_OP_TO_FILE;
 
@@ -207,8 +208,7 @@ class core_image
 			if (Services_RemoteStorage::is_enabled())
 			{
 				$content = $im->getimageblob();
-				$response = Services_RemoteStorage::put($this->new_image, $content);
-				if (!$response OR $response['status_code'] != 200)
+				if (!$this->saveToRemoteStorage($this->new_image, $content))
 				{
 					$result = false;
 				}
@@ -386,8 +386,7 @@ class core_image
 						$content = ob_get_contents();
 						ob_end_clean();
 
-						$response = Services_RemoteStorage::put($this->new_image, $content);
-						if (!$response OR $response['status_code'] != 200)
+						if (!$this->saveToRemoteStorage($this->new_image, $content))
 						{
 							$result = false;
 						}
@@ -406,8 +405,7 @@ class core_image
 						$content = ob_get_contents();
 						ob_end_clean();
 
-						$response = Services_RemoteStorage::put($this->new_image, $content);
-						if (!$response OR $response['status_code'] != 200)
+						if (!$this->saveToRemoteStorage($this->new_image, $content))
 						{
 							$result = false;
 						}
@@ -448,4 +446,16 @@ class core_image
 
 		return $result;
 	}
+
+	private function saveToRemoteStorage($path, &$content)
+	{
+		$path = str_replace($this->local_upload_dir, '', $path);
+		$response = Services_RemoteStorage::put($path, $content);
+		if (!$response OR $response['status_code'] != 200)
+		{
+			return false;
+		}
+		return true;
+	}
+
 }
