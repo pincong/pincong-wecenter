@@ -319,9 +319,53 @@
 
 <script type="text/javascript">
 var ANSWER_EDIT_TIME = <?php echo get_setting('answer_edit_time'); ?>;
+var VIDEO_ID = <?php echo $this->video_info['id']; ?>;
+var video_metadata;
+var $html5_video;
+
+function get_video_metadata(callback) {
+	var url = G_BASE_URL + '/v/api/get_video_metadata/';
+	var params = 'video_id=' + VIDEO_ID;
+	$.post(url, params + '&_post_type=ajax', function(result) {
+		if (!result['rsm'] || !result['rsm']['formats']) {
+			callback('error');
+			return;
+		}
+		callback(null, result['rsm']);
+	}, 'json').error(function(error) {
+		callback('error');
+	});
+}
+
+function get_and_play_video() {
+	get_video_metadata(function(error, data) {
+		if (error) {
+			alert('解析视频失败');
+			return;
+		}
+		video_metadata = data;
+		var video = $html5_video[0];
+		var source = document.createElement('source');
+		source.src = data['formats'][0]['url'];
+		video.appendChild(source);
+		video.play();
+	});
+}
+
+function play_video() {
+	if (video_metadata)
+		return;
+	get_and_play_video();
+}
+
 
 $(document).ready(function () {
-	if ($('#c_log_list').attr('id'))
+	$html5_video = $('.ab-player .ab-video video');
+	$html5_video.attr('poster', '<?php echo $this->video_info['thumb_url']; ?>');
+	$('.ab-player .ab-play-btn').click(play_video);
+
+
+	/*if ($('#c_log_list').attr('id'))
 	{
 		AWS.load_list_view(G_BASE_URL + '/v/ajax/log/id-<?php echo $this->video_info['id']; ?>', $('#bp_log_more'), $('#c_log_list'));
 	}
@@ -329,7 +373,7 @@ $(document).ready(function () {
 	{
 		AWS.at_user_lists('#wmd-input');
 		AWS.Init.init_article_comment_box($('.aw-article-comment'));
-	}
+	}*/
 });
 </script>
 
