@@ -932,8 +932,8 @@ CREATE TABLE IF NOT EXISTS `aws_video` (
 -- Data exporting was unselected.
 
 
--- Dumping structure for table panic.aws_video_comments
-CREATE TABLE IF NOT EXISTS `aws_video_comments` (
+-- Dumping structure for table panic.aws_video_comment
+CREATE TABLE IF NOT EXISTS `aws_video_comment` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `uid` int(10) DEFAULT '0',
   `video_id` int(10) DEFAULT '0',

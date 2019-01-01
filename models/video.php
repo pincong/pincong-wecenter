@@ -144,7 +144,7 @@ class video_class extends AWS_MODEL
 
 	public function get_comment_by_id($comment_id)
 	{
-		if ($comment = $this->fetch_row('video_comments', 'id = ' . intval($comment_id)))
+		if ($comment = $this->fetch_row('video_comment', 'id = ' . intval($comment_id)))
 		{
 			$comment_user_infos = $this->model('account')->get_user_info_by_uids(array(
 				$comment['uid'],
@@ -175,7 +175,7 @@ class video_class extends AWS_MODEL
 
 		array_walk_recursive($comment_ids, 'intval_string');
 
-		if ($comments = $this->fetch_all('video_comments', 'id IN (' . implode(',', $comment_ids) . ')'))
+		if ($comments = $this->fetch_all('video_comment', 'id IN (' . implode(',', $comment_ids) . ')'))
 		{
 			//$comment_downvote_fold = get_setting('comment_downvote_fold');
 			foreach ($comments AS $key => $val)
@@ -196,7 +196,7 @@ class video_class extends AWS_MODEL
 
 	public function get_comments($video_id, $page, $per_page)
 	{
-		if ($comments = $this->fetch_page('video_comments', 'video_id = ' . intval($video_id), 'id ASC', $page, $per_page))
+		if ($comments = $this->fetch_page('video_comment', 'video_id = ' . intval($video_id), 'id ASC', $page, $per_page))
 		{
 			//$comment_downvote_fold = get_setting('comment_downvote_fold');
 			foreach ($comments AS $key => $val)
@@ -241,9 +241,9 @@ class video_class extends AWS_MODEL
 
 		$this->delete('video_log', 'item_id = ' . intval($video_id));
 
-		$this->delete('video_comments', "video_id = " . intval($video_id)); // 删除关联的回复内容
+		$this->delete('video_comment', "video_id = " . intval($video_id)); // 删除关联的回复内容
 
-		//$this->delete('video_danmaku', 'video_id = ' . intval($video_id));
+		$this->delete('video_danmaku', 'video_id = ' . intval($video_id));
 
 		$this->delete('topic_relation', "`type` = 'video' AND item_id = " . intval($video_id));		// 删除话题关联
 
@@ -266,7 +266,7 @@ class video_class extends AWS_MODEL
 
 	public function remove_video_comment($comment, $uid)
 	{
-		$this->update('video_comments', array(
+		$this->update('video_comment', array(
 			'message' => null
 		), "id = " . $comment['id']);
 

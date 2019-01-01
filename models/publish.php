@@ -429,7 +429,7 @@ class publish_class extends AWS_MODEL
 		$video_id = $video_info['id'];
 		$now = fake_time();
 
-		$comment_id = $this->insert('video_comments', array(
+		$comment_id = $this->insert('video_comment', array(
 			'uid' => intval($uid),
 			'video_id' => intval($video_id),
 			'message' => htmlspecialchars($message),
@@ -439,7 +439,7 @@ class publish_class extends AWS_MODEL
 		));
 
 		$this->update('video', array(
-			'comment_count' => $this->count('video_comments', 'video_id = ' . intval($video_id)),
+			'comment_count' => $this->count('video_comment', 'video_id = ' . intval($video_id)),
 			'update_time' => $now
 		), 'id = ' . intval($video_id));
 
@@ -660,7 +660,7 @@ class publish_class extends AWS_MODEL
 		$time_after = real_time() - 24 * 3600;
 
 		$where = "add_time > " . $time_after . " AND uid =" . $uid;
-		$count = $this->count('video_comments', $where);
+		$count = $this->count('video_comment', $where);
 		if ($count >= $limit)
 		{
 			return false;
