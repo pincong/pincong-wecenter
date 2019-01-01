@@ -150,9 +150,10 @@ class follow_class extends AWS_MODEL
 		return $this->model('account')->get_user_info_by_uids($friend_uids, $users_attrib);
 	}
 
-	public function get_user_friends_ids($fans_uid)
+	// 得到我关注的人 uid
+	public function get_user_friends_ids($fans_uid, $limit = 20)
 	{
-		if (!$user_follow = $this->fetch_all('user_follow', 'fans_uid = ' . intval($fans_uid)))
+		if (!$user_follow = $this->fetch_all('user_follow', 'fans_uid = ' . intval($fans_uid), 'add_time DESC', $limit))
 		{
 			return false;
 		}

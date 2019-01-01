@@ -8,7 +8,7 @@
 					<a name="c_contents"></a>
 					<div class="aw-mod clearfix">
 						<div class="mod-head common-head">
-							<h2 id="main_title"><?php _e('最新动态'); ?></h2>
+							<h2 id="main_title"><?php _e('邀请我回复的问题'); ?><?php if ($this->user_info['invite_count']) { ?><span class="badge"><?php echo $this->user_info['invite_count']; ?></span><?php } ?></h2>
 						</div>
 
 						<div class="mod-body aw-feed-list clearfix" id="main_contents"></div>
@@ -39,7 +39,7 @@
 
 <script type="text/javascript">
 $(document).ready(function () {
-	AWS.load_list_view(G_BASE_URL + '/home/info/activities/', $('#bp_more'), $('#main_contents'), 1);
+	AWS.load_list_view(G_BASE_URL + '/home/info/invites/', $('#bp_more'), $('#main_contents'));
 });
 </script>
 

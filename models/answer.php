@@ -65,14 +65,9 @@ class answer_class extends AWS_MODEL
 
 		if ($answers = $this->fetch_all('answer', "answer_id IN (" . implode(', ', $answer_ids) . ")"))
 		{
-			$downvote_fold = get_setting('downvote_fold');
+			// 不折叠
 			foreach ($answers AS $key => $val)
 			{
-				if (-$val['agree_count'] >= $downvote_fold)
-				{
-					$val['fold'] = 2;
-				}
-
 				$result[$val['answer_id']] = $val;
 			}
 		}

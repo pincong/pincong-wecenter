@@ -229,13 +229,9 @@ class article_class extends AWS_MODEL
 
 		if ($comments = $this->fetch_all('article_comment', 'id IN (' . implode(',', $comment_ids) . ')'))
 		{
-			$downvote_fold = get_setting('downvote_fold');
+			// 不折叠
 			foreach ($comments AS $key => $val)
 			{
-				if (-$val['agree_count'] >= $downvote_fold)
-				{
-					$val['fold'] = 2;
-				}
 				$article_comments[$val['id']] = $val;
 			}
 		}
