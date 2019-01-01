@@ -138,7 +138,7 @@ class article_class extends AWS_MODEL
 
 	public function get_comment_by_id($comment_id)
 	{
-		if ($comment = $this->fetch_row('article_comments', 'id = ' . intval($comment_id)))
+		if ($comment = $this->fetch_row('article_comment', 'id = ' . intval($comment_id)))
 		{
 			$comment_user_infos = $this->model('account')->get_user_info_by_uids(array(
 				$comment['uid'],
@@ -166,7 +166,7 @@ class article_class extends AWS_MODEL
 
 		array_walk_recursive($comment_ids, 'intval_string');
 
-		if ($comments = $this->fetch_all('article_comments', 'id IN (' . implode(',', $comment_ids) . ')'))
+		if ($comments = $this->fetch_all('article_comment', 'id IN (' . implode(',', $comment_ids) . ')'))
 		{
 			$comment_downvote_fold = get_setting('comment_downvote_fold');
 			foreach ($comments AS $key => $val)
@@ -184,7 +184,7 @@ class article_class extends AWS_MODEL
 
 	public function get_comments($article_id, $page, $per_page)
 	{
-		if ($comments = $this->fetch_page('article_comments', 'article_id = ' . intval($article_id), 'id ASC', $page, $per_page))
+		if ($comments = $this->fetch_page('article_comment', 'article_id = ' . intval($article_id), 'id ASC', $page, $per_page))
 		{
 			$comment_downvote_fold = get_setting('comment_downvote_fold');
 			foreach ($comments AS $key => $val)
@@ -226,7 +226,7 @@ class article_class extends AWS_MODEL
 
 		$this->delete('article_log', 'item_id = ' . intval($article_id));
 
-		$this->delete('article_comments', "article_id = " . intval($article_id)); // 删除关联的回复内容
+		$this->delete('article_comment', "article_id = " . intval($article_id)); // 删除关联的回复内容
 
 		$this->delete('article_vote', 'article_id = ' . intval($article_id));
 
@@ -254,10 +254,10 @@ class article_class extends AWS_MODEL
 			return false;
 		}
 
-		$this->delete('article_comments', 'id = ' . $comment_info['id']);
+		$this->delete('article_comment', 'id = ' . $comment_info['id']);
 
 		$this->update('article', array(
-			'comments' => $this->count('article_comments', 'article_id = ' . $comment_info['article_id'])
+			'comments' => $this->count('article_comment', 'article_id = ' . $comment_info['article_id'])
 		), 'id = ' . $comment_info['article_id']);
 
 		return true;
@@ -265,7 +265,7 @@ class article_class extends AWS_MODEL
 
 	public function remove_article_comment($comment, $uid)
 	{
-		$this->update('article_comments', array(
+		$this->update('article_comment', array(
 			'message' => null
 		), "id = " . $comment['id']);
 
@@ -517,7 +517,7 @@ class article_class extends AWS_MODEL
 			break;
 
 			case 'comment':
-				$this->query('UPDATE ' . $this->get_table('article_comments') . ' SET votes = votes + ' . $add_agree_count . ' WHERE id = ' . ($item_id));
+				$this->query('UPDATE ' . $this->get_table('article_comment') . ' SET votes = votes + ' . $add_agree_count . ' WHERE id = ' . ($item_id));
 			break;
 		}
 

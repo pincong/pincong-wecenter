@@ -300,7 +300,7 @@ class publish_class extends AWS_MODEL
 		$article_id = $article_info['id'];
 		$now = fake_time();
 
-		$comment_id = $this->insert('article_comments', array(
+		$comment_id = $this->insert('article_comment', array(
 			'uid' => intval($uid),
 			'article_id' => intval($article_id),
 			'message' => htmlspecialchars($message),
@@ -311,7 +311,7 @@ class publish_class extends AWS_MODEL
 
 		// TODO: comments 字段改为 comment_count
 		$this->update('article', array(
-			'comments' => $this->count('article_comments', 'article_id = ' . intval($article_id)),
+			'comments' => $this->count('article_comment', 'article_id = ' . intval($article_id)),
 			'update_time' => $now
 		), 'id = ' . intval($article_id));
 
@@ -604,7 +604,7 @@ class publish_class extends AWS_MODEL
 		$time_after = real_time() - 24 * 3600;
 
 		$where = "add_time > " . $time_after . " AND uid =" . $uid;
-		$count = $this->count('article_comments', $where);
+		$count = $this->count('article_comment', $where);
 		if ($count >= $limit)
 		{
 			return false;

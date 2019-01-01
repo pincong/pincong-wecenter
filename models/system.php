@@ -494,7 +494,7 @@ class system_class extends AWS_MODEL
 			$update_tables[] = 'article';
 
 			$delete_tables[] = 'answer_comments';
-			$delete_tables[] = 'article_comments';
+			$delete_tables[] = 'article_comment';
 			$delete_tables[] = 'question_comments';
 
 			if ($inbox_dialog = $this->fetch_all('inbox_dialog', 'recipient_uid = ' . intval($uid) . ' OR sender_uid = ' . intval($uid)))
@@ -511,7 +511,7 @@ class system_class extends AWS_MODEL
 			$update_tables[] = 'answer';
 			$update_tables[] = 'answer_comments';
 			$update_tables[] = 'article';
-			$update_tables[] = 'article_comments';
+			$update_tables[] = 'article_comment';
 			$update_tables[] = 'question_comments';
 			$delete_tables[] = 'inbox';
 

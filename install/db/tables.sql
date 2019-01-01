@@ -97,8 +97,8 @@ CREATE TABLE IF NOT EXISTS `aws_article` (
 -- Data exporting was unselected.
 
 
--- Dumping structure for table panic.aws_article_comments
-CREATE TABLE IF NOT EXISTS `aws_article_comments` (
+-- Dumping structure for table panic.aws_article_comment
+CREATE TABLE IF NOT EXISTS `aws_article_comment` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `uid` int(10) DEFAULT '0',
   `article_id` int(10) DEFAULT '0',
