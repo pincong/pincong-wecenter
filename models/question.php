@@ -766,27 +766,6 @@ class question_class extends AWS_MODEL
 		return $comment_id;
 	}
 
-	public function check_comment_limit_rate($uid, $user_permission)
-	{
-		$limit = intval($user_permission['comment_limit_per_day']);
-		if (!$limit)
-		{
-			return true;
-		}
-
-		$uid = intval($uid);
-		$time_after = real_time() - 24 * 3600;
-
-		$where = "time > " . $time_after . " AND uid =" . $uid;
-		$count = $this->count('question_comments', $where);
-		if ($count >= $limit)
-		{
-			return false;
-		}
-
-		return true;
-	}
-
 	public function get_question_comments($question_id)
 	{
 		return $this->fetch_all('question_comments', 'question_id = ' . intval($question_id), "id ASC");

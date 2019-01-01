@@ -158,7 +158,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得超过 %s 字', $comment_length_max)));
 		}
 
-		if (!$this->model('answer')->check_comment_limit_rate($this->user_id, $this->user_info['permission']))
+		if (!$this->model('ratelimit')->check_answer_comment($this->user_id, $this->user_info['permission']['comment_limit_per_day']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日评论回复已经达到上限')));
 		}
@@ -253,7 +253,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得超过 %s 字', $comment_length_max)));
 		}
 
-		if (!$this->model('question')->check_comment_limit_rate($this->user_id, $this->user_info['permission']))
+		if (!$this->model('ratelimit')->check_question_comment($this->user_id, $this->user_info['permission']['comment_limit_per_day']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日评论问题已经达到上限')));
 		}
@@ -380,7 +380,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
 		}
 
-		if (!$this->model('publish')->check_answer_limit_rate($this->user_id, $this->user_info['permission']))
+		if (!$this->model('ratelimit')->check_answer($this->user_id, $this->user_info['permission']['reply_limit_per_day']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天的回复已经达到上限')));
 		}

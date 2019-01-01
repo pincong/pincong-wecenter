@@ -47,7 +47,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
 		}
 
-		if (!$this->model('vote')->check_user_vote_limit_rate($this->user_id, $this->user_info['permission']))
+		if (!$this->model('vote')->check_user_vote_rate_limit($this->user_id, $this->user_info['permission']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日赞同/反对已经达到上限')));
 		}
@@ -82,7 +82,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
 		}
 
-		if (!$this->model('vote')->check_user_vote_limit_rate($this->user_id, $this->user_info['permission']))
+		if (!$this->model('vote')->check_user_vote_rate_limit($this->user_id, $this->user_info['permission']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日赞同/反对已经达到上限')));
 		}

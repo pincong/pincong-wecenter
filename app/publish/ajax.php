@@ -140,6 +140,26 @@ class ajax extends AWS_CONTROLLER
 		}
 	}
 
+	private function get_anonymous_uid($type)
+	{
+		if (!$anonymous_uid = $this->model('anonymous')->get_anonymous_uid())
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('本站未开启匿名功能')));
+		}
+
+		if (!$this->model('anonymous')->check_rate_limit($type, $anonymous_uid))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日匿名额度已经用完')));
+		}
+
+		if (!$this->model('anonymous')->check_spam($anonymous_uid))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('检测到滥用行为, 匿名功能暂时关闭')));
+		}
+
+		return $anonymous_uid;
+	}
+
 
 	public function publish_question_action()
 	{
@@ -153,12 +173,17 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
 		}
 
-		if (!$this->model('publish')->check_question_limit_rate($this->user_id, $this->user_info['permission']))
+		if (!$this->model('ratelimit')->check_question($this->user_id, $this->user_info['permission']['thread_limit_per_day']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天发布的问题已经达到上限')));
 		}
 
 		$this->do_validate();
+
+		if ($_POST['anonymous'])
+		{
+			$anonymous_uid = $this->get_anonymous_uid('question');
+		}
 
 		// !注: 来路检测后面不能再放报错提示
 		if (!valid_post_hash($_POST['post_hash']))
@@ -220,12 +245,17 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
 		}
 
-		if (!$this->model('publish')->check_article_limit_rate($this->user_id, $this->user_info['permission']))
+		if (!$this->model('ratelimit')->check_article($this->user_id, $this->user_info['permission']['thread_limit_per_day']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天发布的文章已经达到上限')));
 		}
 
 		$this->do_validate();
+
+		if ($_POST['anonymous'])
+		{
+			$anonymous_uid = $this->get_anonymous_uid('article');
+		}
 
 		// !注: 来路检测后面不能再放报错提示
 		if (!valid_post_hash($_POST['post_hash']))
@@ -291,12 +321,17 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
 		}
 
-		if (!$this->model('publish')->check_video_limit_rate($this->user_id, $this->user_info['permission']))
+		if (!$this->model('ratelimit')->check_video($this->user_id, $this->user_info['permission']['thread_limit_per_day']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天发布的投稿已经达到上限')));
 		}
 
 		$this->do_validate();
+
+		if ($_POST['anonymous'])
+		{
+			$anonymous_uid = $this->get_anonymous_uid('video');
+		}
 
 		// TODO: why?
 		// !注: 来路检测后面不能再放报错提示

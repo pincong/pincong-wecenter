@@ -318,7 +318,7 @@ class vote_class extends AWS_MODEL
 	}
 
 
-	public function check_user_vote_limit_rate($uid, $user_permission)
+	public function check_user_vote_rate_limit($uid, $user_permission)
 	{
 		$limit = intval($user_permission['user_vote_limit_per_day']);
 		if (!$limit)
