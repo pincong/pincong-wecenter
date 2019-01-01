@@ -28,7 +28,7 @@ class AWS_CONTROLLER
 
 	public function __construct($process_setup = true)
 	{
-		// 获取当前用户 User ID
+		// 从 Session 中获取当前用户 User ID
 		$this->user_id = AWS_APP::user()->get_info('uid');
 
 		if ($this->user_info = $this->model('account')->get_user_info_by_uid($this->user_id, TRUE))
@@ -38,6 +38,15 @@ class AWS_CONTROLLER
 			if ($this->user_info['default_timezone'])
 			{
 				date_default_timezone_set($this->user_info['default_timezone']);
+			}
+
+			// 如果上次登录时间早于12小时, 则更新登录时间
+			// TODO: 在管理后台添加选项
+			$seconds = 12 * 3600;
+			$time_before = real_time() - (12 * 3600);
+			if ($this->user_info['last_login'] < $time_before)
+			{
+				$this->model('account')->update_user_last_login($this->user_info['uid']);
 			}
 
 		}

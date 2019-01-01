@@ -35,7 +35,6 @@ class core_user
 				if ($user_info = AWS_APP::model('account')->check_hash_login($sso_user_login['user_name'], $sso_user_login['password']))
 				{
 					AWS_APP::session()->client_info['__CLIENT_UID'] = $user_info['uid'];
-					AWS_APP::session()->client_info['__CLIENT_USER_NAME'] = $user_info['user_name'];
 
 					return true;
 				}
