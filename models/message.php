@@ -273,7 +273,6 @@ class message_class extends AWS_MODEL
 			$time_before = 0;
 		}
 		$this->delete('inbox', 'add_time < ' . $time_before);
-		$this->delete('inbox_dialog', 'add_time < ' . $time_before);
 	}
 
 }
