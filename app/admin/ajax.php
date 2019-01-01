@@ -711,7 +711,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
             'visit_question',
             'visit_topic',
             'visit_people',
-            'answer_show',
             'operation_interval',
 			'thread_limit_per_day',
 			'reply_limit_per_day',
