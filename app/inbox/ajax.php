@@ -35,7 +35,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		$message = $_POST['message'];
-		if (my_trim($message) == '')
+		if (trim($message) == '')
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入私信内容')));
 		}

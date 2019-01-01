@@ -241,7 +241,7 @@ class topic_class extends AWS_MODEL
 
 		if ($topic_title)
 		{
-			$data['topic_title'] = htmlspecialchars(my_trim($topic_title));
+			$data['topic_title'] = htmlspecialchars(trim($topic_title));
 		}
 
 		if ($topic_description)

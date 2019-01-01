@@ -1128,15 +1128,6 @@ function fake_time($timestamp = 0)
 	return intval($timestamp / 86400) * 86400 + rand($min, $max);
 }
 
-function my_trim($str)
-{
-	// trim 不适用于处理多字节字符
-	// trim('【BUG】trim 函数处理全角空格会产生 bug 会清除整个字符串', "　");
-	// trim('【BUG】trim 函数处理 NBSP(U+00A0) 会产生 bug 你你你你你', " "); // U+00A0 NO-BREAK SPACE
-
-	return trim($str, "\x00..\x20");
-}
-
 
 function rand_minmax($min, $max, $default = 0, $undefined = 0)
 {

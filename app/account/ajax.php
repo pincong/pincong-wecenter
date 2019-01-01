@@ -73,7 +73,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('本站只能通过邀请注册')));
 		}
 
-		if (my_trim($_POST['user_name']) == '')
+		if (trim($_POST['user_name']) == '')
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入用户名')));
 		}
@@ -104,7 +104,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名包含无效字符')));
 		}
-		if ($this->model('account')->check_username_sensitive_words($_POST['user_name']) OR my_trim($_POST['user_name']) != $_POST['user_name'])
+		if ($this->model('account')->check_username_sensitive_words($_POST['user_name']) OR trim($_POST['user_name']) != $_POST['user_name'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名中包含敏感词或系统保留字')));
 		}
@@ -236,7 +236,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function request_find_password_action()
 	{
-		if (!$user_name = my_trim($_POST['user_name']))
+		if (!$user_name = trim($_POST['user_name']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1',  AWS_APP::lang()->_t('请填写用户名')));
 		}
@@ -258,7 +258,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function find_password_modify_action()
 	{
-		if (!$recovery_code = my_trim($_POST['recovery_code']))
+		if (!$recovery_code = trim($_POST['recovery_code']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1',  AWS_APP::lang()->_t('请填写恢复码')));
 		}
@@ -350,7 +350,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if ($_POST['user_name'] AND $_POST['user_name'] != $this->user_info['user_name'])
 		{
-			if ($user_name = htmlspecialchars(my_trim($_POST['user_name'])))
+			if ($user_name = htmlspecialchars(trim($_POST['user_name'])))
 			{
 				if ($this->user_info['user_update_time'] AND $this->user_info['user_update_time'] > (time() - 3600 * 24 * 30))
 				{
@@ -435,7 +435,7 @@ class ajax extends AWS_CONTROLLER
 		$status = intval($_POST['status']);
 		if ($status)
 		{
-			$reason = my_trim($_POST['reason']);
+			$reason = trim($_POST['reason']);
 			if (!$reason)
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写理由')));
@@ -520,7 +520,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 
-		$text = my_trim($_POST['text']);
+		$text = trim($_POST['text']);
 		if (!$text)
 		{
 			$text = null;
@@ -551,7 +551,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 
-		$text = my_trim($_POST['text']);
+		$text = trim($_POST['text']);
 		if (!$text)
 		{
 			$text = null;

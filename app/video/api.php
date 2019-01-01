@@ -83,7 +83,7 @@ class api extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('数据错误')));
 		}
 
-		$text = my_trim($_POST['text']);
+		$text = trim($_POST['text']);
 
 		if (!$text)
 		{

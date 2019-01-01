@@ -86,7 +86,7 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		$_POST['title'] = my_trim($_POST['title']);
+		$_POST['title'] = trim($_POST['title']);
 		if (!$_POST['title'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请输入标题')));
@@ -103,7 +103,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请不要重复提交')));
 		}
 
-		$_POST['message'] = my_trim($_POST['message']);
+		$_POST['message'] = trim($_POST['message']);
 		// TODO: 在管理后台添加字数选项
 		if (cjk_strlen($_POST['message']) > 20000)
 		{
@@ -115,7 +115,7 @@ class ajax extends AWS_CONTROLLER
 			$topic_title_limit = intval(get_setting('topic_title_limit'));
 			foreach ($_POST['topics'] AS $key => $topic_title)
 			{
-				$topic_title = my_trim($topic_title);
+				$topic_title = trim($topic_title);
 
 				if (!$topic_title)
 				{
@@ -200,7 +200,7 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		$_POST['message'] = my_trim($_POST['message']);
+		$_POST['message'] = trim($_POST['message']);
 		if (!$_POST['message'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入回复内容')));
@@ -377,7 +377,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
 		}
 
-		$web_url = my_trim($_POST['web_url']);
+		$web_url = trim($_POST['web_url']);
 		if (!Services_VideoParser::check_url($web_url))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('无法识别影片来源')));
@@ -598,7 +598,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$_POST['do_delete'])
 		{
-			$web_url = my_trim($_POST['web_url']);
+			$web_url = trim($_POST['web_url']);
 			$modify_source = !!$web_url;
 			if ($modify_source AND !Services_VideoParser::check_url($web_url))
 			{
