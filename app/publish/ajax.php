@@ -46,8 +46,33 @@ class ajax extends AWS_CONTROLLER
 		exit($this->model('system')->build_category_json());
 	}
 
+	private function get_anonymous_uid($type)
+	{
+		if (!$anonymous_uid = $this->model('anonymous')->get_anonymous_uid())
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('本站未开启匿名功能')));
+		}
+
+		if (!$this->model('anonymous')->check_rate_limit($type, $anonymous_uid))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日匿名额度已经用完')));
+		}
+
+		if (!$this->model('anonymous')->check_spam($anonymous_uid))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('检测到滥用行为, 匿名功能暂时关闭')));
+		}
+
+		return $anonymous_uid;
+	}
+
 	private function do_validate()
 	{
+		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
 		if ($_POST['anonymous'] AND !$this->user_info['permission']['post_anonymously'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能匿名')));
@@ -66,7 +91,7 @@ class ajax extends AWS_CONTROLLER
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('延迟时间不能小于 10 分钟')));
 			}
 
-			if ($_POST['later'] > 1440 AND !$this->user_info['permission']['post_anonymously'])
+			if ($_POST['later'] > 1440 AND !$this->user_info['permission']['is_administrator'])
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('延迟时间不能大于 1440 分钟')));
 			}
@@ -141,26 +166,63 @@ class ajax extends AWS_CONTROLLER
 		}
 	}
 
-	private function get_anonymous_uid($type)
+
+	private function do_validate_reply()
 	{
-		if (!$anonymous_uid = $this->model('anonymous')->get_anonymous_uid())
+		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('本站未开启匿名功能')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 
-		if (!$this->model('anonymous')->check_rate_limit($type, $anonymous_uid))
+		if ($_POST['anonymous'] AND !$this->user_info['permission']['reply_anonymously'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日匿名额度已经用完')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能匿名')));
 		}
 
-		if (!$this->model('anonymous')->check_spam($anonymous_uid))
+		$_POST['later'] = intval($_POST['later']);
+		if ($_POST['later'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('检测到滥用行为, 匿名功能暂时关闭')));
+			if (!$this->user_info['permission']['reply_later'])
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不能延迟发布')));
+			}
+
+			if ($_POST['later'] < 10)
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('延迟时间不能小于 10 分钟')));
+			}
+
+			if ($_POST['later'] > 1440 AND !$this->user_info['permission']['is_administrator'])
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('延迟时间不能大于 1440 分钟')));
+			}
 		}
 
-		return $anonymous_uid;
+		$_POST['message'] = my_trim($_POST['message']);
+		if (!$_POST['message'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入回复内容')));
+		}
+
+		// TODO: 在管理后台添加字数选项
+		if (cjk_strlen($_POST['message']) > 20000)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容字数不得多于 20000 字')));
+		}
+
+		if (!check_repeat_submission($_POST['message']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请不要重复提交')));
+		}
+
 	}
 
+
+/*
++--------------------------------------------------------------------------
+|   发布主题
++---------------------------------------------------------------------------
+*/
 
 	public function publish_question_action()
 	{
@@ -549,6 +611,249 @@ class ajax extends AWS_CONTROLLER
 			'url' => get_js_url('/v/' . $video_info['id'])
 		), 1, null));
 
+	}
+
+
+
+/*
++--------------------------------------------------------------------------
+|   发布回应
++---------------------------------------------------------------------------
+*/
+
+	public function publish_answer_action()
+	{
+		if (!$this->user_info['permission']['answer_question'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
+		}
+
+		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_reply_question'))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
+		}
+
+		if (!$this->model('ratelimit')->check_answer($this->user_id, $this->user_info['permission']['reply_limit_per_day']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天的回复已经达到上限')));
+		}
+
+		$this->do_validate_reply();
+
+		if (!$question_info = $this->model('question')->get_question_info_by_id($_POST['question_id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
+		}
+
+		if ($question_info['lock'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的问题不能回复')));
+		}
+
+		// 判断是否是问题发起者
+		if (get_setting('answer_self_question') == 'N' AND $question_info['published_uid'] == $this->user_id)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能回复自己发布的问题，你可以修改问题内容')));
+		}
+
+		// 判断是否已回复过问题
+		if ((get_setting('answer_unique') == 'Y'))
+		{
+			if ($this->model('answer')->has_answer_by_uid($question_info['question_id'], $this->user_id))
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('一个问题只能回复一次，你可以编辑回复过的回复')));
+			}
+			$schedule = $this->model('answer')->fetch_one('scheduled_posts', 'id', "type = 'answer' AND parent_id = " . intval($question_info['question_id']) . " AND uid = " . intval($this->user_id));
+			if ($schedule)
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你已经使用延迟显示功能回复过该问题')));
+			}
+		}
+
+		if ($_POST['anonymous'])
+		{
+			$publish_uid = $this->get_anonymous_uid('answer');
+			$auto_focus = false;
+		}
+		else
+		{
+			$publish_uid = $this->user_id;
+			$auto_focus = $_POST['auto_focus'];
+		}
+
+		// !注: 来路检测后面不能再放报错提示
+		if (! valid_post_hash($_POST['post_hash']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
+		}
+
+		set_repeat_submission_digest($_POST['message']);
+		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
+
+		$answer_id = $this->model('publish')->publish_answer(array(
+			'parent_id' => $question_info['question_id'],
+			'message' => $_POST['message'],
+			'uid' => $publish_uid,
+			'auto_focus' => $auto_focus,
+		), $this->user_id, $_POST['later']);
+
+		if ($_POST['later'])
+		{
+			// 延迟显示
+			H::ajax_json_output(AWS_APP::RSM(array(
+				'url' => get_js_url('/publish/delay_display/')
+			), 1, null));
+		}
+
+		$answer_info = $this->model('answer')->get_answer_by_id($answer_id);
+		$answer_info['user_info'] = $this->model('account')->get_user_info_by_uid($publish_uid);
+		$answer_info['answer_content'] = $this->model('question')->parse_at_user($answer_info['answer_content']);
+		TPL::assign('answer_info', $answer_info);
+		H::ajax_json_output(AWS_APP::RSM(array(
+			'ajax_html' => TPL::output('question/ajax/answer', false)
+		), 1, null));
+	}
+
+
+	public function publish_article_comment_action()
+	{
+		if (!$this->user_info['permission']['comment_article'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
+		}
+
+		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_reply_article'))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
+		}
+
+		if (!$this->model('ratelimit')->check_article_comment($this->user_id, $this->user_info['permission']['reply_limit_per_day']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天的文章评论已经达到上限')));
+		}
+
+		$this->do_validate_reply();
+
+		if (!$article_info = $this->model('article')->get_article_info_by_id($_POST['article_id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定文章不存在')));
+		}
+
+		if ($article_info['lock'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的文章不能回复')));
+		}
+
+		if ($_POST['anonymous'])
+		{
+			$publish_uid = $this->get_anonymous_uid('question');
+		}
+		else
+		{
+			$publish_uid = $this->user_id;
+		}
+
+		// !注: 来路检测后面不能再放报错提示
+		if (!valid_post_hash($_POST['post_hash']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
+		}
+
+		set_repeat_submission_digest($_POST['message']);
+		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
+
+		$comment_id = $this->model('publish')->publish_article_comment(array(
+			'parent_id' => $article_info['id'],
+			'message' => $_POST['message'],
+			'uid' => $publish_uid,
+			'at_uid' => $_POST['at_uid'],
+		), $this->user_id, $_POST['later']);
+
+		if ($_POST['later'])
+		{
+			// 延迟显示
+			H::ajax_json_output(AWS_APP::RSM(array(
+				'url' => get_js_url('/publish/delay_display/')
+			), 1, null));
+		}
+
+		$comment_info = $this->model('article')->get_comment_by_id($comment_id);
+		$comment_info['message'] = $this->model('question')->parse_at_user($comment_info['message']);
+		TPL::assign('comment_info', $comment_info);
+		H::ajax_json_output(AWS_APP::RSM(array(
+			'ajax_html' => TPL::output('article/ajax/comment', false)
+		), 1, null));
+	}
+
+
+	public function publish_video_comment_action()
+	{
+		if (!$this->user_info['permission']['comment_video'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的等级还不够')));
+		}
+
+		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_reply_video'))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
+		}
+
+		if (!$this->model('ratelimit')->check_video_comment($this->user_id, $this->user_info['permission']['reply_limit_per_day']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天的投稿评论已经达到上限')));
+		}
+
+		$this->do_validate_reply();
+
+		if (!$video_info = $this->model('video')->get_video_info_by_id($_POST['video_id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定投稿不存在')));
+		}
+
+		if ($video_info['lock'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的投稿不能回复')));
+		}
+
+		if ($_POST['anonymous'])
+		{
+			$publish_uid = $this->get_anonymous_uid('video_comment');
+		}
+		else
+		{
+			$publish_uid = $this->user_id;
+		}
+
+		// !注: 来路检测后面不能再放报错提示
+		if (!valid_post_hash($_POST['post_hash']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
+		}
+
+		set_repeat_submission_digest($_POST['message']);
+		set_user_operation_last_time('publish', $this->user_id, $this->user_info['permission']);
+
+		$comment_id = $this->model('publish')->publish_video_comment(array(
+			'parent_id' => $video_info['id'],
+			'message' => $_POST['message'],
+			'uid' => $publish_uid,
+			'at_uid' => $_POST['at_uid'],
+		), $this->user_id, $_POST['later']);
+
+		if ($_POST['later'])
+		{
+			// 延迟显示
+			H::ajax_json_output(AWS_APP::RSM(array(
+				'url' => get_js_url('/publish/delay_display/')
+			), 1, null));
+		}
+
+		$comment_info = $this->model('video')->get_comment_by_id($comment_id);
+		$comment_info['message'] = $this->model('question')->parse_at_user($comment_info['message']);
+		TPL::assign('comment_info', $comment_info);
+		H::ajax_json_output(AWS_APP::RSM(array(
+			'ajax_html' => TPL::output('video/ajax/comment', false)
+		), 1, null));
 	}
 
 }

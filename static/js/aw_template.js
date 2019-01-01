@@ -95,7 +95,7 @@ var AW_TEMPLATE = {
 
 	'articleCommentBox' :
 		'<div class="aw-article-replay-box clearfix">'+
-			'<form action="'+ G_BASE_URL +'/article/ajax/save_comment/" onsubmit="return false;" method="post">'+
+			'<form action="'+ G_BASE_URL +'/publish/ajax/publish_article_comment/" onsubmit="return false;" method="post">'+
 				'<div class="mod-body">'+
 					'<input type="hidden" name="at_uid" value="{{at_uid}}">'+
 					'<input type="hidden" name="post_hash" value="' + G_POST_HASH + '" />'+
@@ -175,14 +175,14 @@ var AW_TEMPLATE = {
 								'<input type="hidden" name="post_hash" value="' + G_POST_HASH + '" />'+
 								'<input type="hidden" name="ask_user_id" value="{{ask_user_id}}" />'+
 								'<div>'+
-									'<textarea class="form-control" placeholder="' + _t('写下你的问题') + '..." rows="1" name="question_content" id="quick_publish_question_content" onkeydown="if (event.keyCode == 13) { return false; }"></textarea>'+
+									'<textarea class="form-control" placeholder="' + _t('写下你的问题') + '..." rows="1" name="title" id="quick_publish_question_content" onkeydown="if (event.keyCode == 13) { return false; }"></textarea>'+
 									'<div class="aw-publish-suggest-question collapse">'+
 										'<p class="text-color-999">你的问题可能已经有答案</p>'+
 										'<ul class="aw-dropdown-list">'+
 										'</ul>'+
 									'</div>'+
 								'</div>'+
-								'<textarea name="question_detail" class="form-control" rows="4" placeholder="' + _t('问题背景、条件等详细信息') + '..."></textarea>'+
+								'<textarea name="message" class="form-control" rows="4" placeholder="' + _t('问题背景、条件等详细信息') + '..."></textarea>'+
 								'<div class="aw-publish-title">'+
 									'<div class="dropdown" id="quick_publish_category_chooser">'+
 										'<div class="dropdown-toggle" data-toggle="dropdown">'+

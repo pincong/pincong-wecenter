@@ -239,7 +239,7 @@
 						<?php } else if (!$this->user_id) { ?>
 						<p align="center"><?php _e('要回复文章请先<a href="account/login/">登录</a>或<a href="account/register/">注册</a>'); ?></p>
 						<?php } else { ?>
-						<form action="article/ajax/save_comment/" onsubmit="return false;" method="post" id="answer_form">
+						<form action="publish/ajax/publish_article_comment/" onsubmit="return false;" method="post" id="answer_form">
 						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
 						<input type="hidden" name="article_id" value="<?php echo $this->article_info['id']; ?>" />
 						<div class="mod-head">
