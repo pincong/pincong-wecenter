@@ -87,8 +87,6 @@
 	text-align: center;
 	transition: all .2s ease-in-out;
 	border: solid 1px #0085b3;
-	border-top: none;
-	border-right: none;
 	background-color: #00a1d8;
 }
 .c-text-btn:hover {
@@ -128,7 +126,7 @@
 
 .ab-control-bar {
 	height: 20px;
-	border-top: 1px solid #ececec;
+	border-bottom: 1px solid #ececec;
 }
 
 .ab-control-bar .c-cell {
@@ -177,6 +175,7 @@
 }
 
 .ab-control-bar .ab-send-btn {
+	border-top: none;
 	width: 58px;
 	height: 100%;
 	padding-top: 2px;
@@ -251,16 +250,18 @@ var ABP = {};
 (function() {
 	'use strict';
 	function Player(htmlElement) {
-		var $player;
-		if (!htmlElement) {
-			$player = $('.ab-player');
-		} else {
-			$player = $(htmlElement);
-		}
+		var $player = $(htmlElement);
 		this.$$ = function(selector) {
 			return $player.find(selector);
 		};
+
 		this.video = this.$$('.ab-video video')[0];
+
+		// 弹幕管理器初始化
+		this.cm = new CommentManager(this.$$('.abp .container')[0]);
+		this.cm.init();
+		// end 弹幕管理器初始化
+
 		// 初始状态
 		this.isPlaying = false;
 		this.danmakuEnabled = true;
@@ -289,6 +290,9 @@ var ABP = {};
 		this.$timeLabel = this.$$('.ab-control .ab-time-label');
 		this.$currentTimeLabel = this.$timeLabel.children('.ab-time-label-current');
 		this.$durationLabel = this.$timeLabel.children('.ab-time-label-total');
+
+		this.$sendBtn = this.$$('.ab-control .ab-send-btn');
+		this.$danmakuInput = this.$$('.ab-control .ab-danmaku-input');
 
 		this.bindEvents();
 	};
@@ -323,12 +327,22 @@ var ABP = {};
 			if (self.video.paused) self.video.play();
 		});
 
+		this.$sendBtn.click(function() {
+			self.sendDanmaku(
+				self.$danmakuInput.val()
+				// TODO: mode, size, color
+			);
+			self.$danmakuInput.val('');
+		});
+
 		this.video.onplaying = function() {
 			self.$playIcon.attr('class', 'c-icon-pause');
+			if (self.danmakuEnabled) self.cm.start();
 			self.isPlaying = true;
 		};
 		this.video.onpause = function() {
 			self.$playIcon.attr('class', 'c-icon-play');
+			if (self.danmakuEnabled) self.cm.stop();
 			self.isPlaying = false;
 		};
 		this.video.onvolumechange = function() {
@@ -336,6 +350,7 @@ var ABP = {};
 			self.updateVolumeBar();
 		};
 		this.video.ontimeupdate = function() {
+			self.updateDanmakuStage();
 			self.updateSeekbar();
 			self.updateCurrentTimeLabel();
 		};
@@ -365,11 +380,14 @@ var ABP = {};
 
 	Player.prototype.toggleDanmaku = function() {
 		if (this.danmakuEnabled) {
-			this.danmakuEnabled = false;
+			this.cm.stop();
+			this.cm.clear();
 			this.$danmakuBtn.removeClass('c-btn-on');
+			this.danmakuEnabled = false;
 		} else {
-			this.danmakuEnabled = true;
+			this.cm.start();
 			this.$danmakuBtn.addClass('c-btn-on');
+			this.danmakuEnabled = true;
 		}
 	};
 
@@ -417,6 +435,44 @@ var ABP = {};
 		this.$durationLabel.text(ABP.Util.formatTime(this.video.duration));
 	};
 
+	Player.prototype.updateDanmakuStage = function() {
+		this.cm.time(Math.floor(this.video.currentTime * 1000));
+	};
+
+	Player.prototype.loadDanmaku = function(danmakuArray) {
+		this.cm.load(danmakuArray);
+	};
+
+	Player.prototype.sendDanmaku = function(text, mode, size, color) {
+		text = text.trim();
+		if (!text) return;
+
+		// 1:滚动字幕 4:底端渐隐 5:顶端渐隐
+		mode = parseInt(mode);
+		if (mode !== 4 || mode !== 5) mode = 1;
+
+		// 18:小字号 25:中字号
+		size = parseInt(size);
+		if (size !== 18) size = 25;
+
+		color = parseInt(color);
+		if (isNaN(color) || color > 0xffffff) color = 0xffffff;
+		if (color < 0) color = 0;
+
+		var danmaku = {
+			text: text,
+			mode: mode,
+			size: size,
+			color: color,
+			border: true
+		}
+		this.cm.send(danmaku); // 仅显示
+
+		danmaku.stime = Math.floor(this.video.currentTime * 1000);
+		danmaku.border = false;
+		this.cm.insert(danmaku); // 插入到时间轴
+	};
+
 	ABP.Player = Player;
 })();
 </script>
@@ -424,10 +480,9 @@ var ABP = {};
 
 <div class="c-table ab-player">
 	<div class="c-row ab-video">
-		<div class="c-cell">
-			<video>
-				<p>Your browser does not support HTML5 video.</p>
-			</video>
+		<div class="c-cell abp">
+			<div class="container"></div>
+			<video>Your browser does not support HTML5 video.</video>
 		</div>
 	</div>
 	<div class="c-row c-content-height ab-control">
