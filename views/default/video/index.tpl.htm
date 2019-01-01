@@ -276,7 +276,14 @@
 						<div class="mod-body">
 							<div class="user-detail">
 								<a class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($this->video_info['user_info']); ?>"><img alt="" src="<?php echo UF::avatar($this->video_info['user_info'], 'mid', $this->user_info['permission']['is_administrator']); ?>" /></a>
-								<a class="aw-user-name" href="<?php echo UF::url($this->video_info['user_info']); ?>" data-id="<?php echo $this->video_info['user_info']['uid']; ?>"><?php echo UF::name($this->video_info['user_info']);?></a>
+								<a class="aw-user-name" href="<?php echo UF::url($this->video_info['user_info']); ?>" data-id="<?php echo $this->video_info['user_info']['uid']; ?>">
+									<?php if ($this->video_info['user_info']['flagged'] > 0) { ?>
+										<s><?php echo UF::name($this->video_info['user_info']);?></s>
+									<?php } else { ?>
+										<?php echo UF::name($this->video_info['user_info']);?>
+									<?php } ?>
+								</a>
+								<?php if ($this->video_info['user_info']['forbidden']) { ?><sup><?php _e('封禁'); ?></sup><?php } ?>
 								<?php if ($this->video_info['user_info']['verified']) { ?>
 									<em class="aw-verified"><?php echo $this->video_info['user_info']['verified']; ?></em>
 								<?php } ?>
