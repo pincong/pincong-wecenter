@@ -27,7 +27,19 @@
                                 <a href="account/setting/profile/" class="btn btn-mini btn-success"><?php _e('编辑'); ?></a>
                             <?php } ?>
                             </span>
-                            <h1><?php echo $this->user['user_name']; ?> <?php if ($this->user['verified']) { ?><i class="icon-v <?php if ($this->user['verified'] == 'enterprise') { ?> i-ve<?php } ?>" title="<?php if ($this->user['verified'] == 'enterprise') { ?>企业认证<?php } else { ?>个人认证<?php } ?>"></i><?php } ?> <?php if ($this->user['forbidden']) { ?><span class="text-color-999">[ <?php _e('封禁'); ?> ]</span><?php } ?></h1>
+							<h1>
+								<?php echo $this->user['user_name']; ?>
+								<?php if ($this->user['verified']) { ?><i class="icon-v <?php if ($this->user['verified'] == 'enterprise') { ?> i-ve<?php } ?>" title="<?php if ($this->user['verified'] == 'enterprise') { ?>企业认证<?php } else { ?>个人认证<?php } ?>"></i><?php } ?>
+								<?php if ($this->user['forbidden'] == 1) { ?>
+									<span class="text-color-999"><a href="people/<?php echo $this->user['extra_data']['banned_by']; ?>"><?php _e('管理员'); ?></a><?php _e('封禁'); ?></span>
+									<br />
+									<span class="text-color-999"><?php _e('封禁理由'); ?> : <?php echo $this->user['extra_data']['banned_reason']; ?></span>
+								<?php } else if ($this->user['forbidden']) { ?>
+									<span class="text-color-999"><?php _e('系统自动封禁'); ?></span>
+									<br />
+									<span class="text-color-999"><?php _e('封禁理由'); ?> : <?php _e('累计收到反对票的数量过多'); ?></span>
+								<?php } ?>
+							</h1>
                             <p class="text-color-999"><?php echo $this->user['signature']; ?></p>
                             <p class="aw-user-flag">
                             </p>
