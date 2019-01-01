@@ -514,7 +514,12 @@ class account_class extends AWS_MODEL
      */
     public function update_users_attrib_fields($update_data, $uid)
     {
-        return $this->update('users_attrib', $update_data, 'uid = ' . intval($uid));
+		if ($this->update('users_attrib', $update_data, 'uid = ' . intval($uid)))
+		{
+			return;
+		}
+		$update_data['uid'] = intval($uid);
+		$this->insert('users_attrib', $update_data);
     }
 
     /**
