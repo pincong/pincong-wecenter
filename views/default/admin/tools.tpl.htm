@@ -129,6 +129,30 @@
                 </td>
             </tr>
 
+            <tr>
+                <td>
+                    <form action="admin/tools/init/" method="post" target="_blank">
+                        <input type="hidden" name="action" value="flush_avatars" />
+                        <div class="form-group">
+                            <span class="col-sm-3 col-xs-3 control-label middle"><?php _e('刷新头像'); ?>:</span>
+                            <div class="col-sm-7 col-xs-8 middle">
+                                <?php _e('如果头像显示有问题可以使用此功能修正'); ?>
+
+                                <div class="row">
+                                    <span class="col-sm-1 mod-text-inline"><?php _e('&nbsp 每次处理数量'); ?>:</span>
+                                    <div class="col-sm-6">
+                                        <input type="text" value="500" name="per_page" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2 col-xs-12">
+                                <input type="submit" class="btn btn-primary" value="<?php _e('开始处理'); ?>">
+                            </div>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+
             </tbody>
             </table>
         </div>

@@ -331,4 +331,33 @@ class tools extends AWS_ADMIN_CONTROLLER
 		}
 	}
 
+	public function flush_avatars_action()
+	{
+		if ($users = $this->model('system')->fetch_page('users', null, 'uid ASC', $_GET['page'], $_GET['per_page']))
+		{
+			foreach ($users as $key => $val)
+			{
+				$path = get_setting('upload_dir') . '/avatar/' . $this->model('account')->get_avatar($val['uid'], 'min', 0);
+				if (file_exists($path))
+				{
+					$this->model('account')->update_users_fields(array(
+						'avatar_file' => fetch_salt(4) // 生成随机字符串
+					), $val['uid']);
+				}
+				else
+				{
+					$this->model('account')->update_users_fields(array(
+						'avatar_file' => null // 清空
+					), $val['uid']);
+				}
+			}
+
+			H::redirect_msg(AWS_APP::lang()->_t('正在刷新头像') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/flush_avatars/page-' . ($_GET['page'] + 1) . '__per_page-' . $_GET['per_page']);
+		}
+		else
+		{
+			H::redirect_msg(AWS_APP::lang()->_t('处理完成'), '/admin/tools/');
+		}
+	}
+
 }
