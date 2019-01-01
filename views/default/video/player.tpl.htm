@@ -1040,6 +1040,7 @@ var ABP = {};
 		if (this.videoLoaded) this.video.pause();
 		var progress = this._calcProgress(e, this.$seekbar);
 		this.$seekbarProgress.css('width', (progress * 100) + '%');
+		this.$currentTimeLabel.text(ABP.Util.formatTime(this.duration * progress));
 	};
 
 	Player.prototype._calcProgress = function(e, $bar) {
