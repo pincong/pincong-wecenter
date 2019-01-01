@@ -75,8 +75,6 @@ class question_class extends AWS_MODEL
 			return false;
 		}
 
-		$category_id = intval($category_id);
-
 		$this->model('search_fulltext')->push_index('question', $title, $item_info['id']);
 
 		$this->update('question', array(
@@ -97,11 +95,21 @@ class question_class extends AWS_MODEL
 			return false;
 		}
 
-		$this->update('question', array(
+		$data = array(
 			'question_content' => null,
 			'question_detail' => null,
 			'question_content_fulltext' => null,
-		), 'question_id = ' . intval($id));
+		);
+
+		$trash_category_id = intval(get_setting('trash_category_id'));
+		if ($trash_category_id)
+		{
+			$where = "post_id = " . intval($id) . " AND post_type = 'question'";
+			$this->update('posts_index', array('category_id' => $trash_category_id), $where);
+			$data['category_id'] = $trash_category_id;
+		}
+
+		$this->update('question', $data, 'question_id = ' . intval($id));
 
 		if ($uid)
 		{

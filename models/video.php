@@ -75,8 +75,6 @@ class video_class extends AWS_MODEL
 			return false;
 		}
 
-		$category_id = intval($category_id);
-
 		//$this->model('search_fulltext')->push_index('video', $title, $item_info['id']);
 
 		$this->update('video', array(
@@ -97,14 +95,24 @@ class video_class extends AWS_MODEL
 			return false;
 		}
 
-		$this->update('video', array(
+		$data = array(
 			'title' => null,
 			'message' => null,
 			'title_fulltext' => null,
 			'source_type' => null,
 			'source' => null,
 			'duration' => 0,
-		), 'id = ' . intval($id));
+		);
+
+		$trash_category_id = intval(get_setting('trash_category_id'));
+		if ($trash_category_id)
+		{
+			$where = "post_id = " . intval($id) . " AND post_type = 'video'";
+			$this->update('posts_index', array('category_id' => $trash_category_id), $where);
+			$data['category_id'] = $trash_category_id;
+		}
+
+		$this->update('video', $data, 'id = ' . intval($id));
 
 		if ($uid)
 		{

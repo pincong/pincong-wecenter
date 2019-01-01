@@ -942,6 +942,37 @@
                     </td>
                 </tr>
 
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('启用分类功能'); ?>:</span>
+                            <div class="col-sm-6 col-xs-8">
+                                <div class="btn-group mod-btn">
+                                    <label type="button" class="btn mod-btn-color">
+                                        <input type="radio" name="category_enable" value="Y"<?php if ($this->setting['category_enable'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+                                    </label>
+
+                                    <label type="button" class="btn mod-btn-color">
+                                        <input type="radio" name="category_enable" value="N"<?php if ($this->setting['category_enable'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('垃圾箱分类 ID');?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="trash_category_id" type="text" class="form-control" value="<?php echo $this->setting['trash_category_id']; ?>"/>
+                                <span class="help-block"><?php _e('将删除的帖子存入垃圾箱, 留空则不启用'); ?></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
             </table>
         </div>
 
@@ -1040,24 +1071,6 @@
                             <div class="col-sm-6 col-xs-8">
                                 <label><input type="radio" name="advanced_editor_enable" value="Y"<?php if ($this->setting['advanced_editor_enable'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('高级编辑器'); ?></label>
                                 <label class="col-md-offset-1"><input type="radio" name="advanced_editor_enable" value="N"<?php if ($this->setting['advanced_editor_enable'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('纯文本编辑器'); ?></label>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('启用分类功能'); ?>:</span>
-                            <div class="col-sm-6 col-xs-8">
-                                <div class="btn-group mod-btn">
-                                    <label type="button" class="btn mod-btn-color">
-                                        <input type="radio" name="category_enable" value="Y"<?php if ($this->setting['category_enable'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
-                                    </label>
-
-                                    <label type="button" class="btn mod-btn-color">
-                                        <input type="radio" name="category_enable" value="N"<?php if ($this->setting['category_enable'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
-                                    </label>
-                                </div>
                             </div>
                         </div>
                     </td>

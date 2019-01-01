@@ -75,8 +75,6 @@ class article_class extends AWS_MODEL
 			return false;
 		}
 
-		$category_id = intval($category_id);
-
 		$this->model('search_fulltext')->push_index('article', $title, $item_info['id']);
 
 		$this->update('article', array(
@@ -96,11 +94,21 @@ class article_class extends AWS_MODEL
 			return false;
 		}
 
-		$this->update('article', array(
+		$data = array(
 			'title' => null,
 			'message' => null,
 			'title_fulltext' => null,
-		), 'id = ' . intval($id));
+		);
+
+		$trash_category_id = intval(get_setting('trash_category_id'));
+		if ($trash_category_id)
+		{
+			$where = "post_id = " . intval($id) . " AND post_type = 'article'";
+			$this->update('posts_index', array('category_id' => $trash_category_id), $where);
+			$data['category_id'] = $trash_category_id;
+		}
+
+		$this->update('article', $data, 'id = ' . intval($id));
 
 		if ($uid)
 		{

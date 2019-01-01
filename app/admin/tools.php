@@ -379,4 +379,101 @@ class tools extends AWS_ADMIN_CONTROLLER
 		}
 	}
 
+	public function move_to_trash_action()
+	{
+		$trash_category_id = intval(get_setting('trash_category_id'));
+		if (!$trash_category_id)
+		{
+			H::redirect_msg(AWS_APP::lang()->_t('垃圾箱没有启用, 无法继续'), '/admin/tools/');
+		}
+
+		$table = $_GET['table'];
+		if (!$table)
+		{
+			$table = 'question';
+		}
+
+		switch ($table)
+		{
+			case 'question':
+				$next_table = 'article';
+
+				if ($list = AWS_APP::model()->fetch_page($table, '`question_content` IS NULL', 'question_id ASC', $_GET['page'], $_GET['per_page']))
+				{
+					foreach ($list as $key => $val)
+					{
+						AWS_APP::model()->update($table, array(
+							'category_id' => $trash_category_id
+						), 'question_id = ' . intval($val['question_id']));
+
+						AWS_APP::model()->update('posts_index', array(
+							'category_id' => $trash_category_id
+						), "post_type = 'question' AND post_id = " . intval($val['question_id']));
+					}
+
+					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/move_to_trash/page-' . ($_GET['page'] + 1) . '__table-'.$table.'__per_page-' . $_GET['per_page']);
+				}
+				else
+				{
+					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/move_to_trash/page-1__table-'.$next_table.'__per_page-' . $_GET['per_page']);
+				}
+			break;
+
+
+			case 'article':
+				$next_table = 'video';
+
+				if ($list = AWS_APP::model()->fetch_page($table, '`title` IS NULL', 'id ASC', $_GET['page'], $_GET['per_page']))
+				{
+					foreach ($list as $key => $val)
+					{
+						AWS_APP::model()->update($table, array(
+							'category_id' => $trash_category_id
+						), 'id = ' . intval($val['id']));
+
+						AWS_APP::model()->update('posts_index', array(
+							'category_id' => $trash_category_id
+						), "post_type = 'article' AND post_id = " . intval($val['id']));
+					}
+
+					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/move_to_trash/page-' . ($_GET['page'] + 1) . '__table-'.$table.'__per_page-' . $_GET['per_page']);
+				}
+				else
+				{
+					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/move_to_trash/page-1__table-'.$next_table.'__per_page-' . $_GET['per_page']);
+				}
+			break;
+
+
+			case 'video':
+				$next_table = '1'; // finish
+
+				if ($list = AWS_APP::model()->fetch_page($table, '`title` IS NULL', 'id ASC', $_GET['page'], $_GET['per_page']))
+				{
+					foreach ($list as $key => $val)
+					{
+						AWS_APP::model()->update($table, array(
+							'category_id' => $trash_category_id
+						), 'id = ' . intval($val['id']));
+
+						AWS_APP::model()->update('posts_index', array(
+							'category_id' => $trash_category_id
+						), "post_type = 'video' AND post_id = " . intval($val['id']));
+					}
+
+					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/move_to_trash/page-' . ($_GET['page'] + 1) . '__table-'.$table.'__per_page-' . $_GET['per_page']);
+				}
+				else
+				{
+					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/move_to_trash/page-1__table-'.$next_table.'__per_page-' . $_GET['per_page']);
+				}
+			break;
+
+
+			default:
+				H::redirect_msg(AWS_APP::lang()->_t('处理完成'), '/admin/tools/');
+			break;
+		}
+	}
+
 }
