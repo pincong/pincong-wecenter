@@ -601,7 +601,7 @@ CREATE TABLE IF NOT EXISTS `aws_users_group` (
   `group_id` int(11) NOT NULL AUTO_INCREMENT,
   `type` tinyint(3) DEFAULT '0' COMMENT '0-系统组 1-会员组',
   `custom` tinyint(1) DEFAULT '0' COMMENT '是否自定义',
-  `group_name` varchar(50) NOT NULL,
+  `group_name` text,
   `reputation_lower` int(11) DEFAULT '0',
   `reputation_higer` int(11) DEFAULT '0',
   `reputation_factor` float DEFAULT '0' COMMENT '威望系数',
