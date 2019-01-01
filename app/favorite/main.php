@@ -28,12 +28,7 @@ class main extends AWS_CONTROLLER
 	public function index_action()
 	{
 		//边栏可能感兴趣的人或话题
-		if (TPL::is_output('block/sidebar_recommend_users_topics.tpl.htm', 'favorite/index'))
-		{
-			$recommend_users_topics = $this->model('module')->recommend_users_topics($this->user_id);
-
-			TPL::assign('sidebar_recommend_users_topics', $recommend_users_topics);
-		}
+		TPL::assign('sidebar_recommend_users_topics', $this->model('module')->recommend_users_topics($this->user_id));
 
 		TPL::assign('list', $this->model('favorite')->get_item_list($this->user_id, calc_page_limit($_GET['page'], get_setting('contents_per_page'))));
 

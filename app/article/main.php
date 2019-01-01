@@ -171,16 +171,10 @@ class main extends AWS_CONTROLLER
 		}
 
 		// 导航
-		if (TPL::is_output('block/content_nav_menu.tpl.htm', 'article/square'))
-		{
-			TPL::assign('content_nav_menu', $this->model('menu')->get_nav_menu_list('article'));
-		}
+		TPL::assign('content_nav_menu', $this->model('menu')->get_nav_menu_list('article'));
 
 		//边栏热门话题
-		if (TPL::is_output('block/sidebar_hot_topics.tpl.htm', 'article/square'))
-		{
-			TPL::assign('sidebar_hot_topics', $this->model('module')->sidebar_hot_topics($category_info['id']));
-		}
+		TPL::assign('sidebar_hot_topics', $this->model('module')->sidebar_hot_topics($category_info['id']));
 
 		if ($category_info)
 		{

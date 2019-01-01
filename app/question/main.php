@@ -254,34 +254,17 @@ class main extends AWS_CONTROLLER
 		$this->crumb(AWS_APP::lang()->_t('问题'), '/question/');
 
 		// 导航
-		if (TPL::is_output('block/content_nav_menu.tpl.htm', 'question/square'))
-		{
-			TPL::assign('content_nav_menu', $this->model('menu')->get_nav_menu_list('question'));
-		}
+		TPL::assign('content_nav_menu', $this->model('menu')->get_nav_menu_list('question'));
 
-		//边栏可能感兴趣的人
-		if (TPL::is_output('block/sidebar_recommend_users_topics.tpl.htm', 'question/square'))
-		{
-			TPL::assign('sidebar_recommend_users_topics', $this->model('module')->recommend_users_topics($this->user_id));
-		}
 /*
 		//边栏热门用户
-		if (TPL::is_output('block/sidebar_hot_users.tpl.htm', 'question/square'))
-		{
-			TPL::assign('sidebar_hot_users', $this->model('module')->sidebar_hot_users($this->user_id, 5));
-		}
+		TPL::assign('sidebar_hot_users', $this->model('module')->sidebar_hot_users($this->user_id, 5));
 */
 		//边栏热门话题
-		if (TPL::is_output('block/sidebar_hot_topics.tpl.htm', 'question/square'))
-		{
-			TPL::assign('sidebar_hot_topics', $this->model('module')->sidebar_hot_topics($_GET['category']));
-		}
+		TPL::assign('sidebar_hot_topics', $this->model('module')->sidebar_hot_topics($_GET['category']));
 
 		//边栏功能
-		if (TPL::is_output('block/sidebar_feature.tpl.htm', 'question/square'))
-		{
-			TPL::assign('feature_list', $this->model('feature')->get_enabled_feature_list());
-		}
+		TPL::assign('feature_list', $this->model('feature')->get_enabled_feature_list());
 
 		if ($_GET['category'])
 		{

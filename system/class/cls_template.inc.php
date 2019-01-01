@@ -252,32 +252,4 @@ class TPL
 		return file_get_contents(self::$template_path . '/default/' . $template_filename . self::$template_ext);
 	}
 
-	public static function is_output($output_filename, $template_filename)
-	{
-		if (!isset(self::$output_matchs[md5($template_filename)]))
-		{
-			preg_match_all("/TPL::output\(['|\"](.+)['|\"]\)/i", self::fetch($template_filename), $matchs);
-
-			self::$output_matchs[md5($template_filename)] = $matchs[1];
-		}
-
-		if (is_array($output_filename))
-		{
-			foreach($output_filename as $key => $val)
-			{
-				if (!in_array($val, self::$output_matchs[md5($template_filename)]))
-				{
-					return false;
-				}
-			}
-
-			return true;
-		}
-		else if (in_array($output_filename, self::$output_matchs[md5($template_filename)]))
-		{
-			return true;
-		}
-
-		return false;
-	}
 }
