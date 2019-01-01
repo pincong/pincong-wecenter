@@ -73,9 +73,9 @@ function aasort($source_array, $order_field, $sort_type = 'DESC')
 }
 
 /**
- * 检查整型、字符串或数组内的字符串是否为纯数字（十进制数字，不包括负数和小数）
+ * 检查整型、字符串是否为纯数字（十进制数字，不包括负数和小数）
  *
- * @param integer or string or array
+ * @param integer or string
  * @return boolean
  */
 function is_digits($num)
@@ -85,20 +85,21 @@ function is_digits($num)
 		return false;
 	}
 
-	if (is_array($num))
+	if (is_string($num))
 	{
-		foreach ($num AS $val)
+		$num_int = intval($num);
+		if ($num_int < 0)
 		{
-			if (!is_digits($val))
-			{
-				return false;
-			}
+			return false;
 		}
-
-		return true;
+		return ($num === strval($num_int));
+	}
+	else if (is_int($num))
+	{
+		return ($num >= 0);
 	}
 
-	return Zend_Validate::is($num, 'Digits');
+	return false;
 }
 
 if (! function_exists('iconv'))
