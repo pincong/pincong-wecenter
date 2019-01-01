@@ -25,15 +25,55 @@ class Services_RemoteStorage
 
 	public static function is_enabled()
 	{
-		return true;
+		return G_REMOTE_STORAGE;
 	}
 
 
 	private static function request($method, &$filename, &$content)
 	{
-		if ($method == 'PUT')
-			file_put_contents(get_setting('upload_dir').$filename, $content);
-		return json_decode('{"status_code": 200}', true);
+		$url = self::get_request_url($filename);
+
+		// array
+		$headers = self::get_request_headers();
+		if (!is_null($content))
+		{
+			$headers[] = 'Content-Length: ' . strlen($content);
+		}
+
+		// 发起请求
+		$body = @file_get_contents($url, false, stream_context_create(array(
+			'http' => array(
+				'method' => $method,
+				'follow_location' => 0,
+				'protocol_version' => 1.1,
+				'header' => implode("\r\n", $headers),
+				'content' => $content,
+			)
+		)));
+
+		if (!$body)
+		{
+			return false;
+		}
+
+		$body = json_decode($body, true);
+		if (!is_array($body))
+		{
+			return false;
+		}
+
+		return $body;
+	}
+
+
+	private static function get_request_url(&$filename)
+	{
+		return str_replace('{$filename}', G_REMOTE_STORAGE_REQUEST_URL, urlencode($filename));
+	}
+
+	private static function get_request_headers()
+	{
+		return G_REMOTE_STORAGE_REQUEST_HEADERS;
 	}
 
 }

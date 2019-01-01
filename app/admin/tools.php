@@ -335,10 +335,29 @@ class tools extends AWS_ADMIN_CONTROLLER
 	{
 		if ($users = $this->model('system')->fetch_page('users', null, 'uid ASC', $_GET['page'], $_GET['per_page']))
 		{
+			$local_upload_dir = get_setting('upload_dir');
 			foreach ($users as $key => $val)
 			{
-				$path = get_setting('upload_dir') . '/avatar/' . $this->model('avatar')->get_avatar_path($val['uid'], 'min');
-				if (file_exists($path))
+				$file_exists = false;
+				$path = '/avatar/' . $this->model('avatar')->get_avatar_path($val['uid'], 'min');
+
+				if (Services_RemoteStorage::is_enabled())
+				{
+					$response = Services_RemoteStorage::get($path);
+					if ($response AND $response['status_code'] == 200)
+					{
+						$file_exists = true;
+					}
+				}
+				else
+				{
+					if (file_exists($local_upload_dir . $path))
+					{
+						$file_exists = true;
+					}
+				}
+
+				if ($file_exists == true)
 				{
 					$this->model('account')->update_users_fields(array(
 						'avatar_file' => fetch_salt(4) // 生成随机字符串
