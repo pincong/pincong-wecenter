@@ -47,7 +47,12 @@ class api extends AWS_CONTROLLER
 		$metadata = Services_VideoParser::fetch_metadata($video_info['source_type'], $video_info['source']);
 		if (!$metadata)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('无法解析视频')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('视频接口故障')));
+		}
+
+		if ($metadata['error'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, $metadata['error']));
 		}
 
 		H::ajax_json_output(AWS_APP::RSM($metadata, 1, null));

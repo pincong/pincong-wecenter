@@ -214,7 +214,29 @@ class ajax extends AWS_CONTROLLER
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请不要重复提交')));
 		}
+	}
 
+
+	private function validate_video_metadata(&$metadata)
+	{
+		if (!$metadata)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('视频接口故障')));
+		}
+
+		if ($metadata['error'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, $metadata['error']));
+		}
+
+		$metadata['source_type'] = trim($metadata['source_type']);
+		$metadata['source'] = trim($metadata['source']);
+		$metadata['duration'] = intval($metadata['duration']);
+
+		if (!$metadata['source_type'] OR !$metadata['source'] OR !$metadata['duration'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('无法解析视频')));
+		}
 	}
 
 
@@ -388,13 +410,10 @@ class ajax extends AWS_CONTROLLER
 		// 开销大的操作放在最后
 		// 从视频网站取得元数据, 如时长
 		// 以 'https://www.youtube.com/watch?v=abcdefghijk' 为例
-		// $parser_result['source_type'] 指视频网站, 如 'youtube'
-		// $parser_result['source'] 指该视频在所在网站上的 id, 如 'abcdefghijk'
-		$parser_result = Services_VideoParser::fetch_metadata_by_url($web_url);
-		if (!$parser_result)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('无法解析视频')));
-		}
+		// $metadata['source_type'] 指视频网站, 如 'youtube'
+		// $metadata['source'] 指该视频在所在网站上的 id, 如 'abcdefghijk'
+		$metadata = Services_VideoParser::fetch_metadata_by_url($web_url);
+		$this->validate_video_metadata($metadata);
 
 		set_repeat_submission_digest($_POST['title']);
 
@@ -405,9 +424,9 @@ class ajax extends AWS_CONTROLLER
 			'uid' => $publish_uid,
 			'topics' => $_POST['topics'],
 			'permission_create_topic' => $this->user_info['permission']['create_topic'],
-			'source_type' => $parser_result['source_type'],
-			'source' => $parser_result['source'],
-			'duration' => $parser_result['duration'],
+			'source_type' => $metadata['source_type'],
+			'source' => $metadata['source'],
+			'duration' => $metadata['duration'],
 		), $this->user_id, $_POST['later']);
 
 		if ($_POST['later'])
@@ -584,17 +603,14 @@ class ajax extends AWS_CONTROLLER
 		{
 			if ($modify_source)
 			{
-				$parser_result = Services_VideoParser::fetch_metadata_by_url($web_url);
-				if (!$parser_result)
-				{
-					H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('无法解析视频')));
-				}
+				$metadata = Services_VideoParser::fetch_metadata_by_url($web_url);
+				$this->validate_video_metadata($metadata);
 
 				$this->model('video')->modify_video_source(
 					$video_info['id'],
-					$parser_result['source_type'],
-					$parser_result['source'],
-					$parser_result['duration']
+					$metadata['source_type'],
+					$metadata['source'],
+					$metadata['duration']
 				);
 			}
 

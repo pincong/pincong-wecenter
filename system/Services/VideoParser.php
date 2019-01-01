@@ -25,14 +25,11 @@ class Services_VideoParser
 			$kvps = get_key_value_pairs('video_config_thumb_url_rules');
 		}
 
-		$source = trim($source);
-		if (!$source)
+		if (!$source = trim($source))
 		{
 			return false;
 		}
-
-		$source_type = trim($source_type);
-		if (!$source_type)
+		if (!$source_type = trim($source_type))
 		{
 			return false;
 		}
@@ -61,26 +58,17 @@ class Services_VideoParser
 		return str_replace('{$source}', $source, $val);
 	}
 
-	public static function fetch_metadata_by_url($url)
-	{
-		return false;
-	}
-
-    /**
-     * 发送 Http 请求, 取 metadata
-     * 成功返回 array, 失败返回 false
-     *
-     * @param string        $source_type
-     * @param string        $source
-     * @return mixed        例: array('duration' => 12345, ...)
-     */
-	private static function real_fetch_metadata($source_type, $source)
-	{
-		return false;
-	}
-
 	public static function fetch_metadata($source_type, $source, $from_cache = true)
 	{
+		if (!$source = trim($source))
+		{
+			return false;
+		}
+		if (!$source_type = trim($source_type))
+		{
+			return false;
+		}
+
 		if (!$from_cache)
 		{
 			return self::real_fetch_metadata($source_type, $source);
@@ -108,6 +96,94 @@ class Services_VideoParser
 		}
 		return $result;
 
+	}
+
+	public static function fetch_metadata_by_url($url)
+	{
+		if (!$url = trim($url))
+		{
+			return false;
+		}
+		return self::real_fetch_metadata(null, null, $url);
+	}
+
+    /**
+     * 发送 Http 请求, 取 metadata
+     * Http 请求成功返回 array, Http 请求失败返回 false
+     *
+     * @param string        $source_type
+     * @param string        $source
+     * @param string        $url	如果指定则忽略前两个参数
+     * @return mixed        例: array('source_type' => 'youtube', 'source' => 'abcdefghijk', 'duration' => 12345)
+     */
+	private static function real_fetch_metadata($source_type, $source, $url = null)
+	{
+		$api = self::get_parser_api();
+		if (!$api)
+		{
+			return false;
+		}
+
+		if ($url)
+		{
+			$content = 'url=' . urlencode($url);
+		}
+		else
+		{
+			$content = 'source_type=' . urlencode($source_type) . '&source=' . urlencode($source);
+		}
+
+		// 附加参数如 access_token 和/或 其他自定义信息
+		if ($api_params = get_setting('video_config_parser_api_params'))
+		{
+			$content .= '&' . $api_params;
+		}
+
+		$headers = array(
+			'Content-Type: application/x-www-form-urlencoded',
+			'Content-Length: ' . strlen($content)
+		);
+
+		$ctx = stream_context_create(array(
+			'http' => array(
+				'method' => 'POST',
+				'follow_location' => 0,
+				'protocol_version' => 1.1,
+				'header' => implode("\r\n", $headers),
+				'content' => $content,
+			)
+		));
+
+		// 发起请求
+		$body = @file_get_contents($api, false, $ctx);
+		if (!$body)
+		{
+			return false;
+		}
+
+		$body = json_decode($body, true);
+		if (!is_array($body))
+		{
+			return false;
+		}
+
+		// 请自行检查 $body['source_type'], $body['source'], ...
+		return $body;
+	}
+
+	private static function get_parser_api()
+	{
+		static $rows;
+		if (!$rows)
+		{
+			$rows = get_setting('video_config_parser_api');
+			if (!$rows)
+			{
+				return false;
+			}
+			$rows = explode("\n", $rows);
+		}
+		return trim($rows[rand(0, count($rows) - 1)]); // 随机选一个
 	}
 
 }
