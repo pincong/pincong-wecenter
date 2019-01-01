@@ -140,6 +140,59 @@
 	}
 }
 
+.c-dlg {
+	box-sizing: border-box;
+	position: absolute;
+	padding: 10px;
+	border-radius: 5px;
+	transition: all 0.1s ease-in-out;
+	box-shadow: 0 0 10px rgba(0,0,0,.2);
+	background: rgba(255,255,255,.9);
+	z-index: 1;
+}
+.c-dlg-title {
+	display: block;
+	margin: 0;
+	text-align: left;
+	color: #666;
+	font-weight: bold;
+	font-size: 12px;
+}
+
+.c-dlg-btn-group {
+	display: block;
+	text-align: center;
+}
+.c-dlg-btn {
+	box-sizing: border-box;
+	display: inline-block;
+	border-radius: 5px;
+	border: solid 2px;
+	cursor: pointer;
+	transition: all 0.1s ease-in-out;
+	color: #a2a2a2;
+	text-align: center;
+	font-size: 10px;
+}
+.c-dlg-btn:hover {
+	color: #666;
+}
+.c-dlg-btn-group input {
+	appearance: none;
+	-webkit-appearance: none;
+	outline: none;
+	display: none
+}
+.c-dlg-btn-group input:checked ~ .c-dlg-btn,
+.c-dlg-btn-on {
+	color: #fff;
+	background-color: #666;
+	border-color: #666;
+}
+.c-dlg-btn-group input:checked ~ .c-dlg-btn:hover,
+.c-dlg-btn-on:hover {
+	color: #fff;
+}
 
 /* end 通用组件 */
 
@@ -262,65 +315,7 @@
 
 
 
-.c-dlg {
-	box-sizing: border-box;
-	position: absolute;
-	padding: 10px;
-	border-radius: 5px;
-	transition: all 0.1s ease-in-out;
-	box-shadow: 0 0 10px rgba(0,0,0,.2);
-	background: rgba(255,255,255,.9);
-	z-index: 1;
-}
 
-.c-dlg-title {
-	display: block;
-	margin: 0;
-	text-align: left;
-	color: #666;
-	font-weight: bold;
-	font-size: 12px;
-}
-
-.c-dlg-btn-group {
-	display: block;
-	text-align: center;
-}
-
-.c-dlg-btn {
-	box-sizing: border-box;
-	display: inline-block;
-	border-radius: 5px;
-	border: solid 2px;
-	cursor: pointer;
-	transition: all 0.1s ease-in-out;
-	color: #a2a2a2;
-	text-align: center;
-	font-size: 10px;
-}
-
-.c-dlg-btn:hover {
-	color: #666;
-}
-
-.c-dlg-btn-group input {
-	appearance: none;
-	-webkit-appearance: none;
-	outline: none;
-	display: none
-}
-
-.c-dlg-btn-group input:checked ~ .c-dlg-btn,
-.c-dlg-btn-on {
-	color: #fff;
-	background-color: #666;
-	border-color: #666;
-}
-
-.c-dlg-btn-group input:checked ~ .c-dlg-btn:hover,
-.c-dlg-btn-on:hover {
-	color: #fff;
-}
 
 .ab-font-dlg {
 	width: 220px;
@@ -360,12 +355,48 @@
 	position: absolute;
 	left: 50%;
 	top: 50%;
-	width: 64px;
-	height: 64px;
-	margin-left: -32px;
-	margin-top: -32px;
+	width: 80px;
+	height: 80px;
+	margin-left: -40px;
+	margin-top: -40px;
 	z-index: 1;
 	visibility: hidden;
+}
+
+.ab-circle-play-btn {
+	cursor: pointer;
+	box-sizing: border-box;
+	position: absolute;
+	border-radius: 50%;
+	border-style: solid;
+	border-color: rgba(255,255,255,.5);
+	border-width: 8px;
+	left: 50%;
+	top: 50%;
+	width: 80px;
+	height: 80px;
+	margin-left: -40px;
+	margin-top: -40px;
+	z-index: 1;
+}
+
+.ab-circle-play-btn-inner {
+	box-sizing: content-box;
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-color: rgba(255,255,255,.5);
+	border-top-color: transparent;
+	border-bottom-color: transparent;
+	border-right: 0;
+	border-left-width: 34px;
+	border-top-width: 20px;
+	border-bottom-width: 20px;
+	top: 50%;
+	left: 50%;
+	margin-top: -20px;
+	margin-left: -12px;
 }
 
 </style>
@@ -548,14 +579,22 @@ var ABP = {};
 
 		this.$loader = this.$$('.ab-loader');
 
+		this.$circlePlayBtn = this.$$('.ab-circle-play-btn');
+
 		this._bindEvents();
 	};
 
 	Player.prototype._bindEvents = function() {
 		var self = this;
 		this.$playBtn.click(function() {
+			self.$circlePlayBtn.hide();
 			self.togglePlay();
 		});
+		this.$circlePlayBtn.click(function() {
+			self.$circlePlayBtn.hide();
+			self.togglePlay();
+		});
+
 		this.$loopBtn.click(function() {
 			self.toggleLoop();
 		});
@@ -592,6 +631,7 @@ var ABP = {};
 		});
 
 		this.$seekbar.click(function(e) {
+			self.$circlePlayBtn.hide();
 			var progress = (e.clientX - self.$seekbar.offset().left) / self.$seekbar.width();
 			if (progress < 0) progress = 0;
 			if (progress > 1) progress = 1;
@@ -603,6 +643,7 @@ var ABP = {};
 		});
 
 		this.video.onplaying = function() {
+			//console.log('playing');
 			self.$playIcon.attr('class', 'c-icon-pause');
 			if (self.danmakuEnabled) self.cm.start();
 			self.isPlaying = true;
@@ -625,6 +666,24 @@ var ABP = {};
 			self.videoLoaded = true;
 			self._updateSeekbar();
 			self._updateDurationLabel();
+		};
+
+		this.video.onseeking = function() {
+			//console.log('seeking');
+			self.showLoader();
+		};
+		this.video.onseeked = function() {
+			//console.log('seeked');
+			self.hideLoader();
+		};
+
+		this.video.onwaiting = function() {
+			//console.log('waiting');
+			self.showLoader();
+		};
+		this.video.oncanplay = function() {
+			//console.log('canplay');
+			self.hideLoader();
 		};
 	};
 
@@ -801,6 +860,9 @@ var ABP = {};
 			<div class="ccl-container"></div>
 			<video width="100%">Your browser does not support HTML5 video.</video>
 			<div class="c-loader ab-loader"></div>
+			<div class="ab-circle-play-btn">
+				<div class="ab-circle-play-btn-inner"></div>
+			</div>
 		</div>
 	</div>
 

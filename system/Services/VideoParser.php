@@ -111,7 +111,17 @@ class Services_VideoParser
 			return false;
 		}
 
+		if (!$output['video_id'])
+		{
+			return false;
+		}
+
 		$formats = explode(',', $output['url_encoded_fmt_stream_map']);
+		if (count($formats) < 1)
+		{
+			return false;
+		}
+
 		foreach ($formats AS $key => $val)
 		{
 			parse_str($val, $formats[$key]);
