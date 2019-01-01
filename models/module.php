@@ -29,7 +29,7 @@ class module_class extends AWS_MODEL
 
         if (!$friends = $this->model('follow')->get_user_friends($uid, 100))
         {
-            return $this->model('account')->get_users_list(null, $limit, true);
+            return $this->model('account')->get_user_list('uid <> ' . intval($uid), $limit);
         }
 
         foreach ($friends as $key => $val)
@@ -86,10 +86,13 @@ class module_class extends AWS_MODEL
 
         if (! $friend_uids)
         {
-            return $this->model('account')->get_users_list('uid NOT IN (' . implode($follow_uids, ',') . ')', $limit, true);
+			$where = 'uid NOT IN (' . implode($follow_uids, ',') . ')';
+			$where = '(' . $where . ') AND uid <> ' . intval($uid);
+            return $this->model('account')->get_user_list($where, $limit, true);
         }
 
-        if ($users_list = $this->model('account')->get_users_list('uid IN(' . implode($friend_uids, ',') . ') AND uid NOT IN (' . implode($follow_uids, ',') . ')', $limit, true, true))
+		$where = 'uid IN(' . implode($friend_uids, ',') . ') AND uid NOT IN (' . implode($follow_uids, ',') . ')';
+        if ($users_list = $this->model('account')->get_user_list($where, $limit))
         {
             foreach ($users_list as $key => $val)
             {
@@ -127,7 +130,7 @@ class module_class extends AWS_MODEL
 			}
 		}
 
-		if ($friends = $this->model('follow')->get_user_friends($uid, false))
+		if ($friends = $this->model('follow')->get_user_friends($uid, 100))
 		{
 			foreach ($friends as $key => $val)
 			{

@@ -72,7 +72,7 @@ class avatar_class extends AWS_MODEL
 			@unlink(get_setting('upload_dir') . '/avatar/' . $this->get_avatar_path($uid, $key));
 		}
 
-		return $this->model('account')->update_users_fields(array('avatar_file' => null), $uid);
+		return $this->model('account')->update_user_fields(array('avatar_file' => null), $uid);
 	}
 
 
@@ -155,7 +155,7 @@ class avatar_class extends AWS_MODEL
 		$update_data['avatar_file'] = fetch_salt(4); // 生成随机字符串
 
 		// 更新主表
-		$this->model('account')->update_users_fields($update_data, $uid);
+		$this->model('account')->update_user_fields($update_data, $uid);
 
 		return true;
 	}

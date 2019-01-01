@@ -124,11 +124,11 @@ class account_class extends AWS_MODEL
      * @param boolean
      * @return array
      */
-    public function get_user_info_by_username($user_name, $attrb = false, $cache_result = true)
+    public function get_user_info_by_username($user_name)
     {
         if ($uid = $this->fetch_one('users', 'uid', "user_name = '" . $this->quote($user_name) . "'"))
         {
-            return $this->get_user_info_by_uid($uid, $attrb, $cache_result);
+            return $this->get_user_info_by_uid($uid);
         }
     }
 
@@ -142,7 +142,7 @@ class account_class extends AWS_MODEL
      * @param boolean
      * @return array
      */
-    public function get_user_info_by_uid($uid, $attrib = false, $cache_result = true)
+    public function get_user_info_by_uid($uid)
     {
         $uid = intval($uid);
         if ($uid <= 0)
@@ -150,18 +150,11 @@ class account_class extends AWS_MODEL
             return false;
         }
 
-        if ($cache_result)
-        {
-            static $users_info;
+        static $users_info;
 
-            if ($users_info[$uid . '_attrib'])
-            {
-                return $users_info[$uid . '_attrib'];
-            }
-            else if ($users_info[$uid])
-            {
-                return $users_info[$uid];
-            }
+        if ($users_info[$uid])
+        {
+            return $users_info[$uid];
         }
 
         if (! $user_info = $this->fetch_row('users', 'uid = ' . $uid))
@@ -169,40 +162,12 @@ class account_class extends AWS_MODEL
             return false;
         }
 
-		if ($attrib)
-		{
-			if ($user_attrib = $this->fetch_row('users_attrib', 'uid = ' . $uid))
-			{
-				foreach ($user_attrib AS $key => $val)
-				{
-					$user_info[$key] = $val;
-				}
-
-				if ($user_info['extra_data'])
-				{
-					$user_info['extra_data'] = unserialize($user_info['extra_data']);
-				}
-
-				if (!is_array($user_info['extra_data']))
-				{
-					$user_info['extra_data'] = array();
-				}
-			}
-		}
-
         if ($user_info['user_name'])
         {
             $user_info['url_token'] = urlencode($user_info['user_name']);
         }
 
         $users_info[$uid] = $user_info;
-
-        if ($attrib)
-        {
-            unset($users_info[$uid]);
-
-            $users_info[$uid . '_attrib'] = $user_info;
-        }
 
         return $user_info;
     }
@@ -214,7 +179,7 @@ class account_class extends AWS_MODEL
      * @param boolean
      * @return array
      */
-    public function get_user_info_by_uids($uids, $attrib = false)
+    public function get_user_info_by_uids($uids)
     {
         if (! is_array($uids) OR sizeof($uids) == 0)
         {
@@ -227,11 +192,7 @@ class account_class extends AWS_MODEL
 
         static $users_info;
 
-        if ($users_info[implode('_', $uids) . '_attrib'])
-        {
-            return $users_info[implode('_', $uids) . '_attrib'];
-        }
-        else if ($users_info[implode('_', $uids)])
+        if ($users_info[implode('_', $uids)])
         {
             return $users_info[implode('_', $uids)];
         }
@@ -245,8 +206,6 @@ class account_class extends AWS_MODEL
                 unset($val['password'], $val['salt']);
 
                 $data[$val['uid']] = $val;
-
-                $query_uids[] = $val['uid'];
             }
 
             foreach ($uids AS $uid)
@@ -258,36 +217,6 @@ class account_class extends AWS_MODEL
             }
 
             $users_info[implode('_', $uids)] = $data;
-        }
-
-        if ($attrib AND $query_uids)
-        {
-            if ($users_attrib = $this->fetch_all('users_attrib', 'uid IN(' . implode(',', $query_uids) . ')'))
-            {
-                foreach ($users_attrib AS $key => $val)
-                {
-                    unset($val['id']);
-
-                    foreach ($val AS $attrib_key => $attrib_val)
-                    {
-                        $result[$val['uid']][$attrib_key] = $attrib_val;
-                    }
-
-					if ($result[$val['uid']]['extra_data'])
-					{
-						$result[$val['uid']]['extra_data'] = unserialize($result[$val['uid']]['extra_data']);
-					}
-
-					if (!is_array($result[$val['uid']]['extra_data']))
-					{
-						$result[$val['uid']]['extra_data'] = array();
-					}
-                }
-            }
-
-            unset($users_info[implode('_', $uids)]);
-
-            $users_info[implode('_', $uids) . '_attrib'] = $result;
         }
 
         return $result;
@@ -348,10 +277,6 @@ class account_class extends AWS_MODEL
             'reg_time' => fake_time()
         )))
         {
-            $this->insert('users_attrib', array(
-                'uid' => $uid
-            ));
-
             $this->update_notification_setting_fields(get_setting('new_user_notification_setting'), $uid);
 
             //$this->model('search_fulltext')->push_index('user', $user_name, $uid);
@@ -409,7 +334,7 @@ class account_class extends AWS_MODEL
      * @param uid
      * @return int
      */
-    public function update_users_fields($update_data, $uid)
+    public function update_user_fields($update_data, $uid)
     {
         return $this->update('users', $update_data, 'uid = ' . intval($uid));
     }
@@ -433,100 +358,39 @@ class account_class extends AWS_MODEL
     }
 
     /**
-     * 更新用户附加表状态或字段
-     *
-     * @param array
-     * @param uid
-     * @return boolean
-     */
-    public function update_users_attrib_fields($update_data, $uid)
-    {
-		if (isset($update_data['extra_data']) AND $update_data['extra_data'] !== null)
-		{
-			if (is_array($update_data['extra_data']))
-			{
-				if (count($update_data['extra_data']) > 0)
-				{
-					$update_data['extra_data'] = serialize($update_data['extra_data']);
-				}
-				else
-				{
-					// 如果是空数组就直接设为 null
-					$update_data['extra_data'] = null;
-				}
-			}
-			else
-			{
-				unset($update_data['extra_data']);
-			}
-		}
-
-		if (!$this->update('users_attrib', $update_data, 'uid = ' . intval($uid)))
-		{
-			// $this->update 并不能用来检查 users_attrib 是否存在, 如果存在但是未被更新也会返回 0
-			if (!$this->fetch_one('users_attrib', 'uid', 'uid = ' . intval($uid)))
-			{
-				if ($this->uid_exists($uid))
-				{
-					$update_data['uid'] = intval($uid);
-					$this->insert('users_attrib', $update_data);
-					return true;
-				}
-				return false;
-			}
-			return true;
-		}
-		return true;
-    }
-
-    /**
-     * 获取用户附加表 extra_data 字段
+     * 获取用户表 extra_data 字段
      *
      * @param array
      * @param uid
      * @return mixed	成功返回 array, 失败返回 false
      */
-    public function get_users_attrib_extra_data($uid)
+    public function get_user_extra_data($uid)
     {
-		$user_attrib = $this->fetch_row('users_attrib', 'uid = ' . intval($uid));
-		if (!$user_attrib)
+		$user_info = $this->fetch_row('users', 'uid = ' . intval($uid));
+		if (!$user_info)
 		{
-			if ($this->uid_exists($uid))
-			{
-				return array();
-			}
 			// uid 不存在
 			return false;
 		}
 
-		if ($user_attrib['extra_data'])
-		{
-			$result = unserialize($user_attrib['extra_data']);
-		}
-
-		if (!is_array($result))
-		{
-			$result = array();
-		}
-
-		return $result;
+		return unserialize_array($user_info['extra_data']);
     }
 
     /**
-     * 更新用户附加表 extra_data 字段
+     * 更新用户表 extra_data 字段
      *
      * @param array
      * @param uid
      * @return void
      */
-    public function update_users_attrib_extra_data($data, $uid)
+    public function update_user_extra_data($data, $uid)
     {
 		if (!is_array($data))
 		{
 			return;
 		}
 
-		$extra_data = $this->get_users_attrib_extra_data($uid);
+		$extra_data = $this->get_user_extra_data($uid);
 		if (!is_array($extra_data))
 		{
 			return;
@@ -545,7 +409,7 @@ class account_class extends AWS_MODEL
 			}
 		}
 
-		$this->update_users_attrib_fields(array('extra_data' => $extra_data), $uid);
+		$this->update_user_fields(array('extra_data' => serialize_array($extra_data)), $uid);
     }
 
     /**
@@ -708,27 +572,15 @@ class account_class extends AWS_MODEL
         }
     }
 
-    public function get_users_list($where = null, $limit = 10, $attrib = false, $exclude_self = true, $orderby = 'uid DESC')
+    public function get_user_list($where = null, $limit = 10, $orderby = 'uid DESC')
     {
-        if ($exclude_self)
-        {
-            if ($where)
-            {
-                $where = '(' . $where . ') AND uid <> ' . AWS_APP::user()->get_info('uid');
-            }
-            else
-            {
-                $where = 'uid <> ' . AWS_APP::user()->get_info('uid');
-            }
-        }
-
         $result = $this->fetch_all('users', $where, $orderby, $limit);
 
         if ($result)
         {
             foreach ($result AS $key => $val)
             {
-            	unset($val['password'], $val['salt']);
+                unset($val['password'], $val['salt']);
 
                 $data[$val['uid']] = $val;
 
@@ -738,22 +590,6 @@ class account_class extends AWS_MODEL
                 }
 
                 $uids[] = $val['uid'];
-            }
-
-            if ($attrib AND $uids)
-            {
-                if ($users_attrib = $this->fetch_all('users_attrib', 'uid IN(' . implode(',', $uids) . ')'))
-                {
-                    foreach ($users_attrib AS $key => $val)
-                    {
-                        unset($val['id']);
-
-                        foreach ($val AS $attrib_key => $attrib_val)
-                        {
-                            $data[$val['uid']][$attrib_key] = $attrib_val;
-                        }
-                    }
-                }
             }
         }
 
@@ -910,7 +746,7 @@ class account_class extends AWS_MODEL
 		}
 
 		$status = intval($status);
-		if (!$this->update_users_fields(array(
+		if (!$this->update_user_fields(array(
 			'forbidden' => ($status),
 			'user_update_time' => fake_time()
 		), $uid))
@@ -937,7 +773,7 @@ class account_class extends AWS_MODEL
 			);
 		}
 
-		$this->update_users_attrib_extra_data($extra_data, $uid);
+		$this->update_user_extra_data($extra_data, $uid);
     }
 
     public function set_default_timezone($time_zone, $uid)

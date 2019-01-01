@@ -45,7 +45,7 @@ class main extends AWS_CONTROLLER
 			HTTP::error_404();
 		}
 
-		$article_info['user_info'] = $this->model('account')->get_user_info_by_uid($article_info['uid'], true);
+		$article_info['user_info'] = $this->model('account')->get_user_info_by_uid($article_info['uid']);
 
 		if ($this->user_id)
 		{

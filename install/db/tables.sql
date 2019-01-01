@@ -553,6 +553,8 @@ CREATE TABLE IF NOT EXISTS `aws_users` (
   `verified` varchar(32) DEFAULT NULL,
   `default_timezone` varchar(32) DEFAULT NULL,
   `recent_topics` text,
+  `signature` varchar(140) DEFAULT NULL COMMENT '个人签名',
+  `extra_data` TEXT COMMENT '额外数据',
   PRIMARY KEY (`uid`),
   UNIQUE KEY `user_name` (`user_name`) USING BTREE,
   KEY `reputation` (`reputation`),
@@ -564,19 +566,6 @@ CREATE TABLE IF NOT EXISTS `aws_users` (
   KEY `last_login` (`last_login`),
   KEY `user_update_time` (`user_update_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
---
-
-
---
-CREATE TABLE IF NOT EXISTS `aws_users_attrib` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
-  `uid` int(11) DEFAULT '0' COMMENT '用户UID',
-  `signature` varchar(240) DEFAULT NULL COMMENT '个人签名',
-  `extra_data` TEXT COMMENT '不是特别重要的额外数据',
-  PRIMARY KEY (`id`),
-  KEY `uid` (`uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='用户附加属性表';
 
 --
 

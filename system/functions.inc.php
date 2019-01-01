@@ -1057,3 +1057,28 @@ function rand_minmax($min, $max, $default = 0, $undefined = 0)
 
 	return rand($min, $max);
 }
+
+
+function unserialize_array(&$string)
+{
+	if (isset($string))
+	{
+		$result = unserialize($string);
+		if (!is_array($result))
+		{
+			return array();
+		}
+		return $result;
+	}
+	return array();
+}
+
+function serialize_array(&$array)
+{
+	if (is_array($array) AND count($array) > 0)
+	{
+		return serialize($array);
+	}
+	return null;
+}
+
