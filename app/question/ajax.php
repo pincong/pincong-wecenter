@@ -323,17 +323,28 @@ class ajax extends AWS_CONTROLLER
 	// TODO: 重定向功能单独整理出来并支持文章和影片
 	public function redirect_action()
 	{
+		if (! ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+		}
+
+		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
 		$question_info = $this->model('question')->get_question_info_by_id($_POST['item_id']);
+		if (!$question_info)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('内容不存在')));
+		}
 
 		if ($question_info['lock'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定的问题不能设置重定向')));
 		}
 
-		if (! ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
-		}
+		set_user_operation_last_time_by_uid('modify', $this->user_id);
 
 		$this->model('question')->redirect($this->user_id, $_POST['item_id'], $_POST['target_id']);
 
@@ -342,23 +353,35 @@ class ajax extends AWS_CONTROLLER
 
 	public function unredirect_action()
 	{
+		if (! ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+		}
+
+		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
 		$question_info = $this->model('question')->get_question_info_by_id($_POST['item_id']);
+		if (!$question_info)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('内容不存在')));
+		}
 
 		if ($question_info['lock'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定的问题不能设置重定向')));
 		}
 
-		if (! ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
-		}
+		set_user_operation_last_time_by_uid('modify', $this->user_id);
 
 		$this->model('question')->unredirect($this->user_id, $_POST['item_id'], $_POST['target_id']);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
+/*
 	public function remove_question_action()
 	{
 		if (!$this->user_info['permission']['is_administrator'])
@@ -380,6 +403,7 @@ class ajax extends AWS_CONTROLLER
 			'url' => get_js_url('/')
 		), 1, null));
 	}
+*/
 
 	// 只清空不删除
 	public function remove_comment_action()
@@ -435,6 +459,11 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
+		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
 		if (!$answer_info = $this->model('answer')->get_answer_by_id($_POST['answer_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('回答不存在')));
@@ -444,6 +473,8 @@ class ajax extends AWS_CONTROLLER
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('问题不存在')));
 		}
+
+		set_user_operation_last_time_by_uid('modify', $this->user_id);
 
 		if ($question_info['best_answer'])
 		{

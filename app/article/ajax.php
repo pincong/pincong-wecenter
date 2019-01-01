@@ -37,7 +37,7 @@ class ajax extends AWS_CONTROLLER
 		HTTP::no_cache_header();
 	}
 
-
+/*
 	public function remove_article_action()
 	{
 		if (!$this->user_info['permission']['is_administrator'])
@@ -59,5 +59,6 @@ class ajax extends AWS_CONTROLLER
 			'url' => get_js_url('/')
 		), 1, null));
 	}
+*/
 
 }

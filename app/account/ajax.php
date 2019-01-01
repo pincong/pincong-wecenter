@@ -566,6 +566,11 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
+		if (!check_user_operation_interval_by_uid('modify', $this->user_id, get_setting('modify_content_interval')))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
 		$status = intval($_POST['status']);
 		if ($status)
 		{
@@ -595,6 +600,8 @@ class ajax extends AWS_CONTROLLER
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 			}
 		}
+
+		set_user_operation_last_time_by_uid('modify', $this->user_id);
 
 		$this->model('account')->forbid_user_by_uid($uid, $status, $this->user_id, $reason);
 
