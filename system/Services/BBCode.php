@@ -16,7 +16,12 @@ class Services_BBCode
 
 	private function _code_callback($match)
 	{
-		return "<pre>" . str_replace('[', '<span>[</span>', $match[1]) . "</pre>";
+		return "<pre><code>" . str_replace('[', '<span>[</span>', $match[1]) . "</code></pre>";
+	}
+
+	private function _code_2_callback($match)
+	{
+		return "<pre><code class=\"language-$match[1]\">" . str_replace('[', '<span>[</span>', $match[2]) . "</code></pre>";
 	}
 
 	private function _b_callback($match)
@@ -146,7 +151,10 @@ class Services_BBCode
         $this->bbcode_table["/\[color=(.*?)\](.*?)\[\/color\]/is"] = '_plain_text_2_callback';
 
 	    // Replace [code]...[/code] with <pre><code>...</code></pre>
-        $this->bbcode_table["/\[code\](.*?)\[\/code\]/is"] = '_code_callback';
+		$this->bbcode_table["/\[code\](.*?)\[\/code\]/is"] = '_code_callback';
+		
+		// Replace [code=css]...[/code] with <pre><code class="language-css">...</code></pre>
+        $this->bbcode_table["/\[code=(.*?)\](.*?)\[\/code\]/is"] = '_code_2_callback';
 
         // Replace [b]...[/b] with <strong>...</strong>
         $this->bbcode_table["/\[b\](.*?)\[\/b\]/is"] = '_b_callback';
