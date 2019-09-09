@@ -31,7 +31,7 @@ class AWS_CONTROLLER
 		// 从 Session 中获取当前用户 User ID
 		$this->user_id = AWS_APP::user()->get_info('uid');
 
-		$this->user_info = $this->model('account')->get_user_info_by_uid($this->user_id, TRUE);
+		$this->user_info = $this->model('account')->get_user_info_by_uid($this->user_id);
 
 		if ($this->user_info)
 		{
@@ -39,6 +39,9 @@ class AWS_CONTROLLER
 				$this->user_info['group_id'],
 				$this->model('reputation')->get_reputation_group_id_by_reputation($this->user_info['reputation'])
 			);
+
+			$user_settings = unserialize_array($this->user_info['settings']);
+			$this->user_info['default_timezone'] = $user_settings['timezone'];
 
 			if ($this->user_info['default_timezone'])
 			{

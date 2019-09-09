@@ -130,14 +130,10 @@ class ajax extends AWS_CONTROLLER
 		{
 			$update_data['sex'] = intval($_POST['sex']);
 
-
-			$update_attrib_data['signature'] = htmlspecialchars($_POST['signature']);
+			$update_data['signature'] = htmlspecialchars($_POST['signature']);
 
 			// 更新主表
-			$this->model('account')->update_users_fields($update_data, $uid);
-
-			// 更新从表
-			$this->model('account')->update_users_attrib_fields($update_attrib_data, $uid);
+			$this->model('account')->update_user_fields($update_data, $uid);
 		}
 
 		$this->model('account')->setcookie_logout();
@@ -340,7 +336,7 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		$this->model('account')->update_users_fields(array(
+		$this->model('account')->update_user_fields(array(
 			'inbox_recv' => intval($_POST['inbox_recv'])
 		), $this->user_id);
 
@@ -377,13 +373,10 @@ class ajax extends AWS_CONTROLLER
 
 		$update_data['sex'] = intval($_POST['sex']);
 
-		$update_attrib_data['signature'] = htmlspecialchars($_POST['signature']);
+		$update_data['signature'] = htmlspecialchars($_POST['signature']);
 
 		// 更新主表
-		$this->model('account')->update_users_fields($update_data, $this->user_id);
-
-		// 更新从表
-		$this->model('account')->update_users_attrib_fields($update_attrib_data, $this->user_id);
+		$this->model('account')->update_user_fields($update_data, $this->user_id);
 
 		$this->model('account')->set_default_timezone($_POST['default_timezone'], $this->user_id);
 
@@ -535,7 +528,7 @@ class ajax extends AWS_CONTROLLER
 
 		set_user_operation_last_time('manage', $this->user_id);
 
-		$this->model('account')->update_users_fields(array(
+		$this->model('account')->update_user_fields(array(
 			'verified' => $text
 		), $_POST['uid']);
 
@@ -566,7 +559,7 @@ class ajax extends AWS_CONTROLLER
 
 		set_user_operation_last_time('manage', $this->user_id);
 
-		$this->model('account')->update_users_attrib_fields(array(
+		$this->model('account')->update_user_fields(array(
 			'signature' => $text
 		), $_POST['uid']);
 

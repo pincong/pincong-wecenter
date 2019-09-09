@@ -153,7 +153,7 @@ class user extends AWS_ADMIN_CONTROLLER
     {
         $this->crumb(AWS_APP::lang()->_t('编辑用户资料'), 'admin/user/edit/');
 
-        if (!$user = $this->model('account')->get_user_info_by_uid($_GET['uid'], TRUE))
+        if (!$user = $this->model('account')->get_user_info_by_uid($_GET['uid']))
         {
             H::redirect_msg(AWS_APP::lang()->_t('用户不存在'), '/admin/user/list/');
         }

@@ -108,7 +108,7 @@ class answer_class extends AWS_MODEL
 
 		if ($uids)
 		{
-			if ($users_info = $this->model('account')->get_user_info_by_uids($uids, true))
+			if ($users_info = $this->model('account')->get_user_info_by_uids($uids))
 			{
 				foreach($answer_list as $key => $val)
 				{

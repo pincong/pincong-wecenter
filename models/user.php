@@ -268,7 +268,6 @@ class user_class extends AWS_MODEL
 		$uid = intval($uid);
 
 		$this->delete('users', 'uid = ' . ($uid));
-		$this->delete('users_attrib', 'uid = ' . ($uid));
 	}
 
 	public function auto_delete_users()

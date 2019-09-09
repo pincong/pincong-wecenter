@@ -150,7 +150,7 @@ class search_class extends AWS_MODEL
 
 			$search_id = $result_info['uid'];
 
-			$user_info = $this->model('account')->get_user_info_by_uid($result_info['uid'], true);
+			$user_info = $this->model('account')->get_user_info_by_uid($result_info['uid']);
 
 			$name = $user_info['user_name'];
 

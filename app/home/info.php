@@ -138,13 +138,18 @@ class info extends AWS_CONTROLLER
 		{
 			$welcome_recommend_users = explode(',', $welcome_recommend_users);
 
-			$users_list = $this->model('account')->get_users_list("user_name IN('" . implode("','", $welcome_recommend_users) . "')", 6, true, true, 'RAND()');
+			$where = "user_name IN('" . implode("','", $welcome_recommend_users) . "')";
+			$where = '(' . $where . ') AND uid <> ' . $this->user_id;
+			$users_list = $this->model('account')->get_user_list($where, 6, 'RAND()');
 		}
 
 		if (!$users_list)
 		{
-			//$users_list = $this->model('account')->get_users_list("reputation > 5 AND last_login > " . (time() - (60 * 60 * 24 * 7)), 6, true, true, 'RAND()');
-			$users_list = $this->model('account')->get_users_list("reputation > 5 AND forbidden = 0", 6, true, true, 'RAND()');
+			//$where = "reputation > 5 AND last_login > " . (time() - (60 * 60 * 24 * 7));
+
+			$where = "reputation > 5 AND forbidden = 0";
+			$where = '(' . $where . ') AND uid <> ' . $this->user_id;
+			$users_list = $this->model('account')->get_user_list($where, 6, 'RAND()');
 		}
 
 		if ($users_list)

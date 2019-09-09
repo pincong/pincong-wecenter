@@ -812,7 +812,9 @@ class ajax extends AWS_ADMIN_CONTROLLER
             $update_data['agree_count'] = intval($_POST['agree_count']);
             $update_data['currency'] = intval($_POST['currency']);
 
-            $this->model('account')->update_users_fields($update_data, $user_info['uid']);
+            $update_data['signature'] = htmlspecialchars($_POST['signature']);
+
+            $this->model('account')->update_user_fields($update_data, $user_info['uid']);
 
             if ($_POST['delete_avatar'])
             {
@@ -823,10 +825,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
             {
                 $this->model('account')->update_user_password_ingore_oldpassword($_POST['password'], $user_info['uid'], fetch_salt());
             }
-
-            $this->model('account')->update_users_attrib_fields(array(
-                'signature' => htmlspecialchars($_POST['signature'])
-            ), $user_info['uid']);
 
             if ($_POST['user_name'] AND $_POST['user_name'] != $user_info['user_name'])
             {

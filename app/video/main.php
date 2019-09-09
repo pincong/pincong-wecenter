@@ -48,7 +48,7 @@ class main extends AWS_CONTROLLER
 			HTTP::error_404();
 		}
 
-		$video_info['user_info'] = $this->model('account')->get_user_info_by_uid($video_info['uid'], true);
+		$video_info['user_info'] = $this->model('account')->get_user_info_by_uid($video_info['uid']);
 
 		$video_info['thumb_url'] = Services_VideoParser::get_thumb_url($video_info['source_type'], $video_info['source'], 'l');
 

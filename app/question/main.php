@@ -62,7 +62,7 @@ class main extends AWS_CONTROLLER
 			$question_info['category_info'] = $this->model('category')->get_category_info($question_info['category_id']);
 		}
 
-		$question_info['user_info'] = $this->model('account')->get_user_info_by_uid($question_info['uid'], true);
+		$question_info['user_info'] = $this->model('account')->get_user_info_by_uid($question_info['uid']);
 
 
 		$this->model('content')->update_view_count('question', $question_info['question_id'], session_id());
@@ -74,7 +74,7 @@ class main extends AWS_CONTROLLER
 		}
 		else if ($_GET['uid'] == 'focus' and $this->user_id)
 		{
-			if ($friends = $this->model('follow')->get_user_friends($this->user_id, false))
+			if ($friends = $this->model('follow')->get_user_friends($this->user_id, 100))
 			{
 				foreach ($friends as $key => $val)
 				{

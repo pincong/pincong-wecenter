@@ -42,7 +42,7 @@
 									<br />
 									<span class="text-color-999"><?php _e('封禁理由'); ?> : <?php _e('累计收到反对票的数量过多'); ?></span>
 								<?php } else if ($this->user['forbidden']) { ?>
-									<span class="text-color-999"><a href="people/<?php echo $this->user['extra_data']['banned_by']; ?>"><?php _e('管理员'); ?></a><?php _e('封禁'); ?></span>
+									<span class="text-color-999"><a href="people/<?php echo $this->user['data']['banned_by']; ?>"><?php _e('管理员'); ?></a><?php _e('封禁'); ?></span>
 									<?php if ($this->user['forbidden'] == 3 AND get_setting('days_delete_forbidden_users')) {
 										$expiration_date = intval(get_setting('days_delete_forbidden_users')) * 86400 + $this->user['user_update_time'];
 									?>
@@ -53,7 +53,7 @@
 									<span class="text-color-999"><?php _e('将于 %s 解封', date_friendly($expiration_date)); ?></span>
 									<?php } ?>
 									<br />
-									<span class="text-color-999"><?php _e('封禁理由'); ?> : <?php echo $this->user['extra_data']['banned_reason']; ?></span>
+									<span class="text-color-999"><?php _e('封禁理由'); ?> : <?php echo $this->user['data']['banned_reason']; ?></span>
 								<?php } ?>
 								<!-- end 封禁 -->
 							</h1>

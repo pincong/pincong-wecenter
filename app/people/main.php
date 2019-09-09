@@ -44,14 +44,14 @@ class main extends AWS_CONTROLLER
 
 		if (is_digits($_GET['id']))
 		{
-			if (!$user = $this->model('account')->get_user_info_by_uid($_GET['id'], TRUE))
+			if (!$user = $this->model('account')->get_user_info_by_uid($_GET['id']))
 			{
-				$user = $this->model('account')->get_user_info_by_username($_GET['id'], TRUE);
+				$user = $this->model('account')->get_user_info_by_username($_GET['id']);
 			}
 		}
 		else
 		{
-			$user = $this->model('account')->get_user_info_by_username($_GET['id'], TRUE);
+			$user = $this->model('account')->get_user_info_by_username($_GET['id']);
 		}
 
 		if (!$user)
@@ -65,6 +65,8 @@ class main extends AWS_CONTROLLER
 		}
 
 		$user['reputation_group_name'] = $this->model('reputation')->get_reputation_group_name_by_reputation($user['reputation']);
+
+		$user['data'] = unserialize_array($user['extra_data']);
 
 		$this->model('people')->update_view_count($user['uid'], session_id());
 
@@ -117,7 +119,7 @@ class main extends AWS_CONTROLLER
 			$base_url .= 'forbidden-1';
 		}
 
-		$users_list = $this->model('account')->get_users_list(implode('', $where), calc_page_limit($_GET['page'], get_setting('contents_per_page')), true, false, 'forbidden ASC, reputation DESC');
+		$users_list = $this->model('account')->get_user_list(implode('', $where), calc_page_limit($_GET['page'], get_setting('contents_per_page')), 'forbidden ASC, reputation DESC');
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
 			'base_url' => get_js_url('/people/' . $base_url),

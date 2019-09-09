@@ -106,7 +106,7 @@ class TPL
 
 			if ($template_dirs[0] != 'admin')
 			{
-				$output = H::sensitive_words_replace($output);
+				H::sensitive_words_replace($output);
 			}
 
 			if (get_setting('url_rewrite_enable') != 'Y' OR $template_dirs[0] == 'admin')

@@ -364,7 +364,7 @@ function get_setting($varname = null)
  * @param  string
  * @return mixed
  */
-function get_key_value_pairs($varname, $separator = ',')
+function get_key_value_pairs($varname, $separator = ',', $allow_empty_separator = false)
 {
 	$result = array();
 
@@ -381,10 +381,16 @@ function get_key_value_pairs($varname, $separator = ',')
 		$count = count($array);
 		if ($count < 2)
 		{
-			continue;
+			if (!$allow_empty_separator)
+			{
+				continue;
+			}
+			$result[trim($array[0])] = '';
 		}
-
-		$result[trim($array[0])] = trim($array[$count - 1]);
+		else
+		{
+			$result[trim($array[0])] = trim($array[$count - 1]);
+		}
 	}
 
 	return $result;
@@ -1050,4 +1056,38 @@ function rand_minmax($min, $max, $default = 0, $undefined = 0)
 	}
 
 	return rand($min, $max);
+}
+
+
+function unserialize_array(&$string)
+{
+	if (isset($string))
+	{
+		$result = unserialize($string);
+		if (!is_array($result))
+		{
+			return array();
+		}
+		return $result;
+	}
+	return array();
+}
+
+function serialize_array(&$array)
+{
+	if (is_array($array) AND count($array) > 0)
+	{
+		return serialize($array);
+	}
+	return null;
+}
+
+function is_valid_timezone($timezone)
+{
+	if (!$timezone)
+	{
+		return false;
+	}
+	@$tz = timezone_open($timezone);
+	return $tz !== false;
 }

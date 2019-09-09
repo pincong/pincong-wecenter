@@ -47,7 +47,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			$user_info = $this->user_info;
 		}
-		else if (!$user_info = $this->model('account')->get_user_info_by_uid($_GET['uid'], ture))
+		else if (!$user_info = $this->model('account')->get_user_info_by_uid($_GET['uid']))
 		{
 			H::ajax_json_output(array(
 				'uid' => null

@@ -86,33 +86,7 @@ class register_class extends AWS_MODEL
      */
     public function check_username_sensitive_words($user_name)
     {
-        if (H::sensitive_word_exists($user_name))
-        {
-            return true;
-        }
-
-        if (!get_setting('censoruser'))
-        {
-            return false;
-        }
-
-        if ($censorusers = explode("\n", get_setting('censoruser')))
-        {
-            foreach ($censorusers as $name)
-            {
-                if (!$name = trim($name))
-                {
-                    continue;
-                }
-
-                if (preg_match('/(' . $name . ')/is', $user_name))
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return content_contains('censoruser', $user_name, true);
     }
 
 }
