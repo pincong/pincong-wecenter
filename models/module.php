@@ -88,7 +88,7 @@ class module_class extends AWS_MODEL
         {
 			$where = 'uid NOT IN (' . implode($follow_uids, ',') . ')';
 			$where = '(' . $where . ') AND uid <> ' . intval($uid);
-            return $this->model('account')->get_user_list($where, $limit, true);
+            return $this->model('account')->get_user_list($where, $limit);
         }
 
 		$where = 'uid IN(' . implode($friend_uids, ',') . ') AND uid NOT IN (' . implode($follow_uids, ',') . ')';

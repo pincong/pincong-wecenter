@@ -38,14 +38,20 @@
 </div>
 
 <?php if ($_GET['first_login']) { ?>
-<script type="text/javascript" src="<?php echo G_STATIC_URL; ?>/js/fileupload.js"></script>
+<script type="text/javascript" src="<?php echo G_STATIC_URL; ?>/js/imageuploader.js"></script>
 <script type="text/javascript">
 function welcome_step(step)
 {
 	switch (step)
 	{
 		case '1':
-			var fileupload = new FileUpload('avatar', $('#welcome_avatar_uploader'), $("#aw-upload-img"), G_BASE_URL + '/account/ajax/avatar_upload/', {'loading_status' : '#aw-img-uploading'});
+			new ImageUploader({
+				url: G_BASE_URL + '/account/ajax/avatar_upload/',
+				field_name: 'aws_upload_file',
+				upload_button: $('#welcome_avatar_uploader'),
+				image_container: $('#aw-upload-img'),
+				loading_status: $('#aw-img-uploading')
+			});
 		break;
 
 		case '2':

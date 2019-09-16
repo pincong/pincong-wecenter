@@ -36,8 +36,6 @@ class setting extends AWS_CONTROLLER
 	{
 		$this->crumb(AWS_APP::lang()->_t('基本资料'), '/account/setting/profile/');
 
-		TPL::import_js('js/fileupload.js');
-
 		TPL::output('account/setting/profile');
 	}
 

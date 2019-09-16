@@ -10,7 +10,6 @@ a{cursor: pointer;color: #23527c;}
 a:hover{text-decoration: none;color: #404451;}
 .aw-load-more-content:hover{background: #404451;color: #fff;}
 .aw-load-more-content:hover a, .aw-load-more-content:hover span{background-color:#404451;color: #fff;}
-.aw-load-more-content.warmming{display:none;background:#f4fbff;border:1px solid #cbe1f0;font-size: 12px;}
 .topic-tag .text{display:inline-block;height:20px;line-height:16px;padding:2px 5px;background-color:#697287;font-size:12px;color: #fff;border-radius: 4px;}
 .topic-tag .text:hover, .topic-tag .text:active, .topic-tag .close:hover, .topic-tag .close:active{background-color: #323341;}
 .topic-tag .close{width: 20px;height: 20px;background-color: #555c6c;text-align: center;line-height:20px;color: #fff;font-size: 10px;opacity: 1;filter:alpha(opacity=100);border-radius: 0 4px 4px 0;}
@@ -32,7 +31,6 @@ a:hover{text-decoration: none;color: #404451;}
 .aw-feed-list .operate .aw-add-comment:hover, .aw-feed-list .operate .aw-add-comment.active{background-color: #404451;color: #fff;border-radius: 4px;}
 .aw-mod.side-nav ul li a.active{background-color:#404451;color: #fff;}
 .aw-mod.side-nav ul li a.active .badge{background-color: #fff;color: #404451;}
-.aw-upload-box .upload-list li .img .icon-file{font-size: 48px;vertical-align: middle;color: #aac6e1;}
 .aw-topic-bar .tag-bar .operate .btn-group.open .btn{background-color:#404451;color: #fff;}
 .aw-comment-box .aw-comment-list a{color: #23527c;}
 /*.aw-comment-box .aw-comment-list a{color: #083156;}*/

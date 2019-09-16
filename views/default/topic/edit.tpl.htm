@@ -67,14 +67,16 @@
 	</div>
 </div>
 
+<script type="text/javascript" src="<?php echo G_STATIC_URL; ?>/js/imageuploader.js"></script>
 <script type="text/javascript">
-	$(function()
-	{
-		if ($('#topic_pic_uploader').length)
-		{
-			var fileUpload = new FileUpload('avatar', $('#topic_pic_uploader'), $('#topic_pic_uploader'), G_BASE_URL + '/topic/ajax/upload_topic_pic/topic_id-<?php echo $this->topic_info['topic_id']; ?>', {'loading_status' : '#uploading_status'});
-		}
+$(document).ready(function () {
+	new ImageUploader({
+		url: G_BASE_URL + '/topic/ajax/upload_topic_pic/topic_id-<?php echo $this->topic_info['topic_id']; ?>',
+		field_name: 'aws_upload_file',
+		upload_button: $('#topic_pic_uploader'),
+		image_container: $('#topic_pic_uploader'),
 	});
+});
 </script>
 
 <?php TPL::include('global/footer.tpl.htm'); ?>

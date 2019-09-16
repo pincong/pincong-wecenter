@@ -31,7 +31,7 @@
 			<?php } ?>
 
 		<?php if ($val['post_type'] == 'question') { ?>
-			<?php if ($val['answer_count'] > 0) { ?>
+			<?php if ($val['answer_info']) { ?>
 				<a href="<?php echo UF::url($val['answer_info']['user_info']); ?>" class="aw-user-name" data-id="<?php echo $val['answer_info']['user_info']['uid']; ?>"><?php echo UF::name($val['answer_info']['user_info']); ?></a>
 				<span class="text-color-999"><?php _e('回复了问题'); ?> • <?php _e('%s 个回复', $val['answer_count']); ?> • <?php _e('%s 次浏览', $val['view_count']); ?> • <?php echo date_friendly($val['update_time']); ?></span>
 			<?php } else { ?>

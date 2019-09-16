@@ -73,6 +73,7 @@ class AWS_CONTROLLER
 
 		$this->user_info['group_name'] = $user_group['group_name'];
 		$this->user_info['permission'] = $user_group['permission'];
+		$this->user_info['reputation_factor'] = $user_group['reputation_factor'];
 
 		AWS_APP::session()->permission = $this->user_info['permission'];
 
@@ -81,6 +82,12 @@ class AWS_CONTROLLER
 			$this->model('account')->logout();
 
 			H::redirect_msg(AWS_APP::lang()->_t('抱歉, 你的账号已经被禁止登录'), '/');
+		}
+		elseif ($this->user_info['flagged'])
+		{
+			$this->model('account')->logout();
+
+			HTTP::redirect('/');
 		}
 		else
 		{

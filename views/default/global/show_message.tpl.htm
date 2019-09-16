@@ -3,7 +3,7 @@
 	<head>
 		<meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" />
-		<title><?php if ($this->url_bit) { ?><?php _e('请稍候'); ?>...<?php } else { ?><?php _e('提示信息'); ?><?php } ?></title>
+		<title><?php if ($this->url_bit) { ?><?php _e('请稍候...'); ?><?php } else { ?><?php _e('提示信息'); ?><?php } ?></title>
 		<?php if ($this->url_bit) { ?>
 		<meta http-equiv="refresh" content="<?php echo $this->interval; ?>; url=<?php echo $this->url_bit; ?>" />
 		<?php } ?>

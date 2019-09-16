@@ -204,10 +204,9 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', $error));
 		}
 
-		echo htmlspecialchars(json_encode(array(
-			'success' => true,
-			'thumb' => get_setting('upload_url') . '/topic/' . $this->model('topic')->get_image_path($_GET['topic_id'], 'mid')
-		)), ENT_NOQUOTES);
+		H::ajax_json_output(AWS_APP::RSM(array(
+			'thumb' => get_setting('upload_url') . '/topic/' . $this->model('topic')->get_image_path($_GET['topic_id'], 'mid') . '?' . rand(1, 999)
+		), '1', null));
 	}
 
 	public function focus_topic_action()

@@ -186,8 +186,6 @@ class topic extends AWS_ADMIN_CONTROLLER
 
 		TPL::assign('parent_topics', $this->model('topic')->get_parent_topics());
 
-		TPL::import_js('js/fileupload.js');
-
 		TPL::output('admin/topic/edit');
 	}
 }

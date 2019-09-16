@@ -78,7 +78,7 @@
 				<!-- 上传头像 -->
 				<div class="side-bar">
 					<dl>
-						<dt class="pull-left"><img class="aw-border-radius-5" src="<?php echo UF::avatar($this->user_info, 'max'); ?>?rand=<?php echo rand(1, 999); ?>" alt="" id="avatar_src" /></dt>
+						<dt class="pull-left"><img class="aw-border-radius-5" src="<?php echo UF::avatar($this->user_info, 'max'); ?>" alt="" id="avatar_src" /></dt>
 						<dd class="pull-left">
 							<h5><?php _e('头像设置'); ?></h5>
 							<p><?php _e('支持 jpg、gif、png 等格式的图片'); ?></p>
@@ -97,9 +97,16 @@
 	</div>
 </div>
 
+<script type="text/javascript" src="<?php echo G_STATIC_URL; ?>/js/imageuploader.js"></script>
 <script type="text/javascript">
 $(document).ready(function () {
-    var fileUpload = new FileUpload('avatar', $('#avatar_uploader'), $('#avatar_src'), G_BASE_URL + '/account/ajax/avatar_upload/', {'loading_status' : '#avatar_uploading_status'});
+	new ImageUploader({
+		url: G_BASE_URL + '/account/ajax/avatar_upload/',
+		field_name: 'aws_upload_file',
+		upload_button: $('#avatar_uploader'),
+		image_container: $('#avatar_src'),
+		loading_status: $('#avatar_uploading_status')
+	});
 });
 </script>
 

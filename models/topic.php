@@ -414,7 +414,7 @@ class topic_class extends AWS_MODEL
 			{
 				foreach (AWS_APP::config()->get('image')->topic_thumbnail as $key => $val)
 				{
-					@unlink(get_setting('upload_dir') . '/topic/' . $this->get_topic_path($topic_id, $key));
+					@unlink(get_setting('upload_dir') . '/topic/' . $this->get_image_path($topic_id, $key));
 				}
 			}
 

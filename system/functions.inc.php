@@ -385,7 +385,7 @@ function get_key_value_pairs($varname, $separator = ',', $allow_empty_separator 
 			{
 				continue;
 			}
-			$result[trim($array[0])] = '';
+			$result[$row] = null;
 		}
 		else
 		{
