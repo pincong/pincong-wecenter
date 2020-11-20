@@ -427,7 +427,12 @@ a.aw-load-more-content{display: block;}
 .aw-article-reply-box .mod-body{margin-bottom:10px;padding:0 !important;}
 .aw-article-reply-box .mod-footer{padding:0 !important;}
 .aw-article-reply-box .mod-footer input[type="text"]{width: 80px;}
-
+.aw-voting-reply-box{position:relative;margin:20px 20px 0 0;padding-left: 60px;}
+.aw-voting-reply-box .mod-head{position:absolute;left:20px;}
+.aw-voting-reply-box .mod-head img{width: 32px;height: 32px;}
+.aw-voting-reply-box .mod-body{margin-bottom:10px;padding:0 !important;}
+.aw-voting-reply-box .mod-footer{padding:0 !important;}
+.aw-voting-reply-box .mod-footer input[type="text"]{width: 80px;}
 /* 新编辑器 */
 .aw-editor-box .mod-head{border:1px solid #e6e6e6;border-radius: 4px;}
 .aw-editor-box textarea{border: none;}
@@ -537,7 +542,23 @@ a.aw-load-more-content{display: block;}
 .aw-article-content .aw-question-detail .mod-footer a img{width: 25px;height: 25px;margin-bottom:10px;border-radius: 15px;}
 .aw-article-content .aw-question-detail .mod-footer a.more-voters{display: inline-block;width: 25px;height: 25px;line-height:18px;border-radius: 15px;background-color: #f1f2f3;text-align: center;vertical-align: middle;color: #cdcecf;}
 .aw-article-content .aw-feed-list .aw-article-reply-box{margin:10px 0 0;padding:0;}
-
+.aw-voting-content .aw-question-detail .mod-body{margin-bottom: 20px;}
+.aw-voting-content .aw-question-detail .mod-body > a{line-height: 38px;margin:0 0 0 15px !important;}
+.aw-voting-vote a{border-radius: 4px;background-color: #f5f5f5;}
+.aw-voting-vote a{display:inline-block;float:left;height:38px;line-height:38px;padding:0 13px 0 15px;color: #9d9e9f;outline: none;}
+.aw-voting-vote a + a{border-left: 1px solid #e6e6e6;}
+.aw-voting-vote a:hover, .aw-voting-vote a.active{background-color: #499ef3;color: #fff;}
+.aw-voting-vote a.agree{border-radius: 4px 0 0 4px;}
+.aw-voting-vote a.disagree{border-radius: 0 4px 4px 0;}
+.aw-voting-vote a:hover i, .aw-voting-vote a.active i{color: #fff !important;}
+.aw-voting-vote i{margin:0;vertical-align: 0;}
+.aw-voting-vote b{margin-left: 5px;font-size: 16px;font-weight: 500;}
+.aw-voting-vote.disabled a{background-color: #fff !important;border:1px solid #f5f5f5;box-shadow:none;border-radius: 4px;text-decoration: none;}
+.aw-voting-vote.disabled a:hover b, .aw-voting-vote.disabled a:hover i{color: #999 !important;}
+.aw-voting-content .aw-question-detail .meta{line-height: 38px;}
+.aw-voting-content .aw-question-detail .mod-footer a img{width: 25px;height: 25px;margin-bottom:10px;border-radius: 15px;}
+.aw-voting-content .aw-question-detail .mod-footer a.more-voters{display: inline-block;width: 25px;height: 25px;line-height:18px;border-radius: 15px;background-color: #f1f2f3;text-align: center;vertical-align: middle;color: #cdcecf;}
+.aw-voting-content .aw-feed-list .aw-voting-reply-box{margin:10px 0 0;padding:0;}
 /* 发起问题页面 */
 .aw-mod-publish{padding:0 20px 20px;}
 .aw-mod-publish h3{margin-top:30px;}
@@ -839,6 +860,7 @@ a.aw-load-more-content{display: block;}
 	.aw-tips-box .modal-dialog, .aw-share-box .modal-dialog{width: auto;}
 	/*发起问题页面*/
 	.aw-publish-title input, .aw-publish-article .aw-publish-title input {width: 68%;}
+	.aw-publish-title input, .aw-publish-voting .aw-publish-title input {width: 68%;}
 	.aw-publish-title .dropdown {width: 30%;}
 	/*个人页面*/
 	.aw-user-detail-box .mod-head {min-height:70px !important;padding:10px 10px 0px 70px !important;}
@@ -875,6 +897,7 @@ a.aw-load-more-content{display: block;}
 	.category dl dd {width: 80px;}
 	/* 发起页面 */
 	.aw-publish-title input, .aw-publish-article .aw-publish-title input {width: 58%;}
+	.aw-publish-title input, .aw-publish-voting .aw-publish-title input {width: 58%;}
 	.aw-publish-title .dropdown {width: 40%;}
 	.aw-mod-publish .mod-footer .aw-anonymity {margin:0 20px 0 0;}
 	/* 问题详情页 */

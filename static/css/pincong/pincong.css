@@ -34,6 +34,7 @@ a:hover{text-decoration: none;color: #404451;}
 /*.aw-comment-box .aw-comment-list a{color: #083156;}*/
 .aw-invite-box .mod-footer a{display: inline-block;width: 28px;height: 24px;line-height:22px;background-color: #555c6c;text-align: center;border-radius: 4px;color: #fff;}
 .aw-article-vote a:hover, .aw-article-vote a.active{background-color: #404451;color: #fff;}
+.aw-voting-vote a:hover, .aw-voting-vote a.active{background-color: #404451;color: #fff;}
 .aw-first-login .mod-head ul{background: #697287;color: #fff;}
 .navbar-collapse {background: #404451;}
 .aw-common-list .aw-question-content h4{font-size: 15px;font-weight: bold;}
