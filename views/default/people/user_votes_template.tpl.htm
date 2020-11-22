@@ -22,6 +22,7 @@
 				case 'question':
 				case 'article':
 				case 'video':
+                case 'voting':
 				{
 					echo $val['type'] . '/id-' . $val['item_id'];
 					break;
@@ -39,6 +40,11 @@
 				case 'video_comment':
 				{
 					echo 'video/item_id-' . $val['item_id'];
+					break;
+				}
+                case 'voting_comment':
+				{
+					echo 'voting/item_id-' . $val['item_id'];
 					break;
 				}
 			}

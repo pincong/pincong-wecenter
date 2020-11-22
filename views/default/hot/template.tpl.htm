@@ -350,6 +350,99 @@
 	</div>
 </div>
 <!-- end 影片评论 -->
+<?php } else if ($val['item_type'] == 'voting') { ?>
+<?php if (!$val['title']) continue; ?>
+
+<!-- 文章 -->
+<div class="aw-item" data-category-id="<?php echo $val['item_category_id']; ?>">
+	<div class="mod-head">
+		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
+		<p class="aw-small-text">
+			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
+			<?php _e('发表了文章'); ?>
+			•
+			<?php _e('%s 个评论', $val['comments']); ?>
+		</p>
+		<h2 style="font-size:16px;">
+			<a href="<?php echo url_rewrite(); ?>/voting/<?php echo $val['id']; ?>"><?php echo CF::title($val['user_info'], 'voting_' . $val['id'], $val['title']); ?></a>
+		</h2>
+	</div>
+	<div class="mod-body">
+		<div class="content markitup-box">
+			<?php echo CF::body($val['user_info'], 'voting_' . $val['id'], $val['message']); ?>
+		</div>
+	</div>
+	<div class="mod-footer">
+		<!-- 社交操作 -->
+		<div class="meta clearfix">
+			<span class="aw-small-text pull-right"><?php echo date_friendly($val['add_time']); ?></span>
+			<!-- 投票栏 -->
+			<span class="operate aw-vote-ui">
+				<a href="javascript:;" class="agree disabled">
+					<i class="icon icon-agree"></i> <b class="count"><?php echo $val['agree_count']; ?></b>
+				</a>
+			</span>
+			<!-- end 投票栏 -->
+
+			<!-- 可显示/隐藏的操作box -->
+			<div class="more-operate">
+
+				<a href="<?php echo url_rewrite(); ?>/vote/log/item_type-voting__item_id-<?php echo $val['id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
+
+				<?php if ($this->user_id) { ?>
+					<a href="javascript:;" onclick="AWS.User.add_favorite('voting', '<?php echo $val['id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>
+				<?php } ?>
+
+			</div>
+			<!-- end 可显示/隐藏的操作box -->
+		</div>
+		<!-- end 社交操作 -->
+	</div>
+</div>
+<!-- end 文章 -->
+
+<?php } else if ($val['item_type'] == 'voting_comment') { ?>
+<?php if ($val['fold']) continue; ?>
+<?php if (!$val['message']) continue; ?>
+
+<!-- 文章评论 -->
+<div class="aw-item" data-category-id="<?php echo $val['item_category_id']; ?>">
+	<div class="mod-head">
+		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
+		<p class="aw-small-text">
+			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
+			<?php _e('评论了文章'); ?>
+		</p>
+		<h2 style="font-size:16px;">
+			<a href="<?php echo url_rewrite(); ?>/voting/<?php echo $val['thread_info']['id']; ?>"><?php echo CF::title($val['thread_info']['user_info'], 'voting_' . $val['thread_info']['id'], $val['thread_info']['title']); ?></a>
+		</h2>
+	</div>
+	<div class="mod-body clearfix">
+		<?php echo CF::reply($val['user_info'], 'voting_comment_' . $val['id'], $val['message']); ?>
+	</div>
+	<div class="mod-footer">
+		<!-- 社交操作 -->
+		<div class="meta clearfix">
+			<span class="aw-small-text pull-right"><?php echo date_friendly($val['add_time']); ?></span>
+			<!-- 投票栏 -->
+			<span class="operate aw-vote-ui">
+				<a href="javascript:;" class="agree disabled">
+					<i class="icon icon-agree"></i> <b class="count"><?php echo $val['agree_count']; ?></b>
+				</a>
+			</span>
+			<!-- end 投票栏 -->
+
+			<div class="more-operate">
+				<a href="<?php echo url_rewrite(); ?>/vote/log/item_type-voting_comment__item_id-<?php echo $val['id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
+			</div>
+
+		</div>
+		<!-- end 社交操作 -->
+	</div>
+</div>
+<!-- end 文章评论 -->
+
+
 
 <?php } ?>
 <?php } ?>

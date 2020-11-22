@@ -52,6 +52,13 @@
 											<a href="<?php echo url_rewrite(); ?>/video/<?php echo $val['item']['id']; ?>"><?php if (!$val['item']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['item']['title']); ?><?php } ?></a>
 										</h4>
 										<!-- end 影片 -->
+                                        
+                                        <?php } else if ($val['type'] == 'voting') { ?>
+										<!-- 文章 -->
+										<h4>
+											<a href="<?php echo url_rewrite(); ?>/voting/<?php echo $val['item']['id']; ?>"><?php if (!$val['item']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['item']['title']); ?><?php } ?></a>
+										</h4>
+                                        
 										<?php } ?>
 
 									</div>

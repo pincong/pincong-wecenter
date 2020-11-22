@@ -59,6 +59,17 @@
 				<span class="aw-small-text"><?php _e('发布了影片'); ?> • <?php _e('%s 个评论', $val['comment_count']); ?> • <?php _e('%s 次浏览', $val['view_count']); ?> • <?php echo date_friendly($val['add_time']); ?></span>
 			<?php } ?>
 		<?php } ?>
+            
+        <?php } elseif ($val['post_type'] == 'voting') { ?>
+			<?php if ($val['last_user_info'] AND !$val['last_user_info']['forbidden']) { ?>
+				<a href="<?php echo UF::url($val['last_user_info']); ?>" class="aw-user-name" data-id="<?php echo $val['last_user_info']['uid']; ?>" data-reputation="<?php echo UF::reputation($val['last_user_info']); ?>"><?php echo UF::name($val['last_user_info']); ?></a>
+				<?php if ($val['last_user_info']['flagged']) { ?><sup><?php echo UF::flagged($val['last_user_info']); ?></sup><?php } ?>
+				<span class="aw-small-text"><?php _e('评论了投票'); ?> • <?php _e('%s 个评论', $val['comments']); ?> • <?php _e('%s 次浏览', $val['view_count']); ?> • <?php echo date_friendly($val['update_time']); ?></span>
+			<?php } else { ?>
+				<a href="<?php echo UF::url($val['user_info']); ?>" class="aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>" data-reputation="<?php echo UF::reputation($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
+				<?php if ($val['user_info']['flagged']) { ?><sup><?php echo UF::flagged($val['user_info']); ?></sup><?php } ?>
+				<span class="aw-small-text"><?php _e('发表了投票'); ?> • <?php _e('%s 个评论', $val['comments']); ?> • <?php _e('%s 次浏览', $val['view_count']); ?> • <?php echo date_friendly($val['add_time']); ?></span>
+            <?php } ?>
 		</p>
 
 	</div>

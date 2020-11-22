@@ -19,6 +19,9 @@
 				case 'video':
 					_e('影片');
 					break;
+                case 'voting':
+					_e('投票');
+					break;
 			} ?></a>
 			<a class="pull-right" href="javascript:;" onclick="(function(selector){AWS.ajax_request(G_BASE_URL + '/content/ajax/unfollow/', 'item_type=<?php echo $val['post_type']; ?>&item_id=<?php echo $val['id']; ?>', function(){selector.parentsUntil('.aw-item').parent().remove();});})($(this))"><?php _e('取消关注'); ?></a>
 		</p>

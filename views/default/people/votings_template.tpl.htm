@@ -1,0 +1,17 @@
+<?php if (is_array($this->list)) { ?>
+<?php foreach ($this->list AS $key => $val) { ?>
+<div class="aw-item">
+	<div class="aw-mod">
+		<div class="mod-head">
+			<h4 class="aw-hide-txt">
+				<a href="<?php echo url_rewrite(); ?>/voting/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a>
+			</h4>
+		</div>
+		<div class="mod-body">
+			<span class="aw-border-radius-5 count pull-left"><i class="icon icon-agree"></i> <?php echo $val['agree_count']; ?></span>
+			<p class="aw-small-text"><?php _e('%s 次浏览', $val['view_count']); ?> • <?php _e('%s 个评论', $val['comments']); ?> • <?php echo date_friendly($val['add_time']); ?></p>
+		</div>
+	</div>
+</div>
+<?php } ?>
+<?php } ?>

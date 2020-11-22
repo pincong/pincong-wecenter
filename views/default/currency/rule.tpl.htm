@@ -60,6 +60,19 @@
 						<dt><?php _e('收到回应'); ?></dt>
 						<dd><span class="<?php if (S::get('currency_system_config_video_replied') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(S::get('currency_system_config_video_replied'), S::get('currency_unit'))); ?></span></dd>
 					</dl>
+                    
+                    <dl>
+						<dt><?php _e('发布投票'); ?></dt>
+						<dd><span class="<?php if (S::get('currency_system_config_new_voting') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(S::get('currency_system_config_new_voting'), S::get('currency_unit'))); ?></span></dd>
+					</dl>
+					<dl>
+						<dt><?php _e('回应'); ?></dt>
+						<dd><span class="<?php if (S::get('currency_system_config_reply_voting') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(S::get('currency_system_config_reply_voting'), S::get('currency_unit'))); ?></span></dd>
+					</dl>
+					<dl>
+						<dt><?php _e('收到回应'); ?></dt>
+						<dd><span class="<?php if (S::get('currency_system_config_voting_replied') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(S::get('currency_system_config_voting_replied'), S::get('currency_unit'))); ?></span></dd>
+					</dl>
 
 					<dl>
 						<dt><?php _e('赞同'); ?></dt>

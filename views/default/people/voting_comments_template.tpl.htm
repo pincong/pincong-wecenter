@@ -1,0 +1,26 @@
+<?php if (is_array($this->list)) { ?>
+<?php foreach ($this->list AS $key => $val) { ?>
+<div class="aw-item">
+	<div class="aw-mod">
+		<div class="mod-head">
+			<h4 class="aw-hide-txt">
+				<a href="<?php echo url_rewrite(); ?>/voting/<?php echo $val['voting_id']; ?>"><?php if (!$val['voting_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['voting_info']['title']); ?><?php } ?></a>
+			</h4>
+		</div>
+		<div class="mod-body">
+			<span class="aw-border-radius-5 count pull-left"><i class="icon icon-agree"></i> <?php echo $val['agree_count']; ?></span>
+			<p>
+			<a class="aw-small-text" href="<?php echo url_rewrite(); ?>/voting/item_id-<?php echo $val['id']; ?>">
+			<?php if (!$val['message']) { ?>
+				<s class="aw-deleted"><?php _e('已删除'); ?></s>
+			<?php } else { ?>
+				<?php echo safe_text(truncate_text($val['message'], 200)); ?>
+			<?php } ?>
+			</a>
+			</p>
+			<p class="aw-small-text"><?php echo date_friendly($val['add_time']); ?></p>
+		</div>
+	</div>
+</div>
+<?php } ?>
+<?php } ?>

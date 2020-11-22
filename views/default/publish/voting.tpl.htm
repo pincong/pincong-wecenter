@@ -1,21 +1,21 @@
 <?php TPL::include('global/header.tpl.htm'); ?>
 
 <div class="aw-container-wrap">
-	<div class="container aw-publish aw-publish-article">
+	<div class="container aw-publish aw-publish-voting">
 		<div class="row">
 			<div class="aw-content-wrap clearfix">
 				<div class="col-sm-12 col-md-9 aw-main-content">
 					<!-- tab 切换 -->
 					<ul class="nav nav-tabs aw-nav-tabs active">
-						<li class="active"><a href="<?php echo url_rewrite(); ?>/publish/video/"><?php _e('影片'); ?></a></li>
-						<li><a href="<?php echo url_rewrite(); ?>/publish/article/"><?php _e('文章'); ?></a></li>
+						<li><a href="<?php echo url_rewrite(); ?>/publish/video/"><?php _e('影片'); ?></a></li>
+						<li class="active"><a href="<?php echo url_rewrite(); ?>/publish/voting/"><?php _e('投票'); ?></a></li>
 						<li><a href="<?php echo url_rewrite(); ?>/publish/"><?php _e('问题'); ?></a></li>
-                        <li><a href="<?php echo url_rewrite(); ?>/publish/voting/"><?php _e('投票'); ?></a></li>
+                        <li><a href="<?php echo url_rewrite(); ?>/publish/article/"><?php _e('文章'); ?></a></li>
 						<h2 class="hidden-xs"><i class="icon icon-ask"></i> <?php _e('发起'); ?></h2>
 					</ul>
 					<!-- end tab 切换 -->
-					<form action="<?php echo url_rewrite(); ?>/<?php if ($this->thread_info['id']) { ?>modify/ajax/modify_video/<?php } else { ?>publish/ajax/publish_video/<?php } ?>" method="post" id="question_form" onsubmit="return false;">
-						<input type="hidden" name="video_id" id="video_id" value="<?php echo $this->thread_info['id']; ?>" />
+					<form action="<?php echo url_rewrite(); ?>/<?php if ($this->thread_info['id']) { ?>modify/ajax/modify_voting/<?php } else { ?>publish/ajax/publish_voting/<?php } ?>" method="post" id="question_form" onsubmit="return false;">
+						<input type="hidden" name="voting_id" id="voting_id" value="<?php echo $this->thread_info['id']; ?>" />
 						<?php if (!$this->thread_info['id'] AND S::get('category_enable') != 'N') { ?>
 							<select name="category_id" class="collapse" id="category_id">
 								<option value="0">- <?php _e('请选择分类'); ?> -</option>
@@ -24,8 +24,8 @@
 						<?php } ?>
 						<div class="aw-mod aw-mod-publish">
 							<div class="mod-body">
-								<h3><?php _e('标题'); ?>:</h3>
-								<!-- 标题 -->
+								<h3><?php _e('投票标题'); ?>:</h3>
+								<!-- 投票标题 -->
 								<div class="aw-publish-title<?php if (S::get('category_enable') == 'N') { ?> active<?php } ?>">
 									<input type="text" name="title" value="<?php echo FORMAT::text($this->thread_info['title']); ?>" class="form-control" />
 									<?php if (!$this->thread_info['id'] AND S::get('category_enable') != 'N') { ?>
@@ -37,29 +37,17 @@
 									</div>
 									<?php } ?>
 								</div>
-								<!-- end 标题 -->
+								<!-- end 投票标题 -->
 
-								<h3><?php _e('详细'); ?>:</h3>
+								<h3><?php _e('投票内容'); ?>:</h3>
 								<div class="aw-mod aw-editor-box">
 									<div class="mod-head">
 										<div class="wmd-panel">
-											<textarea class="wmd-input form-control autosize editor" id="wmd-input" rows="4" name="message"><?php echo FORMAT::text($this->thread_info['message']); ?></textarea>
+											<textarea class="wmd-input form-control autosize editor" id="wmd-input" rows="15" name="message"><?php echo FORMAT::text($this->thread_info['message']); ?></textarea>
 										</div>
 									</div>
 									<div class="mod-body">
-									</div>
-								</div>
-
-								<h3><?php _e('影片来源'); ?>:</h3>
-								<div class="aw-mod">
-									<div class="mod-head">
-										<div class="">
-											<input type="text" name="web_url" placeholder="<?php if ($this->thread_info['id']) { ?><?php _e('不更改请留空'); ?><?php } else { ?>https://<?php } ?>" value="" class="form-control" />
-										</div>
-									</div>
-									<div class="mod-body">
-										<span><?php _e('支持以下格式 URL'); ?></span>
-										<pre><?php _e(S::get('video_config_example_url')); ?></pre>
+										<?php if (S::get('image_upload_link')) { ?><a class="pull-right" href="<?php echo S::get('image_upload_link'); ?>" <?php if (!is_javascript(S::get('image_upload_link'))) { ?>rel="nofollow noreferrer noopener" target="_blank"<?php } ?>><?php _e('上传图片'); ?></a><?php } ?>
 									</div>
 								</div>
 
@@ -113,7 +101,7 @@
 								<span class="aw-anonymity">
 									<?php if ($this->thread_info['id']) { ?>
 									<label><input type="checkbox" class="pull-left" value="1" name="do_delete" />
-										<?php _e('删除'); ?>&nbsp;</label>
+										<?php _e('删除投票'); ?>&nbsp;</label>
 									<?php } ?>
 
 									<?php if (!$this->thread_info['id'] AND $this->user_info['permission']['post_anonymously']) { ?>
@@ -128,18 +116,18 @@
 				</div>
 				<!-- 侧边栏 -->
 				<div class="col-sm-12 col-md-3 aw-side-bar">
-					<!-- 发起指南 -->
+					<!-- 投票发起指南 -->
 					<div class="aw-mod publish-help">
 						<div class="mod-head">
-							<h3><?php _e('发起指南'); ?></h3>
+							<h3><?php _e('投票发起指南'); ?></h3>
 						</div>
 						<div class="mod-body">
-							<p><b>• <?php _e('标题'); ?>:</b> <?php _e('请用准确的语言描述您发布的内容'); ?></p>
-							<p><b>• <?php _e('补充'); ?>:</b> <?php _e('详细补充您的内容'); ?></p>
-							<p><b>• <?php _e('选择话题'); ?>:</b> <?php _e('选择一个或者多个合适的话题, 让您发布的内容得到更多有相同兴趣的人参与. 所有人可以在您发布内容之后添加和编辑该内容所属的话题'); ?></p>
+							<p><b>• <?php _e('投票标题'); ?>:</b> <?php _e('请用准确的语言描述您发布的投票思想'); ?></p>
+							<p><b>• <?php _e('投票补充'); ?>:</b> <?php _e('详细补充您的投票内容, 并提供一些相关的素材以供参与者更多的了解您所要投票的主题思想'); ?></p>
+							<p><b>• <?php _e('选择话题'); ?>:</b> <?php _e('选择一个或者多个合适的话题, 让您发布的投票得到更多有相同兴趣的人参与. 所有人可以在您发布投票之后添加和编辑该投票所属的话题'); ?></p>
 						</div>
 					</div>
-					<!-- end 发起指南 -->
+					<!-- end 投票发起指南 -->
 				</div>
 				<!-- end 侧边栏 -->
 			</div>
@@ -152,6 +140,11 @@ var CATEGORY_ID = <?php echo $this->thread_info['category_id']; ?>;
 
 $(document).ready(function () {
 	AWS.init_later_time_helper($('#later_time_input'), $('#later_time_label'));
+	<?php if (!$this->thread_info['uid'] OR $this->thread_info['uid'] == $this->user_id) { ?>
+		// 初始化编辑器
+		AWS.create_editor(document.getElementById('wmd-input'), true);
+	<?php } ?>
+
 });
 </script>
 

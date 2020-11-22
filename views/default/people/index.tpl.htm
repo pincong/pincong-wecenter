@@ -91,6 +91,8 @@
 								<li><a href="#article_comments" id="page_article_comments" data-toggle="tab"><?php _e('文章评论'); ?></a></li>
 								<li><a href="#videos" id="page_videos" data-toggle="tab"><?php _e('影片'); ?></a></li>
 								<li><a href="#video_comments" id="page_video_comments" data-toggle="tab"><?php _e('影片评论'); ?></a></li>
+                                <li><a href="#votings" id="page_votings" data-toggle="tab"><?php _e('投票'); ?></a></li>
+								<li><a href="#voting_comments" id="page_voting_comments" data-toggle="tab"><?php _e('投票评论'); ?></a></li>
 								<li><a href="#received_votes" id="page_received_votes" data-toggle="tab"><?php _e('收到的赞'); ?></a></li>
 								<li><a href="#sent_votes" id="page_sent_votes" data-toggle="tab"><?php _e('送出的赞'); ?></a></li>
 								<li><a href="#focus" id="page_focus" data-toggle="tab"><?php _e('关注'); ?></a></li>
@@ -313,6 +315,42 @@
 									</div>
 								</div>
 							</div>
+                            
+                            							<div class="tab-pane" id="votings">
+								<div class="aw-mod">
+									<div class="mod-head">
+										<h3><?php _e('投票'); ?></h3>
+									</div>
+									<div class="mod-body">
+										<div class="aw-profile-publish-list" id="contents_user_votings"></div>
+									</div>
+									<div class="mod-footer">
+										<!-- 加载更多内容 -->
+										<a class="aw-load-more-content" id="bp_user_votings_more">
+											<span><?php _e('更多'); ?></span>
+										</a>
+										<!-- end 加载更多内容 -->
+									</div>
+								</div>
+							</div>
+
+							<div class="tab-pane" id="voting_comments">
+								<div class="aw-mod">
+									<div class="mod-head">
+										<h3><?php _e('投票评论'); ?></h3>
+									</div>
+									<div class="mod-body">
+										<div class="aw-profile-answer-list" id="contents_user_voting_comments"></div>
+									</div>
+									<div class="mod-footer">
+										<!-- 加载更多内容 -->
+										<a class="aw-load-more-content" id="bp_user_voting_comments_more">
+											<span><?php _e('更多'); ?></span>
+										</a>
+										<!-- end 加载更多内容 -->
+									</div>
+								</div>
+							</div>
 
 							<div class="tab-pane" id="received_votes">
 								<div class="aw-mod">
@@ -477,6 +515,21 @@ $(document).ready(function () {
 		if (page_video_comments_inited) return;
 		page_video_comments_inited = true;
 		AWS.load_list_view(G_BASE_URL + '/people/info/video_comments/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_video_comments_more'), $('#contents_user_video_comments'), 1);
+	});
+    
+    
+	var page_votings_inited = false;
+	$('#page_votings').click(function() {
+		if (page_votings_inited) return;
+		page_votings_inited = true;
+		AWS.load_list_view(G_BASE_URL + '/people/info/votings/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_votings_more'), $('#contents_user_votings'), 1);
+	});
+
+	var page_voting_comments_inited = false;
+	$('#page_voting_comments').click(function() {
+		if (page_voting_comments_inited) return;
+		page_voting_comments_inited = true;
+		AWS.load_list_view(G_BASE_URL + '/people/info/voting_comments/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_voting_comments_more'), $('#contents_user_voting_comments'), 1);
 	});
 
 	var page_received_votes_inited = false;
