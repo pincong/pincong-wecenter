@@ -148,8 +148,10 @@ class ajax extends AWS_CONTROLLER
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请不要重复提交')));
 		}
-
-		$_POST['message'] = trim($_POST['message']);
+        
+		if ($type != 'voting'){
+            $_POST['message'] = trim($_POST['message']);
+        }
 		$this->validate_body_length($type);
 
 		$topics_limit_min = intval(S::get('topics_limit_min'));

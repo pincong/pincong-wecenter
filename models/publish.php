@@ -101,6 +101,7 @@ class publish_class extends AWS_MODEL
 			case 'video':
 				$this->real_publish_video($data, 1);
 				break;
+                
             case 'voting':
 				$this->real_publish_voting($data, 1);
 				break;
