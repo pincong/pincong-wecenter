@@ -54,7 +54,7 @@
 							</div>
 						</div>
 						<div class="mod-footer">
-							<?php TPL::include('global/pagination.tpl.htm'); ?>
+							<?php echo $this->pagination; ?>
 						</div>
 					</div>
 				</div>
@@ -62,11 +62,11 @@
 				<!-- 侧边栏 -->
 				<div class="col-sm-12 col-md-3 aw-side-bar">
 					<?php TPL::include('block/sidebar_announce.tpl.htm'); ?>
-					<?php echo S::get('ad_space_a1'); ?>
+					<?php echo get_setting('ad_space_a1'); ?>
 					<?php TPL::include('block/sidebar_feature.tpl.htm'); ?>
-					<?php echo S::get('ad_space_a2'); ?>
+					<?php echo get_setting('ad_space_a2'); ?>
 					<?php TPL::include('block/sidebar_hot_topics.tpl.htm'); ?>
-					<?php echo S::get('ad_space_a3'); ?>
+					<?php echo get_setting('ad_space_a3'); ?>
 				</div>
 				<!-- end 侧边栏 -->
 			</div>
