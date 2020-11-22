@@ -7,10 +7,10 @@
 				<div class="col-sm-12 col-md-9 aw-main-content">
 					<!-- tab 切换 -->
 					<ul class="nav nav-tabs aw-nav-tabs active">
+                        <li><a href="<?php echo url_rewrite(); ?>/publish/voting/"><?php _e('投票'); ?></a></li>
 						<li><a href="<?php echo url_rewrite(); ?>/publish/video/"><?php _e('影片'); ?></a></li>
 						<li class="active"><a href="<?php echo url_rewrite(); ?>/publish/article/"><?php _e('文章'); ?></a></li>
 						<li><a href="<?php echo url_rewrite(); ?>/publish/"><?php _e('问题'); ?></a></li>
-                        <li><a href="<?php echo url_rewrite(); ?>/publish/voting/"><?php _e('投票'); ?></a></li>
 						<h2 class="hidden-xs"><i class="icon icon-ask"></i> <?php _e('发起'); ?></h2>
 					</ul>
 					<!-- end tab 切换 -->
@@ -28,6 +28,11 @@
 								<!-- 文章标题 -->
 								<div class="aw-publish-title<?php if (S::get('category_enable') == 'N') { ?> active<?php } ?>">
 									<input type="text" name="title" value="<?php echo FORMAT::text($this->thread_info['title']); ?>" class="form-control" />
+									<div class="aw-dropdown aw-question-dropdown">
+										<i class="aw-icon i-dropdown-triangle active"></i>
+										<p class="title"><?php _e('没有找到相关结果'); ?></p>
+										<ul class="aw-question-dropdown-list"></ul>
+									</div>
 									<?php if (!$this->thread_info['id'] AND S::get('category_enable') != 'N') { ?>
 									<div class="dropdown">
 										<div class="dropdown-toggle" data-toggle="dropdown">
