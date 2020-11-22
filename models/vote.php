@@ -93,6 +93,16 @@ class vote_class extends AWS_MODEL
 				$note_agree = '赞同影片评论';
 				$note_item_agreed = '影片评论被赞同';
 				break;
+                
+            case 'voting':
+				$note_agree = '赞同投票';
+				$note_item_agreed = '投票被赞同';
+				break;
+
+			case 'voting_comment':
+				$note_agree = '赞同投票评论';
+				$note_item_agreed = '投票评论被赞同';
+				break;
 		}
 
 		$this->model('currency')->process($uid, 'AGREE', S::get('currency_system_config_agree'), $note_agree, $item_id, $type);
@@ -134,6 +144,16 @@ class vote_class extends AWS_MODEL
 			case 'video_comment':
 				$note_disagree = '反对影片评论';
 				$note_item_disagreed = '影片评论被反对';
+				break;
+                
+            case 'voting':
+				$note_disagree = '反对投票';
+				$note_item_disagreed = '投票被反对';
+				break;
+
+			case 'voting_comment':
+				$note_disagree = '反对投票评论';
+				$note_item_disagreed = '投票评论被反对';
 				break;
 		}
 

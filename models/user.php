@@ -59,6 +59,15 @@ class user_class extends AWS_MODEL
 			'comment_count' => $this->count('video_comment', 'video_id = ' . ($video_id))
 		), 'id = ' . ($video_id));
 	}
+    
+    private function update_voting_comment_count($voting_id)
+	{
+		$voting_id = intval($voting_id);
+		// TODO: rename comments to comment_count
+		$this->update('voting', array(
+			'comments' => $this->count('voting_comment', 'voting_id = ' . ($voting_id))
+		), 'id = ' . ($voting_id));
+	}
 
 
 	public function delete_question_discussions($uid)
@@ -195,6 +204,34 @@ class user_class extends AWS_MODEL
 
 		$this->update('video_comment', array('at_uid' => '-1'), 'at_uid = ' . intval($uid));
 	}
+    
+    public function delete_voting_comments($uid)
+	{
+		$voting_comments = $this->fetch_all('voting_comment', 'uid = ' . intval($uid));
+		if (!$voting_comments)
+		{
+			return;
+		}
+
+		$this->delete('voting_comment', 'uid = ' . intval($uid));
+
+		foreach ($voting_comments AS $key => $val)
+		{
+			$voting_ids[$val['voting_id']] = $val['voting_id'];
+		}
+
+		if ($voting_ids)
+		{
+			foreach ($voting_ids AS $key => $val)
+			{
+				$this->update_voting_comment_count($key);
+			}
+
+			$this->update('voting', array('last_uid' => '-1'), 'last_uid = ' . intval($uid));
+		}
+
+		$this->update('voting_comment', array('at_uid' => '-1'), 'at_uid = ' . intval($uid));
+	}
 
 
 	public function delete_questions($uid)
@@ -219,6 +256,14 @@ class user_class extends AWS_MODEL
 	{
 		// TODO: 需要彻底删除?
 		$this->update('video', array(
+			'uid' => '-1'
+		), 'uid = ' . intval($uid));
+	}
+    
+    public function delete_votings($uid)
+	{
+		// TODO: 需要彻底删除?
+		$this->update('voting', array(
 			'uid' => '-1'
 		), 'uid = ' . intval($uid));
 	}
@@ -278,6 +323,9 @@ class user_class extends AWS_MODEL
 
 		$this->delete_videos($uid);
 		$this->delete_video_comments($uid);
+        
+        $this->delete_votings($uid);
+		$this->delete_voting_comments($uid);
 	}
 
 	public function delete_user_by_uid($uid, $delete_user_contents = false)

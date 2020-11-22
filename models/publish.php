@@ -101,6 +101,9 @@ class publish_class extends AWS_MODEL
 			case 'video':
 				$this->real_publish_video($data, 1);
 				break;
+            case 'voting':
+				$this->real_publish_voting($data, 1);
+				break;
 
 			case 'answer':
 				$this->real_publish_answer($data);
@@ -112,6 +115,9 @@ class publish_class extends AWS_MODEL
 
 			case 'video_comment':
 				$this->real_publish_video_comment($data);
+				break;
+            case 'voting_comment':
+				$this->real_publish_voting_comment($data);
 				break;
 
 			case 'question_discussion':
@@ -247,6 +253,55 @@ class publish_class extends AWS_MODEL
 
 		// 记录用户动态
 		$this->model('activity')->push('article', $item_id, $data['uid']);
+
+		return $item_id;
+	}
+    
+    
+    private function real_publish_voting(&$data, $view_count = 0)
+	{
+		$now = fake_time();
+        
+        
+		$item_id = $this->insert('voting', array(
+			'uid' => $data['uid'],
+			'title' => htmlspecialchars($data['title']),
+			'message' => htmlspecialchars($data['message']),
+            'message_count' => htmlspecialchars($data['message_count']),
+            'message_vote' => htmlspecialchars($data['mesage_vote']),
+			'category_id' => $data['category_id'],
+			'add_time' => $now,
+			'update_time' => $now,
+			'view_count' => $view_count,
+
+		));
+
+		if (!$item_id)
+		{
+			return false;
+		}
+
+		$this->model('posts')->set_posts_index($item_id, 'voting');
+        
+        
+		$this->model('search_fulltext')->push_index('voting', $data['title'], $item_id);
+
+		$this->save_topics('voting', $data['uid'], $item_id, $data['topics'], $data['permission_create_topic']);
+
+		if ($data['ask_user_id'])
+		{
+			$this->model('invite')->add_invite($item_id, $data['uid'], $data['ask_user_id']);
+		}
+
+		if ($data['follow'])
+		{
+			$this->model('postfollow')->follow('voting', $item_id, $data['uid']);
+		}
+
+		$this->mention_users('voting', $item_id, null, 0, $data['uid'], null, $data['message']);
+
+		// 记录用户动态
+		$this->model('activity')->push('voting', $item_id, $data['uid']);
 
 		return $item_id;
 	}
@@ -455,6 +510,60 @@ class publish_class extends AWS_MODEL
 
 		return $item_id;
 	}
+    
+    private function real_publish_voting_comment(&$data)
+	{
+		if (!$parent_info = $this->model('content')->get_thread_info_by_id('voting', $data['parent_id']))
+		{
+			return false;
+		}
+
+		// 给题主增加游戏币
+		if ($data['permission_affect_currency'] AND $data['uid'] != $parent_info['uid'])
+		{
+			if (!$this->model('content')->has_user_relpied_to_thread('voting', $data['parent_id'], $data['uid']))
+			{
+				$this->model('currency')->process($parent_info['uid'], 'REPLIED', S::get('currency_system_config_voting_replied'), '文章收到回应', $data['parent_id'], 'voting');
+			}
+		}
+
+		$now = fake_time();
+
+		$item_id = $this->insert('voting_comment', array(
+			'uid' => $data['uid'],
+			'voting_id' => $data['parent_id'],
+			'message' => htmlspecialchars($data['message']),
+			'add_time' => $now,
+			'at_uid' => $data['at_uid'],
+		));
+
+		if (!$item_id)
+		{
+			return false;
+		}
+
+		// TODO: comments 字段改为 comment_count
+		$this->update('voting', array(
+			'comments' => $this->count('voting_comment', ['voting_id', 'eq', $data['parent_id'], 'i']),
+			'update_time' => $now,
+			'last_uid' => $data['uid']
+		), ['id', 'eq', $data['parent_id'], 'i']);
+
+		$this->model('posts')->set_posts_index($data['parent_id'], 'voting');
+
+		$this->mention_users('voting', $parent_info['id'], 'voting_comment', $item_id, $data['uid'], $data['at_uid'], $data['message']);
+		$this->notify_users('voting', $parent_info['id'], 'voting_comment', $item_id, $data['uid'], $data['at_uid'], $data['message']);
+
+		if ($data['follow'])
+		{
+			$this->model('postfollow')->follow('voting', $data['parent_id'], $data['uid']);
+		}
+
+		// 记录用户动态
+		$this->model('activity')->push('voting_comment', $item_id, $data['uid']);
+
+		return $item_id;
+	}
 
 
 
@@ -619,6 +728,21 @@ class publish_class extends AWS_MODEL
 		$this->model('currency')->process($real_uid, 'NEW_THREAD', S::get('currency_system_config_new_video'), '发布影片', null, null, $is_anonymous);
 		return $item_id;
 	}
+    public function publish_voting($data, $real_uid, $later)
+	{
+		if ($later)
+		{
+			$this->schedule('voting', $this->calc_later_time($later), $data);
+		}
+		else
+		{
+			$item_id = $this->real_publish_voting($data);
+		}
+
+		$is_anonymous = ($real_uid != $data['uid']);
+		$this->model('currency')->process($real_uid, 'NEW_THREAD', S::get('currency_system_config_new_voting'), '发布投票', null, null, $is_anonymous);
+		return $item_id;
+	}
 
 
 	public function publish_answer($data, $real_uid, $later, $pay)
@@ -674,6 +798,25 @@ class publish_class extends AWS_MODEL
 		{
 			$is_anonymous = ($real_uid != $data['uid']);
 			$this->model('currency')->process($real_uid, 'REPLY', S::get('currency_system_config_reply_video'), '回应影片', $data['parent_id'], 'video', $is_anonymous);
+		}
+		return $item_id;
+	}
+    
+    public function publish_voting_comment($data, $real_uid, $later, $pay)
+	{
+		if ($later)
+		{
+			$this->schedule('voting_comment', $this->calc_later_time($later), $data);
+		}
+		else
+		{
+			$item_id = $this->real_publish_voting_comment($data);
+		}
+
+		if ($pay)
+		{
+			$is_anonymous = ($real_uid != $data['uid']);
+			$this->model('currency')->process($real_uid, 'REPLY', S::get('currency_system_config_reply_voting'), '回应文章', $data['parent_id'], 'voting', $is_anonymous);
 		}
 		return $item_id;
 	}

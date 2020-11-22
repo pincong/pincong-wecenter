@@ -145,6 +145,10 @@ class notification_class extends AWS_MODEL
 				case 'video':
 					$video_ids[] = $val['thread_id'];
 					break;
+                    
+                case 'voting':
+					$voting_ids[] = $val['thread_id'];
+					break;
 			}
 		}
 
@@ -159,6 +163,11 @@ class notification_class extends AWS_MODEL
 		if ($video_ids)
 		{
 			$videos = $this->model('content')->get_posts_by_ids('video', $video_ids);
+		}
+        
+        if ($voting_ids)
+		{
+			$votings = $this->model('content')->get_posts_by_ids('voting', $voting_ids);
 		}
 
 		if ($user_ids)
@@ -182,6 +191,10 @@ class notification_class extends AWS_MODEL
 
 				case 'video':
 					$list[$key]['thread_info'] = $videos[$val['thread_id']];
+					break;
+                    
+                case 'voting':
+					$list[$key]['thread_info'] = $votings[$val['thread_id']];
 					break;
 			}
 		}

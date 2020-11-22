@@ -39,6 +39,7 @@ class content_class extends AWS_MODEL
 			case 'question':
 			case 'article':
 			case 'video':
+            case 'voting':
 				return true;
 		}
 		return false;
@@ -52,6 +53,7 @@ class content_class extends AWS_MODEL
 			case 'answer':
 			case 'article_comment':
 			case 'video_comment':
+            case 'voting_comment':
 				return true;
 		}
 		return false;
@@ -67,6 +69,8 @@ class content_class extends AWS_MODEL
 			case 'article_comment':
 			case 'video':
 			case 'video_comment':
+            case 'voting':
+            case 'voting_comment':
 				return true;
 		}
 		return false;
@@ -84,6 +88,8 @@ class content_class extends AWS_MODEL
 			case 'article_comment':
 			case 'video':
 			case 'video_comment':
+            case 'voting':
+            case 'voting_comment':
 				return true;
 		}
 		return false;
@@ -182,6 +188,11 @@ class content_class extends AWS_MODEL
 				$item_info['thread_type'] = 'video';
 				$item_info['thread_id'] = $item_info['id'];
 				return $item_info;
+                
+            case 'voting':
+				$item_info['thread_type'] = 'voting';
+				$item_info['thread_id'] = $item_info['id'];
+				return $item_info;
 
 			case 'answer':
 				$thread_info = $this->get_thread_info_by_id('question', $item_info['question_id']);
@@ -208,6 +219,15 @@ class content_class extends AWS_MODEL
 				if ($thread_info)
 				{
 					$thread_info['thread_type'] = 'video';
+					$thread_info['thread_id'] = $thread_info['id'];
+					return $thread_info;
+				}
+				return false;
+            case 'voting_comment':
+				$thread_info = $this->get_thread_info_by_id('voting', $item_info['voting_id']);
+				if ($thread_info)
+				{
+					$thread_info['thread_type'] = 'voting';
 					$thread_info['thread_id'] = $thread_info['id'];
 					return $thread_info;
 				}
@@ -288,6 +308,11 @@ class content_class extends AWS_MODEL
 			case 'video':
 				$reply_type = 'video_comment';
 				$where = [['video_id', 'eq', $thread_id], ['uid', 'eq', $uid]];
+				break;
+                
+            case 'voting':
+				$reply_type = 'voting_comment';
+				$where = [['voting_id', 'eq', $thread_id], ['uid', 'eq', $uid]];
 				break;
 
 			default:

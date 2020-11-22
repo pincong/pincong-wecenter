@@ -228,6 +228,10 @@ class category_class extends AWS_MODEL
 		{
 			return true;
 		}
+        if ($this->fetch_one('voting', 'id', ['category_id', 'eq', $category_id, 'i']))
+		{
+			return true;
+		}
 	}
 
 	public function move_contents($from_id, $target_id)
@@ -246,6 +250,10 @@ class category_class extends AWS_MODEL
 		), ['category_id', 'eq', $from_id, 'i']);
 
 		$this->update('video', array(
+			'category_id' => intval($target_id)
+		), ['category_id', 'eq', $from_id, 'i']);
+        
+        $this->update('voting', array(
 			'category_id' => intval($target_id)
 		), ['category_id', 'eq', $from_id, 'i']);
 

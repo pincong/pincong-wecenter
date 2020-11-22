@@ -28,6 +28,7 @@ class favorite_class extends AWS_MODEL
 			case 'question':
 			case 'article':
 			case 'video':
+            case 'voting':
 				return true;
 		}
 		return false;
@@ -105,6 +106,10 @@ class favorite_class extends AWS_MODEL
 				case 'video':
 					$video_ids[] = $data['item_id'];
 				break;
+                    
+                case 'voting':
+					$voting_ids[] = $data['item_id'];
+				break;
 			}
 		}
 
@@ -153,6 +158,17 @@ class favorite_class extends AWS_MODEL
 				}
 			}
 		}
+        
+        if ($voting_ids)
+		{
+			if ($voting_infos = $this->model('content')->get_posts_by_ids('voting', $voting_ids))
+			{
+				foreach ($voting_infos AS $key => $data)
+				{
+					$favorite_uids[$data['uid']] = $data['uid'];
+				}
+			}
+		}
 
 		$users_info = $this->model('account')->get_user_info_by_uids($favorite_uids);
 
@@ -179,6 +195,11 @@ class favorite_class extends AWS_MODEL
 				case 'video':
 					$favorite_items[$key]['item'] = $video_infos[$data['item_id']];
 					$favorite_items[$key]['user_info'] = $users_info[$video_infos[$data['item_id']]['uid']];
+				break;
+                    
+                case 'voting':
+					$favorite_items[$key]['item'] = $voting_infos[$data['item_id']];
+					$favorite_items[$key]['user_info'] = $users_info[$voting_infos[$data['item_id']]['uid']];
 				break;
 			}
 		}

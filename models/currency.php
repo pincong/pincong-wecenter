@@ -83,6 +83,10 @@ class currency_class extends AWS_MODEL
 				case 'video':
 					$video_ids[] = $item['item_id'];
 				break;
+                    
+                case 'voting':
+					$voting_ids[] = $item['item_id'];
+				break;
 
 				case 'answer':
 					$answer_ids[] = $item['item_id'];
@@ -94,6 +98,10 @@ class currency_class extends AWS_MODEL
 
 				case 'video_comment':
 					$video_comment_ids[] = $item['item_id'];
+				break;
+                    
+                case 'voting_comment':
+					$voting_comment_ids[] = $item['item_id'];
 				break;
 			}
 		}
@@ -112,6 +120,11 @@ class currency_class extends AWS_MODEL
 		{
 			$videos = $this->model('content')->get_posts_by_ids('video', $video_ids);
 		}
+        
+        if ($voting_ids)
+		{
+			$votings = $this->model('content')->get_posts_by_ids('voting', $voting_ids);
+		}
 
 		if ($answer_ids)
 		{
@@ -126,6 +139,11 @@ class currency_class extends AWS_MODEL
 		if ($video_comment_ids)
 		{
 			$video_comments = $this->model('content')->get_posts_by_ids('video_comment', $video_comment_ids);
+		}
+        
+        if ($voting_comment_ids)
+		{
+			$voting_comments = $this->model('content')->get_posts_by_ids('voting_comment', $voting_comment_ids);
 		}
 
 		foreach ($parse_items AS $log_id => $item)
@@ -161,6 +179,16 @@ class currency_class extends AWS_MODEL
 						);
 					}
 				break;
+                    
+                case 'voting':
+					if ($votings[$item['item_id']])
+					{
+						$result[$log_id] = array(
+							'title' => $votings[$item['item_id']]['title'],
+							'url' => url_rewrite('/voting/' . $item['item_id'])
+						);
+					}
+				break;
 
 				case 'answer':
 					if ($answers[$item['item_id']])
@@ -188,6 +216,16 @@ class currency_class extends AWS_MODEL
 						$result[$log_id] = array(
 							'title' => truncate_text($video_comments[$item['item_id']]['message'], 24),
 							'url' => url_rewrite('/video/' . $video_comments[$item['item_id']]['video_id'])
+						);
+					}
+				break;
+                    
+                case 'voting_comment':
+					if ($voting_comments[$item['item_id']])
+					{
+						$result[$log_id] = array(
+							'title' => truncate_text($voting_comments[$item['item_id']]['message'], 24),
+							'url' => url_rewrite('/voting/' . $voting_comments[$item['item_id']]['voting_id'])
 						);
 					}
 				break;

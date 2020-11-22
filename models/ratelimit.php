@@ -37,7 +37,7 @@ class ratelimit_class extends AWS_MODEL
 			return false;
 		}
 
-		$where = "(type = 'question' OR type = 'article' OR type = 'video') AND time > " . $time_after . " AND uid =" . $uid;
+		$where = "(type = 'question' OR type = 'article' OR type = 'video' OR type = 'voting') AND time > " . $time_after . " AND uid =" . $uid;
 		$count += $this->count('scheduled_posts', $where);
 		if ($count >= $limit)
 		{
@@ -131,6 +131,34 @@ class ratelimit_class extends AWS_MODEL
 
 		return true;
 	}
+    
+    public function check_voting($uid, $limit)
+	{
+		$limit = intval($limit);
+		if (!$limit)
+		{
+			return true;
+		}
+
+		$uid = intval($uid);
+		$time_after = real_time() - 24 * 3600;
+
+		$where = "add_time > " . $time_after . " AND uid =" . $uid;
+		$count = $this->count('voting', $where);
+		if ($count >= $limit)
+		{
+			return false;
+		}
+
+		$where = "type = 'voting' AND time > " . $time_after . " AND uid =" . $uid;
+		$count += $this->count('scheduled_posts', $where);
+		if ($count >= $limit)
+		{
+			return false;
+		}
+
+		return true;
+	}
 
 
 	public function check_answer($uid, $limit)
@@ -208,6 +236,34 @@ class ratelimit_class extends AWS_MODEL
 		}
 
 		$where = "type = 'video_comment' AND time > " . $time_after . " AND uid =" . $uid;
+		$count += $this->count('scheduled_posts', $where);
+		if ($count >= $limit)
+		{
+			return false;
+		}
+
+		return true;
+	}
+    
+    public function check_voting_comment($uid, $limit)
+	{
+		$limit = intval($limit);
+		if (!$limit)
+		{
+			return true;
+		}
+
+		$uid = intval($uid);
+		$time_after = real_time() - 24 * 3600;
+
+		$where = "add_time > " . $time_after . " AND uid =" . $uid;
+		$count = $this->count('voting_comment', $where);
+		if ($count >= $limit)
+		{
+			return false;
+		}
+
+		$where = "type = 'voting_comment' AND time > " . $time_after . " AND uid =" . $uid;
 		$count += $this->count('scheduled_posts', $where);
 		if ($count >= $limit)
 		{

@@ -53,6 +53,10 @@ class posts_class extends AWS_MODEL
 				case 'video':
 					$result = $this->fetch_row('video', ['id', 'eq', $post_id, 'i']);
 					break;
+                    
+                case 'voting':
+					$result = $this->fetch_row('voting', ['id', 'eq', $post_id, 'i']);
+					break;
 			}
 
 			if (!$result)
@@ -101,6 +105,19 @@ class posts_class extends AWS_MODEL
 					'uid' => $result['uid'],
 					'agree_count' => $result['agree_count'],
 					'answer_count' => $result['comment_count'],
+					'lock' => $result['lock'],
+					'recommend' => $result['recommend'],
+				);
+				break;
+            case 'voting':
+				$data = array(
+					'add_time' => $result['add_time'],
+					'update_time' => $result['update_time'],
+					'category_id' => $result['category_id'],
+					'view_count' => $result['view_count'],
+					'uid' => $result['uid'],
+					'agree_count' => $result['agree_count'],
+					'answer_count' => $result['comments'],
 					'lock' => $result['lock'],
 					'recommend' => $result['recommend'],
 				);
@@ -202,6 +219,9 @@ class posts_class extends AWS_MODEL
 				case 'video':
 					$video_ids[] = $data['post_id'];
 					break;
+                case 'voting':
+					$voting_ids[] = $data['post_id'];
+					break;
 
 			}
 
@@ -240,6 +260,18 @@ class posts_class extends AWS_MODEL
 				$data_list_uids[$val['last_uid']] = $val['last_uid'];
 			}
 		}
+        
+        if ($voting_ids)
+		{
+			$topic_infos['voting'] = $this->model('topic')->get_topics_by_item_ids($voting_ids, 'voting');
+
+			$voting_infos = $this->model('content')->get_posts_by_ids('voting', $voting_ids);
+			foreach ($voting_infos as $key => $val)
+			{
+				$data_list_uids[$val['last_uid']] = $val['last_uid'];
+			}
+		}
+
 
 		$users_info = $this->model('account')->get_user_info_by_uids($data_list_uids);
 
@@ -259,6 +291,10 @@ class posts_class extends AWS_MODEL
 
 				case 'video':
 					$explore_list_data[$key] = $video_infos[$data['post_id']];
+					break;
+                    
+                case 'voting':
+					$explore_list_data[$key] = $voting_infos[$data['post_id']];
 					break;
 			}
 			$explore_list_data[$key]['last_user_info'] = $users_info[$explore_list_data[$key]['last_uid']];

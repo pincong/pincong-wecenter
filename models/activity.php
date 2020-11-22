@@ -165,6 +165,14 @@ class activity_class extends AWS_MODEL
 			{
 				$video_comment_ids[] = $val['item_id'];
 			}
+            elseif ($val['item_type'] == 'voting')
+			{
+				$voting_ids[] = $val['item_id'];
+			}
+			elseif ($val['item_type'] == 'voting_comment')
+			{
+				$voting_comment_ids[] = $val['item_id'];
+			}
 		}
 
 		// 获取问题和回答
@@ -215,6 +223,31 @@ class activity_class extends AWS_MODEL
 				foreach ($article_comments AS $key => $val)
 				{
 					$article_comments[$key]['thread_info'] = $articles[$val['article_id']];
+				}
+			}
+		}
+        
+        if ($voting_comment_ids)
+		{
+			$voting_comments = $this->model('content')->get_posts_by_ids('voting_comment', $voting_comment_ids);
+			foreach ($voting_comments AS $key => $val)
+			{
+				$uids[$val['uid']] = $val['uid'];
+				$voting_ids[] = $val['voting_id'];
+			}
+		}
+		if ($voting_ids)
+		{
+			$votings = $this->model('content')->get_posts_by_ids('voting', $voting_ids);
+			foreach ($votings AS $key => $val)
+			{
+				$uids[$val['uid']] = $val['uid'];
+			}
+			if ($voting_comments)
+			{
+				foreach ($voting_comments AS $key => $val)
+				{
+					$voting_comments[$key]['thread_info'] = $votings[$val['voting_id']];
 				}
 			}
 		}
@@ -280,6 +313,18 @@ class activity_class extends AWS_MODEL
 			{
 				$item = $video_comments[$val['item_id']];
 				$item['item_type'] = 'video_comment';
+			}
+            
+            
+            elseif ($val['item_type'] == 'voting')
+			{
+				$item = $votings[$val['item_id']];
+				$item['item_type'] = 'voting';
+			}
+			elseif ($val['item_type'] == 'voting_comment')
+			{
+				$item = $voting_comments[$val['item_id']];
+				$item['item_type'] = 'voting_comment';
 			}
 			else
 			{

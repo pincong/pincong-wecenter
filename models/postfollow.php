@@ -61,6 +61,9 @@ class postfollow_class extends AWS_MODEL
 				case 'video':
 					$video_ids[] = $val['post_id'];
 					break;
+                case 'voting':
+					$voting_ids[] = $val['post_id'];
+					break;
 			}
 		}
 
@@ -84,6 +87,15 @@ class postfollow_class extends AWS_MODEL
 		{
 			$video_infos = $this->model('content')->get_posts_by_ids('video', $video_ids);
 			foreach ($video_infos as $key => $val)
+			{
+				$uids[] = $val['uid'];
+			}
+		}
+        
+        if ($voting_ids)
+		{
+			$voting_infos = $this->model('content')->get_posts_by_ids('voting', $voting_ids);
+			foreach ($voting_infos as $key => $val)
 			{
 				$uids[] = $val['uid'];
 			}
@@ -112,6 +124,11 @@ class postfollow_class extends AWS_MODEL
 					$result[$key] = $video_infos[$val['post_id']];
 					// TODO: 统一字段名称
 					$result[$key]['reply_count'] = $video_infos[$val['post_id']]['comment_count'];
+					break;
+                case 'voting':
+					$result[$key] = $voting_infos[$val['post_id']];
+					// TODO: 统一字段名称
+					$result[$key]['reply_count'] = $voting_infos[$val['post_id']]['comments'];
 					break;
 			}
 			$result[$key]['post_type'] = $val['post_type'];

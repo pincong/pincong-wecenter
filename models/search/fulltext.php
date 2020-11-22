@@ -185,6 +185,55 @@ class search_fulltext_class extends AWS_MODEL
 
 		return array_slice($result, $slice_offset, $limit);
 	}
+    
+    public function search_votings($q, $topic_ids = null, $page = 1, $limit = 20, $recommend = false)
+	{
+		if ($topic_ids)
+		{
+			$topic_ids = explode(',', $topic_ids);
+
+			array_walk_recursive($topic_ids, 'intval_string');
+
+			$where[] = '`id` IN (SELECT `item_id` FROM ' . $this->get_table('topic_relation') . ' WHERE topic_id IN(' . implode(',', $topic_ids) . ') AND `type` = "voting")';
+		}
+
+		if ($recommend)
+		{
+			$where[] = '(`recommend` = "1")';
+		}
+
+		if ($where)
+		{
+			$where = implode(' AND ', $where);
+		}
+
+		$search_hash = $this->get_search_hash('voting', 'title', $q, $where);
+
+		if (!$result = $this->fetch_cache($search_hash))
+		{
+			if ($result = $this->query_all($this->bulid_query('voting', 'title', $q, $where), $this->max_results))
+			{
+				$result = aasort($result, 'score', 'DESC');
+			}
+			else
+			{
+				return false;
+			}
+
+			$this->save_cache($search_hash, $result);
+		}
+
+		if (!$page)
+		{
+			$slice_offset = 0;
+		}
+		else
+		{
+			$slice_offset = (($page - 1) * $limit);
+		}
+
+		return array_slice($result, $slice_offset, $limit);
+	}
 
 	public function encode_search_code($string)
 	{
@@ -237,6 +286,11 @@ class search_fulltext_class extends AWS_MODEL
 
 			case 'article':
 				return $this->update('article', array(
+					'title_fulltext' => $search_code
+				), 'id = ' . intval($item_id));
+			break;
+            case 'voting':
+				return $this->update('voting', array(
 					'title_fulltext' => $search_code
 				), 'id = ' . intval($item_id));
 			break;

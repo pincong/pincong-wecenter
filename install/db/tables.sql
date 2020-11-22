@@ -227,6 +227,59 @@ CREATE TABLE IF NOT EXISTS `aws_video_comment` (
 
 --
 
+CREATE TABLE IF NOT EXISTS `aws_voting` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) DEFAULT '0',
+  `category_id` int(11) DEFAULT '0',
+  `add_time` int(11) DEFAULT '0',
+  `update_time` int(11) DEFAULT '0',
+  `view_count` int(11) DEFAULT '0',
+  `agree_count` int(11) DEFAULT '0',
+  `reputation` float DEFAULT '0',
+  `lock` tinyint(1) DEFAULT '0',
+  `recommend` tinyint(1) DEFAULT '0',
+  `sort` tinyint(2) DEFAULT '0',
+  `last_uid` int(11) DEFAULT '0',
+  `redirect_id` int(11) DEFAULT '0',
+  `title` varchar(240) DEFAULT NULL,
+  `message` text,
+  `message_count` text,
+  `message_vote` text,
+  `title_fulltext` text,
+  `comments` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `category_id` (`category_id`),
+  KEY `add_time` (`add_time`),
+  KEY `update_time` (`update_time`),
+  KEY `view_count` (`view_count`),
+  KEY `agree_count` (`agree_count`),
+  KEY `reputation` (`reputation`),
+  KEY `lock` (`lock`),
+  KEY `recommend` (`recommend`),
+  KEY `sort` (`sort`),
+  FULLTEXT KEY `title_fulltext` (`title_fulltext`),
+  KEY `comments` (`comments`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+
+CREATE TABLE IF NOT EXISTS `aws_voting_comment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) DEFAULT '0',
+  `voting_id` int(11) DEFAULT '0',
+  `message` text,
+  `add_time` int(11) DEFAULT '0',
+  `at_uid` int(11) DEFAULT NULL,
+  `agree_count` int(11) DEFAULT '0',
+  `reputation` float DEFAULT '0',
+  `fold` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `voting_id` (`voting_id`),
+  KEY `add_time` (`add_time`),
+  KEY `agree_count` (`agree_count`),
+  KEY `reputation` (`reputation`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
 CREATE TABLE IF NOT EXISTS `aws_posts_index` (
