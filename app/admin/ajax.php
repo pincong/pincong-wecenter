@@ -89,6 +89,26 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			break;
 		}
 	}
+    
+    public function voting_manage_action()
+	{
+		if (!$_POST['voting_ids'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择文章进行操作')));
+		}
+
+		switch ($_POST['action'])
+		{
+			case 'del':
+				foreach ($_POST['voting_ids'] AS $voting_id)
+				{
+					$this->model('voting')->clear_voting($voting_id, null);
+				}
+
+				H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+			break;
+		}
+	}
 
 	public function save_category_sort_action()
 	{

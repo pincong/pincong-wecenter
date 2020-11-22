@@ -299,6 +299,57 @@ class ajax extends AWS_CONTROLLER
 		), 1, null));
 
 	}
+    
+    public function modify_voting_action()
+	{
+		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_modify']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
+		if (!$voting_info = $this->model('content')->get_thread_info_by_id('voting', $_POST['voting_id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文章不存在')));
+		}
+
+		if ($voting_info['lock'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文章已锁定, 不能编辑')));
+		}
+
+		if (!can_edit_post($voting_info['uid'], $this->user_info))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个文章')));
+		}
+
+		if (!$_POST['do_delete'])
+		{
+			$this->validate_thread('voting');
+		}
+
+		set_user_operation_last_time('publish', $this->user_id);
+
+		if ($_POST['do_delete'])
+		{
+			$this->model('voting')->clear_voting(
+				$voting_info['id'],
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
+			);
+		}
+		else
+		{
+			$this->model('voting')->modify_voting(
+				$voting_info['id'],
+				$_POST['title'],
+				$_POST['message'],
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
+			);
+		}
+
+		H::ajax_json_output(AWS_APP::RSM(array(
+			'url' => url_rewrite('/voting/' . $voting_info['id'])
+		), 1, null));
+	}
 
 
 
@@ -462,6 +513,59 @@ class ajax extends AWS_CONTROLLER
 		else
 		{
 			$this->model('video')->modify_video_comment(
+				$comment_info['id'],
+				$_POST['message'],
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
+			);
+		}
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+    
+    public function modify_voting_comment_action()
+	{
+		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_modify']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
+		if (!$comment_info = $this->model('content')->get_reply_info_by_id('voting_comment', $_GET['id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('内容不存在')));
+		}
+
+		if (!can_edit_post($comment_info['uid'], $this->user_info))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
+		}
+
+		if (!$voting_info = $this->model('content')->get_thread_info_by_id('voting', $comment_info['voting_id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文章不存在')));
+		}
+
+		if ($voting_info['lock'] AND !$voting_info['redirect_id'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的文章不能编辑')));
+		}
+
+		if (!$_POST['do_delete'])
+		{
+			$this->validate_reply('voting');
+		}
+
+		set_user_operation_last_time('publish', $this->user_id);
+
+		if ($_POST['do_delete'])
+		{
+			$this->model('voting')->clear_voting_comment(
+				$comment_info['id'],
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
+			);
+		}
+		else
+		{
+			$this->model('voting')->modify_voting_comment(
 				$comment_info['id'],
 				$_POST['message'],
 				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)

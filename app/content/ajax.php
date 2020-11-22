@@ -316,6 +316,10 @@ class ajax extends AWS_CONTROLLER
 					$parent_type = 'video';
 					$parent_id = $item_info['video_id'];
 					break;
+                case 'voting_comment':
+					$parent_type = 'voting';
+					$parent_id = $item_info['voting_id'];
+					break;
 			}
 
 			$parent_info = $this->model('content')->get_thread_info_by_id($parent_type, $parent_id);
@@ -365,6 +369,10 @@ class ajax extends AWS_CONTROLLER
 				case 'video_comment':
 					$parent_type = 'video';
 					$parent_id = $item_info['video_id'];
+					break;
+                case 'voting_comment':
+					$parent_type = 'voting';
+					$parent_id = $item_info['voting_id'];
 					break;
 			}
 

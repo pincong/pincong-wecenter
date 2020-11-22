@@ -115,5 +115,37 @@ class main extends AWS_CONTROLLER
 
 		TPL::output('publish/video');
 	}
+    
+    public function voting_action()
+	{
+		if (!$thread_info = $this->model('content')->get_thread_info_by_id('voting', $_GET['id']))
+		{
+			H::redirect_msg(AWS_APP::lang()->_t('指定文章不存在'));
+		}
+
+		if (!can_edit_post($thread_info['uid'], $this->user_info))
+		{
+			H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑这个文章'), '/voting/' . $thread_info['id']);
+		}
+
+		if (S::get('category_enable') != 'N')
+		{
+			TPL::assign('category_current_id', $thread_info['category_id']);
+			TPL::assign('category_list', $this->model('category')->get_allowed_categories($this->user_info));
+		}
+
+		TPL::import_js('js/app/publish.js');
+
+		if (S::get('advanced_editor_enable') == 'Y')
+		{
+			import_editor_static_files();
+		}
+
+		TPL::assign('recent_topics', unserialize_array($this->user_info['recent_topics']));
+
+		TPL::assign('thread_info', $thread_info);
+
+		TPL::output('publish/voting');
+	}
 
 }

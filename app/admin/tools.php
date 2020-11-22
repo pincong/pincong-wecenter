@@ -83,6 +83,25 @@ class tools extends AWS_ADMIN_CONTROLLER
             H::redirect_msg(AWS_APP::lang()->_t('搜索索引更新完成'), '/admin/tools/');
         }
     }
+    
+    public function update_voting_search_index_action()
+    {
+        if ($voting_list = $this->model('question')->fetch_page('voting', null, 'id ASC', $_GET['page'], $_GET['per_page']))
+        {
+            foreach ($voting_list as $key => $val)
+            {
+                $this->model('search_fulltext')->push_index('voting', $val['title'], $val['id']);
+
+                $this->model('posts')->set_posts_index($val['id'], 'voting', $val);
+            }
+
+            H::redirect_msg(AWS_APP::lang()->_t('正在更新文章搜索索引') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/update_voting_search_index/page-' . ($_GET['page'] + 1) . '__per_page-' . $_GET['per_page']);
+        }
+        else
+        {
+            H::redirect_msg(AWS_APP::lang()->_t('搜索索引更新完成'), '/admin/tools/');
+        }
+    }
 
     public function update_topic_discuss_count_action()
     {
@@ -257,6 +276,48 @@ class tools extends AWS_ADMIN_CONTROLLER
 
 
 			case 'video_comment':
+				$next_table = 'voting';
+
+				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', $_GET['page'], $_GET['per_page']))
+				{
+					foreach ($list as $key => $val)
+					{
+						AWS_APP::model()->update($table, array(
+							'add_time' => fake_time($val['add_time'])
+						), 'id = ' . intval($val['id']));
+					}
+
+					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/blur_time/page-' . ($_GET['page'] + 1) . '__table-'.$table.'__per_page-' . $_GET['per_page']);
+				}
+				else
+				{
+					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/blur_time/page-1__table-'.$next_table.'__per_page-' . $_GET['per_page']);
+				}
+			break;
+                
+            case 'voting':
+				$next_table = 'voting_comment';
+
+				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', $_GET['page'], $_GET['per_page']))
+				{
+					foreach ($list as $key => $val)
+					{
+						AWS_APP::model()->update($table, array(
+							'add_time' => fake_time($val['add_time']),
+							'update_time' => fake_time($val['update_time'])
+						), 'id = ' . intval($val['id']));
+					}
+
+					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/blur_time/page-' . ($_GET['page'] + 1) . '__table-'.$table.'__per_page-' . $_GET['per_page']);
+				}
+				else
+				{
+					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/blur_time/page-1__table-'.$next_table.'__per_page-' . $_GET['per_page']);
+				}
+			break;
+
+
+			case 'voting_comment':
 				$next_table = 'posts_index';
 
 				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', $_GET['page'], $_GET['per_page']))
@@ -420,7 +481,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 
 
 			case 'video':
-				$next_table = '1'; // finish
+				$next_table = 'voting'; 
 
 				if ($list = AWS_APP::model()->fetch_page($table, '`title` IS NULL', 'id ASC', $_GET['page'], $_GET['per_page']))
 				{
@@ -433,6 +494,30 @@ class tools extends AWS_ADMIN_CONTROLLER
 						AWS_APP::model()->update('posts_index', array(
 							'category_id' => $trash_category_id
 						), "post_type = 'video' AND post_id = " . intval($val['id']));
+					}
+
+					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/move_to_trash/page-' . ($_GET['page'] + 1) . '__table-'.$table.'__per_page-' . $_GET['per_page']);
+				}
+				else
+				{
+					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/move_to_trash/page-1__table-'.$next_table.'__per_page-' . $_GET['per_page']);
+				}
+			break;
+                
+            case 'voting':
+				$next_table = '1';  //finish
+
+				if ($list = AWS_APP::model()->fetch_page($table, '`title` IS NULL', 'id ASC', $_GET['page'], $_GET['per_page']))
+				{
+					foreach ($list as $key => $val)
+					{
+						AWS_APP::model()->update($table, array(
+							'category_id' => $trash_category_id
+						), 'id = ' . intval($val['id']));
+
+						AWS_APP::model()->update('posts_index', array(
+							'category_id' => $trash_category_id
+						), "post_type = 'voting' AND post_id = " . intval($val['id']));
 					}
 
 					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/move_to_trash/page-' . ($_GET['page'] + 1) . '__table-'.$table.'__per_page-' . $_GET['per_page']);

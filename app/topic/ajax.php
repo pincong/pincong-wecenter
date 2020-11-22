@@ -333,6 +333,18 @@ class ajax extends AWS_CONTROLLER
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 				}
 			break;
+                
+            case 'voting':
+				if (!$voting_info = $this->model('content')->get_thread_info_by_id('voting', $_POST['item_id']))
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定项目不存在')));
+				}
+
+				if (!$this->user_info['permission']['edit_question_topic'] AND $this->user_id != $voting_info['uid'])
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+				}
+			break;
 
 			default:
 				{
@@ -395,6 +407,18 @@ class ajax extends AWS_CONTROLLER
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 				}
 			break;
+            
+            case 'voting':
+				if (!$voting_info = $this->model('content')->get_thread_info_by_id('voting', $_POST['item_id']))
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定项目不存在')));
+				}
+
+				if (!$this->user_info['permission']['edit_question_topic'] AND $this->user_id != $voting_info['uid'])
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+				}
+			break;
 
 			default:
 				{
@@ -436,6 +460,13 @@ class ajax extends AWS_CONTROLLER
 
 			case 'video':
 				if ($video_info['lock'])
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定内容不能添加话题')));
+				}
+			break;
+                
+            case 'voting':
+				if ($voting_info['lock'])
 				{
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定内容不能添加话题')));
 				}

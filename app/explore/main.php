@@ -83,6 +83,10 @@ class main extends AWS_CONTROLLER
 		{
 			$type = 'video';
 		}
+        else if ($_GET['type'] == 'voting')
+		{
+			$type = 'voting';
+		}
 
 		if ($_GET['recommend'])
 		{

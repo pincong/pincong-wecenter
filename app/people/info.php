@@ -36,6 +36,8 @@ class info extends AWS_CONTROLLER
 				'article_comments',
 				'videos',
 				'video_comments',
+                'votings',
+                'voting_comments',
 				'followers',
 				'received_votes',
 				'sent_votes',
@@ -117,6 +119,20 @@ class info extends AWS_CONTROLLER
 		TPL::assign('list', $this->model('video')->get_video_comments_by_uid($_GET['uid'], $_GET['page'], $this->per_page));
 
 		TPL::output('people/video_comments_template');
+	}
+    
+    public function votings_action()
+	{
+		TPL::assign('list', $this->model('voting')->get_votings_by_uid($_GET['uid'], $_GET['page'], $this->per_page));
+
+		TPL::output('people/votings_template');
+	}
+
+	public function voting_comments_action()
+	{
+		TPL::assign('list', $this->model('voting')->get_voting_comments_by_uid($_GET['uid'], $_GET['page'], $this->per_page));
+
+		TPL::output('people/voting_comments_template');
 	}
 
 	public function sent_votes_action()

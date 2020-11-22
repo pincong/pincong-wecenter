@@ -432,6 +432,77 @@ class ajax extends AWS_CONTROLLER
 			'url' => url_rewrite('/video/' . $video_id)
 		), 1, null));
 	}
+    
+    public function publish_voting_action()
+	{
+        
+		if (!$this->model('publish')->check_user_permission('voting', $this->user_info))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
+		}
+
+		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_new_voting'))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', S::get('currency_name'))));
+		}
+        
+        
+		$this->validate_thread('voting');
+
+		if ($_POST['anonymous'])
+		{
+			$publish_uid = $this->get_anonymous_uid('voting');
+		}
+		else
+		{
+			$publish_uid = $this->user_id;
+		}
+        
+        
+        
+        $message = array_filter($_POST['message']);
+        $message_count = array();
+        $message_vote = array();
+        $msg_length = count($message);
+        
+        for($i = 0; $i < $msg_length; $i++){
+            if(!ctype_alnum($message[$i])){
+                H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('投票不能有特出符号')));
+            }
+        }
+        
+        for($i = 0; $i < $msg_length; $i++){
+            array_push($message_count, '0');
+        }
+        
+		set_repeat_submission_digest($this->user_id, $_POST['title']);
+		set_user_operation_last_time('publish', $this->user_id);
+
+		$voting_id = $this->model('publish')->publish_voting(array(
+			'title' => $_POST['title'],
+			'message' => implode(',' , $message),
+            'message_count' => implode(',', $message_count),
+            'message_vote' => implode(',', $message_vote),
+            //add message_count
+			'category_id' => $_POST['category_id'],
+			'uid' => $publish_uid,
+			'topics' => $_POST['topics'],
+			'permission_create_topic' => $this->user_info['permission']['create_topic'],
+			'follow' => !$_POST['anonymous'],
+		), $this->user_id, $_POST['later']);
+
+		if ($_POST['later'])
+		{
+			// 延迟显示
+			H::ajax_json_output(AWS_APP::RSM(array(
+				'url' => url_rewrite('/publish/delay/')
+			), 1, null));
+		}
+
+		H::ajax_json_output(AWS_APP::RSM(array(
+			'url' => url_rewrite('/voting/' . $voting_id)
+		), 1, null));
+	}
 
 
 
@@ -709,6 +780,90 @@ class ajax extends AWS_CONTROLLER
 			'ajax_html' => TPL::process('video/ajax_reply')
 		), 1, null));
 	}
+    
+    public function publish_voting_comment_action()
+	{
+		if (!$this->model('publish')->check_user_permission('voting_comment', $this->user_info))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
+		}
+
+		if (!$this->model('ratelimit')->check_voting_comment($this->user_id, $this->user_info['permission']['reply_limit_per_day']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天的文章评论已经达到上限')));
+		}
+
+		$this->validate_reply('voting');
+
+		if (!$voting_info = $this->model('content')->get_thread_info_by_id('voting', $_POST['voting_id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定文章不存在')));
+		}
+
+		if ($voting_info['lock'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的文章不能回复')));
+		}
+
+		if (!$voting_info['title'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经删除的文章不能回复')));
+		}
+
+		if (!$this->model('category')->check_user_permission_reply($voting_info['category_id'], $this->user_info))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你的声望还不能在这个分类发言')));
+		}
+
+		$pay = true;
+		$replied = $this->model('content')->has_user_relpied_to_thread('voting', $voting_info['id'], $this->user_id, true);
+		if ((S::get('reply_pay_only_once') == 'Y') AND $replied)
+		{
+			$pay = false;
+		}
+
+		if ($pay AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_reply_voting'))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', S::get('currency_name'))));
+		}
+
+		if ($_POST['anonymous'])
+		{
+			$publish_uid = $this->get_anonymous_uid('voting_comment');
+		}
+		else
+		{
+			$publish_uid = $this->user_id;
+		}
+
+		set_repeat_submission_digest($this->user_id, $_POST['message']);
+		set_user_operation_last_time('publish', $this->user_id);
+
+		$comment_id = $this->model('publish')->publish_voting_comment(array(
+			'parent_id' => $voting_info['id'],
+			'message' => $_POST['message'],
+			'uid' => $publish_uid,
+			'follow' => ($_POST['follow'] AND !$_POST['anonymous'] AND ($this->user_info['permission']['follow_thread'] OR $voting_info['uid'] == $this->user_id)),
+			'at_uid' => $_POST['at_uid'],
+			'permission_affect_currency' => $this->user_info['permission']['affect_currency'],
+		), $this->user_id, $_POST['later'], $pay);
+
+		if ($_POST['later'])
+		{
+			// 延迟显示
+			H::ajax_json_output(AWS_APP::RSM(array(
+				'url' => url_rewrite('/publish/delay/')
+			), 1, null));
+		}
+
+		$comment_info = $this->model('voting')->get_voting_comment_by_id($comment_id);
+		//$comment_info['message'] = $this->model('mention')->parse_at_user($comment_info['message']);
+		TPL::assign('comment_info', $comment_info);
+		H::ajax_json_output(AWS_APP::RSM(array(
+			'ajax_html' => TPL::process('voting/ajax_reply')
+		), 1, null));
+	}
+
 
 
 }

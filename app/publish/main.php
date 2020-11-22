@@ -148,6 +148,49 @@ class main extends AWS_CONTROLLER
 
 		TPL::output('publish/video');
 	}
+    
+    public function voting_action()
+	{
+		if (!$this->model('publish')->check_user_permission('voting', $this->user_info))
+		{
+			H::redirect_msg(AWS_APP::lang()->_t('你的声望还不够'));
+		}
+
+		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_new_voting'))
+		{
+			H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', S::get('currency_name')), '/currency/rule/');
+		}
+
+		if (!$this->model('ratelimit')->check_thread($this->user_id, $this->user_info['permission']['thread_limit_per_day']))
+		{
+			H::redirect_msg(AWS_APP::lang()->_t('今日发帖数量已经达到上限'));
+		}
+
+		$thread_info = array(
+			'title' => '',
+			'message' => '',
+			'category_id' => intval($_GET['category_id'])
+		);
+
+		if (S::get('category_enable') != 'N')
+		{
+			TPL::assign('category_current_id', $thread_info['category_id']);
+			TPL::assign('category_list', $this->model('category')->get_allowed_categories($this->user_info));
+		}
+
+		TPL::import_js('js/app/publish.js');
+
+		if (S::get('advanced_editor_enable') == 'Y')
+		{
+			import_editor_static_files();
+		}
+
+		TPL::assign('thread_info', $thread_info);
+
+		TPL::assign('recent_topics', unserialize_array($this->user_info['recent_topics']));
+
+		TPL::output('publish/voting');
+	}
 
 	public function delay_action()
 	{
