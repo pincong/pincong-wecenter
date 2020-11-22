@@ -1537,6 +1537,37 @@
 						</div>
 					</td>
 				</tr>
+                
+                				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('发布投票'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input name="currency_system_config_new_voting" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['currency_system_config_new_voting']); ?>"/>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('回应'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input name="currency_system_config_reply_voting" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['currency_system_config_reply_voting']); ?>"/>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('收到回应'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input name="currency_system_config_voting_replied" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['currency_system_config_voting_replied']); ?>"/>
+							</div>
+						</div>
+					</td>
+				</tr>
 
 				<tr>
 					<td>
@@ -1799,7 +1830,30 @@
 						</div>
 					</td>
 				</tr>
+                <tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('投票正文最小字数限制'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input name="voting_body_length_min" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['voting_body_length_min']); ?>"/>
 
+								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('投票正文最大字数限制'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input name="voting_body_length_max" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['voting_body_length_max']); ?>"/>
+
+								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+							</div>
+						</div>
+					</td>
+				</tr>
 				<tr>
 					<td>
 						<div class="form-group">
@@ -1897,7 +1951,30 @@
 						</div>
 					</td>
 				</tr>
+                <tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('投票回复最小字数限制'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input name="voting_reply_length_min" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['voting_reply_length_min']); ?>"/>
 
+								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('投票回复最大字数限制'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input name="voting_reply_length_max" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['voting_reply_length_max']); ?>"/>
+
+								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+							</div>
+						</div>
+					</td>
+				</tr>
 				<tr>
 					<td>
 						<div class="form-group">
