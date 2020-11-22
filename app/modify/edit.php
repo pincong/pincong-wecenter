@@ -99,5 +99,29 @@ class edit extends AWS_CONTROLLER
 			TPL::output("modify/edit_video_comment_template");
 		}
 	}
+    
+    public function voting_comment_action()
+	{
+		$id = intval($_GET['id']);
+		if (!$id)
+		{
+			HTTP::error_403();
+		}
+		if (!$reply_info = $this->model('content')->get_reply_info_by_id('voting_comment', $id))
+		{
+			HTTP::error_403();
+		}
+
+		if (!can_edit_post($reply_info['uid'], $this->user_info))
+		{
+			TPL::assign('dialog_message', AWS_APP::lang()->_t('你没有权限编辑此内容'));
+			TPL::output("dialog/alert_template");
+		}
+		else
+		{
+			TPL::assign('reply_info', $reply_info);
+			TPL::output("modify/edit_voting_comment_template");
+		}
+	}
 
 }
