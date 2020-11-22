@@ -174,7 +174,8 @@ ul,ol{padding:0;list-style:none;}
 .aw-message-box a{margin-top:10px;}
 .aw-question-list li,.aw-article-list li{overflow: hidden;margin-bottom: 5px;}
 .aw-article-list a,.aw-question-list a{display:block;max-width:600px;}
-
+.aw-question-list li,.aw-voting-list li{overflow: hidden;margin-bottom: 5px;}
+.aw-voting-list a,.aw-question-list a{display:block;max-width:600px;}
 
 /*编辑用户资料*/
 #remove_user_form label{margin-right:15px;}
@@ -260,7 +261,7 @@ ul,ol{padding:0;list-style:none;}
 .aw-content-wrap label.checkbox-inline,.aw-dropdown .aw-dropdown-list li.question b{line-height:30px;}
 .table-striped > tbody > tr:first-child td,.aw-content-wrap .mod-border,.aw-content-wrap .mod-site-foot,.aw-dropdown .aw-dropdown-list li:first-child,.aw-category-dropdown .aw-category-dropdown-list li:first-child{border-top:none;}
 .nowrap,.aw-content-wrap .table th{white-space:nowrap;}
-label,.aw-content-wrap .mod-title,.aw-article-list b,.aw-question-list b{font-weight:400;}
+label,.aw-content-wrap .mod-title,.aw-article-list b,.aw-voting-list b,.aw-question-list b{font-weight:400;}
 .aw-header .mod-btn,.aw-content-wrap .aw-nav-menu .aw-nav-menu-descrip{width:100%;}
 .aw-content-wrap .aw-nav-menu li h4{font-size:14px;}
 .aw-side ul li i,.aw-content-wrap .md-tip{margin:0 1px;}

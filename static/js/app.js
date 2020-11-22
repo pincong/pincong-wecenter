@@ -82,6 +82,9 @@ $(document).ready(function ()
             case 'video':
                 data_url = G_BASE_URL + '/topic/ajax/remove_topic_relation/';
                 break;
+            case 'voting':
+                data_url = G_BASE_URL + '/topic/ajax/remove_topic_relation/';
+                break;
         }
 
         if ($(this).parents('.aw-topic-bar').attr('data-url'))
