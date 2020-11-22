@@ -1,6 +1,6 @@
 # pincong-wecenter
 
-the final voting update
+the final voting update (not yet, next step will be UI)
 
 数据库一个是品葱默认的system/config/database.php, 另一个是投票页面的 voting_data/connect.php
 
