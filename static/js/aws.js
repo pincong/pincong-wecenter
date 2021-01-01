@@ -1094,14 +1094,6 @@ AWS.User =
 		});
 	},
 
-	// 删除讨论
-	remove_comment: function(selector, type, comment_id)
-	{
-		$.get(G_BASE_URL + '/question/ajax/remove_comment/type-' + type + '__comment_id-' + comment_id);
-
-		selector.parents('.aw-comment-box li').fadeOut();
-	},
-
 	edit_verified_title: function(uid, text)
 	{
 		AWS.textBox(_t('头衔'), text, function(text)

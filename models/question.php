@@ -318,17 +318,42 @@ class question_class extends AWS_MODEL
 	}
 
 
-	public function get_question_discussions($thread_ids)
+	// 同时获取用户信息
+	public function get_question_discussions($thread_ids, $page, $per_page, $order = 'id ASC')
 	{
 		array_walk_recursive($thread_ids, 'intval_string');
 		$where = 'question_id IN (' . implode(',', $thread_ids) . ')';
 
-		return $this->fetch_all('question_discussion', $where, "id ASC");
+		if ($list = $this->fetch_page('question_discussion', $where, $order, $page, $per_page))
+		{
+			foreach($list as $key => $val)
+			{
+				$uids[] = $val['uid'];
+			}
+		}
+
+		if ($uids)
+		{
+			if ($users_info = $this->model('account')->get_user_info_by_uids($uids))
+			{
+				foreach($list as $key => $val)
+				{
+					$list[$key]['user_info'] = $users_info[$val['uid']];
+				}
+			}
+		}
+
+		return $list;
 	}
 
-	public function get_question_discussion_by_id($comment_id)
+	// 同时获取用户信息
+	public function get_question_discussion_by_id($id)
 	{
-		return $this->fetch_row('question_discussion', "id = " . intval($comment_id));
+		if ($item = $this->fetch_row('question_discussion', "id = " . intval($id)))
+		{
+			$item['user_info'] = $this->model('account')->get_user_info_by_uid($item['uid']);
+		}
+		return $item;
 	}
 
 

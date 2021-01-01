@@ -148,18 +148,17 @@ class ajax extends AWS_CONTROLLER
 		// TODO: 以$_POST['at_uid']代替
 		$message1 = $this->model('mention')->parse_at_user($message, false, false, true);
 
-		$this->model('publish')->publish_answer_discussion(array(
+		$item_id = $this->model('publish')->publish_answer_discussion(array(
 			'parent_id' => $answer_info['id'],
 			'message' => $message1,
 			'uid' => $publish_uid,
 		), $this->user_id, false);
 
-		/*H::ajax_json_output(AWS_APP::RSM(array(
-			'item_id' => $answer_info['id'],
-			'type_name' => 'answer'
-		), 1, null));*/
+		$item_info = $this->model('answer')->get_answer_discussion_by_id($item_id);
+		$item_info['message'] = $this->model('mention')->parse_at_user($item_info['message']);
+		TPL::assign('discussion_info', $item_info);
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'ajax_html' => '<div>' . $message . '</div>'
+			'ajax_html' => TPL::process('answer/ajax_answer_discussion')
 		), 1, null));
 	}
 
@@ -244,18 +243,17 @@ class ajax extends AWS_CONTROLLER
 		// TODO: 以$_POST['at_uid']代替
 		$message1 = $this->model('mention')->parse_at_user($message, false, false, true);
 
-		$this->model('publish')->publish_question_discussion(array(
+		$item_id = $this->model('publish')->publish_question_discussion(array(
 			'parent_id' => $question_info['id'],
 			'message' => $message1,
 			'uid' => $publish_uid,
 		), $this->user_id, false);
 
-		/*H::ajax_json_output(AWS_APP::RSM(array(
-			'item_id' => $question_info['id'],
-			'type_name' => 'question'
-		), 1, null));*/
+		$item_info = $this->model('question')->get_question_discussion_by_id($item_id);
+		$item_info['message'] = $this->model('mention')->parse_at_user($item_info['message']);
+		TPL::assign('discussion_info', $item_info);
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'ajax_html' => '<div>' . $message . '</div>'
+			'ajax_html' => TPL::process('question/ajax_question_discussion')
 		), 1, null));
 	}
 
@@ -313,17 +311,19 @@ class ajax extends AWS_CONTROLLER
 
 	public function get_answer_discussions_action()
 	{
-		$comments = $this->model('answer')->get_answer_discussions($_GET['answer_id']);
-
-		$user_infos = $this->model('account')->get_user_info_by_uids(fetch_array_value($comments, 'uid'));
-
-		foreach ($comments as $key => $val)
+		$replies_per_page = intval(get_setting('replies_per_page'));
+		if (!$replies_per_page)
 		{
-			$comments[$key]['message'] = $this->model('mention')->parse_at_user($comments[$key]['message']);
-			$comments[$key]['user_info'] = $user_infos[$val['uid']];
+			$replies_per_page = 100;
+		}
+		$discussions = $this->model('answer')->get_answer_discussions($_GET['answer_id'], $_GET['page'], $replies_per_page);
+
+		foreach ($discussions as $key => $val)
+		{
+			$discussions[$key]['message'] = $this->model('mention')->parse_at_user($discussions[$key]['message']);
 		}
 
-		TPL::assign('comments', $comments);
+		TPL::assign('discussions', $discussions);
 
 		TPL::output("question/answer_discussions_template");
 	}
@@ -340,17 +340,19 @@ class ajax extends AWS_CONTROLLER
 		}
 		$post_ids[] = $_GET['question_id'];
 
-		$comments = $this->model('question')->get_question_discussions($post_ids);
-
-		$user_infos = $this->model('account')->get_user_info_by_uids(fetch_array_value($comments, 'uid'));
-
-		foreach ($comments as $key => $val)
+		$replies_per_page = intval(get_setting('replies_per_page'));
+		if (!$replies_per_page)
 		{
-			$comments[$key]['message'] = $this->model('mention')->parse_at_user($comments[$key]['message']);
-			$comments[$key]['user_info'] = $user_infos[$val['uid']];
+			$replies_per_page = 100;
+		}
+		$discussions = $this->model('question')->get_question_discussions($post_ids, $_GET['page'], $replies_per_page);
+
+		foreach ($discussions as $key => $val)
+		{
+			$discussions[$key]['message'] = $this->model('mention')->parse_at_user($discussions[$key]['message']);
 		}
 
-		TPL::assign('comments', $comments);
+		TPL::assign('discussions', $discussions);
 
 		TPL::output("question/question_discussions_template");
 	}

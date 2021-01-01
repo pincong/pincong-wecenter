@@ -78,15 +78,41 @@ class answer_class extends AWS_MODEL
 		return $this->fetch_one('answer', 'id', "question_id = " . intval($question_id) . " AND uid = " . intval($uid));
 	}
 
-
-	public function get_answer_discussions($answer_id)
+	// 同时获取用户信息
+	public function get_answer_discussions($parent_id, $page, $per_page, $order = 'id ASC')
 	{
-		return $this->fetch_all('answer_discussion', "answer_id = " . intval($answer_id), "id ASC");
+		$where = "answer_id = " . intval($parent_id);
+
+		if ($list = $this->fetch_page('answer_discussion', $where, $order, $page, $per_page))
+		{
+			foreach($list as $key => $val)
+			{
+				$uids[] = $val['uid'];
+			}
+		}
+
+		if ($uids)
+		{
+			if ($users_info = $this->model('account')->get_user_info_by_uids($uids))
+			{
+				foreach($list as $key => $val)
+				{
+					$list[$key]['user_info'] = $users_info[$val['uid']];
+				}
+			}
+		}
+
+		return $list;
 	}
 
-	public function get_answer_discussion_by_id($comment_id)
+	// 同时获取用户信息
+	public function get_answer_discussion_by_id($id)
 	{
-		return $this->fetch_row('answer_discussion', "id = " . intval($comment_id));
+		if ($item = $this->fetch_row('question_discussion', "id = " . intval($id)))
+		{
+			$item['user_info'] = $this->model('account')->get_user_info_by_uid($item['uid']);
+		}
+		return $item;
 	}
 
 }

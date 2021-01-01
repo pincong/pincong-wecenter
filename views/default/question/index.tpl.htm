@@ -470,8 +470,15 @@
 <script type="text/javascript">
 	var QUESTION_ID = <?php echo $this->question_info['id']; ?>;
 
+function remove_discussion(div, type) {
+	var el = div.find('.markitup-box');
+	if (el.html().indexOf('<s class="aw-deleted">') !== -1) return;
+	$.get(G_BASE_URL + '/question/ajax/remove_comment/type-' + type + '__comment_id-' + div.data('item-id'));
+	el.html('<s class="aw-deleted">' + _t('已删除') + '</s>');
+}
+
 function toggle_disscusion(btn) {
-	var div = btn.parentsUntil('.aw-item').find('.aw-comment-box');
+	var div = btn.closest('.aw-item').find('.aw-comment-box');
 	if (div.css('display') == 'none') {
 		if (!div.data('initialized')) {
 			div.attr('data-initialized', 'true');
