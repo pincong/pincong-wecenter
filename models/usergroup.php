@@ -31,36 +31,66 @@ if (!defined('IN_ANWSION'))
 class usergroup_class extends AWS_MODEL
 {
 
-	public function add_reputation_group($group_name, $reputation_factor = 0, $reputation_lower = 0, $reputation_higer = 0)
+	public function add_reputation_group($group_name, $reputation_factor, $reputation_factor_receive, $reputation_lower = 0, $reputation_higer = 0)
 	{
+		if (!is_numeric($reputation_factor))
+		{
+			$reputation_factor = 0;
+		}
+		if (!is_numeric($reputation_factor_receive))
+		{
+			$reputation_factor_receive = null;
+		}
+
 		return $this->insert('users_group', array(
 			'type' => 1,
 			'group_name' => $group_name,
+			'reputation_factor' => $reputation_factor,
+			'reputation_factor_receive' => $reputation_factor_receive,
 			'reputation_lower' => $reputation_lower,
 			'reputation_higer' => $reputation_higer,
-			'reputation_factor' => $reputation_factor,
 		));
 	}
 
-	public function add_system_group($group_name, $reputation_factor = 0)
+	public function add_system_group($group_name, $reputation_factor, $reputation_factor_receive)
 	{
+		if (!is_numeric($reputation_factor))
+		{
+			$reputation_factor = 0;
+		}
+		if (!is_numeric($reputation_factor_receive))
+		{
+			$reputation_factor_receive = null;
+		}
+
 		return $this->insert('users_group', array(
 			'type' => 0,
 			'group_name' => $group_name,
+			'reputation_factor' => $reputation_factor,
+			'reputation_factor_receive' => $reputation_factor_receive,
 			'reputation_lower' => 0,
 			'reputation_higer' => 0,
-			'reputation_factor' => $reputation_factor,
 		));
 	}
 
-	public function add_custom_group($group_name, $reputation_factor = 0)
+	public function add_custom_group($group_name, $reputation_factor, $reputation_factor_receive)
 	{
+		if (!is_numeric($reputation_factor))
+		{
+			$reputation_factor = 0;
+		}
+		if (!is_numeric($reputation_factor_receive))
+		{
+			$reputation_factor_receive = null;
+		}
+
 		return $this->insert('users_group', array(
 			'type' => 2,
 			'group_name' => $group_name,
+			'reputation_factor' => $reputation_factor,
+			'reputation_factor_receive' => $reputation_factor_receive,
 			'reputation_lower' => 0,
 			'reputation_higer' => 0,
-			'reputation_factor' => $reputation_factor,
 		));
 	}
 
@@ -72,7 +102,7 @@ class usergroup_class extends AWS_MODEL
 			'group_id' => 0,
 		), 'group_id = ' . ($group_id));
 
-		if ($group_id <= 2)
+		if ($group_id <= 1)
 		{
 			return;
 		}
