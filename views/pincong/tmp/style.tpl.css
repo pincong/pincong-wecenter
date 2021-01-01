@@ -2,3 +2,26 @@ html,
 body {
 	height: 100%;
 }
+
+.navbar .btn,
+.navbar .dropdown-menu {
+	min-width: 5rem;
+}
+
+.modal-dialog .btn {
+	min-width: 6rem;
+}
+
+@media (min-width: 576px) {
+	.navbar .navbar-nav .dropdown-menu.show {
+		display: -ms-flexbox;
+		display: flex;
+		-ms-flex-wrap: wrap;
+		flex-wrap: wrap;
+		width: 16rem;
+	}
+
+	.navbar .navbar-nav .dropdown-menu.show .dropdown-item {
+		width: 50%;
+	}
+}

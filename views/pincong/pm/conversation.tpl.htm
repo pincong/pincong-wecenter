@@ -27,7 +27,7 @@
 				<form id="id_pm_form" onsubmit="return false;" method="post">
 					<textarea class="form-control" name="message" rows="5" placeholder="<?php echo _t('想要对ta说点什么'); ?>?"></textarea>
 					<div class="text-right my-3">
-						<button class="btn btn-success" style="min-width:6rem;visibility:hidden;" type="submit"><?php echo _t('发送'); ?></button>
+						<button class="btn btn-primary" style="visibility:hidden;" type="submit"><?php echo _t('发送'); ?></button>
 					</div>
 				</form>
 			</div>
@@ -57,7 +57,7 @@
 				</div>
 			</div>
 			<div class="col overflow-hidden">
-				<div class="alert my-0 <?php if ($myself) { ?>alert-success<?php } else { ?>alert-primary<?php } ?>">
+				<div class="alert my-0 <?php if ($myself) { ?>alert-success<?php } else { ?>alert-secondary<?php } ?>">
 					<p>
 						<a href="<?php echo UF::url($user); ?>"><?php echo UF::name($user); ?></a>:
 						<?php if (isset($val['plaintext'])) { ?>

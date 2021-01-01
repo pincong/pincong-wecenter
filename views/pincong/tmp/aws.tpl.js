@@ -42,7 +42,7 @@ TPL['alert'] =
 					'<div param="title"></div>' +
 				'</div>' +
 				'<div class="modal-footer border-0">' +
-					'<button class="btn btn-primary" style="min-width:6rem;" type="button" data-dismiss="modal">OK</button>' +
+					'<button class="btn btn-primary" type="button" data-dismiss="modal">OK</button>' +
 				'</div>' +
 			'</div>' +
 		'</div>' +
@@ -56,8 +56,8 @@ TPL['confirm'] =
 					'<div param="title"></div>' +
 				'</div>' +
 				'<div class="modal-footer border-0">' +
-					'<button class="btn btn-outline-secondary" style="min-width:6rem;" type="button" data-dismiss="modal">Cancel</button>' +
-					'<button class="btn btn-primary" style="min-width:6rem;" type="button" data-dismiss="modal">OK</button>' +
+					'<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>' +
+					'<button class="btn btn-primary" type="button" data-dismiss="modal">OK</button>' +
 				'</div>' +
 			'</div>' +
 		'</div>' +
@@ -74,8 +74,8 @@ TPL['prompt'] =
 					'<input class="form-control" type="text" value="" param="text">' +
 				'</div>' +
 				'<div class="modal-footer border-0">' +
-					'<button class="btn btn-outline-secondary" style="min-width:6rem;" type="button" data-dismiss="modal">Cancel</button>' +
-					'<button class="btn btn-primary" style="min-width:6rem;" type="button" data-dismiss="modal">OK</button>' +
+					'<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>' +
+					'<button class="btn btn-primary" type="button" data-dismiss="modal">OK</button>' +
 				'</div>' +
 			'</div>' +
 		'</div>' +
@@ -92,8 +92,8 @@ TPL['password_prompt'] =
 					'<input class="form-control" type="password" value="" param="text">' +
 				'</div>' +
 				'<div class="modal-footer border-0">' +
-					'<button class="btn btn-outline-secondary" style="min-width:6rem;" type="button" data-dismiss="modal">Cancel</button>' +
-					'<button class="btn btn-primary" style="min-width:6rem;" type="button" data-dismiss="modal">OK</button>' +
+					'<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>' +
+					'<button class="btn btn-primary" type="button" data-dismiss="modal">OK</button>' +
 				'</div>' +
 			'</div>' +
 		'</div>' +
@@ -110,8 +110,8 @@ TPL['text_box'] =
 					'<textarea class="form-control" rows="6" param="text"></textarea>'+
 				'</div>' +
 				'<div class="modal-footer border-0">' +
-					'<button class="btn btn-outline-secondary" style="min-width:6rem;" type="button" data-dismiss="modal">Cancel</button>' +
-					'<button class="btn btn-primary" style="min-width:6rem;" type="button" data-dismiss="modal">OK</button>' +
+					'<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>' +
+					'<button class="btn btn-primary" type="button" data-dismiss="modal">OK</button>' +
 				'</div>' +
 			'</div>' +
 		'</div>' +

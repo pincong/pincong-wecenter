@@ -1,4 +1,4 @@
-<header class="navbar navbar-expand navbar-dark bg-primary">
+<header class="navbar navbar-expand navbar-dark bg-dark">
 	<div class="container-fluid flex-column flex-sm-row justify-content-start">
 		<a class="navbar-brand text-center overflow-hidden text-sm-left mr-0 mr-sm-2" style="<?php echo S::get('logo_link_style'); ?>" href="<?php echo base_url(); ?>/">
 			<img style="max-width:100%;" src="<?php echo S::get('logo_url'); ?>" alt="">
@@ -34,6 +34,35 @@
 			<li class="nav-item">
 				<a class="nav-link py-1 <?php if ($_GET['app'] == 'invite') { ?>active<?php } ?>" href="<?php echo url_rewrite(); ?>/home/invite/"><?php echo _t('邀请'); ?></a>
 			</li>
+			<li class="nav-item dropdown">
+				<a class="nav-link py-1 dropdown-toggle" data-toggle="dropdown"><?php echo _t('主题'); ?><span class="caret"></span></a>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="default">Default</a>
+					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="classic">Classic</a>
+					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="legacy">Legacy</a>
+					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="cerulean">Cerulean</a>
+					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="cosmo">Cosmo</a>
+					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="cyborg">Cyborg</a>
+					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="darkly">Darkly</a>
+					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="flatly">Flatly</a>
+					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="journal">Journal</a>
+					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="litera">Litera</a>
+					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="lumen">Lumen</a>
+					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="lux">Lux</a>
+					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="materia">Materia</a>
+					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="minty">Minty</a>
+					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="pulse">Pulse</a>
+					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="sandstone">Sandstone</a>
+					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="simplex">Simplex</a>
+					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="sketchy">Sketchy</a>
+					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="slate">Slate</a>
+					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="solar">Solar</a>
+					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="spacelab">Spacelab</a>
+					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="superhero">Superhero</a>
+					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="united">United</a>
+					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="yeti">Yeti</a>
+				</div>
+			</li>
 		</ul>
 		<div class="text-nowrap my-2 my-sm-0">
 		<?php if ($this->user_id) { ?>
@@ -57,8 +86,8 @@
 				}
 			?>
 			<div class="btn-group mr-2">
-				<button class="btn btn-outline-light dropdown-toggle" style="min-width:6rem;" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo _t('发起'); ?></button>
-				<div class="dropdown-menu dropdown-menu-right" style="min-width:6rem;">
+				<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo _t('发起'); ?></button>
+				<div class="dropdown-menu dropdown-menu-right">
 					<a class="dropdown-item" href="<?php echo url_rewrite(); ?>/publish/<?php echo $publish_url_params; ?>"><?php echo _t('问题'); ?></a>
 					<a class="dropdown-item" href="<?php echo url_rewrite(); ?>/publish/article/<?php echo $publish_url_params; ?>"><?php echo _t('文章'); ?></a>
 					<a class="dropdown-item" href="<?php echo url_rewrite(); ?>/publish/video/<?php echo $publish_url_params; ?>"><?php echo _t('影片'); ?></a>
@@ -68,7 +97,7 @@
 				<a style="cursor:pointer;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<img class="rounded" style="width:2.375rem;height:2.375rem;" src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" alt="">
 				</a>
-				<div class="dropdown-menu dropdown-menu-right" style="min-width:6rem;">
+				<div class="dropdown-menu dropdown-menu-right">
 					<a class="dropdown-item" href="<?php echo UF::url($this->user_info); ?>"><?php echo UF::name($this->user_info); ?></a>
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" href="<?php echo url_rewrite(); ?>/profile/"><?php echo _t('设置'); ?></a>
@@ -79,8 +108,8 @@
 				</div>
 			</div>
 		<?php } else { ?>
-			<a class="btn btn-outline-light mr-2" style="min-width:6rem;" href="<?php echo url_rewrite(); ?>/login/"><?php echo _t('登录'); ?></a>
-			<a class="btn btn-success" style="min-width:6rem;" href="<?php echo url_rewrite(); ?>/register/"><?php echo _t('注册'); ?></a>
+			<a class="btn btn-secondary mr-2" href="<?php echo url_rewrite(); ?>/login/"><?php echo _t('登录'); ?></a>
+			<a class="btn btn-primary" href="<?php echo url_rewrite(); ?>/register/"><?php echo _t('注册'); ?></a>
 		<?php } ?>
 		</div>
 	</div>

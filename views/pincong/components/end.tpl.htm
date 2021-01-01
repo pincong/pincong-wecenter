@@ -1,17 +1,18 @@
 <!--<?php echo S::get('statistic_code'); ?>-->
-<?php if ($this->user_id) { ?>
+<!--<?php echo S::get('custom_body_bottom'); ?>-->
+<?php TPL::include('components/debuger.tpl.htm'); ?>
 <script>
+<?php TPL::include('js/awutil.tpl.js'); ?>
 $(document).ready(function() {
+<?php if ($this->user_id) { ?>
 	$('<img>', {
 		src: '<?php echo url_rewrite(); ?>/crond/run/<?php echo TIMESTAMP; ?>',
 		style: 'display:none;',
 		width: 0,
 		height: 0,
 	}).appendTo('body');
+<?php } ?>
 });
 </script>
-<?php } ?>
-<!--<?php echo S::get('custom_body_bottom'); ?>-->
-<?php TPL::include('components/debuger.tpl.htm'); ?>
 </body>
 </html>
