@@ -83,17 +83,7 @@ class core_uri
 			parse_str($querystring, $query_string);
 			foreach ($query_string AS $key => $val)
 			{
-				if (!$_GET[$key])
-				{
-					if (!strstr($val, '%'))
-					{
-						$_GET[$key] = $val;
-					}
-					else
-					{
-						$_GET[$key] = urldecode($val);
-					}
-				}
+				$_GET[$key] = safe_url_decode($val);
 			}
 		}
 
@@ -176,43 +166,47 @@ class core_uri
 		{
 			if (!strstr($args_var_str, '-'))
 			{
-				$_GET['id'] = urldecode($args_var_str);
+				$_GET['id'] = safe_url_decode($args_var_str);
 			}
 			else
 			{
 				// '__' 变量分割符
 				$parts = explode('__', $args_var_str);
 
-				foreach ($parts as $val)
+				for ($i = 0, $l = count($parts); $i < $l; $i++)
 				{
-					if (!$val)
+					if (!$parts[$i])
 					{
 						continue;
 					}
 
 					// '-' 赋值分隔符
-					@list($k, $v) = explode('-', $val, 2);
-
-					if ($k)
+					$kv = explode('-', $parts[$i], 2);
+					if (!$kv)
 					{
-						if (!strstr($v, '%'))
+						continue;
+					}
+
+					if (count($kv) < 2) // 缺少分隔符
+					{
+						if ($i)
 						{
-							$_GET[$k] = $v;
+							continue;
 						}
-						else
-						{
-							$_GET[$k] = urldecode($v);
-						}
+						$key = 'id';
+						$val = $kv[0];
+					}
+					else
+					{
+						$key = $kv[0];
+						$val = $kv[1];
+					}
+
+					if ($key)
+					{
+						$_GET[$key] = safe_url_decode($val);
 					}
 				}
-			}
-		}
-
-		foreach ($_GET AS $key => $val)
-		{
-			if (strstr($key, '/'))
-			{
-				unset($_GET[$key]);
 			}
 		}
 

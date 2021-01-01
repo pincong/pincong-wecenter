@@ -393,6 +393,14 @@ function safe_base64_decode($string) {
 	return base64_decode(strtr($string, '._', '+/'));
 }
 
+function safe_url_encode($string) {
+	return strtr(rawurlencode($string), '-', '+');
+}
+
+function safe_url_decode($string) {
+	return rawurldecode(strtr($string, '+', '-'));
+}
+
 function safe_text($html) {
 	return str_replace(
 		array('<', '>', '"', "'"),
