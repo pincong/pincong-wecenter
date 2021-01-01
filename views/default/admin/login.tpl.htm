@@ -45,7 +45,7 @@ $(document).ready(function () {
 
 		PasswordUtil.password_hash(pwd, client_salt, password_version).then(function(value) {
 			new_form.append($('<input>', {name: 'scrambled_password', value: value}));
-			AWS.ajax_post(new_form, AWS.ajax_processer, 'error_message');
+			AWS.submit_form(new_form, null, $('.error_message'));
 		}).catch(function(error) {
 			console.log(error);
 			alert("<?php echo _t('发生错误'); ?>");

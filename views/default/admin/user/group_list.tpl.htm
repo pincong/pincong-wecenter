@@ -73,8 +73,8 @@
 						</table>
 						<div class="mod-table-foot">
 							<a class="btn btn-primary add"><?php echo _t('新增'); ?></a>
-							<a class="btn btn-primary" onclick="AWS.ajax_post($('#batchs_form'));"><?php echo _t('保存'); ?></a>
-							<a class="btn btn-danger" onclick="AWS.ajax_post($('#batchs_form'));"><?php echo _t('删除'); ?></a>
+							<a class="btn btn-primary" onclick="AWS.submit_form($('#batchs_form'));"><?php echo _t('保存'); ?></a>
+							<a class="btn btn-danger" onclick="AWS.submit_form($('#batchs_form'));"><?php echo _t('删除'); ?></a>
 						</div>
 					</form>
 				</div>
@@ -130,8 +130,8 @@
 				</form>
 				<div class="mod-table-foot">
 					<a class="btn btn-primary" onclick="$('#system_group_table').append('<tr>' + $('#system_group_add_form').html() + '</tr>')"><?php echo _t('新增'); ?></a>
-					<a class="btn btn-primary" onclick="AWS.ajax_post($('#system_group_form'));"><?php echo _t('保存'); ?></a>
-					<a class="btn btn-danger" onclick="AWS.ajax_post($('#system_group_form'));"><?php echo _t('删除'); ?></a>
+					<a class="btn btn-primary" onclick="AWS.submit_form($('#system_group_form'));"><?php echo _t('保存'); ?></a>
+					<a class="btn btn-danger" onclick="AWS.submit_form($('#system_group_form'));"><?php echo _t('删除'); ?></a>
 				</div>
 			</div>
 
@@ -187,8 +187,8 @@
 				</form>
 				<div class="mod-table-foot">
 					<a class="btn btn-primary" onclick="$('#custom_group_table').append('<tr>' + $('#custom_group_add_form').html() + '</tr>')"><?php echo _t('新增'); ?></a>
-					<a class="btn btn-primary" onclick="AWS.ajax_post($('#custom_group_form'));"><?php echo _t('保存'); ?></a>
-					<a class="btn btn-danger" onclick="AWS.ajax_post($('#custom_group_form'));"><?php echo _t('删除'); ?></a>
+					<a class="btn btn-primary" onclick="AWS.submit_form($('#custom_group_form'));"><?php echo _t('保存'); ?></a>
+					<a class="btn btn-danger" onclick="AWS.submit_form($('#custom_group_form'));"><?php echo _t('删除'); ?></a>
 				</div>
 			</div>
 		</div>

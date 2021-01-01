@@ -9,7 +9,7 @@
 				<form action="<?php echo url_rewrite(); ?>/admin/ajax/save_nav_menu/" method="post" id="nav_menu_list" onsubmit="return false">
 					<div class="mod aw-message-box ">
 					<div class="mod-set-head">
-						<a class="btn btn-primary btn-xs pull-right" onclick="AWS.ajax_post($('#nav_menu_list'));"><?php echo _t('保存设置'); ?></a>
+						<a class="btn btn-primary btn-xs pull-right" onclick="AWS.submit_form($('#nav_menu_list'));"><?php echo _t('保存设置'); ?></a>
 						<h3>
 							<?php echo _t('导航菜单'); ?>
 							<span><?php echo _t('拖动菜单可调整导航菜单排序'); ?></span>
@@ -79,7 +79,7 @@
 								<option value="0"><?php echo _t('无'); ?></option>
 								<?php TPL::include('block/category_options.tpl.htm'); ?>
 							</select>
-							<a onclick="AWS.ajax_post($(this).parents('form'));" class="btn btn-primary"><?php echo _t('添加至导航菜单'); ?></a>
+							<a onclick="AWS.submit_form($(this).parents('form'));" class="btn btn-primary"><?php echo _t('添加至导航菜单'); ?></a>
 						</form>
 					</div>
 				</div>
@@ -105,7 +105,7 @@
 								链接
 								<br />
 								<input class="form-control" type="text" name="link" value="http://"></p>
-							<a onclick="AWS.ajax_post($(this).parents('form'));" class="btn btn-primary"><?php echo _t('添加至导航菜单'); ?></a>
+							<a onclick="AWS.submit_form($(this).parents('form'));" class="btn btn-primary"><?php echo _t('添加至导航菜单'); ?></a>
 						</form>
 					</div>
 				</div>

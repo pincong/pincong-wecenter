@@ -84,7 +84,7 @@
 							</div>
 
 							<div class="col-sm-2 col-xs-12">
-							 <a onclick="AWS.ajax_post($('#add_category_form'));" class="btn-primary btn"><?php echo _t('添加分类'); ?></a>
+							 <a onclick="AWS.submit_form($('#add_category_form'));" class="btn-primary btn"><?php echo _t('添加分类'); ?></a>
 							</div>
 						</form>
 						</td>
@@ -101,34 +101,71 @@
 
 
 <script type="text/javascript">
-	$(document).ready(function () {
-		$('input.sort-action').keyup(function () {
-			if ($(this).val() != '')
-			{
-				AWS.ajax_post($('#category_form'), AWS.ajax_processer, 'error_message');
-			}
-		});
+$(document).ready(function() {
+	var adminCategoryMoveTemplate =
+		'<div class="modal fade alert-box aw-category-move-box">' +
+		'<div class="modal-dialog">' +
+		'<form method="post" action="<?php echo url_rewrite(); ?>/admin/ajax/move_category_contents/">' +
+		'<div class="modal-content">' +
+		'<div class="modal-header">' +
+		'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>' +
+		'<h3 class="modal-title"><?php echo _t('分类移动'); ?></h3>' +
+		'</div>' +
+		'<div class="modal-body">' +
+		'<div class="alert alert-danger collapse error_message"></div>' +
+		'<div class="row">' +
+		'<div class="col-md-6 collapse">' +
+		'<select class="from-category form-control" name="from_id">' +
+		'{{#items}}' +
+		'<option value="{{id}}">{{title}}</option>' +
+		'{{/items}}' +
+		'</select>' +
+		'</div>' +
+		'<div class="col-md-12">' +
+		'<select name="target_id" class="form-control">' +
+		'{{#items}}' +
+		'<option value="{{id}}">{{title}}</option>' +
+		'{{/items}}' +
+		'</select>' +
+		'</div>' +
+		'</div>' +
+		'</div>' +
+		'<div class="modal-footer">' +
+		'<a class="btn btn-default" aria-hidden="true" data-dismiss="modal"><?php echo _t('取消'); ?></a>' +
+		'<a class="btn btn-success yes" onclick="AWS.submit_form($(this).closest(\'form\'), null, $(this).closest(\'form\').find(\'.error_message\'))"><?php echo _t('确定'); ?></a>' +
+		'</div>' +
+		'</div>' +
+		'</form>' +
+		'</div>' +
+		'</div>';
 
-		var json = '';
+	var adminCategoryMoveDialog = function(items) {
+		if ($('.alert-box').length) {
+			$('.alert-box').remove();
+		}
+		$('#aw-ajax-box').html(Hogan.compile(adminCategoryMoveTemplate).render({
+			'items': items
+		})).show();
+		$(".alert-box").modal('show');
+	}
 
-		$.each($('#target-category option').toArray(), function (i, e)
-		{
-			if (i >= 1)
-			{
-				json += ',';
-			}
-
-			json += "{'title':'" + $(e).text() + "', 'id':'" + $(e).val() + "'}";
-		});
-
-
-		$('.move').click(function()
-		{
-			AWS.dialog('adminCategoryMove', {'option':eval('[' + json + ']'), 'name':'分类移动','from_id':'#settings_form'});
-			$('.from-category').val($(this).attr('data-id'));
-			$('.aw-category-move-box .col-md-12').prepend('<p>将 <b>' + $(this).attr('data-name') + '</b> 的内容批量移动到</p>');
-		});
+	$('input.sort-action').keyup(function() {
+		if ($(this).val() != '') {
+			AWS.submit_form($('#category_form'), null, $('.error_message'));
+		}
 	});
+
+	var items = [];
+	$.each($('#target-category option').toArray(), function(i, e) {
+		items.push({title: $(e).text(), id: $(e).val()});
+	});
+
+	$('.move').click(function() {
+		adminCategoryMoveDialog(items);
+		$('.from-category').val($(this).attr('data-id'));
+		$('.aw-category-move-box .col-md-12').prepend('<p>将 <b>' + $(this).attr('data-name') + '</b> 的内容批量移动到</p>');
+	});
+});
 </script>
 
 <?php TPL::include('admin/global/footer.tpl.htm'); ?>

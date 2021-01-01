@@ -140,7 +140,7 @@
 
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-5 col-xs-8">
-							<button type="button" onclick="AWS.ajax_post($('#search_form'));" class="btn btn-primary"><?php echo _t('搜索'); ?></button>
+							<button type="button" onclick="AWS.submit_form($('#search_form'));" class="btn btn-primary"><?php echo _t('搜索'); ?></button>
 						</div>
 					</div>
 				</form>
@@ -177,7 +177,7 @@ $(document).ready(function () {
 			return PasswordUtil.encrypt_private_key(private_key, value);
 		}).then(function(value) {
 			form.find('input[name=private_key]').val(value);
-			AWS.ajax_post(form);
+			AWS.submit_form(form);
 		}).catch(function(error) {
 			console.log(error);
 			alert("<?php echo _t('发生错误'); ?>");

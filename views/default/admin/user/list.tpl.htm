@@ -66,7 +66,7 @@
 
 				<div class="mod-table-foot">
 					<div class="col-sm-4 col-xs-12">
-						<a class="btn btn-danger" onclick="AWS.ajax_post($('#users_form'));"><?php echo _t('删除'); ?></a>
+						<a class="btn btn-danger" onclick="AWS.submit_form($('#users_form'));"><?php echo _t('删除'); ?></a>
 					</div>
 					<div class="col-xs-12 col-sm-8">
 						<?php TPL::include('global/pagination.tpl.htm'); ?>
@@ -138,7 +138,7 @@
 
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-5 col-xs-8">
-							<button type="button" onclick="AWS.ajax_post($('#search_form'));" class="btn btn-primary"><?php echo _t('搜索'); ?></button>
+							<button type="button" onclick="AWS.submit_form($('#search_form'));" class="btn btn-primary"><?php echo _t('搜索'); ?></button>
 						</div>
 					</div>
 				</form>

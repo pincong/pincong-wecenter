@@ -69,8 +69,8 @@
 				<div class="mod-table-foot">
 					<?php TPL::include('global/pagination.tpl.htm'); ?>
 
-					<a class="btn btn-danger" onclick="$('#action').val('remove'); AWS.ajax_post($('#batchs_form'));"><?php echo _t('删除话题'); ?></a>
-					<a class="btn btn-primary" onclick="$('#action').val('lock'); AWS.ajax_post($('#batchs_form'));"><?php echo _t('锁定话题'); ?></a>
+					<a class="btn btn-danger" onclick="$('#action').val('remove'); AWS.submit_form($('#batchs_form'));"><?php echo _t('删除话题'); ?></a>
+					<a class="btn btn-primary" onclick="$('#action').val('lock'); AWS.submit_form($('#batchs_form'));"><?php echo _t('锁定话题'); ?></a>
 				</div>
 			</div>
 
@@ -135,7 +135,7 @@
 
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-5 col-xs-8">
-							<button type="button" onclick="AWS.ajax_post($('#search_form'));" class="btn btn-primary"><?php echo _t('搜索'); ?></button>
+							<button type="button" onclick="AWS.submit_form($('#search_form'));" class="btn btn-primary"><?php echo _t('搜索'); ?></button>
 						</div>
 					</div>
 				</form>

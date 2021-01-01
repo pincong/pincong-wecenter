@@ -58,7 +58,7 @@
 <script type="text/javascript">
 	$(document).ready(function () {
 		$('input.enabled-status').on('ifChanged', function () {
-			AWS.ajax_post($('#feature_form'), AWS.ajax_processer, 'error_message');
+			AWS.submit_form($('#feature_form'), null, $('.error_message'));
 		});
 	});
 </script>
