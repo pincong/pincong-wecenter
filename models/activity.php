@@ -247,6 +247,10 @@ class activity_class extends AWS_MODEL
 		{
 			$where = $where . " AND category_id = " . ($category_id);
 		}
+		else
+		{
+			$where = $where . ' AND `category_id` IN(' . implode(',', $this->model('posts')->get_default_category_ids()) . ')';
+		}
 
 		$list = $this->query_activities($where, $page, $per_page);
 		if (count($list) > 0)
