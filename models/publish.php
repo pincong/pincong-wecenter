@@ -116,7 +116,7 @@ class publish_class extends AWS_MODEL
 
 		$item_id = $this->insert('question', array(
 			'uid' => $data['uid'],
-			'question_content' => htmlspecialchars($data['title']),
+			'title' => htmlspecialchars($data['title']),
 			'question_detail' => htmlspecialchars($data['message']),
 			'category_id' => $data['category_id'],
 			'add_time' => $now,

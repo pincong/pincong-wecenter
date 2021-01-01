@@ -697,7 +697,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的问题不能回复')));
 		}
 
-		if (!$question_info['question_content'])
+		if (!$question_info['title'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经删除的问题不能回复')));
 		}

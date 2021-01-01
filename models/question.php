@@ -78,7 +78,7 @@ class question_class extends AWS_MODEL
 		$this->model('search_fulltext')->push_index('question', $title, $item_info['id']);
 
 		$this->update('question', array(
-			'question_content' => htmlspecialchars($title),
+			'title' => htmlspecialchars($title),
 			'question_detail' => htmlspecialchars($message)
 		), 'id = ' . intval($id));
 
@@ -96,7 +96,7 @@ class question_class extends AWS_MODEL
 		}
 
 		$data = array(
-			'question_content' => null,
+			'title' => null,
 			'question_detail' => null,
 			'title_fulltext' => null,
 		);
@@ -404,16 +404,16 @@ class question_class extends AWS_MODEL
 		), 'id = ' . intval($question_id));
 	}
 
-	public function get_related_question_list($question_id, $question_content, $limit = 10)
+	public function get_related_question_list($question_id, $title, $limit = 10)
 	{
-		$cache_key = 'question_related_list_' . md5($question_content) . '_' . $limit;
+		$cache_key = 'question_related_list_' . md5($title) . '_' . $limit;
 
 		if ($question_related_list = AWS_APP::cache()->get($cache_key))
 		{
 			return $question_related_list;
 		}
 
-		if ($question_keywords = $this->model('system')->analysis_keyword($question_content))
+		if ($question_keywords = $this->model('system')->analysis_keyword($title))
 		{
 			if (sizeof($question_keywords) <= 1)
 			{
@@ -437,7 +437,7 @@ class question_class extends AWS_MODEL
 					{
 						if (! isset($question_related[$val['id']]))
 						{
-							$question_related[$val['id']] = $val['question_content'];
+							$question_related[$val['id']] = $val['title'];
 
 							$question_info[$val['id']] = $val;
 						}
@@ -448,11 +448,11 @@ class question_class extends AWS_MODEL
 
 		if ($question_related)
 		{
-			foreach ($question_related as $key => $question_content)
+			foreach ($question_related as $key => $title)
 			{
 				$question_related_list[] = array(
 					'id' => $key,
-					'question_content' => $question_content,
+					'title' => $title,
 					'answer_count' => $question_info[$key]['answer_count']
 				);
 			}
@@ -741,9 +741,9 @@ class question_class extends AWS_MODEL
 		return $topics_by_questions_ids;
 	}
 
-	public function get_related_topics($question_content)
+	public function get_related_topics($title)
 	{
-		if ($question_related_list = $this->get_related_question_list(null, $question_content, 10))
+		if ($question_related_list = $this->get_related_question_list(null, $title, 10))
 		{
 			foreach ($question_related_list AS $key => $val)
 			{

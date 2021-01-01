@@ -299,7 +299,7 @@ CREATE TABLE IF NOT EXISTS `aws_posts_index` (
 --
 CREATE TABLE IF NOT EXISTS `aws_question` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `question_content` varchar(240) DEFAULT NULL COMMENT '问题标题',
+  `title` varchar(240) DEFAULT NULL COMMENT '问题标题',
   `question_detail` text COMMENT '问题详细说明',
   `add_time` int(11) DEFAULT '0' COMMENT '添加时间',
   `update_time` int(11) DEFAULT '0',
@@ -324,7 +324,7 @@ CREATE TABLE IF NOT EXISTS `aws_question` (
   KEY `answer_count` (`answer_count`),
   KEY `agree_count` (`agree_count`),
   KEY `reputation` (`reputation`),
-  KEY `question_content` (`question_content`),
+  KEY `title` (`title`),
   KEY `lock` (`lock`),
   KEY `recommend` (`recommend`),
   KEY `sort` (`sort`),

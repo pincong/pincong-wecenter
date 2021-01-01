@@ -190,7 +190,7 @@ class search_class extends AWS_MODEL
 
 			$url = get_js_url('/question/' . $result_info['id']);
 
-			$name = $result_info['question_content'];
+			$name = $result_info['title'];
 
 			$detail = array(
 				'answer_count' => $result_info['answer_count'],	// 回复数

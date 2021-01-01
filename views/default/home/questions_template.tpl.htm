@@ -12,7 +12,7 @@
 			<?php _e('%s 个回复', $val['answer_count']); ?>
 		</p>
 		<h4>
-			<a href="question/<?php echo $val['id']; ?>"><?php if (!$val['question_content']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['question_content']; ?><?php } ?></a>
+			<a href="question/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['title']; ?><?php } ?></a>
 		</h4>
 	</div>
 </div>

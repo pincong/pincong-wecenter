@@ -17,7 +17,7 @@
 			<?php _e('%s 个回复', $val['answer_count']); ?>
 		</p>
 		<h2 style="font-size:16px;">
-			<a href="question/<?php echo $val['id']; ?>"><?php echo CF::title($val['user_info'], 'question_' . $val['id'], $val['question_content']); ?></a>
+			<a href="question/<?php echo $val['id']; ?>"><?php echo CF::title($val['user_info'], 'question_' . $val['id'], $val['title']); ?></a>
 		</h2>
 	</div>
 	<div class="mod-body">
@@ -68,7 +68,7 @@
 			<?php _e('回复了问题'); ?>
 		</p>
 		<h2 style="font-size:16px;">
-			<a href="question/<?php echo $val['question_info']['id']; ?>"><?php echo $val['question_info']['question_content']; ?></a>
+			<a href="question/<?php echo $val['question_info']['id']; ?>"><?php echo $val['question_info']['title']; ?></a>
 		</h2>
 	</div>
 	<div class="mod-body clearfix">

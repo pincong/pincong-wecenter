@@ -119,7 +119,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能讨论锁定的问题')));
 		}
 
-		if (!$question_info['question_content'])
+		if (!$question_info['title'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能讨论已删除的问题')));
 		}
@@ -196,7 +196,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能讨论锁定的问题')));
 		}
 
-		if (!$question_info['question_content'])
+		if (!$question_info['title'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能讨论已删除的问题')));
 		}

@@ -57,7 +57,7 @@ class tools extends AWS_ADMIN_CONTROLLER
         {
             foreach ($questions_list as $key => $val)
             {
-                $this->model('search_fulltext')->push_index('question', $val['question_content'], $val['id']);
+                $this->model('search_fulltext')->push_index('question', $val['title'], $val['id']);
 
                 $this->model('posts')->set_posts_index($val['id'], 'question', $val);
             }
@@ -377,7 +377,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 			case 'question':
 				$next_table = 'article';
 
-				if ($list = AWS_APP::model()->fetch_page($table, '`question_content` IS NULL', 'id ASC', $_GET['page'], $_GET['per_page']))
+				if ($list = AWS_APP::model()->fetch_page($table, '`title` IS NULL', 'id ASC', $_GET['page'], $_GET['per_page']))
 				{
 					foreach ($list as $key => $val)
 					{

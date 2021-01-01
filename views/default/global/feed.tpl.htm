@@ -15,7 +15,7 @@
 		<description><?php echo get_setting('description'); ?></description>
 		<?php foreach($this->list as $key => $val){ ?>
 		<item>
-			<title><?php echo $val['question_content']; ?></title>
+			<title><?php echo $val['title']; ?></title>
 			<link><?php echo get_js_url('/question/' . $val['id']); ?></link>
 			<description><![CDATA[<?php echo nl2br(FORMAT::parse_bbcode($val['question_detail'])); ?>]]></description>
 			<pubDate><?php echo date('D, d M Y', $val['add_time']); ?></pubDate>

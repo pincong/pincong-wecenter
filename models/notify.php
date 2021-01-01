@@ -270,7 +270,7 @@ class notify_class extends AWS_MODEL
 								continue;
 							}
 
-							$tmp_data['title'] = $question_list[$data['question_id']]['question_content'];
+							$tmp_data['title'] = $question_list[$data['question_id']]['title'];
 
 							$querys = array();
 

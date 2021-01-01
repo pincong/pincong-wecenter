@@ -156,14 +156,14 @@ class main extends AWS_CONTROLLER
 
 		if (sizeof($question_topics) == 0 AND $this->user_id)
 		{
-			$related_topics = $this->model('question')->get_related_topics($question_info['question_content']);
+			$related_topics = $this->model('question')->get_related_topics($question_info['title']);
 
 			TPL::assign('related_topics', $related_topics);
 		}
 
 		TPL::assign('question_topics', $question_topics);
 
-		TPL::assign('question_related_list', $this->model('question')->get_related_question_list($question_info['id'], $question_info['question_content']));
+		TPL::assign('question_related_list', $this->model('question')->get_related_question_list($question_info['id'], $question_info['title']));
 
 		if ($question_topics)
 		{
@@ -173,7 +173,7 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		$page_title = CF::page_title($question_info['user_info'], 'question_' . $question_info['id'], $question_info['question_content']);
+		$page_title = CF::page_title($question_info['user_info'], 'question_' . $question_info['id'], $question_info['title']);
 		$this->crumb($page_title);
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
@@ -182,9 +182,9 @@ class main extends AWS_CONTROLLER
 			'per_page' => $replies_per_page
 		))->create_links());
 
-		TPL::set_meta('keywords', implode(',', $this->model('system')->analysis_keyword($question_info['question_content'])));
+		TPL::set_meta('keywords', implode(',', $this->model('system')->analysis_keyword($question_info['title'])));
 
-		TPL::set_meta('description', $question_info['question_content'] . ' - ' . cjk_substr(str_replace("\r\n", ' ', strip_tags($question_info['question_detail'])), 0, 128, 'UTF-8', '...'));
+		TPL::set_meta('description', $question_info['title'] . ' - ' . cjk_substr(str_replace("\r\n", ' ', strip_tags($question_info['question_detail'])), 0, 128, 'UTF-8', '...'));
 
 		if (get_setting('advanced_editor_enable') == 'Y')
 		{

@@ -47,7 +47,7 @@ class main extends AWS_CONTROLLER
 		else if ($this->is_post() AND $_POST['question_detail'])
 		{
 			$question_info = array(
-				'question_content' => htmlspecialchars($_POST['question_content']),
+				'title' => htmlspecialchars($_POST['title']),
 				'question_detail' => htmlspecialchars($_POST['question_detail']),
 				'category_id' => intval($_POST['category_id'])
 			);
@@ -55,7 +55,7 @@ class main extends AWS_CONTROLLER
 		else
 		{
 			$question_info = array(
-				'question_content' => htmlspecialchars($_POST['question_content']),
+				'title' => htmlspecialchars($_POST['title']),
 				'question_detail' => ''
 			);
 		}

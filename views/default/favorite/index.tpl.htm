@@ -26,7 +26,7 @@
 										<?php if ($val['type'] == 'answer') { ?>
 										<!-- 回答 -->
 										<h4>
-											<a href="question/id-<?php echo $val['item']['question_info']['id']; ?>__item_id-<?php echo $val['item']['id']; ?>"><?php if (!$val['item']['question_info']['question_content']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['item']['question_info']['question_content']; ?><?php } ?></a>
+											<a href="question/id-<?php echo $val['item']['question_info']['id']; ?>__item_id-<?php echo $val['item']['id']; ?>"><?php if (!$val['item']['question_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['item']['question_info']['title']; ?><?php } ?></a>
 										</h4>
 										<div class="content">
 											<div id="detail_<?php echo $val['item_id']; ?>">
@@ -43,7 +43,7 @@
 										<?php } else if ($val['type'] == 'question') { ?>
 										<!-- 问题 -->
 										<h4>
-											<a href="question/<?php echo $val['item']['id']; ?>"><?php if (!$val['item']['question_content']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['item']['question_content']; ?><?php } ?></a>
+											<a href="question/<?php echo $val['item']['id']; ?>"><?php if (!$val['item']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['item']['title']; ?><?php } ?></a>
 										</h4>
 										<!-- end 问题 -->
 										<?php } else if ($val['type'] == 'article') { ?>

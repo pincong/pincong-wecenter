@@ -6,7 +6,7 @@
 		<h4>
 			<?php if ($val['post_type'] == 'question') { ?>
 			<a href="question/<?php echo $val['id']; ?>">
-				<?php echo CF::title($val['user_info'], 'question_' . $val['id'], $val['question_content']); ?>
+				<?php echo CF::title($val['user_info'], 'question_' . $val['id'], $val['title']); ?>
 			</a>
 			<?php } elseif ($val['post_type'] == 'article') { ?>
 			<a href="article/<?php echo $val['id']; ?>">
