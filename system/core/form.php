@@ -26,9 +26,9 @@ class core_form
 		return AWS_APP::token()->create($type, $expire, $this->secret);
 	}
 
-	public function check_csrf_token($token, $type)
+	public function check_csrf_token($token, $type, $single_use = true)
 	{
-		if ($token AND AWS_APP::token()->verify($type_result, $token, $this->secret))
+		if ($token AND AWS_APP::token()->verify($type_result, $token, $this->secret, $single_use))
 		{
 			if ($type == $type_result)
 			{
@@ -36,5 +36,10 @@ class core_form
 			}
 		}
 		return false;
+	}
+
+	public function revoke_csrf_token($token)
+	{
+		AWS_APP::token()->check($token, $this->secret, true);
 	}
 }

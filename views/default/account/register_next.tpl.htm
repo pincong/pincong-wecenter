@@ -79,6 +79,8 @@ $(document).ready(function () {
 		}
 
 		var new_form = $('<form>', {action: '<?php echo url_rewrite(); ?>/register/ajax/process/', method: 'post'});
+		new_form.append($('<input>', {name: 'token', value: '<?php echo $this->token; ?>'}));
+
 		_append(new_form, 'username', usr);
 
 		var scrambled_pwd = _v2(pwd, '<?php echo $this->client_salt; ?>');

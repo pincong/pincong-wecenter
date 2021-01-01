@@ -47,6 +47,7 @@ class main extends AWS_CONTROLLER
 
 		TPL::import_css('css/register.css');
 
+		TPL::assign('token', AWS_APP::form()->create_csrf_token(600, 'login_index'));
 		TPL::assign('captcha_required', $this->model('login')->is_captcha_required());
 
 		TPL::output("account/login");
@@ -54,6 +55,11 @@ class main extends AWS_CONTROLLER
 
 	public function next_action()
 	{
+		if (!AWS_APP::form()->check_csrf_token($_POST['token'], 'login_index'))
+		{
+			H::redirect_msg(AWS_APP::lang()->_t('页面停留时间过长, 请刷新页面重试'), '/login/');
+		}
+
 		$captcha_required = $this->model('login')->is_captcha_required();
 
 		// 检查验证码
@@ -85,6 +91,7 @@ class main extends AWS_CONTROLLER
 			TPL::assign('client_salt', $this->model('password')->generate_client_salt());
 		}
 
+		TPL::assign('token', AWS_APP::form()->create_csrf_token(600, 'login_next'));
 		TPL::assign('captcha_required', $captcha_required);
 		TPL::assign('user', $user_info);
 

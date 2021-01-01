@@ -44,6 +44,8 @@ $(document).ready(function () {
 		e.preventDefault();
 
 		var new_form = $('<form>', {action: '<?php echo url_rewrite(); ?>/register/next/', method: 'post'});
+		new_form.append($('<input>', {name: 'token', value: '<?php echo $this->token; ?>'}));
+
 		new_form.append($('<input>', {name: 'agree', value: form.find('input[name=agree]').is(':checked') ? 1 : 0}));
 		<?php if ($this->captcha_required) { ?>
 		new_form.append($('<input>', {name: 'captcha', value: form.find('input[name=captcha]').val()}));

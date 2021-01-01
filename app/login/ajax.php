@@ -53,12 +53,17 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的用户名和密码')));
 		}
 
+		if (!AWS_APP::form()->check_csrf_token($_POST['token'], 'login_next', false))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('页面停留时间过长, 请<a href="%s">刷新页面</a>重试', url_rewrite() . '/login/')));
+		}
+
 		// 检查验证码
 		if ($this->model('login')->is_captcha_required())
 		{
 			if ($_POST['captcha_enabled'] == '0')
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请刷新页面重试')));
+				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请<a href="%s">刷新页面</a>重试', url_rewrite() . '/login/')));
 				//H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 			}
 			if (!AWS_APP::captcha()->is_valid($_POST['captcha'], HTTP::get_cookie('captcha')))
@@ -66,7 +71,6 @@ class ajax extends AWS_CONTROLLER
 				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请填写正确的验证码')));
 			}
 		}
-
 
 		$user_info = $this->model('login')->verify($_POST['uid'], $_POST['scrambled_password']);
 
@@ -95,6 +99,8 @@ class ajax extends AWS_CONTROLLER
 		{
 			$scrambled_password = $_POST['scrambled_password'];
 		}
+
+		AWS_APP::form()->revoke_csrf_token($_POST['token']);
 
 		if ($user_info['forbidden'] OR $user_info['flagged'] > 0)
 		{

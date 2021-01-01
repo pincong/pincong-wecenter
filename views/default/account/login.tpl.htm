@@ -43,6 +43,8 @@ $(document).ready(function () {
 		form.find('input[name=password]').val('');
 
 		var new_form = $('<form>', {action: '<?php echo url_rewrite(); ?>/login/next/', method: 'post'});
+		new_form.append($('<input>', {name: 'token', value: '<?php echo $this->token; ?>'}));
+
 		new_form.append($('<input>', {name: 'username', value: form.find('input[name=username]').val()}));
 		<?php if ($this->captcha_required) { ?>
 		new_form.append($('<input>', {name: 'captcha', value: form.find('input[name=captcha]').val()}));

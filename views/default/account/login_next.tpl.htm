@@ -59,6 +59,8 @@ $(document).ready(function () {
 		e.preventDefault();
 
 		var new_form = $('<form>', {action: '<?php echo url_rewrite(); ?>/login/ajax/process/', method: 'post'});
+		new_form.append($('<input>', {name: 'token', value: '<?php echo $this->token; ?>'}));
+
 		_append(new_form, 'uid', '<?php echo $this->user['uid']; ?>');
 		_append(new_form, 'remember_me', form.find('input[name=remember_me]').is(':checked') ? 1 : 0);
 

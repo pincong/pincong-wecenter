@@ -62,6 +62,7 @@ class main extends AWS_CONTROLLER
 			TPL::import_js('js/md5.js');
 		}
 
+		TPL::assign('token', AWS_APP::form()->create_csrf_token(600, 'account_change_password'));
 		TPL::assign('client_salt', $this->model('password')->generate_client_salt());
 
 		TPL::output("account/change_password");

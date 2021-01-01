@@ -40,8 +40,15 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的密码')));
 		}
 
+		if (!AWS_APP::form()->check_csrf_token($_POST['token'], 'account_change_password', false))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('页面停留时间过长, 请刷新页面重试')));
+		}
+
 		if ($this->model('password')->change_password($this->user_id, $_POST['scrambled_password'], $_POST['new_scrambled_password'], $_POST['client_salt']))
 		{
+			AWS_APP::form()->revoke_csrf_token($_POST['token']);
+
 			// 记住我
 			if ($_POST['remember_me'])
 			{

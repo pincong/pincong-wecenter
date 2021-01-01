@@ -81,12 +81,9 @@ class core_token
 		{
 			return false;
 		}
-		if ($single_use)
+		if ($this->_get_cache($token['key']))
 		{
-			if ($this->_get_cache($token['key']))
-			{
-				return false;
-			}
+			return false;
 		}
 		$body = $this->_decode($token['body'], $secret);
 		if (!is_array($body) OR !$body['expire'])
