@@ -154,7 +154,7 @@ class ajax extends AWS_CONTROLLER
 			'uid' => $publish_uid,
 		), $this->user_id, false);
 
-		$item_info = $this->model('answer')->get_answer_discussion_by_id($item_id);
+		$item_info = $this->model('question')->get_answer_discussion_by_id($item_id);
 		$item_info['message'] = $this->model('mention')->parse_at_user($item_info['message']);
 		TPL::assign('discussion_info', $item_info);
 		H::ajax_json_output(AWS_APP::RSM(array(
@@ -316,7 +316,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			$replies_per_page = 100;
 		}
-		$discussions = $this->model('answer')->get_answer_discussions($_GET['answer_id'], $_GET['page'], $replies_per_page);
+		$discussions = $this->model('question')->get_answer_discussions($_GET['answer_id'], $_GET['page'], $replies_per_page);
 
 		foreach ($discussions as $key => $val)
 		{
@@ -397,7 +397,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($_GET['type'] == 'answer')
 		{
-			$comment = $this->model('answer')->get_answer_discussion_by_id($comment_id);
+			$comment = $this->model('question')->get_answer_discussion_by_id($comment_id);
 		}
 		else if ($_GET['type'] == 'question')
 		{
@@ -418,14 +418,14 @@ class ajax extends AWS_CONTROLLER
 
 		if ($_GET['type'] == 'answer')
 		{
-			$this->model('question')->remove_answer_discussion(
+			$this->model('question')->clear_answer_discussion(
 				$comment,
 				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
 			);
 		}
 		else if ($_GET['type'] == 'question')
 		{
-			$this->model('question')->remove_question_discussion(
+			$this->model('question')->clear_question_discussion(
 				$comment,
 				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
 			);

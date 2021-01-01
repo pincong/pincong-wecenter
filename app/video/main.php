@@ -44,14 +44,14 @@ class main extends AWS_CONTROLLER
 		$item_id = intval($_GET['item_id']);
 		if ($item_id)
 		{
-			if (!$reply = $this->model('video')->get_comment_by_id($item_id))
+			if (!$reply = $this->model('video')->get_video_comment_by_id($item_id))
 			{
 				HTTP::error_404();
 			}
 			$_GET['id'] = $reply['video_id'];
 		}
 
-		if (! $video_info = $this->model('video')->get_video_info_by_id($_GET['id']))
+		if (! $video_info = $this->model('video')->get_video_by_id($_GET['id']))
 		{
 			HTTP::error_404();
 		}
@@ -148,7 +148,7 @@ class main extends AWS_CONTROLLER
 		}
 		else
 		{
-			$comments = $this->model('video')->get_comments($post_ids, $_GET['page'], $replies_per_page, implode(', ', $order_by));
+			$comments = $this->model('video')->get_video_comments($post_ids, $_GET['page'], $replies_per_page, implode(', ', $order_by));
 		}
 
 		if ($comments AND $this->user_id)

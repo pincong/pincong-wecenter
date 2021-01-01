@@ -164,77 +164,65 @@ class video_class extends AWS_MODEL
 	}
 
 
-	public function update_video_comment_count($video_id)
+	// 同时获取用户信息
+	public function get_video_by_id($id)
 	{
-		$video_id = intval($video_id);
-		if (!$video_id)
+		if ($item = $this->fetch_row('video', 'id = ' . intval($id)))
 		{
-			return false;
+			$item['user_info'] = $this->model('account')->get_user_info_by_uid($item['uid']);
 		}
 
-		return $this->update('video', array(
-			'comment_count' => $this->count('video_comment', 'video_id = ' . ($video_id))
-		), 'id = ' . ($video_id));
+		return $item;
 	}
 
 	// 同时获取用户信息
-	public function get_video_info_by_id($video_id)
+	public function get_video_comment_by_id($id)
 	{
-		if ($video = $this->fetch_row('video', 'id = ' . intval($video_id)))
+		if ($item = $this->fetch_row('video_comment', 'id = ' . intval($id)))
 		{
-			$video['user_info'] = $this->model('account')->get_user_info_by_uid($video['uid']);
-		}
-
-		return $video;
-	}
-
-	// 同时获取用户信息
-	public function get_comment_by_id($comment_id)
-	{
-		if ($comment = $this->fetch_row('video_comment', 'id = ' . intval($comment_id)))
-		{
-			$comment_user_infos = $this->model('account')->get_user_info_by_uids(array(
-				$comment['uid'],
-				$comment['at_uid']
+			$user_infos = $this->model('account')->get_user_info_by_uids(array(
+				$item['uid'],
+				$item['at_uid']
 			));
 
-			$comment['user_info'] = $comment_user_infos[$comment['uid']];
-			$comment['at_user_info'] = $comment_user_infos[$comment['at_uid']];
+			$item['user_info'] = $user_infos[$item['uid']];
+			$item['at_user_info'] = $user_infos[$item['at_uid']];
 		}
 
-		return $comment;
+		return $item;
 	}
 
-	public function get_comments($thread_ids, $page, $per_page, $order = 'id ASC')
+	// 同时获取用户信息
+	public function get_video_comments($thread_ids, $page, $per_page, $order = 'id ASC')
 	{
 		array_walk_recursive($thread_ids, 'intval_string');
 		$where = 'video_id IN (' . implode(',', $thread_ids) . ')';
 
-		if ($comments = $this->fetch_page('video_comment', $where, $order, $page, $per_page))
+		if ($list = $this->fetch_page('video_comment', $where, $order, $page, $per_page))
 		{
-			foreach ($comments AS $key => $val)
+			foreach ($list AS $key => $val)
 			{
-				$comment_uids[$val['uid']] = $val['uid'];
+				$uids[$val['uid']] = $val['uid'];
 
 				if ($val['at_uid'])
 				{
-					$comment_uids[$val['at_uid']] = $val['at_uid'];
+					$uids[$val['at_uid']] = $val['at_uid'];
 				}
 			}
 
-			if ($comment_uids)
+			if ($uids)
 			{
-				$comment_user_infos = $this->model('account')->get_user_info_by_uids($comment_uids);
+				$user_infos = $this->model('account')->get_user_info_by_uids($uids);
 			}
 
-			foreach ($comments AS $key => $val)
+			foreach ($list AS $key => $val)
 			{
-				$comments[$key]['user_info'] = $comment_user_infos[$val['uid']];
-				$comments[$key]['at_user_info'] = $comment_user_infos[$val['at_uid']];
+				$list[$key]['user_info'] = $user_infos[$val['uid']];
+				$list[$key]['at_user_info'] = $user_infos[$val['at_uid']];
 			}
 		}
 
-		return $comments;
+		return $list;
 	}
 
 }

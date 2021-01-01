@@ -19,6 +19,48 @@ if (!defined('IN_ANWSION'))
 
 class user_class extends AWS_MODEL
 {
+	private function update_question_discussion_count($question_id)
+	{
+		$question_id = intval($question_id);
+		$this->update('question', array(
+			'comment_count' => $this->count('question_discussion', 'question_id = ' . ($question_id))
+		), 'id = ' . ($question_id));
+	}
+
+	private function update_answer_discussion_count($answer_id)
+	{
+		$answer_id = intval($answer_id);
+		$this->update('answer', array(
+			'comment_count' => $this->count('answer_discussion', "answer_id = " . ($answer_id))
+		), "id = " . ($answer_id));
+	}
+
+	private function update_answer_count($question_id)
+	{
+		$question_id = intval($question_id);
+		$this->update('question', array(
+			'answer_count' => $this->count('answer', 'question_id = ' . ($question_id))
+		), 'id = ' . ($question_id));
+	}
+
+	private function update_article_comment_count($article_id)
+	{
+		$article_id = intval($article_id);
+		// TODO: rename comments to comment_count
+		$this->update('article', array(
+			'comments' => $this->count('article_comment', 'article_id = ' . ($article_id))
+		), 'id = ' . ($article_id));
+	}
+
+	private function update_video_comment_count($video_id)
+	{
+		$video_id = intval($video_id);
+		$this->update('video', array(
+			'comment_count' => $this->count('video_comment', 'video_id = ' . ($video_id))
+		), 'id = ' . ($video_id));
+	}
+
+
 	public function delete_question_discussions($uid)
 	{
 		$discussions = $this->fetch_all('question_discussion', 'uid = ' . intval($uid));
@@ -38,7 +80,7 @@ class user_class extends AWS_MODEL
 		{
 			foreach ($question_ids AS $key => $val)
 			{
-				$this->model('question')->update_question_discussion_count($key);
+				$this->update_question_discussion_count($key);
 			}
 		}
 	}
@@ -62,7 +104,7 @@ class user_class extends AWS_MODEL
 		{
 			foreach ($answer_ids AS $key => $val)
 			{
-				$this->model('answer')->update_answer_discussion_count($key);
+				$this->update_answer_discussion_count($key);
 			}
 		}
 	}
@@ -116,7 +158,7 @@ class user_class extends AWS_MODEL
 		{
 			foreach ($article_ids AS $key => $val)
 			{
-				$this->model('article')->update_article_comment_count($key);
+				$this->update_article_comment_count($key);
 			}
 
 			$this->update('article', array('last_uid' => '-1'), 'last_uid = ' . intval($uid));
@@ -145,7 +187,7 @@ class user_class extends AWS_MODEL
 		{
 			foreach ($video_ids AS $key => $val)
 			{
-				$this->model('video')->update_video_comment_count($key);
+				$this->update_video_comment_count($key);
 			}
 
 			$this->update('video', array('last_uid' => '-1'), 'last_uid = ' . intval($uid));

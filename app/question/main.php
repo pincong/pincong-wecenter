@@ -44,14 +44,14 @@ class main extends AWS_CONTROLLER
 		$item_id = intval($_GET['item_id']);
 		if ($item_id)
 		{
-			if (!$reply = $this->model('answer')->get_answer_by_id($item_id))
+			if (!$reply = $this->model('question')->get_answer_by_id($item_id))
 			{
 				HTTP::error_404();
 			}
 			$_GET['id'] = $reply['question_id'];
 		}
 
-		if (!$question_info = $this->model('question')->get_question_info_by_id($_GET['id']))
+		if (!$question_info = $this->model('question')->get_question_by_id($_GET['id']))
 		{
 			HTTP::error_404();
 		}
@@ -115,7 +115,7 @@ class main extends AWS_CONTROLLER
 		}
 		else
 		{
-			$answer_list = $this->model('answer')->get_answers($post_ids, $_GET['page'], $replies_per_page, implode(', ', $order_by));
+			$answer_list = $this->model('question')->get_answers($post_ids, $_GET['page'], $replies_per_page, implode(', ', $order_by));
 		}
 
 		if (! is_array($answer_list))
@@ -150,14 +150,7 @@ class main extends AWS_CONTROLLER
 
 		if (get_setting('answer_unique') == 'Y')
 		{
-			if ($this->model('answer')->has_answer_by_uid($question_info['id'], $this->user_id))
-			{
-				TPL::assign('user_answered', 1);
-			}
-			else
-			{
-				TPL::assign('user_answered', 0);
-			}
+			TPL::assign('user_answered', $this->model('content')->has_user_relpied_to_thread('question', $question_info['id'], $this->user_id));
 		}
 
 		TPL::assign('answers', $answers);

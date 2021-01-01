@@ -213,45 +213,300 @@ class question_class extends AWS_MODEL
 		return true;
 	}
 
-
-	public function update_answer_count($question_id)
+	public function clear_question_discussion(&$comment, $log_uid)
 	{
-		$question_id = intval($question_id);
-		if (!$question_id)
-		{
-			return false;
-		}
+		$this->update('question_discussion', array(
+			'message' => null
+		), "id = " . $comment['id']);
 
-		return $this->update('question', array(
-			'answer_count' => $this->count('answer', 'question_id = ' . ($question_id))
-		), 'id = ' . ($question_id));
+		$this->model('content')->log('question', $comment['question_id'], 'question_discussion', $comment['id'], '删除', $log_uid);
+
+		return true;
 	}
 
-
-	public function update_question_discussion_count($question_id)
+	public function clear_answer_discussion(&$comment, $log_uid)
 	{
-		$question_id = intval($question_id);
-		if (!$question_id)
+		$this->update('answer_discussion', array(
+			'message' => null
+		), "id = " . $comment['id']);
+
+		if ($answer = $this->fetch_row('answer', 'id = ' . intval($comment['answer_id'])))
 		{
-			return false;
+			$this->model('content')->log('question', $answer['question_id'], 'answer_discussion', $comment['id'], '删除', $log_uid);
 		}
 
-		return $this->update('question', array(
-			'comment_count' => $this->count('question_discussion', 'question_id = ' . ($question_id))
-		), 'id = ' . ($question_id));
+		return true;
 	}
 
 
 	// 同时获取用户信息
-	public function get_question_info_by_id($question_id)
+	public function get_question_by_id($id)
 	{
-		if ($question = $this->fetch_row('question', 'id = ' . intval($question_id)))
+		if ($item = $this->fetch_row('question', 'id = ' . intval($id)))
 		{
-			$question['user_info'] = $this->model('account')->get_user_info_by_uid($question['uid']);
+			$item['user_info'] = $this->model('account')->get_user_info_by_uid($item['uid']);
 		}
 
-		return $question;
+		return $item;
 	}
+
+	// 同时获取用户信息
+	public function get_answer_by_id($id)
+	{
+		if ($item = $this->fetch_row('answer', 'id = ' . intval($id)))
+		{
+			$item['user_info'] = $this->model('account')->get_user_info_by_uid($item['uid']);
+		}
+
+		return $item;
+	}
+
+	// 同时获取用户信息
+	public function get_answers($thread_ids, $page, $per_page, $order = 'id ASC')
+	{
+		array_walk_recursive($thread_ids, 'intval_string');
+		$where = 'question_id IN (' . implode(',', $thread_ids) . ')';
+
+		if ($list = $this->fetch_page('answer', $where, $order, $page, $per_page))
+		{
+			foreach($list as $key => $val)
+			{
+				$uids[] = $val['uid'];
+			}
+		}
+
+		if ($uids)
+		{
+			if ($user_infos = $this->model('account')->get_user_info_by_uids($uids))
+			{
+				foreach($list as $key => $val)
+				{
+					$list[$key]['user_info'] = $user_infos[$val['uid']];
+				}
+			}
+		}
+
+		return $list;
+	}
+
+
+	// 同时获取用户信息
+	public function get_question_discussion_by_id($id)
+	{
+		if ($item = $this->fetch_row('question_discussion', "id = " . intval($id)))
+		{
+			$item['user_info'] = $this->model('account')->get_user_info_by_uid($item['uid']);
+		}
+		return $item;
+	}
+
+	// 同时获取用户信息
+	public function get_question_discussions($thread_ids, $page, $per_page, $order = 'id ASC')
+	{
+		array_walk_recursive($thread_ids, 'intval_string');
+		$where = 'question_id IN (' . implode(',', $thread_ids) . ')';
+
+		if ($list = $this->fetch_page('question_discussion', $where, $order, $page, $per_page))
+		{
+			foreach($list as $key => $val)
+			{
+				$uids[] = $val['uid'];
+			}
+		}
+
+		if ($uids)
+		{
+			if ($users_info = $this->model('account')->get_user_info_by_uids($uids))
+			{
+				foreach($list as $key => $val)
+				{
+					$list[$key]['user_info'] = $users_info[$val['uid']];
+				}
+			}
+		}
+
+		return $list;
+	}
+
+	// 同时获取用户信息
+	public function get_answer_discussion_by_id($id)
+	{
+		if ($item = $this->fetch_row('question_discussion', "id = " . intval($id)))
+		{
+			$item['user_info'] = $this->model('account')->get_user_info_by_uid($item['uid']);
+		}
+		return $item;
+	}
+
+	// 同时获取用户信息
+	public function get_answer_discussions($parent_id, $page, $per_page, $order = 'id ASC')
+	{
+		$where = "answer_id = " . intval($parent_id);
+
+		if ($list = $this->fetch_page('answer_discussion', $where, $order, $page, $per_page))
+		{
+			foreach($list as $key => $val)
+			{
+				$uids[] = $val['uid'];
+			}
+		}
+
+		if ($uids)
+		{
+			if ($users_info = $this->model('account')->get_user_info_by_uids($uids))
+			{
+				foreach($list as $key => $val)
+				{
+					$list[$key]['user_info'] = $users_info[$val['uid']];
+				}
+			}
+		}
+
+		return $list;
+	}
+
+
+
+
+
+	/**
+	 *
+	 * 根据问题ID,得到相关联的话题标题信息
+	 * @param int $question_id
+	 * @param string $limit
+	 *
+	 * @return array
+	 */
+	public function get_question_topic_by_questions($question_ids, $limit = null)
+	{
+		if (!is_array($question_ids) OR sizeof($question_ids) == 0)
+		{
+			return false;
+		}
+
+		if (!$topic_ids_query = $this->query_all("SELECT DISTINCT topic_id FROM " . $this->get_table('topic_relation') . " WHERE item_id IN(" . implode(',', $question_ids) . ") AND `type` = 'question'"))
+		{
+			return false;
+		}
+
+		foreach ($topic_ids_query AS $key => $val)
+		{
+			$topic_ids[] = $val['topic_id'];
+		}
+
+		$topic_list = $this->query_all("SELECT * FROM " . $this->get_table('topic') . " WHERE topic_id IN(" . implode(',', $topic_ids) . ") ORDER BY discuss_count DESC", $limit);
+
+		return $topic_list;
+	}
+
+
+	public function get_topic_info_by_question_ids($question_ids)
+	{
+		if (!is_array($question_ids))
+		{
+			return false;
+		}
+
+		if ($topic_relation = $this->fetch_all('topic_relation', 'item_id IN(' . implode(',', $question_ids) . ") AND `type` = 'question'"))
+		{
+			foreach ($topic_relation AS $key => $val)
+			{
+				$topic_ids[$val['topic_id']] = $val['topic_id'];
+			}
+
+			$topics_info = $this->model('topic')->get_topics_by_ids($topic_ids);
+
+			foreach ($topic_relation AS $key => $val)
+			{
+				$topics_by_questions_ids[$val['item_id']][] = array(
+					'topic_id' => $val['topic_id'],
+					'topic_title' => $topics_info[$val['topic_id']]['topic_title'],
+				);
+			}
+		}
+
+		return $topics_by_questions_ids;
+	}
+
+
+	public function get_related_topics($title)
+	{
+		if ($question_related_list = $this->get_related_question_list(null, $title, 10))
+		{
+			foreach ($question_related_list AS $key => $val)
+			{
+				$question_related_ids[$val['id']] = $val['id'];
+			}
+
+			if (!$topic_ids_query = $this->fetch_all('topic_relation', 'item_id IN(' . implode(',', $question_related_ids) . ") AND `type` = 'question'"))
+			{
+				return false;
+			}
+
+			foreach ($topic_ids_query AS $key => $val)
+			{
+				if ($val['merged_id'])
+				{
+					continue;
+				}
+
+				$topic_hits[$val['topic_id']] = intval($topic_hits[$val['topic_id']]) + 1;
+			}
+
+			if (!$topic_hits)
+			{
+				return false;
+			}
+
+			arsort($topic_hits);
+
+			$topic_hits = array_slice($topic_hits, 0, 3, true);
+
+			foreach ($topic_hits AS $topic_id => $hits)
+			{
+				if ($topic_info = $this->model('topic')->get_topic_by_id($topic_id))
+				{
+					$topics[$topic_info['topic_title']] = $topic_info['topic_title'];
+				}
+			}
+		}
+
+		return $topics;
+	}
+
+
+	public function get_answer_users_by_question_id($question_id, $limit = 5, $uid = null)
+	{
+		if ($result = AWS_APP::cache()->get('answer_users_by_question_id_' . md5($question_id . $limit . $uid)))
+		{
+			return $result;
+		}
+
+		if (!$uid)
+		{
+			if (!$question_info = $this->model('content')->get_thread_info_by_id('question', $question_id))
+			{
+				return false;
+			}
+
+			$uid = $question_info['uid'];
+		}
+
+		if ($answer_users = $this->query_all("SELECT DISTINCT uid FROM " . get_table('answer') . " WHERE question_id = " . intval($question_id) . " AND uid <> " . intval($uid) . " ORDER BY agree_count DESC LIMIT " . intval($limit)))
+		{
+			foreach ($answer_users AS $key => $val)
+			{
+				$answer_uids[] = $val['uid'];
+			}
+
+			$result = $this->model('account')->get_user_info_by_uids($answer_uids);
+
+			AWS_APP::cache()->set('answer_users_by_question_id_' . md5($question_id . $limit . $uid), $result, get_setting('cache_level_normal'));
+		}
+
+		return $result;
+	}
+
 
 	public function get_related_question_list($question_id, $title, $limit = 10)
 	{
@@ -315,208 +570,6 @@ class question_class extends AWS_MODEL
 		AWS_APP::cache()->set($cache_key, $question_related_list, get_setting('cache_level_low'));
 
 		return $question_related_list;
-	}
-
-
-	// 同时获取用户信息
-	public function get_question_discussions($thread_ids, $page, $per_page, $order = 'id ASC')
-	{
-		array_walk_recursive($thread_ids, 'intval_string');
-		$where = 'question_id IN (' . implode(',', $thread_ids) . ')';
-
-		if ($list = $this->fetch_page('question_discussion', $where, $order, $page, $per_page))
-		{
-			foreach($list as $key => $val)
-			{
-				$uids[] = $val['uid'];
-			}
-		}
-
-		if ($uids)
-		{
-			if ($users_info = $this->model('account')->get_user_info_by_uids($uids))
-			{
-				foreach($list as $key => $val)
-				{
-					$list[$key]['user_info'] = $users_info[$val['uid']];
-				}
-			}
-		}
-
-		return $list;
-	}
-
-	// 同时获取用户信息
-	public function get_question_discussion_by_id($id)
-	{
-		if ($item = $this->fetch_row('question_discussion', "id = " . intval($id)))
-		{
-			$item['user_info'] = $this->model('account')->get_user_info_by_uid($item['uid']);
-		}
-		return $item;
-	}
-
-
-	// 只清空不删除
-	public function remove_question_discussion(&$comment, $log_uid)
-	{
-		$this->update('question_discussion', array(
-			'message' => null
-		), "id = " . $comment['id']);
-
-		$this->model('content')->log('question', $comment['question_id'], 'question_discussion', $comment['id'], '删除', $log_uid);
-
-		return true;
-	}
-
-	public function remove_answer_discussion(&$comment, $log_uid)
-	{
-		$this->update('answer_discussion', array(
-			'message' => null
-		), "id = " . $comment['id']);
-
-		if ($answer = $this->fetch_row('answer', 'id = ' . intval($comment['answer_id'])))
-		{
-			$this->model('content')->log('question', $answer['question_id'], 'answer_discussion', $comment['id'], '删除', $log_uid);
-		}
-
-		return true;
-	}
-
-
-	/**
-	 *
-	 * 根据问题ID,得到相关联的话题标题信息
-	 * @param int $question_id
-	 * @param string $limit
-	 *
-	 * @return array
-	 */
-	public function get_question_topic_by_questions($question_ids, $limit = null)
-	{
-		if (!is_array($question_ids) OR sizeof($question_ids) == 0)
-		{
-			return false;
-		}
-
-		if (!$topic_ids_query = $this->query_all("SELECT DISTINCT topic_id FROM " . $this->get_table('topic_relation') . " WHERE item_id IN(" . implode(',', $question_ids) . ") AND `type` = 'question'"))
-		{
-			return false;
-		}
-
-		foreach ($topic_ids_query AS $key => $val)
-		{
-			$topic_ids[] = $val['topic_id'];
-		}
-
-		$topic_list = $this->query_all("SELECT * FROM " . $this->get_table('topic') . " WHERE topic_id IN(" . implode(',', $topic_ids) . ") ORDER BY discuss_count DESC", $limit);
-
-		return $topic_list;
-	}
-
-	public function get_topic_info_by_question_ids($question_ids)
-	{
-		if (!is_array($question_ids))
-		{
-			return false;
-		}
-
-		if ($topic_relation = $this->fetch_all('topic_relation', 'item_id IN(' . implode(',', $question_ids) . ") AND `type` = 'question'"))
-		{
-			foreach ($topic_relation AS $key => $val)
-			{
-				$topic_ids[$val['topic_id']] = $val['topic_id'];
-			}
-
-			$topics_info = $this->model('topic')->get_topics_by_ids($topic_ids);
-
-			foreach ($topic_relation AS $key => $val)
-			{
-				$topics_by_questions_ids[$val['item_id']][] = array(
-					'topic_id' => $val['topic_id'],
-					'topic_title' => $topics_info[$val['topic_id']]['topic_title'],
-				);
-			}
-		}
-
-		return $topics_by_questions_ids;
-	}
-
-	public function get_related_topics($title)
-	{
-		if ($question_related_list = $this->get_related_question_list(null, $title, 10))
-		{
-			foreach ($question_related_list AS $key => $val)
-			{
-				$question_related_ids[$val['id']] = $val['id'];
-			}
-
-			if (!$topic_ids_query = $this->fetch_all('topic_relation', 'item_id IN(' . implode(',', $question_related_ids) . ") AND `type` = 'question'"))
-			{
-				return false;
-			}
-
-			foreach ($topic_ids_query AS $key => $val)
-			{
-				if ($val['merged_id'])
-				{
-					continue;
-				}
-
-				$topic_hits[$val['topic_id']] = intval($topic_hits[$val['topic_id']]) + 1;
-			}
-
-			if (!$topic_hits)
-			{
-				return false;
-			}
-
-			arsort($topic_hits);
-
-			$topic_hits = array_slice($topic_hits, 0, 3, true);
-
-			foreach ($topic_hits AS $topic_id => $hits)
-			{
-				if ($topic_info = $this->model('topic')->get_topic_by_id($topic_id))
-				{
-					$topics[$topic_info['topic_title']] = $topic_info['topic_title'];
-				}
-			}
-		}
-
-		return $topics;
-	}
-
-	public function get_answer_users_by_question_id($question_id, $limit = 5, $uid = null)
-	{
-		if ($result = AWS_APP::cache()->get('answer_users_by_question_id_' . md5($question_id . $limit . $uid)))
-		{
-			return $result;
-		}
-
-		if (!$uid)
-		{
-			if (!$question_info = $this->model('content')->get_thread_info_by_id('question', $question_id))
-			{
-				return false;
-			}
-
-			$uid = $question_info['uid'];
-		}
-
-		if ($answer_users = $this->query_all("SELECT DISTINCT uid FROM " . get_table('answer') . " WHERE question_id = " . intval($question_id) . " AND uid <> " . intval($uid) . " ORDER BY agree_count DESC LIMIT " . intval($limit)))
-		{
-			foreach ($answer_users AS $key => $val)
-			{
-				$answer_uids[] = $val['uid'];
-			}
-
-			$result = $this->model('account')->get_user_info_by_uids($answer_uids);
-
-			AWS_APP::cache()->set('answer_users_by_question_id_' . md5($question_id . $limit . $uid), $result, get_setting('cache_level_normal'));
-		}
-
-		return $result;
 	}
 
 }

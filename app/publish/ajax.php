@@ -559,7 +559,7 @@ class ajax extends AWS_CONTROLLER
 			), 1, null));
 		}
 
-		$answer_info = $this->model('answer')->get_answer_by_id($answer_id);
+		$answer_info = $this->model('question')->get_answer_by_id($answer_id);
 		$answer_info['message'] = $this->model('mention')->parse_at_user($answer_info['message']);
 		TPL::assign('answer_info', $answer_info);
 		H::ajax_json_output(AWS_APP::RSM(array(
@@ -649,8 +649,8 @@ class ajax extends AWS_CONTROLLER
 			), 1, null));
 		}
 
-		$comment_info = $this->model('article')->get_comment_by_id($comment_id);
-		$comment_info['message'] = $this->model('mention')->parse_at_user($comment_info['message']);
+		$comment_info = $this->model('article')->get_article_comment_by_id($comment_id);
+		//$comment_info['message'] = $this->model('mention')->parse_at_user($comment_info['message']);
 		TPL::assign('comment_info', $comment_info);
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'ajax_html' => TPL::process('article/ajax_reply')
@@ -739,7 +739,7 @@ class ajax extends AWS_CONTROLLER
 			), 1, null));
 		}
 
-		$comment_info = $this->model('video')->get_comment_by_id($comment_id);
+		$comment_info = $this->model('video')->get_video_comment_by_id($comment_id);
 		$comment_info['message'] = $this->model('mention')->parse_at_user($comment_info['message']);
 		TPL::assign('comment_info', $comment_info);
 		H::ajax_json_output(AWS_APP::RSM(array(

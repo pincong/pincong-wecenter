@@ -44,14 +44,14 @@ class main extends AWS_CONTROLLER
 		$item_id = intval($_GET['item_id']);
 		if ($item_id)
 		{
-			if (!$reply = $this->model('article')->get_comment_by_id($item_id))
+			if (!$reply = $this->model('article')->get_article_comment_by_id($item_id))
 			{
 				HTTP::error_404();
 			}
 			$_GET['id'] = $reply['article_id'];
 		}
 
-		if (!$article_info = $this->model('article')->get_article_info_by_id($_GET['id']))
+		if (!$article_info = $this->model('article')->get_article_by_id($_GET['id']))
 		{
 			HTTP::error_404();
 		}
@@ -143,7 +143,7 @@ class main extends AWS_CONTROLLER
 		}
 		else
 		{
-			$comments = $this->model('article')->get_comments($post_ids, $_GET['page'], $replies_per_page, implode(', ', $order_by));
+			$comments = $this->model('article')->get_article_comments($post_ids, $_GET['page'], $replies_per_page, implode(', ', $order_by));
 		}
 
 		if ($comments AND $this->user_id)
