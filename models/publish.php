@@ -286,10 +286,12 @@ class publish_class extends AWS_MODEL
 		// 记录用户动态
 		$this->model('activity')->push('answer', $item_id, $data['uid']);
 
-		// TODO: 防止匿名回复刷代币
 		if ($data['permission_affect_currency'] AND $data['uid'] != $parent_info['uid'])
 		{
-			$this->model('currency')->process($parent_info['uid'], 'QUESTION_REPLIED', get_setting('currency_system_config_question_replied'), '问题收到回应', $data['parent_id'], 'question');
+			if (!$this->model('content')->has_user_relpied_to_thread('question', $data['parent_id'], $data['uid']))
+			{
+				$this->model('currency')->process($parent_info['uid'], 'QUESTION_REPLIED', get_setting('currency_system_config_question_replied'), '问题收到回应', $data['parent_id'], 'question');
+			}
 		}
 		return $item_id;
 	}
@@ -358,10 +360,12 @@ class publish_class extends AWS_MODEL
 		// 记录用户动态
 		$this->model('activity')->push('article_comment', $item_id, $data['uid']);
 
-		// TODO: 防止匿名回复刷代币
 		if ($data['permission_affect_currency'] AND $data['uid'] != $parent_info['uid'])
 		{
-			$this->model('currency')->process($parent_info['uid'], 'ARTICLE_REPLIED', get_setting('currency_system_config_article_replied'), '文章收到回应', $data['parent_id'], 'article');
+			if (!$this->model('content')->has_user_relpied_to_thread('article', $data['parent_id'], $data['uid']))
+			{
+				$this->model('currency')->process($parent_info['uid'], 'ARTICLE_REPLIED', get_setting('currency_system_config_article_replied'), '文章收到回应', $data['parent_id'], 'article');
+			}
 		}
 		return $item_id;
 	}
@@ -429,10 +433,12 @@ class publish_class extends AWS_MODEL
 		// 记录用户动态
 		$this->model('activity')->push('video_comment', $item_id, $data['uid']);
 
-		// TODO: 防止匿名回复刷代币
 		if ($data['permission_affect_currency'] AND $data['uid'] != $parent_info['uid'])
 		{
-			$this->model('currency')->process($parent_info['uid'], 'VIDEO_REPLIED', get_setting('currency_system_config_video_replied'), '影片收到回应', $data['parent_id'], 'video');
+			if (!$this->model('content')->has_user_relpied_to_thread('video', $data['parent_id'], $data['uid']))
+			{
+				$this->model('currency')->process($parent_info['uid'], 'VIDEO_REPLIED', get_setting('currency_system_config_video_replied'), '影片收到回应', $data['parent_id'], 'video');
+			}
 		}
 		return $item_id;
 	}

@@ -262,6 +262,55 @@ class content_class extends AWS_MODEL
 		return $result;
 	}
 
+
+	public function has_user_relpied_to_thread($thread_type, $thread_id, $uid, $check_scheduled_posts = false)
+	{
+		$thread_id = intval($thread_id);
+		if (!$thread_id)
+		{
+			return false;
+		}
+
+		$uid = intval($uid);
+
+		switch ($thread_type)
+		{
+			case 'question':
+				$reply_type = 'answer';
+				$where = "question_id = " . ($thread_id) . " AND uid = " . ($uid);
+				break;
+
+			case 'article':
+				$reply_type = 'article_comment';
+				$where = "article_id = " . ($thread_id) . " AND uid = " . ($uid);
+				break;
+
+			case 'video':
+				$reply_type = 'video_comment';
+				$where = "video_id = " . ($thread_id) . " AND uid = " . ($uid);
+				break;
+
+			default:
+				return false;
+		}
+
+		if ($this->fetch_one($reply_type, 'id', $where))
+		{
+			return 1;
+		}
+
+		if ($check_scheduled_posts)
+		{
+			if ($this->fetch_one('scheduled_posts', 'id', "type = '" . ($reply_type) . "' AND parent_id = " . ($thread_id) . " AND uid = " . ($uid)))
+			{
+				return 2;
+			}
+		}
+
+		return 0;
+	}
+
+
 	/**
 	 * 记录日志
 	 * @param string $thread_type question|article|video

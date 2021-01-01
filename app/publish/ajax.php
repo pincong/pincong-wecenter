@@ -507,14 +507,14 @@ class ajax extends AWS_CONTROLLER
 		// 判断是否已回复过问题
 		if ((get_setting('answer_unique') == 'Y'))
 		{
-			if ($this->model('answer')->has_answer_by_uid($question_info['id'], $this->user_id))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('一个问题只能回复一次，你可以编辑回复过的回复')));
-			}
-			$schedule = $this->model('answer')->fetch_one('scheduled_posts', 'id', "type = 'answer' AND parent_id = " . intval($question_info['id']) . " AND uid = " . intval($this->user_id));
-			if ($schedule)
+			$replied = $this->model('content')->has_user_relpied_to_thread('question', $question_info['id'], $this->user_id, true);
+			if ($replied == 2)
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你已经使用延迟显示功能回复过该问题')));
+			}
+			else if ($schedule)
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('一个问题只能回复一次，你可以编辑回复过的回复')));
 			}
 		}
 
