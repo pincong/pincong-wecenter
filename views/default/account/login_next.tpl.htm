@@ -13,6 +13,9 @@
 				<li class="alert alert-danger collapse error_message text-left">
 					<i class="icon icon-delete"></i> <em></em>
 				</li>
+				<li class="alert alert-info collapse text-left">
+					<i class="icon icon-about"></i> <em></em>
+				</li>
 				<li>
 					<input type="text" class="form-control" name="username" autocomplete="username" value="<?php echo $this->user['user_name']; ?>" readonly style="cursor:default">
 				</li>
@@ -40,54 +43,119 @@
 <script type="text/javascript">
 $(document).ready(function () {
 	var form = $('#login_form').show();
+	var btn = form.find('button[type=submit]');
 
-	var _v1 = function(p, s) {
-		p = md5(md5(p) + s);
-		return p;
+	var _alert = function(s) {
+		form.find('.alert-info').hide();
+		var err_el = form.find('.error_message');
+		err_el.find('em').html(s);
+		if (err_el.css('display') != 'none')
+			AWS.shake(err_el);
+		else
+			err_el.fadeIn();
 	}
 
-	var _v2 = function(p, s) {
-		p = dcodeIO.bcrypt.hashSync(p, s);
-		return p;
+	var _store = function(private_key) {
+		localStorage.setItem('<?php echo G_COOKIE_PREFIX; ?>_private_key', private_key);
 	}
 
-	var _append = function(f, n, v) {
-		f.append($('<input>', {name: n, value: v}));
+	var _redirect = function(url) {
+		url || (url = '<?php echo url_rewrite(); ?>/');
+		window.location = url;
 	}
 
 	form.submit(function(e) {
 		e.preventDefault();
-
-		var new_form = $('<form>', {action: '<?php echo url_rewrite(); ?>/login/ajax/process/', method: 'post'});
-		new_form.append($('<input>', {name: 'token', value: '<?php echo $this->token; ?>'}));
-
-		_append(new_form, 'uid', '<?php echo $this->user['uid']; ?>');
-		_append(new_form, 'remember_me', form.find('input[name=remember_me]').is(':checked') ? 1 : 0);
+		btn.addClass('disabled');
 
 		var pwd = form.find('input[name=password]').val();
-<?php if ($this->user['password_version'] < 2) { ?>
-		var scrambled_pwd = _v1(pwd, '<?php echo $this->user['salt']; ?>');
+
+		var params = {
+			captcha: form.find('input[name=captcha]').val(),
+			captcha_enabled: <?php echo intval($this->captcha_required); ?>,
+			uid: '<?php echo $this->user['uid']; ?>',
+			remember_me: form.find('input[name=remember_me]').is(':checked') ? 1 : 0,
+			token: '<?php echo $this->token; ?>',
+		}
+
+		var client_salt = '<?php echo $this->user['salt']; ?>';
+		var password_version = (<?php echo intval($this->user['password_version']); ?> || 1);
+
+		form.find('.error_message').hide();
+		form.find('.alert-info').show().find('em').text(_t('请稍候...'));
+
+<?php if ($this->user['password_version'] < 3) { ?>
+		setTimeout(function() {
+			var private_key;
+			PasswordUtil.password_hash(pwd, client_salt, password_version).then(function(value) {
+				params.scrambled_password = value;
+				return PasswordUtil.random_string(45);
+			}).then(function(value) {
+				params.new_client_salt = value;
+				return PasswordUtil.password_hash(pwd, params.new_client_salt);
+			}).then(function(value) {
+				params.new_scrambled_password = value;
+				return PasswordUtil.generate_key();
+			}).then(function(value) {
+				params.new_public_key = value[0];
+				private_key = value[1];
+				return PasswordUtil.password_hash(pwd, params.new_public_key);
+			}).then(function(value) {
+				return PasswordUtil.encrypt_private_key(private_key, value);
+			}).then(function(value) {
+				params.new_private_key = value;
+				form.find('.alert-info').hide();
+				AWS.ajax_request('<?php echo url_rewrite(); ?>/login/ajax/process/', params, function(rsm) {
+					_store(private_key);
+					rsm || (rsm = {});
+					_redirect(rsm.next);
+				}, function(err) {
+					_alert(err);
+					btn.removeClass('disabled');
+					$('.aw-register-verify img').click();
+				});
+			}).catch(function(error) {
+				_alert(_t('无法生成密钥'));
+				btn.removeClass('disabled');
+				console.log(error);
+			});
+		}, 50);
+
 <?php } else { ?>
-		var scrambled_pwd = _v2(pwd, '<?php echo $this->user['salt']; ?>');
+		setTimeout(function() {
+			PasswordUtil.password_hash(pwd, client_salt).then(function(value) {
+				params.scrambled_password = value;
+				AWS.ajax_request('<?php echo url_rewrite(); ?>/login/ajax/process/', params, function(rsm) {
+					rsm || (rsm = {});
+					if (!rsm.private_key) {
+						form.find('.alert-info').hide();
+						_redirect(rsm.next);
+						return;
+					}
+					PasswordUtil.password_hash(pwd, '<?php echo $this->user['public_key']; ?>').then(function(value) {
+						return PasswordUtil.decrypt_private_key(rsm.private_key, value);
+					}).then(function(value) {
+						form.find('.alert-info').hide();
+						_store(value);
+						_redirect(rsm.next);
+					}).catch(function(error) {
+						console.log(error);
+						alert(_t('无法解密密钥'));
+						_redirect(rsm.next);
+					});
+				}, function(err) {
+					_alert(err);
+					btn.removeClass('disabled');
+					$('.aw-register-verify img').click();
+				});
+			}).catch(function(error) {
+				_alert(_t('无法 hash 密码'));
+				btn.removeClass('disabled');
+				console.log(error);
+			});
+		}, 50);
+
 <?php } ?>
-		_append(new_form, 'scrambled_password', scrambled_pwd);
-
-<?php if (isset($this->client_salt)) { ?>
-		var new_scrambled_pwd = _v2(pwd, '<?php echo $this->client_salt; ?>');
-		_append(new_form, 'new_scrambled_password', new_scrambled_pwd);
-		_append(new_form, 'client_salt', '<?php echo $this->client_salt; ?>');
-<?php } ?>
-
-<?php if ($this->captcha_required) { ?>
-		_append(new_form, 'captcha', form.find('input[name=captcha]').val());
-<?php } else { ?>
-		_append(new_form, 'captcha_enabled', 0);
-<?php } ?>
-
-		AWS.submit_form(new_form, form.find('button[type=submit]'), form.find('.error_message'), null, function() {
-			$('.aw-register-verify img').click();
-		});
-
 		return false;
 	});
 });

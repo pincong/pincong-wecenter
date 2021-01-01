@@ -37,42 +37,13 @@ class password_class extends AWS_MODEL
 
 	public function hash($string)
 	{
-		$rounds = S::get_int('server_side_bcrypt_rounds');
-		if (!$rounds)
-			$rounds = 10;
-		if ($rounds < 4)
-			$rounds = 4;
-		else if ($rounds > 31)
-			$rounds = 31;
+		$rounds = 10;
 		return password_hash($string, PASSWORD_BCRYPT, array(
 			'cost' => $rounds
 		));
 	}
 
-	public function generate_client_salt()
-	{
-		$rounds = S::get_int('client_side_bcrypt_rounds');
-		if (!$rounds)
-			$rounds = 10;
-		if ($rounds < 4)
-			$rounds = 4;
-		else if ($rounds > 31)
-			$rounds = 31;
-		$salt = '$2y$';
-		if ($rounds < 10)
-			$salt .= '0';
-		$salt .= strval($rounds);
-		$salt .= '$';
-		$bytes = openssl_random_pseudo_bytes(16);
-		$salt .= strtr(
-			rtrim(base64_encode($bytes), '='),
-			'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
-			'./ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-		);
-		return $salt;
-	}
-
-	public function check_structure($scrambled_password, $client_salt = false)
+	public function check_structure($scrambled_password)
 	{
 		if (!$scrambled_password OR strlen($scrambled_password) != 60)
 		{
@@ -87,22 +58,24 @@ class password_class extends AWS_MODEL
 		{
 			return false;
 		}
-		if ($client_salt === false)
-		{
-			return true;
-		}
-		if (!$client_salt OR strlen($client_salt) != 29)
+		return true;
+	}
+
+	public function check_base64_string($str, $max_len)
+	{
+		if (!$str OR strlen($str) > $max_len)
 		{
 			return false;
 		}
-		if (strpos($scrambled_password, $client_salt) !== 0)
+
+		if (!preg_match('/^([A-Za-z0-9+\/=]+)$/', $str))
 		{
 			return false;
 		}
 		return true;
 	}
 
-	public function change_password($uid, $scrambled_password, $new_scrambled_password, $new_client_salt)
+	public function change_password($uid, $scrambled_password, $new_scrambled_password, $new_client_salt, $new_public_key, $new_private_key)
 	{
 		if (!$user_info = $this->fetch_row('users', ['uid', 'eq', $uid, 'i']))
 		{
@@ -114,15 +87,17 @@ class password_class extends AWS_MODEL
 			return false;
 		}
 
-		return $this->update_password($uid, $new_scrambled_password, $new_client_salt);
+		return $this->update_password($uid, $new_scrambled_password, $new_client_salt, $new_public_key, $new_private_key);
 	}
 
-	public function update_password($uid, $new_scrambled_password, $new_client_salt)
+	public function update_password($uid, $new_scrambled_password, $new_client_salt, $new_public_key, $new_private_key)
 	{
 		return !!$this->update('users', array(
 			'password' => $this->hash($new_scrambled_password),
 			'salt' => $new_client_salt,
-			'password_version' => 2
+			'password_version' => 3,
+			'public_key' => $new_public_key,
+			'private_key' => $new_private_key
 		), ['uid', 'eq', $uid, 'i']);
 	}
 

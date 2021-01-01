@@ -38,7 +38,9 @@
 							<div class="col-sm-5 col-xs-8">
 								<input class="form-control" name="password" type="password" value="" autocomplete="new-password" />
 								<input name="scrambled_password" type="hidden" value="" />
-								<input name="client_salt" type="hidden" value="<?php echo $this->client_salt; ?>" />
+								<input name="client_salt" type="hidden" value="" />
+								<input name="public_key" type="hidden" value="" />
+								<input name="private_key" type="hidden" value="" />
 							</div>
 						</div>
 					</td>
@@ -148,24 +150,35 @@
 $(document).ready(function () {
 	var form = $('#settings_form');
 
-	var _v2 = function(p, s) {
-		p = dcodeIO.bcrypt.hashSync(p, s);
-		return p;
-	}
-
 	form.submit(function(e) {
 		e.preventDefault();
 
-		form.find('input[name=scrambled_password]').val('');
-
 		var pwd = form.find('input[name=password]').val();
-		if (pwd) {
-			form.find('input[name=scrambled_password]').val(_v2(pwd, '<?php echo $this->client_salt; ?>'));
+		if (!pwd) {
+			return false;
 		}
-
 		form.find('input[name=password]').val('');
 
-		AWS.ajax_post(form);
+		var private_key;
+		PasswordUtil.random_string(45).then(function(value) {
+			form.find('input[name=client_salt]').val(value);
+			return PasswordUtil.password_hash(pwd, value);
+		}).then(function(value) {
+			form.find('input[name=scrambled_password]').val(value);
+			return PasswordUtil.generate_key();
+		}).then(function(value) {
+			form.find('input[name=public_key]').val(value[0]);
+			private_key = value[1];
+			return PasswordUtil.password_hash(pwd, value[0]);
+		}).then(function(value) {
+			return PasswordUtil.encrypt_private_key(private_key, value);
+		}).then(function(value) {
+			form.find('input[name=private_key]').val(value);
+			AWS.ajax_post(form);
+		}).catch(function(error) {
+			console.log(error);
+			alert(_t('发生错误'));
+		});
 
 		return false;
 	});

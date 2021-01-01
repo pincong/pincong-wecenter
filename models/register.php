@@ -30,9 +30,9 @@ class register_class extends AWS_MODEL
 		return false;
 	}
 
-	public function register($username, $scrambled_password, $client_salt)
+	public function register($username, $scrambled_password, $client_salt, $public_key, $private_key)
 	{
-		if ($uid = $this->insert_user($username, $scrambled_password, $client_salt))
+		if ($uid = $this->insert_user($username, $scrambled_password, $client_salt, $public_key, $private_key))
 		{
 			$this->model('account')->update_notification_setting_fields(S::get('new_user_notification_setting'), $uid);
 
@@ -62,7 +62,7 @@ class register_class extends AWS_MODEL
 	 * @param string
 	 * @return int
 	 */
-	public function insert_user($username, $scrambled_password, $client_salt)
+	public function insert_user($username, $scrambled_password, $client_salt, $public_key, $private_key)
 	{
 		if (!$username OR !$scrambled_password)
 		{
@@ -80,7 +80,9 @@ class register_class extends AWS_MODEL
 			'user_name' => htmlspecialchars($username),
 			'password' => $this->model('password')->hash($scrambled_password),
 			'salt' => $client_salt,
-			'password_version' => 2,
+			'password_version' => 3,
+			'public_key' => $public_key,
+			'private_key' => $private_key,
 			'group_id' => 0,
 			'flagged' => $flagged,
 			'sex' => 0,

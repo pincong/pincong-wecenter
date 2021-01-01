@@ -77,7 +77,7 @@ class core_auth
 		{
 			if ($this->_get_payload_from_token($payload, $token))
 			{
-				$user_info = AWS_APP::model('account')->get_user_and_group_info_by_uid($payload['uid']);
+				$user_info = AWS_APP::model('account')->get_user_and_group_info_by_uid($payload['uid'], true);
 				if ($user_info)
 				{
 					// token 认证成功
@@ -92,7 +92,7 @@ class core_auth
 		{
 			if ($this->_get_payload_from_cookie($payload, $cookie))
 			{
-				$user_info = AWS_APP::model('account')->get_user_and_group_info_by_uid($payload['uid']);
+				$user_info = AWS_APP::model('account')->get_user_and_group_info_by_uid($payload['uid'], true);
 				if ($user_info)
 				{
 					if (AWS_APP::model('password')->compare($payload['password'], $user_info['password']))

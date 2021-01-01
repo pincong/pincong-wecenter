@@ -49,10 +49,23 @@ class ajax extends AWS_CONTROLLER
 	public function process_action()
 	{
 		$username = H::POST_S('username');
+		$client_salt = H::POST('client_salt');
+		$scrambled_password = H::POST('scrambled_password');
+
 		if (!$username OR
-			!$this->model('password')->check_structure(H::POST('scrambled_password'), H::POST('client_salt')))
+			!$this->model('password')->check_base64_string($client_salt, 60) OR
+			!$this->model('password')->check_structure($scrambled_password))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的用户名和密码')));
+		}
+
+		$public_key = H::POST('public_key');
+		$private_key = H::POST('private_key');
+
+		if (!$this->model('password')->check_base64_string($public_key, 1000) OR
+			!$this->model('password')->check_base64_string($private_key, 1000))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('密钥无效')));
 		}
 
 		if (!AWS_APP::form()->check_csrf_token(H::POST('token'), 'register_next', false))
@@ -91,7 +104,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名已经存在')));
 		}
 
-		$uid = $this->model('register')->register($username, H::POST('scrambled_password'), H::POST('client_salt'));
+		$uid = $this->model('register')->register($username, $scrambled_password, $client_salt, $public_key, $private_key);
 		if (!$uid)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('注册失败')));
@@ -102,10 +115,10 @@ class ajax extends AWS_CONTROLLER
 
 		$this->model('login')->logout();
 
-		$this->model('login')->cookie_login($uid, H::POST('scrambled_password'));
+		$this->model('login')->cookie_login($uid, $scrambled_password);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => url_rewrite('/home/first_login-TRUE')
+			'next' => url_rewrite('/home/first_login-TRUE')
 		), 1, null));
 
 	}

@@ -46,11 +46,13 @@
 								<span class="col-sm-4 col-xs-3 control-label"><?php _e('密码'); ?>:</span>
 								<div class="col-sm-5 col-xs-8">
 									<input class="form-control" name="password" type="text" autocomplete="off" value="" />
-									<input name="scrambled_password" type="hidden" value="" />
-									<input name="client_salt" type="hidden" value="<?php echo $this->client_salt; ?>" />
+									<input name="new_scrambled_password" type="hidden" value="" />
+									<input name="new_client_salt" type="hidden" value="" />
+									<input name="new_public_key" type="hidden" value="" />
+									<input name="new_private_key" type="hidden" value="" />
 									<p class="filetext"></p>
 									<label><input name="confirm_change_password" type="checkbox" value="1" /> <?php _e('确认修改密码'); ?></label>
-									<a class="btn btn-primary btn-xs" onclick="$(this).closest('form').find('input[name=password]').val(md5(Math.random()))"><?php _e('随机生成'); ?></a>
+									<a class="btn btn-primary btn-xs" onclick="var el=$(this);PasswordUtil.hash('ripemd', Math.random()).then(function(value){el.closest('form').find('input[name=password]').val(value)})"><?php _e('随机生成'); ?></a>
 								</div>
 							</div>
 						</td>
@@ -251,26 +253,36 @@
 $(document).ready(function () {
 	var form = $('#settings_form');
 
-	var _v2 = function(p, s) {
-		p = dcodeIO.bcrypt.hashSync(p, s);
-		return p;
-	}
-
 	form.submit(function(e) {
 		e.preventDefault();
 
-		form.find('input[name=scrambled_password]').val('');
-
-		if (form.find('input[name=confirm_change_password]').is(':checked')) {
-			var pwd = form.find('input[name=password]').val();
-			if (pwd) {
-				form.find('input[name=scrambled_password]').val(_v2(pwd, '<?php echo $this->client_salt; ?>'));
-			}
-		}
-
+		var pwd = form.find('input[name=password]').val();
 		form.find('input[name=password]').val('');
 
-		AWS.ajax_post(form);
+		if (pwd && form.find('input[name=confirm_change_password]').is(':checked')) {
+			var private_key;
+			PasswordUtil.random_string(45).then(function(value) {
+				form.find('input[name=new_client_salt]').val(value);
+				return PasswordUtil.password_hash(pwd, value);
+			}).then(function(value) {
+				form.find('input[name=new_scrambled_password]').val(value);
+				return PasswordUtil.generate_key();
+			}).then(function(value) {
+				form.find('input[name=new_public_key]').val(value[0]);
+				private_key = value[1];
+				return PasswordUtil.password_hash(pwd, value[0]);
+			}).then(function(value) {
+				return PasswordUtil.encrypt_private_key(private_key, value);
+			}).then(function(value) {
+				form.find('input[name=new_private_key]').val(value);
+				AWS.ajax_post(form);
+			}).catch(function(error) {
+				console.log(error);
+				alert(_t('发生错误'));
+			});
+		} else {
+			AWS.ajax_post(form);
+		}
 
 		return false;
 	});

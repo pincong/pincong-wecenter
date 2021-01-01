@@ -11,6 +11,9 @@
 				<li class="alert alert-danger collapse error_message text-left">
 					<i class="icon icon-delete"></i> <em></em>
 				</li>
+				<li class="alert alert-info collapse text-left">
+					<i class="icon icon-about"></i> <em></em>
+				</li>
 				<li>
 					<input class="form-control" type="text" name="username" autocomplete="username" placeholder="<?php _e('用户名'); ?>">
 				</li>
@@ -43,27 +46,30 @@
 <script type="text/javascript">
 $(document).ready(function () {
 	var form = $('#login_form').show();
-
-	var _v2 = function(p, s) {
-		p = dcodeIO.bcrypt.hashSync(p, s);
-		return p;
-	}
-
-	var _append = function(f, n, v) {
-		f.append($('<input>', {name: n, value: v}));
-	}
+	var btn = form.find('button[type=submit]');
 
 	var _alert = function(s) {
+		form.find('.alert-info').hide();
 		var err_el = form.find('.error_message');
-		err_el.find('em').text(s);
+		err_el.find('em').html(s);
 		if (err_el.css('display') != 'none')
 			AWS.shake(err_el);
 		else
 			err_el.fadeIn();
 	}
 
+	var _store = function(private_key) {
+		localStorage.setItem('<?php echo G_COOKIE_PREFIX; ?>_private_key', private_key);
+	}
+
+	var _redirect = function(url) {
+		url || (url = '<?php echo url_rewrite(); ?>/');
+		window.location = url;
+	}
+
 	form.submit(function(e) {
 		e.preventDefault();
+		btn.addClass('disabled');
 
 		var usr = form.find('input[name=username]').val();
 		var pwd = form.find('input[name=password]').val();
@@ -78,22 +84,47 @@ $(document).ready(function () {
 			return false;
 		}
 
-		var new_form = $('<form>', {action: '<?php echo url_rewrite(); ?>/register/ajax/process/', method: 'post'});
-		new_form.append($('<input>', {name: 'token', value: '<?php echo $this->token; ?>'}));
+		var params = {
+			captcha: form.find('input[name=captcha]').val(),
+			token: '<?php echo $this->token; ?>',
+			username: usr,
+		}
 
-		_append(new_form, 'username', usr);
+		form.find('.error_message').hide();
+		form.find('.alert-info').show().find('em').text(_t('正在生成密钥, 请稍候...'));
 
-		var scrambled_pwd = _v2(pwd, '<?php echo $this->client_salt; ?>');
-		_append(new_form, 'scrambled_password', scrambled_pwd);
-		_append(new_form, 'client_salt', '<?php echo $this->client_salt; ?>');
-
-<?php if ($this->captcha_required) { ?>
-		_append(new_form, 'captcha', form.find('input[name=captcha]').val());
-<?php } ?>
-
-		AWS.submit_form(new_form, form.find('button[type=submit]'), form.find('.error_message'), null, function() {
-			$('.aw-register-verify img').click();
-		});
+		setTimeout(function() {
+			var private_key;
+			PasswordUtil.random_string(45).then(function(value) {
+				params.client_salt = value;
+				return PasswordUtil.password_hash(pwd, params.client_salt);
+			}).then(function(value) {
+				params.scrambled_password = value;
+				return PasswordUtil.generate_key();
+			}).then(function(value) {
+				params.public_key = value[0];
+				private_key = value[1];
+				return PasswordUtil.password_hash(pwd, params.public_key);
+			}).then(function(value) {
+				return PasswordUtil.encrypt_private_key(private_key, value);
+			}).then(function(value) {
+				params.private_key = value;
+				form.find('.alert-info').hide();
+				AWS.ajax_request('<?php echo url_rewrite(); ?>/register/ajax/process/', params, function(rsm) {
+					_store(private_key);
+					rsm || (rsm = {});
+					_redirect(rsm.next);
+				}, function(err) {
+					_alert(err);
+					btn.removeClass('disabled');
+					$('.aw-register-verify img').click();
+				});
+			}).catch(function(error) {
+				_alert(_t('无法生成密钥'));
+				btn.removeClass('disabled');
+				console.log(error);
+			});
+		}, 50);
 
 		return false;
 	});

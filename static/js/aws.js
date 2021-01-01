@@ -84,21 +84,24 @@ var AWS =
 			$.get(url, _success, 'json').error(_error);
 		}
 
+		function _show_error(text) {
+			if (error_cb) {
+				(typeof error_cb === 'function') && error_cb(text);
+			}
+			else {
+				AWS.alert(text);
+			}
+		}
+
 		function _success(result) {
 			AWS.loading('hide');
 
-			if (!result) {
-				alert(_t('未知错误'));
-				return;
+			if (typeof result !== 'object' || result === null) {
+				result = {};
 			}
 
 			if (result.err) {
-				if (error_cb) {
-					(typeof error_cb === 'function') && error_cb(result.err);
-				}
-				else {
-					AWS.alert(result.err);
-				}
+				_show_error(result.err);
 				return;
 			}
 
@@ -119,10 +122,11 @@ var AWS =
 			AWS.loading('hide');
 
 			if (error.status == 0) {
-				alert(_t('网络连接异常'));
+				_show_error(_t('网络连接异常'));
 			}
 			else {
-				alert(_t('发生错误, 请刷新页面重试') + '\r\n' + error.responseText);
+				console.log(error.responseText);
+				_show_error(_t('发生错误, 请刷新页面重试'));
 			}
 		}
 	},
@@ -152,40 +156,43 @@ var AWS =
 			error: _error
 		});
 
+		function _show_error(text) {
+			if (err_el && err_el.length) {
+				if (err_el.find('em').length) {
+					err_el.find('em').html(text);
+				}
+				else {
+					err_el.html(text);
+				}
+				if (err_el.css('display') != 'none') {
+					AWS.shake(err_el);
+				}
+				else {
+					err_el.fadeIn();
+				}
+			}
+			if (error_cb) {
+				(typeof error_cb === 'function') && error_cb(text);
+			}
+			else {
+				if (!err_el || !err_el.length) {
+					AWS.alert(text);
+				}
+			}
+		}
+
 		function _success(result) {
 			AWS.loading('hide');
 			if (btn_el) {
 				btn_el.removeClass('disabled');
 			}
 
-			if (!result) {
-				alert(_t('未知错误'));
-				return;
+			if (typeof result !== 'object' || result === null) {
+				result = {};
 			}
 
 			if (result.err) {
-				if (err_el && err_el.length) {
-					if (err_el.find('em').length) {
-							err_el.find('em').html(result.err);
-					}
-					else {
-						err_el.html(result.err);
-					}
-					if (err_el.css('display') != 'none') {
-						AWS.shake(err_el);
-					}
-					else {
-							err_el.fadeIn();
-					}
-				}
-				if (error_cb) {
-					(typeof error_cb === 'function') && error_cb(result.err);
-				}
-				else {
-					if (!err_el || !err_el.length) {
-						AWS.alert(result.err);
-					}
-				}
+				_show_error(result.err);
 				return;
 			}
 
@@ -217,10 +224,11 @@ var AWS =
 			}
 
 			if (error.status == 0) {
-				alert(_t('网络连接异常'));
+				_show_error(_t('网络连接异常'));
 			}
 			else {
-				alert(_t('发生错误, 请刷新页面重试') + '\r\n' + error.responseText);
+				console.log(error.responseText);
+				_show_error(_t('发生错误, 请刷新页面重试'));
 			}
 		}
 	},

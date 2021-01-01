@@ -94,11 +94,12 @@ class main extends AWS_CONTROLLER
 
 		TPL::import_css('css/register.css');
 
+		TPL::import_js('js/openpgp.min.js');
 		TPL::import_js('js/bcrypt.js');
+		TPL::import_js('js/passwordutil.js');
 
 		TPL::assign('token', AWS_APP::form()->create_csrf_token(600, 'register_next'));
 		TPL::assign('captcha_required', $captcha_required);
-		TPL::assign('client_salt', $this->model('password')->generate_client_salt());
 
 		TPL::output("account/register_next");
 	}

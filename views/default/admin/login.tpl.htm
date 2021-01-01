@@ -60,19 +60,22 @@ var G_BASE_URL = "<?php echo url_rewrite(); ?>";
 $(document).ready(function () {
 	var form = $('#login_form');
 
-	var _v2 = function(p, s) {
-		p = dcodeIO.bcrypt.hashSync(p, s);
-		return p;
-	}
-
 	form.submit(function(e) {
 		e.preventDefault();
 
-		var new_form = $('<form>', {action: '<?php echo url_rewrite(); ?>/admin/ajax/login_process/', method: 'post'});
 		var pwd = form.find('input[name=password]').val();
-		new_form.append($('<input>', {name: 'scrambled_password', value: _v2(pwd, '<?php echo $this->user_info['salt']; ?>')}));
+		var client_salt = '<?php echo $this->user_info['salt']; ?>';
+		var password_version = (<?php echo intval($this->user_info['password_version']); ?> || 1);
 
-		AWS.ajax_post(new_form, AWS.ajax_processer, 'error_message');
+		var new_form = $('<form>', {action: '<?php echo url_rewrite(); ?>/admin/ajax/login_process/', method: 'post'});
+
+		PasswordUtil.password_hash(pwd, client_salt, password_version).then(function(value) {
+			new_form.append($('<input>', {name: 'scrambled_password', value: value}));
+			AWS.ajax_post(new_form, AWS.ajax_processer, 'error_message');
+		}).catch(function(error) {
+			console.log(error);
+			alert(_t('发生错误'));
+		});
 
 		return false;
 	});

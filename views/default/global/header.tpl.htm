@@ -68,7 +68,7 @@
 							<?php if ($this->user_info['permission']['is_administrator']) { ?>
 							<li><a href="<?php echo url_rewrite(); ?>/admin/"><i class="icon icon-job"></i> <?php _e('管理'); ?></a></li>
 							<?php } ?>
-							<li><form action="<?php echo url_rewrite(); ?>/account/logout/" method="post"><a href="<?php echo url_rewrite(); ?>/account/logout/" onclick="$(this).parent().submit();return false;"><i class="icon icon-logout"></i> <?php _e('退出'); ?></a></form></li>
+							<li><form action="<?php echo url_rewrite(); ?>/account/logout/" method="post"><a href="<?php echo url_rewrite(); ?>/account/logout/" onclick="localStorage.clear();$(this).parent().submit();return false;"><i class="icon icon-logout"></i> <?php _e('退出'); ?></a></form></li>
 						</ul>
 					</div>
 				<?php } else { ?>

@@ -644,10 +644,27 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			$this->model('avatar')->delete_avatar($user_info['uid']);
 		}
 
-		if (H::POST('confirm_change_password') AND
-			$this->model('password')->check_structure(H::POST('scrambled_password'), H::POST('client_salt')))
+		if (H::POST('confirm_change_password'))
 		{
-			$this->model('password')->update_password($user_info['uid'], H::POST('scrambled_password'), H::POST('client_salt'));
+			$new_scrambled_password = H::POST('new_scrambled_password');
+			$new_client_salt = H::POST('new_client_salt');
+
+			if (!$this->model('password')->check_base64_string($new_client_salt, 60) OR
+				!$this->model('password')->check_structure($new_scrambled_password))
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的密码')));
+			}
+
+			$new_public_key = H::POST('new_public_key');
+			$new_private_key = H::POST('new_private_key');
+
+			if (!$this->model('password')->check_base64_string($new_public_key, 1000) OR
+				!$this->model('password')->check_base64_string($new_private_key, 1000))
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('密钥无效')));
+			}
+
+			$this->model('password')->update_password($user_info['uid'], $new_scrambled_password, $new_client_salt, $new_public_key, $new_private_key);
 		}
 
 		if ($username AND $username != $user_info['user_name'])
@@ -664,9 +681,19 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 		$username = H::POST_S('username');
 		if (!$username OR
-			!$this->model('password')->check_structure(H::POST('scrambled_password'), H::POST('client_salt')))
+			!$this->model('password')->check_base64_string(H::POST('client_salt'), 60) OR
+			!$this->model('password')->check_structure(H::POST('scrambled_password')))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的用户名和密码')));
+		}
+
+		$public_key = H::POST('public_key');
+		$private_key = H::POST('private_key');
+
+		if (!$this->model('password')->check_base64_string($public_key, 1000) OR
+			!$this->model('password')->check_base64_string($private_key, 1000))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('密钥无效')));
 		}
 
 		if ($this->model('account')->username_exists($username))
@@ -674,7 +701,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名已经存在')));
 		}
 
-		$uid = $this->model('register')->register($username, H::POST('scrambled_password'), H::POST('client_salt'));
+		$uid = $this->model('register')->register($username, H::POST('scrambled_password'), H::POST('client_salt'), $public_key, $private_key);
 
 		if (!$uid)
 		{

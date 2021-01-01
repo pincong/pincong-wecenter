@@ -66,19 +66,17 @@ class login_class extends AWS_MODEL
 	 */
 	public function verify($uid, $scrambled_password)
 	{
-		if (!$uid OR !$scrambled_password)
+		$uid = intval($uid);
+
+		if ($uid <= 0 OR !$scrambled_password)
 		{
 			return false;
 		}
 
-		$user_info = $this->model('account')->get_user_info_by_uid($uid);
-
-		if (!$user_info)
+		if (!$user_info = $this->fetch_row('users', ['uid', 'eq', $uid]))
 		{
 			return false;
 		}
-
-		$uid = intval($user_info['uid']);
 
 		if ($max_attempts = S::get_int('limit_login_attempts'))
 		{

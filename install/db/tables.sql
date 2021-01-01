@@ -566,6 +566,8 @@ CREATE TABLE `aws_users` (
   `settings` text,
   `verified` varchar(32) DEFAULT NULL COMMENT '认证头衔',
   `signature` varchar(140) DEFAULT NULL COMMENT '个人签名',
+  `public_key` text,
+  `private_key` text,
   `extra_data` text COMMENT '额外数据',
   PRIMARY KEY (`uid`),
   UNIQUE KEY `user_name` (`user_name`),

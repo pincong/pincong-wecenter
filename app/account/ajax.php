@@ -34,10 +34,24 @@ class ajax extends AWS_CONTROLLER
 
 	public function change_password_action()
 	{
-		if (!H::POST('scrambled_password') OR
-			!$this->model('password')->check_structure(H::POST('new_scrambled_password'), H::POST('client_salt')))
+		$scrambled_password = H::POST('scrambled_password');
+		$new_scrambled_password = H::POST('new_scrambled_password');
+		$new_client_salt = H::POST('new_client_salt');
+
+		if (!$scrambled_password OR
+			!$this->model('password')->check_base64_string($new_client_salt, 60) OR
+			!$this->model('password')->check_structure($new_scrambled_password))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的密码')));
+		}
+
+		$new_public_key = H::POST('new_public_key');
+		$new_private_key = H::POST('new_private_key');
+
+		if (!$this->model('password')->check_base64_string($new_public_key, 1000) OR
+			!$this->model('password')->check_base64_string($new_private_key, 1000))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('密钥无效')));
 		}
 
 		if (!AWS_APP::form()->check_csrf_token(H::POST('token'), 'account_change_password', false))
@@ -45,7 +59,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('页面停留时间过长, 请刷新页面重试')));
 		}
 
-		if ($this->model('password')->change_password($this->user_id, H::POST('scrambled_password'), H::POST('new_scrambled_password'), H::POST('client_salt')))
+		if ($this->model('password')->change_password($this->user_id, $scrambled_password, $new_scrambled_password, $new_client_salt, $new_public_key, $new_private_key))
 		{
 			AWS_APP::form()->revoke_csrf_token(H::POST('token'));
 
@@ -56,10 +70,10 @@ class ajax extends AWS_CONTROLLER
 			}
 
 			$this->model('login')->cookie_logout();
-			$this->model('login')->cookie_login($this->user_id, H::POST('new_scrambled_password'), $expire);
+			$this->model('login')->cookie_login($this->user_id, $new_scrambled_password, $expire);
 
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => url_rewrite('/account/password_updated/')
+				'next' => url_rewrite('/account/password_updated/')
 			), 1, null));
 		}
 		else

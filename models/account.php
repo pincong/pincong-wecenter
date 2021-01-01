@@ -67,7 +67,7 @@ class account_class extends AWS_MODEL
 	 * @param int
 	 * @return array
 	 */
-	public function get_user_and_group_info_by_uid($uid)
+	public function get_user_and_group_info_by_uid($uid, $get_password = false)
 	{
 		$uid = intval($uid);
 		if ($uid <= 0)
@@ -85,6 +85,11 @@ class account_class extends AWS_MODEL
 		if (!$user_info = $this->fetch_row('users', ['uid', 'eq', $uid]))
 		{
 			return false;
+		}
+
+		if (!$get_password)
+		{
+			unset($user_info['password'], $user_info['private_key']);
 		}
 
 		$user_group = $this->model('usergroup')->get_user_group_by_user_info($user_info);
@@ -145,6 +150,8 @@ class account_class extends AWS_MODEL
 			return false;
 		}
 
+		unset($user_info['password'], $user_info['private_key']);
+
 		$users_info[$uid] = $user_info;
 
 		return $user_info;
@@ -178,7 +185,7 @@ class account_class extends AWS_MODEL
 		{
 			foreach ($user_info as $key => $val)
 			{
-				unset($val['password'], $val['salt']);
+				unset($val['password'], $val['private_key']);
 
 				$data[$val['uid']] = $val;
 			}
@@ -439,7 +446,7 @@ class account_class extends AWS_MODEL
 		{
 			foreach ($result AS $key => $val)
 			{
-				unset($val['password'], $val['salt']);
+				unset($val['password'], $val['private_key']);
 
 				$data[$val['uid']] = $val;
 

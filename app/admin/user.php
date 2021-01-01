@@ -162,16 +162,9 @@ class user extends AWS_ADMIN_CONTROLLER
         TPL::assign('user', $user);
         TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(402));
 
-		if ($user['password_version'] < 2)
-		{
-			TPL::assign('client_salt', $this->model('password')->generate_client_salt());
-		}
-		else
-		{
-			TPL::assign('client_salt', $user['salt']);
-		}
+		TPL::import_js('js/openpgp.min.js');
 		TPL::import_js('js/bcrypt.js');
-		TPL::import_js('js/md5.js');
+		TPL::import_js('js/passwordutil.js');
 
         TPL::output('admin/user/edit');
     }
@@ -184,9 +177,9 @@ class user extends AWS_ADMIN_CONTROLLER
 
         TPL::assign('system_group', $this->model('usergroup')->get_normal_group_list());
 
-		TPL::assign('client_salt', $this->model('password')->generate_client_salt());
-
+		TPL::import_js('js/openpgp.min.js');
 		TPL::import_js('js/bcrypt.js');
+		TPL::import_js('js/passwordutil.js');
 
         TPL::output('admin/user/add');
     }

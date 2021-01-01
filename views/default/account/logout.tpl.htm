@@ -8,7 +8,7 @@
 		</div>
 	</div>
 	<div class="mod-body">
-		<form id="login_form" method="post" action="<?php echo url_rewrite(); ?>/account/logout/">
+		<form id="login_form" method="post" action="<?php echo url_rewrite(); ?>/account/logout/" onsubmit="localStorage.clear();">
 			<ul>
 				<li class="alert alert-danger">
 					<em><?php _e('您即将退出'); ?></em>
