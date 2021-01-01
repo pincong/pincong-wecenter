@@ -117,8 +117,6 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_location(UF::url($user_info));
 		}
 
-		//$this->model('account')->update_user_last_login($user_info['uid']);
-
 		// 记住我
 		if (H::POST_I('remember_me'))
 		{

@@ -400,23 +400,6 @@ class account_class extends AWS_MODEL
 
 
 	/**
-	 * 更新用户最后登录时间
-	 *
-	 * @param  int
-	 */
-	public function update_user_last_login($uid)
-	{
-		if (!$uid)
-		{
-			return false;
-		}
-
-		return $this->update('users', array(
-			'last_login' => fake_time()
-		), ['uid', 'eq', $uid, 'i']);
-	}
-
-	/**
 	 * 更新用户通知设置
 	 *
 	 * @param  array

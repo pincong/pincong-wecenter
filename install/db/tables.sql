@@ -503,7 +503,6 @@ CREATE TABLE `aws_users` (
   `avatar_file` varchar(128) DEFAULT NULL,
   `sex` tinyint(1) DEFAULT '0',
   `reg_time` int(11) DEFAULT '0',
-  `last_login` int(11) DEFAULT '0',
   `notification_unread` int(11) DEFAULT '0' COMMENT '未读系统通知数量',
   `inbox_unread` int(11) DEFAULT '0' COMMENT '未读短信息数量',
   `inbox_recv` tinyint(1) DEFAULT '0' COMMENT '3-所有人可以发给我, 2-拒绝所有人, 1-我关注的人, 0-系统默认',
@@ -531,7 +530,6 @@ CREATE TABLE `aws_users` (
   KEY `reputation` (`reputation`),
   KEY `agree_count` (`agree_count`),
   KEY `currency` (`currency`),
-  KEY `last_login` (`last_login`),
   KEY `user_update_time` (`user_update_time`)
 ) DEFAULT CHARSET=utf8mb4;
 
