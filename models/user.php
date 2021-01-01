@@ -425,7 +425,6 @@ class user_class extends AWS_MODEL
 			$status = explode(',', $status);
 			if (is_array($status))
 			{
-				//array_walk_recursive($status, 'intval_string');
 				$where[] = ['status', 'in', $status, 'i'];
 			}
 		}

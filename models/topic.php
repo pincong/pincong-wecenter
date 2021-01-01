@@ -109,8 +109,6 @@ class topic_class extends AWS_MODEL
 			return false;
 		}
 
-		//array_walk_recursive($topic_ids, 'intval_string');
-
 		$topics = $this->fetch_all('topic', ['topic_id', 'in', $topic_ids, 'i']);
 
 		foreach ($topics AS $key => $val)
@@ -219,8 +217,6 @@ class topic_class extends AWS_MODEL
 			);
 		}
 
-		//array_walk_recursive($topic_ids, 'intval_string');
-
 		return $this->update('topic', array(
 			'topic_lock' => $topic_lock
 		), ['topic_id', 'in', $topic_ids, 'i']);
@@ -282,8 +278,6 @@ class topic_class extends AWS_MODEL
 			return false;
 		}
 
-		//array_walk_recursive($topic_ids, 'intval_string');
-
 		$where = [
 			['uid', 'eq', $uid, 'i'],
 			['topic_id', 'in', $topic_ids, 'i']
@@ -335,8 +329,6 @@ class topic_class extends AWS_MODEL
 		{
 			$topic_ids[] = $topic_id;
 		}
-
-		//array_walk_recursive($topic_ids, 'intval_string');
 
 		foreach($topic_ids as $topic_id)
 		{

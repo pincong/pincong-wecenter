@@ -192,7 +192,6 @@ class video_class extends AWS_MODEL
 	// 同时获取用户信息
 	public function get_video_comments($thread_ids, $page, $per_page, $order = 'id ASC')
 	{
-		//array_walk_recursive($thread_ids, 'intval_string');
 		$where = ['video_id', 'in', $thread_ids, 'i'];
 
 		if ($list = $this->fetch_page('video_comment', $where, $order, $page, $per_page))

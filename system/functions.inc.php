@@ -117,21 +117,6 @@ function array_random($arr)
 }
 
 
-
-/**
- * 强制转换字符串为整型, 对数字或数字字符串无效
- *
- * @param  mixed
- */
-function intval_string(&$value)
-{
-	if (! is_numeric($value))
-	{
-		$value = intval($value);
-	}
-}
-
-
 /**
  * 删除网页上看不见的隐藏字符串, 如 Java\0script
  *

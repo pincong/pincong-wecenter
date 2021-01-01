@@ -170,10 +170,6 @@ class account_class extends AWS_MODEL
 			return false;
 		}
 
-		//array_walk_recursive($uids, 'intval_string');
-
-		//$uids = array_unique($uids);
-
 		static $users_info;
 
 		if (isset($users_info[implode('_', $uids)]))

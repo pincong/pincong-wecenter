@@ -249,8 +249,6 @@ class content_class extends AWS_MODEL
 			return false;
 		}
 
-		//array_walk_recursive($item_ids, 'intval_string');
-
 		if ($item_list = $this->fetch_all($type, ['id', 'in', $item_ids, 'i']))
 		{
 			foreach ($item_list AS $key => $val)
@@ -269,8 +267,6 @@ class content_class extends AWS_MODEL
 		{
 			return false;
 		}
-
-		//array_walk_recursive($item_ids, 'intval_string');
 
 		if ($item_list = $this->fetch_all($type, ['id', 'in', $item_ids, 'i']))
 		{
