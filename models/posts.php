@@ -333,15 +333,13 @@ class posts_class extends AWS_MODEL
 			$topic_relation_where[] = ['type', 'eq', $post_type];
 		}
 
-		$topic_relations = $this->fetch_page('topic_relation', $topic_relation_where, 'id DESC', $page, $per_page);
+		$topic_relations = $this->fetch_distinct_rows('topic_relation', ['type', 'item_id'], $topic_relation_where, 'id DESC', $page, $per_page);
 		if ($topic_relations)
 		{
 			foreach ($topic_relations AS $key => $val)
 			{
 				$info[$val['type']][$val['item_id']] = $val['item_id'];
 			}
-
-			//$this->posts_list_total = $this->total_rows();
 		}
 
 		if (!$info)
@@ -360,9 +358,9 @@ class posts_class extends AWS_MODEL
 		return $this->process_explore_list_data($result);
 	}
 
-	public function get_recommend_posts_by_topic_ids($topic_ids)
+	public function get_related_posts_by_topic_ids($post_type, $topic_ids, $exclude_post_id = 0, $limit = 10)
 	{
-		if (!is_array($topic_ids) OR count($topic_ids) < 1)
+		if (!$this->model('content')->check_thread_type($post_type) OR !is_array($topic_ids) OR count($topic_ids) < 1)
 		{
 			return false;
 		}
@@ -373,7 +371,40 @@ class posts_class extends AWS_MODEL
 			$topic_ids = array_merge($topic_ids, $merged_ids);
 		}
 
-		return $this->model('posts')->get_posts_list_by_topic_ids(null, $topic_ids);
+		$topic_relation_where[] = ['topic_id', 'in', $topic_ids, 'i'];
+		$topic_relation_where[] = ['type', 'eq', $post_type];
+
+		$post_ids = $this->fetch_distinct('topic_relation', 'item_id', $topic_relation_where, 'RAND()', 200);
+		if (!$post_ids)
+		{
+			return false;
+		}
+
+		$where = [
+			['post_id', 'notEq', $exclude_post_id, 'i'],
+			['post_id', 'in', $post_ids, 'i'],
+			['post_type', 'eq', $post_type],
+			['category_id', 'in', $this->get_default_category_ids(), 'i'],
+		];
+		$result = $this->fetch_all('posts_index', $where, 'RAND()', $limit);
+
+		return $this->process_explore_list_data($result);
+	}
+
+	public function get_recommended_posts($exclude_post_type, $exclude_post_id, $limit = 10)
+	{
+		$where = [
+			['recommend', 'eq', 1],
+			['category_id', 'in', $this->get_default_category_ids(), 'i'],
+			[
+				['post_type', 'notEq', $exclude_post_type, 's'],
+				'or',
+				['post_id', 'notEq', $exclude_post_id, 'i']
+			]
+		];
+		$result = $this->fetch_all('posts_index', $where, 'RAND()', $limit);
+
+		return $this->process_explore_list_data($result);
 	}
 
 	public function bring_to_top($post_id, $post_type)

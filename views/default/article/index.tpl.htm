@@ -346,46 +346,42 @@
 					</div>
 					<!-- end 发起人 -->
 
-					<?php if ($this->recommend_posts) { ?>
-					<!-- 推荐内容 -->
+					<?php if ($this->related_posts) { ?>
+					<!-- 相关 -->
 					<div class="aw-mod">
 						<div class="mod-head">
-							<h3><?php _e('推荐内容'); ?></h3>
+							<h3><?php _e('相关主题'); ?></h3>
 						</div>
 						<div class="mod-body">
 							<ul>
-								<?php foreach($this->recommend_posts AS $key => $val) { ?>
+								<?php foreach($this->related_posts AS $key => $val) { ?>
 								<li>
-									<?php if ($val['post_type'] == 'question') { ?>
-									<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a>
-									<?php } elseif ($val['post_type'] == 'article') { ?>
-									<a href="<?php echo url_rewrite(); ?>/article/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a>
-									<?php } elseif ($val['post_type'] == 'video') { ?>
-									<a href="<?php echo url_rewrite(); ?>/video/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a>
-									<?php } ?>
+									<a href="<?php echo url_rewrite(); ?>/<?php echo $val['post_type']; ?>/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a>
 								</li>
 								<?php } ?>
 							</ul>
 						</div>
 					</div>
-					<!-- end 推荐内容 -->
+					<!-- end 相关 -->
 					<?php } ?>
 
-					<?php if ($this->question_related_list) { ?>
-					<!-- 相关问题 -->
+					<?php if ($this->recommended_posts) { ?>
+					<!-- 推荐 -->
 					<div class="aw-mod aw-text-align-justify question-related-list">
 						<div class="mod-head">
-							<h3><?php _e('相关问题'); ?></h3>
+							<h3><?php _e('推荐'); ?></h3>
 						</div>
 						<div class="mod-body aw-size-12">
 							<ul>
-								<?php foreach($this->question_related_list AS $key => $val) { ?>
-								<li><a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a></li>
+								<?php foreach($this->recommended_posts AS $key => $val) { ?>
+								<li>
+									<a href="<?php echo url_rewrite(); ?>/<?php echo $val['post_type']; ?>/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a>
+								</li>
 								<?php } ?>
 							</ul>
 						</div>
 					</div>
-					<!-- end 相关问题 -->
+					<!-- end 推荐 -->
 					<?php } ?>
 
 					<!-- 状态 -->

@@ -177,8 +177,6 @@ class main extends AWS_CONTROLLER
 			TPL::assign('redirected_from', $this->model('content')->get_post_by_id('question', $_GET['rf']));
 		}
 
-		TPL::assign('question_related_list', $this->model('question')->get_related_question_list($thread_info['id'], $thread_info['title']));
-
 		$this->model('content')->update_view_count('question', $thread_info['id']);
 
 		$page_title = CF::page_title($thread_info['user_info'], 'question_' . $thread_info['id'], $thread_info['title']);
@@ -205,19 +203,8 @@ class main extends AWS_CONTROLLER
 			TPL::assign('topics', $this->model('topic')->get_topics_by_ids($topic_ids));
 		}
 
-		$recommend_posts = $this->model('posts')->get_recommend_posts_by_topic_ids($topic_ids);
-		if ($recommend_posts)
-		{
-			foreach ($recommend_posts as $key => $value)
-			{
-				if ($value['post_type'] == 'question' AND $value['id'] == $thread_info['id'])
-				{
-					unset($recommend_posts[$key]);
-					break;
-				}
-			}
-			TPL::assign('recommend_posts', $recommend_posts);
-		}
+		TPL::assign('related_posts', $this->model('posts')->get_related_posts_by_topic_ids('question', $topic_ids, $thread_info['id']));
+		TPL::assign('recommended_posts', $this->model('posts')->get_recommended_posts('question', $thread_info['id']));
 
 		if ($this->user_id)
 		{

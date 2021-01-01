@@ -157,8 +157,6 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		TPL::assign('question_related_list', $this->model('question')->get_related_question_list(null, $thread_info['title']));
-
 		$this->model('content')->update_view_count('video', $thread_info['id']);
 
 		TPL::assign('comments', $comments);
@@ -185,19 +183,8 @@ class main extends AWS_CONTROLLER
 			TPL::assign('topics', $this->model('topic')->get_topics_by_ids($topic_ids));
 		}
 
-		$recommend_posts = $this->model('posts')->get_recommend_posts_by_topic_ids($topic_ids);
-		if ($recommend_posts)
-		{
-			foreach ($recommend_posts as $key => $value)
-			{
-				if ($value['post_type'] == 'video' AND $value['id'] == $thread_info['id'])
-				{
-					unset($recommend_posts[$key]);
-					break;
-				}
-			}
-			TPL::assign('recommend_posts', $recommend_posts);
-		}
+		TPL::assign('related_posts', $this->model('posts')->get_related_posts_by_topic_ids('video', $topic_ids, $thread_info['id']));
+		TPL::assign('recommended_posts', $this->model('posts')->get_recommended_posts('video', $thread_info['id']));
 
 		if ($this->user_id)
 		{
