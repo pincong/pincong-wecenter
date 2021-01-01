@@ -161,8 +161,10 @@
 
 								<span class="pull-right more-operate">
 								<?php if ($this->user_id) { ?>
-									<?php if ($this->user_info['permission']['bump_sink']) { ?>
+									<?php if ($this->user_info['permission']['bump_post']) { ?>
 									<a href="javascript:;" class="aw-small-text" onclick="AWS.confirm('<?php _e('确认提升?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/content/ajax/bump/', 'item_type=article&item_id=<?php echo $this->article_info['id']; ?>', true);});"><i class="icon icon-up"></i> <?php _e('提升'); ?></a>
+									<?php } ?>
+									<?php if ($this->user_info['permission']['sink_post']) { ?>
 									<a href="javascript:;" class="aw-small-text" onclick="AWS.confirm('<?php _e('确认下沉?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/content/ajax/sink/', 'item_type=article&item_id=<?php echo $this->article_info['id']; ?>', true);});"><i class="icon icon-down"></i> <?php _e('下沉'); ?></a>
 									<?php } ?>
 

@@ -232,7 +232,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function bump_action()
 	{
-		$this->validate_thread('bump_sink', 'manage', $_POST['item_type'], $_POST['item_id'], $item_info);
+		$this->validate_thread('bump', 'manage', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		$this->model('content')->bump(
 			$_POST['item_type'],
@@ -245,7 +245,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function sink_action()
 	{
-		$this->validate_thread('bump_sink', 'manage', $_POST['item_type'], $_POST['item_id'], $item_info);
+		$this->validate_thread('sink', 'manage', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		$this->model('content')->sink(
 			$_POST['item_type'],

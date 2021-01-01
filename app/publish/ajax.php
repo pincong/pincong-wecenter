@@ -272,7 +272,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function publish_question_action()
 	{
-		if (!$this->user_info['permission']['publish_question'])
+		if (!$this->model('publish')->check_user_permission('question', $this->user_info))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
 		}
@@ -323,7 +323,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function publish_article_action()
 	{
-		if (!$this->user_info['permission']['publish_article'])
+		if (!$this->model('publish')->check_user_permission('article', $this->user_info))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
 		}
@@ -373,7 +373,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function publish_video_action()
 	{
-		if (!$this->user_info['permission']['publish_video'])
+		if (!$this->model('publish')->check_user_permission('video', $this->user_info))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
 		}
@@ -443,7 +443,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function publish_answer_action()
 	{
-		if (!$this->user_info['permission']['answer_question'])
+		if (!$this->model('publish')->check_user_permission('answer', $this->user_info))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
 		}
@@ -545,7 +545,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function publish_article_comment_action()
 	{
-		if (!$this->user_info['permission']['comment_article'])
+		if (!$this->model('publish')->check_user_permission('article_comment', $this->user_info))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
 		}
@@ -629,7 +629,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function publish_video_comment_action()
 	{
-		if (!$this->user_info['permission']['comment_video'])
+		if (!$this->model('publish')->check_user_permission('video_comment', $this->user_info))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
 		}

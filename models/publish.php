@@ -124,6 +124,12 @@ class publish_class extends AWS_MODEL
 		}
 	}
 
+	public function check_user_permission($item_type, &$user_info)
+	{
+		// TODO
+		return true;
+	}
+
 	// model('crond') 调用
 	public function publish_scheduled_posts()
 	{

@@ -27,7 +27,7 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		if (!$this->user_info['permission']['publish_question'])
+		if (!$this->model('publish')->check_user_permission('question', $this->user_info))
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('你的声望还不够'));
 		}
@@ -70,7 +70,7 @@ class main extends AWS_CONTROLLER
 
 	public function article_action()
 	{
-		if (!$this->user_info['permission']['publish_article'])
+		if (!$this->model('publish')->check_user_permission('article', $this->user_info))
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('你的声望还不够'));
 		}
@@ -113,7 +113,7 @@ class main extends AWS_CONTROLLER
 
 	public function video_action()
 	{
-		if (!$this->user_info['permission']['publish_video'])
+		if (!$this->model('publish')->check_user_permission('video', $this->user_info))
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('你的声望还不够'));
 		}

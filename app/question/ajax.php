@@ -111,7 +111,7 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		if (!$this->user_info['permission']['publish_discussion'] AND $org_question_uid != $this->user_id AND $question_info['uid'] != $this->user_id AND $answer_info['uid'] != $this->user_id)
+		if (!$this->model('publish')->check_user_permission('answer_discussion', $this->user_info) AND $org_question_uid != $this->user_id AND $question_info['uid'] != $this->user_id AND $answer_info['uid'] != $this->user_id)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
 		}
@@ -201,7 +201,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('问题不存在')));
 		}
 
-		if (!$this->user_info['permission']['publish_discussion'] AND $question_info['uid'] != $this->user_id)
+		if (!$this->model('publish')->check_user_permission('question_discussion', $this->user_info) AND $question_info['uid'] != $this->user_id)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
 		}
