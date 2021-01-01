@@ -152,7 +152,24 @@ class ajax extends AWS_CONTROLLER
 		$_POST['message'] = trim($_POST['message']);
 		$this->validate_body_length($type);
 
+		$topics_limit_min = intval(get_setting('topics_limit_min'));
+		$topics_limit_max = intval(get_setting('topics_limit_max'));
+
+		$num_topics = 0;
 		if ($_POST['topics'])
+		{
+			$num_topics = sizeof($_POST['topics']);
+		}
+		if ($topics_limit_min AND $num_topics < $topics_limit_min)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题数量最少 %s 个, 请添加话题', $topics_limit_min)));
+		}
+		if ($topics_limit_max AND $num_topics > $topics_limit_max)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题数量最多 %s 个, 请调整话题数量', $topics_limit_max)));
+		}
+
+		if ($num_topics)
 		{
 			$topic_title_limit = intval(get_setting('topic_title_limit'));
 			foreach ($_POST['topics'] AS $key => $topic_title)
@@ -161,22 +178,34 @@ class ajax extends AWS_CONTROLLER
 
 				if (!$topic_title)
 				{
-					unset($_POST['topics'][$key]);
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写话题标题')));
+					break;
 				}
-				else
+
+				$topic_title_length = strlen($topic_title);
+				if ($topic_title_length > 100)
 				{
-					if ($topic_title_limit AND strlen($topic_title) > $topic_title_limit AND !$this->model('topic')->get_topic_id_by_title($topic_title))
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题标题字数超出限制')));
+					break;
+				}
+
+				$topic_exists = !!$this->model('topic')->get_topic_id_by_title($topic_title);
+				if (!$topic_exists AND !$this->user_info['permission']['create_topic'])
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不能创建新话题「%s」, 请选择现有话题', $topic_title)));
+					break;
+				}
+
+				if ($topic_title_limit AND $topic_title_length > $topic_title_limit)
+				{
+					if (!$topic_exists)
 					{
 						H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题标题字数超出限制')));
 						break;
 					}
-					$_POST['topics'][$key] = $topic_title;
 				}
-			}
 
-			if (get_setting('question_topics_limit') AND sizeof($_POST['topics']) > get_setting('question_topics_limit'))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('单个问题话题数量最多为 %s 个, 请调整话题数量', get_setting('question_topics_limit'))));
+				$_POST['topics'][$key] = $topic_title;
 			}
 		}
 
