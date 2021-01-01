@@ -31,6 +31,96 @@ class postfollow_class extends AWS_MODEL
 		return $this->query_all('SELECT uid FROM ' . $this->get_table('post_follow') . ' WHERE ' . $where) ;
 	}
 
+	public function get_following_posts($uid, $post_type, $page, $per_page)
+	{
+		$where = "uid = " . intval($uid);
+
+		if ($post_type AND $this->model('content')->check_thread_type($post_type))
+		{
+			$where .= " AND post_type = '" . $post_type . "'";
+		}
+
+		$result = array();
+
+		$posts = $this->fetch_page('post_follow', $where, 'id DESC', $page, $per_page);
+		if (!$posts)
+		{
+			return $result;
+		}
+
+		foreach ($posts as $key => $val)
+		{
+			switch ($val['post_type'])
+			{
+				case 'question':
+					$question_ids[] = $val['post_id'];
+					break;
+				case 'article':
+					$article_ids[] = $val['post_id'];
+					break;
+				case 'video':
+					$video_ids[] = $val['post_id'];
+					break;
+			}
+		}
+
+		if ($question_ids)
+		{
+			$question_infos = $this->model('content')->get_posts_by_ids('question', $question_ids);
+			foreach ($question_infos as $key => $val)
+			{
+				$uids[] = $val['uid'];
+			}
+		}
+		if ($article_ids)
+		{
+			$article_infos = $this->model('content')->get_posts_by_ids('article', $article_ids);
+			foreach ($article_infos as $key => $val)
+			{
+				$uids[] = $val['uid'];
+			}
+		}
+		if ($video_ids)
+		{
+			$video_infos = $this->model('content')->get_posts_by_ids('video', $video_ids);
+			foreach ($video_infos as $key => $val)
+			{
+				$uids[] = $val['uid'];
+			}
+		}
+
+		if ($uids)
+		{
+			$user_infos = $this->model('account')->get_user_info_by_uids($uids);
+		}
+
+		foreach ($posts as $key => $val)
+		{
+			switch ($val['post_type'])
+			{
+				case 'question':
+					$result[$key] = $question_infos[$val['post_id']];
+					// TODO: 统一字段名称
+					$result[$key]['reply_count'] = $question_infos[$val['post_id']]['answer_count'];
+					break;
+				case 'article':
+					$result[$key] = $article_infos[$val['post_id']];
+					// TODO: 统一字段名称
+					$result[$key]['reply_count'] = $article_infos[$val['post_id']]['comments'];
+					break;
+				case 'video':
+					$result[$key] = $video_infos[$val['post_id']];
+					// TODO: 统一字段名称
+					$result[$key]['reply_count'] = $video_infos[$val['post_id']]['comment_count'];
+					break;
+			}
+			$result[$key]['post_type'] = $val['post_type'];
+			$result[$key]['user_info'] = $user_infos[$result[$key]['uid']];
+		}
+
+		return $result;
+	}
+
 	public function follow($post_type, $post_id, $uid)
 	{
 		if (!$this->model('content')->check_thread_type($post_type))

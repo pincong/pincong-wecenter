@@ -1,6 +1,4 @@
-<?php if ($this->list) { ?>
 <?php foreach ($this->list AS $key => $val) { ?>
-<!-- 问题 -->
 <div class="aw-item">
 	<div class="mod-head">
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
@@ -8,12 +6,25 @@
 			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
 			•
 			<?php echo date_friendly($val['add_time']); ?>
+			•
+			<?php _e('%s 个回复', $val['reply_count']); ?>
+			•
+			<a href="<?php echo url_rewrite(); ?>/home/following/type-<?php echo $val['post_type']; ?>"><?php switch ($val['post_type']) {
+				case 'question':
+					_e('问题');
+					break;
+				case 'article':
+					_e('文章');
+					break;
+				case 'video':
+					_e('影片');
+					break;
+			} ?></a>
+			<a class="pull-right" href="javascript:;" onclick="(function(selector){AWS.ajax_request(G_BASE_URL + '/content/ajax/unfollow/', 'item_type=<?php echo $val['post_type']; ?>&item_id=<?php echo $val['id']; ?>', function(){selector.parentsUntil('.aw-item').parent().remove();});})($(this))"><?php _e('取消关注'); ?></a>
 		</p>
 		<h4>
-			<a href="<?php echo url_rewrite(); ?>/<?php echo $val['post_type']; ?>/<?php echo $val['post_id']; ?>"><?php if (!$val['post_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['post_info']['title']); ?><?php } ?></a>
+			<a href="<?php echo url_rewrite(); ?>/<?php echo $val['post_type']; ?>/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a>
 		</h4>
 	</div>
 </div>
-<!-- end 问题 -->
-<?php } ?>
 <?php } ?>

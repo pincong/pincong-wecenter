@@ -113,32 +113,16 @@ class info extends AWS_CONTROLLER
 	}
 
 	// 我关注的主题
-/*	public function following_posts_action()
+	public function following_posts_action()
 	{
 		$per_page = intval(get_setting('contents_per_page'));
 
-		if ($list = $this->model('postfollow')->get_following_posts($this->user_id, intval($_GET['page']), $per_page))
-		{
-			foreach($list as $key => $val)
-			{
-				$uids[] = $val['uid'];
-			}
-
-			if ($uids)
-			{
-				$users_info = $this->model('account')->get_user_info_by_uids($uids);
-			}
-
-			foreach($list as $key => $val)
-			{
-				$list[$key]['user_info'] = $users_info[$val['uid']];
-			}
-		}
+		$list = $this->model('postfollow')->get_following_posts($this->user_id, $_GET['type'], $_GET['page'], $per_page);
 
 		TPL::assign('list', $list);
 
 		TPL::output('home/following_posts_template');
-	}*/
+	}
 
 
 	public function welcome_action()
