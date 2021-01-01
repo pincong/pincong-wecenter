@@ -219,7 +219,7 @@ class user_class extends AWS_MODEL
 		$this->update('topic_merge', array('uid' => '-1'), 'uid = ' . ($uid));
 		$this->update('topic_relation', array('uid' => '-1'), 'uid = ' . ($uid));
 
-		$this->$this->delete('notification', 'sender_uid = ' . ($uid) . ' OR recipient_uid = ' . ($uid));
+		$this->delete('notification', 'sender_uid = ' . ($uid) . ' OR recipient_uid = ' . ($uid));
 
 		$this->delete_private_messages($uid);
 
