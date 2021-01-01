@@ -112,7 +112,7 @@ class register_class extends AWS_MODEL
 
         $length_min = S::get_int('username_length_min');
         $length_max = S::get_int('username_length_max');
-        $length = cjk_strlen($user_name);
+        $length = iconv_strlen($user_name);
         if ($length < $length_min OR $length > $length_max)
         {
             return AWS_APP::lang()->_t('用户名字数不符合规则');

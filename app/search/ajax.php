@@ -34,7 +34,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			$limit = 20;
 		}
-		$result = $this->model('search')->search(cjk_substr($_GET['q'], 0, 64), $_GET['type'], 1, $limit);
+		$result = $this->model('search')->search(iconv_substr($_GET['q'], 0, 64), $_GET['type'], 1, $limit);
 
 		if (!$result)
 		{

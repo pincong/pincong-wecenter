@@ -29,7 +29,7 @@ class system_class extends AWS_MODEL
 			return false;
 		}
 
-		if (cjk_strlen($keyword) == 1)
+		if (iconv_strlen($keyword) == 1)
 		{
 			return false;
 		}

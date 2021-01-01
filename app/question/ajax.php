@@ -72,13 +72,13 @@ class ajax extends AWS_CONTROLLER
         }
 
 		$discussion_length_min = intval(S::get('discussion_length_min'));
-		if ($discussion_length_min AND cjk_strlen($message) < $discussion_length_min)
+		if ($discussion_length_min AND iconv_strlen($message) < $discussion_length_min)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('讨论内容字数不得少于 %s 字', $discussion_length_min)));
 		}
 
 		$discussion_length_max = intval(S::get('discussion_length_max'));
-		if ($discussion_length_max AND cjk_strlen($message) > $discussion_length_max)
+		if ($discussion_length_max AND iconv_strlen($message) > $discussion_length_max)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('讨论内容字数不得超过 %s 字', $discussion_length_max)));
 		}
@@ -184,13 +184,13 @@ class ajax extends AWS_CONTROLLER
         }
 
 		$discussion_length_min = intval(S::get('discussion_length_min'));
-		if ($discussion_length_min AND cjk_strlen($message) < $discussion_length_min)
+		if ($discussion_length_min AND iconv_strlen($message) < $discussion_length_min)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('讨论内容字数不得少于 %s 字', $discussion_length_min)));
 		}
 
 		$discussion_length_max = intval(S::get('discussion_length_max'));
-		if ($discussion_length_max AND cjk_strlen($message) > $discussion_length_max)
+		if ($discussion_length_max AND iconv_strlen($message) > $discussion_length_max)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('讨论内容字数不得超过 %s 字', $discussion_length_max)));
 		}

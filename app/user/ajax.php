@@ -66,7 +66,7 @@ class ajax extends AWS_CONTROLLER
 		$reason = trim($_POST['reason']);
 		$detail = trim($_POST['detail']);
 		// TODO: 字数选项
-		if (cjk_strlen($reason) > 300 OR cjk_strlen($detail) > 300)
+		if (iconv_strlen($reason) > 300 OR iconv_strlen($detail) > 300)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('理由太长')));
 		}

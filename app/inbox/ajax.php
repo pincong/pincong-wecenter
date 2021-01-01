@@ -73,7 +73,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		$length_limit = S::get('pm_length_limit');
-		if (cjk_strlen($message) > $length_limit)
+		if (iconv_strlen($message) > $length_limit)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('私信字数不得多于 %s 字', $length_limit)));
 		}

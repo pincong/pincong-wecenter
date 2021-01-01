@@ -51,7 +51,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		$length_min = intval(S::get('title_length_min'));
 		$length_max = intval(S::get('title_length_max'));
-		$length = cjk_strlen($_POST['title']);
+		$length = iconv_strlen($_POST['title']);
 		if ($length_min AND $length < $length_min)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('标题字数不得小于 %s 字', $length_min)));
@@ -66,7 +66,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		$length_min = intval(S::get($type . '_body_length_min'));
 		$length_max = intval(S::get($type . '_body_length_max'));
-		$length = cjk_strlen($_POST['message']);
+		$length = iconv_strlen($_POST['message']);
 		if ($length_min AND $length < $length_min)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('正文字数不得小于 %s 字', $length_min)));
@@ -81,7 +81,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		$length_min = intval(S::get($type . '_reply_length_min'));
 		$length_max = intval(S::get($type . '_reply_length_max'));
-		$length = cjk_strlen($_POST['message']);
+		$length = iconv_strlen($_POST['message']);
 		if ($length_min AND $length < $length_min)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('回复字数不得小于 %s 字', $length_min)));
@@ -137,7 +137,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($type == 'question' AND S::get('question_ends_with_question') == 'Y')
 		{
-			$question_mark = cjk_substr($_POST['title'], $title_length - 1, 1);
+			$question_mark = iconv_substr($_POST['title'], $title_length - 1, 1);
 			if ($question_mark != '？' AND $question_mark != '?' AND $question_mark != '¿')
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请以问号提问')));
