@@ -66,6 +66,35 @@ class main extends AWS_CONTROLLER
 
 		$url_param[] = 'id-' . $video_info['id'];
 
+		if ($_GET['sort'] == 'DESC')
+		{
+			$sort = 'DESC';
+
+			$url_param[] = 'sort-DESC';
+		}
+		else
+		{
+			$sort = 'ASC';
+		}
+
+		if ($_GET['fold'])
+		{
+			$order_by[] = "fold ASC";
+
+			$url_param[] = 'fold-1';
+		}
+
+		if ($_GET['sort_key'] == 'agree_count')
+		{
+			$order_by[] = "reputation " . $sort;
+
+			$url_param[] = 'sort_key-agree_count';
+		}
+		else
+		{
+			$order_by[] = "id " . $sort;
+		}
+
 		$video_info['iframe_url'] = Services_VideoParser::get_iframe_url($video_info['source_type'], $video_info['source']);
 
 		if ($this->user_id)
@@ -100,19 +129,6 @@ class main extends AWS_CONTROLLER
 		$page_title = CF::page_title($video_info['user_info'], 'video_' . $video_info['id'], $video_info['title']);
 		$this->crumb($page_title);
 
-		if ($_GET['fold'])
-		{
-			$order_by = "fold ASC, ";
-
-			$url_param[] = 'fold-1';
-		}
-		else
-		{
-			$order_by = "";
-		}
-
-		$order_by .= "id ASC";
-
 		$reply_count = $video_info['comment_count'];
 		// 判断是否已合并
 		if ($redirect_posts = $this->model('content')->get_redirect_posts('video', $video_info['id']))
@@ -133,7 +149,7 @@ class main extends AWS_CONTROLLER
 		}
 		else
 		{
-			$comments = $this->model('video')->get_comments($post_ids, $_GET['page'], $replies_per_page, $order_by);
+			$comments = $this->model('video')->get_comments($post_ids, $_GET['page'], $replies_per_page, implode(', ', $order_by));
 		}
 
 		if ($comments AND $this->user_id)

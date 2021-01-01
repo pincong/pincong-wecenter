@@ -63,6 +63,35 @@ class main extends AWS_CONTROLLER
 
 		$url_param[] = 'id-' . $article_info['id'];
 
+		if ($_GET['sort'] == 'DESC')
+		{
+			$sort = 'DESC';
+
+			$url_param[] = 'sort-DESC';
+		}
+		else
+		{
+			$sort = 'ASC';
+		}
+
+		if ($_GET['fold'])
+		{
+			$order_by[] = "fold ASC";
+
+			$url_param[] = 'fold-1';
+		}
+
+		if ($_GET['sort_key'] == 'agree_count')
+		{
+			$order_by[] = "reputation " . $sort;
+
+			$url_param[] = 'sort_key-agree_count';
+		}
+		else
+		{
+			$order_by[] = "id " . $sort;
+		}
+
 		if ($this->user_id)
 		{
 			$article_info['vote_value'] = $this->model('vote')->get_user_vote_value_by_id('article', $article_info['id'], $this->user_id);
@@ -93,19 +122,6 @@ class main extends AWS_CONTROLLER
 		$page_title = CF::page_title($article_info['user_info'], 'article_' . $article_info['id'], $article_info['title']);
 		$this->crumb($page_title);
 
-		if ($_GET['fold'])
-		{
-			$order_by = "fold ASC, ";
-
-			$url_param[] = 'fold-1';
-		}
-		else
-		{
-			$order_by = "";
-		}
-
-		$order_by .= "id ASC";
-
 		$reply_count = $article_info['comments'];
 		// 判断是否已合并
 		if ($redirect_posts = $this->model('content')->get_redirect_posts('article', $article_info['id']))
@@ -125,7 +141,7 @@ class main extends AWS_CONTROLLER
 		}
 		else
 		{
-			$comments = $this->model('article')->get_comments($post_ids, $_GET['page'], $replies_per_page, $order_by);
+			$comments = $this->model('article')->get_comments($post_ids, $_GET['page'], $replies_per_page, implode(', ', $order_by));
 		}
 
 		if ($comments AND $this->user_id)

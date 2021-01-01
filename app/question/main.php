@@ -76,28 +76,22 @@ class main extends AWS_CONTROLLER
 			$sort = 'DESC';
 		}
 
-		$this->model('content')->update_view_count('question', $question_info['id'], session_id());
-
 		if ($_GET['fold'])
 		{
-			$order_by = "fold ASC, ";
+			$order_by[] = "fold ASC";
 
 			$url_param[] = 'fold-1';
-		}
-		else
-		{
-			$order_by = "";
 		}
 
 		if ($_GET['sort_key'] == 'add_time')
 		{
-			$order_by .= "id " . $sort;
+			$order_by[] = "id " . $sort;
 
 			$url_param[] = 'sort_key-add_time';
 		}
 		else
 		{
-			$order_by .= "reputation " . $sort . ", agree_count " . $sort . ", id ASC";
+			$order_by[] = "reputation " . $sort;
 		}
 
 		$reply_count = $question_info['answer_count'];
@@ -121,7 +115,7 @@ class main extends AWS_CONTROLLER
 		}
 		else
 		{
-			$answer_list = $this->model('answer')->get_answers($post_ids, $_GET['page'], $replies_per_page, $order_by);
+			$answer_list = $this->model('answer')->get_answers($post_ids, $_GET['page'], $replies_per_page, implode(', ', $order_by));
 		}
 
 		if (! is_array($answer_list))
@@ -212,6 +206,8 @@ class main extends AWS_CONTROLLER
 				$question_topic_ids[] = $val['topic_id'];
 			}
 		}
+
+		$this->model('content')->update_view_count('question', $question_info['id'], session_id());
 
 		$page_title = CF::page_title($question_info['user_info'], 'question_' . $question_info['id'], $question_info['title']);
 		$this->crumb($page_title);
