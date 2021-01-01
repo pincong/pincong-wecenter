@@ -28,6 +28,18 @@ class edit extends AWS_CONTROLLER
 		return $rule_action;
 	}
 
+	private function check_permission($post_uid)
+	{
+		if ($post_uid != $this->user_id AND !$this->user_info['permission']['edit_any_post'])
+		{
+			if (!$this->user_info['permission']['edit_specific_post'] OR !in_array($post_uid, get_setting_array('specific_post_uids')))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public function answer_action()
 	{
 		$id = intval($_GET['id']);
@@ -35,17 +47,21 @@ class edit extends AWS_CONTROLLER
 		{
 			HTTP::error_403();
 		}
-		if (!$answer_info = $this->model('content')->get_reply_info_by_id('answer', $id))
-		{
-			HTTP::error_403();
-		}
-		if ($answer_info['uid'] != $this->user_id AND !$this->user_info['permission']['edit_any_post'] AND !$this->user_info['permission']['edit_specific_post'])
+		if (!$reply_info = $this->model('content')->get_reply_info_by_id('answer', $id))
 		{
 			HTTP::error_403();
 		}
 
-		TPL::assign('answer_info', $answer_info);
-		TPL::output("publish/edit_answer_template");
+		if (!$this->check_permission($reply_info['uid']))
+		{
+			TPL::assign('dialog_message', AWS_APP::lang()->_t('你没有权限编辑此内容'));
+			TPL::output("dialog/alert_template");
+		}
+		else
+		{
+			TPL::assign('reply_info', $reply_info);
+			TPL::output("modify/edit_answer_template");
+		}
 	}
 
 	public function article_comment_action()
@@ -55,17 +71,21 @@ class edit extends AWS_CONTROLLER
 		{
 			HTTP::error_403();
 		}
-		if (!$comment_info = $this->model('content')->get_reply_info_by_id('article_comment', $id))
-		{
-			HTTP::error_403();
-		}
-		if ($comment_info['uid'] != $this->user_id AND !$this->user_info['permission']['edit_any_post'] AND !$this->user_info['permission']['edit_specific_post'])
+		if (!$reply_info = $this->model('content')->get_reply_info_by_id('article_comment', $id))
 		{
 			HTTP::error_403();
 		}
 
-		TPL::assign('comment_info', $comment_info);
-		TPL::output("publish/edit_article_comment_template");
+		if (!$this->check_permission($reply_info['uid']))
+		{
+			TPL::assign('dialog_message', AWS_APP::lang()->_t('你没有权限编辑此内容'));
+			TPL::output("dialog/alert_template");
+		}
+		else
+		{
+			TPL::assign('reply_info', $reply_info);
+			TPL::output("modify/edit_article_comment_template");
+		}
 	}
 
 	public function video_comment_action()
@@ -75,17 +95,21 @@ class edit extends AWS_CONTROLLER
 		{
 			HTTP::error_403();
 		}
-		if (!$comment_info = $this->model('content')->get_reply_info_by_id('video_comment', $id))
-		{
-			HTTP::error_403();
-		}
-		if ($comment_info['uid'] != $this->user_id AND !$this->user_info['permission']['edit_any_post'] AND !$this->user_info['permission']['edit_specific_post'])
+		if (!$reply_info = $this->model('content')->get_reply_info_by_id('video_comment', $id))
 		{
 			HTTP::error_403();
 		}
 
-		TPL::assign('comment_info', $comment_info);
-		TPL::output("publish/edit_video_comment_template");
+		if (!$this->check_permission($reply_info['uid']))
+		{
+			TPL::assign('dialog_message', AWS_APP::lang()->_t('你没有权限编辑此内容'));
+			TPL::output("dialog/alert_template");
+		}
+		else
+		{
+			TPL::assign('reply_info', $reply_info);
+			TPL::output("modify/edit_video_comment_template");
+		}
 	}
 
 }
