@@ -436,20 +436,41 @@ class content_class extends AWS_MODEL
 	{
 		if (!$this->check_thread_type($item_type))
 		{
-			return false;
+			return;
 		}
 
-		$key = 'update_view_count_' . $item_type . '_' . intval($item_id);
-		if (AWS_APP::cache()->get($key))
+		$item_id = intval($item_id);
+		$key = 'update_view_count_' . $item_type . '_' . $item_id;
+		$now = time();
+		$update = false;
+
+		$data = AWS_APP::cache()->get($key);
+		if (is_array($data))
 		{
-			return false;
+			$count = intval($data['count']) + 1;
+			$exipre = intval($data['time']) + 60;
+			if ($now >= $exipre)
+			{
+				$update = true;
+			}
+		}
+		else
+		{
+			$count = 1;
+			$update = true;
 		}
 
-		AWS_APP::cache()->set($key, time(), 60);
+		if ($update)
+		{
+			$sql = "UPDATE " . $this->get_table($item_type) . " SET view_count = view_count + " . ($count) . " WHERE id = " . ($item_id);
+			$this->query($sql);
+			$count = 0;
+		}
 
-		$this->query("UPDATE " . $this->get_table($item_type) . " SET view_count = view_count + 1 WHERE id = " . intval($item_id));
-
-		return true;
+		AWS_APP::cache()->set($key, array(
+			'time' => $now,
+			'count' => $count
+		), 3600);
 	}
 
 	public function change_uid($item_type, $item_id, $new_uid, $old_uid, $log_uid)
