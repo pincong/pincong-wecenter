@@ -50,7 +50,7 @@ class topic extends AWS_ADMIN_CONTROLLER
 
 		if ($_GET['keyword'])
 		{
-			$where[] = "topic_title LIKE '" . $this->model('topic')->quote($_GET['keyword']) . "%'";
+			$where[] = "topic_title LIKE '" . $this->model('topic')->escape($_GET['keyword']) . "%'";
 		}
 
 		if ($_GET['discuss_count_min'] OR $_GET['discuss_count_min'] == '0')

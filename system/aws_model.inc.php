@@ -143,7 +143,7 @@ class AWS_MODEL
 	/**
 	 * 插入数据
 	 *
-	 * 面向对象数据库操作, 表名无需加表前缀, 数据也无需使用 $this->quote 进行过滤
+	 * 面向对象数据库操作, 表名无需加表前缀, 数据也无需使用 $this->escape 进行过滤
 	 *
 	 * @param	string
 	 * @param	array
@@ -155,7 +155,7 @@ class AWS_MODEL
 
 		foreach ($data AS $key => $val)
 		{
-			$debug_data['`' . $key . '`'] = "'" . $this->quote($val) . "'";
+			$debug_data['`' . $key . '`'] = "'" . $this->escape($val) . "'";
 		}
 
 		$sql = 'INSERT INTO `' . $this->get_table($table) . '` (' . implode(', ', array_keys($debug_data)) . ') VALUES (' . implode(', ', $debug_data) . ')';
@@ -184,7 +184,7 @@ class AWS_MODEL
 	/**
 	 * 更新数据
 	 *
-	 * 面向对象数据库操作, 表名无需加表前缀, 数据也无需使用 $this->quote 进行过滤 ($where 条件除外)
+	 * 面向对象数据库操作, 表名无需加表前缀, 数据也无需使用 $this->escape 进行过滤 ($where 条件除外)
 	 *
 	 * @param	string
 	 * @param	array
@@ -209,7 +209,7 @@ class AWS_MODEL
 		{
 			foreach ($data AS $key => $val)
 			{
-				$update_string[] = '`' . $key . "` = '" . $this->quote($val) . "'";
+				$update_string[] = '`' . $key . "` = '" . $this->escape($val) . "'";
 			}
 		}
 
@@ -379,7 +379,7 @@ class AWS_MODEL
 	/**
 	 * 执行 SQL 语句
 	 *
-	 * 执行 SQL 语句, 表名要使用 get_table 函数获取, 外来数据要使用 $this->quote() 过滤
+	 * 执行 SQL 语句, 表名要使用 get_table 函数获取, 外来数据要使用 $this->escape() 过滤
 	 *
 	 * @param	string
 	 * @param	integer
@@ -418,7 +418,7 @@ class AWS_MODEL
 	/**
 	 * 查询全部数据, 返回数组
 	 *
-	 * 执行 SQL 语句, 表名要使用 get_table 函数获取, 外来数据要使用 $this->quote() 过滤
+	 * 执行 SQL 语句, 表名要使用 get_table 函数获取, 外来数据要使用 $this->escape() 过滤
 	 *
 	 * @param	string
 	 * @param	integer
@@ -587,7 +587,7 @@ class AWS_MODEL
 	/**
 	 * 查询一行数据, 返回数组, key 为 字段名
 	 *
-	 * query_row 的面向对象方法, 表名无需加表前缀, 数据也无需使用 $this->quote 进行过滤 ($where 条件除外)
+	 * query_row 的面向对象方法, 表名无需加表前缀, 数据也无需使用 $this->escape 进行过滤 ($where 条件除外)
 	 *
 	 * @param	string
 	 * @param	string
@@ -655,7 +655,7 @@ class AWS_MODEL
 	/**
 	 * 查询单字段, 直接返回数据
 	 *
-	 * 面向对象数据库操作, 表名无需加表前缀, 数据也无需使用 $this->quote 进行过滤 ($where 条件除外)
+	 * 面向对象数据库操作, 表名无需加表前缀, 数据也无需使用 $this->escape 进行过滤 ($where 条件除外)
 	 *
 	 * @param	string
 	 * @param	string
@@ -725,7 +725,7 @@ class AWS_MODEL
 	/**
 	 * 获取记录总数, SELECT COUNT() 方法
 	 *
-	 * 面向对象数据库操作, 表名无需加表前缀, 数据也无需使用 $this->quote 进行过滤 ($where 条件除外)
+	 * 面向对象数据库操作, 表名无需加表前缀, 数据也无需使用 $this->escape 进行过滤 ($where 条件除外)
 	 *
 	 * @param	string
 	 * @param	string
@@ -772,7 +772,7 @@ class AWS_MODEL
 	/**
 	 * 计算字段总和, SELECT SUM() 方法
 	 *
-	 * 面向对象数据库操作, 表名无需加表前缀, 数据也无需使用 $this->quote 进行过滤 ($where 条件除外)
+	 * 面向对象数据库操作, 表名无需加表前缀, 数据也无需使用 $this->escape 进行过滤 ($where 条件除外)
 	 *
 	 * @param	string
 	 * @param	string
@@ -825,7 +825,7 @@ class AWS_MODEL
 	 * @param	string
 	 * @return	string
 	 */
-	public function quote($string)
+	public function escape($string)
 	{
 		$_quote = $this->db()->quote($string);
 

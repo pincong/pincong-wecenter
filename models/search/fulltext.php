@@ -29,7 +29,7 @@ class search_fulltext_class extends AWS_MODEL
 
 	public function fetch_cache($search_hash)
 	{
-		if ($search_cache = $this->fetch_row('search_cache', "`hash` = '" . $this->quote($search_hash) . "'"))
+		if ($search_cache = $this->fetch_row('search_cache', "`hash` = '" . $this->escape($search_hash) . "'"))
 		{
 			return unserialize(gzuncompress(base64_decode($search_cache['data'])), array('allowed_classes' => false));
 		}
@@ -56,7 +56,7 @@ class search_fulltext_class extends AWS_MODEL
 
 	public function remove_cache($search_hash)
 	{
-		return $this->delete('search_cache', "`hash` = '" . $this->quote($search_hash) . "'");
+		return $this->delete('search_cache', "`hash` = '" . $this->escape($search_hash) . "'");
 	}
 
 	public function clean_cache()
@@ -85,7 +85,7 @@ class search_fulltext_class extends AWS_MODEL
 			$where = ' AND (' . $where . ')';
 		}
 
-		return trim("SELECT *, MATCH(" . $column . "_fulltext) AGAINST('" . $this->quote($this->encode_search_code($keyword)) . "' IN BOOLEAN MODE) AS score FROM " . $this->get_table($table) . " WHERE MATCH(" . $column . "_fulltext) AGAINST('" . $this->quote($this->encode_search_code($keyword)) . "' IN BOOLEAN MODE) " . $where);
+		return trim("SELECT *, MATCH(" . $column . "_fulltext) AGAINST('" . $this->escape($this->encode_search_code($keyword)) . "' IN BOOLEAN MODE) AS score FROM " . $this->get_table($table) . " WHERE MATCH(" . $column . "_fulltext) AGAINST('" . $this->escape($this->encode_search_code($keyword)) . "' IN BOOLEAN MODE) " . $where);
 	}
 
 	public function search_questions($q, $topic_ids = null, $page = 1, $limit = 20, $recommend = false)

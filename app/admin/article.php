@@ -53,7 +53,7 @@ class article extends AWS_ADMIN_CONTROLLER
 
 		if ($_GET['keyword'])
 		{
-			$where[] = "(`title` LIKE '%" . $this->model('article')->quote($_GET['keyword']) . "%')";
+			$where[] = "(`title` LIKE '%" . $this->model('article')->escape($_GET['keyword']) . "%')";
 		}
 
 		if ($_GET['start_date'])

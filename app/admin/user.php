@@ -53,7 +53,7 @@ class user extends AWS_ADMIN_CONTROLLER
 
         if ($_GET['user_name'])
         {
-            $where[] = "user_name LIKE '%" . $this->model('account')->quote($_GET['user_name']) . "%'";
+            $where[] = "user_name LIKE '%" . $this->model('account')->escape($_GET['user_name']) . "%'";
         }
 
         if ($_GET['group_id'])

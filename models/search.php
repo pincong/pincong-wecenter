@@ -41,7 +41,7 @@ class search_class extends AWS_MODEL
 	{
 		if (is_array($q) AND sizeof($q) > 1)
 		{
-			$where[] = "user_name = '" . $this->quote(implode(' ', $q)) . "' OR user_name = '" . $this->quote(implode('', $q)) . "'";
+			$where[] = "user_name = '" . $this->escape(implode(' ', $q)) . "' OR user_name = '" . $this->escape(implode('', $q)) . "'";
 		}
 		else
 		{
@@ -50,7 +50,7 @@ class search_class extends AWS_MODEL
 				$q = implode('', $q);
 			}
 
-			$where[] = "user_name LIKE '" . $this->quote($q) . "%'";
+			$where[] = "user_name LIKE '" . $this->escape($q) . "%'";
 		}
 
 		return $this->query_all('SELECT uid, user_name FROM ' . get_table('users') . ' WHERE ' . implode(' OR ', $where), calc_page_limit($page, $limit));
@@ -63,7 +63,7 @@ class search_class extends AWS_MODEL
 			$q = implode('', $q);
 		}
 
-		$result = $this->fetch_all('topic', "topic_title LIKE '" . $this->quote($q) . "%'", null, calc_page_limit($page, $limit));
+		$result = $this->fetch_all('topic', "topic_title LIKE '" . $this->escape($q) . "%'", null, calc_page_limit($page, $limit));
 
 		return $result;
 	}
