@@ -37,10 +37,17 @@ class ajax extends AWS_CONTROLLER
 
 		if ($this->model('password')->change_password($this->user_id, $_POST['scrambled_password'], $_POST['new_scrambled_password'], $_POST['client_salt']))
 		{
-			$this->model('login')->logout();
+			// 记住我
+			if ($_POST['remember_me'])
+			{
+				$expire = 60 * 60 * 24 * 360;
+			}
+
+			$this->model('login')->cookie_logout();
+			$this->model('login')->cookie_login($this->user_id, $_POST['new_scrambled_password'], $expire);
 
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => url_rewrite('/login/password_updated/')
+				'url' => url_rewrite('/account/password_updated/')
 			), 1, null));
 		}
 		else

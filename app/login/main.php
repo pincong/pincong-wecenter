@@ -86,11 +86,4 @@ class main extends AWS_CONTROLLER
 		TPL::output("account/login_next");
 	}
 
-	public function password_updated_action()
-	{
-		$url = '/login/';
-
-		H::redirect_msg(AWS_APP::lang()->_t('密码修改成功, 请使用新密码登录'), $url);
-	}
-
 }
