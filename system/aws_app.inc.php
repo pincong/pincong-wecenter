@@ -39,6 +39,7 @@ class AWS_APP
 	private static $token;
 	private static $auth;
 	private static $uri;
+	private static $theme;
 
 	private static $models = array();
 
@@ -454,6 +455,24 @@ class AWS_APP
 		}
 
 		return self::$auth;
+	}
+
+	/**
+	 * theme 处理类
+	 *
+	 * 调用 core/theme.php
+	 *
+	 * @access	public
+	 * @return	object
+	 */
+	public static function theme()
+	{
+		if (!self::$theme)
+		{
+			self::$theme = load_class('core_theme');
+		}
+
+		return self::$theme;
 	}
 
 	/**

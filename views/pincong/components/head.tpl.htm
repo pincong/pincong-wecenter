@@ -11,12 +11,8 @@
 <style>
 <?php TPL::include('tmp/style.tpl.css'); ?>
 </style>
-<link id="id_stylesheet_theme" rel="stylesheet" href="<?php
-	$theme_name = $_COOKIE[G_COOKIE_PREFIX . '_theme'] ?? null;
-	if ($theme_name AND $theme_name != 'default') {
-		echo G_STATIC_URL . '/themes/' . htmlspecialchars($theme_name) . '.css';
-	}
-?>">
+<?php $current_theme = AWS_APP::theme()->current_theme(); ?>
+<link id="id_stylesheet_theme" rel="stylesheet" href="<?php echo $current_theme['css']; ?>">
 <!--<?php if (S::get('custom_css')) { ?>
 <style>
 <?php echo S::get('custom_css'); ?>

@@ -19,14 +19,14 @@ class H
 	 *
 	 * @param $name
 	 */
-	public static function get_cookie($name)
+	public static function get_cookie($name, $default = false)
 	{
 		if (isset($_COOKIE[G_COOKIE_PREFIX . '_' . $name]))
 		{
 			return $_COOKIE[G_COOKIE_PREFIX . '_' . $name];
 		}
 
-		return false;
+		return $default;
 	}
 
 	/**

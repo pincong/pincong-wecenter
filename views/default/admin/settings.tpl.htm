@@ -1865,7 +1865,58 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('用户界面风格'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('浅色 Logo'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input name="logo_light" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['logo_light']); ?>"/>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('深色 Logo'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input name="logo_dark" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['logo_dark']); ?>"/>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('Logo 宽度'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input name="logo_width" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['logo_width']); ?>"/>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('Logo 高度'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input name="logo_height" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['logo_height']); ?>"/>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('默认主题风格'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input name="default_theme" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['default_theme']); ?>"/>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('用户界面模板'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<select class="form-control" name="ui_style">
 								<?php foreach($this->styles as $skey => $val) { ?>
