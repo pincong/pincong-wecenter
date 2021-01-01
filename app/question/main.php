@@ -181,7 +181,7 @@ class main extends AWS_CONTROLLER
 
 		$this->model('content')->update_view_count('question', $thread_info['id']);
 
-		$page_title = CF::page_title($thread_info['user_info'], 'question_' . $thread_info['id'], $thread_info['title']);
+		$page_title = CF::page_title($thread_info);
 		$this->crumb($page_title);
 
 		TPL::assign('pagination', AWS_APP::pagination()->create(array(

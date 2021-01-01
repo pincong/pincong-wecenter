@@ -23,7 +23,7 @@
 			<a class="pull-right" href="javascript:;" onclick="(function(selector){AWS.ajax_request(G_BASE_URL + '/content/ajax/unfollow/', 'item_type=<?php echo $val['post_type']; ?>&item_id=<?php echo $val['id']; ?>', function(){selector.parentsUntil('.aw-item').parent().remove();});})($(this))"><?php _e('取消关注'); ?></a>
 		</p>
 		<h4>
-			<a href="<?php echo url_rewrite(); ?>/<?php echo $val['post_type']; ?>/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a>
+			<a href="<?php echo url_rewrite(); ?>/<?php echo $val['post_type']; ?>/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title'], true); ?><?php } ?></a>
 		</h4>
 	</div>
 </div>

@@ -15,9 +15,9 @@
 		<description><?php echo S::get('description'); ?></description>
 		<?php foreach($this->list as $key => $val){ ?>
 		<item>
-			<title><?php echo FORMAT::text($val['title']); ?></title>
+			<title><?php echo FORMAT::text($val['title'], true); ?></title>
 			<link><?php echo url_rewrite('/question/' . $val['id']); ?></link>
-			<description><![CDATA[<?php echo FORMAT::bbcode($val['message']); ?>]]></description>
+			<description><![CDATA[<?php echo FORMAT::bbcode($val['message'], true); ?>]]></description>
 			<pubDate><?php echo date('D, d M Y', $val['add_time']); ?></pubDate>
 			<guid><?php echo url_rewrite('/question/' . $val['id']); ?></guid>
 		</item>

@@ -6,7 +6,7 @@
 		<div class="row">
 			<div class="col-sm-12 aw-global-tips">
 				<div class="alert alert-warning fade in">
-					<a href="<?php echo url_rewrite(); ?>/article/<?php echo $this->redirected_from['id']; ?>"><?php echo FORMAT::text($this->redirected_from['title']); ?></a> <?php _e('已与本文章合并'); ?>
+					<a href="<?php echo url_rewrite(); ?>/article/<?php echo $this->redirected_from['id']; ?>"><?php echo CF::title($this->redirected_from); ?></a> <?php _e('已与本文章合并'); ?>
 				</div>
 			</div>
 		</div>
@@ -17,7 +17,7 @@
 		<div class="row">
 			<div class="col-sm-12 aw-global-tips">
 				<div class="alert alert-danger fade in">
-					<?php _e('本文章已被合并到'); ?>: <a href="<?php echo url_rewrite(); ?>/article/id-<?php echo $this->redirect_info['id']; ?>__rf-<?php echo $this->article_info['id']; ?>"><?php echo FORMAT::text($this->redirect_info['title']); ?></a>
+					<?php _e('本文章已被合并到'); ?>: <a href="<?php echo url_rewrite(); ?>/article/id-<?php echo $this->redirect_info['id']; ?>__rf-<?php echo $this->article_info['id']; ?>"><?php echo CF::title($this->redirect_info); ?></a>
 				</div>
 			</div>
 		</div>
@@ -136,12 +136,12 @@
 					<div class="aw-mod aw-question-detail" <?php if ($this->user_info['permission']['is_moderator']) { ?>data-item-reputation="<?php echo $this->article_info['reputation']; ?>"<?php } ?>>
 						<div class="mod-head">
 							<h1>
-								<?php echo CF::title($this->article_info['user_info'], 'article_' . $this->article_info['id'], $this->article_info['title']); ?>
+								<?php echo CF::title($this->article_info); ?>
 							</h1>
 						</div>
 						<div class="mod-body">
 							<div class="content markitup-box">
-								<?php echo CF::body($this->article_info['user_info'], 'article_' . $this->article_info['id'], $this->article_info['message']); ?>
+								<?php echo CF::body($this->article_info); ?>
 							</div>
 							<div class="meta clearfix">
 								<div class="aw-vote-ui aw-article-vote pull-left<?php if (!$this->user_id OR $this->user_id == $this->article_info['uid']) { ?> disabled<?php } ?>">
@@ -356,7 +356,7 @@
 							<ul>
 								<?php foreach($this->related_posts AS $key => $val) { ?>
 								<li>
-									<a href="<?php echo url_rewrite(); ?>/<?php echo $val['post_type']; ?>/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a>
+									<a href="<?php echo url_rewrite(); ?>/<?php echo $val['post_type']; ?>/<?php echo $val['id']; ?>"><?php echo CF::title($val); ?></a>
 								</li>
 								<?php } ?>
 							</ul>
@@ -375,7 +375,7 @@
 							<ul>
 								<?php foreach($this->recommended_posts AS $key => $val) { ?>
 								<li>
-									<a href="<?php echo url_rewrite(); ?>/<?php echo $val['post_type']; ?>/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a>
+									<a href="<?php echo url_rewrite(); ?>/<?php echo $val['post_type']; ?>/<?php echo $val['id']; ?>"><?php echo CF::title($val); ?></a>
 								</li>
 								<?php } ?>
 							</ul>

@@ -32,7 +32,7 @@
 		<span><?php echo date_friendly($val['add_time']); ?></span>
 	</div>
 	<div class="markitup-box">
-		<?php echo CF::reply_simple($val['user_info'], 'answer_discussion_' . $val['id'], $val['message']); ?>
+		<?php echo CF::reply_simple($val); ?>
 	</div>
 </div>
 <?php } ?>

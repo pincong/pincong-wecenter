@@ -38,7 +38,7 @@
 										<img src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" alt="" />
 									</a>
 									<div class="aw-item">
-										<p><a href="<?php echo UF::url($this->user_info); ?>"><?php _e('我'); ?></a>: <?php echo FORMAT::hyperlink($val['message']); ?></p>
+										<p><a href="<?php echo UF::url($this->user_info); ?>"><?php _e('我'); ?></a>: <?php echo FORMAT::hyperlink($val['message'], true); ?></p>
 										<p class="aw-small-text">
 											<?php echo date_friendly($val['add_time']); ?>
 											<?php if ($val['receipt']) { ?> (<?php _e('对方于 %s 已读', date_friendly($val['receipt'])); ?>)<?php } ?>
@@ -52,7 +52,7 @@
 										<img src="<?php echo UF::avatar($this->recipient_user, 'mid'); ?>" alt="" />
 									</a>
 									<div class="aw-item">
-										<p><a href="<?php echo UF::url($this->recipient_user); ?>"><?php echo UF::name($this->recipient_user); ?></a>: <?php echo FORMAT::message($val['message']); ?></p>
+										<p><a href="<?php echo UF::url($this->recipient_user); ?>"><?php echo UF::name($this->recipient_user); ?></a>: <?php echo FORMAT::hyperlink($val['message'], true); ?></p>
 										<p class="aw-small-text">
 											<span class="pull-right aw-reply"><a href="javascript:;" onclick="$.scrollTo(($('#recipient_form').offset()['top']) - 20, 600, {queue:true});$('.message').focus();"><?php _e('回复'); ?></a></span>
 											<?php echo date_friendly($val['add_time']); ?>

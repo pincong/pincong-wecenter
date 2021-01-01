@@ -6,7 +6,7 @@
 		<div class="row">
 			<div class="col-sm-12 aw-global-tips">
 				<div class="alert alert-warning fade in">
-					<a href="<?php echo url_rewrite(); ?>/question/<?php echo $this->redirected_from['id']; ?>"><?php echo FORMAT::text($this->redirected_from['title']); ?></a> <?php _e('已与本问题合并'); ?>
+					<a href="<?php echo url_rewrite(); ?>/question/<?php echo $this->redirected_from['id']; ?>"><?php echo CF::title($this->redirected_from); ?></a> <?php _e('已与本问题合并'); ?>
 				</div>
 			</div>
 		</div>
@@ -17,7 +17,7 @@
 		<div class="row">
 			<div class="col-sm-12 aw-global-tips">
 				<div class="alert alert-danger fade in">
-					<?php _e('本问题已被合并到'); ?>: <a href="<?php echo url_rewrite(); ?>/question/id-<?php echo $this->redirect_info['id']; ?>__rf-<?php echo $this->question_info['id']; ?>"><?php echo FORMAT::text($this->redirect_info['title']); ?></a>
+					<?php _e('本问题已被合并到'); ?>: <a href="<?php echo url_rewrite(); ?>/question/id-<?php echo $this->redirect_info['id']; ?>__rf-<?php echo $this->question_info['id']; ?>"><?php echo CF::title($this->redirect_info); ?></a>
 				</div>
 			</div>
 		</div>
@@ -135,12 +135,12 @@
 					<div class="aw-mod aw-question-detail aw-item" <?php if ($this->user_info['permission']['is_moderator']) { ?>data-item-reputation="<?php echo $this->question_info['reputation']; ?>"<?php } ?>>
 						<div class="mod-head">
 							<h1>
-								<?php echo CF::title($this->question_info['user_info'], 'question_' . $this->question_info['id'], $this->question_info['title']); ?>
+								<?php echo CF::title($this->question_info); ?>
 							</h1>
 						</div>
 						<div class="mod-body">
 							<div class="content markitup-box">
-								<?php echo CF::body($this->question_info['user_info'], 'question_' . $this->question_info['id'], $this->question_info['message']); ?>
+								<?php echo CF::body($this->question_info); ?>
 							</div>
 						</div>
 						<div class="mod-footer">
@@ -403,7 +403,7 @@
 							<ul>
 								<?php foreach($this->related_posts AS $key => $val) { ?>
 								<li>
-									<a href="<?php echo url_rewrite(); ?>/<?php echo $val['post_type']; ?>/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a>
+									<a href="<?php echo url_rewrite(); ?>/<?php echo $val['post_type']; ?>/<?php echo $val['id']; ?>"><?php echo CF::title($val); ?></a>
 								</li>
 								<?php } ?>
 							</ul>
@@ -421,7 +421,7 @@
 						<div class="mod-body aw-size-12">
 							<ul>
 								<?php foreach($this->recommended_posts AS $key => $val) { ?>
-								<li><a href="<?php echo url_rewrite(); ?>/<?php echo $val['post_type']; ?>/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a></li>
+								<li><a href="<?php echo url_rewrite(); ?>/<?php echo $val['post_type']; ?>/<?php echo $val['id']; ?>"><?php echo CF::title($val); ?></a></li>
 								<?php } ?>
 							</ul>
 						</div>

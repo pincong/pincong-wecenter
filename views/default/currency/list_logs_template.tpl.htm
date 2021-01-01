@@ -5,7 +5,7 @@
 	<td><span class="<?php if ($val['currency'] > 0) { ?>aw-text-color-orange<?php } ?>"><?php echo $val['currency']; ?></span></td>
 	<td><?php echo $val['balance']; ?></td>
 	<td><?php _e($val['note']); ?><?php if ($val['item_type']) { ?> <?php echo $val['item_type']; ?> #<?php echo $val['item_id']; ?><?php } ?></td>
-	<td><p><?php if ($this->log_detail[$val['id']]) { ?><a href="<?php echo $this->log_detail[$val['id']]['url']; ?>"><?php echo FORMAT::text($this->log_detail[$val['id']]['title']); ?></a><?php } else { ?> - <?php } ?></p></td>
+	<td><p><?php if ($this->log_detail[$val['id']]) { ?><a href="<?php echo $this->log_detail[$val['id']]['url']; ?>"><?php echo FORMAT::text($this->log_detail[$val['id']]['title'], true); ?></a><?php } else { ?> - <?php } ?></p></td>
 </tr>
 <?php } ?>
 <?php } ?>

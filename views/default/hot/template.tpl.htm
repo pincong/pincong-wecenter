@@ -17,12 +17,12 @@
 			<?php _e('%s 个回复', $val['answer_count']); ?>
 		</p>
 		<h2 style="font-size:16px;">
-			<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['id']; ?>"><?php echo CF::title($val['user_info'], 'question_' . $val['id'], $val['title']); ?></a>
+			<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['id']; ?>"><?php echo CF::title($val); ?></a>
 		</h2>
 	</div>
 	<div class="mod-body">
 		<div class="content markitup-box">
-			<?php echo CF::body($val['user_info'], 'question_' . $val['id'], $val['message']); ?>
+			<?php echo CF::body($val); ?>
 		</div>
 	</div>
 	<div class="mod-footer">
@@ -96,7 +96,7 @@
 			<?php _e('回复了问题'); ?>
 		</p>
 		<h2 style="font-size:16px;">
-			<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['thread_info']['id']; ?>"><?php echo CF::title($val['thread_info']['user_info'], 'question_' . $val['thread_info']['id'], $val['thread_info']['title']); ?></a>
+			<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['thread_info']['id']; ?>"><?php echo CF::title($val['thread_info']); ?></a>
 		</h2>
 	</div>
 	<div class="mod-body clearfix">
@@ -181,12 +181,12 @@
 			<?php _e('%s 个评论', $val['comments']); ?>
 		</p>
 		<h2 style="font-size:16px;">
-			<a href="<?php echo url_rewrite(); ?>/article/<?php echo $val['id']; ?>"><?php echo CF::title($val['user_info'], 'article_' . $val['id'], $val['title']); ?></a>
+			<a href="<?php echo url_rewrite(); ?>/article/<?php echo $val['id']; ?>"><?php echo CF::title($val); ?></a>
 		</h2>
 	</div>
 	<div class="mod-body">
 		<div class="content markitup-box">
-			<?php echo CF::body($val['user_info'], 'article_' . $val['id'], $val['message']); ?>
+			<?php echo CF::body($val); ?>
 		</div>
 	</div>
 	<div class="mod-footer">
@@ -231,7 +231,7 @@
 			<?php _e('评论了文章'); ?>
 		</p>
 		<h2 style="font-size:16px;">
-			<a href="<?php echo url_rewrite(); ?>/article/<?php echo $val['thread_info']['id']; ?>"><?php echo CF::title($val['thread_info']['user_info'], 'article_' . $val['thread_info']['id'], $val['thread_info']['title']); ?></a>
+			<a href="<?php echo url_rewrite(); ?>/article/<?php echo $val['thread_info']['id']; ?>"><?php echo CF::title($val['thread_info']); ?></a>
 		</h2>
 	</div>
 	<div class="mod-body clearfix">
@@ -273,12 +273,12 @@
 			<?php _e('%s 个评论', $val['comment_count']); ?>
 		</p>
 		<h2 style="font-size:16px;">
-			<a href="<?php echo url_rewrite(); ?>/video/<?php echo $val['id']; ?>"><?php echo CF::title($val['user_info'], 'video_' . $val['id'], $val['title']); ?></a>
+			<a href="<?php echo url_rewrite(); ?>/video/<?php echo $val['id']; ?>"><?php echo CF::title($val); ?></a>
 		</h2>
 	</div>
 	<div class="mod-body">
 		<div class="content markitup-box">
-			<?php echo CF::body_simple($val['user_info'], 'video_' . $val['id'], $val['message']); ?>
+			<?php echo CF::body_simple($val); ?>
 		</div>
 	</div>
 	<div class="mod-footer">
@@ -323,7 +323,7 @@
 			<?php _e('评论了影片'); ?>
 		</p>
 		<h2 style="font-size:16px;">
-			<a href="<?php echo url_rewrite(); ?>/video/<?php echo $val['thread_info']['id']; ?>"><?php echo CF::title($val['thread_info']['user_info'], 'video_' . $val['thread_info']['id'], $val['thread_info']['title']); ?></a>
+			<a href="<?php echo url_rewrite(); ?>/video/<?php echo $val['thread_info']['id']; ?>"><?php echo CF::title($val['thread_info']); ?></a>
 		</h2>
 	</div>
 	<div class="mod-body clearfix">

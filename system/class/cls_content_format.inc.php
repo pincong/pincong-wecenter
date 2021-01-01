@@ -69,7 +69,7 @@ class CF
 	// 获得知识库 id (替换原内容)
 	private static function get_kb_id($user_info, $key)
 	{
-		if ($user_info['forbidden'] != 3)
+		if (!$user_info OR $user_info['forbidden'] != 3)
 		{
 			return 0;
 		}
@@ -101,99 +101,111 @@ class CF
 	}
 
 	// 标题 (raw text)
-	public static function page_title($user_info, $key, $string)
+	public static function page_title($item_info)
 	{
-		if ($user_info['forbidden'] == 2)
+		$user_info = $item_info['user_info'] ?? null;
+
+		if ($user_info AND $user_info['forbidden'] == 2)
 		{
 			return '';
 		}
 
-		if ($kb = self::get_kb($user_info, $key))
+		if ($kb = self::get_kb($user_info, 'thread_' . $item_info['id']))
 		{
-			return $kb['title'];
+			return FORMAT::text($kb['title']);
 		}
-		return $string;
+		return FORMAT::text($item_info['title']);
 	}
 
 	// 标题
-	public static function title($user_info, $key, $string)
+	public static function title($item_info)
 	{
-		if ($user_info['forbidden'] == 2)
+		$user_info = $item_info['user_info'] ?? null;
+
+		if ($user_info AND $user_info['forbidden'] == 2)
 		{
 			return self::txt_hidden();
 		}
 
-		if ($kb = self::get_kb($user_info, $key))
+		if ($kb = self::get_kb($user_info, 'thread_' . $item_info['id']))
 		{
-			return $kb['title'];
+			return FORMAT::text($kb['title']);
 		}
-		if (!isset($string))
+		if (!$item_info['title'])
 		{
 			return self::txt_deleted();
 		}
-		return $string;
+		return FORMAT::text($item_info['title'], true);
 	}
 
 	// 正文 (不显示已删除) (解析bbcode)
-	public static function body($user_info, $key, $string)
+	public static function body($item_info)
 	{
-		if ($user_info['forbidden'] == 2)
+		$user_info = $item_info['user_info'] ?? null;
+
+		if ($user_info AND $user_info['forbidden'] == 2)
 		{
 			return '';
 		}
 
-		if ($kb = self::get_kb($user_info, $key))
+		if ($kb = self::get_kb($user_info, 'thread_' . $item_info['id']))
 		{
 			return self::kb_tips() . FORMAT::bbcode($kb['message']);
 		}
-		return FORMAT::bbcode($string);
+		return FORMAT::bbcode($item_info['message'], true);
 	}
 
 	// 正文 (不显示已删除) (解析链接)
-	public static function body_simple($user_info, $key, $string)
+	public static function body_simple($item_info)
 	{
-		if ($user_info['forbidden'] == 2)
+		$user_info = $item_info['user_info'] ?? null;
+
+		if ($user_info AND $user_info['forbidden'] == 2)
 		{
 			return '';
 		}
 
-		if ($kb = self::get_kb($user_info, $key))
+		if ($kb = self::get_kb($user_info, 'thread_' . $item_info['id']))
 		{
 			return self::kb_tips() . FORMAT::bbcode($kb['message']);
 		}
-		return FORMAT::hyperlink($string);
+		return FORMAT::hyperlink($item_info['message'], true);
 	}
 
 	// 回复 (解析bbcode)
-	public static function reply($user_info, $key, $string)
+	public static function reply($item_info)
 	{
-		if ($kb = self::get_kb($user_info, $key))
+		$user_info = $item_info['user_info'] ?? null;
+
+		if ($kb = self::get_kb($user_info, 'reply_' . $item_info['id']))
 		{
 			$text = $kb['title'] . "\r\n" . $kb['message'];
 			return self::kb_tips() . FORMAT::bbcode($text);
 		}
 
-		if (!isset($string))
+		if (!$item_info['message'])
 		{
 			return self::txt_deleted();
 		}
-		return FORMAT::bbcode($string);
+		return FORMAT::bbcode($item_info['message'], true);
 	}
 
 	// 回复 (解析链接)
-	public static function reply_simple($user_info, $key, $string)
+	public static function reply_simple($item_info)
 	{
-		if ($kb = self::get_kb($user_info, $key))
+		$user_info = $item_info['user_info'] ?? null;
+
+		if ($kb = self::get_kb($user_info, 'reply_' . $item_info['id']))
 		{
 			$text = $kb['title'] . "\r\n" . $kb['message'];
 			return self::kb_tips() . FORMAT::bbcode($text);
 		}
 
-		if (!isset($string))
+		if (!$item_info['message'])
 		{
 			return self::txt_deleted();
 		}
-		return FORMAT::hyperlink($string);
+		return FORMAT::hyperlink($item_info['message'], true);
 	}
 
 	public static function skip($user_info, $limited = true)

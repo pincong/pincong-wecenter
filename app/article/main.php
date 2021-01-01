@@ -113,7 +113,7 @@ class main extends AWS_CONTROLLER
 			TPL::assign('redirected_from', $this->model('content')->get_post_by_id('article', H::GET('rf')));
 		}
 
-		$page_title = CF::page_title($thread_info['user_info'], 'article_' . $thread_info['id'], $thread_info['title']);
+		$page_title = CF::page_title($thread_info);
 		$this->crumb($page_title);
 
 		$reply_count = $thread_info['comments'];

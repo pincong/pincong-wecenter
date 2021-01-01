@@ -97,7 +97,7 @@ class FORMAT
 	}
 
 
-	public static function text($text)
+	public static function text($text, $censor = false)
 	{
 		if (!$text)
 		{
@@ -110,7 +110,7 @@ class FORMAT
 			$text
 		);
 
-		if ($_GET['app'] == 'admin')
+		if (!$censor)
 		{
 			return $text;
 		}
@@ -137,17 +137,17 @@ class FORMAT
 	}
 
 
-	public static function message($text)
+	public static function message($text, $censor = false)
 	{
-		$text = self::text($text);
+		$text = self::text($text, $censor);
 
 		return nl2br($text);
 	}
 
 
-	public static function hyperlink($text)
+	public static function hyperlink($text, $censor = false)
 	{
-		$text = self::text($text);
+		$text = self::text($text, $censor);
 
 		$text = @preg_replace_callback(
 			'/(?<!!!\[\]\(|"|\'|\)|>)(https?:\/\/[-a-zA-Z0-9@:;%_\+.~#?\&\/\/=!]+)(?!"|\'|\)|>)/i',
@@ -164,9 +164,9 @@ class FORMAT
 	}
 
 
-	public static function bbcode($text)
+	public static function bbcode($text, $censor = false)
 	{
-		$text = self::text($text);
+		$text = self::text($text, $censor);
 
 		// 不再主动解析链接
 		// Bug: [url]https://web.archive.org/web/20170602230234/http://www.sohu.com/a/145581401_670685[/url]

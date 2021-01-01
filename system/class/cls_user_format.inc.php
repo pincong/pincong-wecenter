@@ -61,7 +61,7 @@ class UF
 		{
 			return '';
 		}
-		return FORMAT::text($user_info['signature']);
+		return FORMAT::text($user_info['signature'], true);
 	}
 
 	public static function name($user_info)

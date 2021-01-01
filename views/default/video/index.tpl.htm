@@ -6,7 +6,7 @@
 		<div class="row">
 			<div class="col-sm-12 aw-global-tips">
 				<div class="alert alert-warning fade in">
-					<a href="<?php echo url_rewrite(); ?>/video/<?php echo $this->redirected_from['id']; ?>"><?php echo FORMAT::text($this->redirected_from['title']); ?></a> <?php _e('已与本影片合并'); ?>
+					<a href="<?php echo url_rewrite(); ?>/video/<?php echo $this->redirected_from['id']; ?>"><?php echo CF::title($this->redirected_from); ?></a> <?php _e('已与本影片合并'); ?>
 				</div>
 			</div>
 		</div>
@@ -17,7 +17,7 @@
 		<div class="row">
 			<div class="col-sm-12 aw-global-tips">
 				<div class="alert alert-danger fade in">
-					<?php _e('本影片已被合并到'); ?>: <a href="<?php echo url_rewrite(); ?>/video/id-<?php echo $this->redirect_info['id']; ?>__rf-<?php echo $this->video_info['id']; ?>"><?php echo FORMAT::text($this->redirect_info['title']); ?></a>
+					<?php _e('本影片已被合并到'); ?>: <a href="<?php echo url_rewrite(); ?>/video/id-<?php echo $this->redirect_info['id']; ?>__rf-<?php echo $this->video_info['id']; ?>"><?php echo CF::title($this->redirect_info); ?></a>
 				</div>
 			</div>
 		</div>
@@ -135,7 +135,7 @@
 					<div class="aw-mod aw-question-detail" <?php if ($this->user_info['permission']['is_moderator']) { ?>data-item-reputation="<?php echo $this->video_info['reputation']; ?>"<?php } ?>>
 						<div class="mod-head">
 							<h1>
-								<?php echo CF::title($this->video_info['user_info'], 'video_' . $this->video_info['id'], $this->video_info['title']); ?>
+								<?php echo CF::title($this->video_info); ?>
 							</h1>
 						</div>
 						<div class="mod-body">
@@ -145,7 +145,7 @@
 							</div>
 							<?php } ?>
 							<div class="content markitup-box">
-								<?php echo CF::body_simple($this->video_info['user_info'], 'video_' . $this->video_info['id'], $this->video_info['message']); ?>
+								<?php echo CF::body_simple($this->video_info); ?>
 							</div>
 							<div class="meta clearfix">
 								<div class="aw-vote-ui aw-article-vote pull-left<?php if (!$this->user_id OR $this->user_id == $this->video_info['uid']) { ?> disabled<?php } ?>">
@@ -360,7 +360,7 @@
 							<ul>
 								<?php foreach($this->related_posts AS $key => $val) { ?>
 								<li>
-									<a href="<?php echo url_rewrite(); ?>/<?php echo $val['post_type']; ?>/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a>
+									<a href="<?php echo url_rewrite(); ?>/<?php echo $val['post_type']; ?>/<?php echo $val['id']; ?>"><?php echo CF::title($val); ?></a>
 								</li>
 								<?php } ?>
 							</ul>
@@ -378,7 +378,7 @@
 						<div class="mod-body aw-size-12">
 							<ul>
 								<?php foreach($this->recommended_posts AS $key => $val) { ?>
-								<li><a href="<?php echo url_rewrite(); ?>/<?php echo $val['post_type']; ?>/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a></li>
+								<li><a href="<?php echo url_rewrite(); ?>/<?php echo $val['post_type']; ?>/<?php echo $val['id']; ?>"><?php echo CF::title($val); ?></a></li>
 								<?php } ?>
 							</ul>
 						</div>
