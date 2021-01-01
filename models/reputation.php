@@ -82,15 +82,31 @@ class reputation_class extends AWS_MODEL
 	}
 
 	// 更新posts_index表声望(用于热门排序)
-	private function update_index_reputation(&$item_type, $item_id, $item_reputation)
+	private function update_index_reputation(&$item_type, $item_id, &$item_info, $reputation_value)
 	{
-		if (!$this->model('content')->check_thread_type($item_type))
+		switch ($item_type)
 		{
-			return;
+			case 'answer':
+				$parent_id = $item_info['question_id'];
+				$parent_type = 'question';
+				break;
+
+			case 'article_comment':
+				$parent_id = $item_info['article_id'];
+				$parent_type = 'article';
+				break;
+
+			case 'video_comment':
+				$parent_id = $item_info['video_id'];
+				$parent_type = 'video';
+				break;
+
+			default:
+				return;
 		}
 
-		$where = "post_id = " . $item_id . " AND post_type = '" . $item_type . "'";
-		$sql = 'UPDATE ' . $this->get_table('posts_index') . ' SET reputation = ' . ($item_reputation) . ' WHERE ' . $where;
+		$where = "post_id = " . $parent_id . " AND post_type = '" . $parent_type . "'";
+		$sql = 'UPDATE ' . $this->get_table('posts_index') . ' SET reputation = reputation + ' . $reputation_value . ' WHERE ' . $where;
 		$this->query($sql);
 	}
 
@@ -224,7 +240,7 @@ class reputation_class extends AWS_MODEL
 			{
 				$this->push_item_with_high_reputation($item_type, $item_id, $item_reputation);
 			}
-			$this->update_index_reputation($item_type, $item_id, $item_reputation);
+			$this->update_index_reputation($item_type, $item_id, $item_info, $reputation_value);
 		}
 
 		$this->update_item_agree_count_and_reputation($item_type, $item_id, $agree_value, $reputation_value);

@@ -267,7 +267,7 @@ class posts_class extends AWS_MODEL
 
 			$explore_list_data[$key]['post_type'] = $data['post_type'];
 
-			$explore_list_data[$key]['hot'] = intval(is_numeric($push_reputation) AND $data['reputation'] >= $push_reputation);
+			$explore_list_data[$key]['hot'] = intval(is_numeric($push_reputation) AND $explore_list_data[$key]['reputation'] >= $push_reputation);
 
 			if (get_setting('category_enable') != 'N')
 			{

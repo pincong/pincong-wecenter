@@ -56,7 +56,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($item_info['uid'] == $this->user_id)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能对自己发表的内容进行投票')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能赞同/反对自己发表的内容')));
 		}
 
 		if (!$this->model('vote')->check_same_user_limit($this->user_id, $item_info['uid'], 1))
@@ -67,7 +67,7 @@ class ajax extends AWS_CONTROLLER
 		// 恶意行为
 		if ($this->model('vote')->get_user_vote_count($this->user_id, null, null, $_POST['type'], $_POST['item_id']) >= 4)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作失败')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能反复赞同/反对')));
 		}
 
 		set_user_operation_last_time('vote', $this->user_id);
@@ -107,7 +107,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($item_info['uid'] == $this->user_id)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能对自己发表的内容进行投票')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能赞同/反对自己发表的内容')));
 		}
 
 		if (!$this->model('vote')->check_same_user_limit($this->user_id, $item_info['uid'], -1))
@@ -118,7 +118,7 @@ class ajax extends AWS_CONTROLLER
 		// 恶意行为
 		if ($this->model('vote')->get_user_vote_count($this->user_id, null, null, $_POST['type'], $_POST['item_id']) >= 4)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作失败')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能反复赞同/反对')));
 		}
 
 		set_user_operation_last_time('vote', $this->user_id);
