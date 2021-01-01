@@ -313,15 +313,7 @@ var AWS =
 			start_page = 0
 		}
 
-		// 把页数绑定在元素上面
-		if (selector.attr('data-page') == undefined)
-		{
-			selector.attr('data-page', start_page);
-		}
-		else
-		{
-			selector.attr('data-page', parseInt(selector.attr('data-page')) + 1);
-		}
+		var page = start_page;
 
 		selector.bind('click', function ()
 		{
@@ -329,32 +321,30 @@ var AWS =
 
 			$(this).addClass('loading');
 
-			$.get(url + '__page-' + $(_this).attr('data-page'), function (result)
+			$.get(url + '__page-' + page, function (result)
 			{
 				$(_this).removeClass('loading');
 
-				if ($.trim(result) != '')
-				{
-					if ($(_this).attr('data-page') == start_page && $(_this).attr('auto-load') != 'false')
-					{
-						container.html(result);
-					}
-					else
-					{
-						container.append(result);
-					}
+				result = $.trim(result);
 
-					// 页数增加1
-					$(_this).attr('data-page', parseInt($(_this).attr('data-page')) + 1);
-				}
-				else
+				if (!result)
 				{
 					//没有内容
-					if ($(_this).attr('data-page') == start_page && $(_this).attr('auto-load') != 'false')
+					if (page == start_page && $(_this).attr('auto-load') != 'false')
 					{
 						container.html('<p style="padding: 15px 0" align="center">' + _t('没有内容') + '</p>');
 					}
+				}
+				else
+				{
+					container.append(result);
+				}
 
+				// 页数增加1
+				page++;
+
+				if (!result || (total_pages && page > total_pages))
+				{
 					$(_this).addClass('disabled').unbind('click').bind('click', function () { return false; });
 
 					$(_this).find('span').html(_t('没有更多了'));
