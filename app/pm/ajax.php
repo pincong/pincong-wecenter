@@ -82,6 +82,20 @@ class ajax extends AWS_CONTROLLER
 		}
 		else
 		{
+			$users = $this->model('account')->get_user_info_by_uids($uids);
+			if (!is_array($users) OR count($users) != count($uids))
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('接收私信的用户不存在')));
+			}
+			foreach ($users as $user)
+			{
+				if (!$this->model('pm')->test_permissions($this->user_info, $user, $error))
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', $error));
+					break;
+				}
+			}
+
 			$conversation_id = $this->model('pm')->new_conversation($this->user_id, $messages);
 			if (!$conversation_id)
 			{

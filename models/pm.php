@@ -22,31 +22,80 @@ class pm_class extends AWS_MODEL
 {
 	private static $cached_conversations = array();
 
-	public function test_permission($this_user, $recipient_user)
+	public function test_permissions($this_user, $recipient_user, &$error)
 	{
+		if (!$recipient_user['public_key'])
+		{
+			$error = AWS_APP::lang()->_t('%s 没有公钥, 你无法给 Ta 发送私信', $recipient_user['user_name']);
+			return false;
+		}
+
+		if ($this_user['uid'] == $recipient_user['uid'])
+		{
+			// 不在此处检查自己
+			return true;
+		}
+
 		if ($this_user['permission']['dispatch_pm'])
 		{
-			return 1; // 自己可以给任何人发送例外私信
+			// 自己可以给任何人发送例外私信
+			return true;
+		}
+
+		if ($recipient_user['forbidden'])
+		{
+			$error = AWS_APP::lang()->_t('%s 已经被禁止登录', $recipient_user['user_name']);
+			return false;
 		}
 
 		$recipient_user_group = $this->model('usergroup')->get_user_group_by_user_info($recipient_user);
 		// 例外情况 如果对方拥有['receive_pm']权限
 		if ($recipient_user_group['permission']['receive_pm'])
 		{
-			return 2; // 对方可以接收例外私信
+			// 对方可以接收例外私信
+		}
+		else
+		{
+			if (!$this_user['permission']['send_pm'])
+			{
+				// 自己不可以发送私信
+				$error = AWS_APP::lang()->_t('你的声望还不能给 %s 发送私信', $recipient_user['user_name']);
+				return false;
+			}
+			if (!$recipient_user_group['permission']['send_pm'])
+			{
+				// 对方不可以发送私信
+				$error = AWS_APP::lang()->_t('%s 的声望还不能接收你的私信', $recipient_user['user_name']);
+				return false;
+			}
+			// 双方都可以发送私信
 		}
 
-		if (!$this_user['permission']['send_pm'])
+		$inbox_recv = $recipient_user['inbox_recv'];
+		if ($inbox_recv != 1 AND $inbox_recv != 2 AND $inbox_recv != 3)
 		{
-			return false; // 自己不可以发送私信
-		}
-		if (!$recipient_user_group['permission']['send_pm'])
-		{
-			return 0; // 对方不可以发送私信
+			$inbox_recv = S::get_int('default_inbox_recv');
 		}
 
-		return true; // 双方都可以发送私信
+		if ($inbox_recv == 2) // 2为拒绝任何人
+		{
+			$error = AWS_APP::lang()->_t('%s 设置了拒绝接收任何人的私信', $recipient_user['user_name']);
+			return false;
+		}
+		else if ($inbox_recv == 3) // 3为任何人
+		{
+			return true;
+		}
+
+		if (!$this->model('follow')->user_follow_check($recipient_user['uid'], $this->user_id))
+		{
+			$error = AWS_APP::lang()->_t('%s 未关注你, 你无法给 Ta 发送私信', $recipient_user['user_name']);
+			return false;
+		}
+
+		return true;
 	}
+
 
 	public function find_conversation_by_uids($uids)
 	{

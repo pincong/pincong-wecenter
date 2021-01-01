@@ -83,12 +83,47 @@ class main extends AWS_CONTROLLER
 
 	public function new_action()
 	{
-		$uids = explode(',', H::GET_S('id'));
-		$uids[] = $this->user_id;
-		$users = $this->model('account')->get_user_info_by_uids($uids);
-		if (!is_array($users) OR count($users) < 2 OR count($users) > 5)
+		$usernames = H::POST_S('usernames');
+		if (!is_array($usernames) OR count($usernames) > 4)
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('会话不存在'), '/pm/');
+			H::redirect_msg(AWS_APP::lang()->_t('内容错误'));
+		}
+		$usernames = array_unique($usernames);
+
+		$names = [];
+		$sender_name = htmlspecialchars_decode($this->user_info['user_name']);
+		foreach ($usernames as $username)
+		{
+			if (!$username)
+			{
+				continue;
+			}
+			if ($username == $sender_name)
+			{
+				H::redirect_msg(AWS_APP::lang()->_t('不能给自己发私信'));
+			}
+			$names[] = $username;
+		}
+		$names[] = $sender_name;
+		$count = count($names);
+		if ($count < 2)
+		{
+			H::redirect_msg(AWS_APP::lang()->_t('内容错误'));
+		}
+
+		$users = $this->model('account')->get_user_info_by_usernames($names);
+		if (!is_array($users) OR count($users) != $count)
+		{
+			H::redirect_msg(AWS_APP::lang()->_t('接收私信的用户不存在'));
+		}
+
+		foreach ($users as $user)
+		{
+			if (!$this->model('pm')->test_permissions($this->user_info, $user, $error))
+			{
+				H::redirect_msg($error);
+				break;
+			}
 		}
 
 		$conversation = [
@@ -117,4 +152,5 @@ class main extends AWS_CONTROLLER
 
 		TPL::output('pm/conversation');
 	}
+
 }

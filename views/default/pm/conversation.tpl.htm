@@ -20,11 +20,11 @@
 						</div>
 						<div class="mod-body">
 							<!-- 私信内容输入框　-->
-							<form id="pm_form" onsubmit="return false" method="post" style="visibility:hidden;">
+							<form id="pm_form" onsubmit="return false" method="post">
 								<a href="<?php echo UF::url($this->user_info); ?>" class="aw-user-img aw-border-radius-5"><img src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" alt="" /></a>
 								<textarea rows="3" class="form-control autosize" placeholder="<?php _e('想要对ta说点什么'); ?>?" type="text" name="message" /></textarea>
 								<p>
-									<button type="submit" class="btn btn-mini btn-success"><?php _e('发送'); ?></button>
+									<button type="submit" class="btn btn-mini btn-success" style="visibility:hidden;"><?php _e('发送'); ?></button>
 								</p>
 							</form>
 							<!-- end 私信内容输入框 -->
@@ -87,8 +87,8 @@
 
 <script type="text/javascript">
 $(document).ready(function () {
-	var form = $('#pm_form').css('visibility', 'visible');
-	var btn = form.find('button[type=submit]');
+	var form = $('#pm_form');
+	var btn = form.find('button[type=submit]').css('visibility', 'visible');
 
 	var public_keys = {
 <?php foreach($this->conversation['users'] as $user) { ?>

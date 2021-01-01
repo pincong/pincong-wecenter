@@ -8,7 +8,7 @@
 					<div class="aw-mod aw-inbox">
 						<div class="mod-head common-head">
 							<h2>
-								<a href="javascript:;" onclick="" class="pull-right btn btn-mini btn-success"><?php _e('新私信'); ?></a>
+								<a href="javascript:;" class="pm_compose pull-right btn btn-mini btn-success"><?php _e('新私信'); ?></a>
 								<span class="pull-right aw-setting-inbox hidden-xs"><a class="aw-small-text" href="<?php echo url_rewrite(); ?>/profile/privacy/#!inbox"><i class="icon icon-setting"></i> <?php _e('私信设置'); ?></a></span>
 								<?php _e('私信'); ?>
 							</h2>
@@ -75,6 +75,63 @@
 
 <script type="text/javascript">
 $(document).ready(function () {
+	function bind_recipient_input(input_el, dropdown_el) {
+		var xhr, dropdown_list = dropdown_el.find('.aw-dropdown-list');
+		var last = '';
+		input_el.on('input', function(e) {
+			var text = input_el.val().trim();
+			if (text == last) {
+				return;
+			}
+			last = text;
+			if (!text.length) {
+				dropdown_el.hide();
+				return;
+			}
+			var url = G_BASE_URL + '/search/ajax/search/?type=users&q=' + encodeURIComponent(text) + '&limit=10';
+			if (xhr) {
+				xhr.abort();
+			}
+			xhr = $.get(url, function(result) {
+				dropdown_list.html('');
+				if (result.length && xhr) {
+					$.each(result, function(i, a) {
+						var item = Hogan.compile(AW_TEMPLATE.inviteDropdownList).render({
+							'uid': a.uid,
+							'name': a.name,
+							'img': a.detail.avatar_file
+						});
+						item = $(item);
+						item.children('a').click(function() {
+							last = $(this).text()
+							input_el.val(last);
+							dropdown_el.hide();
+						});
+						item.appendTo(dropdown_list);
+					});
+					dropdown_el.find('.title').hide();
+					dropdown_list.show();
+				} else {
+					dropdown_el.find('.title').show();
+					dropdown_list.hide();
+				}
+				dropdown_el.show();
+			}, 'json');
+		});
+		input_el.blur(function() {
+			dropdown_el.delay(500).fadeOut(300);
+		});
+	};
+
+	$('.pm_compose').click(function() {
+		AWS.popup(G_BASE_URL + '/pm/edit/compose/', function() {
+			var input = $('.pm_recipient_input'), dropdown = $('.pm_recipient_dropdown');
+			for (var i=0; i < input.length; i++) {
+				bind_recipient_input(input.eq(i), dropdown.eq(i));
+			}
+		});
+	});
+
 	function truncate(s) {
 		var n = 60;
 		if (s.length <= n) return s;

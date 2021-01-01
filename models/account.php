@@ -181,7 +181,7 @@ class account_class extends AWS_MODEL
 			return $users_info[implode('_', $uids)];
 		}
 
-		if ($user_info = $this->fetch_all('users', ['uid', 'in', $uids, 'i']))
+		if ($user_info = $this->fetch_all('users', ['uid', 'in', $uids, 'i'], 'uid ASC'))
 		{
 			foreach ($user_info as $key => $val)
 			{
@@ -203,6 +203,35 @@ class account_class extends AWS_MODEL
 
 		return $result;
 	}
+
+
+	public function get_user_info_by_usernames($usernames)
+	{
+		if (!is_array($usernames) OR !count($usernames))
+		{
+			return false;
+		}
+
+		foreach ($usernames as &$val)
+		{
+			$val = htmlspecialchars($val);
+		}
+		unset($val);
+
+		$result = [];
+		if ($users = $this->fetch_all('users', ['user_name', 'in', $usernames, 's'], 'uid ASC'))
+		{
+			foreach ($users as $val)
+			{
+				unset($val['password'], $val['private_key']);
+
+				$result[$val['uid']] = $val;
+			}
+		}
+
+		return $result;
+	}
+
 
 	/**
 	 * 根据用户ID获取用户通知设置
