@@ -16,13 +16,13 @@
 								<span class="mask"></span>
 								<b>修改</b>
 							</a>
-							<h3><?php echo $this->topic_info['topic_title']; ?></h3>
+							<h3><?php echo FORMAT::text($this->topic_info['topic_title'], false); ?></h3>
 							<span class="pull-left"><?php _e('相关话题'); ?> : </span>
 							<div class="aw-topic-bar pull-left" data-type="topic" data-id="<?php echo $this->topic_info['topic_id']; ?>">
 								<div class="tag-bar clearfix">
 									<?php if ($this->related_topics) { ?>
 									<?php foreach($this->related_topics as $key => $val){ ?>
-									<span class="topic-tag" data-id="<?php echo $val['topic_id']?>"><a class="text" href="topic/<?php echo urlencode($val['topic_title']); ?>"><?php echo $val['topic_title']; ?></a></span>
+									<span class="topic-tag" data-id="<?php echo $val['topic_id']?>"><a class="text" href="topic/<?php echo urlencode($val['topic_title']); ?>"><?php echo FORMAT::text($val['topic_title'], false); ?></a></span>
 									<?php } ?>
 									<?php } ?>
 

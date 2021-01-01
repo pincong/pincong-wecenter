@@ -33,7 +33,7 @@
 						<?php if ($this->article_topics) { ?>
 							<?php foreach($this->article_topics as $key => $val) { ?>
 							<span class="topic-tag" data-id="<?php echo $val['topic_id']; ?>">
-								<a class="text" href="topic/<?php echo urlencode($val['topic_title']); ?>"><?php echo $val['topic_title']; ?></a>
+								<a class="text" href="topic/<?php echo urlencode($val['topic_title']); ?>"><?php echo FORMAT::text($val['topic_title'], false); ?></a>
 							</span>
 							<?php } ?>
 						<?php } else if (!$this->user_id) { ?>
@@ -343,11 +343,11 @@
 								<?php foreach($this->recommend_posts AS $key => $val) { ?>
 								<li>
 									<?php if ($val['post_type'] == 'question') { ?>
-									<a href="question/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a>
+									<a href="question/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title'], false); ?><?php } ?></a>
 									<?php } elseif ($val['post_type'] == 'article') { ?>
-									<a href="article/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a>
+									<a href="article/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title'], false); ?><?php } ?></a>
 									<?php } elseif ($val['post_type'] == 'video') { ?>
-									<a href="video/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a>
+									<a href="video/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title'], false); ?><?php } ?></a>
 									<?php } ?>
 								</li>
 								<?php } ?>
@@ -366,7 +366,7 @@
 						<div class="mod-body aw-size-12">
 							<ul>
 								<?php foreach($this->question_related_list AS $key => $val) { ?>
-								<li><a href="question/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a></li>
+								<li><a href="question/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title'], false); ?><?php } ?></a></li>
 								<?php } ?>
 							</ul>
 						</div>

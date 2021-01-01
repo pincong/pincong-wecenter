@@ -32,7 +32,7 @@
 								<p class="clearfix">
 									<!-- 话题内容 -->
 									<span class="topic-tag">
-										<a class="text" href="topic/<?php echo urlencode($val['topic_title']); ?>" data-id="<?php echo $val['topic_id']; ?>"><?php echo $val['topic_title']; ?></a>
+										<a class="text" href="topic/<?php echo urlencode($val['topic_title']); ?>" data-id="<?php echo $val['topic_id']; ?>"><?php echo FORMAT::text($val['topic_title'], false); ?></a>
 									</span>
 									<!-- end 话题内容 -->
 								</p>
@@ -65,7 +65,7 @@
 								<div class="topic-bar clearfix">
 									<?php foreach ($this->new_topics AS $key => $val) { ?>
 									<span class="topic-tag">
-										<a class="text" href="topic/<?php echo urlencode($val['topic_title']); ?>" data-id="<?php echo $val['topic_id']; ?>"><?php echo $val['topic_title']; ?></a>
+										<a class="text" href="topic/<?php echo urlencode($val['topic_title']); ?>" data-id="<?php echo $val['topic_id']; ?>"><?php echo FORMAT::text($val['topic_title'], false); ?></a>
 									</span>
 									<?php } ?>
 								</div>

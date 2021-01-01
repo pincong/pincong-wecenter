@@ -36,7 +36,7 @@
 
 								<input type="checkbox" class="enabled-status" name="enabled_status[<?php echo $val['id']; ?>]" value="1"<?php if ($val['enabled']) { ?> checked="checked"<?php } ?> />
 							</td>
-							<td><?php echo FORMAT::text($val['title']); ?></td>
+							<td><?php echo FORMAT::text($val['title'], false); ?></td>
 							<td><?php echo $val['link']; ?></td>
 							<td><?php echo $val['sort']; ?></td>
 							<td><a href="admin/feature/edit/feature_id-<?php echo $val['id']; ?>" title="<?php _e('编辑'); ?>" class="icon icon-edit md-tip"></a>

@@ -41,7 +41,7 @@
 							<tr>
 								<td><input type="checkbox" name="topic_ids[]" value="<?php echo $topic_info['topic_id']; ?>"></td>
 
-								<td><a href="topic/<?php echo urlencode($topic_info['topic_title']); ?>" target="_blank"><?php echo $topic_info['topic_title']; ?></a></td>
+								<td><a href="topic/<?php echo urlencode($topic_info['topic_title']); ?>" target="_blank"><?php echo FORMAT::text($topic_info['topic_title'], false); ?></a></td>
 
 								<td><?php echo $topic_info['discuss_count']; ?></td>
 
