@@ -575,6 +575,7 @@ CREATE TABLE IF NOT EXISTS `aws_users_group` (
   `reputation_higer` int(11) DEFAULT '0',
   `reputation_factor` float DEFAULT '0' COMMENT '声望系数',
   `reputation_factor_receive` float NULL DEFAULT NULL COMMENT '接收声望系数 留空则使用普通声望系数',
+  `content_reputation_factor` float NULL DEFAULT NULL COMMENT '內容声望系数 留空则使用普通声望系数',
   `permission` text COMMENT '权限设置',
   PRIMARY KEY (`group_id`),
   KEY `type` (`type`)

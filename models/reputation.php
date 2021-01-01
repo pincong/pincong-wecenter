@@ -110,46 +110,14 @@ class reputation_class extends AWS_MODEL
 		$this->query($sql);
 	}
 
-	// 推入精选
-	private function push_item_with_high_reputation(&$item_type, $item_id, $item_reputation)
-	{
-		$push_reputation = get_setting('push_reputation');
-
-		if (!is_numeric($push_reputation) OR $item_reputation < $push_reputation)
-		{
-			return;
-		}
-
-		if (!$this->model('activity')->check_push_type($item_type))
-		{
-			return;
-		}
-
-		$where = "`uid` = 0 AND `item_type` = '". ($item_type) . "' AND `item_id` = " . ($item_id);
-		if (!!$this->fetch_one('activity', 'id', $where))
-		{
-			return;
-		}
-
-		$parent_info = $this->model('content')->get_item_thread_info_by_id($item_type, $item_id);
-		$category_id = intval($parent_info['category_id']);
-
-		if (!$this->model('activity')->check_push_category($category_id))
-		{
-			return;
-		}
-
-		$this->model('activity')->log($item_type, $item_id, 0, $parent_info['thread_type'], $parent_info['thread_id'], $category_id);
-	}
-
 
 	// 根据post字数获得额外奖励声望
-	private function get_bonus_reputation(&$item_info, $reputation_value)
+	private function get_bonus_factor(&$item_info)
 	{
 		$bonus_factor = get_setting('bonus_factor');
 		if (!is_numeric($bonus_factor))
 		{
-			return $reputation_value;
+			return 1;
 		}
 
 		$bonus_max_count = intval(get_setting('bonus_max_count'));
@@ -158,7 +126,7 @@ class reputation_class extends AWS_MODEL
 		$message = $item_info['message'];
 		if (!$message)
 		{
-			return $reputation_value;
+			return 1;
 		}
 
 		$message = preg_replace('/\[quote\](.*?)\[\/quote\]/is', '', $message);
@@ -173,19 +141,18 @@ class reputation_class extends AWS_MODEL
 			$sigmoid = 1 / (1 + exp(-6 * (($word_count - $bonus_min_count) / $bonus_max_count - 0.5)));
 			if ($word_count < ($bonus_max_count / 2))
 			{
-				$reputation_value = $bonus_factor / 4 * (1 + $sigmoid) * $reputation_value;
+				return $bonus_factor / 4 * (1 + $sigmoid);
 			}
 			else
 			{
-				$reputation_value = $bonus_factor / 2 * (1 + $sigmoid) * $reputation_value;
+				return $bonus_factor / 2 * (1 + $sigmoid);
 			}
 		}
-		return $reputation_value;
+		return 1;
 	}
 
-
 	// 根据一星期点赞次数计算动态声望
-	private function calc_dynamic_reputation($uid, $agree_value, $reputation_value)
+	private function get_dynamic_factor($uid, $agree_value)
 	{
 		// 1赞同 -1反对
 		if ($agree_value > 0)
@@ -203,77 +170,101 @@ class reputation_class extends AWS_MODEL
 
 			if ($total > 0)
 			{
-				$reputation_value = $reputation_value * exp(-($arg) * $total);
+				return exp(-($arg) * $total);
 			}
 		}
-		return $reputation_value;
+		return 1;
 	}
 
 
-	private function update_agree_count_and_reputation($item_type, $item_id, &$vote_user, &$recipient_user, $agree_value, $reputation_value)
+	private function update_agree_count_and_reputation($item_type, $item_id, &$vote_user, &$recipient_user, $agree_value, $user_reputation_value, $content_reputation_value)
 	{
-		if ($reputation_value)
+		if ($user_reputation_value OR $content_reputation_value)
 		{
 			// 已缓存过
 			$item_info = $this->model('content')->get_thread_or_reply_info_by_id($item_type, $item_id);
 
 			if (!$vote_user['permission']['no_dynamic_reputation_factor'])
 			{
-				$reputation_value = $this->calc_dynamic_reputation($vote_user['uid'], $agree_value, $reputation_value);
+				$factor = $this->calc_dynamic_factor($vote_user['uid'], $agree_value);
+				$user_reputation_value = $user_reputation_value * $factor;
+				$content_reputation_value = $content_reputation_value * $factor;
 			}
 			if (!$vote_user['permission']['no_bonus_reputation_factor'])
 			{
-				$reputation_value = $this->get_bonus_reputation($item_info, $reputation_value);
+				$factor = $this->get_bonus_reputation($item_info);
+				$user_reputation_value = $user_reputation_value * $factor;
+				$content_reputation_value = $content_reputation_value * $factor;
 			}
 
-			if (is_infinite($reputation_value))
+			if (is_infinite($user_reputation_value))
 			{
-				$reputation_value = 0;
+				$user_reputation_value = 0;
 			}
-			else
+			if (is_infinite($content_reputation_value))
 			{
-				$reputation_value = round($reputation_value, 6);
+				$content_reputation_value = 0;
 			}
+			$user_reputation_value = round($user_reputation_value, 6);
+			$content_reputation_value = round($content_reputation_value, 6);
 
-			$item_reputation = $item_info['reputation'] + $reputation_value;
-			if ($agree_value > 0)
+			if ($content_reputation_value)
 			{
-				$this->push_item_with_high_reputation($item_type, $item_id, $item_reputation);
+				if ($agree_value > 0)
+				{
+					$this->model('activity')->push_item_with_high_reputation($item_type, $item_id, $item_info['reputation'] + $content_reputation_value);
+				}
+				$this->update_index_reputation($item_type, $item_id, $item_info, $content_reputation_value);
 			}
-			$this->update_index_reputation($item_type, $item_id, $item_info, $reputation_value);
 		}
 
-		$this->update_item_agree_count_and_reputation($item_type, $item_id, $agree_value, $reputation_value);
-		$this->update_user_agree_count_and_reputation($item_type, $recipient_user, $agree_value, $reputation_value);
+		$this->update_item_agree_count_and_reputation($item_type, $item_id, $agree_value, $content_reputation_value);
+		$this->update_user_agree_count_and_reputation($item_type, $recipient_user, $agree_value, $user_reputation_value);
 	}
 
 
-	private function get_initial_reputation(&$vote_user, &$recipient_user, $agree_value)
+	private function get_initial_reputation(&$vote_user, &$recipient_user, $agree_value, &$result_user_reputation, &$result_content_reputation)
 	{
 		if ($vote_user['flagged'])
 		{
-			return 0;
+			$result_user_reputation = 0;
+			$result_content_reputation = 0;
+			return;
 		}
 
 		if (!!$recipient_user AND is_numeric($recipient_user['reputation_factor_receive']))
 		{
-			$reputation_factor = $recipient_user['reputation_factor_receive'];
+			$user_reputation_factor = $recipient_user['reputation_factor_receive'];
 		}
 		else
 		{
-			$reputation_factor = $vote_user['reputation_factor'];
+			$user_reputation_factor = $vote_user['reputation_factor'];
 		}
 
 		if ($agree_value > 0 AND $vote_user['permission']['no_upvote_reputation_factor'])
 		{
-			$reputation_factor = 0;
+			$user_reputation_factor = 0;
+			$content_reputation_factor = 0;
 		}
 		else if ($agree_value < 0 AND $vote_user['permission']['no_downvote_reputation_factor'])
 		{
-			$reputation_factor = 0;
+			$user_reputation_factor = 0;
+			$content_reputation_factor = 0;
+		}
+		else
+		{
+			if (is_numeric($vote_user['content_reputation_factor']))
+			{
+				$content_reputation_factor = $vote_user['content_reputation_factor'];
+			}
+			else
+			{
+				$content_reputation_factor = $user_reputation_factor;
+			}
 		}
 
-		return $agree_value * $reputation_factor;
+		$result_user_reputation = $agree_value * $user_reputation_factor;
+		$result_content_reputation = $agree_value * $content_reputation_factor;
 	}
 
 
@@ -295,14 +286,15 @@ class reputation_class extends AWS_MODEL
 
 		if ($update_agree_count_only)
 		{
-			$reputation_value = 0;
+			$user_reputation_value = 0;
+			$content_reputation_value = 0;
 		}
 		else
 		{
-			$reputation_value = $this->get_initial_reputation($vote_user, $recipient_user, $agree_value);
+			$this->get_initial_reputation($vote_user, $recipient_user, $agree_value, $user_reputation_value, $content_reputation_value);
 		}
 
-		$this->update_agree_count_and_reputation($item_type, $item_id, $vote_user, $recipient_user, $agree_value, $reputation_value);
+		$this->update_agree_count_and_reputation($item_type, $item_id, $vote_user, $recipient_user, $agree_value, $user_reputation_value, $content_reputation_value);
 	}
 
 }

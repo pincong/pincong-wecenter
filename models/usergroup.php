@@ -31,7 +31,7 @@ if (!defined('IN_ANWSION'))
 class usergroup_class extends AWS_MODEL
 {
 
-	public function add_reputation_group($group_name, $reputation_factor, $reputation_factor_receive, $reputation_lower = 0, $reputation_higer = 0)
+	public function add_reputation_group($group_name, $reputation_factor, $reputation_factor_receive, $content_reputation_factor, $reputation_lower = 0, $reputation_higer = 0)
 	{
 		if (!is_numeric($reputation_factor))
 		{
@@ -40,6 +40,10 @@ class usergroup_class extends AWS_MODEL
 		if (!is_numeric($reputation_factor_receive))
 		{
 			$reputation_factor_receive = null;
+		}
+		if (!is_numeric($content_reputation_factor))
+		{
+			$content_reputation_factor = null;
 		}
 
 		return $this->insert('users_group', array(
@@ -47,12 +51,13 @@ class usergroup_class extends AWS_MODEL
 			'group_name' => $group_name,
 			'reputation_factor' => $reputation_factor,
 			'reputation_factor_receive' => $reputation_factor_receive,
+			'content_reputation_factor' => $content_reputation_factor,
 			'reputation_lower' => $reputation_lower,
 			'reputation_higer' => $reputation_higer,
 		));
 	}
 
-	public function add_system_group($group_name, $reputation_factor, $reputation_factor_receive)
+	public function add_system_group($group_name, $reputation_factor, $reputation_factor_receive, $content_reputation_factor)
 	{
 		if (!is_numeric($reputation_factor))
 		{
@@ -61,6 +66,10 @@ class usergroup_class extends AWS_MODEL
 		if (!is_numeric($reputation_factor_receive))
 		{
 			$reputation_factor_receive = null;
+		}
+		if (!is_numeric($content_reputation_factor))
+		{
+			$content_reputation_factor = null;
 		}
 
 		return $this->insert('users_group', array(
@@ -68,12 +77,13 @@ class usergroup_class extends AWS_MODEL
 			'group_name' => $group_name,
 			'reputation_factor' => $reputation_factor,
 			'reputation_factor_receive' => $reputation_factor_receive,
+			'content_reputation_factor' => $content_reputation_factor,
 			'reputation_lower' => 0,
 			'reputation_higer' => 0,
 		));
 	}
 
-	public function add_custom_group($group_name, $reputation_factor, $reputation_factor_receive)
+	public function add_custom_group($group_name, $reputation_factor, $reputation_factor_receive, $content_reputation_factor)
 	{
 		if (!is_numeric($reputation_factor))
 		{
@@ -83,12 +93,17 @@ class usergroup_class extends AWS_MODEL
 		{
 			$reputation_factor_receive = null;
 		}
+		if (!is_numeric($content_reputation_factor))
+		{
+			$content_reputation_factor = null;
+		}
 
 		return $this->insert('users_group', array(
 			'type' => 2,
 			'group_name' => $group_name,
 			'reputation_factor' => $reputation_factor,
 			'reputation_factor_receive' => $reputation_factor_receive,
+			'content_reputation_factor' => $content_reputation_factor,
 			'reputation_lower' => 0,
 			'reputation_higer' => 0,
 		));
@@ -112,6 +127,19 @@ class usergroup_class extends AWS_MODEL
 
 	public function update_user_group_data($group_id, $data)
 	{
+		if (isset($data['reputation_factor']) AND !is_numeric($data['reputation_factor']))
+		{
+			$data['reputation_factor'] = 0;
+		}
+		if (isset($data['reputation_factor_receive']) AND !is_numeric($data['reputation_factor_receive']))
+		{
+			$data['reputation_factor_receive'] = null;
+		}
+		if (isset($data['content_reputation_factor']) AND !is_numeric($data['content_reputation_factor']))
+		{
+			$data['content_reputation_factor'] = null;
+		}
+
 		return $this->update('users_group', $data, 'group_id = ' . intval($group_id));
 	}
 

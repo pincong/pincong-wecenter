@@ -25,6 +25,7 @@
 									<th><?php _e('声望介于'); ?></th>
 									<th><?php _e('声望系数'); ?></th>
 									<th><?php _e('声望系数 (接收)'); ?></th>
+									<th><?php _e('內容声望系数'); ?></th>
 									<th></th>
 								</tr>
 							</thead>
@@ -45,6 +46,7 @@
 									</td>
 									<td><input type="text" name="group[<?php echo $val['group_id']; ?>][reputation_factor]" class="form-control" value="<?php echo $val['reputation_factor']; ?>" /></td>
 									<td><input type="text" name="group[<?php echo $val['group_id']; ?>][reputation_factor_receive]" class="form-control" value="<?php echo $val['reputation_factor_receive']; ?>" placeholder="<?php _e('不使用请留空'); ?>" /></td>
+									<td><input type="text" name="group[<?php echo $val['group_id']; ?>][content_reputation_factor]" class="form-control" value="<?php echo $val['content_reputation_factor']; ?>" placeholder="<?php _e('不使用请留空'); ?>" /></td>
 									<td><a href="admin/user/group_edit/group_id-<?php echo $val['group_id']; ?>" title="<?php _e('权限编辑'); ?>" class="icon icon-edit md-tip"></a></td>
 								</tr>
 								<?php } } ?>
@@ -62,6 +64,7 @@
 									</td>
 									<td><input type="text" class="input-small form-control" name="group_new[reputation_factor][]" /></td>
 									<td><input type="text" class="input-small form-control" name="group_new[reputation_factor_receive][]" /></td>
+									<td><input type="text" class="input-small form-control" name="group_new[content_reputation_factor][]" /></td>
 									<td></td>
 								</tr>
 							</tbody>
@@ -85,6 +88,7 @@
 							<th><?php _e('系统组名称'); ?></th>
 							<th><?php _e('声望系数'); ?></th>
 							<th><?php _e('声望系数 (接收)'); ?></th>
+							<th><?php _e('內容声望系数'); ?></th>
 							<th></th>
 						</tr>
 					</thead>
@@ -96,6 +100,7 @@
 							<td><input type="text" class="form-control" name="group[<?php echo $val['group_id']; ?>][group_name]" value="<?php echo $val['group_name']; ?>" /></td>
 							<td><input type="text" class="form-control" name="group[<?php echo $val['group_id']; ?>][reputation_factor]" value="<?php echo $val['reputation_factor']; ?>" /></td>
 							<td><input type="text" class="form-control" name="group[<?php echo $val['group_id']; ?>][reputation_factor_receive]" value="<?php echo $val['reputation_factor_receive']; ?>" placeholder="<?php _e('不使用请留空'); ?>" /></td>
+							<td><input type="text" class="form-control" name="group[<?php echo $val['group_id']; ?>][content_reputation_factor]" value="<?php echo $val['content_reputation_factor']; ?>" placeholder="<?php _e('不使用请留空'); ?>" /></td>
 							<td><a href="admin/user/group_edit/group_id-<?php echo $val['group_id']; ?>" title="<?php _e('权限编辑'); ?>" class="icon icon-edit md-tip"></a></td>
 						</tr>
 						<?php } ?>
@@ -105,6 +110,7 @@
 							<td><input type="text" class="form-control" name="group_new[group_name][]" placeholder="<?php _e('用户组名称'); ?>" /></td>
 							<td><input type="text" class="form-control" name="group_new[reputation_factor][]" /></td>
 							<td><input type="text" class="form-control" name="group_new[reputation_factor_receive][]" /></td>
+							<td><input type="text" class="form-control" name="group_new[content_reputation_factor][]" /></td>
 							<td></td>
 						</tr>
 					</tbody>
@@ -127,6 +133,7 @@
 							<th><?php _e('名称'); ?></th>
 							<th><?php _e('声望系数'); ?></th>
 							<th><?php _e('声望系数 (接收)'); ?></th>
+							<th><?php _e('內容声望系数'); ?></th>
 							<th></th>
 						</tr>
 					</thead>
@@ -139,6 +146,7 @@
 							<td><input type="text" class="form-control" name="group[<?php echo $val['group_id']; ?>][group_name]" value="<?php echo $val['group_name']; ?>" /></td>
 							<td><input type="text" class="form-control" name="group[<?php echo $val['group_id']; ?>][reputation_factor]" value="<?php echo $val['reputation_factor']; ?>" /></td>
 							<td><input type="text" class="form-control" name="group[<?php echo $val['group_id']; ?>][reputation_factor_receive]" value="<?php echo $val['reputation_factor_receive']; ?>" placeholder="<?php _e('不使用请留空'); ?>" /></td>
+							<td><input type="text" class="form-control" name="group[<?php echo $val['group_id']; ?>][content_reputation_factor]" value="<?php echo $val['content_reputation_factor']; ?>" placeholder="<?php _e('不使用请留空'); ?>" /></td>
 							<td><a href="admin/user/group_edit/group_id-<?php echo $val['group_id']; ?>" title="<?php _e('权限编辑'); ?>" class="icon icon-edit md-tip"></a></td>
 						</tr>
 						<?php } ?>
@@ -149,6 +157,7 @@
 							<td><input type="text" class="form-control" name="group_new[group_name][]" placeholder="<?php _e('用户组名称'); ?>" /></td>
 							<td><input type="text" class="form-control" name="group_new[reputation_factor][]" /></td>
 							<td><input type="text" class="form-control" name="group_new[reputation_factor_receive][]" /></td>
+							<td><input type="text" class="form-control" name="group_new[content_reputation_factor][]" /></td>
 							<td></td>
 						</tr>
 					</tbody>

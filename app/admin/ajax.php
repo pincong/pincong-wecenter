@@ -442,19 +442,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 					H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入用户组名称')));
 				}
 
-				if (!is_numeric($val['reputation_factor']))
-				{
-					$val['reputation_factor'] = 0;
-				}
-				if (!is_numeric($val['reputation_factor_receive']))
-				{
-					$val['reputation_factor_receive'] = null;
-				}
-
-				/*f ($val['reputation_factor'] < 0)
-					H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('声望系数必须为大于或等于 0')));
-				}*/
-
 				$this->model('usergroup')->update_user_group_data($key, $val);
 			}
 		}
@@ -469,6 +456,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 						trim($group_new['group_name'][$key]),
 						$group_new['reputation_factor'][$key],
 						$group_new['reputation_factor_receive'][$key],
+						$group_new['content_reputation_factor'][$key],
 						$group_new['reputation_lower'][$key],
 						$group_new['reputation_higer'][$key]
 					);
@@ -500,15 +488,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 					H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入用户组名称')));
 				}
 
-				if (!is_numeric($val['reputation_factor']))
-				{
-					$val['reputation_factor'] = 0;
-				}
-				if (!is_numeric($val['reputation_factor_receive']))
-				{
-					$val['reputation_factor_receive'] = null;
-				}
-
 				$this->model('usergroup')->update_user_group_data($key, $val);
 			}
 		}
@@ -522,7 +501,8 @@ class ajax extends AWS_ADMIN_CONTROLLER
 					$this->model('usergroup')->add_custom_group(
 						trim($group_new['group_name'][$key]),
 						$group_new['reputation_factor'][$key],
-						$group_new['reputation_factor_receive'][$key]
+						$group_new['reputation_factor_receive'][$key],
+						$group_new['content_reputation_factor'][$key]
 					);
 				}
 			}
@@ -552,15 +532,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 					H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入用户组名称')));
 				}
 
-				if (!is_numeric($val['reputation_factor']))
-				{
-					$val['reputation_factor'] = 0;
-				}
-				if (!is_numeric($val['reputation_factor_receive']))
-				{
-					$val['reputation_factor_receive'] = null;
-				}
-
 				$this->model('usergroup')->update_user_group_data($key, $val);
 			}
 		}
@@ -574,7 +545,8 @@ class ajax extends AWS_ADMIN_CONTROLLER
 					$this->model('usergroup')->add_system_group(
 						trim($group_new['group_name'][$key]),
 						$group_new['reputation_factor'][$key],
-						$group_new['reputation_factor_receive'][$key]
+						$group_new['reputation_factor_receive'][$key],
+						$group_new['content_reputation_factor'][$key]
 					);
 				}
 			}

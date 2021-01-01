@@ -59,6 +59,39 @@ class activity_class extends AWS_MODEL
 		return true;
 	}
 
+	// 推入精选
+	public function push_item_with_high_reputation($item_type, $item_id, $item_reputation)
+	{
+		$push_reputation = get_setting('push_reputation');
+
+		if (!is_numeric($push_reputation) OR $item_reputation < $push_reputation)
+		{
+			return;
+		}
+
+		if (!$this->check_push_type($item_type))
+		{
+			return;
+		}
+
+		$where = "`uid` = 0 AND `item_type` = '". ($item_type) . "' AND `item_id` = " . ($item_id);
+		if (!!$this->fetch_one('activity', 'id', $where))
+		{
+			return;
+		}
+
+		$parent_info = $this->model('content')->get_item_thread_info_by_id($item_type, $item_id);
+		$category_id = intval($parent_info['category_id']);
+
+		if (!$this->check_push_category($category_id))
+		{
+			return;
+		}
+
+		$this->log($item_type, $item_id, 0, $parent_info['thread_type'], $parent_info['thread_id'], $category_id);
+	}
+
+
 	public function push($item_type, $item_id, $uid = 0, $thread_type = null, $thread_id = 0, $category_id = 0)
 	{
 		if (!$this->check_push_type($item_type))
