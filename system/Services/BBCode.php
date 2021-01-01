@@ -237,14 +237,6 @@ class Services_BBCode
 
 
 		// 纯文本tags
-		$this->bbcode_table["/\[left\](.*?)\[\/left\]/is"] = '_plain_text_callback';
-		$this->bbcode_table["/\[right\](.*?)\[\/right\]/is"] = '_plain_text_callback';
-		$this->bbcode_table["/\[justify\](.*?)\[\/justify\]/is"] = '_plain_text_callback';
-		$this->bbcode_table["/\[sub\](.*?)\[\/sub\]/is"] = '_plain_text_callback';
-		$this->bbcode_table["/\[sup\](.*?)\[\/sup\]/is"] = '_plain_text_callback';
-		$this->bbcode_table["/\[ltr\](.*?)\[\/ltr\]/is"] = '_plain_text_callback';
-		$this->bbcode_table["/\[rtl\](.*?)\[\/rtl\]/is"] = '_plain_text_callback';
-
 		$this->bbcode_table["/\[cp\](.*?)\[\/cp\]/is"] = '_plain_text_callback';
 
 		$this->bbcode_table["/\[size=(.*?)\](.*?)\[\/size\]/is"] = '_plain_text_2_callback';
