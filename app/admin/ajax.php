@@ -109,7 +109,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
             case 'del':
                 foreach ($_POST['article_ids'] AS $article_id)
                 {
-                    $this->model('article')->clear_article($article_id);
+                    $this->model('article')->clear_article($article_id, null);
                 }
 
                 H::ajax_json_output(AWS_APP::RSM(null, 1, null));
@@ -363,7 +363,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
             case 'remove':
                 foreach ($_POST['question_ids'] AS $question_id)
                 {
-                    $this->model('question')->clear_question($question_id);
+                    $this->model('question')->clear_question($question_id, null);
                 }
 
                 H::ajax_json_output(AWS_APP::RSM(null, 1, null));

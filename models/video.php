@@ -88,7 +88,7 @@ class video_class extends AWS_MODEL
 	}
 
 
-	public function clear_video($id, $uid = null)
+	public function clear_video($id, $uid)
 	{
 		if (!$item_info = $this->model('content')->get_thread_info_by_id('video', $id))
 		{

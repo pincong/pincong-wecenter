@@ -87,7 +87,7 @@ class article_class extends AWS_MODEL
 		return true;
 	}
 
-	public function clear_article($id, $uid = null)
+	public function clear_article($id, $uid)
 	{
 		if (!$item_info = $this->model('content')->get_thread_info_by_id('article', $id))
 		{

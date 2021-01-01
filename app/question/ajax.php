@@ -241,14 +241,14 @@ class ajax extends AWS_CONTROLLER
 
 	public function remove_question_action()
 	{
-		if (!$this->user_info['permission']['is_administrator'])
+		if (!$this->user_info['permission']['is_moderator'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有删除问题的权限')));
 		}
 
 		if ($question_info = $this->model('content')->get_thread_info_by_id('question', $_POST['question_id']))
 		{
-			$this->model('question')->clear_question($question_info['id']);
+			$this->model('question')->clear_question($question_info['id'], null);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(

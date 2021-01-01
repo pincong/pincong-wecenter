@@ -28,14 +28,14 @@ class ajax extends AWS_CONTROLLER
 
 	public function remove_video_action()
 	{
-		if (!$this->user_info['permission']['is_administrator'])
+		if (!$this->user_info['permission']['is_moderator'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有删除影片的权限')));
 		}
 
 		if ($video_info = $this->model('content')->get_thread_info_by_id('video', $_POST['video_id']))
 		{
-			$this->model('video')->clear_video($video_info['id']);
+			$this->model('video')->clear_video($video_info['id'], null);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
