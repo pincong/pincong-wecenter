@@ -1,0 +1,61 @@
+<?php if ($this->discussions) { ?>
+<?php foreach ($this->discussions AS $key => $val) { ?>
+<?php if (CF::skip($val['user_info'])) continue; ?>
+<div class="aw-item" data-item-id="<?php echo $val['id']; ?>" data-item-id="<?php echo $val['id']; ?>" data-fold="<?php echo $val['fold']; ?>" <?php if ($this->user_info['permission']['is_moderator']) { ?>data-item-reputation="<?php echo $val['reputation']; ?>"<?php } ?>>
+	<div>
+		<!-- 用户头像 -->
+		<a class="aw-user-img aw-border-radius-5" data-id="<?php echo $val['user_info']['uid']; ?>" href="<?php echo UF::url($val['user_info']); ?>">
+			<img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" />
+		</a>
+		<!-- end 用户头像 -->
+		<?php if ($this->user_id) { ?>
+		<span class="pull-right">
+		<?php if (can_edit_post($val['uid'], $this->user_info)) { ?>
+		<a href="javascript:;" onclick="remove_discussion($(this).closest('.aw-item'), 'question_reply');"><?php echo _t('删除'); ?></a>
+		&nbsp;
+		<?php } ?>
+
+
+		<?php if (($this->user_info['permission']['fold_post'] /*AND $this->user_id != $this->question_info['uid']*/) OR ($this->user_info['permission']['fold_post_own_thread'] /*AND $this->user_id == $this->question_info['uid']*/)) { ?>
+		<?php if ($val['fold'] == 0) { ?>
+		<a href="javascript:;" onclick="var el=$(this);AWS.confirm('<?php echo _t('确认折叠?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/content/ajax/fold/', 'item_type=question_discussion&item_id=<?php echo $val['id']; ?>', function(){el.hide();});});"><?php echo _t('折叠'); ?></a>
+		<?php } elseif ($val['fold'] == 1) { ?>
+		<a href="javascript:;" onclick="var el=$(this);AWS.ajax_request(G_BASE_URL + '/content/ajax/unfold/', 'item_type=question_discussion&item_id=<?php echo $val['id']; ?>', function(){el.hide();});"><?php echo _t('取消折叠'); ?></a>
+		<?php } ?>
+		&nbsp;
+		<?php } ?>
+
+		<a href="javascript:;" onclick="(function(form){form.find('textarea').focus().insertAtCaret('@<?php echo UF::name($val['user_info']); ?>:');$.scrollTo(form, 300, {queue:true});})($(this).closest('.aw-comment-box').find('form'));"><?php echo _t('回复'); ?></a>
+		</span>
+		<?php } ?>
+		<!-- 用户名 -->
+		<a class="aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>" data-reputation="<?php echo UF::reputation($val['user_info']); ?>" href="<?php echo UF::url($val['user_info']); ?>">
+		<?php if ($val['user_info']['forbidden']) { ?>
+			<s><?php echo UF::name($val['user_info']); ?></s>
+		<?php } else { ?>
+			<?php echo UF::name($val['user_info']); ?>
+		<?php } ?>
+		</a>
+		<?php if ($val['user_info']['verified']) { ?><em class="aw-verified"><?php echo $val['user_info']['verified']; ?></em><?php } ?>
+		<?php if ($val['user_info']['flagged']) { ?><sup><?php echo UF::flagged($val['user_info']); ?></sup><?php } ?>
+		<!-- end 用户名 -->
+		•
+		<span><?php echo date_friendly($val['add_time']); ?></span>
+	</div>
+
+	<?php if ($val['fold']) { ?>
+	<div class="aw-load-more-content">
+		<a class="aw-small-text aw-alert-box aw-small-text" tabindex="-1" href="<?php echo url_rewrite(); ?>/content/log/item_type-question_discussion__item_id-<?php echo $val['id']; ?>" rel="nofollow" target="_blank"><?php echo _t('为什么被折叠?'); ?></a>
+		<a href="javascript:;" class="aw-load-more-content" onclick="$(this).parent().parent().children('.markitup-box').toggle();"><?php echo _t('内容被折叠'); ?></a>
+	</div>
+	<div class="markitup-box collapse">
+		<?php echo CF::reply($val); ?>
+	</div>
+	<?php } else { ?>
+	<div class="markitup-box">
+		<?php echo CF::reply_simple($val); ?>
+	</div>
+	<?php } ?>
+</div>
+<?php } ?>
+<?php } ?>

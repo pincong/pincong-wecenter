@@ -468,7 +468,12 @@ function toggle_disscusion(btn) {
 	if (div.css('display') == 'none') {
 		if (!div.data('initialized')) {
 			div.attr('data-initialized', 'true');
-			var data_url = G_BASE_URL + '/question/info/' + btn.data('type') + '_discussions/parent_id-' + btn.data('id');
+			var data_url;
+			if (btn.data('type') == 'question') {
+				data_url = G_BASE_URL + '/question/info/comments/parent_id-' + btn.data('id');
+			} else {
+				data_url = G_BASE_URL + '/question/info/discussions/parent_id-' + btn.data('id');
+			}
 			var per_page = <?php echo S::get_int('replies_per_page'); ?> || 100;
 			var count = parseInt(btn.data('comment-count')) || 0;
 			var pages = Math.ceil(count / per_page);

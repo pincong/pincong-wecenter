@@ -340,9 +340,17 @@ class content_class extends AWS_MODEL
 	}
 
 
-	public function fold_reply($item_type, $item_id, $thread_type, $thread_id, $log_uid)
+	public function fold($item_type, $item_id, $thread_type, $thread_id, $log_uid)
 	{
-		if (!$this->model('post')->check_reply_type($item_type))
+		if ($this->model('post')->check_thread_type($item_type))
+		{
+			return false;
+		}
+		if (!$this->model('post')->check_post_type($item_type))
+		{
+			return false;
+		}
+		if (!$this->model('post')->check_thread_type($thread_type))
 		{
 			return false;
 		}
@@ -363,9 +371,17 @@ class content_class extends AWS_MODEL
 		$this->model('content')->log($thread_type, $thread_id, $item_type, $item_id, '折叠', $log_uid);
 	}
 
-	public function unfold_reply($item_type, $item_id, $thread_type, $thread_id, $log_uid)
+	public function unfold($item_type, $item_id, $thread_type, $thread_id, $log_uid)
 	{
-		if (!$this->model('post')->check_reply_type($item_type))
+		if ($this->model('post')->check_thread_type($item_type))
+		{
+			return false;
+		}
+		if (!$this->model('post')->check_post_type($item_type))
+		{
+			return false;
+		}
+		if (!$this->model('post')->check_thread_type($thread_type))
 		{
 			return false;
 		}

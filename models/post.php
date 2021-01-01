@@ -226,10 +226,10 @@ class post_class extends AWS_MODEL
 			case 'video_discussion':
 				$thread_type = substr($type, 0, strlen($type) - strlen('_discussion'));
 				$reply_type = $thread_type . '_reply';
-				$relpy_info = $this->get_relpy_info_by_id($relpy_type, $item_info['parent_id']);
-				if ($relpy_info)
+				$reply_info = $this->get_reply_info_by_id($reply_type, $item_info['parent_id']);
+				if ($reply_info)
 				{
-					$thread_info = $this->get_thread_info_by_id($thread_type, $relpy_info['parent_id']);
+					$thread_info = $this->get_thread_info_by_id($thread_type, $reply_info['parent_id']);
 					if ($thread_info)
 					{
 						$thread_info['thread_type'] = $thread_type;
@@ -237,65 +237,6 @@ class post_class extends AWS_MODEL
 						return $thread_info;
 					}
 					return false;
-				}
-				return false;
-		}
-
-		return false;
-	}
-
-	public function get_item_thread_info_by_id($type, $item_id)
-	{
-		$item_info = $this->get_post_info_by_id($type, $item_id);
-		if (!$item_info)
-		{
-			return false;
-		}
-
-		switch ($type)
-		{
-			case 'question':
-				$item_info['thread_type'] = 'question';
-				$item_info['thread_id'] = $item_info['id'];
-				return $item_info;
-
-			case 'article':
-				$item_info['thread_type'] = 'article';
-				$item_info['thread_id'] = $item_info['id'];
-				return $item_info;
-
-			case 'video':
-				$item_info['thread_type'] = 'video';
-				$item_info['thread_id'] = $item_info['id'];
-				return $item_info;
-
-			case 'question_reply':
-				$thread_info = $this->get_thread_info_by_id('question', $item_info['parent_id']);
-				if ($thread_info)
-				{
-					$thread_info['thread_type'] = 'question';
-					$thread_info['thread_id'] = $thread_info['id'];
-					return $thread_info;
-				}
-				return false;
-
-			case 'article_reply':
-				$thread_info = $this->get_thread_info_by_id('article', $item_info['parent_id']);
-				if ($thread_info)
-				{
-					$thread_info['thread_type'] = 'article';
-					$thread_info['thread_id'] = $thread_info['id'];
-					return $thread_info;
-				}
-				return false;
-
-			case 'video_reply':
-				$thread_info = $this->get_thread_info_by_id('video', $item_info['parent_id']);
-				if ($thread_info)
-				{
-					$thread_info['thread_type'] = 'video';
-					$thread_info['thread_id'] = $thread_info['id'];
-					return $thread_info;
 				}
 				return false;
 		}

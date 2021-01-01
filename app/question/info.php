@@ -52,7 +52,7 @@ class info extends AWS_CONTROLLER
 		}
 	}
 
-	public function question_discussions_action()
+	public function comments_action()
 	{
 		// 判断是否已合并
 		if ($redirect_posts = $this->model('post')->get_redirect_threads('question', $this->parent_id))
@@ -68,16 +68,16 @@ class info extends AWS_CONTROLLER
 
 		TPL::assign('discussions', $discussions);
 
-		TPL::output("question/question_discussions_template");
+		TPL::output("question/comments_template");
 	}
 
-	public function answer_discussions_action()
+	public function discussions_action()
 	{
 		$discussions = $this->model('question')->get_answer_discussions($this->parent_id, H::GET('page'), $this->per_page);
 
 		TPL::assign('discussions', $discussions);
 
-		TPL::output("question/answer_discussions_template");
+		TPL::output("question/discussions_template");
 	}
 
 }

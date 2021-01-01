@@ -165,7 +165,7 @@ class ajax extends AWS_CONTROLLER
 		$item_info = $this->model('question')->get_answer_discussion_by_id($item_id);
 		TPL::assign('discussion_info', $item_info);
 		H::ajax_response(array(
-			'ajax_html' => TPL::process('question/ajax_answer_discussion')
+			'ajax_html' => TPL::process('question/ajax_discussion')
 		));
 	}
 
@@ -269,7 +269,7 @@ class ajax extends AWS_CONTROLLER
 		$item_info = $this->model('question')->get_question_discussion_by_id($item_id);
 		TPL::assign('discussion_info', $item_info);
 		H::ajax_response(array(
-			'ajax_html' => TPL::process('question/ajax_question_discussion')
+			'ajax_html' => TPL::process('question/ajax_comment')
 		));
 	}
 

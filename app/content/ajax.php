@@ -291,7 +291,7 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_success();
 	}
 
-
+	// TODO: 刪
 	public function fold_reply_action()
 	{
 		$this->validate_interval('manage');
@@ -329,7 +329,7 @@ class ajax extends AWS_CONTROLLER
 
 			set_user_operation_last_time('manage', $this->user_id);
 
-			$this->model('content')->fold_reply(
+			$this->model('content')->fold(
 				H::POST('item_type'),
 				H::POST('item_id'),
 				$parent_type,
@@ -341,6 +341,7 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_success();
 	}
 
+	// TODO: 刪
 	public function unfold_reply_action()
 	{
 		$this->validate_interval('manage');
@@ -378,7 +379,7 @@ class ajax extends AWS_CONTROLLER
 
 			set_user_operation_last_time('manage', $this->user_id);
 
-			$this->model('content')->unfold_reply(
+			$this->model('content')->unfold(
 				H::POST('item_type'),
 				H::POST('item_id'),
 				$parent_type,
@@ -434,6 +435,88 @@ class ajax extends AWS_CONTROLLER
 			H::POST('item_id'),
 			$this->user_id
 		);
+
+		H::ajax_success();
+	}
+
+	public function fold_action()
+	{
+		$this->validate_interval('manage');
+		$item_type = H::POST('item_type');
+		$item_id = H::POST('item_id');
+		if ($this->model('post')->check_thread_type($item_type) OR
+			!$item_info = $this->model('post')->get_post_info_by_id($item_type, $item_id))
+		{
+			H::ajax_error((_t('内容不存在')));
+		}
+
+		if (!$item_info['fold'])
+		{
+			$thread_info = $this->model('post')->get_post_thread_info_by_id($item_type, $item_id);
+			if (!$thread_info)
+			{
+				H::ajax_error((_t('内容不存在')));
+			}
+			if ($thread_info['uid'] != $this->user_id)
+			{
+				$this->validate_permission('fold_post');
+			}
+			else
+			{
+				$this->validate_permission('fold_post_own_thread');
+			}
+
+			set_user_operation_last_time('manage', $this->user_id);
+
+			$this->model('content')->fold(
+				$item_type,
+				$item_id,
+				$thread_info['thread_type'],
+				$thread_info['thread_id'],
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
+			);
+		}
+
+		H::ajax_success();
+	}
+
+	public function unfold_action()
+	{
+		$this->validate_interval('manage');
+		$item_type = H::POST('item_type');
+		$item_id = H::POST('item_id');
+		if ($this->model('post')->check_thread_type($item_type) OR
+			!$item_info = $this->model('post')->get_post_info_by_id($item_type, $item_id))
+		{
+			H::ajax_error((_t('内容不存在')));
+		}
+
+		if ($item_info['fold'])
+		{
+			$thread_info = $this->model('post')->get_post_thread_info_by_id($item_type, $item_id);
+			if (!$thread_info)
+			{
+				H::ajax_error((_t('内容不存在')));
+			}
+			if ($thread_info['uid'] != $this->user_id)
+			{
+				$this->validate_permission('fold_post');
+			}
+			else
+			{
+				$this->validate_permission('fold_post_own_thread');
+			}
+
+			set_user_operation_last_time('manage', $this->user_id);
+
+			$this->model('content')->unfold(
+				$item_type,
+				$item_id,
+				$thread_info['thread_type'],
+				$thread_info['thread_id'],
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
+			);
+		}
 
 		H::ajax_success();
 	}
