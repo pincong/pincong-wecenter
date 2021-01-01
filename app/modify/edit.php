@@ -28,18 +28,6 @@ class edit extends AWS_CONTROLLER
 		return $rule_action;
 	}
 
-	private function check_permission($post_uid)
-	{
-		if ($post_uid != $this->user_id AND !$this->user_info['permission']['edit_any_post'])
-		{
-			if (!$this->user_info['permission']['edit_specific_post'] OR !in_array($post_uid, get_setting_array('specific_post_uids')))
-			{
-				return false;
-			}
-		}
-		return true;
-	}
-
 	public function answer_action()
 	{
 		$id = intval($_GET['id']);
@@ -52,7 +40,7 @@ class edit extends AWS_CONTROLLER
 			HTTP::error_403();
 		}
 
-		if (!$this->check_permission($reply_info['uid']))
+		if (!can_edit_post($reply_info['uid'], $this->user_info))
 		{
 			TPL::assign('dialog_message', AWS_APP::lang()->_t('你没有权限编辑此内容'));
 			TPL::output("dialog/alert_template");
@@ -76,7 +64,7 @@ class edit extends AWS_CONTROLLER
 			HTTP::error_403();
 		}
 
-		if (!$this->check_permission($reply_info['uid']))
+		if (!can_edit_post($reply_info['uid'], $this->user_info))
 		{
 			TPL::assign('dialog_message', AWS_APP::lang()->_t('你没有权限编辑此内容'));
 			TPL::output("dialog/alert_template");
@@ -100,7 +88,7 @@ class edit extends AWS_CONTROLLER
 			HTTP::error_403();
 		}
 
-		if (!$this->check_permission($reply_info['uid']))
+		if (!can_edit_post($reply_info['uid'], $this->user_info))
 		{
 			TPL::assign('dialog_message', AWS_APP::lang()->_t('你没有权限编辑此内容'));
 			TPL::output("dialog/alert_template");

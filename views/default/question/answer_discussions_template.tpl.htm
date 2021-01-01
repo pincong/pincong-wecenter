@@ -10,7 +10,7 @@
 		<!-- end 用户头像 -->
 		<?php if ($this->user_id) { ?>
 		<span class="pull-right">
-		<?php if ($val['uid'] == $this->user_id OR $this->user_info['permission']['edit_any_post'] OR $this->user_info['permission']['edit_specific_post']) { ?>
+		<?php if (can_edit_post($val['uid'], $this->user_info)) { ?>
 		<a href="javascript:;" onclick="remove_discussion($(this).closest('.aw-item'), 'answer');"><?php _e('删除'); ?></a>
 		&nbsp;
 		<?php } ?>

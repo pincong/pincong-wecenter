@@ -77,8 +77,8 @@
 			<?php if ($this->user_id) { ?>
 				<a class="aw-article-comment aw-small-text" href="javascript:;" onclick="show_user_reply_box($(this))" data-id="<?php echo $val['user_info']['uid']; ?>"><i class="icon icon-comment"></i> <?php _e('回复'); ?></a>
 
-				<?php if ($this->user_id == $val['uid'] OR $this->user_info['permission']['edit_any_post'] OR $this->user_info['permission']['edit_specific_post']) { ?>
-				<a class="aw-small-text" href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/modify/edit/video_comment/id-<?php echo $val['id']; ?>');"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
+				<?php if (can_edit_post($val['uid'], $this->user_info)) { ?>
+				<a class="aw-small-text" href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/modify/edit/video_comment/id-<?php echo $val['id']; ?>'<?php if ($val['uid'] == $this->user_id) { ?>, AWS.init_answer_editor<?php } ?>);"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
 				<?php } ?>
 
 				&nbsp;&nbsp;

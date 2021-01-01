@@ -73,10 +73,8 @@
 				<a href="<?php echo url_rewrite(); ?>/vote/log/item_type-answer__item_id-<?php echo $val['id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
 
 				<?php if ($this->user_id) { ?>
-					<?php if ($val['uid'] == $this->user_id) { // 高级编辑器 ?>
-						<a class="aw-small-text" href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/modify/edit/answer/id-<?php echo $val['id']; ?>', AWS.init_answer_editor);"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
-					<?php } elseif ($this->user_info['permission']['edit_any_post'] OR $this->user_info['permission']['edit_specific_post']) { // 纯文本编辑器 ?>
-						<a class="aw-small-text" href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/modify/edit/answer/id-<?php echo $val['id']; ?>');"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
+					<?php if (can_edit_post($val['uid'], $this->user_info)) { ?>
+					<a class="aw-small-text" href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/modify/edit/answer/id-<?php echo $val['id']; ?>'<?php if ($val['uid'] == $this->user_id) { ?>, AWS.init_answer_editor<?php } ?>);"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
 					<?php } ?>
 
 				<?php if ($this->user_info['permission']['fold_post']) { ?>

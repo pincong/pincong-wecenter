@@ -142,12 +142,9 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题已锁定, 不能编辑')));
 		}
 
-		if ($question_info['uid'] != $this->user_id AND !$this->user_info['permission']['edit_any_post'])
+		if (!can_edit_post($question_info['uid'], $this->user_info))
 		{
-			if (!$this->user_info['permission']['edit_specific_post'] OR !in_array($question_info['uid'], get_setting_array('specific_post_uids')))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个问题')));
-			}
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个问题')));
 		}
 
 		if (!$_POST['do_delete'])
@@ -204,12 +201,9 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文章已锁定, 不能编辑')));
 		}
 
-		if ($article_info['uid'] != $this->user_id AND !$this->user_info['permission']['edit_any_post'])
+		if (!can_edit_post($article_info['uid'], $this->user_info))
 		{
-			if (!$this->user_info['permission']['edit_specific_post'] OR !in_array($article_info['uid'], get_setting_array('specific_post_uids')))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个文章')));
-			}
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个文章')));
 		}
 
 		if (!$_POST['do_delete'])
@@ -265,12 +259,9 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('影片已锁定, 不能编辑')));
 		}
 
-		if ($video_info['uid'] != $this->user_id AND !$this->user_info['permission']['edit_any_post'])
+		if (!can_edit_post($video_info['uid'], $this->user_info))
 		{
-			if (!$this->user_info['permission']['edit_specific_post'] OR !in_array($video_info['uid'], get_setting_array('specific_post_uids')))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个影片')));
-			}
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个影片')));
 		}
 
 		if (!$_POST['do_delete'])
@@ -347,12 +338,9 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('内容不存在')));
 		}
 
-		if ($answer_info['uid'] != $this->user_id AND !$this->user_info['permission']['edit_any_post'])
+		if (!can_edit_post($answer_info['uid'], $this->user_info))
 		{
-			if (!$this->user_info['permission']['edit_specific_post'] OR !in_array($answer_info['uid'], get_setting_array('specific_post_uids')))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
-			}
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
 		if (!$question_info = $this->model('content')->get_thread_info_by_id('question', $answer_info['question_id']))
@@ -407,12 +395,9 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('内容不存在')));
 		}
 
-		if ($comment_info['uid'] != $this->user_id AND !$this->user_info['permission']['edit_any_post'])
+		if (!can_edit_post($comment_info['uid'], $this->user_info))
 		{
-			if (!$this->user_info['permission']['edit_specific_post'] OR !in_array($comment_info['uid'], get_setting_array('specific_post_uids')))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
-			}
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
 		if (!$article_info = $this->model('content')->get_thread_info_by_id('article', $comment_info['article_id']))
@@ -463,12 +448,9 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('内容不存在')));
 		}
 
-		if ($comment_info['uid'] != $this->user_id AND !$this->user_info['permission']['edit_any_post'])
+		if (!can_edit_post($comment_info['uid'], $this->user_info))
 		{
-			if (!$this->user_info['permission']['edit_specific_post'] OR !in_array($comment_info['uid'], get_setting_array('specific_post_uids')))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
-			}
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
 		if (!$video_info = $this->model('content')->get_thread_info_by_id('video', $comment_info['video_id']))

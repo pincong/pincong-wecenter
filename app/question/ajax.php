@@ -46,6 +46,8 @@ class ajax extends AWS_CONTROLLER
 		return $anonymous_uid;
 	}
 
+
+
 	public function save_answer_discussion_action()
 	{
 		if ($_POST['anonymous'] AND !$this->user_info['permission']['reply_anonymously'])
@@ -345,12 +347,9 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('讨论不存在')));
 		}
 
-		if ($this->user_id != $comment['uid'] AND !$this->user_info['permission']['edit_any_post'])
+		if (!can_edit_post($comment['uid'], $this->user_info))
 		{
-			if (!$this->user_info['permission']['edit_specific_post'] OR !in_array($comment['uid'], get_setting_array('specific_post_uids')))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('你没有权限删除该讨论')));
-			}
+			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('你没有权限删除该讨论')));
 		}
 
 		if ($_GET['type'] == 'answer')

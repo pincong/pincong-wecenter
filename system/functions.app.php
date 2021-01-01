@@ -72,6 +72,36 @@ function set_user_operation_last_time($op_name, $uid)
 	AWS_APP::cache()->set($key, time(), 86400);
 }
 
+function can_edit_post($post_uid, &$user_info)
+{
+	if (!$user_info OR !$user_info['uid'])
+	{
+		return false;
+	}
+	if ($user_info['permission']['edit_any_post'])
+	{
+		return true;
+	}
+	if ($post_uid == $user_info['uid'] AND $user_info['permission']['edit_own_post'])
+	{
+		return true;
+	}
+	if (!$user_info['permission']['edit_specific_post'])
+	{
+		return false;
+	}
+	static $specific_post_uids;
+	if (!isset($specific_post_uids))
+	{
+		$specific_post_uids = get_setting_array('specific_post_uids');
+	}
+	if (in_array($post_uid, $specific_post_uids))
+	{
+		return true;
+	}
+	return false;
+}
+
 // 获取主题图片指定尺寸的完整url地址
 function get_topic_pic_url(&$topic_info, $size = 'min')
 {
