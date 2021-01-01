@@ -178,7 +178,7 @@ class category_class extends AWS_MODEL
 			'group_id' => intval($group_id),
 			'description' => $description,
 			'skip' => intval($skip)
-		), 'id = ' . intval($category_id));
+		), ['id', 'eq', $category_id, 'i']);
 	}
 
 	public function set_category_sort($category_id, $sort)
@@ -187,7 +187,7 @@ class category_class extends AWS_MODEL
 
 		return $this->update('category', array(
 			'sort' => intval($sort)
-		), 'id = ' . intval($category_id));
+		), ['id', 'eq', $category_id, 'i']);
 	}
 
 	public function add_category($title, $group_id, $description = null, $skip = 0)
@@ -206,25 +206,25 @@ class category_class extends AWS_MODEL
 	{
 		AWS_APP::cache()->cleanGroup('category');
 
-		return $this->delete('category', 'id = ' . intval($category_id));
+		return $this->delete('category', ['id', 'eq', $category_id, 'i']);
 	}
 
 	public function category_exists($category_id)
 	{
-		return $this->count('category', "id = " . intval($category_id));
+		return $this->count('category', ['id', 'eq', $category_id, 'i']);
 	}
 
 	public function contents_exists($category_id)
 	{
-		if ($this->fetch_one('question', 'id', 'category_id = ' . intval($category_id)))
+		if ($this->fetch_one('question', 'id', ['category_id', 'eq', $category_id, 'i']))
 		{
 			return true;
 		}
-		if ($this->fetch_one('article', 'id', 'category_id = ' . intval($category_id)))
+		if ($this->fetch_one('article', 'id', ['category_id', 'eq', $category_id, 'i']))
 		{
 			return true;
 		}
-		if ($this->fetch_one('video', 'id', 'category_id = ' . intval($category_id)))
+		if ($this->fetch_one('video', 'id', ['category_id', 'eq', $category_id, 'i']))
 		{
 			return true;
 		}
@@ -239,18 +239,18 @@ class category_class extends AWS_MODEL
 
 		$this->update('question', array(
 			'category_id' => intval($target_id)
-		), 'category_id = ' . intval($from_id));
+		), ['category_id', 'eq', $from_id, 'i']);
 
 		$this->update('article', array(
 			'category_id' => intval($target_id)
-		), 'category_id = ' . intval($from_id));
+		), ['category_id', 'eq', $from_id, 'i']);
 
 		$this->update('video', array(
 			'category_id' => intval($target_id)
-		), 'category_id = ' . intval($from_id));
+		), ['category_id', 'eq', $from_id, 'i']);
 
 		$this->update('posts_index', array(
 			'category_id' => intval($target_id)
-		), 'category_id = ' . intval($from_id));
+		), ['category_id', 'eq', $from_id, 'i']);
 	}
 }

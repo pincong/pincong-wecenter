@@ -74,7 +74,12 @@ class activity_class extends AWS_MODEL
 			return;
 		}
 
-		$where = "`uid` = 0 AND `item_type` = '". ($item_type) . "' AND `item_id` = " . ($item_id);
+		$where = [
+			['uid', 'eq', 0],
+			['item_type', 'eq', $item_type, false],
+			['item_id', 'eq', $item_id, 'i'],
+		];
+
 		if (!!$this->fetch_one('activity', 'id', $where))
 		{
 			return;
@@ -309,7 +314,7 @@ class activity_class extends AWS_MODEL
 			return array();
 		}
 
-		$where = "uid IN(" . implode(',', $following_uids) . ")";
+		$where = ['uid', 'in', $following_uids];
 
 		$list = $this->query_activities($where, $page, $per_page);
 		if (count($list) > 0)
@@ -330,14 +335,14 @@ class activity_class extends AWS_MODEL
 			return $list;
 		}
 
-		$where = "uid = 0";
+		$where[] = ['uid', 'eq', 0];
 		if ($category_id)
 		{
-			$where = $where . " AND category_id = " . ($category_id);
+			$where[] = ['category_id', 'eq', $category_id];
 		}
 		else
 		{
-			$where = $where . ' AND `category_id` IN(' . implode(',', $this->model('posts')->get_default_category_ids()) . ')';
+			$where[] = ['category_id', 'in', $this->model('posts')->get_default_category_ids()];
 		}
 
 		$list = $this->query_activities($where, $page, $per_page);
@@ -362,7 +367,7 @@ class activity_class extends AWS_MODEL
 		{
 			$time_before = 0;
 		}
-		$this->delete('activity', 'time < ' . $time_before);
+		$this->delete('activity', ['time', 'lt', $time_before]);
 	}
 
 }

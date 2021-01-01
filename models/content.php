@@ -104,7 +104,7 @@ class content_class extends AWS_MODEL
 			return $item_info;
 		}
 
-		$where = 'id = ' . ($item_id);
+		$where = ['id', 'eq', $item_id];
 
 		$item_info = $this->fetch_row($type, $where);
 
@@ -127,7 +127,7 @@ class content_class extends AWS_MODEL
 			return $item_info;
 		}
 
-		$where = 'id = ' . ($item_id);
+		$where = ['id', 'eq', $item_id];
 
 		$item_info = $this->fetch_row($type, $where);
 
@@ -150,7 +150,7 @@ class content_class extends AWS_MODEL
 			return $item_info;
 		}
 
-		$where = 'id = ' . ($item_id);
+		$where = ['id', 'eq', $item_id];
 
 		$item_info = $this->fetch_row($type, $where);
 
@@ -224,7 +224,7 @@ class content_class extends AWS_MODEL
 		{
 			return false;
 		}
-		return $this->fetch_all($type, 'redirect_id = ' . ($redirect_id));
+		return $this->fetch_all($type, ['redirect_id', 'eq', $redirect_id]);
 	}
 
 
@@ -237,7 +237,7 @@ class content_class extends AWS_MODEL
 			return false;
 		}
 
-		$where = 'id = ' . ($item_id);
+		$where = ['id', 'eq', $item_id];
 		return $this->fetch_row($type, $where);
 	}
 
@@ -249,9 +249,9 @@ class content_class extends AWS_MODEL
 			return false;
 		}
 
-		array_walk_recursive($item_ids, 'intval_string');
+		//array_walk_recursive($item_ids, 'intval_string');
 
-		if ($item_list = $this->fetch_all($type, "id IN(" . implode(',', $item_ids) . ")"))
+		if ($item_list = $this->fetch_all($type, ['id', 'in', $item_ids, 'i']))
 		{
 			foreach ($item_list AS $key => $val)
 			{
@@ -277,17 +277,17 @@ class content_class extends AWS_MODEL
 		{
 			case 'question':
 				$reply_type = 'answer';
-				$where = "question_id = " . ($thread_id) . " AND uid = " . ($uid);
+				$where = [['question_id', 'eq', $thread_id], ['uid', 'eq', $uid]];
 				break;
 
 			case 'article':
 				$reply_type = 'article_comment';
-				$where = "article_id = " . ($thread_id) . " AND uid = " . ($uid);
+				$where = [['article_id', 'eq', $thread_id], ['uid', 'eq', $uid]];
 				break;
 
 			case 'video':
 				$reply_type = 'video_comment';
-				$where = "video_id = " . ($thread_id) . " AND uid = " . ($uid);
+				$where = [['video_id', 'eq', $thread_id], ['uid', 'eq', $uid]];
 				break;
 
 			default:
@@ -301,7 +301,11 @@ class content_class extends AWS_MODEL
 
 		if ($check_scheduled_posts)
 		{
-			if ($this->fetch_one('scheduled_posts', 'id', "type = '" . ($reply_type) . "' AND parent_id = " . ($thread_id) . " AND uid = " . ($uid)))
+			if ($this->fetch_one('scheduled_posts', 'id', [
+				['type', 'eq', $reply_type, false],
+				['parent_id', 'eq', $thread_id],
+				['uid', 'eq', $uid]
+			]))
 			{
 				return 2;
 			}
@@ -369,26 +373,26 @@ class content_class extends AWS_MODEL
 		$where = array();
 		if ($thread_type)
 		{
-			$where[] = "`thread_type` = '" . ($thread_type) . "'";
+			$where[] = ['thread_type', 'eq', $thread_type, false];
 		}
 		if ($thread_id = intval($thread_id))
 		{
-			$where[] = "thread_id = " . ($thread_id);
+			$where[] = ['thread_id', 'eq', $thread_id];
 		}
 		if ($item_type)
 		{
-			$where[] = "`item_type` = '" . ($item_type) . "'";
+			$where[] = ['item_type', 'eq', $item_type, false];
 		}
 		if ($item_id = intval($item_id))
 		{
-			$where[] = "item_id = " . ($item_id);
+			$where[] = ['item_id', 'eq', $item_id];
 		}
 		if ($uid = intval($uid))
 		{
-			$where[] = "uid = " . ($uid);
+			$where[] = ['uid', 'eq', $uid];
 		}
 
-		$log_list = $this->fetch_page('content_log', implode(' AND ', $where), 'id DESC', $page, $per_page);
+		$log_list = $this->fetch_page('content_log', $where, 'id DESC', $page, $per_page);
 		if (!$log_list)
 		{
 			return false;
@@ -429,7 +433,7 @@ class content_class extends AWS_MODEL
 		{
 			$time_before = 0;
 		}
-		$this->delete('content_log', 'time < ' . $time_before);
+		$this->delete('content_log', ['time', 'lt', $time_before]);
 	}
 
 	public function update_view_count($item_type, $item_id)
@@ -489,10 +493,10 @@ class content_class extends AWS_MODEL
 			return false;
 		}
 
-		$where = 'id = ' . intval($item_id);
+		$where = ['id', 'eq', $item_id, 'i'];
 		$this->update($item_type, array('uid' => ($new_uid)), $where);
 
-		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
+		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type, false]];
 		$this->update('posts_index', array('uid' => ($new_uid)), $where);
 
 		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '变更作者', $log_uid, 'user', $old_uid);
@@ -507,7 +511,7 @@ class content_class extends AWS_MODEL
 			return false;
 		}
 
-		$where = 'id = ' . intval($item_id);
+		$where = ['id', 'eq', $item_id, 'i'];
 		$this->update($item_type, array(
 			'redirect_id' => intval($redirect_id),
 			'lock' => 1
@@ -525,7 +529,7 @@ class content_class extends AWS_MODEL
 			return false;
 		}
 
-		$where = 'id = ' . intval($item_id);
+		$where = ['id', 'eq', $item_id, 'i'];
 		$this->update($item_type, array(
 			'redirect_id' => 0,
 			'lock' => 0
@@ -543,13 +547,13 @@ class content_class extends AWS_MODEL
 			return false;
 		}
 
-		$where = 'id = ' . intval($item_id);
+		$where = ['id', 'eq', $item_id, 'i'];
 		$this->update($item_type, array('category_id' => intval($category_id)), $where);
 
-		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $item_type . "'";
+		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type, false]];
 		$this->update('posts_index', array('category_id' => intval($category_id)), $where);
 
-		$where = "uid = 0 AND thread_id = " . intval($item_id) . " AND thread_type = '" . $item_type . "'";
+		$where = [['uid', 'eq', 0], ['thread_id', 'eq', $item_id, 'i'], ['thread_type', 'eq', $item_type, false]];
 		$this->update('activity', array('category_id' => intval($category_id)), $where);
 
 		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '变更分类', $log_uid, 'category', $old_category_id);
@@ -565,7 +569,7 @@ class content_class extends AWS_MODEL
 			return false;
 		}
 
-		$where = 'id = ' . intval($item_id);
+		$where = ['id', 'eq', $item_id, 'i'];
 		$this->update($item_type, array('lock' => 1), $where);
 
 		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '锁定', $log_uid);
@@ -580,7 +584,7 @@ class content_class extends AWS_MODEL
 			return false;
 		}
 
-		$where = 'id = ' . intval($item_id);
+		$where = ['id', 'eq', $item_id, 'i'];
 		$this->update($item_type, array('lock' => 0), $where);
 
 		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '取消锁定', $log_uid);
@@ -596,7 +600,7 @@ class content_class extends AWS_MODEL
 			return false;
 		}
 
-		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
+		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type, false]];
 
 		$this->update('posts_index', array(
 			'update_time' => $this->model('posts')->get_last_update_time()
@@ -614,7 +618,7 @@ class content_class extends AWS_MODEL
 			return false;
 		}
 
-		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
+		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type, false]];
 
 		$this->update('posts_index', array(
 			'update_time' => $this->model('posts')->get_last_update_time() - (7 * 24 * 3600)
@@ -632,10 +636,10 @@ class content_class extends AWS_MODEL
 			return false;
 		}
 
-		$where = 'id = ' . intval($item_id);
+		$where = ['id', 'eq', $item_id, 'i'];
 		$this->update($item_type, array('recommend' => 1), $where);
 
-		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
+		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type, false]];
 		$this->update('posts_index', array('recommend' => 1), $where);
 
 		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '推荐', $log_uid);
@@ -648,10 +652,10 @@ class content_class extends AWS_MODEL
 			return false;
 		}
 
-		$where = 'id = ' . intval($item_id);
+		$where = ['id', 'eq', $item_id, 'i'];
 		$this->update($item_type, array('recommend' => 0), $where);
 
-		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
+		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type, false]];
 		$this->update('posts_index', array('recommend' => 0), $where);
 
 		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '取消推荐', $log_uid);
@@ -665,10 +669,10 @@ class content_class extends AWS_MODEL
 			return false;
 		}
 
-		$where = 'id = ' . intval($item_id);
+		$where = ['id', 'eq', $item_id, 'i'];
 		$this->update($item_type, array('sort' => 1), $where);
 
-		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
+		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type, false]];
 		$this->update('posts_index', array('sort' => 1), $where);
 
 		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '置顶', $log_uid);
@@ -681,10 +685,10 @@ class content_class extends AWS_MODEL
 			return false;
 		}
 
-		$where = 'id = ' . intval($item_id);
+		$where = ['id', 'eq', $item_id, 'i'];
 		$this->update($item_type, array('sort' => 0), $where);
 
-		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
+		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type, false]];
 		$this->update('posts_index', array('sort' => 0), $where);
 
 		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '取消置顶', $log_uid);
@@ -698,14 +702,18 @@ class content_class extends AWS_MODEL
 			return false;
 		}
 
-		$where = 'id = ' . intval($item_id);
+		$where = ['id', 'eq', $item_id, 'i'];
 
 		$this->update($item_type, array('fold' => 1), $where);
 
 		// 折叠的回复的通知标为已读
 		$this->update('notification', array(
 			'read_flag' => 1
-		), 'read_flag <> 1 AND item_type = "' . ($item_type) . '" AND item_id = ' . intval($item_id));
+		), [
+			['id', 'notEq', 1],
+			['item_type', 'eq', $item_type, false],
+			['item_id', 'eq', $item_id, 'i']
+		]);
 
 		$this->model('content')->log($parent_type, $parent_id, $item_type, $item_id, '折叠', $log_uid);
 	}
@@ -717,7 +725,7 @@ class content_class extends AWS_MODEL
 			return false;
 		}
 
-		$where = 'id = ' . intval($item_id);
+		$where = ['id', 'eq', $item_id, 'i'];
 
 		$this->update($item_type, array('fold' => 0), $where);
 

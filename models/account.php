@@ -40,7 +40,7 @@ class account_class extends AWS_MODEL
 	{
 		$user_name = trim($user_name);
 
-		return $this->fetch_one('users', 'uid', "user_name = '" . $this->quote($user_name) . "'");
+		return $this->fetch_one('users', 'uid', ['user_name', 'eq', $user_name, 's']);
 	}
 
 	/**
@@ -57,7 +57,7 @@ class account_class extends AWS_MODEL
 		{
 			return false;
 		}
-		return $this->fetch_one('users', 'uid', 'uid = ' . ($uid));
+		return $this->fetch_one('users', 'uid', ['uid', 'eq', $uid]);
 	}
 
 
@@ -84,7 +84,7 @@ class account_class extends AWS_MODEL
 			return $users_info[$uid];
 		}
 
-		if (! $user_info = $this->fetch_row('users', 'uid = ' . $uid))
+		if (! $user_info = $this->fetch_row('users', ['uid', 'eq', $uid]))
 		{
 			return false;
 		}
@@ -118,7 +118,7 @@ class account_class extends AWS_MODEL
 	 */
 	public function get_user_info_by_username($user_name)
 	{
-		if ($uid = $this->fetch_one('users', 'uid', "user_name = '" . $this->quote($user_name) . "'"))
+		if ($uid = $this->fetch_one('users', 'uid', ['user_name', 'eq', $user_name, 's']))
 		{
 			return $this->get_user_info_by_uid($uid);
 		}
@@ -147,7 +147,7 @@ class account_class extends AWS_MODEL
 			return $users_info[$uid];
 		}
 
-		if (! $user_info = $this->fetch_row('users', 'uid = ' . $uid))
+		if (! $user_info = $this->fetch_row('users', ['uid', 'eq', $uid]))
 		{
 			return false;
 		}
@@ -175,9 +175,9 @@ class account_class extends AWS_MODEL
 			return false;
 		}
 
-		array_walk_recursive($uids, 'intval_string');
+		//array_walk_recursive($uids, 'intval_string');
 
-		$uids = array_unique($uids);
+		//$uids = array_unique($uids);
 
 		static $users_info;
 
@@ -186,7 +186,7 @@ class account_class extends AWS_MODEL
 			return $users_info[implode('_', $uids)];
 		}
 
-		if ($user_info = $this->fetch_all('users', "uid IN(" . implode(',', $uids) . ")"))
+		if ($user_info = $this->fetch_all('users', ['uid', 'in', $uids, 'i']))
 		{
 			foreach ($user_info as $key => $val)
 			{
@@ -217,7 +217,7 @@ class account_class extends AWS_MODEL
 	 */
 	public function get_notification_setting_by_uid($uid)
 	{
-		if (!$setting = $this->fetch_row('users_notification_setting', 'uid = ' . intval($uid)))
+		if (!$setting = $this->fetch_row('users_notification_setting', ['uid', 'eq', $uid, 'i']))
 		{
 			return array('data' => array());
 		}
@@ -250,7 +250,7 @@ class account_class extends AWS_MODEL
 	 */
 	public function update_user_fields($update_data, $uid)
 	{
-		return $this->update('users', $update_data, 'uid = ' . intval($uid));
+		return $this->update('users', $update_data, ['uid', 'eq', $uid, 'i']);
 	}
 
 	/**
@@ -264,7 +264,7 @@ class account_class extends AWS_MODEL
 		$this->update('users', array(
 			'user_name' => htmlspecialchars($user_name),
 			'user_update_time' => fake_time()
-		), 'uid = ' . intval($uid));
+		), ['uid', 'eq', $uid, 'i']);
 
 		//return $this->model('search_fulltext')->push_index('user', $user_name, $uid);
 
@@ -280,7 +280,7 @@ class account_class extends AWS_MODEL
 	 */
 	public function get_user_extra_data($uid)
 	{
-		$user_info = $this->fetch_row('users', 'uid = ' . intval($uid));
+		$user_info = $this->fetch_row('users', ['uid', 'eq', $uid, 'i']);
 		if (!$user_info)
 		{
 			// uid 不存在
@@ -335,7 +335,7 @@ class account_class extends AWS_MODEL
 	 */
 	public function get_user_settings($uid)
 	{
-		$user_info = $this->fetch_row('users', 'uid = ' . intval($uid));
+		$user_info = $this->fetch_row('users', ['uid', 'eq', $uid, 'i']);
 		if (!$user_info)
 		{
 			// uid 不存在
@@ -396,7 +396,7 @@ class account_class extends AWS_MODEL
 
 		return $this->update('users', array(
 			'last_login' => fake_time()
-		), 'uid = ' . intval($uid));
+		), ['uid', 'eq', $uid, 'i']);
 	}
 
 	/**
@@ -408,7 +408,7 @@ class account_class extends AWS_MODEL
 	 */
 	public function update_notification_setting_fields($data, $uid)
 	{
-		if (!$this->count('users_notification_setting', 'uid = ' . intval($uid)))
+		if (!$this->count('users_notification_setting', ['uid', 'eq', $uid, 'i']))
 		{
 			$this->insert('users_notification_setting', array(
 				'data' => serialize($data),
@@ -419,7 +419,7 @@ class account_class extends AWS_MODEL
 		{
 			$this->update('users_notification_setting', array(
 				'data' => serialize($data)
-			), 'uid = ' . intval($uid));
+			), ['uid', 'eq', $uid, 'i']);
 		}
 
 		return true;
@@ -428,22 +428,22 @@ class account_class extends AWS_MODEL
 	public function update_notification_unread($uid)
 	{
 		return $this->update('users', array(
-			'notification_unread' => $this->count('notification', 'read_flag = 0 AND recipient_uid = ' . intval($uid))
-		), 'uid = ' . intval($uid));
+			'notification_unread' => $this->count('notification', [['read_flag', 'eq', 0], ['recipients_uid', 'eq', $uid, 'i']])
+		), ['uid', 'eq', $uid, 'i']);
 	}
 
 	public function update_question_invite_count($uid)
 	{
 		return $this->update('users', array(
-			'invite_count' => $this->count('question_invite', 'recipients_uid = ' . intval($uid))
-		), 'uid = ' . intval($uid));
+			'invite_count' => $this->count('question_invite', ['recipients_uid', 'eq', $uid, 'i'])
+		), ['uid', 'eq', $uid, 'i']);
 	}
 
 	public function update_inbox_unread($uid)
 	{
 		return $this->update('users', array(
-			'inbox_unread' => ($this->sum('inbox_dialog', 'sender_unread', 'sender_uid = ' . intval($uid)) + $this->sum('inbox_dialog', 'recipient_unread', 'recipient_uid = ' . intval($uid)))
-		), 'uid = ' . intval($uid));
+			'inbox_unread' => ($this->sum('inbox_dialog', 'sender_unread', ['sender_uid', 'eq', $uid, 'i']) + $this->sum('inbox_dialog', 'recipient_unread', ['recipients_uid', 'eq', $uid, 'i']))
+		), ['uid', 'eq', $uid, 'i']);
 	}
 
 	public function get_user_list($where = null, $limit = 10, $orderby = 'uid DESC')
@@ -522,7 +522,7 @@ class account_class extends AWS_MODEL
 
 		return $this->update('users', array(
 			'recent_topics' => serialize($new_recent_topics)
-		), 'uid = ' . intval($uid));
+		), ['uid', 'eq', $uid, 'i']);
 	}
 
 }
