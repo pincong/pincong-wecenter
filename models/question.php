@@ -655,16 +655,7 @@ class question_class extends AWS_MODEL
 			$topic_ids[] = $val['topic_id'];
 		}
 
-		if ($topic_list = $this->query_all("SELECT * FROM " . $this->get_table('topic') . " WHERE topic_id IN(" . implode(',', $topic_ids) . ") ORDER BY discuss_count DESC", $limit))
-		{
-			foreach ($topic_list AS $key => $val)
-			{
-				if (!$val['url_token'])
-				{
-					$topic_list[$key]['url_token'] = urlencode($val['topic_title']);
-				}
-			}
-		}
+		$topic_list = $this->query_all("SELECT * FROM " . $this->get_table('topic') . " WHERE topic_id IN(" . implode(',', $topic_ids) . ") ORDER BY discuss_count DESC", $limit);
 
 		return $topic_list;
 	}
@@ -690,7 +681,6 @@ class question_class extends AWS_MODEL
 				$topics_by_questions_ids[$val['item_id']][] = array(
 					'topic_id' => $val['topic_id'],
 					'topic_title' => $topics_info[$val['topic_id']]['topic_title'],
-					'url_token' => $topics_info[$val['topic_id']]['url_token'],
 				);
 			}
 		}

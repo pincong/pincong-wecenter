@@ -22,16 +22,7 @@ class topic_class extends AWS_MODEL
 {
 	public function get_topic_list($where = null, $order = 'topic_id DESC', $limit = 10, $page = null)
 	{
-		if ($topic_list = $this->fetch_page('topic', $where, $order, $page, $limit))
-		{
-			foreach ($topic_list AS $key => $val)
-			{
-				if (!$val['url_token'])
-				{
-					$topic_list[$key]['url_token'] = rawurlencode($val['topic_title']);
-				}
-			}
-		}
+		$topic_list = $this->fetch_page('topic', $where, $order, $page, $limit);
 
 		return $topic_list;
 	}
@@ -53,16 +44,7 @@ class topic_class extends AWS_MODEL
 			$topic_ids[] = $val['topic_id'];
 		}
 
-		if ($topic_list = $this->fetch_all('topic', 'topic_id IN(' . implode(',', $topic_ids) . ')', 'discuss_count DESC', $limit))
-		{
-			foreach ($topic_list AS $key => $val)
-			{
-				if (!$val['url_token'])
-				{
-					$topic_list[$key]['url_token'] = urlencode($val['topic_title']);
-				}
-			}
-		}
+		$topic_list = $this->fetch_all('topic', 'topic_id IN(' . implode(',', $topic_ids) . ')', 'discuss_count DESC', $limit);
 
 		return $topic_list;
 	}
@@ -106,22 +88,9 @@ class topic_class extends AWS_MODEL
 		if (! $topics[$topic_id])
 		{
 			$topics[$topic_id] = $this->fetch_row('topic', 'topic_id = ' . intval($topic_id));
-
-			if ($topics[$topic_id] AND !$topics[$topic_id]['url_token'])
-			{
-				$topics[$topic_id]['url_token'] = urlencode($topics[$topic_id]['topic_title']);
-			}
 		}
 
 		return $topics[$topic_id];
-	}
-
-	public function get_topic_by_url_token($url_token)
-	{
-		if ($topic_id = $this->fetch_one('topic', 'topic_id', "url_token = '" . $this->quote($url_token) . "'"))
-		{
-			return $this->get_topic_by_id($topic_id);
-		}
 	}
 
 	public function get_merged_topic_ids($topic_id)
@@ -170,11 +139,6 @@ class topic_class extends AWS_MODEL
 
 		foreach ($topics AS $key => $val)
 		{
-			if (!$val['url_token'])
-			{
-				$val['url_token'] = urlencode($val['topic_title']);
-			}
-
 			$result[$val['topic_id']] = $val;
 		}
 
@@ -652,18 +616,6 @@ class topic_class extends AWS_MODEL
 		$topic = $this->get_topic_by_id($topic_id);
 
 		return $topic['user_related'];
-	}
-
-	public function check_url_token($url_token, $topic_id)
-	{
-		return $this->count('topic', "url_token = '" . $this->quote($url_token) . "' OR topic_title = '" . $this->quote($url_token) . "' AND topic_id != " . intval($topic_id));
-	}
-
-	public function update_url_token($url_token, $topic_id)
-	{
-		return $this->update('topic', array(
-			'url_token' => htmlspecialchars($url_token)
-		), 'topic_id = ' . intval($topic_id));
 	}
 
 	public function save_topic_relation($uid, $topic_id, $item_id, $type)

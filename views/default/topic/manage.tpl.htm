@@ -7,21 +7,10 @@
 				<div class="col-sm-9 aw-main-content">
 					<div class="aw-mod">
 						<div class="mod-head common-head">
-							<h2><span class="pull-right"><a class="aw-small-text" href="topic/<?php echo $this->topic_info['url_token']; ?>"><?php _e('返回话题'); ?> »</a></span><?php _e('管理话题'); ?> - <?php echo $this->topic_info['topic_title']; ?></h2>
+							<h2><span class="pull-right"><a class="aw-small-text" href="topic/<?php echo urlencode($this->topic_info['topic_title']); ?>"><?php _e('返回话题'); ?> »</a></span><?php _e('管理话题'); ?> - <?php echo $this->topic_info['topic_title']; ?></h2>
 						</div>
 					</div>
 					<div class="aw-mod-topic-manage">
-						<dl class="dl-horizontal">
-							<form class="form-inline" action="topic/ajax/save_url_token/" method="post" id="url_token_form">
-								<input type="hidden" name="topic_id" value="<?php echo $this->topic_info['topic_id']; ?>" />
-								<dt><?php _e('话题别名'); ?>:</dt>
-								<dd>
-									<a class="btn btn-normal btn-success pull-right" href="javascript:;" onclick="AWS.submit($('#url_token_form'), $(this));" /><?php _e('保存'); ?></a>
-									<script type="text/javascript">document.write(G_BASE_URL);</script>/topic/
-									<input type="text" class="form-control" name="url_token" value="<?php echo $this->topic_info['url_token']; ?>" />
-								</dd>
-							</form>
-						</dl>
 						<dl class="dl-horizontal">
 							<form action="topic/ajax/merge_topic/" method="post" id="merge_topic_form">
 								<input type="hidden" name="target_id" value="<?php echo $this->topic_info['topic_id']; ?>" />

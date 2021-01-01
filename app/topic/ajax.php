@@ -57,7 +57,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		$topic_info['topic_pic'] = get_topic_pic_url($topic_info, 'mid');
-		$topic_info['url'] = get_js_url('/topic/' . $topic_info['url_token']);
+		$topic_info['url'] = get_js_url('/topic/' . urlencode($topic_info['topic_title']));
 
 		H::ajax_json_output($topic_info);
 	}
@@ -207,43 +207,14 @@ class ajax extends AWS_CONTROLLER
 
 	public function lock_topic_action()
 	{
+		if (! $this->user_info['permission']['manage_topic'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('你没有权限进行此操作')));
+		}
+
 		$this->model('topic')->lock_topic_by_id($_GET['topic_id'], $this->model('topic')->has_lock_topic($_GET['topic_id']));
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1));
-	}
-
-	public function save_url_token_action()
-	{
-		if (!($this->user_info['permission']['manage_topic']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
-		}
-
-		if (!$topic_info = $this->model('topic')->get_topic_by_id($_POST['topic_id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题不存在')));
-		}
-
-		if (!preg_match("/^(?!__)[a-zA-Z0-9_]+$/i", $_POST['url_token']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题别名只允许输入英文或数字')));
-		}
-
-		if ($this->model('topic')->check_url_token($_POST['url_token'], $topic_info['topic_id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题别名已经被占用请更换一个')));
-		}
-
-		if (preg_match("/^[\d]+$/i", $_POST['url_token']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题别名不允许为纯数字')));
-		}
-
-		$this->model('topic')->update_url_token($_POST['url_token'], $topic_info['topic_id']);
-
-		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => get_js_url('/topic/' . $_POST['url_token'])
-		), 1, null));
 	}
 
 	public function lock_action()

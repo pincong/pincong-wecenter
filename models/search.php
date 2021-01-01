@@ -73,16 +73,7 @@ class search_class extends AWS_MODEL
 			$q = implode('', $q);
 		}
 
-		if ($result = $this->fetch_all('topic', "topic_title LIKE '" . $this->quote($q) . "%'", null, calc_page_limit($page, $limit)))
-		{
-			foreach ($result AS $key => $val)
-			{
-				if (!$val['url_token'])
-				{
-					$result[$key]['url_token'] = urlencode($val['topic_title']);
-				}
-			}
-		}
+		$result = $this->fetch_all('topic', "topic_title LIKE '" . $this->quote($q) . "%'", null, calc_page_limit($page, $limit));
 
 		return $result;
 	}
@@ -170,7 +161,7 @@ class search_class extends AWS_MODEL
 
 			$search_id = $result_info['topic_id'];
 
-			$url = get_js_url('/topic/' . $result_info['url_token']);
+			$url = get_js_url('/topic/' . urlencode($result_info['topic_title']));
 
 			$name = $result_info['topic_title'];
 

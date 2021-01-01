@@ -37,14 +37,11 @@ class main extends AWS_CONTROLLER
 	{
 		if (is_digits($_GET['id']))
 		{
-			if (!$topic_info = $this->model('topic')->get_topic_by_id($_GET['id']))
-			{
-				$topic_info = $this->model('topic')->get_topic_by_title($_GET['id']);
-			}
+			$topic_info = $this->model('topic')->get_topic_by_id($_GET['id']);
 		}
-		else if (!$topic_info = $this->model('topic')->get_topic_by_title($_GET['id']))
+		else
 		{
-			$topic_info = $this->model('topic')->get_topic_by_url_token($_GET['id']);
+			$topic_info = $this->model('topic')->get_topic_by_title($_GET['id']);
 		}
 
 		if (!$topic_info)
@@ -64,12 +61,7 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		if (urldecode($topic_info['url_token']) != $_GET['id'])
-		{
-			HTTP::redirect('/topic/' . $topic_info['url_token'] . '?rf=' . $_GET['rf']);
-		}
-
-		if (is_digits($_GET['rf']) and $_GET['rf'])
+		if (is_digits($_GET['rf']) AND $_GET['rf'])
 		{
 			if ($from_topic = $this->model('topic')->get_topic_by_id($_GET['rf']))
 			{
