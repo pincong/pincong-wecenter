@@ -69,7 +69,7 @@
 											</li>
 										<?php } ?>
 
-										<?php if ($this->user_info['permission']['pin_post']) { ?>
+										<?php if ($this->user_info['permission']['recommend_post']) { ?>
 											<li>
 												<?php if ($this->question_info['recommend']) { ?>
 												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unrecommend/', 'item_type=question&item_id=<?php echo $this->question_info['id']; ?>');"><?php _e('取消推荐'); ?></a>

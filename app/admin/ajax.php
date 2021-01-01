@@ -676,6 +676,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
             'edit_question_topic',
 			'pin_post',
 			'fold_post',
+			'recommend_post',
 			'lock_post',
 			'bump_sink',
 			'vote_agree',

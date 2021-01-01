@@ -148,7 +148,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function recommend_action()
 	{
-		if (!$this->user_info['permission']['pin_post'])
+		if (!$this->user_info['permission']['recommend_post'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有设置推荐的权限')));
 		}
@@ -176,7 +176,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function unrecommend_action()
 	{
-		if (!$this->user_info['permission']['pin_post'])
+		if (!$this->user_info['permission']['recommend_post'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有设置推荐的权限')));
 		}

@@ -52,7 +52,7 @@
 											</li>
 										<?php } ?>
 
-										<?php if ($this->user_info['permission']['pin_post']) { ?>
+										<?php if ($this->user_info['permission']['recommend_post']) { ?>
 											<li>
 												<?php if ($this->video_info['recommend']) { ?>
 												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unrecommend/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>');"><?php _e('取消推荐'); ?></a>
