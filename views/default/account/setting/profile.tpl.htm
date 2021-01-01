@@ -13,8 +13,8 @@
 				<dl>
 					<dt><?php _e('用户名'); ?>:</dt>
 					<dd>
-						<input type="text" name="user_name" value="<?php echo UF::name($this->user_info); ?>" class="form-control" <?php if ($this->user_info['user_update_time'] AND $this->user_info['user_update_time'] > (TIMESTAMP - 3600 * 24 * 30)) { ?> disabled="disabled"<?php } ?> />
-						<p class="aw-small-text"><?php _e('30 天内只能修改一次'); ?></p>
+						<input type="text" name="user_name" value="<?php echo UF::name($this->user_info); ?>" class="form-control" />
+						<p class="aw-small-text"><?php _e('修改用户名需要支付 %s0 %s1', array(-intval(get_setting('currency_system_config_change_username')), get_setting('currency_unit'))); ?></p>
 					</dd>
 				</dl>
 				<dl>

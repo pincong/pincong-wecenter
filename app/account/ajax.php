@@ -356,13 +356,14 @@ class ajax extends AWS_CONTROLLER
 
 	public function profile_setting_action()
 	{
-		if ($_POST['user_name'] AND $_POST['user_name'] != $this->user_info['user_name'])
+		if ($_POST['user_name'])
 		{
-			if ($user_name = htmlspecialchars(trim($_POST['user_name'])))
+			$user_name = trim($_POST['user_name']);
+			if ($user_name != $this->user_info['user_name'])
 			{
-				if ($this->user_info['user_update_time'] AND $this->user_info['user_update_time'] > (time() - 3600 * 24 * 30))
+				if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_change_username'))
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你距离上次修改用户名未满 30 天')));
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
 				}
 				if ($check_result = $this->model('register')->check_username_char($user_name))
 				{
@@ -377,6 +378,8 @@ class ajax extends AWS_CONTROLLER
 					H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('已经存在相同的姓名, 请重新填写')));
 				}
 				$this->model('account')->update_user_name($user_name, $this->user_id);
+
+				$this->model('currency')->process($this->user_id, 'CHANGE_USERNAME', get_setting('currency_system_config_change_username'), '修改用户名');
 			}
 		}
 
