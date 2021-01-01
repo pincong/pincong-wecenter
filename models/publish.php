@@ -519,12 +519,14 @@ class publish_class extends AWS_MODEL
 
 		if (get_setting('discussion_bring_top') == 'Y')
 		{
+			$thread_id = ($thread_info['redirect_id'] ? $thread_info['redirect_id'] : $thread_info['id']);
+
 			$this->update('question', array(
 				'update_time' => $now,
 				'last_uid' => $data['uid'],
-			), 'id = ' . intval($thread_info['id']));
+			), 'id = ' . intval($thread_id));
 
-			$this->model('posts')->bring_to_top($thread_info['id'], 'question');
+			$this->model('posts')->bring_to_top($thread_id, 'question');
 		}
 
 		$this->update('answer', array(
