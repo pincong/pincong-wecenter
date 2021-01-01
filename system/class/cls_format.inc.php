@@ -26,7 +26,7 @@ class FORMAT
 	{
 		$url = self::text($orig_url, false);
 
-		if (!is_website($orig_url))
+		if (!is_website($orig_url) AND !is_uri_path($orig_url))
 		{
 			return $url;
 		}
@@ -44,7 +44,7 @@ class FORMAT
 	{
 		$url = self::text($orig_url, false);
 
-		if (!is_website($orig_url))
+		if (!is_website($orig_url) AND !is_uri_path($orig_url))
 		{
 			return $url;
 		}
@@ -70,7 +70,7 @@ class FORMAT
 			$title = self::text($title, false);
 		}
 
-		if (!is_website($orig_url))
+		if (!is_website($orig_url) AND !is_uri_path($orig_url))
 		{
 			return $title;
 		}

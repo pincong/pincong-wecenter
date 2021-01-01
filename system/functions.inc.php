@@ -562,3 +562,18 @@ function is_website($url)
 
 	return true;
 }
+
+function is_uri_path($url)
+{
+	if (!$url)
+	{
+		return false;
+	}
+
+	if (strpos($url, '/') !== 0 OR strpos($url, '//') === 0)
+	{
+		return false;
+	}
+
+	return true;
+}
