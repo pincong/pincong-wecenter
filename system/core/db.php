@@ -14,91 +14,112 @@
 
 class core_db
 {
-	private $db;
-	private $current_db_object;
+	private $dbh_master;
+	private $dbh_slave;
 
 	public function __construct()
 	{
-		if (load_class('core_config')->get('system')->debug)
+		$debug_mode = !!load_class('core_config')->get('system')->debug;
+		if ($debug_mode)
 		{
 			$start_time = microtime(TRUE);
 		}
 
-		if (load_class('core_config')->get('database')->charset)
-		{
-			load_class('core_config')->get('database')->master['charset'] = load_class('core_config')->get('database')->charset;
+		$cfg = load_class('core_config')->get('database');
 
-			if (load_class('core_config')->get('database')->slave)
+		if ($cfg->charset)
+		{
+			$cfg->master['charset'] = $cfg->charset;
+
+			if ($cfg->slave)
 			{
-				load_class('core_config')->get('database')->slave['charset'] = load_class('core_config')->get('database')->charset;
+				$cfg->slave['charset'] = $cfg->charset;
 			}
 		}
 
-		$this->db['master'] = Zend_Db::factory(load_class('core_config')->get('database')->driver, load_class('core_config')->get('database')->master);
+		if (!$cfg->master['dsn'])
+		{
+			$cfg->master['dsn'] = $this->to_dsn($cfg->dbtype, $cfg->master);
+		}
 
 		try
 		{
-			$this->db['master']->query("SET sql_mode = ''");
+			$this->dbh_master = new PDO($cfg->master['dsn'], $cfg->master['username'], $cfg->master['password'], array(
+				PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+			));
 		}
 		catch (Exception $e)
 		{
-			throw new Zend_Exception('Can\'t connect to master database.');
+			throw new Zend_Exception("Can't connect to master database.");
 		}
 
-		if (load_class('core_config')->get('system')->debug AND class_exists('AWS_APP', false))
+		if ($debug_mode)
 		{
-			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), 'Connect Master DB');
+			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), 'Connected to Master DB');
 		}
 
-		if (load_class('core_config')->get('database')->slave)
+		if ($cfg->slave)
 		{
-			if (load_class('core_config')->get('system')->debug)
+			if ($debug_mode)
 			{
 				$start_time = microtime(TRUE);
 			}
 
-			$this->db['slave'] = Zend_Db::factory(load_class('core_config')->get('database')->driver, load_class('core_config')->get('database')->slave);
+			if (!$cfg->slave['dsn'])
+			{
+				$cfg->slave['dsn'] = $this->to_dsn($cfg->dbtype, $cfg->slave);
+			}
 
 			try
 			{
-				$this->db['slave']->query("SET sql_mode = ''");
+				$this->dbh_slave = new PDO($cfg->slave['dsn'], $cfg->slave['username'], $cfg->slave['password'], array(
+					PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+				));
 			}
 			catch (Exception $e)
 			{
-				throw new Zend_Exception('Can\'t connect to slave database.');
+				throw new Zend_Exception("Can't connect to slave database.");
 			}
 
-			if (load_class('core_config')->get('system')->debug AND class_exists('AWS_APP', false))
+			if ($debug_mode)
 			{
-				AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), 'Connect Slave DB');
+				AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), 'Connected to Slave DB');
 			}
 		}
 		else
 		{
-			$this->db['slave'] =& $this->db['master'];
+			$this->dbh_slave = $this->dbh_master;
 		}
-
-		if (!defined('MYSQL_VERSION'))
-		{
-			define('MYSQL_VERSION', $this->db['master']->getServerVersion());
-		}
-
-		//Zend_Db_Table_Abstract::setDefaultAdapter($this->db['master']);
-		$this->setObject();
 	}
 
-	public function setObject($db_object_name = 'master')
+	private function to_dsn($type, $params)
 	{
-		if (isset($this->db[$db_object_name]))
+		unset($params['username']);
+		unset($params['password']);
+
+		$result = '';
+		foreach ($params as $key => $val)
 		{
-			Zend_Registry::set('dbAdapter', $this->db[$db_object_name]);
-			Zend_Db_Table_Abstract::setDefaultAdapter($this->db[$db_object_name]);
-
-			$this->current_db_object = $db_object_name;
-
-			return $this->db[$db_object_name];
+			if (!!$result)
+			{
+				$result .= ';';
+			}
+			$result .= $key . '=' .$val;
 		}
+		if (!$type)
+		{
+			$type = 'mysql';
+		}
+		return $type . ':' . $result;
+	}
 
-		throw new Zend_Exception('Can\'t find this db object: ' . $db_object_name);
+	public function master()
+	{
+		return $this->dbh_master;
+	}
+
+	public function slave()
+	{
+		return $this->dbh_slave;
 	}
 }

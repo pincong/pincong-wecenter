@@ -2,7 +2,7 @@
 
 $config['charset'] = 'utf8mb4';
 $config['prefix'] = 'aws_';
-$config['driver'] = 'PDO_MYSQL';
+$config['dbtype'] = 'mysql';
 $config['master'] = array (
   'charset' => 'utf8mb4',
   'host' => 'localhost',

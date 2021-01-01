@@ -371,20 +371,19 @@ class AWS_APP
 	/**
 	 * 调用系统数据库
 	 *
-	 * 此功能基于 Zend_DB 类库
+	 * 此功能基于 PDO
 	 *
 	 * @access	public
-	 * @param	string
 	 * @return	object
 	 */
-	public static function db($db_object_name = 'master')
+	public static function db()
 	{
 		if (!self::$db)
 		{
 			self::$db = load_class('core_db');
 		}
 
-		return self::$db->setObject($db_object_name);
+		return self::$db;
 	}
 
 	/**

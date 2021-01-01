@@ -25,8 +25,6 @@ class AWS_MODEL
 {
 	private $_prefix;
 	private $_debug;
-	private $_slave_db_available;
-	private $_current_db = 'master';
 
 	private $_fetch_page_table;
 	private $_fetch_page_where;
@@ -35,9 +33,13 @@ class AWS_MODEL
 	{
 		$this->_prefix = AWS_APP::config()->get('database')->prefix;
 		$this->_debug = !!AWS_APP::config()->get('system')->debug;
-		$this->_slave_db_available = !!AWS_APP::config()->get('database')->slave;
 
 		$this->setup();
+	}
+
+	private function _db_error($sql, $e)
+	{
+		show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
 	}
 
 	public function setup()
@@ -48,117 +50,29 @@ class AWS_MODEL
 		return AWS_APP::model($model);
 	}
 
-	/**
-	 * 获取表前缀
-	 */
-	public function get_prefix()
-	{
-		return $this->_prefix;
-	}
-
-	/**
-	 * 获取表名
-	 *
-	 * 直接写 SQL 的时候要用这个函数, 外部程序使用 get_table() 方法
-	 *
-	 * @access	public
-	 * @param	string
-	 * @return	string
-	 */
 	public function get_table($name)
 	{
 		return $this->_prefix . $name;
 	}
 
-	/**
-	 * 获取系统 DB 类
-	 *
-	 * 此功能基于 Zend_DB 类库
-	 *
-	 * @return	object
-	 */
-	public function db()
-	{
-		return AWS_APP::db($this->_current_db);
-	}
 
-	/**
-	 * 切换到主数据库
-	 *
-	 * 此功能用于数据库读写分离
-	 *
-	 * @return	object
-	 */
-	public function master()
-	{
-		if ($this->_current_db == 'master')
-		{
-			return $this;
-		}
-
-		if ($this->_debug)
-		{
-			$start_time = microtime(TRUE);
-		}
-
-		AWS_APP::db('master');
-
-		if ($this->_debug)
-		{
-			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), 'Master DB Seleted');
-		}
-
-		return $this;
-	}
-
-	/**
-	 * 切换到从数据库
-	 *
-	 * 此功能用于数据库读写分离
-	 *
-	 * @return	object
-	 */
-	public function slave()
-	{
-		if (!$this->_slave_db_available OR $this->_current_db == 'slave')
-		{
-			return $this;
-		}
-
-		if ($this->_debug)
-		{
-			$start_time = microtime(TRUE);
-		}
-
-		AWS_APP::db('slave');
-
-		if ($this->_debug)
-		{
-			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), 'Slave DB Seleted');
-		}
-
-		return $this;
-	}
-
-	/**
-	 * 插入数据
-	 *
-	 * 面向对象数据库操作, 表名无需加表前缀, 数据也无需使用 $this->escape 进行过滤
-	 *
-	 * @param	string
-	 * @param	array
-	 * @return	int
-	 */
 	public function insert($table, $data)
 	{
-		$this->master();
+		$pdo = AWS_APP::db()->master();
 
-		foreach ($data AS $key => $val)
+		$sql = 'INSERT INTO `' . $this->get_table($table) . '` ';
+
+		if (is_array($data))
 		{
-			$debug_data['`' . $key . '`'] = "'" . $this->escape($val) . "'";
+			$sql .= '(`' . implode('`, `', array_keys($data)) . '`) ';
+			$sql .= 'VALUES (' . implode(', ', array_fill(0, count($data), '?')) . ')';
+			$values = array_values($data);
 		}
-
-		$sql = 'INSERT INTO `' . $this->get_table($table) . '` (' . implode(', ', array_keys($debug_data)) . ') VALUES (' . implode(', ', $debug_data) . ')';
+		else
+		{
+			$sql .= $data;
+			$values = null;
+		}
 
 		if ($this->_debug)
 		{
@@ -166,9 +80,10 @@ class AWS_MODEL
 		}
 
 		try {
-			$rows_affected = $this->db()->insert($this->get_table($table), $data);
+			$stmt = $pdo->prepare($sql);
+			$success = $stmt->execute($values);
 		} catch (Exception $e) {
-			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
+			$this->_db_error($sql, $e);
 		}
 
 		if ($this->_debug)
@@ -176,24 +91,17 @@ class AWS_MODEL
 			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
 		}
 
-		$last_insert_id = $this->db()->lastInsertId();
-
-		return $last_insert_id;
+		if (!$success)
+		{
+			return false;
+		}
+		return $pdo->lastInsertId();
 	}
 
-	/**
-	 * 更新数据
-	 *
-	 * 面向对象数据库操作, 表名无需加表前缀, 数据也无需使用 $this->escape 进行过滤 ($where 条件除外)
-	 *
-	 * @param	string
-	 * @param	array
-	 * @param	string
-	 * @return	int
-	 */
+
 	public function update($table, $data, $where)
 	{
-		$this->master();
+		$pdo = AWS_APP::db()->master();
 
 		if (is_array($where))
 		{
@@ -202,18 +110,22 @@ class AWS_MODEL
 
 		if (!$where)
 		{
-			throw new Zend_Exception('DB Update no where string.');
+			throw new Zend_Exception('Missing WHERE clause.');
 		}
 
-		if ($data)
+		$sql = 'UPDATE `' . $this->get_table($table) . '` SET ';
+
+		if (is_array($data))
 		{
-			foreach ($data AS $key => $val)
-			{
-				$update_string[] = '`' . $key . "` = '" . $this->escape($val) . "'";
-			}
+			$sql .= '`' . implode('`= ?, `', array_keys($data)) . '` = ?';
+			$values = array_values($data);
 		}
-
-		$sql = 'UPDATE `' . $this->get_table($table) . '` SET ' . implode(', ', $update_string) . ' WHERE ' . $where;
+		else
+		{
+			$sql .= $data;
+			$values = null;
+		}
+		$sql .= ' WHERE ' . $where;
 
 		if ($this->_debug)
 		{
@@ -221,9 +133,10 @@ class AWS_MODEL
 		}
 
 		try {
-			$rows_affected = $this->db()->update($this->get_table($table), $data, $where);
+			$stmt = $pdo->prepare($sql);
+			$success = $stmt->execute($values);
 		} catch (Exception $e) {
-			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
+			$this->_db_error($sql, $e);
 		}
 
 		if ($this->_debug)
@@ -231,21 +144,13 @@ class AWS_MODEL
 			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
 		}
 
-		return $rows_affected;
+		return $success;
 	}
 
-	/**
-	 * 删除数据
-	 *
-	 * 面向对象数据库操作
-	 *
-	 * @param	string
-	 * @param	string
-	 * @return	int
-	 */
+
 	public function delete($table, $where)
 	{
-		$this->master();
+		$pdo = AWS_APP::db()->master();
 
 		if (is_array($where))
 		{
@@ -254,7 +159,7 @@ class AWS_MODEL
 
 		if (!$where)
 		{
-			throw new Exception('DB Delete no where string.');
+			throw new Zend_Exception('Missing WHERE clause.');
 		}
 
 		$sql = 'DELETE FROM `' . $this->get_table($table) . '` WHERE ' . $where;
@@ -265,9 +170,10 @@ class AWS_MODEL
 		}
 
 		try {
-			$rows_affected = $this->db()->delete($this->get_table($table), $where);
+			$stmt = $pdo->prepare($sql);
+			$success = $stmt->execute();
 		} catch (Exception $e) {
-			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
+			$this->_db_error($sql, $e);
 		}
 
 		if ($this->_debug)
@@ -275,87 +181,85 @@ class AWS_MODEL
 			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
 		}
 
-		return $rows_affected;
+		return $success;
 	}
 
-	/**
-	 * Zend DB Select 对象别名
-	 *
-	 * @return	object
-	 */
-	public function select()
-	{
-		$this->slave();
 
-		return $this->db()->select();
+	public function execute($sql)
+	{
+		$pdo = AWS_APP::db()->master();
+
+		if ($this->_debug)
+		{
+			$start_time = microtime(TRUE);
+		}
+
+		try {
+			$stmt = $pdo->prepare($sql);
+			$success = $stmt->execute();
+		} catch (Exception $e) {
+			$this->_db_error($sql, $e);
+		}
+
+		if ($this->_debug)
+		{
+			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
+		}
+
+		return $success;
 	}
 
-	/**
-	 * 获取查询全部数组数据
-	 *
-	 * 面向对象数据库操作, 查询结果返回数组
-	 *
-	 * @param	string
-	 * @param	string
-	 * @param	string
-	 * @param	integer
-	 * @param	integer
-	 * @return	array
-	 */
-	public function fetch_all($table, $where = null, $order = null, $limit = null, $offset = 0)
+
+	public function query_all($sql)
 	{
-		$this->slave();
+		$pdo = AWS_APP::db()->slave();
 
-		$select = $this->select();
+		if ($this->_debug)
+		{
+			$start_time = microtime(TRUE);
+		}
 
-		$select->from($this->get_table($table), '*');
+		try {
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute();
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		} catch (Exception $e) {
+			$this->_db_error($sql, $e);
+		}
+
+		if ($this->_debug)
+		{
+			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
+		}
+
+		return $result;
+	}
+
+
+	public function fetch_all($table, $where = null, $order_by = null, $page = null, $per_page = null)
+	{
+		$pdo = AWS_APP::db()->slave();
+
+		$sql = 'SELECT * FROM `' . $this->get_table($table) . '`';
 
 		if (is_array($where))
 		{
 			$where = $this->where($where);
 		}
-
 		if ($where)
 		{
-			$select->where($where);
+			$sql .= ' WHERE ' . $where;
 		}
 
-		if ($order)
+		if ($order_by)
 		{
-			if (strstr($order, ','))
-			{
-				$all_order = explode(',', $order);
-
-				foreach ($all_order AS $current_order)
-				{
-					$select->order($current_order);
-				}
-			}
-			else
-			{
-				$select->order($order);
-			}
+			$sql .= ' ORDER BY ' . $order_by;
 		}
-
-		if ($limit)
+		$limit = $this->limit_page($page, $per_page);
+		if (isset($limit))
 		{
-			if (strstr($limit, ','))
-			{
-				$limit = explode(',', $limit);
-
-				$select->limit(intval($limit[1]), intval($limit[0]));
-			}
-			else if ($offset)
-			{
-				$select->limit($limit, $offset);
-			}
-			else
-			{
-				$select->limit($limit);
-			}
+			$sql .= ' LIMIT ' . $limit;
 		}
-
-		$sql = $select->__toString();
 
 		if ($this->_debug)
 		{
@@ -363,9 +267,11 @@ class AWS_MODEL
 		}
 
 		try {
-			$result = $this->db()->fetchAll($select);
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute();
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		} catch (Exception $e) {
-			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
+			$this->_db_error($sql, $e);
 		}
 
 		if ($this->_debug)
@@ -376,25 +282,27 @@ class AWS_MODEL
 		return $result;
 	}
 
-	/**
-	 * 执行 SQL 语句
-	 *
-	 * 执行 SQL 语句, 表名要使用 get_table 函数获取, 外来数据要使用 $this->escape() 过滤
-	 *
-	 * @param	string
-	 * @param	integer
-	 * @param	integer
-	 * @param	string
-	 * @return	boolean
-	 */
-	public function execute($sql)
+	public function fetch_row($table, $where = null, $order_by = null)
 	{
-		$this->master();
+		$pdo = AWS_APP::db()->slave();
 
-		if (!$sql)
+		$sql = 'SELECT * FROM `' . $this->get_table($table) . '`';
+
+		if (is_array($where))
 		{
-			throw new Exception('Query was empty.');
+			$where = $this->where($where);
 		}
+		if ($where)
+		{
+			$sql .= ' WHERE ' . $where;
+		}
+
+		if ($order_by)
+		{
+			$sql .= ' ORDER BY ' . $order_by;
+		}
+
+		$sql .= ' LIMIT 1';
 
 		if ($this->_debug)
 		{
@@ -402,9 +310,11 @@ class AWS_MODEL
 		}
 
 		try {
-			$result = $this->db()->query($sql);
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute();
+			$result = $stmt->fetch(PDO::FETCH_ASSOC);
 		} catch (Exception $e) {
-			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
+			$this->_db_error($sql, $e);
 		}
 
 		if ($this->_debug)
@@ -415,26 +325,28 @@ class AWS_MODEL
 		return $result;
 	}
 
-	/**
-	 * 查询全部数据, 返回数组
-	 *
-	 * 执行 SQL 语句, 表名要使用 get_table 函数获取, 外来数据要使用 $this->escape() 过滤
-	 *
-	 * @param	string
-	 * @param	integer
-	 * @param	integer
-	 * @param	string
-	 * @param	string
-	 * @return	array
-	 */
-	public function query_all($sql)
+
+	public function fetch_one($table, $column, $where = null, $order_by = null)
 	{
-		$this->slave();
+		$pdo = AWS_APP::db()->slave();
 
-		if (!$sql)
+		$sql = 'SELECT `' . $column . '` FROM `' . $this->get_table($table) . '`';
+
+		if (is_array($where))
 		{
-			throw new Exception('Query was empty.');
+			$where = $this->where($where);
 		}
+		if ($where)
+		{
+			$sql .= ' WHERE ' . $where;
+		}
+
+		if ($order_by)
+		{
+			$sql .= ' ORDER BY ' . $order_by;
+		}
+
+		$sql .= ' LIMIT 1';
 
 		if ($this->_debug)
 		{
@@ -442,9 +354,11 @@ class AWS_MODEL
 		}
 
 		try {
-			$result = $this->db()->fetchAll($sql);
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute();
+			$result = $stmt->fetch(PDO::FETCH_COLUMN);
 		} catch (Exception $e) {
-			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
+			$this->_db_error($sql, $e);
 		}
 
 		if ($this->_debug)
@@ -455,13 +369,97 @@ class AWS_MODEL
 		return $result;
 	}
 
-	/**
-	 * 获取上一次查询中的全部 ROWS
-	 *
-	 * 此函数需配合 $this->fetch_page() 使用
-	 *
-	 * @return	int
-	 */
+
+	public function count($table, $where = null)
+	{
+		$pdo = AWS_APP::db()->slave();
+
+		$sql = 'SELECT COUNT(*) AS `n` FROM `' . $this->get_table($table) . '`';
+
+		if (is_array($where))
+		{
+			$where = $this->where($where);
+		}
+		if ($where)
+		{
+			$sql .= ' WHERE ' . $where;
+		}
+
+		if ($this->_debug)
+		{
+			$start_time = microtime(TRUE);
+		}
+
+		try {
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute();
+			$result = $stmt->fetchColumn();
+		} catch (Exception $e) {
+			$this->_db_error($sql, $e);
+		}
+
+		if ($this->_debug)
+		{
+			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
+		}
+
+		return $result;
+	}
+
+
+	public function sum($table, $column, $where = null)
+	{
+		$pdo = AWS_APP::db()->slave();
+
+		$sql = 'SELECT SUM(`' . $column . '`) AS `n` FROM `' . $this->get_table($table) . '`';
+
+		if (is_array($where))
+		{
+			$where = $this->where($where);
+		}
+		if ($where)
+		{
+			$sql .= ' WHERE ' . $where;
+		}
+
+		if ($this->_debug)
+		{
+			$start_time = microtime(TRUE);
+		}
+
+		try {
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute();
+			$result = $stmt->fetchColumn();
+		} catch (Exception $e) {
+			$this->_db_error($sql, $e);
+		}
+
+		if ($this->_debug)
+		{
+			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
+		}
+
+		return $result;
+	}
+
+
+	public function fetch_page($table, $where = null, $order_by = null, $page = null, $per_page = null)
+	{
+		if (is_array($where))
+		{
+			$where = $this->where($where);
+		}
+
+		$result = $this->fetch_all($table, $where, $order_by, $page, $per_page);
+
+		$this->_fetch_page_table = $table;
+		$this->_fetch_page_where = $where;
+
+		return $result;
+	}
+
+
 	public function total_rows($rows_cache = true)
 	{
 		if (!$this->_fetch_page_table)
@@ -489,342 +487,16 @@ class AWS_MODEL
 		return $db_found_rows;
 	}
 
-	/**
-	 * 获取查询全部数组数据, 并记录匹配记录总数
-	 *
-	 * 面向对象数据库操作, 查询结果返回数组, 此函数适用于需要分页的场景使用, 配合 $this->total_rows() 获取匹配记录总数
-	 *
-	 * @param	string
-	 * @param	string
-	 * @param	string
-	 * @param	integer
-	 * @param	integer
-	 * @param	boolean
-	 * @return	array
-	 */
-	public function fetch_page($table, $where = null, $order = null, $page = null, $limit = 10)
+
+	public function quote($string)
 	{
-		$this->slave();
-
-		$select = $this->select();
-
-		$select->from($this->get_table($table), '*');
-		//$select->from($this->get_table($table), array(new Zend_Db_Expr('SQL_CALC_FOUND_ROWS *')));
-
-		if (is_array($where))
-		{
-			$where = $this->where($where);
-		}
-
-		if ($where)
-		{
-			$select->where($where);
-		}
-
-		if ($order)
-		{
-			if (strstr($order, ','))
-			{
-				if ($all_order = explode(',', $order))
-				{
-					foreach ($all_order AS $current_order)
-					{
-						$select->order($current_order);
-					}
-				}
-			}
-			else
-			{
-				$select->order($order);
-			}
-		}
-
-		if (!$page)
-		{
-			$page = 1;
-		}
-
-		if ($limit)
-		{
-			$select->limitPage($page, $limit);
-		}
-
-		$sql = $select->__toString();
-
-		if ($this->_debug)
-		{
-			$start_time = microtime(TRUE);
-		}
-
-		try {
-			$result = $this->db()->fetchAll($select);
-		} catch (Exception $e) {
-
-			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
-		}
-
-		if ($this->_debug)
-		{
-			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
-		}
-
-		$this->_fetch_page_table = $table;
-		$this->_fetch_page_where = $where;
-
-		return $result;
+		$pdo = AWS_APP::db()->master();
+		return $pdo->quote($string);
 	}
 
-	/**
-	 * 查询一行数据, 返回数组, key 为 字段名
-	 *
-	 * query_row 的面向对象方法, 表名无需加表前缀, 数据也无需使用 $this->escape 进行过滤 ($where 条件除外)
-	 *
-	 * @param	string
-	 * @param	string
-	 * @return	array
-	 */
-	public function fetch_row($table, $where = null, $order = null)
-	{
-		$this->slave();
-
-		$select = $this->select();
-
-		$select->from($this->get_table($table), '*');
-
-		if (is_array($where))
-		{
-			$where = $this->where($where);
-		}
-
-		if ($where)
-		{
-			$select->where($where);
-		}
-
-		if ($order)
-		{
-			if (strstr($order, ','))
-			{
-				if ($all_order = explode(',', $order))
-				{
-					foreach ($all_order AS $current_order)
-					{
-						$select->order($current_order);
-					}
-				}
-			}
-			else
-			{
-				$select->order($order);
-			}
-		}
-
-		$select->limit(1, 0);
-
-		$sql = $select->__toString();
-
-		if ($this->_debug)
-		{
-			$start_time = microtime(TRUE);
-		}
-
-		try {
-			$result = $this->db()->fetchRow($select);
-		} catch (Exception $e) {
-			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
-		}
-
-		if ($this->_debug)
-		{
-			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
-		}
-
-		return $result;
-	}
-
-	/**
-	 * 查询单字段, 直接返回数据
-	 *
-	 * 面向对象数据库操作, 表名无需加表前缀, 数据也无需使用 $this->escape 进行过滤 ($where 条件除外)
-	 *
-	 * @param	string
-	 * @param	string
-	 * @param	string
-	 * @param	string
-	 * @return	mixed
-	 */
-	public function fetch_one($table, $column, $where = null, $order = null)
-	{
-		$this->slave();
-
-		$select = $this->select();
-
-		$select->from($this->get_table($table), $column);
-
-		if (is_array($where))
-		{
-			$where = $this->where($where);
-		}
-
-		if ($where)
-		{
-			$select->where($where);
-		}
-
-		if ($order)
-		{
-			if (strstr($order, ','))
-			{
-				if ($all_order = explode(',', $order))
-				{
-					foreach ($all_order AS $current_order)
-					{
-						$select->order($current_order);
-					}
-				}
-			}
-			else
-			{
-				$select->order($order);
-			}
-		}
-
-		$select->limit(1, 0);
-
-		$sql = $select->__toString();
-
-		if ($this->_debug)
-		{
-			$start_time = microtime(TRUE);
-		}
-
-		try {
-			$result = $this->db()->fetchOne($select);
-		} catch (Exception $e) {
-			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
-		}
-
-		if ($this->_debug)
-		{
-			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
-		}
-
-		return $result;
-	}
-
-	/**
-	 * 获取记录总数, SELECT COUNT() 方法
-	 *
-	 * 面向对象数据库操作, 表名无需加表前缀, 数据也无需使用 $this->escape 进行过滤 ($where 条件除外)
-	 *
-	 * @param	string
-	 * @param	string
-	 * @return	int
-	 */
-	public function count($table, $where = null)
-	{
-		$this->slave();
-
-		$select = $this->select();
-		$select->from($this->get_table($table), 'COUNT(*) AS n');
-
-		if (is_array($where))
-		{
-			$where = $this->where($where);
-		}
-
-		if ($where)
-		{
-			$select->where($where);
-		}
-
-		$sql = $select->__toString();
-
-		if ($this->_debug)
-		{
-			$start_time = microtime(TRUE);
-		}
-
-		try {
-			$result = $this->db()->fetchRow($select);
-		} catch (Exception $e) {
-			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
-		}
-
-		if ($this->_debug)
-		{
-			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
-		}
-
-		return $result['n'];
-	}
-
-	/**
-	 * 计算字段总和, SELECT SUM() 方法
-	 *
-	 * 面向对象数据库操作, 表名无需加表前缀, 数据也无需使用 $this->escape 进行过滤 ($where 条件除外)
-	 *
-	 * @param	string
-	 * @param	string
-	 * @param	string
-	 * @return	int
-	 */
-	public function sum($table, $column, $where = null)
-	{
-		$this->slave();
-
-		$select = $this->select();
-		$select->from($this->get_table($table), 'SUM(' . $column . ') AS n');
-
-		if (is_array($where))
-		{
-			$where = $this->where($where);
-		}
-
-		if ($where)
-		{
-			$select->where($where);
-		}
-
-		$sql = $select->__toString();
-
-		if ($this->_debug)
-		{
-			$start_time = microtime(TRUE);
-		}
-
-		try {
-			$result = $this->db()->fetchRow($select);
-		} catch (Exception $e) {
-			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
-		}
-
-		if ($this->_debug)
-		{
-			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
-		}
-
-		return intval($result['n']);
-	}
-
-	/**
-	 * 添加引号防止数据库攻击
-	 *
-	 * 外部提交的数据需要使用此方法进行清理
-	 *
-	 * @param	string
-	 * @return	string
-	 */
 	public function escape($string)
 	{
-		$_quote = $this->db()->quote($string);
-
-		if (substr($_quote, 0, 1) == "'")
-		{
-			$_quote = substr(substr($_quote, 1), 0, -1);
-		}
-
-		return $_quote;
+		return substr(substr($this->quote($string), 1), 0, -1);
 	}
 
 	public function where($array)
@@ -835,6 +507,35 @@ class AWS_MODEL
 			throw new Zend_Exception('Error while building WHERE clause.');
 		}
 		return $where;
+	}
+
+	function limit_page($page, $per_page)
+	{
+		if (!isset($per_page))
+		{
+			if (!isset($page))
+			{
+				return null;
+			}
+			$limit = intval($page);
+			if ($limit < 0)
+			{
+				$limit = 0;
+			}
+			return $limit;
+		}
+
+		$page = intval($page);
+		if ($page < 1)
+		{
+			$page = 1;
+		}
+		$per_page = intval($per_page);
+		if ($per_page < 0)
+		{
+			$per_page = 0;
+		}
+		return (($page - 1) * $per_page) . ', ' . ($per_page);
 	}
 
 }
