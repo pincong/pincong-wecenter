@@ -68,7 +68,7 @@ class ajax extends AWS_CONTROLLER
 
 		$reputation_factor = $this->user_info['reputation_factor'];
 
-		$this->model('vote')->agree($_POST['type'], $_POST['item_id'], $this->user_id, $item_info['uid'], $reputation_factor, $this->user_info['permission']['affect_currency']);
+		$this->model('vote')->agree($_POST['type'], $_POST['item_id'], $this->user_id, $item_info['uid'], $reputation_factor, $this->user_info['permission']);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
@@ -115,7 +115,7 @@ class ajax extends AWS_CONTROLLER
 
 		$reputation_factor = $this->user_info['reputation_factor'];
 
-		$this->model('vote')->disagree($_POST['type'], $_POST['item_id'], $this->user_id, $item_info['uid'], $reputation_factor, $this->user_info['permission']['affect_currency']);
+		$this->model('vote')->disagree($_POST['type'], $_POST['item_id'], $this->user_id, $item_info['uid'], $reputation_factor, $this->user_info['permission']);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
