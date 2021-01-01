@@ -58,9 +58,14 @@ class ajax extends AWS_CONTROLLER
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对方的账号已经被禁止登录')));
 			}
 
-			if (!$this->model('message')->test_permission($this->user_info, $recipient_user))
+			$test_result = $this->model('message')->test_permission($this->user_info, $recipient_user);
+			if ($test_result === false)
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不能发送私信')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不能给这位用户发送私信')));
+			}
+			else if ($test_result === 0)
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('这位用户的声望还不能接收你的私信')));
 			}
 
 			$inbox_recv = $recipient_user['inbox_recv'];

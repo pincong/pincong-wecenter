@@ -50,19 +50,28 @@ class message_class extends AWS_MODEL
 
 	public function test_permission(&$this_user, &$recipient_user)
 	{
-		if ($this_user['permission']['send_pm'])
+		if ($this_user['permission']['dispatch_pm'])
 		{
-			return true;
+			return 1; // 自己可以给任何人发送例外私信
 		}
 
 		$recipient_user_group = $this->model('usergroup')->get_user_group_by_user_info($recipient_user);
 		// 例外情况 如果对方拥有['receive_pm']权限
 		if ($recipient_user_group['permission']['receive_pm'])
 		{
-			return true;
+			return 2; // 对方可以接收例外私信
 		}
 
-		return false;
+		if (!$this_user['permission']['send_pm'])
+		{
+			return false; // 自己不可以发送私信
+		}
+		if (!$recipient_user_group['permission']['send_pm'])
+		{
+			return 0; // 对方不可以发送私信
+		}
+
+		return true; // 双方都可以发送私信
 	}
 
 	public function send_message($sender_uid, $recipient_uid, $message)
