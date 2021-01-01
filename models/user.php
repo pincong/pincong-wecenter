@@ -55,7 +55,7 @@ class user_class extends AWS_MODEL
 	{
 		$video_id = intval($video_id);
 		$this->update('video', array(
-			'comment_count' => $this->count('video_reply', ['parent_id', 'eq', $video_id])
+			'reply_count' => $this->count('video_reply', ['parent_id', 'eq', $video_id])
 		), ['id', 'eq', $video_id]);
 	}
 

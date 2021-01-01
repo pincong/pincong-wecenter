@@ -270,7 +270,7 @@
 			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
 			<?php echo _t('发表了影片'); ?>
 			•
-			<?php echo _t('%s 个评论', $val['comment_count']); ?>
+			<?php echo _t('%s 个评论', $val['reply_count']); ?>
 		</p>
 		<h2 style="font-size:16px;">
 			<a href="<?php echo url_rewrite(); ?>/video/<?php echo $val['id']; ?>"><?php echo CF::title($val); ?></a>

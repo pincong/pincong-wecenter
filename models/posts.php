@@ -63,52 +63,26 @@ class posts_class extends AWS_MODEL
 
 		switch ($post_type)
 		{
-			// TODO: 统一字段名称
 			case 'question':
-				$data = array(
-					'add_time' => $result['add_time'],
-					'update_time' => $result['update_time'],
-					'category_id' => $result['category_id'],
-					'view_count' => $result['view_count'],
-					'uid' => $result['uid'],
-					'agree_count' => $result['agree_count'],
-					'reply_count' => $result['reply_count'],
-					'lock' => $result['lock'],
-					'recommend' => $result['recommend'],
-				);
-				break;
-
 			case 'article':
-				$data = array(
-					'add_time' => $result['add_time'],
-					'update_time' => $result['update_time'],
-					'category_id' => $result['category_id'],
-					'view_count' => $result['view_count'],
-					'uid' => $result['uid'],
-					'agree_count' => $result['agree_count'],
-					'reply_count' => $result['reply_count'],
-					'lock' => $result['lock'],
-					'recommend' => $result['recommend'],
-				);
-				break;
-
 			case 'video':
-				$data = array(
-					'add_time' => $result['add_time'],
-					'update_time' => $result['update_time'],
-					'category_id' => $result['category_id'],
-					'view_count' => $result['view_count'],
-					'uid' => $result['uid'],
-					'agree_count' => $result['agree_count'],
-					'reply_count' => $result['comment_count'],
-					'lock' => $result['lock'],
-					'recommend' => $result['recommend'],
-				);
 				break;
 
 			default:
 				return false;
 		}
+
+		$data = array(
+			'add_time' => $result['add_time'],
+			'update_time' => $result['update_time'],
+			'uid' => $result['uid'],
+			'category_id' => $result['category_id'],
+			'view_count' => $result['view_count'],
+			'reply_count' => $result['reply_count'],
+			'agree_count' => $result['agree_count'],
+			'lock' => $result['lock'],
+			'recommend' => $result['recommend'],
+		);
 
 		if (!$post_data AND S::get('time_blurring') != 'N')
 		{
@@ -229,9 +203,6 @@ class posts_class extends AWS_MODEL
 			$explore_list_data[$key]['post_type'] = $data['post_type'];
 			$explore_list_data[$key]['children_reputation'] = $data['reputation'];
 
-			///////////////////////////////////////////////////////////////
-			$explore_list_data[$key]['reply_count'] = $data['reply_count'];
-
 			$explore_list_data[$key]['hot'] = intval(is_numeric($push_reputation) AND $explore_list_data[$key]['reputation'] >= $push_reputation);
 
 			if ($category)
@@ -250,7 +221,7 @@ class posts_class extends AWS_MODEL
 			$order_key = 'sort DESC, update_time DESC';
 		}
 
-		/*if (isset($answer_count))
+		if (isset($answer_count))
 		{
 			$answer_count = intval($answer_count);
 
@@ -262,7 +233,7 @@ class posts_class extends AWS_MODEL
 			{
 				$where[] = ['reply_count', 'gte', $answer_count];
 			}
-		}*/
+		}
 
 		if ($recommend)
 		{

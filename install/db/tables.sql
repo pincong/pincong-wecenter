@@ -175,7 +175,7 @@ CREATE TABLE `aws_video` (
   `redirect_id` int(11) DEFAULT '0',
   `title` varchar(240) DEFAULT NULL,
   `message` text,
-  `comment_count` int(11) DEFAULT '0',
+  `reply_count` int(11) DEFAULT '0',
   `source_type` varchar(32) DEFAULT NULL,
   `source` text,
   PRIMARY KEY (`id`),
@@ -189,7 +189,7 @@ CREATE TABLE `aws_video` (
   KEY `lock` (`lock`),
   KEY `recommend` (`recommend`),
   KEY `sort` (`sort`),
-  KEY `comment_count` (`comment_count`)
+  KEY `reply_count` (`reply_count`)
 ) DEFAULT CHARSET=utf8mb4;
 
 --
