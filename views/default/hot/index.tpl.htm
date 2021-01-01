@@ -67,7 +67,31 @@
 
 <script type="text/javascript">
 $(document).ready(function () {
-	AWS.load_list_view(G_BASE_URL + '/hot/list/category-<?php echo intval($_GET['category']); ?>', $('#bp_more'), $('#main_contents'), 1);
+var observer = new MutationObserver(function(mutations) {
+	mutations.forEach(function(mutationRecord) {
+		if (mutationRecord.type == 'childList' && mutationRecord.addedNodes.length > 1) {
+			// 问题页添加讨论
+			$(document).off('click', '.aw-add-comment');
+			AWS.Init.init_comment_box('.aw-add-comment');
+			// RFC-091 展開閱讀全文 此功能由 onemorecat 提供
+			$('.mod-body.aw-feed-list .aw-item .markitup-box').each(function () {
+				var $contentDiv = $(this);
+				if($contentDiv.text().length > 1000 || $contentDiv.find('img').length >= 5) {
+					$contentDiv.addClass('aw-briefly');
+					var $button = $('<div class="aw-stretch-content-button-container"><button class="aw-stretch-content-button" type="button"></button></div>');
+					$button.click(function () {
+						$contentDiv.removeClass('aw-briefly');
+						$button.hide();
+					});
+					$contentDiv.append($button);
+				}
+			});
+		}
+	})
+});
+observer.observe(document.getElementsByClassName('mod-body aw-feed-list')[0], {childList: true});
+
+AWS.load_list_view(G_BASE_URL + '/hot/list/category-<?php echo intval($_GET['category']); ?>', $('#bp_more'), $('#main_contents'), 1);
 });
 </script>
 
