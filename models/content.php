@@ -427,7 +427,7 @@ class content_class extends AWS_MODEL
 			'update_time' => $this->model('posts')->get_last_update_time()
 		), $where);
 
-		$this->model('content')->log($item_type, $item_id, '提升', $log_uid);
+		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '提升', $log_uid);
 
 		return true;
 	}
@@ -445,7 +445,7 @@ class content_class extends AWS_MODEL
 			'update_time' => $this->model('posts')->get_last_update_time() - (7 * 24 * 3600)
 		), $where);
 
-		$this->model('content')->log($item_type, $item_id, '下沉', $log_uid);
+		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '下沉', $log_uid);
 
 		return true;
 	}
