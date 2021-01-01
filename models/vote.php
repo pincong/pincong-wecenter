@@ -223,29 +223,45 @@ class vote_class extends AWS_MODEL
 		}
 
 		$push_types = get_setting('push_types');
-		if ($push_types == '')
+		if (!$push_types)
 		{
 			return;
 		}
-
 		$push_types = explode(',', $push_types);
 		if (!is_array($push_types))
 		{
 			return;
 		}
-
-		$push_types = array_map('trim', $push_types);
-
-		if (in_array($type, $push_types))
+		array_walk($push_types, 'trim');
+		if (!in_array($type, $push_types))
 		{
-			if (!$this->fetch_row('activity', "`uid` = 0 AND `item_type` = '". ($type) . "' AND `item_id` = " . ($item_id)))
+			return;
+		}
+
+		if (!!$this->fetch_row('activity', "`uid` = 0 AND `item_type` = '". ($type) . "' AND `item_id` = " . ($item_id)))
+		{
+			return;
+		}
+
+		$parent_info = $this->model('content')->get_item_parent_info_by_id($type, $item_id);
+		$category_id = intval($parent_info['category_id']);
+
+		$push_categories = get_setting('push_categories');
+		if (!!$push_categories)
+		{
+			$push_categories = explode(',', $push_categories);
+			if (is_array($push_categories) AND count($push_categories) > 0)
 			{
-				$parent_info = $this->model('content')->get_item_parent_info_by_id($type, $item_id);
-				$category_id = intval($parent_info['category_id']);
-				$thread_id = intval($parent_info['id']);
-				$this->model('activity')->log($type, $item_id, null, 0, $thread_id, $category_id);
+				array_walk($push_categories, 'intval');
+				if (!in_array($category_id, $push_categories))
+				{
+					return;
+				}
 			}
 		}
+
+		$thread_id = intval($parent_info['id']);
+		$this->model('activity')->log($type, $item_id, null, 0, $thread_id, $category_id);
 	}
 
 	// 用于筛选最热帖子 (首页排序)
