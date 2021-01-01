@@ -961,7 +961,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
 		}
 
-		if ($question_info['lock'])
+		if ($question_info['lock'] AND !$question_info['redirect_id'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的问题不能编辑')));
 		}
@@ -1021,7 +1021,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文章不存在')));
 		}
 
-		if ($article_info['lock'])
+		if ($article_info['lock'] AND !$article_info['redirect_id'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的文章不能编辑')));
 		}
@@ -1077,7 +1077,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('影片不存在')));
 		}
 
-		if ($video_info['lock'])
+		if ($video_info['lock'] AND !$video_info['redirect_id'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的影片不能编辑')));
 		}
