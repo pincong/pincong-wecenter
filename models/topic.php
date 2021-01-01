@@ -136,8 +136,6 @@ class topic_class extends AWS_MODEL
 
 	public function save_topic($topic_title, $uid = null, $auto_create = true, $topic_description = null)
 	{
-		$topic_title = str_replace(array('-', '/'), '_', $topic_title);
-
 		if (!$topic_id = $this->get_topic_id_by_title($topic_title) AND $auto_create)
 		{
 			$topic_id = $this->insert('topic', array(
@@ -146,13 +144,6 @@ class topic_class extends AWS_MODEL
 				'topic_description' => htmlspecialchars($topic_description),
 				'topic_lock' => 0
 			));
-
-			// TODO: 在管理后台添加选项
-			// 创建者不再自动关注话题
-			//if ($uid)
-			//{
-			//	$this->add_focus_topic($uid, $topic_id);
-			//}
 		}
 		else
 		{
@@ -181,7 +172,7 @@ class topic_class extends AWS_MODEL
 
 		if ($topic_title)
 		{
-			$data['topic_title'] = htmlspecialchars(trim($topic_title));
+			$data['topic_title'] = htmlspecialchars($topic_title);
 		}
 
 		if ($topic_description)

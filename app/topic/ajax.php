@@ -120,11 +120,6 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入话题标题')));
 		}
 
-		if (strstr($topic_title, '/') OR strstr($topic_title, '-') OR strstr($topic_title, '&'))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题标题不能包含 / - &')));
-		}
-
 		if (S::get('topic_title_limit') AND strlen($topic_title) > S::get('topic_title_limit'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题标题字数超出限制')));
@@ -326,11 +321,6 @@ class ajax extends AWS_CONTROLLER
 		if (!$topic_title = trim($_POST['topic_title']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入话题标题')));
-		}
-
-		if (strstr($topic_title, '/') OR strstr($topic_title, '-') OR strstr($topic_title, '&'))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题标题不能包含 / - &')));
 		}
 
 		if (S::get('topic_title_limit') AND strlen($topic_title) > S::get('topic_title_limit') AND !$this->model('topic')->get_topic_id_by_title($topic_title))
