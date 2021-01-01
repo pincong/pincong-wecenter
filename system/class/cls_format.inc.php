@@ -16,7 +16,7 @@ class FORMAT
 {
 
 	// 为了防止[video]、[img]、[url]嵌套而产生XSS
-	// $url还需要再htmlspecialchars一次但排除&amp, 见safe_text()
+	// $url还需要再htmlspecialchars一次但排除&amp, 见self::text()
 	// XSS例子: [img]http://localhost/favicon.ico?[url]http://localhost/favicon.ico? onload='alert(1)' onerror='alert(2)'[/url][/img]
 	// 首先被解析成：<img src="http://localhost/favicon.ico?[url]http://localhost/favicon.ico? onload='alert(1)' onerror='alert(2)'[/url]">
 	// 然后被解析成：<img src="http://localhost/favicon.ico?<a href="http://localhost/favicon.ico? onload='alert(1)' onerror='alert(2)'">此处省略</a>">
@@ -24,7 +24,7 @@ class FORMAT
 
 	public static function parse_image($orig_url)
 	{
-		$url = safe_text($orig_url);
+		$url = self::text($orig_url, false);
 
 		if (!is_website($orig_url))
 		{
@@ -42,7 +42,7 @@ class FORMAT
 
 	public static function parse_video($orig_url)
 	{
-		$url = safe_text($orig_url);
+		$url = self::text($orig_url, false);
 
 		if (!is_website($orig_url))
 		{
@@ -59,7 +59,7 @@ class FORMAT
 
 	public static function parse_link($orig_url, $title = null, $allow_nested = false)
 	{
-		$url = safe_text($orig_url);
+		$url = self::text($orig_url, false);
 
 		if ($title === null)
 		{
@@ -67,7 +67,7 @@ class FORMAT
 		}
 		else if (!$allow_nested)
 		{
-			$title = safe_text($title);
+			$title = self::text($title, false);
 		}
 
 		if (!is_website($orig_url))
@@ -96,37 +96,65 @@ class FORMAT
 		return '<a href="url/link/' . safe_base64_encode(htmlspecialchars_decode($orig_url)) . '" title="' . $url . '" rel="nofollow noreferrer noopener" target="_blank">' . $title . '</a>';
 	}
 
-	private static function _link_callback($matches)
-	{
-		return self::parse_link($matches[1]);
-	}
-
 	// 注意是引用
-	public static function &parse_links(&$str)
-	{
-		$str = @preg_replace_callback(
-			'/(?<!!!\[\]\(|"|\'|\)|>)(https?:\/\/[-a-zA-Z0-9@:;%_\+.~#?\&\/\/=!]+)(?!"|\'|\)|>)/i',
-			array('FORMAT', '_link_callback'),
-			$str
-		);
-
-		//$str = @preg_replace('/([a-z0-9\+_\-]+[\.]?[a-z0-9\+_\-]+@[a-z0-9\-]+\.+[a-z]{2,6}+(\.+[a-z]{2,6})?)/is', '<a href="mailto:\1">\1</a>', $str);
-
-		return $str;
-	}
-
-	// 注意是引用
-	public static function &parse_bbcode(&$text)
+	public static function &text(&$text)
 	{
 		if (!$text)
 		{
 			return '';
 		}
 
+		$text = str_replace(
+			array('<', '>', '"', "'"),
+			array('&lt;', '&gt;', '&quot;', '&#39;'),
+			$text
+		);
+
+		if ($nr2br)
+		{
+			$text = nl2br($text);
+		}
+		return $text;
+	}
+
+	// 注意是引用
+	public static function &hyperlink(&$text, $nr2br = true)
+	{
+		$text = self::text($text, false);
+
+		$text = @preg_replace_callback(
+			'/(?<!!!\[\]\(|"|\'|\)|>)(https?:\/\/[-a-zA-Z0-9@:;%_\+.~#?\&\/\/=!]+)(?!"|\'|\)|>)/i',
+			array('FORMAT', '_hyperlink_callback'),
+			$text
+		);
+
+		if ($nr2br)
+		{
+			$text = nl2br($text);
+		}
+		return $text;
+	}
+
+	private static function _hyperlink_callback($matches)
+	{
+		return self::parse_link($matches[1]);
+	}
+
+	// 注意是引用
+	public static function &bbcode(&$text, $nr2br = true)
+	{
+		$text = self::text($text, false);
+
 		// 不再主动解析链接
 		// Bug: [url]https://web.archive.org/web/20170602230234/http://www.sohu.com/a/145581401_670685[/url]
-		// return self::parse_links(load_class('Services_BBCode')->parse($text));
-		return load_class('Services_BBCode')->parse($text);
+		// return self::hyperlink(load_class('Services_BBCode')->parse($text), false);
+		$text = load_class('Services_BBCode')->parse($text);
+
+		if ($nr2br)
+		{
+			$text = nl2br($text);
+		}
+		return $text;
 	}
 
 }

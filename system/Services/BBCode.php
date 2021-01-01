@@ -198,26 +198,16 @@ class Services_BBCode
 		return $this;
 	}
 
-	public function parse($text, $escapeHTML = false, $nr2br = false)
+	public function &parse(&$text)
 	{
-		if (! $text)
+		if (!$text)
 		{
-			return false;
-		}
-
-		if ($escapeHTML)
-		{
-			$text = htmlspecialchars($text);
+			return '';
 		}
 
 		foreach ($this->bbcode_table AS $key => $val)
 		{
 			$text = preg_replace_callback($key, array(&$this, $val), $text);
-		}
-
-		if ($nr2br)
-		{
-			$text = nl2br($text);
 		}
 
 		return $text;

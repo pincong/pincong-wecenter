@@ -56,7 +56,7 @@
 						</div>
 						<div class="mod-body">
 							<?php if ($this->topic_info['topic_description']) { ?>
-							<p><?php echo nl2br(FORMAT::parse_link($this->topic_info['topic_description'])); ?></p>
+							<p><?php echo FORMAT::hyperlink($this->topic_info['topic_description']); ?></p>
 							<?php } else if ($this->topic_info['topic_lock'] == 0 && $this->user_info['permission']['edit_topic']) { ?>
 							<a href="topic/edit/<?php echo $this->topic_info['topic_id']; ?>" class="icon-inverse" class=><i class="icon icon-edit"></i> <?php _e('添加描述'); ?></a>
 							<?php } ?>

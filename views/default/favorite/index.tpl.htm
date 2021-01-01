@@ -36,7 +36,7 @@
 												<?php } ?>
 											</div>
 											<div id="detail_more_<?php echo $val['item_id']; ?>" class="collapse">
-												<?php echo nl2br(strip_ubb($val['item']['message'])); ?>
+												<?php echo FORMAT::text(strip_ubb($val['item']['message'])); ?>
 											</div>
 										</div>
 										<!-- end 回答 -->

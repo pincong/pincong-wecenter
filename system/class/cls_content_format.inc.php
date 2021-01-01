@@ -144,9 +144,9 @@ class CF
 
 		if ($kb = self::get_kb($user_info, $key))
 		{
-			return self::kb_tips() . nl2br(FORMAT::parse_bbcode($kb['message']));
+			return self::kb_tips() . FORMAT::bbcode($kb['message']);
 		}
-		return nl2br(FORMAT::parse_bbcode($string));
+		return FORMAT::bbcode($string);
 	}
 
 	// 正文 (不显示已删除) (解析链接)
@@ -159,9 +159,9 @@ class CF
 
 		if ($kb = self::get_kb($user_info, $key))
 		{
-			return self::kb_tips() . nl2br(FORMAT::parse_bbcode($kb['message']));
+			return self::kb_tips() . FORMAT::bbcode($kb['message']);
 		}
-		return nl2br(FORMAT::parse_links($string));
+		return FORMAT::hyperlink($string);
 	}
 
 	// 回复 (解析bbcode)
@@ -170,14 +170,14 @@ class CF
 		if ($kb = self::get_kb($user_info, $key))
 		{
 			$text = $kb['title'] . "\r\n" . $kb['message'];
-			return self::kb_tips() . nl2br(FORMAT::parse_bbcode($text));
+			return self::kb_tips() . FORMAT::bbcode($text);
 		}
 
 		if (!isset($string))
 		{
 			return self::txt_deleted();
 		}
-		return nl2br(FORMAT::parse_bbcode($string));
+		return FORMAT::bbcode($string);
 	}
 
 	// 回复 (解析链接)
@@ -186,14 +186,14 @@ class CF
 		if ($kb = self::get_kb($user_info, $key))
 		{
 			$text = $kb['title'] . "\r\n" . $kb['message'];
-			return self::kb_tips() . nl2br(FORMAT::parse_bbcode($text));
+			return self::kb_tips() . FORMAT::bbcode($text);
 		}
 
 		if (!isset($string))
 		{
 			return self::txt_deleted();
 		}
-		return nl2br(FORMAT::parse_links($string));
+		return FORMAT::hyperlink($string);
 	}
 
 	public static function skip(&$user_info, $limited = true)
