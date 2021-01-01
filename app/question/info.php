@@ -28,8 +28,8 @@ class info extends AWS_CONTROLLER
 		if ($this->user_info['permission']['visit_site'])
 		{
 			$rule_action['actions'] = array(
-				'question_discussions',
-				'answer_discussions'
+				'comments',
+				'discussions'
 			);
 		}
 
