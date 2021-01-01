@@ -19,6 +19,11 @@ class Services_BBCode
 		return $match[2];
 	}
 
+	private function _hr_callback($match)
+	{
+		return "<hr>";
+	}
+
 	private function _b_callback($match)
 	{
 		return "<strong>$match[1]</strong>";
@@ -125,7 +130,6 @@ class Services_BBCode
 		//$this->bbcode_table["/\[code\](((?![\[code\]]).*?)+)\[\/code\]/is"] = '_code_callback';
 
 		$this->bbcode_table["/\[left\](.*?)\[\/left\]/is"] = '_plain_text_callback';
-		//$this->bbcode_table["/\[center\](.*?)\[\/center\]/is"] = '_plain_text_callback';
 		$this->bbcode_table["/\[right\](.*?)\[\/right\]/is"] = '_plain_text_callback';
 		$this->bbcode_table["/\[justify\](.*?)\[\/justify\]/is"] = '_plain_text_callback';
 		$this->bbcode_table["/\[sub\](.*?)\[\/sub\]/is"] = '_plain_text_callback';
@@ -133,10 +137,30 @@ class Services_BBCode
 		$this->bbcode_table["/\[ltr\](.*?)\[\/ltr\]/is"] = '_plain_text_callback';
 		$this->bbcode_table["/\[rtl\](.*?)\[\/rtl\]/is"] = '_plain_text_callback';
 
+		$this->bbcode_table["/\[cp\](.*?)\[\/cp\]/is"] = '_plain_text_callback';
+
 		$this->bbcode_table["/\[size=(.*?)\](.*?)\[\/size\]/is"] = '_plain_text_2_callback';
 		$this->bbcode_table["/\[font=(.*?)\](.*?)\[\/font\]/is"] = '_plain_text_2_callback';
 		$this->bbcode_table["/\[color=(.*?)\](.*?)\[\/color\]/is"] = '_plain_text_2_callback';
 
+
+		// Replace [img]...[/img] with <img src="..."/>
+		$this->bbcode_table["/\[img\](.*?)\[\/img\]/is"] = '_img_callback';
+
+		// Replace [img=...]...[/img] with <img src="..."/>
+		$this->bbcode_table["/\[img=(.*?)\](.*?)\[\/img\]/is"] = '_img_2_callback';
+
+		// Replace [video]...[/video] with swf video player
+		$this->bbcode_table["/\[video\](.*?)\[\/video\]/is"] = '_video_callback';
+
+		// Replace [url]...[/url] with <a href="...">...</a>
+		$this->bbcode_table["/\[url\](.*?)\[\/url\]/is"] = '_url_callback';
+
+		// Replace [url=http://www.google.com/]A link to google[/url] with <a href="http://www.google.com/">A link to google</a>
+		$this->bbcode_table["/\[url=(.*?)\](.*?)\[\/url\]/is"] = '_url_2_callback';
+
+		// Replace [hr] with <hr>
+		$this->bbcode_table["/\[hr\]/is"] = '_hr_callback';
 
 		// Replace [b]...[/b] with <strong>...</strong>
 		$this->bbcode_table["/\[b\](.*?)\[\/b\]/is"] = '_b_callback';
@@ -155,21 +179,6 @@ class Services_BBCode
 
 		// Replace [center] with <center>
 		$this->bbcode_table["/\[center\](.*?)\[\/center\]/is"] = '_center_callback';
-
-		// Replace [url]...[/url] with <a href="...">...</a>
-		$this->bbcode_table["/\[url\](.*?)\[\/url\]/is"] = '_url_callback';
-
-		// Replace [url=http://www.google.com/]A link to google[/url] with <a href="http://www.google.com/">A link to google</a>
-		$this->bbcode_table["/\[url=(.*?)\](.*?)\[\/url\]/is"] = '_url_2_callback';
-
-		// Replace [img]...[/img] with <img src="..."/>
-		$this->bbcode_table["/\[img\](.*?)\[\/img\]/is"] = '_img_callback';
-
-		// Replace [img=...]...[/img] with <img src="..."/>
-		$this->bbcode_table["/\[img=(.*?)\](.*?)\[\/img\]/is"] = '_img_2_callback';
-
-		// Replace [video]...[/video] with swf video player
-		$this->bbcode_table["/\[video\](.*?)\[\/video\]/is"] = '_video_callback';
 
 		// Replace [list]...[/list] with <ul><li>...</li></ul>
 		$this->bbcode_table["/\[list\](.*?)\[\/list\]/is"] = '_list_callback';
