@@ -9,7 +9,8 @@ form{margin:0;}
 select, input[type="file"]{line-height: 28px;}
 select{width: auto;}
 .tooltip{z-index: 9999;}
-.alert{margin-bottom:0px;padding:5px 14px;background: #fcfddb;border: 1px solid #f9f2a7;}
+.alert{margin-bottom:0px;padding:5px 14px;}
+.alert-warning{background: #fcfddb;border: 1px solid #f9f2a7;}
 .alert-danger, .alert-error{background: #f2dede;border: 1px solid #eed3d7;}
 .tab-content{padding-bottom:20px;}
 .form-horizontal .control-label, .form-horizontal .controls{height: 30px;line-height: 30px;padding-top:0;}

@@ -425,13 +425,11 @@ function show_user_reply_box(reply_btn) {
 	}
 }
 
-function reply_callback(err) {
-	if (err) return;
+function reply_callback() {
 	$('.aw-mod.aw-reply-box textarea').css('height', '329px');
 }
 
-function reply_callback_2(err) {
-	if (err) return;
+function reply_callback_2() {
 	$('#user_reply_box textarea').css('height', '34px');
 }
 

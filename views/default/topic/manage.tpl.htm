@@ -16,7 +16,7 @@
 								<input type="hidden" name="target_id" value="<?php echo $this->topic_info['topic_id']; ?>" />
 								<dt><?php _e('话题合并'); ?>:</dt>
 								<dd>
-									<a class="btn btn-normal btn-success pull-right" onclick="AWS.submit($('#merge_topic_form'), $(this));"><?php _e('合并'); ?></a>
+									<a class="btn btn-normal btn-success pull-right" onclick="AWS.submit_form($('#merge_topic_form'), $(this));"><?php _e('合并'); ?></a>
 									<input type="text" class="form-control" name="topic_title" placeholder="<?php _e('在此输入要与该话题合并的话题'); ?>..."/>
 								</dd>
 							</form>

@@ -20,7 +20,7 @@
 								<a href="<?php echo UF::url($this->user_info); ?>" data-id="<?php echo $this->user_info['uid']; ?>" class="aw-user-img aw-border-radius-5"><img src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" alt="" /></a>
 								<textarea rows="3" class="form-control message" placeholder="<?php _e('想要对ta说点什么'); ?>?" type="text" name="message" /></textarea>
 								<p>
-									<a class="btn btn-mini btn-success" href="javascript:;" onclick="AWS.submit($('#recipient_form'), $(this));"><?php _e('发送'); ?></a>
+									<a class="btn btn-mini btn-success" href="javascript:;" onclick="AWS.submit_form($('#recipient_form'), $(this));"><?php _e('发送'); ?></a>
 								</p>
 							</form>
 							<!-- end 私信内容输入框 -->

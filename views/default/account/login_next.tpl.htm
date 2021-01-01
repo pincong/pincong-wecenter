@@ -84,7 +84,7 @@ $(document).ready(function () {
 		_append(new_form, 'captcha_enabled', 0);
 <?php } ?>
 
-		AWS.submit_form(new_form, form.find('button[type=submit]'), form.find('.error_message'), function() {
+		AWS.submit_form(new_form, form.find('button[type=submit]'), form.find('.error_message'), null, function() {
 			$('.aw-register-verify img').click();
 		});
 

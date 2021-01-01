@@ -481,15 +481,13 @@ function toggle_disscusion(btn) {
 function submit_disscusion(btn) {
 	var form = btn.closest('form');
 	var list = btn.closest('.aw-comment-box').find('.aw-comment-list');
-	AWS.submit_append(form, btn, list, function(err) {
-		if (err) return;
+	AWS.submit_append(form, btn, list, function() {
 		list.children('p').remove();
 		form.find('textarea').css('height', '34px');
 	});
 }
 
-function reply_callback(err) {
-	if (err) return;
+function reply_callback() {
 <?php if (S::get('answer_unique') == 'Y') { ?>
 	$('.question_answer_form').detach();
 	if ($('.aw-reply-box.question').length)

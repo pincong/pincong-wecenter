@@ -68,229 +68,177 @@ var AWS =
 		}
 	},
 
-	ajax_request: function(url, params, no_reload)
-	{
+	ajax_request: function(url, params, cb, error_cb) {
 		AWS.loading('show');
 
-		if (params)
-		{
-			if (typeof params == 'object')
-			{
+		if (params) {
+			if (typeof params == 'object') {
 				params['_post_type'] = 'ajax';
 			}
-			else
-			{
+			else {
 				params += '&_post_type=ajax';
 			}
-			$.post(url, params, function (result)
-			{
-				_callback(result);
-			}, 'json').error(function (error)
-			{
-				_error(error);
-			});
+			$.post(url, params, _success, 'json').error(_error);
 		}
-		else
-		{
-			$.get(url, function (result)
-			{
-				_callback(result);
-			}, 'json').error(function (error)
-			{
-				_error(error);
-			});
+		else {
+			$.get(url, _success, 'json').error(_error);
 		}
 
-		function _callback (result)
-		{
+		function _success(result) {
 			AWS.loading('hide');
 
-			if (!result)
-			{
-				return false;
+			if (!result) {
+				alert(_t('未知错误'));
+				return;
 			}
 
-			if (result.err)
-			{
-				AWS.alert(result.err);
-			}
-			else if (result.rsm && result.rsm.url)
-			{
-				window.location = decodeURIComponent(result.rsm.url);
-			}
-			else if (result.errno == 1)
-			{
-				if (!no_reload)
-				{
-					window.location.reload();
+			if (result.err) {
+				if (error_cb) {
+					(typeof error_cb === 'function') && error_cb(result.err);
 				}
-				else if (typeof no_reload === 'function')
-				{
-					no_reload();
+				else {
+					AWS.alert(result.err);
 				}
+				return;
+			}
+
+			if (result.rsm && result.rsm.url) {
+				window.location = result.rsm.url;
+				return;
+			}
+
+			if (cb) {
+				(typeof cb === 'function') && cb(result.rsm);
+			}
+			else {
+				window.location.reload();
 			}
 		}
 
-		function _error (error)
-		{
+		function _error(error) {
 			AWS.loading('hide');
 
-			if ($.trim(error.responseText) != '')
-			{
-				alert(_t('发生错误, 返回的信息:') + ' ' + error.responseText);
+			if (error.status == 0) {
+				alert(_t('网络连接异常'));
+			}
+			else {
+				alert(_t('发生错误, 请刷新页面重试') + '\r\n' + error.responseText);
 			}
 		}
-
-		return false;
 	},
 
 
-	submit_form: function(form_el, btn_el, err_el, callback)
-	{
+	submit_form: function(form_el, btn_el, err_el, cb, error_cb) {
 		// 若有编辑器的话就从编辑器更新内容再提交
-		if (G_ADVANCED_EDITOR_ENABLE == 'Y')
-		{
-			form_el.find('textarea').each(function()
-			{
-				if (this._sceditor)
-				{
+		if (G_ADVANCED_EDITOR_ENABLE == 'Y') {
+			form_el.find('textarea').each(function() {
+				if (this._sceditor) {
 					this._sceditor.updateOriginal();
 				}
 			});
 		}
 
 		AWS.loading('show');
-
-		if (btn_el)
-		{
+		if (btn_el) {
 			btn_el.addClass('disabled');
 		}
 
-		var custom_data = {
-			_post_type: 'ajax'
-		};
-
-		form_el.ajaxSubmit(
-		{
+		form_el.ajaxSubmit({
 			dataType: 'json',
-			data: custom_data,
-			success: function (result)
-			{
-				AWS.loading('hide');
-				if (btn_el)
-				{
-					btn_el.removeClass('disabled');
-				}
-				if (!result)
-				{
-					alert(_t('未知错误'));
-					return;
-				}
-				if (result.errno == 1) // success
-				{
-					if (result.rsm && result.rsm.url)
-					{
-						window.location = decodeURIComponent(result.rsm.url);
-					}
-					else if (callback)
-					{
-						form_el.find('textarea').each(function()
-						{
-							$(this).val('');
-							if (G_ADVANCED_EDITOR_ENABLE == 'Y')
-							{
-								if (this._sceditor)
-								{
-									this._sceditor.val('');
-								}
-							}
-						});
-						callback(null, result.rsm);
-					}
-					else
-					{
-						window.location.reload();
-					}
-				}
-				else
-				{
-					if (!err_el || !err_el.length)
-					{
-						AWS.alert(result.err);
-					}
-					else
-					{
-						if (err_el.find('em').length)
-						{
-							err_el.find('em').html(result.err);
-						}
-						else
-						{
-							err_el.html(result.err);
-						}
-						if (err_el.css('display') != 'none')
-						{
-							AWS.shake(err_el);
-						}
-						else
-						{
-							err_el.fadeIn();
-						}
-					}
-					callback && callback('error');
-				}
+			data: {
+				_post_type: 'ajax'
 			},
-			error: function (error)
-			{
-				AWS.loading('hide');
-				if (btn_el)
-				{
-					btn_el.removeClass('disabled');
-				}
-				if ($.trim(error.responseText) != '')
-				{
-					alert(_t('发生错误, 返回的信息:') + ' ' + error.responseText);
-				}
-				else if (error.status == 0)
-				{
-					alert(_t('网络连接异常'));
-				}
-				else if (error.status == 500)
-				{
-					alert(_t('内部服务器错误'));
-				}
-			}
+			success: _success,
+			error: _error
 		});
-	},
 
-	submit: function(form_el, btn_el, callback)
-	{
-		AWS.submit_form(form_el, btn_el, null, callback);
-	},
+		function _success(result) {
+			AWS.loading('hide');
+			if (btn_el) {
+				btn_el.removeClass('disabled');
+			}
 
-	submit_append: function(form_el, btn_el, append_el, callback)
-	{
-		AWS.submit_form(form_el, btn_el, null, function(err, rsm)
-		{
-			if (err)
-			{
-				callback && callback(err);
+			if (!result) {
+				alert(_t('未知错误'));
 				return;
 			}
-			if (append_el && append_el.length)
-			{
-				if (rsm && rsm.ajax_html)
-				{
-					append_el.append(rsm.ajax_html);
-					var el_id = $(rsm.ajax_html).attr('id');
-					if (el_id)
-					{
-						$.scrollTo($('#' + el_id), 600, {queue:true});
+
+			if (result.err) {
+				if (err_el && err_el.length) {
+					if (err_el.find('em').length) {
+							err_el.find('em').html(result.err);
+					}
+					else {
+						err_el.html(result.err);
+					}
+					if (err_el.css('display') != 'none') {
+						AWS.shake(err_el);
+					}
+					else {
+							err_el.fadeIn();
+					}
+				}
+				if (error_cb) {
+					(typeof error_cb === 'function') && error_cb(result.err);
+				}
+				else {
+					if (!err_el || !err_el.length) {
+						AWS.alert(result.err);
+					}
+				}
+				return;
+			}
+
+			if (result.rsm && result.rsm.url) {
+				window.location = result.rsm.url;
+				return;
+			}
+
+			if (cb) {
+				form_el.find('textarea').each(function() {
+					$(this).val('');
+					if (G_ADVANCED_EDITOR_ENABLE == 'Y') {
+						if (this._sceditor) {
+							this._sceditor.val('');
+						}
+					}
+				});
+				(typeof cb === 'function') && cb(result.rsm);
+			}
+			else {
+				window.location.reload();
+			}
+		}
+
+		function _error(error) {
+			AWS.loading('hide');
+			if (btn_el) {
+				btn_el.removeClass('disabled');
+			}
+
+			if (error.status == 0) {
+				alert(_t('网络连接异常'));
+			}
+			else {
+				alert(_t('发生错误, 请刷新页面重试') + '\r\n' + error.responseText);
+			}
+		}
+	},
+
+	submit_append: function(form_el, btn_el, container_el, cb, error_cb) {
+		AWS.submit_form(form_el, btn_el, null, function(rsm) {
+			if (container_el && container_el.length) {
+				if (rsm && rsm.ajax_html) {
+					try {
+						$.scrollTo($(rsm.ajax_html).appendTo(container_el), 600, {queue:true});
+					} catch (e) {
 					}
 				}
 			}
-			callback && callback(null, rsm);
-		});
+			if (cb) {
+				(typeof cb === 'function') && cb(rsm);
+			}
+		}, error_cb);
 	},
 
 	// 加载更多
