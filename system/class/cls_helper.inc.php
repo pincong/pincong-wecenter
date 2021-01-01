@@ -57,10 +57,41 @@ class H
 	 */
 	public static function ajax_json_output($array)
 	{
-		//H::no_cache_header('text/javascript');
+		//H::no_cache_header('text/json');
 
 		echo str_replace(array("\r", "\n", "\t"), '', json_encode($array));
 		exit;
+	}
+
+	public static function ajax_error($err)
+	{
+		H::ajax_json_output(array(
+			'err' => $err,
+		));
+	}
+
+	public static function ajax_success($data)
+	{
+		H::ajax_json_output(array(
+			'errno' => 1,
+		));
+	}
+
+	public static function ajax_response($data)
+	{
+		H::ajax_json_output(array(
+			'rsm' => $data,
+		));
+	}
+
+	public static function ajax_location($url)
+	{
+		H::ajax_json_output(array(
+			'url' => $url,
+			'rsm' => array(
+				'url' => $url,
+			),
+		));
 	}
 
 	public static function redirect_msg($message, $url = null, $interval = 5)

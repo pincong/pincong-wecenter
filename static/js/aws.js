@@ -105,6 +105,11 @@ var AWS =
 				return;
 			}
 
+			if (result.url) {
+				window.location = result.url;
+				return;
+			}
+
 			if (result.rsm && result.rsm.url) {
 				window.location = result.rsm.url;
 				return;
@@ -193,6 +198,11 @@ var AWS =
 
 			if (result.err) {
 				_show_error(result.err);
+				return;
+			}
+
+			if (result.url) {
+				window.location = result.url;
 				return;
 			}
 
@@ -878,7 +888,7 @@ AWS.User =
 
 		$.post(G_BASE_URL + url, data, function (result)
 		{
-			if (result.errno == 1)
+			if (result.rsm)
 			{
 				if (result.rsm.type == 'add')
 				{
@@ -889,17 +899,9 @@ AWS.User =
 					selector.removeClass('active');
 				}
 			}
-			else
+			else if (result.err)
 			{
-				if (result.err)
-				{
-					AWS.alert(result.err);
-				}
-
-				if (result.rsm.url)
-				{
-					window.location = decodeURIComponent(result.rsm.url);
-				}
+				AWS.alert(result.err);
 			}
 
 			selector.removeClass('disabled');
@@ -919,13 +921,13 @@ AWS.User =
 	{
 		$.post(G_BASE_URL + '/question/ajax/question_invite_delete/', 'question_invite_id=' + question_invite_id, function (result)
 		{
-			if (result.errno == 1)
+			if (result.err)
 			{
-				selector.fadeOut();
+				AWS.alert(result.err);
 			}
 			else
 			{
-				AWS.alert(result.rsm.err);
+				selector.fadeOut();
 			}
 		}, 'json');
 	},
@@ -939,7 +941,7 @@ AWS.User =
 			'uid': selector.attr('data-id')
 		}, function (result)
 		{
-			if (result.errno != -1)
+			if (!result.err)
 			{
 				if (selector.parents('.aw-invite-box').find('.invite-list a').length == 0)
 				{
@@ -949,7 +951,7 @@ AWS.User =
 				selector.addClass('active').attr('onclick','AWS.User.disinvite_user($(this))').text('取消邀请');
 				selector.parents('.aw-question-detail').find('.aw-invite-reply .badge').text(parseInt(selector.parents('.aw-question-detail').find('.aw-invite-reply .badge').text()) + 1);
 			}
-			else if (result.errno == -1)
+			else if (result.err)
 			{
 				AWS.alert(result.err);
 			}
@@ -961,7 +963,7 @@ AWS.User =
 	{
 		$.get(G_BASE_URL + '/question/ajax/cancel_question_invite/question_id-' + QUESTION_ID + "__recipients_uid-" + selector.attr('data-id'), function (result)
 		{
-			if (result.errno != -1)
+			if (!result.err)
 			{
 				$.each($('.aw-question-detail .invite-list a'), function (i, e)
 				{
@@ -1078,7 +1080,7 @@ AWS.User =
 
 		toggle_ui(function() {
 			$.post(G_BASE_URL + '/vote/ajax/' + operation + '/', 'type=' + type + '&item_id=' + item_id, function(result) {
-				if (result.errno != '1') {
+				if (result.err) {
 					AWS.alert(result.err);
 					toggle_ui();
 				}
@@ -1527,7 +1529,7 @@ AWS.Init =
 							case 'question':
 								$.post(G_BASE_URL + '/topic/ajax/save_topic_relation/', 'type=question&item_id=' + data_id + '&topic_title=' + encodeURIComponent(_topic_editor.find('#aw_edit_topic_title').val()), function (result)
 								{
-									if (result.errno != 1)
+									if (result.err)
 									{
 										AWS.alert(result.err);
 
@@ -1543,7 +1545,7 @@ AWS.Init =
 							case 'article':
 								$.post(G_BASE_URL + '/topic/ajax/save_topic_relation/', 'type=article&item_id=' + data_id + '&topic_title=' + encodeURIComponent(_topic_editor.find('#aw_edit_topic_title').val()), function (result)
 								{
-									if (result.errno != 1)
+									if (result.err)
 									{
 										AWS.alert(result.err);
 
@@ -1559,7 +1561,7 @@ AWS.Init =
 							case 'video':
 								$.post(G_BASE_URL + '/topic/ajax/save_topic_relation/', 'type=video&item_id=' + data_id + '&topic_title=' + encodeURIComponent(_topic_editor.find('#aw_edit_topic_title').val()), function (result)
 								{
-									if (result.errno != 1)
+									if (result.err)
 									{
 										AWS.alert(result.err);
 
@@ -1576,7 +1578,7 @@ AWS.Init =
 							case 'topic':
 								$.post(G_BASE_URL + '/topic/ajax/save_related_topic/topic_id-' + data_id, 'topic_title=' + encodeURIComponent(_topic_editor.find('#aw_edit_topic_title').val()), function (result)
 								{
-									if (result.errno != 1)
+									if (result.err)
 									{
 										AWS.alert(result.err);
 

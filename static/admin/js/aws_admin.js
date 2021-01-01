@@ -105,15 +105,22 @@ var AWS =
 			if (result.err)
 			{
 				AWS.alert(result.err);
+				return;
 			}
-			else if (result.rsm && result.rsm.url)
+
+			if (result.url)
 			{
-				window.location = decodeURIComponent(result.rsm.url);
+				window.location = result.url;
+				return;
 			}
-			else if (result.errno == 1)
+
+			if (result.rsm && result.rsm.url)
 			{
-				window.location.reload();
+				window.location = result.rsm.url;
+				return;
 			}
+
+			window.location.reload();
 		}
 
 		function _error (error)
@@ -174,11 +181,7 @@ var AWS =
 		{
 			AWS.loading('hide');
 		}
-		if (typeof (result.errno) == 'undefined')
-		{
-			AWS.alert(result);
-		}
-		else if (result.errno != 1)
+		if (result.err)
 		{
 			switch (type)
 			{
@@ -216,9 +219,13 @@ var AWS =
 		}
 		else
 		{
-			if (result.rsm && result.rsm.url)
+			if (result.url)
 			{
-				window.location = decodeURIComponent(result.rsm.url);
+				window.location = result.url;
+			}
+			else if (result.rsm && result.rsm.url)
+			{
+				window.location = result.rsm.url;
 			}
 			else
 			{
