@@ -189,6 +189,34 @@ class content_class extends AWS_MODEL
 		return $item_info;
 	}
 
+	public function get_item_parent_info_by_id($type, $item_id)
+	{
+		$item_info = $this->get_item_info_by_id($type, $item_id);
+		if (!$item_info)
+		{
+			return false;
+		}
+
+		switch ($type)
+		{
+			case 'question':
+			case 'article':
+			case 'video':
+				return $item_info;
+
+			case 'answer':
+				return $this->get_item_info_by_id('question', $item_info['question_id']);
+
+			case 'article_comment':
+				return $this->get_item_info_by_id('article', $item_info['article_id']);
+
+			case 'video_comment':
+				return $this->get_item_info_by_id('video', $item_info['video_id']);
+		}
+
+		return false;
+	}
+
 	/**
 	 * 记录日志
 	 * @param string $item_type question|article|video

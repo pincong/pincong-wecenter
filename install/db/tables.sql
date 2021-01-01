@@ -737,9 +737,13 @@ CREATE TABLE IF NOT EXISTS `aws_activity` (
   `note` varchar(128) DEFAULT NULL,
   `item_id` int(11) DEFAULT '0',
   `item_type` varchar(32) DEFAULT NULL,
+  `thread_id` int(11) DEFAULT '0',
+  `category_id` int(11) DEFAULT '0',
   `time` int(10) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
+  KEY `thread_id` (`thread_id`),
+  KEY `category_id` (`category_id`),
   KEY `time` (`time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 

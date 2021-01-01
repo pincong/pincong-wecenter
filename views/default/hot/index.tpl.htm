@@ -1,0 +1,74 @@
+<?php TPL::include('global/header.tpl.htm'); ?>
+
+<div class="aw-container-wrap">
+	<!-- 导航 -->
+	<?php if ($this->content_nav_menu) { ?>
+	<div class="container category">
+		<div class="row">
+		<div class="col-sm-12">
+
+			<ul class="list">
+				<li class="<?php if (!$_GET['category']) { ?>active<?php } ?>">
+					<a href="<?php echo 'hot'; ?>"><?php _e('全部'); ?></a>
+				</li>
+				<?php foreach ($this->content_nav_menu as $key => $val) { ?>
+
+				<?php if ($val['type'] == 'category') { ?>
+				<li class="<?php if ($_GET['category'] == $val['type_id']) { ?>active<?php } ?>">
+					<a href="<?php echo str_replace('explore' , 'hot', $val['link']); ?>"><?php echo $val['title']; ?></a>
+				</li>
+				<?php } else if ($val['type'] == 'custom') { ?>
+				<li class="">
+					<a href="<?php echo $val['link']; ?>"<?php if (!is_inside_url($val['link'])) { ?> rel="nofollow noreferrer noopener" target="_blank"<?php } ?>><?php echo $val['title']; ?></a>
+				</li>
+				<?php } ?>
+
+				<?php } ?>
+			</ul>
+
+		</div>
+	</div>
+	<!-- end 导航 -->
+
+	</div>
+	<?php } ?>
+	<div class="container">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="col-sm-12 col-md-9 aw-main-content">
+					<a name="c_contents"></a>
+					<div class="aw-mod clearfix">
+						<div class="mod-head common-head">
+							<h2 id="main_title"><?php _e('精选'); ?></h2>
+						</div>
+
+						<div class="mod-body aw-feed-list clearfix" id="main_contents"></div>
+
+						<div class="mod-footer">
+							<!-- 加载更多内容 -->
+							<a id="bp_more" class="aw-load-more-content">
+								<span><?php _e('更多'); ?></span>
+							</a>
+							<!-- end 加载更多内容 -->
+						</div>
+					</div>
+				</div>
+
+				<!-- 侧边栏 -->
+				<div class="col-sm-12 col-md-3 aw-side-bar">
+					<?php TPL::include('block/sidebar_feature.tpl.htm'); ?>
+					<?php TPL::include('block/sidebar_hot_topics.tpl.htm'); ?>
+				</div>
+				<!-- end 侧边栏 -->
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+	AWS.load_list_view(G_BASE_URL + '/hot/list/category-<?php echo intval($_GET['category']); ?>', $('#bp_more'), $('#main_contents'), 1);
+});
+</script>
+
+<?php TPL::include('global/footer.tpl.htm'); ?>

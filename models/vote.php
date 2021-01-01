@@ -224,6 +224,41 @@ class vote_class extends AWS_MODEL
 		return $factor;
 	}
 
+	// 推入精选
+	private function push_item_with_high_reputation(&$type, $item_id, $item_reputation)
+	{
+		$push_reputation = get_setting('push_reputation');
+
+		if (!is_numeric($push_reputation) OR $item_reputation < $push_reputation)
+		{
+			return;
+		}
+
+		$push_types = get_setting('push_types');
+		if ($push_types == '')
+		{
+			return;
+		}
+
+		$push_types = explode(',', $push_types);
+		if (!is_array($push_types))
+		{
+			return;
+		}
+
+		$push_types = array_map('trim', $push_types);
+
+		if (in_array($type, $push_types))
+		{
+			if (!$this->fetch_row('activity', "`uid` = 0 AND `item_type` = '". ($type) . "' AND `item_id` = " . ($item_id)))
+			{
+				$parent_info = $this->model('content')->get_item_parent_info_by_id($type, $item_id);
+				$category_id = intval($parent_info['category_id']);
+				$thread_id = intval($parent_info['id']);
+				$this->model('activity')->log($type, $item_id, null, 0, $thread_id, $category_id);
+			}
+		}
+	}
 
 	// 用于筛选最热帖子 (首页排序)
 	private function update_parent_reputation(&$type, $item_id, $value, &$item_info)
@@ -291,6 +326,8 @@ class vote_class extends AWS_MODEL
 
 		if ($reputation)
 		{
+			$this->push_item_with_high_reputation($type, $item_id, $item_info['reputation'] + $reputation);
+
 			// 更新帖子声望(热度)
 			$this->update_parent_reputation($type, $item_id, $reputation, $item_info);
 			// 计算被赞用户所获声望

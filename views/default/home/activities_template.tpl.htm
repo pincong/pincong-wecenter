@@ -1,5 +1,9 @@
 <?php foreach ($this->list AS $key => $val) { ?>
-<?php if (!$val['item']) continue; ?>
+
+<?php if (CF::skip($val['user_info'])) continue; ?>
+<?php if ($val['user_info']['forbidden']) continue; ?>
+<?php if ($val['user_info']['flagged'] > 1) continue; ?>
+
 <?php if ($val['item_type'] == 'question') { ?>
 
 <!-- 问题 -->
@@ -8,14 +12,14 @@
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
 			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
-			<?php echo $val['note']; ?>
+			<?php _e('发起了问题'); ?>
 			•
-			<?php echo date_friendly($val['time']); ?>
+			<?php echo date_friendly($val['add_time']); ?>
 			•
-			<?php _e('%s 个回复', $val['item']['answer_count']); ?>
+			<?php _e('%s 个回复', $val['answer_count']); ?>
 		</p>
 		<h4>
-			<a href="question/<?php echo $val['item']['question_id']; ?>"><?php if (!$val['item']['question_content']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['item']['question_content']; ?><?php } ?></a>
+			<a href="question/<?php echo $val['question_id']; ?>"><?php if (!$val['question_content']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['question_content']; ?><?php } ?></a>
 		</h4>
 	</div>
 </div>
@@ -29,23 +33,23 @@
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
 			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
-			<?php echo $val['note']; ?>
+			<?php _e('回复了问题'); ?>
 			•
-			<?php echo date_friendly($val['time']); ?>
+			<?php echo date_friendly($val['add_time']); ?>
 		</p>
 		<h4>
-			<a href="question/<?php echo $val['item']['question_info']['question_id']; ?>"><?php if (!$val['item']['question_info']['question_content']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['item']['question_info']['question_content']; ?><?php } ?></a>
+			<a href="question/<?php echo $val['question_info']['question_id']; ?>"><?php if (!$val['question_info']['question_content']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['question_info']['question_content']; ?><?php } ?></a>
 		</h4>
 	</div>
 	<div class="mod-body clearfix">
 		<div id="detail_<?php echo $val['id']; ?>" class="markitup-box">
-			<?php echo nl2br(cjk_substr(strip_ubb($val['item']['answer_content']), 0, 130, 'UTF-8', '...')); ?>
-		<?php if (cjk_strlen($val['item']['answer_content']) > 130) { ?>
+			<?php echo nl2br(cjk_substr(strip_ubb($val['answer_content']), 0, 130, 'UTF-8', '...')); ?>
+		<?php if (cjk_strlen($val['answer_content']) > 130) { ?>
 		<a href="javascript:;" class="showMore" onclick="AWS.content_switcher($('#detail_<?php echo $val['id']; ?>'), $('#detail_more_<?php echo $val['id']; ?>'));"><?php _e('显示全部'); ?> »</a>
 		<?php } ?>
 		</div>
 		<div id="detail_more_<?php echo $val['id']; ?>" class="collapse markitup-box">
-			<?php echo nl2br(strip_ubb($val['item']['answer_content'])); ?>
+			<?php echo nl2br(strip_ubb($val['answer_content'])); ?>
 		</div>
 	</div>
 </div>
@@ -59,14 +63,14 @@
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
 			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
-			<?php echo $val['note']; ?>
+			<?php _e('发表了文章'); ?>
 			•
-			<?php echo date_friendly($val['time']); ?>
+			<?php echo date_friendly($val['add_time']); ?>
 			•
-			<?php _e('%s 个评论', $val['item']['comments']); ?>
+			<?php _e('%s 个评论', $val['comments']); ?>
 		</p>
 		<h4>
-			<a href="article/<?php echo $val['item']['id']; ?>"><?php if (!$val['item']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['item']['title']; ?><?php } ?></a>
+			<a href="article/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['title']; ?><?php } ?></a>
 		</h4>
 	</div>
 </div>
@@ -80,23 +84,23 @@
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
 			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
-			<?php echo $val['note']; ?>
+			<?php _e('评论了文章'); ?>
 			•
-			<?php echo date_friendly($val['time']); ?>
+			<?php echo date_friendly($val['add_time']); ?>
 		</p>
 		<h4>
-			<a href="article/<?php echo $val['item']['article_info']['id']; ?>"><?php if (!$val['item']['article_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['item']['article_info']['title']; ?><?php } ?></a>
+			<a href="article/<?php echo $val['article_info']['id']; ?>"><?php if (!$val['article_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['article_info']['title']; ?><?php } ?></a>
 		</h4>
 	</div>
 	<div class="mod-body clearfix">
 		<div id="detail_<?php echo $val['id']; ?>" class="markitup-box">
-			<?php echo nl2br(cjk_substr(strip_ubb($val['item']['message']), 0, 130, 'UTF-8', '...')); ?>
-		<?php if (cjk_strlen($val['item']['message']) > 130) { ?>
+			<?php echo nl2br(cjk_substr(strip_ubb($val['message']), 0, 130, 'UTF-8', '...')); ?>
+		<?php if (cjk_strlen($val['message']) > 130) { ?>
 		<a href="javascript:;" class="showMore" onclick="AWS.content_switcher($('#detail_<?php echo $val['id']; ?>'), $('#detail_more_<?php echo $val['id']; ?>'));"><?php _e('显示全部'); ?> »</a>
 		<?php } ?>
 		</div>
 		<div id="detail_more_<?php echo $val['id']; ?>" class="collapse markitup-box">
-			<?php echo nl2br(strip_ubb($val['item']['message'])); ?>
+			<?php echo nl2br(strip_ubb($val['message'])); ?>
 		</div>
 	</div>
 </div>
@@ -110,14 +114,14 @@
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
 			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
-			<?php echo $val['note']; ?>
+			<?php _e('发表了影片'); ?>
 			•
-			<?php echo date_friendly($val['time']); ?>
+			<?php echo date_friendly($val['add_time']); ?>
 			•
-			<?php _e('%s 个评论', $val['item']['comment_count']); ?>
+			<?php _e('%s 个评论', $val['comment_count']); ?>
 		</p>
 		<h4>
-			<a href="video/<?php echo $val['item']['id']; ?>"><?php if (!$val['item']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['item']['title']; ?><?php } ?></a>
+			<a href="video/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['title']; ?><?php } ?></a>
 		</h4>
 	</div>
 </div>
@@ -131,23 +135,23 @@
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
 			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
-			<?php echo $val['note']; ?>
+			<?php _e('评论了影片'); ?>
 			•
-			<?php echo date_friendly($val['time']); ?>
+			<?php echo date_friendly($val['add_time']); ?>
 		</p>
 		<h4>
-			<a href="video/<?php echo $val['item']['video_info']['id']; ?>"><?php if (!$val['item']['video_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['item']['video_info']['title']; ?><?php } ?></a>
+			<a href="video/<?php echo $val['video_info']['id']; ?>"><?php if (!$val['video_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['video_info']['title']; ?><?php } ?></a>
 		</h4>
 	</div>
 	<div class="mod-body clearfix">
 		<div id="detail_<?php echo $val['id']; ?>" class="markitup-box">
-			<?php echo nl2br(cjk_substr(strip_ubb($val['item']['message']), 0, 130, 'UTF-8', '...')); ?>
-		<?php if (cjk_strlen($val['item']['message']) > 130) { ?>
+			<?php echo nl2br(cjk_substr(strip_ubb($val['message']), 0, 130, 'UTF-8', '...')); ?>
+		<?php if (cjk_strlen($val['message']) > 130) { ?>
 		<a href="javascript:;" class="showMore" onclick="AWS.content_switcher($('#detail_<?php echo $val['id']; ?>'), $('#detail_more_<?php echo $val['id']; ?>'));"><?php _e('显示全部'); ?> »</a>
 		<?php } ?>
 		</div>
 		<div id="detail_more_<?php echo $val['id']; ?>" class="collapse markitup-box">
-			<?php echo nl2br(strip_ubb($val['item']['message'])); ?>
+			<?php echo nl2br(strip_ubb($val['message'])); ?>
 		</div>
 	</div>
 </div>
