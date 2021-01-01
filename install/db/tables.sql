@@ -446,7 +446,6 @@ CREATE TABLE IF NOT EXISTS `aws_topic` (
   `user_related` tinyint(1) DEFAULT '0' COMMENT '是否被用户关联',
   `url_token` varchar(32) DEFAULT NULL,
   `merged_id` int(11) DEFAULT '0',
-  `seo_title` varchar(240) DEFAULT NULL,
   `discuss_count_last_week` int(10) DEFAULT '0',
   `discuss_count_last_month` int(10) DEFAULT '0',
   `discuss_count_update` int(10) DEFAULT '0',

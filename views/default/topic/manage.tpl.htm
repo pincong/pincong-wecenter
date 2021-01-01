@@ -23,16 +23,6 @@
 							</form>
 						</dl>
 						<dl class="dl-horizontal">
-							<form action="topic/ajax/save_seo_title/" method="post" id="seo_title_form">
-								<input type="hidden" name="topic_id" value="<?php echo $this->topic_info['topic_id']; ?>" />
-								<dt><?php _e('页面标题'); ?>:</dt>
-								<dd>
-									<a class="btn btn-normal btn-success pull-right" href="javascript:;" onclick="AWS.submit($('#seo_title_form'), $(this));"><?php _e('保存'); ?></a>
-									<input type="text" class="form-control" name="seo_title" value="<?php echo $this->topic_info['seo_title']; ?>" />
-								</dd>
-							</form>
-						</dl>
-						<dl class="dl-horizontal">
 							<form action="topic/ajax/merge_topic/" method="post" id="merge_topic_form">
 								<input type="hidden" name="target_id" value="<?php echo $this->topic_info['topic_id']; ?>" />
 								<dt><?php _e('话题合并'); ?>:</dt>

@@ -77,14 +77,7 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		if ($topic_info['seo_title'])
-		{
-			TPL::assign('page_title', $topic_info['seo_title']);
-		}
-		else
-		{
-			$this->crumb($topic_info['topic_title']);
-		}
+		$this->crumb($topic_info['topic_title']);
 
 		if ($this->user_id)
 		{

@@ -666,13 +666,6 @@ class topic_class extends AWS_MODEL
 		), 'topic_id = ' . intval($topic_id));
 	}
 
-	public function update_seo_title($seo_title, $topic_id)
-	{
-		return $this->update('topic', array(
-			'seo_title' => htmlspecialchars($seo_title)
-		), 'topic_id = ' . intval($topic_id));
-	}
-
 	public function save_topic_relation($uid, $topic_id, $item_id, $type)
 	{
 		if (!$topic_id OR !$item_id OR !$type)
