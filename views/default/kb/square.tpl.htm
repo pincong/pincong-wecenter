@@ -72,7 +72,7 @@
 							<a href="<?php echo UF::url($this->user_info); ?>" class="aw-user-name"><img alt="" src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" /></a>
 							<p>
 								<label class="pull-right">
-									<input type="checkbox" value="1" name="anonymous" /> <?php _e(get_setting('anonymous_option_name')); ?>
+									<input type="checkbox" value="1" name="anonymous" /> <?php _e('用这个身份发表'); ?>: <a href="<?php echo UF::url(get_anonymous_user_info($this->user_info)); ?>"><?php echo UF::name(get_anonymous_user_info($this->user_info)); ?></a>
 								</label>
 								<label class="pull-right">
 									<a href="<?php echo url_rewrite(); ?>/currency/rule/" target="_blank"><?php _e(get_setting('currency_rule_name')); ?></a>

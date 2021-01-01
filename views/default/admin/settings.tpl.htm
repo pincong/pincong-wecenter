@@ -905,10 +905,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('特定发帖用户 UID(s)'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('特定贴文 UID(s)'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="specific_post_uids" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['specific_post_uids']); ?>"/>
-								<span class="help-block"><?php _e('多个用户 UID 请用 , 隔开, 留空则不启用'); ?></span>
+								<span class="help-block"><?php _e('多个 UID 请用","隔开, 留空则不启用'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -1147,17 +1147,6 @@
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('功能链接名称'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="feature_list_name" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['feature_list_name']); ?>"/>
-							</div>
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('匿名发布选项名称'); ?>:</span>
-							<div class="col-sm-5 col-xs-8">
-								<input name="anonymous_option_name" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['anonymous_option_name']); ?>"/>
 							</div>
 						</div>
 					</td>

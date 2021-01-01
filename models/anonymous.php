@@ -20,15 +20,26 @@ if (!defined('IN_ANWSION'))
 class anonymous_class extends AWS_MODEL
 {
 
-	public function get_anonymous_uid()
+	public function get_anonymous_uid($user_info = null)
 	{
-		$uid = intval(get_setting('anonymous_uid'));
+		if ($user_info AND $user_info['permission'])
+		{
+			$uid = intval($user_info['permission']['anonymous_uid']);
+		}
+		if (!$uid)
+		{
+			$uid = intval(get_setting('anonymous_uid'));
+		}
+		if ($uid < 0)
+		{
+			return -1;
+		}
 		if ($this->model('account')->uid_exists($uid))
 		{
 			return $uid;
 		}
 		// uid 不存在
-		return false;
+		return 0;
 	}
 
 	public function check_rate_limit($type, $anonymous_uid)

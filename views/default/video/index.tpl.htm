@@ -233,7 +233,7 @@
 							<p>
 								<?php if ($this->user_info['permission']['reply_anonymously']) { ?>
 								<label class="pull-right">
-									<input type="checkbox" value="1" name="anonymous" /> <?php _e(get_setting('anonymous_option_name')); ?>
+									<input type="checkbox" value="1" name="anonymous" /> <?php _e('用这个身份发表'); ?>: <a href="<?php echo UF::url(get_anonymous_user_info($this->user_info)); ?>"><?php echo UF::name(get_anonymous_user_info($this->user_info)); ?></a>
 								</label>
 								<?php } ?>
 								<?php if ($this->user_info['permission']['follow_thread'] OR $this->video_info['uid'] == $this->user_id) { ?>
@@ -296,7 +296,7 @@
 
 							<label class="pull-right">
 								<?php if ($this->user_info['permission']['reply_anonymously']) { ?>
-								&nbsp;<input type="checkbox" value="1" name="anonymous" /> <?php _e(get_setting('anonymous_option_name')); ?>
+								&nbsp;<input type="checkbox" value="1" name="anonymous" /> <?php _e('用这个身份发表'); ?>: <a href="<?php echo UF::url(get_anonymous_user_info($this->user_info)); ?>"><?php echo UF::name(get_anonymous_user_info($this->user_info)); ?></a>
 								<?php } ?>
 								&nbsp;<a href="javascript:;" onclick="AWS.submit_append($('#answer_form_2'), $(this), $('.aw-replies'), reply_callback_2);" class="btn btn-normal btn-success btn-submit btn-reply"><?php _e('回复'); ?></a>
 							</label>

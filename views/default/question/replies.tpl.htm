@@ -113,7 +113,7 @@
 					<div class="aw-comment-box-btn">
 						<span class="pull-right">
 							<?php if ($this->user_info['permission']['reply_anonymously']) { ?>
-							<label><input type="checkbox" name="anonymous" value="1"> <?php _e(get_setting('anonymous_option_name')); ?></label>
+							<label><input type="checkbox" name="anonymous" value="1"> <?php _e('用这个身份发表'); ?>: <a href="<?php echo UF::url(get_anonymous_user_info($this->user_info)); ?>"><?php echo UF::name(get_anonymous_user_info($this->user_info)); ?></a></label>
 							<?php } ?>
 							<a href="javascript:;" class="btn btn-mini btn-success" onclick="submit_disscusion($(this));"><?php _e('讨论'); ?></a>
 						</span>

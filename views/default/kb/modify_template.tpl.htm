@@ -12,7 +12,7 @@
 				<textarea name="message" id="editor_reply" class="form-control" rows="10"><?php echo FORMAT::text($this->item_info['message']); ?></textarea>
 			</div>
 			<div class="modal-footer">
-				<span><input id="anonymous_checkbox" type="checkbox" value="1" name="anonymous" /><label for="anonymous_checkbox"><?php _e(get_setting('anonymous_option_name')); ?></label></span>
+				<span><input id="anonymous_checkbox" type="checkbox" value="1" name="anonymous" /><label for="anonymous_checkbox"><?php _e('用这个身份发表'); ?>: <a href="<?php echo UF::url(get_anonymous_user_info($this->user_info)); ?>"><?php echo UF::name(get_anonymous_user_info($this->user_info)); ?></a></label></span>
 				<button class="btn btn-large btn-success" onclick="AWS.submit_form($('#edit_form'), $(this), $('.error_message'));return false;"><?php _e('确定'); ?></button>
 			</div>
 			</form>

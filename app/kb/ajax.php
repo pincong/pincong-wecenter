@@ -96,7 +96,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($_POST['anonymous'])
 		{
-			if (!$uid = $this->model('anonymous')->get_anonymous_uid())
+			if (!$uid = $this->model('anonymous')->get_anonymous_uid($this->user_info))
 			{
 				$uid = $this->user_id;
 			}
@@ -127,7 +127,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($_POST['anonymous'])
 		{
-			if (!$uid = $this->model('anonymous')->get_anonymous_uid())
+			if (!$uid = $this->model('anonymous')->get_anonymous_uid($this->user_info))
 			{
 				$uid = $item_info['uid'];
 			}

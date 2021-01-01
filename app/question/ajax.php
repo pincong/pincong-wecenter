@@ -28,7 +28,7 @@ class ajax extends AWS_CONTROLLER
 
 	private function get_anonymous_uid($type)
 	{
-		if (!$anonymous_uid = $this->model('anonymous')->get_anonymous_uid())
+		if (!$anonymous_uid = $this->model('anonymous')->get_anonymous_uid($this->user_info))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('本站未开启匿名功能')));
 		}

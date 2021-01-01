@@ -115,7 +115,7 @@
 
 									<?php if (!$this->thread_info['id'] AND $this->user_info['permission']['post_anonymously']) { ?>
 									<label><input type="checkbox" class="pull-left" value="1" name="anonymous" />
-										<?php _e(get_setting('anonymous_option_name')); ?></label>
+										<?php _e('用这个身份发表'); ?>: <a href="<?php echo UF::url(get_anonymous_user_info($this->user_info)); ?>"><?php echo UF::name(get_anonymous_user_info($this->user_info)); ?></a></label>
 									<?php } ?>
 								</span>
 								<a class="btn btn-large btn-success btn-publish-submit" id="publish_submit" onclick="AWS.submit($('#question_form'), $(this)); return false;"><?php _e('确认发起'); ?></a>

@@ -93,13 +93,32 @@ function can_edit_post($post_uid, &$user_info)
 	static $specific_post_uids;
 	if (!isset($specific_post_uids))
 	{
-		$specific_post_uids = get_setting_array('specific_post_uids');
+		$specific_post_uids = array_map('trim', explode(',', $user_info['permission']['specific_post_uids']));
+		if (!$specific_post_uids)
+		{
+			$specific_post_uids = get_setting_array('specific_post_uids');
+		}
+		if (!is_array($specific_post_uids))
+		{
+			$specific_post_uids = array();
+		}
 	}
 	if (in_array($post_uid, $specific_post_uids))
 	{
 		return true;
 	}
 	return false;
+}
+
+function &get_anonymous_user_info(&$user_info)
+{
+	static $anonymous_user;
+	if (!isset($anonymous_user))
+	{
+		$uid = AWS_APP::model('anonymous')->get_anonymous_uid($user_info);
+		$anonymous_user = AWS_APP::model('account')->get_user_info_by_uid($uid);
+	}
+	return $anonymous_user;
 }
 
 // 获取主题图片指定尺寸的完整url地址

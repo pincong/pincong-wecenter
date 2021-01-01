@@ -57,61 +57,6 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许编辑自己的贴文'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="edit_own_post"<?php if ($this->group_pms['edit_own_post']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="edit_own_post"<?php if (!$this->group_pms['edit_own_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许编辑任何贴文'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="edit_any_post"<?php if ($this->group_pms['edit_any_post']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="edit_any_post"<?php if (!$this->group_pms['edit_any_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许编辑特定贴文'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="edit_specific_post"<?php if ($this->group_pms['edit_specific_post']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="edit_specific_post"<?php if (!$this->group_pms['edit_specific_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td>
-						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许封禁用户'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
@@ -386,6 +331,123 @@
 				<tr>
 					<td>
 						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许编辑任何贴文'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="edit_any_post"<?php if ($this->group_pms['edit_any_post']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="edit_any_post"<?php if (!$this->group_pms['edit_any_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许编辑特定贴文'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="edit_specific_post"<?php if ($this->group_pms['edit_specific_post']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="edit_specific_post"<?php if (!$this->group_pms['edit_specific_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许编辑自己的贴文'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="edit_own_post"<?php if ($this->group_pms['edit_own_post']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="edit_own_post"<?php if (!$this->group_pms['edit_own_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许匿名发帖'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="post_anonymously"<?php if ($this->group_pms['post_anonymously']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="post_anonymously"<?php if (!$this->group_pms['post_anonymously']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许匿名回应'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="reply_anonymously"<?php if ($this->group_pms['reply_anonymously']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="reply_anonymously"<?php if (!$this->group_pms['reply_anonymously']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('特定贴文 UID(s)'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input type="text" name="specific_post_uids" class="form-control" value="<?php echo $this->group_pms['specific_post_uids']; ?>" />
+
+								<span class="help-block"><?php _e('多个 UID 请用","隔开, 留空则采用全局设定'); ?></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('匿名用户 UID'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input type="text" name="anonymous_uid" class="form-control" value="<?php echo $this->group_pms['anonymous_uid']; ?>" />
+
+								<span class="help-block"><?php _e('留空则采用全局设定'); ?></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('受限分类'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="restricted_categories" class="form-control" value="<?php echo $this->group_pms['restricted_categories']; ?>" />
@@ -633,42 +695,6 @@
 					</td>
 				</tr>
 
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许匿名发帖'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="post_anonymously"<?php if ($this->group_pms['post_anonymously']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="post_anonymously"<?php if (!$this->group_pms['post_anonymously']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许匿名回应'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="reply_anonymously"<?php if ($this->group_pms['reply_anonymously']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="reply_anonymously"<?php if (!$this->group_pms['reply_anonymously']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
 				<tr>
 					<td>
 						<div class="form-group">
