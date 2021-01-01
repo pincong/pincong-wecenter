@@ -220,7 +220,7 @@ class vote_class extends AWS_MODEL
 				$this->process_currency_disagree($type, $item_id, $uid, $item_uid, $vote_user['permission']);
 			}
 		}
-		$this->model('reputation')->update($type, $item_id, $uid, $item_uid, $count, !!$vote_info);
+		$this->model('reputation')->apply($type, $item_id, $uid, $item_uid, $count, !!$vote_info);
 
 		return true;
 	}

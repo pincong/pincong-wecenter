@@ -290,7 +290,7 @@ class reputation_class extends AWS_MODEL
 	}
 
 
-	public function update($item_type, $item_id, $uid, $item_uid, $agree_value, $update_agree_count_only = false)
+	public function apply($item_type, $item_id, $uid, $item_uid, $agree_value, $update_agree_count_only = false)
 	{
 		if ($agree_value > 0)
 		{
