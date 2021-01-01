@@ -133,9 +133,15 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		$this->model('user')->forbid_user_by_uid($uid, $status, $this->user_id, $reason, $detail);
-
-		$this->model('user')->insert_admin_log($uid, $this->user_id, 'forbid_user', $status, $log_detail);
+		if (!$this->user_info['permission']['is_moderator'])
+		{
+			$this->model('user')->forbid_user_by_uid($uid, $status, $this->user_id, $reason, $detail);
+			$this->model('user')->insert_admin_log($uid, $this->user_id, 'forbid_user', $status, $log_detail);
+		}
+		else
+		{
+			$this->model('user')->forbid_user_by_uid($uid, $status);
+		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
@@ -181,9 +187,15 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		$this->model('user')->flag_user_by_uid($uid, $status, $this->user_id, $reason, $detail);
-
-		$this->model('user')->insert_admin_log($uid, $this->user_id, 'flag_user', $status, $log_detail);
+		if (!$this->user_info['permission']['is_moderator'])
+		{
+			$this->model('user')->flag_user_by_uid($uid, $status, $this->user_id, $reason, $detail);
+			$this->model('user')->insert_admin_log($uid, $this->user_id, 'flag_user', $status, $log_detail);
+		}
+		else
+		{
+			$this->model('user')->flag_user_by_uid($uid, $status);
+		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
@@ -216,7 +228,10 @@ class ajax extends AWS_CONTROLLER
 			'verified' => $text
 		), $_POST['uid']);
 
-		$this->model('user')->insert_admin_log($_POST['uid'], $this->user_id, 'edit_title', 0, $text);
+		if (!$this->user_info['permission']['is_moderator'])
+		{
+			$this->model('user')->insert_admin_log($_POST['uid'], $this->user_id, 'edit_title', 0, $text);
+		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
@@ -249,7 +264,10 @@ class ajax extends AWS_CONTROLLER
 			'signature' => $text
 		), $_POST['uid']);
 
-		$this->model('user')->insert_admin_log($_POST['uid'], $this->user_id, 'edit_signature', 0, $text);
+		if (!$this->user_info['permission']['is_moderator'])
+		{
+			$this->model('user')->insert_admin_log($_POST['uid'], $this->user_id, 'edit_signature', 0, $text);
+		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
@@ -308,7 +326,10 @@ class ajax extends AWS_CONTROLLER
 				'user_update_time' => fake_time()
 			), $uid);
 
-			$this->model('user')->insert_admin_log($uid, $this->user_id, 'change_group', $group_id, $group_name);
+			if (!$this->user_info['permission']['is_moderator'])
+			{
+				$this->model('user')->insert_admin_log($uid, $this->user_id, 'change_group', $group_id, $group_name);
+			}
 		}
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
