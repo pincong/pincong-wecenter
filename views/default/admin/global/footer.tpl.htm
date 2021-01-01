@@ -5,15 +5,6 @@
 <!-- DO NOT REMOVE -->
 <div id="aw-ajax-box" class="aw-ajax-box"></div>
 
-<?php if (!$this->user_info['permission']['is_administrator']) { ?>
-<script type="text/javascript">
-$(function()
-{
-    $('.mod-bar .icon-setting, .mod-bar .icon-signup, .mod-bar .icon-job').hide();
-})
-</script>
-<?php } ?>
-
 <div style="display:none;" id="__crond">
 	<script type="text/javascript">
 		$(document).ready(function () {

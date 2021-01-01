@@ -11,7 +11,7 @@
 						<div class="mod-head">
 							<img src="<?php echo UF::avatar($this->user, 'max', $this->user_info['permission']['is_administrator']); ?>" alt="<?php echo UF::name($this->user); ?>" />
 							<span class="pull-right operate">
-							<?php if ($this->user['uid'] != $this->user_id AND $this->user_id) { ?>
+							<?php if ($this->user_id AND $this->user['uid'] != $this->user_id) { ?>
 
 								<?php if ($this->user_info['permission']['change_user_group']) { ?>
 									<a href="javascript:;" class="aw-small-text" onclick="AWS.popup(G_BASE_URL + '/user/edit/change_group/uid-<?php echo $this->user['uid']; ?>');"><i class="icon icon-edit"></i> <?php _e('用户组'); ?></a>
@@ -125,7 +125,7 @@
 										<span><?php echo $this->user['reputation_group_name']; ?></span>
 										<p></p>
 
-									<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
+									<?php if ($this->user_info['permission']['is_moderator']) { ?>
 										<span><?php _e('UID'); ?> : <?php echo $this->user['uid']; ?></span>
 										<p></p>
 									<?php } ?>

@@ -72,12 +72,10 @@
 											</li>
 										<?php } ?>
 
-										<?php if ($this->article_info['uid'] == $this->user_id OR $this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
-											<?php if ($this->user_info['permission']['change_category']) { ?>
+										<?php if ($this->user_info['permission']['change_category']) { ?>
 											<li>
 												<a href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/content/edit/change_category/item_type-article__item_id-<?php echo $this->article_info['id']; ?>__category_id-<?php echo $this->article_info['category_id']; ?>');"><?php _e('变更分类'); ?></a>
 											</li>
-											<?php } ?>
 										<?php } ?>
 
 										</ul>
@@ -284,7 +282,7 @@
 								<?php if ($this->article_info['user_info']['verified']) { ?>
 									<em class="aw-verified"><?php echo $this->article_info['user_info']['verified']; ?></em>
 								<?php } ?>
-								<?php if ($this->article_info['user_info']['uid'] != $this->user_id AND $this->user_id) { ?>
+								<?php if ($this->user_id AND $this->article_info['user_info']['uid'] != $this->user_id) { ?>
 									<a class="icon-inverse follow tooltips icon icon-plus <?php if ($this->user_follow_check) { ?> active<?php } ?>" onclick="AWS.User.follow($(this), 'user', <?php echo $this->article_info['user_info']['uid']; ?>);"></a>
 								<?php } ?>
 							</div>
