@@ -12,7 +12,7 @@
 					</span>	
 					<?php } ?>
 				<?php } ?>
-				<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator'] OR ($this->topic_info['topic_lock'] == 0 && $this->user_info['permission']['edit_topic'])) { ?>
+				<?php if ($this->topic_info['topic_lock'] == 0 AND $this->user_info['permission']['edit_topic']) { ?>
 					<?php if ($this->related_topics) { ?>
 					<span class="aw-edit-topic icon-inverse"><i class="icon icon-edit"></i> <?php _e('添加话题'); ?></span>
 					<?php } else { ?>

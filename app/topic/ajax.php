@@ -166,7 +166,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function upload_topic_pic_action()
 	{
-		if (get_setting('upload_enable') == 'N' AND !$this->user_info['permission']['is_administrator'])
+		if (get_setting('upload_enable') == 'N')
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('本站未开启上传功能')));
 		}

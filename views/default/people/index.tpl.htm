@@ -74,7 +74,7 @@
 								: <?php echo $this->user['data']['flagged_reason']; ?> <?php echo $this->user['data']['flagged_detail']; ?>
 							</span>
 							<?php } ?>
-							<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
+							<?php if ($this->user_id) { ?>
 							<br />
 							<a href="user/admin_log/uid-<?php echo $this->user['uid']; ?>" target="_blank"><?php _e('查看管理记录'); ?></a>
 							<?php } ?>
@@ -159,7 +159,7 @@
 										<?php if ($this->fans_list) { ?>
 										<p>
 											<?php foreach ($this->fans_list AS $key => $val) { ?>
-											<?php if (($val['forbidden'] OR $val['flagged']) AND !$this->user_info['permission']['is_administrator']) continue; ?>
+											<?php if (($val['forbidden'] OR $val['flagged'] > 0) AND !$this->user_info['permission']['is_administrator']) continue; ?>
 												<a class="aw-user-name" data-id="<?php echo $val['uid']; ?>" href="<?php echo UF::url($val); ?>"><img src="<?php echo UF::avatar($val, 'mid'); ?>" alt=""></a>
 											<?php } ?>
 										</p>
