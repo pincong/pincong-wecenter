@@ -68,14 +68,27 @@ var AWS =
 		}
 	},
 
-	// TODO: what does rsm stand for?
+	// ajax post
 	ajax_rsm: function(url, params, callback)
 	{
+		AWS.loading('show');
+
+		if (typeof params == 'object')
+		{
+			params['_post_type'] = 'ajax';
+		}
+		else
+		{
+			params += '&_post_type=ajax';
+		}
+
 		$.post(url, params, function (result)
 		{
+			AWS.loading('hide');
 			_callback(result);
 		}, 'json').error(function (error)
 		{
+			AWS.loading('hide');
 			_error(error);
 		});
 
@@ -84,24 +97,24 @@ var AWS =
 			if (!result)
 			{
 				alert(_t('未知错误'));
-				callback('error');
+				callback && callback('error');
 				return;
 			}
 
 			if (result.err)
 			{
 				AWS.alert(result.err);
-				callback('error');
+				callback && callback('error');
 				return;
 			}
 
-			callback(null, result.rsm);
+			callback && callback(null, result.rsm);
 		}
 
 		function _error (error)
 		{
 			alert(_t('接口错误') + ' ' + error.responseText);
-			callback('error');
+			callback && callback('error');
 			return;
 		}
 	},
@@ -1494,10 +1507,15 @@ AWS.User =
 
 	add_favorite: function(item_type, item_id)
 	{
-		AWS.ajax_request(G_BASE_URL + '/favorite/ajax/add_favorite/', {
-			'item_id' : item_id,
-			'item_type' : item_type
-		}, 1);
+		AWS.confirm(_t('确认收藏?'), function() {
+			AWS.ajax_rsm(G_BASE_URL + '/favorite/ajax/add_favorite/', {
+				'item_id' : item_id,
+				'item_type' : item_type
+			}, function(err) {
+				if (err) return;
+				AWS.alert(_t('已收藏的内容可以在「动态 - 我的收藏」里找到'));
+			});
+		});
 	},
 
 	compose_message: function(recipient)
