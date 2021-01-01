@@ -112,11 +112,11 @@ class publish_class extends AWS_MODEL
 				break;
 
 			case 'question_discussion':
-				//$this->real_publish_question_discussion($data);
+				$this->real_publish_question_discussion($data);
 				break;
 
 			case 'answer_discussion':
-				//$this->real_publish_answer_discussion($data);
+				$this->real_publish_answer_discussion($data);
 				break;
 		}
 	}
@@ -429,6 +429,118 @@ class publish_class extends AWS_MODEL
 	}
 
 
+
+	private function real_publish_question_discussion(&$data)
+	{
+		if (!$thread_info = $this->model('content')->get_thread_info_by_id('question', $data['parent_id']))
+		{
+			return false;
+		}
+
+		$now = fake_time();
+
+		$item_id = $this->insert('question_discussion', array(
+			'question_id' => $data['parent_id'],
+			'message' => htmlspecialchars($data['message']),
+			'add_time' => $now,
+			'uid' => $data['uid'],
+			'at_uid' => $data['at_uid'],
+		));
+
+		if (!$item_id)
+		{
+			return false;
+		}
+
+		$discussion_count = $this->count('question_discussion', 'question_id = ' . intval($data['parent_id']));
+
+		if (get_setting('discussion_bring_top') == 'Y')
+		{
+			$this->update('question', array(
+				'comment_count' => $discussion_count,
+				'update_time' => $now,
+				'last_uid' => $data['uid'],
+			), 'id = ' . intval($thread_info['id']));
+
+			$this->model('posts')->bring_to_top($thread_info['id'], 'question');
+		}
+		else
+		{
+			$this->update('question', array(
+				'comment_count' => $discussion_count,
+			), 'id = ' . intval($data['parent_id']));
+		}
+
+
+		$this->notify_users('question', $thread_info['id'], null, 0, $data['uid'], $data['at_uid'], $data['message']);
+
+		// TODO: 记录用户动态
+
+		return $item_id;
+	}
+
+
+	private function real_publish_answer_discussion(&$data)
+	{
+		if (!$reply_info = $this->model('content')->get_reply_info_by_id('answer', $data['parent_id']))
+		{
+			return false;
+		}
+		if (!$thread_info = $this->model('content')->get_thread_info_by_id('question', $reply_info['question_id']))
+		{
+			return false;
+		}
+
+		$now = fake_time();
+
+		$item_id = $this->insert('answer_discussion', array(
+			'answer_id' => $data['parent_id'],
+			'message' => htmlspecialchars($data['message']),
+			'add_time' => $now,
+			'uid' => $data['uid'],
+			'at_uid' => $data['at_uid'],
+		));
+
+		if (!$item_id)
+		{
+			return false;
+		}
+
+		$discussion_count = $this->count('answer_discussion', 'answer_id = ' . intval($data['parent_id']));
+
+		if (get_setting('discussion_bring_top') == 'Y')
+		{
+			$this->update('question', array(
+				'update_time' => $now,
+				'last_uid' => $data['uid'],
+			), 'id = ' . intval($thread_info['id']));
+
+			$this->model('posts')->bring_to_top($thread_info['id'], 'question');
+		}
+
+		$this->update('answer', array(
+			'comment_count' => $discussion_count,
+		), 'id = ' . intval($data['parent_id']));
+
+
+		if ($data['at_uid'])
+		{
+			$recipient_uid = $data['at_uid'];
+		}
+		else
+		{
+			$recipient_uid = $reply_info['uid'];
+		}
+
+		$this->notify_users('question', $thread_info['id'], 'answer', $reply_info['id'], $data['uid'], $recipient_uid, $data['message']);
+
+		// TODO: 记录用户动态
+
+		return $item_id;
+	}
+
+
+
 	public function publish_question($data, $real_uid, $later)
 	{
 		if ($later)
@@ -535,4 +647,33 @@ class publish_class extends AWS_MODEL
 		return $item_id;
 	}
 
+
+
+	public function publish_question_discussion($data, $real_uid, $later)
+	{
+		if ($later)
+		{
+			$this->schedule('question_discussion', $this->calc_later_time($later), $data);
+		}
+		else
+		{
+			$item_id = $this->real_publish_question_discussion($data);
+		}
+
+		return $item_id;
+	}
+
+	public function publish_answer_discussion($data, $real_uid, $later)
+	{
+		if ($later)
+		{
+			$this->schedule('answer_discussion', $this->calc_later_time($later), $data);
+		}
+		else
+		{
+			$item_id = $this->real_publish_answer_discussion($data);
+		}
+
+		return $item_id;
+	}
 }
