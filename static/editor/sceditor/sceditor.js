@@ -5034,15 +5034,15 @@
 			var isIeOrEdge = IE_VER || edge;
 			var editable = wysiwygBody;
 			var clipboard = e.clipboardData;
-			var loadImage = function (file) {
-				var reader = new FileReader();
-				reader.onload = function (e) {
-					handlePasteData({
-						html: '<img src="' + e.target.result + '" />'
-					});
-				};
-				reader.readAsDataURL(file);
-			};
+			//var loadImage = function (file) {
+			//	var reader = new FileReader();
+			//	reader.onload = function (e) {
+			//		handlePasteData({
+			//			html: '<img src="' + e.target.result + '" />'
+			//		});
+			//	};
+			//	reader.readAsDataURL(file);
+			//};
 
 			// Modern browsers with clipboard API - everything other than _very_
 			// old android web views and UC browser which doesn't support the
@@ -5065,7 +5065,7 @@
 				}
 				// Call plugins here with file?
 				data$$1.text = data$$1['text/plain'];
-				data$$1.html = data$$1['text/html'];
+				//data$$1.html = data$$1['text/html'];
 
 				handlePasteData(data$$1);
 			// If contentsFragment exists then we are already waiting for a
@@ -5083,7 +5083,8 @@
 				}
 
 				setTimeout(function () {
-					var html = editable.innerHTML;
+					//var html = editable.innerHTML;
+					var text = editable.innerText;
 
 					editable.innerHTML = '';
 					appendChild(editable, pasteContentFragment);
@@ -5092,7 +5093,8 @@
 
 					rangeHelper.restoreRange();
 
-					handlePasteData({ html: html });
+					//handlePasteData({ html: html });
+					handlePasteData({ text: text });
 				}, 0);
 			}
 		};

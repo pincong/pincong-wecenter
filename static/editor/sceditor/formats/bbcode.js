@@ -2415,13 +2415,6 @@
 						content = _formatString(format, content);
 					}
 				});
-			} else {
-				if (tag === 'p') {
-					content = content.trim();
-					if (content) {
-						content += '\n';
-					}
-				}
 			}
 
 			return content;
