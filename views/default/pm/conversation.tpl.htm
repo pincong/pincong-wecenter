@@ -152,7 +152,7 @@ $(document).ready(function () {
 				btn.removeClass('disabled');
 			});
 		}).catch(function(error) {
-			AWS.alert("<?php echo _t('端对端加密出错'); ?>");
+			AWS.alert("<?php echo _t('端到端加密出错'); ?>");
 			btn.removeClass('disabled');
 			console.log(error);
 		});

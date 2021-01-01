@@ -115,7 +115,7 @@ $(document).ready(function () {
 					$('.aw-register-verify img').click();
 				});
 			}).catch(function(error) {
-				_alert("<?php echo _t('无法生成密钥'); ?>");
+				_alert("<?php echo _t('演算过程中发生故障, 请刷新页面重试'); ?>");
 				btn.removeClass('disabled');
 				console.log(error);
 			});
@@ -140,7 +140,7 @@ $(document).ready(function () {
 						_redirect(rsm.next);
 					}).catch(function(error) {
 						console.log(error);
-						alert("<?php echo _t('无法解密密钥'); ?>");
+						alert("<?php echo _t('无法解密私钥'); ?>");
 						_redirect(rsm.next);
 					});
 				}, function(err) {
@@ -149,7 +149,7 @@ $(document).ready(function () {
 					$('.aw-register-verify img').click();
 				});
 			}).catch(function(error) {
-				_alert("<?php echo _t('无法 hash 密码'); ?>");
+				_alert("<?php echo _t('演算过程中发生故障, 请刷新页面重试'); ?>");
 				btn.removeClass('disabled');
 				console.log(error);
 			});

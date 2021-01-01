@@ -82,6 +82,22 @@ $(document).ready(function () {
 			_alert("<?php echo _t('两次输入的密码不一致'); ?>");
 			return false;
 		}
+		if (pwd.length < 8) {
+			_alert("<?php echo _t('密码长度不能少于8个字符'); ?>");
+			return false;
+		}
+		if (/^(.)\1+$/.test(pwd)) {
+			_alert("<?php echo _t('密码不能是单一的字符'); ?>");
+			return false;
+		}
+		if (/^[0-9]+$/.test(pwd)) {
+			_alert("<?php echo _t('密码不能是纯数字'); ?>");
+			return false;
+		}
+		if (/^[a-z]+$/.test(pwd)) {
+			_alert("<?php echo _t('密码不能是纯小写字母'); ?>");
+			return false;
+		}
 
 		var params = {
 			captcha: form.find('input[name=captcha]').val(),
@@ -90,7 +106,7 @@ $(document).ready(function () {
 		}
 
 		form.find('.error_message').hide();
-		form.find('.alert-info').show().find('em').text("<?php echo _t('正在生成密钥, 请稍候...'); ?>");
+		form.find('.alert-info').show().find('em').text("<?php echo _t('正在生成公钥和私钥, 请稍候...'); ?>");
 		btn.addClass('disabled');
 
 		setTimeout(function() {
@@ -120,7 +136,7 @@ $(document).ready(function () {
 					$('.aw-register-verify img').click();
 				});
 			}).catch(function(error) {
-				_alert("<?php echo _t('无法生成密钥'); ?>");
+				_alert("<?php echo _t('无法生成公钥和私钥'); ?>");
 				btn.removeClass('disabled');
 				console.log(error);
 			});
