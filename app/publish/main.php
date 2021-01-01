@@ -27,60 +27,30 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		$id = intval($_GET['id']);
-		if ($id)
-		{
-			if (!$question_info = $this->model('content')->get_thread_info_by_id('question', $id))
-			{
-				H::redirect_msg(AWS_APP::lang()->_t('指定问题不存在'));
-			}
-
-			if ($question_info['uid'] != $this->user_id AND !$this->user_info['permission']['edit_any_post'] AND !$this->user_info['permission']['edit_specific_post'])
-			{
-				H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑这个问题'), '/question/' . $question_info['id']);
-			}
-		}
-		else if (!$this->user_info['permission']['publish_question'])
+		if (!$this->user_info['permission']['publish_question'])
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('你的声望还不够'));
 		}
-		else if ($this->is_post() AND $_POST['message'])
+
+		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_new_question'))
 		{
-			$question_info = array(
-				'title' => htmlspecialchars($_POST['title']),
-				'message' => htmlspecialchars($_POST['message']),
-				'category_id' => intval($_POST['category_id'])
-			);
-		}
-		else
-		{
-			$question_info = array(
-				'title' => htmlspecialchars($_POST['title']),
-				'message' => ''
-			);
+			H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name')), '/currency/rule/');
 		}
 
-		if (!$id)
+		if (!$this->model('ratelimit')->check_thread($this->user_id, $this->user_info['permission']['thread_limit_per_day']))
 		{
-			if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_new_question'))
-			{
-				H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name')), '/currency/rule/');
-			}
-
-			if (!$this->model('ratelimit')->check_thread($this->user_id, $this->user_info['permission']['thread_limit_per_day']))
-			{
-				H::redirect_msg(AWS_APP::lang()->_t('今日发帖数量已经达到上限'));
-			}
+			H::redirect_msg(AWS_APP::lang()->_t('今日发帖数量已经达到上限'));
 		}
 
-		if (!$question_info['category_id'])
-		{
-			$question_info['category_id'] = ($_GET['category_id']) ? intval($_GET['category_id']) : 0;
-		}
+		$thread_info = array(
+			'title' => '',
+			'message' => '',
+			'category_id' => intval($_GET['category_id'])
+		);
 
 		if (get_setting('category_enable') != 'N')
 		{
-			TPL::assign('category_current_id', $question_info['category_id']);
+			TPL::assign('category_current_id', $thread_info['category_id']);
 			TPL::assign('category_list', $this->model('category')->get_category_list_by_user_permission($this->user_info['permission']));
 		}
 
@@ -91,7 +61,7 @@ class main extends AWS_CONTROLLER
 			import_editor_static_files();
 		}
 
-		TPL::assign('question_info', $question_info);
+		TPL::assign('thread_info', $thread_info);
 
 		TPL::assign('recent_topics', @unserialize($this->user_info['recent_topics']));
 
@@ -100,60 +70,30 @@ class main extends AWS_CONTROLLER
 
 	public function article_action()
 	{
-		$id = intval($_GET['id']);
-		if ($id)
-		{
-			if (!$article_info = $this->model('content')->get_thread_info_by_id('article', $id))
-			{
-				H::redirect_msg(AWS_APP::lang()->_t('指定文章不存在'));
-			}
-
-			if ($article_info['uid'] != $this->user_id AND !$this->user_info['permission']['edit_any_post'] AND !$this->user_info['permission']['edit_specific_post'])
-			{
-				H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑这个文章'), '/article/' . $article_info['id']);
-			}
-		}
-		else if (!$this->user_info['permission']['publish_article'])
+		if (!$this->user_info['permission']['publish_article'])
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('你的声望还不够'));
 		}
-		else if ($this->is_post() AND $_POST['message'])
+
+		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_new_article'))
 		{
-			$article_info = array(
-				'title' => htmlspecialchars($_POST['title']),
-				'message' => htmlspecialchars($_POST['message']),
-				'category_id' => intval($_POST['category_id'])
-			);
-		}
-		else
-		{
-			$article_info =  array(
-				'title' => htmlspecialchars($_POST['title']),
-				'message' => ''
-			);
+			H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name')), '/currency/rule/');
 		}
 
-		if (!$id)
+		if (!$this->model('ratelimit')->check_thread($this->user_id, $this->user_info['permission']['thread_limit_per_day']))
 		{
-			if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_new_article'))
-			{
-				H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name')), '/currency/rule/');
-			}
-
-			if (!$this->model('ratelimit')->check_thread($this->user_id, $this->user_info['permission']['thread_limit_per_day']))
-			{
-				H::redirect_msg(AWS_APP::lang()->_t('今日发帖数量已经达到上限'));
-			}
+			H::redirect_msg(AWS_APP::lang()->_t('今日发帖数量已经达到上限'));
 		}
 
-		if (!$article_info['category_id'])
-		{
-			$article_info['category_id'] = ($_GET['category_id']) ? intval($_GET['category_id']) : 0;
-		}
+		$thread_info = array(
+			'title' => '',
+			'message' => '',
+			'category_id' => intval($_GET['category_id'])
+		);
 
 		if (get_setting('category_enable') != 'N')
 		{
-			TPL::assign('category_current_id', $article_info['category_id']);
+			TPL::assign('category_current_id', $thread_info['category_id']);
 			TPL::assign('category_list', $this->model('category')->get_category_list_by_user_permission($this->user_info['permission']));
 		}
 
@@ -166,67 +106,37 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('recent_topics', @unserialize($this->user_info['recent_topics']));
 
-		TPL::assign('article_info', $article_info);
+		TPL::assign('thread_info', $thread_info);
 
 		TPL::output('publish/article');
 	}
 
 	public function video_action()
 	{
-		$id = intval($_GET['id']);
-		if ($id)
-		{
-			if (!$video_info = $this->model('content')->get_thread_info_by_id('video', $id))
-			{
-				H::redirect_msg(AWS_APP::lang()->_t('指定影片不存在'));
-			}
-
-			if ($video_info['uid'] != $this->user_id AND !$this->user_info['permission']['edit_any_post'] AND !$this->user_info['permission']['edit_specific_post'])
-			{
-				H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑这个影片'), '/video/' . $video_info['id']);
-			}
-		}
-		else if (!$this->user_info['permission']['publish_video'])
+		if (!$this->user_info['permission']['publish_video'])
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('你的声望还不够'));
 		}
-		else if ($this->is_post() AND $_POST['message'])
+
+		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_new_video'))
 		{
-			$video_info = array(
-				'title' => htmlspecialchars($_POST['title']),
-				'message' => htmlspecialchars($_POST['message']),
-				'category_id' => intval($_POST['category_id'])
-			);
-		}
-		else
-		{
-			$video_info =  array(
-				'title' => htmlspecialchars($_POST['title']),
-				'message' => ''
-			);
+			H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name')), '/currency/rule/');
 		}
 
-		if (!$id)
+		if (!$this->model('ratelimit')->check_thread($this->user_id, $this->user_info['permission']['thread_limit_per_day']))
 		{
-			if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_new_video'))
-			{
-				H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name')), '/currency/rule/');
-			}
-
-			if (!$this->model('ratelimit')->check_thread($this->user_id, $this->user_info['permission']['thread_limit_per_day']))
-			{
-				H::redirect_msg(AWS_APP::lang()->_t('今日发帖数量已经达到上限'));
-			}
+			H::redirect_msg(AWS_APP::lang()->_t('今日发帖数量已经达到上限'));
 		}
 
-		if (!$video_info['category_id'])
-		{
-			$video_info['category_id'] = ($_GET['category_id']) ? intval($_GET['category_id']) : 0;
-		}
+		$thread_info = array(
+			'title' => '',
+			'message' => '',
+			'category_id' => intval($_GET['category_id'])
+		);
 
 		if (get_setting('category_enable') != 'N')
 		{
-			TPL::assign('category_current_id', $video_info['category_id']);
+			TPL::assign('category_current_id', $thread_info['category_id']);
 			TPL::assign('category_list', $this->model('category')->get_category_list_by_user_permission($this->user_info['permission']));
 		}
 
@@ -234,7 +144,7 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('recent_topics', @unserialize($this->user_info['recent_topics']));
 
-		TPL::assign('video_info', $video_info);
+		TPL::assign('thread_info', $thread_info);
 
 		TPL::output('publish/video');
 	}

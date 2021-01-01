@@ -181,7 +181,7 @@
 								<a class="aw-small-text aw-invite-reply"><i class="icon icon-invite"></i> <?php _e('邀请'); ?> <?php if (sizeof($this->invite_users) > 0){ ?><em class="badge badge-info"><?php echo count($this->invite_users); ?></em><?php } ?></a>
 								<?php } ?>
 
-								<?php if ($this->question_info['uid'] == $this->user_id OR $this->user_info['permission']['edit_any_post'] OR $this->user_info['permission']['edit_specific_post']) { ?><a class="aw-small-text" href="publish/<?php echo $this->question_info['id']; ?>"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a><?php } ?>
+								<?php if ($this->question_info['uid'] == $this->user_id OR $this->user_info['permission']['edit_any_post'] OR $this->user_info['permission']['edit_specific_post']) { ?><a class="aw-small-text" href="modify/<?php echo $this->question_info['id']; ?>"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a><?php } ?>
 
 								<div class="pull-right more-operate">
 								<?php if ($this->user_id) { ?>

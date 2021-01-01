@@ -159,7 +159,7 @@
 									<?php } ?>
 
 									<?php if ($this->article_info['uid'] == $this->user_id OR $this->user_info['permission']['edit_any_post'] OR $this->user_info['permission']['edit_specific_post']) { ?>
-									<a class="aw-small-text" href="publish/article/<?php echo $this->article_info['id']; ?>"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
+									<a class="aw-small-text" href="modify/article/<?php echo $this->article_info['id']; ?>"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
 									<?php } ?>
 
 									<a href="javascript:;" onclick="AWS.User.add_favorite('article', '<?php echo $this->article_info['id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>

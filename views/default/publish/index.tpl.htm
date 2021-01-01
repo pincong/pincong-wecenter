@@ -17,11 +17,11 @@
 						<h2 class="hidden-xs"><i class="icon icon-ask"></i> <?php _e('发起'); ?></h2>
 					</ul>
 					<!-- end tab 切换 -->
-					<form action="publish/ajax/<?php if ($this->question_info['id']) { ?>modify<?php } else { ?>publish<?php } ?>_question/" method="post" id="question_form" onsubmit="return false;">
+					<form action="<?php if ($this->thread_info['id']) { ?>modify/ajax/modify_question/<?php } else { ?>publish/ajax/publish_question/<?php } ?>" method="post" id="question_form" onsubmit="return false;">
 						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
-						<input type="hidden" name="question_id" id="question_id" value="<?php echo $this->question_info['id']; ?>" />
+						<input type="hidden" name="question_id" id="question_id" value="<?php echo $this->thread_info['id']; ?>" />
 						<input type="hidden" name="ask_user_id" value="<?php echo intval($_POST['ask_user_id']); ?>" />
-						<?php if (!$this->question_info['id'] AND get_setting('category_enable') != 'N') { ?>
+						<?php if (!$this->thread_info['id'] AND get_setting('category_enable') != 'N') { ?>
 						<select name="category_id" class="collapse" id="category_id">
 							<option value="0">- <?php _e('请选择分类'); ?> -</option>
 							<?php TPL::include('block/category_options.tpl.htm'); ?>
@@ -36,14 +36,14 @@
 								<!-- 问题标题 -->
 								<div class="aw-publish-title<?php if (get_setting('category_enable') == 'N') { ?> active<?php } ?>">
 									<div>
-										<input type="text" placeholder="<?php _e('问题标题'); ?>..." name="title" id="question_contents" value="<?php echo $this->question_info['title']; ?>" class="form-control" />
+										<input type="text" placeholder="<?php _e('问题标题'); ?>..." name="title" id="question_contents" value="<?php echo $this->thread_info['title']; ?>" class="form-control" />
 										<div class="aw-publish-suggest-question collapse">
 											<p class="aw-small-text">你的问题可能已经有答案</p>
 											<ul class="aw-dropdown-list">
 											</ul>
 										</div>
 									</div>
-									<?php if (!$this->question_info['id'] AND get_setting('category_enable') != 'N') { ?>
+									<?php if (!$this->thread_info['id'] AND get_setting('category_enable') != 'N') { ?>
 									<div class="dropdown">
 										<div class="dropdown-toggle" data-toggle="dropdown">
 											<span id="aw-topic-tags-select" class="aw-hide-txt"><?php _e('选择分类'); ?></span>
@@ -58,14 +58,14 @@
 								<div class="aw-mod aw-editor-box">
 									<div class="mod-head">
 										<div class="wmd-panel">
-											<textarea class="wmd-input form-control autosize editor" id="wmd-input" rows="15" name="message"><?php echo $this->question_info['message']; ?></textarea>
+											<textarea class="wmd-input form-control autosize editor" id="wmd-input" rows="15" name="message"><?php echo $this->thread_info['message']; ?></textarea>
 										</div>
 									</div>
 									<div class="mod-body">
 										<?php if (get_setting('image_upload_link')) { ?><a class="pull-right" href="<?php echo get_setting('image_upload_link'); ?>" rel="nofollow noreferrer noopener" target="_blank"><?php _e('上传图片'); ?></a><?php } ?>
 									</div>
 								</div>
-								<?php if (!$this->question_info['id']) { ?>
+								<?php if (!$this->thread_info['id']) { ?>
 								<h3><?php _e('添加话题'); ?>:</h3>
 								<div class="aw-topic-bar" data-type="publish">
 									<div class="tag-bar clearfix">
@@ -100,7 +100,7 @@
 								<h3>&nbsp;</h3>
 								<?php } ?>
 
-								<?php if (!$this->question_info['id']) { ?>
+								<?php if (!$this->thread_info['id']) { ?>
 								<div class="aw-auth-img clearfix">
 									<input id="later_time_input" name="later" class="form-control pull-right" type="text" placeholder="<?php _e('分钟'); ?>" />
 									<label class="pull-right">&nbsp;<?php _e('延迟显示'); ?></label>
@@ -112,12 +112,12 @@
 							<div class="mod-footer clearfix">
 								<a href="currency/rule/" target="_blank">[<?php _e(get_setting('currency_rule_name')); ?>]</a>
 								<span class="aw-anonymity">
-									<?php if ($this->question_info['id']) { ?>
+									<?php if ($this->thread_info['id']) { ?>
 									<label><input type="checkbox" class="pull-left" value="1" name="do_delete" />
 										<?php _e('删除问题'); ?>&nbsp;</label>
 									<?php } ?>
 
-									<?php if (!$this->question_info['id'] AND $this->user_info['permission']['post_anonymously']) { ?>
+									<?php if (!$this->thread_info['id'] AND $this->user_info['permission']['post_anonymously']) { ?>
 									<label><input type="checkbox" class="pull-left" value="1" name="anonymous" />
 										<?php _e(get_setting('anonymous_option_name')); ?></label>
 									<?php } ?>
@@ -150,11 +150,11 @@
 </div>
 
 <script type="text/javascript">
-var CATEGORY_ID = <?php echo $this->question_info['category_id']; ?>;
+var CATEGORY_ID = <?php echo $this->thread_info['category_id']; ?>;
 
 $(document).ready(function () {
 	AWS.init_later_time_helper($('#later_time_input'), $('#later_time_label'));
-	<?php if (!$this->question_info['uid'] OR $this->question_info['uid'] == $this->user_id) { ?>
+	<?php if (!$this->thread_info['uid'] OR $this->thread_info['uid'] == $this->user_id) { ?>
 		// 初始化编辑器
 		AWS.create_editor(document.getElementById('wmd-input'), true);
 	<?php } ?>

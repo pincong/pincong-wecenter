@@ -119,7 +119,7 @@ class ajax extends AWS_CONTROLLER
 		}
 	}
 
-	private function validate_thread($act, $type)
+	private function validate_thread($type)
 	{
 		$this->do_validate();
 
@@ -144,18 +144,13 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		if ($act == 'publish' AND !check_repeat_submission($this->user_id, $_POST['title']))
+		if (!check_repeat_submission($this->user_id, $_POST['title']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请不要重复提交')));
 		}
 
 		$_POST['message'] = trim($_POST['message']);
 		$this->validate_body_length($type);
-
-		if ($act == 'modify')
-		{
-			return;
-		}
 
 		$topics_limit_min = intval(get_setting('topics_limit_min'));
 		$topics_limit_max = intval(get_setting('topics_limit_max'));
@@ -245,7 +240,7 @@ class ajax extends AWS_CONTROLLER
 	}
 
 
-	private function validate_reply($act, $parent_type)
+	private function validate_reply($parent_type)
 	{
 		$this->do_validate();
 
@@ -261,7 +256,7 @@ class ajax extends AWS_CONTROLLER
 		}
 		$this->validate_reply_length($parent_type);
 
-		if ($act == 'publish' AND !check_repeat_submission($this->user_id, $_POST['message']))
+		if (!check_repeat_submission($this->user_id, $_POST['message']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请不要重复提交')));
 		}
@@ -287,7 +282,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
 		}
 
-		$this->validate_thread('publish', 'question');
+		$this->validate_thread('question');
 
 		if ($_POST['anonymous'])
 		{
@@ -344,7 +339,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
 		}
 
-		$this->validate_thread('publish', 'article');
+		$this->validate_thread('article');
 
 		if ($_POST['anonymous'])
 		{
@@ -410,7 +405,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
 		}
 
-		$this->validate_thread('publish', 'video');
+		$this->validate_thread('video');
 
 		if ($_POST['anonymous'])
 		{
@@ -457,210 +452,6 @@ class ajax extends AWS_CONTROLLER
 	}
 
 
-	public function modify_question_action()
-	{
-		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_modify']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
-		if (!$question_info = $this->model('content')->get_thread_info_by_id('question', $_POST['question_id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
-		}
-
-		if ($question_info['lock'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题已锁定, 不能编辑')));
-		}
-
-		if ($question_info['uid'] != $this->user_id AND !$this->user_info['permission']['edit_any_post'])
-		{
-			if (!$this->user_info['permission']['edit_specific_post'] OR !in_array($question_info['uid'], get_setting_array('specific_post_uids')))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个问题')));
-			}
-		}
-
-		if (!$_POST['do_delete'])
-		{
-			$this->validate_thread('modify', 'question');
-		}
-
-		// !注: 来路检测后面不能再放报错提示
-		if (!valid_post_hash($_POST['post_hash']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
-		}
-
-		set_user_operation_last_time('publish', $this->user_id);
-
-		if ($_POST['do_delete'])
-		{
-			$this->model('question')->clear_question(
-				$question_info['id'],
-				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
-			);
-		}
-		else
-		{
-			$this->model('question')->modify_question(
-				$question_info['id'],
-				$_POST['title'],
-				$_POST['message'],
-				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
-			);
-		}
-
-		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => get_js_url('/question/' . $question_info['id'])
-		), 1, null));
-
-	}
-
-
-	public function modify_article_action()
-	{
-		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_modify']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
-		if (!$article_info = $this->model('content')->get_thread_info_by_id('article', $_POST['article_id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文章不存在')));
-		}
-
-		if ($article_info['lock'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文章已锁定, 不能编辑')));
-		}
-
-		if ($article_info['uid'] != $this->user_id AND !$this->user_info['permission']['edit_any_post'])
-		{
-			if (!$this->user_info['permission']['edit_specific_post'] OR !in_array($article_info['uid'], get_setting_array('specific_post_uids')))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个文章')));
-			}
-		}
-
-		if (!$_POST['do_delete'])
-		{
-			$this->validate_thread('modify', 'article');
-		}
-
-		// !注: 来路检测后面不能再放报错提示
-		if (!valid_post_hash($_POST['post_hash']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
-		}
-
-		set_user_operation_last_time('publish', $this->user_id);
-
-		if ($_POST['do_delete'])
-		{
-			$this->model('article')->clear_article(
-				$article_info['id'],
-				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
-			);
-		}
-		else
-		{
-			$this->model('article')->modify_article(
-				$article_info['id'],
-				$_POST['title'],
-				$_POST['message'],
-				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
-			);
-		}
-
-		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => get_js_url('/article/' . $article_info['id'])
-		), 1, null));
-	}
-
-
-	public function modify_video_action()
-	{
-		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_modify']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
-		if (!$video_info = $this->model('content')->get_thread_info_by_id('video', $_POST['video_id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('影片不存在')));
-		}
-
-		if ($video_info['lock'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('影片已锁定, 不能编辑')));
-		}
-
-		if ($video_info['uid'] != $this->user_id AND !$this->user_info['permission']['edit_any_post'])
-		{
-			if (!$this->user_info['permission']['edit_specific_post'] OR !in_array($video_info['uid'], get_setting_array('specific_post_uids')))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑这个影片')));
-			}
-		}
-
-		if (!$_POST['do_delete'])
-		{
-			if ($web_url = trim($_POST['web_url']))
-			{
-				$metadata = Services_VideoParser::parse_video_url($web_url);
-				if (!$metadata)
-				{
-					H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('无法识别影片来源')));
-				}
-			}
-
-			$this->validate_thread('modify', 'video');
-		}
-
-		// !注: 来路检测后面不能再放报错提示
-		if (!valid_post_hash($_POST['post_hash']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
-		}
-
-		set_user_operation_last_time('publish', $this->user_id);
-
-		if ($_POST['do_delete'])
-		{
-			$this->model('video')->clear_video(
-				$video_info['id'],
-				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
-			);
-		}
-		else
-		{
-			if ($metadata)
-			{
-				$this->model('video')->update_video_source(
-					$video_info['id'],
-					$metadata['source_type'],
-					$metadata['source'],
-					0
-				);
-			}
-
-			$this->model('video')->modify_video(
-				$video_info['id'],
-				$_POST['title'],
-				$_POST['message'],
-				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
-			);
-		}
-
-		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => get_js_url('/video/' . $video_info['id'])
-		), 1, null));
-
-	}
-
-
 
 /*
 +--------------------------------------------------------------------------
@@ -685,7 +476,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天的回复已经达到上限')));
 		}
 
-		$this->validate_reply('publish', 'question');
+		$this->validate_reply('question');
 
 		if (!$question_info = $this->model('content')->get_thread_info_by_id('question', $_POST['question_id']))
 		{
@@ -789,7 +580,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天的文章评论已经达到上限')));
 		}
 
-		$this->validate_reply('publish', 'article');
+		$this->validate_reply('article');
 
 		if (!$article_info = $this->model('content')->get_thread_info_by_id('article', $_POST['article_id']))
 		{
@@ -871,7 +662,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天的影片评论已经达到上限')));
 		}
 
-		$this->validate_reply('publish', 'video');
+		$this->validate_reply('video');
 
 		if (!$video_info = $this->model('content')->get_thread_info_by_id('video', $_POST['video_id']))
 		{
@@ -935,177 +726,5 @@ class ajax extends AWS_CONTROLLER
 		), 1, null));
 	}
 
-
-	public function modify_answer_action()
-	{
-		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_modify']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
-		if (!$answer_info = $this->model('content')->get_reply_info_by_id('answer', $_GET['id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('内容不存在')));
-		}
-
-		if ($answer_info['uid'] != $this->user_id AND !$this->user_info['permission']['edit_any_post'])
-		{
-			if (!$this->user_info['permission']['edit_specific_post'] OR !in_array($answer_info['uid'], get_setting_array('specific_post_uids')))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
-			}
-		}
-
-		if (!$question_info = $this->model('content')->get_thread_info_by_id('question', $answer_info['question_id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
-		}
-
-		if ($question_info['lock'] AND !$question_info['redirect_id'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的问题不能编辑')));
-		}
-
-		if (!$_POST['do_delete'])
-		{
-			$this->validate_reply('modify', 'question');
-		}
-
-		set_user_operation_last_time('publish', $this->user_id);
-
-		if ($_POST['do_delete'])
-		{
-			$this->model('question')->clear_answer(
-				$answer_info['id'],
-				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
-			);
-		}
-		else
-		{
-			$this->model('question')->modify_answer(
-				$answer_info['id'],
-				$_POST['message'],
-				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
-			);
-		}
-
-		// 删除回复邀请, 如果有
-		$this->model('invite')->answer_question_invite($answer_info['question_id'], $this->user_id);
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
-
-
-	public function modify_article_comment_action()
-	{
-		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_modify']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
-		if (!$comment_info = $this->model('content')->get_reply_info_by_id('article_comment', $_GET['id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('内容不存在')));
-		}
-
-		if ($comment_info['uid'] != $this->user_id AND !$this->user_info['permission']['edit_any_post'])
-		{
-			if (!$this->user_info['permission']['edit_specific_post'] OR !in_array($comment_info['uid'], get_setting_array('specific_post_uids')))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
-			}
-		}
-
-		if (!$article_info = $this->model('content')->get_thread_info_by_id('article', $comment_info['article_id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文章不存在')));
-		}
-
-		if ($article_info['lock'] AND !$article_info['redirect_id'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的文章不能编辑')));
-		}
-
-		if (!$_POST['do_delete'])
-		{
-			$this->validate_reply('modify', 'article');
-		}
-
-		set_user_operation_last_time('publish', $this->user_id);
-
-		if ($_POST['do_delete'])
-		{
-			$this->model('article')->clear_article_comment(
-				$comment_info['id'],
-				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
-			);
-		}
-		else
-		{
-			$this->model('article')->modify_article_comment(
-				$comment_info['id'],
-				$_POST['message'],
-				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
-			);
-		}
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
-
-	public function modify_video_comment_action()
-	{
-		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_modify']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
-		if (!$comment_info = $this->model('content')->get_reply_info_by_id('video_comment', $_GET['id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('内容不存在')));
-		}
-
-		if ($comment_info['uid'] != $this->user_id AND !$this->user_info['permission']['edit_any_post'])
-		{
-			if (!$this->user_info['permission']['edit_specific_post'] OR !in_array($comment_info['uid'], get_setting_array('specific_post_uids')))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
-			}
-		}
-
-		if (!$video_info = $this->model('content')->get_thread_info_by_id('video', $comment_info['video_id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('影片不存在')));
-		}
-
-		if ($video_info['lock'] AND !$video_info['redirect_id'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的影片不能编辑')));
-		}
-
-		if (!$_POST['do_delete'])
-		{
-			$this->validate_reply('modify', 'video');
-		}
-
-		set_user_operation_last_time('publish', $this->user_id);
-
-		if ($_POST['do_delete'])
-		{
-			$this->model('video')->clear_video_comment(
-				$comment_info['id'],
-				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
-			);
-		}
-		else
-		{
-			$this->model('video')->modify_video_comment(
-				$comment_info['id'],
-				$_POST['message'],
-				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
-			);
-		}
-
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
 
 }
