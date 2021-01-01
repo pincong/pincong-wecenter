@@ -161,15 +161,7 @@
 										</label>
 
 										<label type="button" class="btn mod-btn-color">
-											<input type="radio" name="forbidden" value="2"<?php if ($this->user['forbidden'] == 2) { ?> checked="checked"<?php } ?> /> <?php _e('自动封禁'); ?>
-										</label>
-
-										<label type="button" class="btn mod-btn-color">
-											<input type="radio" name="forbidden" value="3"<?php if ($this->user['forbidden'] == 3) { ?> checked="checked"<?php } ?> /> <?php _e('自动删号'); ?>
-										</label>
-
-										<label type="button" class="btn mod-btn-color">
-											<input type="radio" name="forbidden" value="4"<?php if ($this->user['forbidden'] == 4) { ?> checked="checked"<?php } ?> /> <?php _e('临时封禁'); ?>
+											<input type="radio" name="forbidden" value="-1"<?php if ($this->user['forbidden'] == -1) { ?> checked="checked"<?php } ?> /> <?php _e('自动封禁'); ?>
 										</label>
 									</div>
 								</div>
