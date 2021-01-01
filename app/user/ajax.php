@@ -60,21 +60,26 @@ class ajax extends AWS_CONTROLLER
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('理由太长')));
 		}
-		if ($status)
+
+		if (!$this->user_info['permission']['is_moderator'])
 		{
-			if (!$reason)
+			if ($status)
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写理由')));
+				if (!$reason)
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写理由')));
+				}
+			}
+			else
+			{
+				// 取消时是没有选项列表的
+				if (!$reason AND !$detail)
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写理由')));
+				}
 			}
 		}
-		else
-		{
-			// 取消时是没有选项列表的
-			if (!$reason AND !$detail)
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写理由')));
-			}
-		}
+
 		$log_detail = trim($reason . ' ' . $detail);
 	}
 
@@ -136,14 +141,10 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
+		$this->model('user')->forbid_user_by_uid($uid, $status, $this->user_id, $reason, $detail);
 		if (!$this->user_info['permission']['is_moderator'])
 		{
-			$this->model('user')->forbid_user_by_uid($uid, $status, $this->user_id, $reason, $detail);
 			$this->model('user')->insert_admin_log($uid, $this->user_id, 'forbid_user', $status, $log_detail);
-		}
-		else
-		{
-			$this->model('user')->forbid_user_by_uid($uid, $status);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
@@ -190,14 +191,10 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
+		$this->model('user')->flag_user_by_uid($uid, $status, $this->user_id, $reason, $detail);
 		if (!$this->user_info['permission']['is_moderator'])
 		{
-			$this->model('user')->flag_user_by_uid($uid, $status, $this->user_id, $reason, $detail);
 			$this->model('user')->insert_admin_log($uid, $this->user_id, 'flag_user', $status, $log_detail);
-		}
-		else
-		{
-			$this->model('user')->flag_user_by_uid($uid, $status);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
