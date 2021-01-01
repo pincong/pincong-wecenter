@@ -140,12 +140,9 @@ $(document).ready(function () {
 		return s.substr(0, n) + '...';
 	}
 
+	var public_key = '<?php echo $this->user_info['public_key']; ?>';
+
 	function decrypt_key(cb) {
-		var public_key = '<?php echo $this->user_info['public_key']; ?>';
-		if (!public_key) {
-			AWS.alert("<?php echo _t('缺少公钥和私钥, 请重新登录以生成新的公钥和私钥'); ?>");
-			return;
-		}
 		AWS.passwordPrompt("<?php echo _t('请输入登录密码以解密私钥'); ?>", function(pwd) {
 			PasswordUtil.password_hash(pwd, public_key).then(function(value) {
 				return PasswordUtil.decrypt_private_key('<?php echo $this->user_info['private_key']; ?>', value);
@@ -181,6 +178,10 @@ $(document).ready(function () {
 	}
 
 	function decrypt_messages() {
+		if (!public_key) {
+			AWS.alert("<?php echo _t('缺少公钥和私钥, 请重新登录以生成新的公钥和私钥'); ?>");
+			return;
+		}
 		var els = $('.pm_message');
 		if (!els.length) return;
 		read_key().then(function(private_key) {
