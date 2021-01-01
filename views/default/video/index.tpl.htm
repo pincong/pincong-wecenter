@@ -226,7 +226,6 @@
 						<p align="center"><?php _e('要发言请先<a href="%s0">登录</a>或<a href="%s1">注册</a>', array(url_rewrite() . '/login/', url_rewrite(). '/register/')); ?></p>
 						<?php } else { ?>
 						<form action="<?php echo url_rewrite(); ?>/publish/ajax/publish_video_comment/" onsubmit="return false;" method="post" id="answer_form" class="question_answer_form">
-						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
 						<input type="hidden" name="video_id" value="<?php echo $this->video_info['id']; ?>" />
 						<div class="mod-head">
 							<a href="<?php echo UF::url($this->user_info); ?>" class="aw-user-name"><img alt="" src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" /></a>
@@ -286,7 +285,6 @@
 						<p align="center"><?php _e('要发言请先<a href="%s0">登录</a>或<a href="%s1">注册</a>', array(url_rewrite() . '/login/', url_rewrite(). '/register/')); ?></p>
 						<?php } else { ?>
 						<form action="<?php echo url_rewrite(); ?>/publish/ajax/publish_video_comment/" onsubmit="return false;" method="post" id="answer_form_2">
-						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
 						<input type="hidden" name="video_id" value="<?php echo $this->video_info['id']; ?>" />
 						<input type="hidden" id="user_reply_box_at_uid" name="at_uid" value="" />
 						<div class="mod-body">

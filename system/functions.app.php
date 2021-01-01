@@ -510,27 +510,6 @@ function calc_page_limit($page, $per_page)
 	return (($page - 1) * $per_page) . ', ' . ($per_page);
 }
 
-/**
- * 检查队列中是否存在指定的 hash 值, 并移除之, 用于表单提交验证
- *
- * @param  string
- * @return boolean
- */
-function valid_post_hash($token)
-{
-	return AWS_APP::form()->check_csrf_token($token, 'post');
-}
-
-/**
- * 创建一个新的 hash 字符串，并写入 hash 队列, 用于表单提交验证
- *
- * @return string
- */
-function new_post_hash()
-{
-	return AWS_APP::form()->create_csrf_token(3600, 'post');
-}
-
 
 /**
  * 格式化输出相应的语言

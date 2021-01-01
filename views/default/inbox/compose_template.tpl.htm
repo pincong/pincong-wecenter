@@ -8,7 +8,6 @@
 			<div class="modal-body">
 				<form action="<?php echo url_rewrite(); ?>/inbox/ajax/send/" method="post" id="personal_message_form" onsubmit="return false">
 					<div class="alert alert-danger collapse error_message"> <i class="icon icon-delete"></i> <em></em></div>
-					<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
 					<input id="personal_message_recipient" class="form-control" type="text" placeholder="<?php _e('搜索用户'); ?>" name="recipient" value="" />
 					<div class="aw-dropdown">
 						<p class="title"><?php _e('没有找到相关结果'); ?></p>

@@ -18,7 +18,6 @@
 					</ul>
 					<!-- end tab 切换 -->
 					<form action="<?php echo url_rewrite(); ?>/<?php if ($this->thread_info['id']) { ?>modify/ajax/modify_question/<?php } else { ?>publish/ajax/publish_question/<?php } ?>" method="post" id="question_form" onsubmit="return false;">
-						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
 						<input type="hidden" name="question_id" id="question_id" value="<?php echo $this->thread_info['id']; ?>" />
 						<input type="hidden" name="ask_user_id" value="<?php echo intval($_POST['ask_user_id']); ?>" />
 						<?php if (!$this->thread_info['id'] AND get_setting('category_enable') != 'N') { ?>

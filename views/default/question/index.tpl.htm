@@ -329,7 +329,6 @@
 						<p align="center"><?php _e('不能回复自己发布的问题, 你可以修改问题内容'); ?></p>
 						<?php } else { ?>
 						<form action="<?php echo url_rewrite(); ?>/publish/ajax/publish_answer/" onsubmit="return false;" method="post" id="answer_form" class="question_answer_form">
-						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
 						<input type="hidden" name="question_id" value="<?php echo $this->question_info['id']; ?>" />
 						<div class="mod-head">
 							<a href="<?php echo UF::url($this->user_info); ?>" class="aw-user-name"><img alt="" src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" /></a>

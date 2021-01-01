@@ -152,12 +152,6 @@ class ajax extends AWS_CONTROLLER
 			$this->validate_thread('question');
 		}
 
-		// !注: 来路检测后面不能再放报错提示
-		if (!valid_post_hash($_POST['post_hash']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
-		}
-
 		set_user_operation_last_time('publish', $this->user_id);
 
 		if ($_POST['do_delete'])
@@ -209,12 +203,6 @@ class ajax extends AWS_CONTROLLER
 		if (!$_POST['do_delete'])
 		{
 			$this->validate_thread('article');
-		}
-
-		// !注: 来路检测后面不能再放报错提示
-		if (!valid_post_hash($_POST['post_hash']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
 		}
 
 		set_user_operation_last_time('publish', $this->user_id);
@@ -276,12 +264,6 @@ class ajax extends AWS_CONTROLLER
 			}
 
 			$this->validate_thread('video');
-		}
-
-		// !注: 来路检测后面不能再放报错提示
-		if (!valid_post_hash($_POST['post_hash']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('页面停留时间过长,或内容已提交,请刷新页面')));
 		}
 
 		set_user_operation_last_time('publish', $this->user_id);
