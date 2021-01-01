@@ -117,4 +117,26 @@ class ajax extends AWS_CONTROLLER
 		), 1, null));
 	}
 
+	public function delete_action()
+	{
+		$message_id = H::POST_I('id');
+		if ($message_id > 0)
+		{
+			$this->model('pm')->delete_message($message_id, $this->user_id);
+		}
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
+	public function exit_action()
+	{
+		$conversation_id = H::POST_I('id');
+		if ($conversation_id > 0)
+		{
+			$this->model('pm')->exit_conversation($conversation_id, $this->user_id);
+		}
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
 }

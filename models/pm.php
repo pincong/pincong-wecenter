@@ -476,4 +476,55 @@ class pm_class extends AWS_MODEL
 		return $val;
 	}
 
+	public function delete_message($id, $uid)
+	{
+		$id = intval($id);
+		$uid = intval($uid);
+
+		$this->update('pm_message', array(
+			'message_1' => null,
+			'message_2' => null,
+			'message_3' => null,
+			'message_4' => null,
+			'message_5' => null,
+		), [['id', 'eq', $id], ['sender_uid', 'eq', $uid]]);
+	}
+
+	public function exit_conversation($id, $uid)
+	{
+		$id = intval($id);
+		$uid = intval($uid);
+
+		if (!$val = $this->get_conversation($id, $uid, true))
+		{
+			return false;
+		}
+
+		$this->delete('pm_message', [['conversation_id', 'eq', $id], ['sender_uid', 'eq', $uid]]);
+
+		if (count($val['uids']) < 2)
+		{
+			$this->delete('pm_conversation', ['id', 'eq', $id]);
+			return true;
+		}
+
+		$uids = [
+			$val['uid_1'] == $uid ? 0 : $val['uid_1'],
+			$val['uid_2'] == $uid ? 0 : $val['uid_2'],
+			$val['uid_3'] == $uid ? 0 : $val['uid_3'],
+			$val['uid_4'] == $uid ? 0 : $val['uid_4'],
+			$val['uid_5'] == $uid ? 0 : $val['uid_5'],
+		];
+
+		$data = $this->count_conversation_unread_messages($id, $uids);
+		if ($val['uid_1'] == $uid) $data['uid_1'] = 0;
+		if ($val['uid_2'] == $uid) $data['uid_2'] = 0;
+		if ($val['uid_3'] == $uid) $data['uid_3'] = 0;
+		if ($val['uid_4'] == $uid) $data['uid_4'] = 0;
+		if ($val['uid_5'] == $uid) $data['uid_5'] = 0;
+		$this->update('pm_conversation', $data, ['id', 'eq', $id]);
+
+		return true;
+	}
+
 }

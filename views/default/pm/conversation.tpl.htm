@@ -42,14 +42,18 @@
 									<div class="aw-item">
 										<p>
 											<a href="javascript:;"><?php echo UF::name($user); ?></a>:
+											<?php if (isset($val['message'])) { ?>
 											<span style="white-space:pre-wrap;" class="pm_message" data-message="<?php echo safe_text($val['message']); ?>"><i><?php _e('待解密'); ?></i></span>
+											<?php } else { ?>
+											<span><s><?php _e('已刪除'); ?></s></span>
+											<?php } ?>
 										</p>
 										<div class="aw-small-text">
 											<span class="pull-right">
 												<?php if ($val['sender_uid'] != $this->user_id) { ?>
 												<a href="javascript:;" onclick="$.scrollTo($('#pm_form').offset()['top'] - 20, 600, {queue:true});$('#pm_form').find('textarea').focus();"><?php _e('回复'); ?></a>
-												<?php } else { ?>
-												<a href="javascript:;" onclick=""><?php _e('删除'); ?></a>
+												<?php } else if (isset($val['message'])) { ?>
+												<a href="javascript:;" onclick="AWS.confirm('<?php _e('确认删除这一条私信?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/pm/ajax/delete/', 'id=<?php echo $val['id']; ?>');});"><?php _e('删除'); ?></a>
 												<?php } ?>
 											</span>
 											<?php echo date_friendly($val['add_time']); ?>
@@ -194,22 +198,28 @@ $(document).ready(function () {
 		});
 	}
 
-	read_key().then(function(private_key) {
-		$('.pm_message').each(function() {
-			var el = $(this);
-			var msg = el.data('message');
-			if (!msg) return;
-			PasswordUtil.decrypt(msg, private_key).then(function(value) {
-				el.text(value);
-			}).catch(function(error) {
-				console.log(error);
-				el.html('<i>' + _t('无法解密这一条私信') + '</i>');
+	function decrypt_messages() {
+		var els = $('.pm_message');
+		if (!els.length) return;
+		read_key().then(function(private_key) {
+			els.each(function() {
+				var el = $(this);
+				var msg = el.data('message');
+				if (!msg) return;
+				PasswordUtil.decrypt(msg, private_key).then(function(value) {
+					el.text(value);
+				}).catch(function(error) {
+					console.log(error);
+					el.html('<i>' + _t('无法解密这一条私信') + '</i>');
+				});
 			});
+		}).catch(function(error) {
+			console.log(error);
+			AWS.alert(_t('无法读取私钥, 请刷新页面重试'));
 		});
-	}).catch(function(error) {
-		console.log(error);
-		AWS.alert(_t('无法读取私钥, 请刷新页面重试'));
-	});
+	}
+
+	decrypt_messages();
 });
 </script>
 
