@@ -9,10 +9,10 @@
 	<?php foreach (AWS_APP::$_debug AS $key => $val) { ?>
 	<br /><p><b style="font-weight: bold;"><?php echo ucfirst($key); ?></b></p>
 		<?php foreach ($val AS $_key => $_val) { ?>
-		<p>[ Log time: <?php echo $_val['log_time']; ?> ] <?php if ($_val['expend_time']) { ?>[ Expend time: <?php echo $_val['expend_time']; ?> ]<?php } ?> <?php echo $_val['message']; ?></p>
+		<p>[ <?php echo $_val['log_time']; ?> ] <?php if ($_val['expend_time']) { ?>[ Spent: <?php echo $_val['expend_time']; ?> ]<?php } ?> <?php echo $_val['message']; ?></p>
 		<?php } ?>
 	<?php } ?>
 	<br />
-	<p style="color: #666;">Escape time: <?php echo (microtime(TRUE) - START_TIME); ?>, <?php echo count(AWS_APP::$_debug['database']); ?> queries<?php if (defined('MEMORY_USAGE_START')) { ?>, PHP Memory usage: <?php echo ((memory_get_usage() - MEMORY_USAGE_START) / 1024); ?> KB<?php } ?>, Server time: <?php echo date('Y-m-d H:i:s', TIMESTAMP); ?></p>
+	<p style="color: #666;">Elapsed time: <?php echo (microtime(TRUE) - START_TIME); ?>, <?php echo count(AWS_APP::$_debug['database']); ?> queries<?php if (defined('MEMORY_USAGE_START')) { ?>, PHP Memory usage: <?php echo ((memory_get_usage() - MEMORY_USAGE_START) / 1024); ?> KB<?php } ?>, Server time: <?php echo date('Y-m-d H:i:s', TIMESTAMP); ?></p>
 </div>
-<?php } else if (!defined('IN_AJAX')) { ?><!-- Escape time: <?php echo (microtime(TRUE) - START_TIME); ?> --><?php } ?>
+<?php } else if (!defined('IN_AJAX')) { ?><!-- <?php echo (microtime(TRUE) - START_TIME); ?> --><?php } ?>

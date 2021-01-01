@@ -69,7 +69,6 @@ $(document).ready(function () {
 
 	form.submit(function(e) {
 		e.preventDefault();
-		btn.addClass('disabled');
 
 		var usr = form.find('input[name=username]').val();
 		var pwd = form.find('input[name=password]').val();
@@ -92,6 +91,7 @@ $(document).ready(function () {
 
 		form.find('.error_message').hide();
 		form.find('.alert-info').show().find('em').text(_t('正在生成密钥, 请稍候...'));
+		btn.addClass('disabled');
 
 		setTimeout(function() {
 			var private_key;

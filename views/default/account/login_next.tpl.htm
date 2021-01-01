@@ -66,7 +66,6 @@ $(document).ready(function () {
 
 	form.submit(function(e) {
 		e.preventDefault();
-		btn.addClass('disabled');
 
 		var pwd = form.find('input[name=password]').val();
 
@@ -83,6 +82,7 @@ $(document).ready(function () {
 
 		form.find('.error_message').hide();
 		form.find('.alert-info').show().find('em').text(_t('请稍候...'));
+		btn.addClass('disabled');
 
 <?php if ($this->user['password_version'] < 3) { ?>
 		setTimeout(function() {
