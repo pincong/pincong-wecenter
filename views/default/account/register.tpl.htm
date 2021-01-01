@@ -7,7 +7,7 @@
 		<p><?php echo get_setting('register_notice'); ?></p>
 	</div>
 	<div class="mod-body">
-		<form id="login_form" onsubmit="return false" method="post">
+		<form id="login_form" onsubmit="return false" method="post" style="display:none">
 			<ul>
 				<?php if ($this->captcha_required) { ?>
 				<li class="aw-register-verify">
@@ -38,7 +38,7 @@
 
 <script type="text/javascript">
 $(document).ready(function () {
-	var form = $('#login_form');
+	var form = $('#login_form').show();
 
 	form.submit(function(e) {
 		e.preventDefault();

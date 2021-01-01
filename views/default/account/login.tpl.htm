@@ -6,7 +6,7 @@
 		<h1><?php _e('登录'); ?></h1>
 	</div>
 	<div class="mod-body">
-		<form id="login_form" onsubmit="return false" method="post">
+		<form id="login_form" onsubmit="return false" method="post" style="display:none">
 			<ul>
 				<li>
 					<input type="text" class="form-control" name="username" autocomplete="username" placeholder="<?php _e('用户名'); ?>" oninput="$(this).closest('form').find('input[name=password]').val('');" autofocus>
@@ -35,7 +35,7 @@
 
 <script type="text/javascript">
 $(document).ready(function () {
-	var form = $('#login_form');
+	var form = $('#login_form').show();
 
 	form.submit(function(e) {
 		e.preventDefault();

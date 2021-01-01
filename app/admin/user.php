@@ -167,7 +167,7 @@ class user extends AWS_ADMIN_CONTROLLER
 		}
 		else
 		{
-			TPL::assign('client_salt', $user['client_salt']);
+			TPL::assign('client_salt', $user['salt']);
 		}
 		TPL::import_js('js/bcrypt.js');
 		TPL::import_js('js/md5.js');
