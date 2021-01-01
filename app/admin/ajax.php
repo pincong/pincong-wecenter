@@ -597,6 +597,8 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			'no_bonus_reputation_factor',
 			'no_upvote_reputation_factor',
 			'no_downvote_reputation_factor',
+			'no_reputation_upvote',
+			'no_reputation_downvote',
 			'invite_answer',
 			'follow_people',
 			'follow_thread',

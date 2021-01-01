@@ -53,7 +53,14 @@ class reputation_class extends AWS_MODEL
 		{
 			// 被标记的用户不增加声望
 			// reputation_types以外post不增加声望
-			if ($recipient_user['flagged'] OR !$this->check_reputation_type($item_type))
+			if ($recipient_user['permission']['no_reputation_upvote'] OR $recipient_user['flagged'] OR !$this->check_reputation_type($item_type))
+			{
+				$reputation_value = 0;
+			}
+		}
+		else
+		{
+			if ($recipient_user['permission']['no_reputation_downvote'])
 			{
 				$reputation_value = 0;
 			}
