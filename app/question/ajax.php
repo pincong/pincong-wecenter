@@ -50,7 +50,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($question_info = $this->model('content')->get_thread_info_by_id('question', $_POST['question_id']))
 		{
-			$this->model('question')->clear_question($question_info['question_id']);
+			$this->model('question')->clear_question($question_info['id']);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
@@ -131,7 +131,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (get_setting('discussion_bring_top') == 'Y')
 		{
-			$this->model('posts')->bring_to_top($this->user_id, $question_info['question_id'], 'question');
+			$this->model('posts')->bring_to_top($this->user_id, $question_info['id'], 'question');
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
@@ -208,7 +208,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (get_setting('discussion_bring_top') == 'Y')
 		{
-			$this->model('posts')->bring_to_top($this->user_id, $question_info['question_id'], 'question');
+			$this->model('posts')->bring_to_top($this->user_id, $question_info['id'], 'question');
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(

@@ -53,13 +53,13 @@ class tools extends AWS_ADMIN_CONTROLLER
 
     public function update_question_search_index_action()
     {
-        if ($questions_list = $this->model('question')->fetch_page('question', null, 'question_id ASC', $_GET['page'], $_GET['per_page']))
+        if ($questions_list = $this->model('question')->fetch_page('question', null, 'id ASC', $_GET['page'], $_GET['per_page']))
         {
             foreach ($questions_list as $key => $val)
             {
-                $this->model('search_fulltext')->push_index('question', $val['question_content'], $val['question_id']);
+                $this->model('search_fulltext')->push_index('question', $val['question_content'], $val['id']);
 
-                $this->model('posts')->set_posts_index($val['question_id'], 'question', $val);
+                $this->model('posts')->set_posts_index($val['id'], 'question', $val);
             }
 
             H::redirect_msg(AWS_APP::lang()->_t('正在更新问题搜索索引') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/update_question_search_index/page-' . ($_GET['page'] + 1) . '__per_page-' . $_GET['per_page']);
@@ -114,14 +114,14 @@ class tools extends AWS_ADMIN_CONTROLLER
 			case 'question':
 				$next_table = 'answer';
 
-				if ($list = AWS_APP::model()->fetch_page($table, null, 'question_id ASC', $_GET['page'], $_GET['per_page']))
+				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', $_GET['page'], $_GET['per_page']))
 				{
 					foreach ($list as $key => $val)
 					{
 						AWS_APP::model()->update($table, array(
 							'add_time' => fake_time($val['add_time']),
 							'update_time' => fake_time($val['update_time'])
-						), 'question_id = ' . intval($val['question_id']));
+						), 'id = ' . intval($val['id']));
 					}
 
 					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/blur_time/page-' . ($_GET['page'] + 1) . '__table-'.$table.'__per_page-' . $_GET['per_page']);
@@ -377,17 +377,17 @@ class tools extends AWS_ADMIN_CONTROLLER
 			case 'question':
 				$next_table = 'article';
 
-				if ($list = AWS_APP::model()->fetch_page($table, '`question_content` IS NULL', 'question_id ASC', $_GET['page'], $_GET['per_page']))
+				if ($list = AWS_APP::model()->fetch_page($table, '`question_content` IS NULL', 'id ASC', $_GET['page'], $_GET['per_page']))
 				{
 					foreach ($list as $key => $val)
 					{
 						AWS_APP::model()->update($table, array(
 							'category_id' => $trash_category_id
-						), 'question_id = ' . intval($val['question_id']));
+						), 'id = ' . intval($val['id']));
 
 						AWS_APP::model()->update('posts_index', array(
 							'category_id' => $trash_category_id
-						), "post_type = 'question' AND post_id = " . intval($val['question_id']));
+						), "post_type = 'question' AND post_id = " . intval($val['id']));
 					}
 
 					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/move_to_trash/page-' . ($_GET['page'] + 1) . '__table-'.$table.'__per_page-' . $_GET['per_page']);

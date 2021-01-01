@@ -292,15 +292,7 @@ class vote_class extends AWS_MODEL
 
 	private function update_item_agree_count_and_reputation(&$type, $item_id, $agree_count, $reputation)
 	{
-		// TODO: question_id 字段改名
-		if ($type == 'question')
-		{
-			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + ' . ($agree_count) . ', reputation = reputation + ' . ($reputation) . ' WHERE question_id = ' . ($item_id);
-		}
-		else
-		{
-			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + ' . ($agree_count) . ', reputation = reputation + ' . ($reputation) . ' WHERE id = ' . ($item_id);
-		}
+		$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + ' . ($agree_count) . ', reputation = reputation + ' . ($reputation) . ' WHERE id = ' . ($item_id);
 		$this->query($sql);
 	}
 

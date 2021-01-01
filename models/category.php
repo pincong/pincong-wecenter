@@ -172,7 +172,7 @@ class category_class extends AWS_MODEL
 
 	public function contents_exists($category_id)
 	{
-		if ($this->fetch_one('question', 'question_id', 'category_id = ' . intval($category_id)))
+		if ($this->fetch_one('question', 'id', 'category_id = ' . intval($category_id)))
 		{
 			return true;
 		}

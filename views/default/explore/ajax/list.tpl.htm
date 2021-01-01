@@ -5,8 +5,8 @@
 	<div class="aw-question-content">
 		<h4>
 			<?php if ($val['post_type'] == 'question') { ?>
-			<a href="question/<?php echo $val['question_id']; ?>">
-				<?php echo CF::title($val['user_info'], 'question_' . $val['question_id'], $val['question_content']); ?>
+			<a href="question/<?php echo $val['id']; ?>">
+				<?php echo CF::title($val['user_info'], 'question_' . $val['id'], $val['question_content']); ?>
 			</a>
 			<?php } elseif ($val['post_type'] == 'article') { ?>
 			<a href="article/<?php echo $val['id']; ?>">
@@ -27,7 +27,7 @@
 			<?php } ?>
 		</div>
 		<?php } else if ($val['post_type'] == 'question') { ?>
-		<a href="question/<?php echo $val['question_id']; ?>#!answer_form" class="pull-right aw-small-text hidden-xs"><?php _e('回复'); ?></a>
+		<a href="question/<?php echo $val['id']; ?>#!answer_form" class="pull-right aw-small-text hidden-xs"><?php _e('回复'); ?></a>
 		<?php } ?>
 		<!-- end 贡献 -->
 

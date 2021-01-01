@@ -40,8 +40,8 @@
 						<tbody>
 							<?php foreach ($this->list AS $key => $val) { ?>
 							<tr>
-								<td><input type="checkbox" name="question_ids[]" value="<?php echo $val['question_id']; ?>"></td>
-								<td><a href="question/<?php echo $val['question_id']; ?>" target="_blank"><?php if (!$val['question_content']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['question_content']; ?><?php } ?></a></td>
+								<td><input type="checkbox" name="question_ids[]" value="<?php echo $val['id']; ?>"></td>
+								<td><a href="question/<?php echo $val['id']; ?>" target="_blank"><?php if (!$val['question_content']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['question_content']; ?><?php } ?></a></td>
 								<td><?php if ($val['answer_count']) { ?><?php echo $val['answer_count']; ?><?php } else { ?>0<?php } ?></td>
 								<td><?php echo $val['focus_count']; ?></td>
 								<td><?php echo $val['view_count']; ?></td>
@@ -50,7 +50,7 @@
 								*/ ?>
 								<td><?php echo date_friendly($val['add_time']); ?></td>
 								<td><?php echo date_friendly($val['update_time']); ?></td>
-								<td><a href="publish/<?php echo $val['question_id']; ?>" target="_blank" class="icon icon-edit md-tip" title="<?php _e('编辑'); ?>"></a></td>
+								<td><a href="publish/<?php echo $val['id']; ?>" target="_blank" class="icon icon-edit md-tip" title="<?php _e('编辑'); ?>"></a></td>
 							</tr>
 							<?php } ?>
 						</tbody>

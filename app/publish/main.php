@@ -37,7 +37,7 @@ class main extends AWS_CONTROLLER
 
 			if (!$this->user_info['permission']['edit_any_post'] AND $question_info['uid'] != $this->user_id)
 			{
-				H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑这个问题'), '/question/' . $question_info['question_id']);
+				H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑这个问题'), '/question/' . $question_info['id']);
 			}
 		}
 		else if (!$this->user_info['permission']['publish_question'])

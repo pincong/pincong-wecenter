@@ -500,11 +500,11 @@ class topic_class extends AWS_MODEL
 
 		if ($category_id)
 		{
-			if ($questions = $this->query_all("SELECT question_id FROM " . get_table('question') . " WHERE category_id =" . intval($category_id) . ' ORDER BY add_time DESC LIMIT 200'))
+			if ($questions = $this->query_all("SELECT id FROM " . get_table('question') . " WHERE category_id =" . intval($category_id) . ' ORDER BY add_time DESC LIMIT 200'))
 			{
 				foreach ($questions AS $key => $val)
 				{
-					$question_ids[] = $val['question_id'];
+					$question_ids[] = $val['id'];
 				}
 			}
 

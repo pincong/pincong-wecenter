@@ -6,7 +6,7 @@
 			<div class="aw-content-wrap clearfix">
 				<div class="col-sm-12 col-md-9 aw-main-content">
 					<!-- 话题bar -->
-					<div class="aw-mod aw-topic-bar" id="question_topic_editor" data-type="question" data-id="<?php echo $this->question_info['question_id']; ?>">
+					<div class="aw-mod aw-topic-bar" id="question_topic_editor" data-type="question" data-id="<?php echo $this->question_info['id']; ?>">
 						<div class="tag-bar clearfix">
 
 						<?php if ($this->question_topics) { ?>
@@ -27,7 +27,7 @@
 								<span class="pull-left"><?php _e('可能属于这些话题'); ?>&nbsp;:&nbsp;</span>
 								<?php foreach ($this->related_topics AS $key => $topic_title) { ?>
 								<span class="topic-tag">
-									<a onclick="one_click_add_topic($(this), '<?php echo $topic_title; ?>', <?php echo $this->question_info['question_id'];?>);" class="text"><?php echo $topic_title; ?></a>
+									<a onclick="one_click_add_topic($(this), '<?php echo $topic_title; ?>', <?php echo $this->question_info['id'];?>);" class="text"><?php echo $topic_title; ?></a>
 								</span>
 								<?php } ?>, <?php _e('都不是'); ?>? <a href="javascript:;" onclick="$('#question_topic_editor .aw-edit-topic').click();$(this).parents('.aw-notopic-sort').hide();"> <?php _e('点此添加话题'); ?></a>
 								<?php } else { ?>
@@ -49,32 +49,32 @@
 									<div class="aw-dropdown pull-right" role="menu" aria-labelledby="dropdownMenu">
 										<ul class="aw-dropdown-list">
 											<li>
-												<a href="content/log/item_type-question__item_id-<?php echo $this->question_info['question_id']; ?>" rel="nofollow"><?php _e('修改记录'); ?></a>
+												<a href="content/log/item_type-question__item_id-<?php echo $this->question_info['id']; ?>" rel="nofollow"><?php _e('修改记录'); ?></a>
 											</li>
 										<?php if ($this->user_info['permission']['lock_post']) { ?>
 											<li>
 												<?php if ($this->question_info['lock']) { ?>
-												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unlock/', 'item_type=question&item_id=<?php echo $this->question_info['question_id']; ?>');"><?php _e('取消锁定'); ?></a>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unlock/', 'item_type=question&item_id=<?php echo $this->question_info['id']; ?>');"><?php _e('取消锁定'); ?></a>
 												<?php } else { ?>
-												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/lock/', 'item_type=question&item_id=<?php echo $this->question_info['question_id']; ?>');"><?php _e('锁定'); ?></a>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/lock/', 'item_type=question&item_id=<?php echo $this->question_info['id']; ?>');"><?php _e('锁定'); ?></a>
 												<?php } ?>
 											</li>
 										<?php } ?>
 										<?php if ($this->user_info['permission']['is_administrator']) { ?>
 											<li>
-												<a href="javascript:;" onclick="AWS.confirm('<?php _e('确认删除?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/question/ajax/remove_question/', 'question_id=<?php echo $this->question_info['question_id']; ?>');});"><?php _e('删除问题'); ?></a>
+												<a href="javascript:;" onclick="AWS.confirm('<?php _e('确认删除?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/question/ajax/remove_question/', 'question_id=<?php echo $this->question_info['id']; ?>');});"><?php _e('删除问题'); ?></a>
 											</li>
 											<li>
-												<a href="javascript:;" onclick="AWS.prompt('<?php _e('请输入新的 UID'); ?>', '<?php echo $this->question_info['uid']; ?>', function(text){AWS.ajax_request(G_BASE_URL + '/content/ajax/change_uid/', 'uid=' + encodeURIComponent(text) + '&item_type=question&item_id=<?php echo $this->question_info['question_id']; ?>');});"><?php _e('变更作者'); ?></a>
+												<a href="javascript:;" onclick="AWS.prompt('<?php _e('请输入新的 UID'); ?>', '<?php echo $this->question_info['uid']; ?>', function(text){AWS.ajax_request(G_BASE_URL + '/content/ajax/change_uid/', 'uid=' + encodeURIComponent(text) + '&item_type=question&item_id=<?php echo $this->question_info['id']; ?>');});"><?php _e('变更作者'); ?></a>
 											</li>
 										<?php } ?>
 
 										<?php if ($this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
 											<li>
 												<?php if ($this->question_info['recommend']) { ?>
-												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unrecommend/', 'item_type=question&item_id=<?php echo $this->question_info['question_id']; ?>');"><?php _e('取消推荐'); ?></a>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unrecommend/', 'item_type=question&item_id=<?php echo $this->question_info['id']; ?>');"><?php _e('取消推荐'); ?></a>
 												<?php } else { ?>
-												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/recommend/', 'item_type=question&item_id=<?php echo $this->question_info['question_id']; ?>');"><?php _e('推荐'); ?></a>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/recommend/', 'item_type=question&item_id=<?php echo $this->question_info['id']; ?>');"><?php _e('推荐'); ?></a>
 												<?php } ?>
 											</li>
 										<?php } ?>
@@ -82,9 +82,9 @@
 										<?php if ($this->user_info['permission']['pin_post']) { ?>
 											<li>
 												<?php if ($this->question_info['sort']) { ?>
-												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unpin/', 'item_type=question&item_id=<?php echo $this->question_info['question_id']; ?>');"><?php _e('取消置顶'); ?></a>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unpin/', 'item_type=question&item_id=<?php echo $this->question_info['id']; ?>');"><?php _e('取消置顶'); ?></a>
 												<?php } else { ?>
-												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/pin/', 'item_type=question&item_id=<?php echo $this->question_info['question_id']; ?>');"><?php _e('置顶'); ?></a>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/pin/', 'item_type=question&item_id=<?php echo $this->question_info['id']; ?>');"><?php _e('置顶'); ?></a>
 												<?php } ?>
 											</li>
 										<?php } ?>
@@ -92,7 +92,7 @@
 										<?php if ($this->question_info['uid'] == $this->user_id OR $this->user_info['permission']['is_administrator'] OR $this->user_info['permission']['is_moderator']) { ?>
 											<?php if ($this->user_info['permission']['change_category']) { ?>
 											<li>
-												<a href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/content/edit/change_category/item_type-question__item_id-<?php echo $this->question_info['question_id']; ?>__category_id-<?php echo $this->question_info['category_id']; ?>');"><?php _e('变更分类'); ?></a>
+												<a href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/content/edit/change_category/item_type-question__item_id-<?php echo $this->question_info['id']; ?>__category_id-<?php echo $this->question_info['category_id']; ?>');"><?php _e('变更分类'); ?></a>
 											</li>
 											<?php } ?>
 										<?php } ?>
@@ -102,7 +102,7 @@
 								<!-- end 下拉菜单 -->
 
 								<?php if ($this->user_id) { ?>
-								<a href="javascript:;" onclick="AWS.User.follow($(this), 'question', <?php echo $this->question_info['question_id']; ?>);" class="follow btn btn-normal btn-success pull-right <?php if ($this->question_focus) { ?> active<?php } ?>"><span><?php if ($this->question_focus) { ?><?php _e('取消关注'); ?><?php } else { ?><?php _e('关注'); ?><?php } ?></span> <em>|</em> <b><?php echo $this->question_info['focus_count']?></b></a>
+								<a href="javascript:;" onclick="AWS.User.follow($(this), 'question', <?php echo $this->question_info['id']; ?>);" class="follow btn btn-normal btn-success pull-right <?php if ($this->question_focus) { ?> active<?php } ?>"><span><?php if ($this->question_focus) { ?><?php _e('取消关注'); ?><?php } else { ?><?php _e('关注'); ?><?php } ?></span> <em>|</em> <b><?php echo $this->question_info['focus_count']?></b></a>
 								<?php } ?>
 
 							</div>
@@ -113,20 +113,20 @@
 					<div class="aw-mod aw-question-detail aw-item">
 						<div class="mod-head">
 							<h1>
-								<?php echo CF::title($this->question_info['user_info'], 'question_' . $this->question_info['question_id'], $this->question_info['question_content']); ?>
+								<?php echo CF::title($this->question_info['user_info'], 'question_' . $this->question_info['id'], $this->question_info['question_content']); ?>
 							</h1>
 						</div>
 						<div class="mod-body">
 							<div class="content markitup-box">
-								<?php echo CF::body($this->question_info['user_info'], 'question_' . $this->question_info['question_id'], $this->question_info['question_detail']); ?>
+								<?php echo CF::body($this->question_info['user_info'], 'question_' . $this->question_info['id'], $this->question_info['question_detail']); ?>
 							</div>
 						</div>
 						<div class="mod-footer">
 							<div class="clearfix aw-vote-ui aw-article-vote<?php if (!$this->user_id OR $this->user_id == $this->question_info['uid']) { ?> disabled<?php } ?>">
 								<?php if ($this->user_id AND $this->user_id != $this->question_info['uid']) { ?>
-									<a href="javascript:;" class="agree<?php if ($this->question_info['vote_value'] > 0) { ?> active<?php } ?>" onclick="AWS.User.toggle_vote(this, 'question', 'agree', <?php echo $this->question_info['question_id']; ?>);"><i class="icon icon-agree"></i> <b class="count"><?php echo $this->question_info['agree_count']; ?></b></a>
+									<a href="javascript:;" class="agree<?php if ($this->question_info['vote_value'] > 0) { ?> active<?php } ?>" onclick="AWS.User.toggle_vote(this, 'question', 'agree', <?php echo $this->question_info['id']; ?>);"><i class="icon icon-agree"></i> <b class="count"><?php echo $this->question_info['agree_count']; ?></b></a>
 									<?php if ($this->user_info['permission']['vote_disagree']) { ?>
-										<a href="javascript:;" class="disagree<?php if ($this->question_info['vote_value'] < 0) { ?> active<?php } ?>" onclick="AWS.User.toggle_vote(this, 'question', 'disagree', <?php echo $this->question_info['question_id']; ?>);"><i class="icon icon-disagree"></i></a>
+										<a href="javascript:;" class="disagree<?php if ($this->question_info['vote_value'] < 0) { ?> active<?php } ?>" onclick="AWS.User.toggle_vote(this, 'question', 'disagree', <?php echo $this->question_info['id']; ?>);"><i class="icon icon-disagree"></i></a>
 									<?php } ?>
 								<?php } else { ?>
 									<a href="javascript:;" class="agree"><i class="icon icon-agree"></i> <b class="count"><?php echo $this->question_info['agree_count']; ?></b></a>
@@ -136,24 +136,24 @@
 							<div class="meta">
 								<span class="aw-small-text"><?php echo date_friendly($this->question_info['add_time']); ?></span>
 
-								<a href="vote/log/item_type-question__item_id-<?php echo $this->question_info['question_id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
+								<a href="vote/log/item_type-question__item_id-<?php echo $this->question_info['id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
 
-								<a data-id="<?php echo $this->question_info['question_id']; ?>" data-type="question" class="aw-add-comment aw-small-text <?php if ($this->question_info['comment_count'] > 0) {?>active<?php }?>" data-comment-count="<?php echo $this->question_info['comment_count']; ?>"><i class="icon icon-comment"></i> <?php if ($this->question_info['comment_count']) { ?><?php _e('%s 条讨论', $this->question_info['comment_count']); ?><?php } else { ?><?php _e('添加讨论'); ?><?php } ?></a>
+								<a data-id="<?php echo $this->question_info['id']; ?>" data-type="question" class="aw-add-comment aw-small-text <?php if ($this->question_info['comment_count'] > 0) {?>active<?php }?>" data-comment-count="<?php echo $this->question_info['comment_count']; ?>"><i class="icon icon-comment"></i> <?php if ($this->question_info['comment_count']) { ?><?php _e('%s 条讨论', $this->question_info['comment_count']); ?><?php } else { ?><?php _e('添加讨论'); ?><?php } ?></a>
 
 								<?php if ($this->user_id) { ?>
 								<a class="aw-small-text aw-invite-replay"><i class="icon icon-invite"></i> <?php _e('邀请'); ?> <?php if (sizeof($this->invite_users) > 0){ ?><em class="badge badge-info"><?php echo count($this->invite_users); ?></em><?php } ?></a>
 								<?php } ?>
 
-								<?php if ($this->question_info['uid'] == $this->user_id OR $this->user_info['permission']['edit_any_post']) { ?><a class="aw-small-text" href="publish/<?php echo $this->question_info['question_id']; ?>"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a><?php } ?>
+								<?php if ($this->question_info['uid'] == $this->user_id OR $this->user_info['permission']['edit_any_post']) { ?><a class="aw-small-text" href="publish/<?php echo $this->question_info['id']; ?>"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a><?php } ?>
 
 								<div class="pull-right more-operate">
 								<?php if ($this->user_id) { ?>
 									<?php if ($this->user_info['permission']['bump_sink']) { ?>
-									<a href="javascript:;" class="aw-small-text" onclick="AWS.confirm('<?php _e('确认提升?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/content/ajax/bump/', 'item_type=question&item_id=<?php echo $this->question_info['question_id']; ?>', true);});"><i class="icon icon-up"></i> <?php _e('提升'); ?></a>
-									<a href="javascript:;" class="aw-small-text" onclick="AWS.confirm('<?php _e('确认下沉?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/content/ajax/sink/', 'item_type=question&item_id=<?php echo $this->question_info['question_id']; ?>', true);});"><i class="icon icon-down"></i> <?php _e('下沉'); ?></a>
+									<a href="javascript:;" class="aw-small-text" onclick="AWS.confirm('<?php _e('确认提升?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/content/ajax/bump/', 'item_type=question&item_id=<?php echo $this->question_info['id']; ?>', true);});"><i class="icon icon-up"></i> <?php _e('提升'); ?></a>
+									<a href="javascript:;" class="aw-small-text" onclick="AWS.confirm('<?php _e('确认下沉?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/content/ajax/sink/', 'item_type=question&item_id=<?php echo $this->question_info['id']; ?>', true);});"><i class="icon icon-down"></i> <?php _e('下沉'); ?></a>
 									<?php } ?>
 
-									<a href="javascript:;" onclick="AWS.User.add_favorite('question', '<?php echo $this->question_info['question_id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>
+									<a href="javascript:;" onclick="AWS.User.add_favorite('question', '<?php echo $this->question_info['id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>
 								<?php } ?>
 
 									<a href="javascript:;" class="aw-small-text" onclick="AWS.User.share_out();"><i class="icon icon-share"></i> <?php _e('分享'); ?></a>
@@ -197,28 +197,28 @@
 								<?php if ($_GET['sort_key'] == 'add_time') { ?>
 									<li class="active">
 									<?php if ($_GET['sort'] == 'ASC') { ?>
-										<a href="question/id-<?php echo $this->question_info['question_id']; ?>__sort_key-add_time__sort-DESC"><?php _e('时间'); ?> <i class="icon icon-up"></i></a>
+										<a href="question/id-<?php echo $this->question_info['id']; ?>__sort_key-add_time__sort-DESC"><?php _e('时间'); ?> <i class="icon icon-up"></i></a>
 									<?php } else { ?>
-										<a href="question/id-<?php echo $this->question_info['question_id']; ?>__sort_key-add_time__sort-ASC"><?php _e('时间'); ?> <i class="icon icon-down"></i></a>
+										<a href="question/id-<?php echo $this->question_info['id']; ?>__sort_key-add_time__sort-ASC"><?php _e('时间'); ?> <i class="icon icon-down"></i></a>
 									<?php } ?>
 									</li>
 								<?php } else { ?>
 									<li>
-										<a href="question/id-<?php echo $this->question_info['question_id']; ?>__sort_key-add_time__sort-ASC"><?php _e('时间'); ?></a>
+										<a href="question/id-<?php echo $this->question_info['id']; ?>__sort_key-add_time__sort-ASC"><?php _e('时间'); ?></a>
 									</li>
 								<?php } ?>
 
 								<?php if (!$_GET['sort_key'] OR $_GET['sort_key'] == 'agree_count') { ?>
 									<li class="active">
 									<?php if ($_GET['sort'] == 'ASC') { ?>
-										<a href="question/id-<?php echo $this->question_info['question_id']; ?>__sort_key-agree_count__sort-DESC"><?php _e('票数'); ?> <i class="icon icon-up"></i></a>
+										<a href="question/id-<?php echo $this->question_info['id']; ?>__sort_key-agree_count__sort-DESC"><?php _e('票数'); ?> <i class="icon icon-up"></i></a>
 									<?php } else { ?>
-										<a href="question/id-<?php echo $this->question_info['question_id']; ?>__sort_key-agree_count__sort-ASC"><?php _e('票数'); ?> <i class="icon icon-down"></i></a>
+										<a href="question/id-<?php echo $this->question_info['id']; ?>__sort_key-agree_count__sort-ASC"><?php _e('票数'); ?> <i class="icon icon-down"></i></a>
 									<?php } ?>
 									</li>
 								<?php } else { ?>
 									<li>
-										<a href="question/id-<?php echo $this->question_info['question_id']; ?>__sort_key-agree_count__sort-DESC"><?php _e('票数'); ?></a>
+										<a href="question/id-<?php echo $this->question_info['id']; ?>__sort_key-agree_count__sort-DESC"><?php _e('票数'); ?></a>
 									</li>
 								<?php } ?>
 							<?php } ?>
@@ -233,7 +233,7 @@
 						</div>
 						<div class="mod-footer">
 							<?php if ($_GET['item_id']) { ?>
-								<a href="question/<?php echo $this->question_info['question_id']; ?>" class="aw-load-more-content">
+								<a href="question/<?php echo $this->question_info['id']; ?>" class="aw-load-more-content">
 									<span><?php _e('查看全部回答'); ?></span>
 								</a>
 							<?php } ?>
@@ -259,7 +259,7 @@
 						<?php } else { ?>
 						<form action="publish/ajax/publish_answer/" onsubmit="return false;" method="post" id="answer_form" class="question_answer_form">
 						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
-						<input type="hidden" name="question_id" value="<?php echo $this->question_info['question_id']; ?>" />
+						<input type="hidden" name="question_id" value="<?php echo $this->question_info['id']; ?>" />
 						<div class="mod-head">
 							<a href="<?php echo UF::url($this->user_info); ?>" class="aw-user-name"><img alt="" src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" /></a>
 							<p>
@@ -349,7 +349,7 @@
 								<?php foreach($this->recommend_posts AS $key => $val) { ?>
 								<li>
 									<?php if ($val['post_type'] == 'question') { ?>
-									<a href="question/<?php echo $val['question_id']; ?>"><?php if (!$val['question_content']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['question_content']; ?><?php } ?></a>
+									<a href="question/<?php echo $val['id']; ?>"><?php if (!$val['question_content']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['question_content']; ?><?php } ?></a>
 									<?php } elseif ($val['post_type'] == 'article') { ?>
 									<a href="article/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['title']; ?><?php } ?></a>
 									<?php } elseif ($val['post_type'] == 'video') { ?>
@@ -372,7 +372,7 @@
 						<div class="mod-body aw-size-12">
 							<ul>
 								<?php foreach($this->question_related_list AS $key => $val) { ?>
-								<li><a href="question/<?php echo $val['question_id']; ?>"><?php if (!$val['question_content']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['question_content']; ?><?php } ?></a></li>
+								<li><a href="question/<?php echo $val['id']; ?>"><?php if (!$val['question_content']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['question_content']; ?><?php } ?></a></li>
 								<?php } ?>
 							</ul>
 						</div>
@@ -402,7 +402,7 @@
 </div>
 
 <script type="text/javascript">
-	var QUESTION_ID = <?php echo $this->question_info['question_id'];?>;
+	var QUESTION_ID = <?php echo $this->question_info['id'];?>;
 
 function reply_callback(err) {
 	if (err) return;

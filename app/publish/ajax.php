@@ -498,14 +498,14 @@ class ajax extends AWS_CONTROLLER
 		if ($_POST['do_delete'])
 		{
 			$this->model('question')->clear_question(
-				$question_info['question_id'],
+				$question_info['id'],
 				$this->user_id
 			);
 		}
 		else
 		{
 			$this->model('question')->modify_question(
-				$question_info['question_id'],
+				$question_info['id'],
 				$this->user_id,
 				$_POST['title'],
 				$_POST['message']
@@ -513,7 +513,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => get_js_url('/question/' . $question_info['question_id'])
+			'url' => get_js_url('/question/' . $question_info['id'])
 		), 1, null));
 
 	}
@@ -716,11 +716,11 @@ class ajax extends AWS_CONTROLLER
 		// 判断是否已回复过问题
 		if ((get_setting('answer_unique') == 'Y'))
 		{
-			if ($this->model('answer')->has_answer_by_uid($question_info['question_id'], $this->user_id))
+			if ($this->model('answer')->has_answer_by_uid($question_info['id'], $this->user_id))
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('一个问题只能回复一次，你可以编辑回复过的回复')));
 			}
-			$schedule = $this->model('answer')->fetch_one('scheduled_posts', 'id', "type = 'answer' AND parent_id = " . intval($question_info['question_id']) . " AND uid = " . intval($this->user_id));
+			$schedule = $this->model('answer')->fetch_one('scheduled_posts', 'id', "type = 'answer' AND parent_id = " . intval($question_info['id']) . " AND uid = " . intval($this->user_id));
 			if ($schedule)
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你已经使用延迟显示功能回复过该问题')));
@@ -748,7 +748,7 @@ class ajax extends AWS_CONTROLLER
 		set_user_operation_last_time('publish', $this->user_id);
 
 		$answer_id = $this->model('publish')->publish_answer(array(
-			'parent_id' => $question_info['question_id'],
+			'parent_id' => $question_info['id'],
 			'message' => $_POST['message'],
 			'uid' => $publish_uid,
 			'auto_focus' => $auto_focus,

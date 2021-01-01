@@ -248,7 +248,7 @@ class publish_class extends AWS_MODEL
 			'answer_count' => $this->count('answer', 'question_id = ' . intval($data['parent_id'])),
 			'update_time' => $now,
 			'last_uid' => $data['uid']
-		), 'question_id = ' . intval($data['parent_id']));
+		), 'id = ' . intval($data['parent_id']));
 
 		$this->model('posts')->set_posts_index($data['parent_id'], 'question');
 

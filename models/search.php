@@ -182,13 +182,13 @@ class search_class extends AWS_MODEL
 				'topic_description' => $result_info['topic_description']
 			);
 		}
-		else if ($result_info['question_id'])
+		else if (isset($result_info['answer_count']))
 		{
 			$result_type = 'questions';
 
-			$search_id = $result_info['question_id'];
+			$search_id = $result_info['id'];
 
-			$url = get_js_url('/question/' . $result_info['question_id']);
+			$url = get_js_url('/question/' . $result_info['id']);
 
 			$name = $result_info['question_content'];
 

@@ -28,7 +28,7 @@ class question_class extends AWS_MODEL
 			return $list;
 		}
 
-		$list = $this->fetch_page('question', 'uid = ' . intval($uid), 'question_id DESC', $page, $per_page);
+		$list = $this->fetch_page('question', 'uid = ' . intval($uid), 'id DESC', $page, $per_page);
 		if (count($list) > 0)
 		{
 			AWS_APP::cache()->set($cache_key, $list, get_setting('cache_level_normal'));
@@ -56,7 +56,7 @@ class question_class extends AWS_MODEL
 			$parents = $this->get_question_info_by_ids($parent_ids);
 			foreach ($list AS $key => $val)
 			{
-				$list[$key]['question_info'] = $parents[$val['question_id']];
+				$list[$key]['question_info'] = $parents[$val['id']];
 			}
 		}
 
@@ -80,7 +80,7 @@ class question_class extends AWS_MODEL
 		$this->update('question', array(
 			'question_content' => htmlspecialchars($title),
 			'question_detail' => htmlspecialchars($message)
-		), 'question_id = ' . intval($id));
+		), 'id = ' . intval($id));
 
 		$this->model('content')->log('question', $id, '编辑问题', $uid);
 
@@ -109,7 +109,7 @@ class question_class extends AWS_MODEL
 			$data['category_id'] = $trash_category_id;
 		}
 
-		$this->update('question', $data, 'question_id = ' . intval($id));
+		$this->update('question', $data, 'id = ' . intval($id));
 
 		if ($uid)
 		{
@@ -164,7 +164,7 @@ class question_class extends AWS_MODEL
 
 		return $this->update('question', array(
 			'answer_count' => $this->count('answer', 'question_id = ' . ($question_id))
-		), 'question_id = ' . ($question_id));
+		), 'id = ' . ($question_id));
 	}
 
 
@@ -178,7 +178,7 @@ class question_class extends AWS_MODEL
 
 		return $this->update('question', array(
 			'comment_count' => $this->count('question_discussion', 'question_id = ' . ($question_id))
-		), 'question_id = ' . ($question_id));
+		), 'id = ' . ($question_id));
 	}
 
 
@@ -190,7 +190,7 @@ class question_class extends AWS_MODEL
 	// 同时获取用户信息
 	public function get_question_info_by_id($question_id)
 	{
-		if ($question = $this->fetch_row('question', 'question_id = ' . intval($question_id)))
+		if ($question = $this->fetch_row('question', 'id = ' . intval($question_id)))
 		{
 			$question['user_info'] = $this->model('account')->get_user_info_by_uid($question['uid']);
 		}
@@ -207,11 +207,11 @@ class question_class extends AWS_MODEL
 
 		array_walk_recursive($question_ids, 'intval_string');
 
-		if ($questions_list = $this->fetch_all('question', "question_id IN(" . implode(',', $question_ids) . ")"))
+		if ($questions_list = $this->fetch_all('question', "id IN(" . implode(',', $question_ids) . ")"))
 		{
 			foreach ($questions_list AS $key => $val)
 			{
-				$result[$val['question_id']] = $val;
+				$result[$val['id']] = $val;
 			}
 		}
 
@@ -247,7 +247,7 @@ class question_class extends AWS_MODEL
 
 		$this->model('posts')->remove_posts_index($question_id, 'question');
 
-		$this->delete('question', 'question_id = ' . intval($question_id));
+		$this->delete('question', 'id = ' . intval($question_id));
 
 	}
 	*/
@@ -387,7 +387,7 @@ class question_class extends AWS_MODEL
 
 		if ($question_ids)
 		{
-			return $this->fetch_all('question', "question_id IN(" . implode(',', $question_ids) . ")", 'add_time DESC');
+			return $this->fetch_all('question', "id IN(" . implode(',', $question_ids) . ")", 'add_time DESC');
 		}
 	}
 
@@ -401,7 +401,7 @@ class question_class extends AWS_MODEL
 
 		return $this->update('question', array(
 			'focus_count' => $this->count('question_focus', 'question_id = ' . intval($question_id))
-		), 'question_id = ' . intval($question_id));
+		), 'id = ' . intval($question_id));
 	}
 
 	public function get_related_question_list($question_id, $question_content, $limit = 10)
@@ -429,17 +429,17 @@ class question_class extends AWS_MODEL
 
 				foreach ($question_list as $key => $val)
 				{
-					if ($val['question_id'] == $question_id)
+					if ($val['id'] == $question_id)
 					{
 						unset($question_list[$key]);
 					}
 					else
 					{
-						if (! isset($question_related[$val['question_id']]))
+						if (! isset($question_related[$val['id']]))
 						{
-							$question_related[$val['question_id']] = $val['question_content'];
+							$question_related[$val['id']] = $val['question_content'];
 
-							$question_info[$val['question_id']] = $val;
+							$question_info[$val['id']] = $val;
 						}
 					}
 				}
@@ -451,7 +451,7 @@ class question_class extends AWS_MODEL
 			foreach ($question_related as $key => $question_content)
 			{
 				$question_related_list[] = array(
-					'question_id' => $key,
+					'id' => $key,
 					'question_content' => $question_content,
 					'answer_count' => $question_info[$key]['answer_count']
 				);
@@ -574,7 +574,7 @@ class question_class extends AWS_MODEL
 
 			foreach ($list as $key => $val)
 			{
-				$list[$key]['question_info'] = $question_infos[$val['question_id']];
+				$list[$key]['question_info'] = $question_infos[$val['id']];
 			}
 
 			return $list;
@@ -600,9 +600,9 @@ class question_class extends AWS_MODEL
 
 		if ($question_info['uid'] != $uid)
 		{
-			$this->model('notify')->send($uid, $question_info['uid'], notify_class::TYPE_QUESTION_COMMENT, notify_class::CATEGORY_QUESTION, $question_info['question_id'], array(
+			$this->model('notify')->send($uid, $question_info['uid'], notify_class::TYPE_QUESTION_COMMENT, notify_class::CATEGORY_QUESTION, $question_info['id'], array(
 				'from_uid' => $uid,
-				'question_id' => $question_info['question_id'],
+				'question_id' => $question_info['id'],
 				'comment_id' => $comment_id
 			));
 
@@ -617,9 +617,9 @@ class question_class extends AWS_MODEL
 					continue;
 				}
 
-				$this->model('notify')->send($uid, $user_id, notify_class::TYPE_QUESTION_COMMENT_AT_ME, notify_class::CATEGORY_QUESTION, $question_info['question_id'], array(
+				$this->model('notify')->send($uid, $user_id, notify_class::TYPE_QUESTION_COMMENT_AT_ME, notify_class::CATEGORY_QUESTION, $question_info['id'], array(
 					'from_uid' => $uid,
-					'question_id' => $question_info['question_id'],
+					'question_id' => $question_info['id'],
 					'comment_id' => $comment_id
 				));
 
@@ -747,7 +747,7 @@ class question_class extends AWS_MODEL
 		{
 			foreach ($question_related_list AS $key => $val)
 			{
-				$question_related_ids[$val['question_id']] = $val['question_id'];
+				$question_related_ids[$val['id']] = $val['id'];
 			}
 
 			if (!$topic_ids_query = $this->fetch_all('topic_relation', 'item_id IN(' . implode(',', $question_related_ids) . ") AND `type` = 'question'"))

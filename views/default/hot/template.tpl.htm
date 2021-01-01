@@ -17,12 +17,12 @@
 			<?php _e('%s 个回复', $val['answer_count']); ?>
 		</p>
 		<h2 style="font-size:16px;">
-			<a href="question/<?php echo $val['question_id']; ?>"><?php echo CF::title($val['user_info'], 'question_' . $val['question_id'], $val['question_content']); ?></a>
+			<a href="question/<?php echo $val['id']; ?>"><?php echo CF::title($val['user_info'], 'question_' . $val['id'], $val['question_content']); ?></a>
 		</h2>
 	</div>
 	<div class="mod-body">
 		<div class="content markitup-box">
-			<?php echo CF::body($val['user_info'], 'question_' . $val['question_id'], $val['question_detail']); ?>
+			<?php echo CF::body($val['user_info'], 'question_' . $val['id'], $val['question_detail']); ?>
 		</div>
 	</div>
 	<div class="mod-footer">
@@ -39,12 +39,12 @@
 
 			<!-- 可显示/隐藏的操作box -->
 			<div class="more-operate">
-				<a data-id="<?php echo $val['question_id']; ?>" data-type="question" class="aw-add-comment aw-small-text <?php if ($val['comment_count'] > 0) {?>active<?php }?>" data-comment-count="<?php echo $val['comment_count']; ?>" style="margin-right: 15px;"><i class="icon icon-comment"></i> <?php if ($val['comment_count']) { ?><?php _e('%s 条讨论', $val['comment_count']); ?><?php } else { ?><?php _e('添加讨论'); ?><?php } ?></a>
+				<a data-id="<?php echo $val['id']; ?>" data-type="question" class="aw-add-comment aw-small-text <?php if ($val['comment_count'] > 0) {?>active<?php }?>" data-comment-count="<?php echo $val['comment_count']; ?>" style="margin-right: 15px;"><i class="icon icon-comment"></i> <?php if ($val['comment_count']) { ?><?php _e('%s 条讨论', $val['comment_count']); ?><?php } else { ?><?php _e('添加讨论'); ?><?php } ?></a>
 				
-				<a href="vote/log/item_type-question__item_id-<?php echo $val['question_id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
+				<a href="vote/log/item_type-question__item_id-<?php echo $val['id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
 
 				<?php if ($this->user_id) { ?>
-					<a href="javascript:;" onclick="AWS.User.add_favorite('question', '<?php echo $val['question_id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>
+					<a href="javascript:;" onclick="AWS.User.add_favorite('question', '<?php echo $val['id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>
 				<?php } ?>
 
 			</div>
@@ -68,7 +68,7 @@
 			<?php _e('回复了问题'); ?>
 		</p>
 		<h2 style="font-size:16px;">
-			<a href="question/<?php echo $val['question_info']['question_id']; ?>"><?php echo $val['question_info']['question_content']; ?></a>
+			<a href="question/<?php echo $val['question_info']['id']; ?>"><?php echo $val['question_info']['question_content']; ?></a>
 		</h2>
 	</div>
 	<div class="mod-body clearfix">

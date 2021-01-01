@@ -232,7 +232,7 @@ class search_fulltext_class extends AWS_MODEL
 			case 'question':
 				return $this->shutdown_update('question', array(
 					'question_content_fulltext' => $search_code
-				), 'question_id = ' . intval($item_id));
+				), 'id = ' . intval($item_id));
 			break;
 
 			case 'article':

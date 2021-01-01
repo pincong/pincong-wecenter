@@ -89,21 +89,8 @@ class content_class extends AWS_MODEL
 		}
 
 		$where = 'id = ' . ($item_id);
-		// TODO: question_id 字段改为 id 以避免特殊处理
-		if ($type == 'question')
-		{
-			$where = 'question_id = ' . ($item_id);
-		}
 
 		$item_info = $this->fetch_row($type, $where);
-		// TODO: id
-		if ($item_info)
-		{
-			if ($type == 'question')
-			{
-				$item_info['id'] = $item_info['question_id'];
-			}
-		}
 
 		$this->cache_content_info($type, $item_id, $item_info);
 		return $item_info;
@@ -148,21 +135,8 @@ class content_class extends AWS_MODEL
 		}
 
 		$where = 'id = ' . ($item_id);
-		// TODO: question_id 字段改为 id 以避免特殊处理
-		if ($type == 'question')
-		{
-			$where = 'question_id = ' . ($item_id);
-		}
 
 		$item_info = $this->fetch_row($type, $where);
-		// TODO: id
-		if ($item_info)
-		{
-			if ($type == 'question')
-			{
-				$item_info['id'] = $item_info['question_id'];
-			}
-		}
 
 		$this->cache_content_info($type, $item_id, $item_info);
 		return $item_info;
@@ -301,7 +275,7 @@ class content_class extends AWS_MODEL
 		//$this->shutdown_query("UPDATE " . $this->get_table($item_type) . " SET view_count = view_count + 1 WHERE id = " . intval($item_id));
 		if ($item_type == 'question')
 		{
-			$this->shutdown_query("UPDATE " . $this->get_table('question') . " SET view_count = view_count + 1 WHERE question_id = " . intval($item_id));
+			$this->shutdown_query("UPDATE " . $this->get_table('question') . " SET view_count = view_count + 1 WHERE id = " . intval($item_id));
 		}
 		elseif ($item_type == 'article')
 		{
@@ -329,11 +303,6 @@ class content_class extends AWS_MODEL
 		}
 
 		$where = 'id = ' . intval($item_id);
-		// TODO
-		if ($item_type == 'question')
-		{
-			$where = 'question_id = ' . intval($item_id);
-		}
 		$this->update($item_type, array('uid' => ($new_uid)), $where);
 
 		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
@@ -353,11 +322,6 @@ class content_class extends AWS_MODEL
 		}
 
 		$where = 'id = ' . intval($item_id);
-		// TODO
-		if ($item_type == 'question')
-		{
-			$where = 'question_id = ' . intval($item_id);
-		}
 		$this->update($item_type, array('category_id' => intval($category_id)), $where);
 
 		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
@@ -377,11 +341,6 @@ class content_class extends AWS_MODEL
 		}
 
 		$where = 'id = ' . intval($item_id);
-		// TODO
-		if ($item_type == 'question')
-		{
-			$where = 'question_id = ' . intval($item_id);
-		}
 		$this->update($item_type, array('lock' => 1), $where);
 
 		$this->model('content')->log($item_type, $item_id, '锁定', $uid);
@@ -397,11 +356,6 @@ class content_class extends AWS_MODEL
 		}
 
 		$where = 'id = ' . intval($item_id);
-		// TODO
-		if ($item_type == 'question')
-		{
-			$where = 'question_id = ' . intval($item_id);
-		}
 		$this->update($item_type, array('lock' => 0), $where);
 
 		$this->model('content')->log($item_type, $item_id, '取消锁定', $uid);
@@ -454,11 +408,6 @@ class content_class extends AWS_MODEL
 		}
 
 		$where = 'id = ' . intval($item_id);
-		// TODO
-		if ($item_type == 'question')
-		{
-			$where = 'question_id = ' . intval($item_id);
-		}
 		$this->update($item_type, array('recommend' => 1), $where);
 
 		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
@@ -475,11 +424,6 @@ class content_class extends AWS_MODEL
 		}
 
 		$where = 'id = ' . intval($item_id);
-		// TODO
-		if ($item_type == 'question')
-		{
-			$where = 'question_id = ' . intval($item_id);
-		}
 		$this->update($item_type, array('recommend' => 0), $where);
 
 		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
@@ -497,11 +441,6 @@ class content_class extends AWS_MODEL
 		}
 
 		$where = 'id = ' . intval($item_id);
-		// TODO
-		if ($item_type == 'question')
-		{
-			$where = 'question_id = ' . intval($item_id);
-		}
 		$this->update($item_type, array('sort' => 1), $where);
 
 		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
@@ -518,11 +457,6 @@ class content_class extends AWS_MODEL
 		}
 
 		$where = 'id = ' . intval($item_id);
-		// TODO
-		if ($item_type == 'question')
-		{
-			$where = 'question_id = ' . intval($item_id);
-		}
 		$this->update($item_type, array('sort' => 0), $where);
 
 		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";

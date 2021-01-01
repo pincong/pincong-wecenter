@@ -311,7 +311,7 @@
 								<?php foreach($this->recommend_posts AS $key => $val) { ?>
 								<li>
 									<?php if ($val['post_type'] == 'question') { ?>
-									<a href="question/<?php echo $val['question_id']; ?>"><?php if (!$val['question_content']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['question_content']; ?><?php } ?></a>
+									<a href="question/<?php echo $val['id']; ?>"><?php if (!$val['question_content']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['question_content']; ?><?php } ?></a>
 									<?php } elseif ($val['post_type'] == 'article') { ?>
 									<a href="article/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['title']; ?><?php } ?></a>
 									<?php } elseif ($val['post_type'] == 'video') { ?>
@@ -334,7 +334,7 @@
 						<div class="mod-body aw-size-12">
 							<ul>
 								<?php foreach($this->question_related_list AS $key => $val) { ?>
-								<li><a href="question/<?php echo $val['question_id']; ?>"><?php if (!$val['question_content']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['question_content']; ?><?php } ?></a></li>
+								<li><a href="question/<?php echo $val['id']; ?>"><?php if (!$val['question_content']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['question_content']; ?><?php } ?></a></li>
 								<?php } ?>
 							</ul>
 						</div>

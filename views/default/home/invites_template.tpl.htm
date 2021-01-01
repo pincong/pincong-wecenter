@@ -2,7 +2,7 @@
 <?php foreach($this->list as $key => $val) { ?>
 <div class="aw-item">
 	<h4>
-		<a href="question/<?php echo $val['question_info']['question_id']; ?>"><?php if (!$val['question_info']['question_content']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['question_info']['question_content']; ?><?php } ?></a>
+		<a href="question/<?php echo $val['question_info']['id']; ?>"><?php if (!$val['question_info']['question_content']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['question_info']['question_content']; ?><?php } ?></a>
 	</h4>
 	<p class="aw-small-text">
 		<span class="pull-right">

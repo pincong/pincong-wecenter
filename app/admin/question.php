@@ -87,7 +87,7 @@ class question extends AWS_ADMIN_CONTROLLER
 			$where[] = 'answer_count <= ' . intval($_GET['answer_count_max']);
 		}
 
-		if ($question_list = $this->model('question')->fetch_page('question', implode(' AND ', $where), 'question_id DESC', $_GET['page'], $this->per_page))
+		if ($question_list = $this->model('question')->fetch_page('question', implode(' AND ', $where), 'id DESC', $_GET['page'], $this->per_page))
 		{
 			$total_rows = $this->model('question')->found_rows();
 

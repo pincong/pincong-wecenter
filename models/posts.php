@@ -43,7 +43,7 @@ class posts_class extends AWS_MODEL
 			switch ($post_type)
 			{
 				case 'question':
-					$result = $this->fetch_row('question', 'question_id = ' . intval($post_id));
+					$result = $this->fetch_row('question', 'id = ' . intval($post_id));
 					break;
 
 				case 'article':

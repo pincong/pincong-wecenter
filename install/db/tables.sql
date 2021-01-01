@@ -298,7 +298,7 @@ CREATE TABLE IF NOT EXISTS `aws_posts_index` (
 
 --
 CREATE TABLE IF NOT EXISTS `aws_question` (
-  `question_id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `question_content` varchar(240) DEFAULT NULL COMMENT '问题标题',
   `question_detail` text COMMENT '问题详细说明',
   `add_time` int(11) DEFAULT '0' COMMENT '添加时间',
@@ -316,7 +316,7 @@ CREATE TABLE IF NOT EXISTS `aws_question` (
   `recommend` tinyint(1) DEFAULT '0',
   `sort` tinyint(2) DEFAULT '0',
   `last_uid` int(11) DEFAULT '0',
-  PRIMARY KEY (`question_id`),
+  PRIMARY KEY (`id`),
   KEY `category_id` (`category_id`),
   KEY `update_time` (`update_time`),
   KEY `add_time` (`add_time`),

@@ -72,7 +72,7 @@ class main extends AWS_CONTROLLER
 			$sort = 'ASC';
 		}
 
-		$this->model('content')->update_view_count('question', $question_info['question_id'], session_id());
+		$this->model('content')->update_view_count('question', $question_info['id'], session_id());
 
 		if ($_GET['sort_key'] == 'add_time')
 		{
@@ -91,7 +91,7 @@ class main extends AWS_CONTROLLER
 		}
 		else
 		{
-			$answer_list = $this->model('answer')->get_answers($question_info['question_id'], $_GET['page'], $replies_per_page, $answer_order_by);
+			$answer_list = $this->model('answer')->get_answers($question_info['id'], $_GET['page'], $replies_per_page, $answer_order_by);
 		}
 
 		if (! is_array($answer_list))
@@ -126,7 +126,7 @@ class main extends AWS_CONTROLLER
 
 		if (get_setting('answer_unique') == 'Y')
 		{
-			if ($this->model('answer')->has_answer_by_uid($question_info['question_id'], $this->user_id))
+			if ($this->model('answer')->has_answer_by_uid($question_info['id'], $this->user_id))
 			{
 				TPL::assign('user_answered', 1);
 			}
@@ -142,17 +142,17 @@ class main extends AWS_CONTROLLER
 
 		if ($this->user_id)
 		{
-			TPL::assign('invite_users', $this->model('question')->get_invite_users($question_info['question_id']));
+			TPL::assign('invite_users', $this->model('question')->get_invite_users($question_info['id']));
 
 			TPL::assign('user_follow_check', $this->model('follow')->user_follow_check($this->user_id, $question_info['uid']));
 
-			$question_info['vote_value'] = $this->model('vote')->get_user_vote_value_by_id('question', $question_info['question_id'], $this->user_id);
+			$question_info['vote_value'] = $this->model('vote')->get_user_vote_value_by_id('question', $question_info['id'], $this->user_id);
 		}
 
 		TPL::assign('question_info', $question_info);
-		TPL::assign('question_focus', $this->model('question')->has_focus_question($question_info['question_id'], $this->user_id));
+		TPL::assign('question_focus', $this->model('question')->has_focus_question($question_info['id'], $this->user_id));
 
-		$question_topics = $this->model('topic')->get_topics_by_item_id($question_info['question_id'], 'question');
+		$question_topics = $this->model('topic')->get_topics_by_item_id($question_info['id'], 'question');
 
 		if (sizeof($question_topics) == 0 AND $this->user_id)
 		{
@@ -163,7 +163,7 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('question_topics', $question_topics);
 
-		TPL::assign('question_related_list', $this->model('question')->get_related_question_list($question_info['question_id'], $question_info['question_content']));
+		TPL::assign('question_related_list', $this->model('question')->get_related_question_list($question_info['id'], $question_info['question_content']));
 
 		if ($question_topics)
 		{
@@ -173,11 +173,11 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		$page_title = CF::page_title($question_info['user_info'], 'question_' . $question_info['question_id'], $question_info['question_content']);
+		$page_title = CF::page_title($question_info['user_info'], 'question_' . $question_info['id'], $question_info['question_content']);
 		$this->crumb($page_title);
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-			'base_url' => get_js_url('/question/id-' . $question_info['question_id'] . '__sort_key-' . $_GET['sort_key'] . '__sort-' . $_GET['sort']),
+			'base_url' => get_js_url('/question/id-' . $question_info['id'] . '__sort_key-' . $_GET['sort_key'] . '__sort-' . $_GET['sort']),
 			'total_rows' => $question_info['answer_count'],
 			'per_page' => $replies_per_page
 		))->create_links());
@@ -197,7 +197,7 @@ class main extends AWS_CONTROLLER
 		{
 			foreach ($recommend_posts as $key => $value)
 			{
-				if ($value['question_id'] AND $value['question_id'] == $question_info['question_id'])
+				if ($value['post_type'] == 'question' AND $value['id'] == $question_info['id'])
 				{
 					unset($recommend_posts[$key]);
 

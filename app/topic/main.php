@@ -131,10 +131,9 @@ class main extends AWS_CONTROLLER
 		{
 			foreach ($posts_list AS $key => $val)
 			{
-				// TODO: if ($val['post_type'] == 'question')
-				if ($val['answer_count'])
+				if ($val['post_type'] == 'question')
 				{
-					$posts_list[$key]['answer_users'] = $this->model('question')->get_answer_users_by_question_id($val['question_id'], 2, $val['uid']);
+					$posts_list[$key]['answer_users'] = $this->model('question')->get_answer_users_by_question_id($val['id'], 2, $val['uid']);
 				}
 			}
 		}
