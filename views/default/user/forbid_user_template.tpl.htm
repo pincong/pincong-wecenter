@@ -9,7 +9,7 @@
 			<input type="hidden" name="uid" value="<?php echo $this->user['uid']; ?>" />
 			<div class="modal-body">
 				<div class="alert alert-danger collapse error_message"><i class="icon icon-delete"></i> <em></em></div>
-				<select class="form-control" name="status" <?php if ($this->banning_reason_list) { ?>onchange="var $reason = $(this).parent().find('select[name=reason]'); if ($(this).val() == 0) {$reason.val(''); $reason.css('visibility', 'hidden');} else {$reason.css('visibility', 'visible');}"<?php } ?>>
+				<select class="form-control" name="status" <?php if ($this->banning_reason_list) { ?>onchange="var $reason = $(this).parent().find('select[name=reason]'); if ($(this).val() == 0) {$(this).parent().find('textarea').val(''); $reason.val(''); $reason.css('visibility', 'hidden');} else {$reason.css('visibility', 'visible');}"<?php } ?>>
 					<option value="1" <?php if ($this->user['forbidden'] == 1) { ?>selected="selected"<?php } ?>><?php _e('封禁'); ?></option>
 					<option value="0" <?php if ($this->user['forbidden'] == 0) { ?>selected="selected"<?php } ?>><?php _e('取消封禁'); ?></option>
 				</select>

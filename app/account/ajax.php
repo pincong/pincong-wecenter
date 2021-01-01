@@ -359,7 +359,7 @@ class ajax extends AWS_CONTROLLER
 		if ($_POST['user_name'])
 		{
 			$user_name = trim($_POST['user_name']);
-			if ($user_name != $this->user_info['user_name'])
+			if ($user_name AND $user_name != $this->user_info['user_name'])
 			{
 				if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_change_username'))
 				{
