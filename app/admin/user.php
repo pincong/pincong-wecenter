@@ -55,7 +55,7 @@ class user extends AWS_ADMIN_CONTROLLER
 
         if ($_GET['user_name'])
         {
-            $where[] = ['user_name', 'like', '%' . $_GET['user_name'] . '%', 's'];
+            $where[] = ['user_name', 'like', '%' . escape_like_clause($_GET['user_name']) . '%', 's'];
         }
 
         if ($_GET['group_id'])

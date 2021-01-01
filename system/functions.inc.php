@@ -299,7 +299,8 @@ function is_valid_timezone($timezone)
 	return $tz !== false;
 }
 
-function checksum($string) {
+function checksum($string)
+{
 	$i = crc32($string);
 	if (0 > $i)
 	{
@@ -309,23 +310,28 @@ function checksum($string) {
 	return $i;
 }
 
-function safe_base64_encode($string) {
+function safe_base64_encode($string)
+{
 	return strtr(rtrim(base64_encode($string), '='), '+/', '._');
 }
 
-function safe_base64_decode($string) {
+function safe_base64_decode($string)
+{
 	return base64_decode(strtr($string, '._', '+/'));
 }
 
-function safe_url_encode($string) {
+function safe_url_encode($string)
+{
 	return strtr(rawurlencode($string), '-', '+');
 }
 
-function safe_url_decode($string) {
+function safe_url_decode($string)
+{
 	return rawurldecode(strtr($string, '+', '-'));
 }
 
-function safe_text($html) {
+function safe_text($html)
+{
 	return str_replace(
 		array('<', '>', '"', "'"),
 		array('&lt;', '&gt;', '&quot;', '&#39;'),
@@ -333,7 +339,8 @@ function safe_text($html) {
 	);
 }
 
-function unnest_bbcode($text) {
+function unnest_bbcode($text)
+{
 	return str_replace(
 		array('[', ']'),
 		array('&#91;', '&#93;'),
@@ -349,6 +356,12 @@ function truncate_text($string, $length, $ellipsis = '...')
 		return $string;
 	}
 	return iconv_substr($string, 0, $length) . $ellipsis;
+}
+
+
+function escape_like_clause($string)
+{
+	return str_replace(array('[', '_', '%'), array('[[]', '[_]', '[%]'), $string);
 }
 
 

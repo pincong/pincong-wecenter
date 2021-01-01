@@ -55,7 +55,7 @@ class article extends AWS_ADMIN_CONTROLLER
 
 		if ($_GET['keyword'])
 		{
-			$where[] = ['title', 'like', '%' . $_GET['keyword'] . '%', 's'];
+			$where[] = ['title', 'like', '%' . escape_like_clause($_GET['keyword']) . '%', 's'];
 		}
 
 		if ($_GET['start_date'])
