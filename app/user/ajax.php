@@ -41,10 +41,10 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('用户不存在')));
 		}
 
-		if ($this->user_info['group_id'] != 1 AND $this->user_info['group_id'] != 2 AND $this->user_info['group_id'] != 3)
+		if (!$this->user_info['permission']['is_moderator'])
 		{
-			// 普通用户不能处理系统组以及比自己声望高的用户
-			if ($user_info['group_id'] < 4 OR intval($this->user_info['reputation']) <= intval($user_info['reputation']))
+			// 普通用户不能处理比自己声望高的用户
+			if (intval($this->user_info['reputation']) <= intval($user_info['reputation']))
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 			}
@@ -165,7 +165,7 @@ class ajax extends AWS_CONTROLLER
 		$uid = intval($_POST['uid']);
 		$this->get_user_info($uid, $user_info);
 
-		if ($status > 0 AND $this->user_info['group_id'] != 1 AND $this->user_info['group_id'] != 2)
+		if ($status > 0 AND !$this->user_info['permission']['is_moderator'])
 		{
 			$reputation_formal_user = get_setting('reputation_formal_user');
 			if (is_numeric($reputation_formal_user) AND $user_info['reputation'] >= $reputation_formal_user)
