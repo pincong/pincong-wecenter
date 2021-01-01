@@ -42,6 +42,24 @@ class AWS_MODEL
 		show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage());
 	}
 
+	private function _build_where($array, &$prepared_values)
+	{
+		if (!isset($array))
+		{
+			return null;
+		}
+		if (is_string($array))
+		{
+			return $array;
+		}
+		$where = load_class('Services_WhereBuilder')->build($array, $prepared_values);
+		if ($where === false)
+		{
+			throw new Zend_Exception('Error while building WHERE clause.');
+		}
+		return $where;
+	}
+
 	public function setup()
 	{}
 
@@ -66,12 +84,12 @@ class AWS_MODEL
 		{
 			$sql .= '(`' . implode('`, `', array_keys($data)) . '`) ';
 			$sql .= 'VALUES (' . implode(', ', array_fill(0, count($data), '?')) . ')';
-			$values = array_values($data);
+			$prepared_values = array_values($data);
 		}
 		else
 		{
 			$sql .= $data;
-			$values = null;
+			$prepared_values = null;
 		}
 
 		if ($this->_debug)
@@ -81,7 +99,7 @@ class AWS_MODEL
 
 		try {
 			$stmt = $pdo->prepare($sql);
-			$success = $stmt->execute($values);
+			$success = $stmt->execute($prepared_values);
 		} catch (Exception $e) {
 			$this->_db_error($sql, $e);
 		}
@@ -103,27 +121,23 @@ class AWS_MODEL
 	{
 		$pdo = AWS_APP::db()->master();
 
-		if (is_array($where))
-		{
-			$where = $this->where($where);
-		}
-
-		if (!$where)
-		{
-			throw new Zend_Exception('Missing WHERE clause.');
-		}
-
 		$sql = 'UPDATE `' . $this->get_table($table) . '` SET ';
 
 		if (is_array($data))
 		{
 			$sql .= '`' . implode('`= ?, `', array_keys($data)) . '` = ?';
-			$values = array_values($data);
+			$prepared_values = array_values($data);
 		}
 		else
 		{
 			$sql .= $data;
-			$values = null;
+			$prepared_values = null;
+		}
+
+		$where = $this->_build_where($where, $prepared_values);
+		if (!$where)
+		{
+			throw new Zend_Exception('Missing WHERE clause.');
 		}
 		$sql .= ' WHERE ' . $where;
 
@@ -134,7 +148,7 @@ class AWS_MODEL
 
 		try {
 			$stmt = $pdo->prepare($sql);
-			$success = $stmt->execute($values);
+			$success = $stmt->execute($prepared_values);
 		} catch (Exception $e) {
 			$this->_db_error($sql, $e);
 		}
@@ -152,17 +166,14 @@ class AWS_MODEL
 	{
 		$pdo = AWS_APP::db()->master();
 
-		if (is_array($where))
-		{
-			$where = $this->where($where);
-		}
+		$sql = 'DELETE FROM `' . $this->get_table($table) . '`';
 
+		$where = $this->_build_where($where, $prepared_values);
 		if (!$where)
 		{
 			throw new Zend_Exception('Missing WHERE clause.');
 		}
-
-		$sql = 'DELETE FROM `' . $this->get_table($table) . '` WHERE ' . $where;
+		$sql .= ' WHERE ' . $where;
 
 		if ($this->_debug)
 		{
@@ -171,7 +182,7 @@ class AWS_MODEL
 
 		try {
 			$stmt = $pdo->prepare($sql);
-			$success = $stmt->execute();
+			$success = $stmt->execute($prepared_values);
 		} catch (Exception $e) {
 			$this->_db_error($sql, $e);
 		}
@@ -185,7 +196,7 @@ class AWS_MODEL
 	}
 
 
-	public function execute($sql)
+	public function execute($sql, $prepared_values = null)
 	{
 		$pdo = AWS_APP::db()->master();
 
@@ -196,7 +207,7 @@ class AWS_MODEL
 
 		try {
 			$stmt = $pdo->prepare($sql);
-			$success = $stmt->execute();
+			$success = $stmt->execute($prepared_values);
 		} catch (Exception $e) {
 			$this->_db_error($sql, $e);
 		}
@@ -210,7 +221,7 @@ class AWS_MODEL
 	}
 
 
-	public function query_all($sql)
+	public function query_all($sql, $prepared_values = null)
 	{
 		$pdo = AWS_APP::db()->slave();
 
@@ -221,7 +232,7 @@ class AWS_MODEL
 
 		try {
 			$stmt = $pdo->prepare($sql);
-			$stmt->execute();
+			$stmt->execute($prepared_values);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		} catch (Exception $e) {
 			$this->_db_error($sql, $e);
@@ -242,10 +253,7 @@ class AWS_MODEL
 
 		$sql = 'SELECT * FROM `' . $this->get_table($table) . '`';
 
-		if (is_array($where))
-		{
-			$where = $this->where($where);
-		}
+		$where = $this->_build_where($where, $prepared_values);
 		if ($where)
 		{
 			$sql .= ' WHERE ' . $where;
@@ -268,7 +276,7 @@ class AWS_MODEL
 
 		try {
 			$stmt = $pdo->prepare($sql);
-			$stmt->execute();
+			$stmt->execute($prepared_values);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		} catch (Exception $e) {
 			$this->_db_error($sql, $e);
@@ -298,10 +306,7 @@ class AWS_MODEL
 		}
 		$sql .= ' FROM `' . $this->get_table($table) . '`';
 
-		if (is_array($where))
-		{
-			$where = $this->where($where);
-		}
+		$where = $this->_build_where($where, $prepared_values);
 		if ($where)
 		{
 			$sql .= ' WHERE ' . $where;
@@ -324,7 +329,7 @@ class AWS_MODEL
 
 		try {
 			$stmt = $pdo->prepare($sql);
-			$stmt->execute();
+			$stmt->execute($prepared_values);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		} catch (Exception $e) {
 			$this->_db_error($sql, $e);
@@ -346,10 +351,7 @@ class AWS_MODEL
 		$sql = $distinct ? 'SELECT DISTINCT ' : 'SELECT ';
 		$sql .= '`' . $column . '` FROM `' . $this->get_table($table) . '`';
 
-		if (is_array($where))
-		{
-			$where = $this->where($where);
-		}
+		$where = $this->_build_where($where, $prepared_values);
 		if ($where)
 		{
 			$sql .= ' WHERE ' . $where;
@@ -372,7 +374,7 @@ class AWS_MODEL
 
 		try {
 			$stmt = $pdo->prepare($sql);
-			$stmt->execute();
+			$stmt->execute($prepared_values);
 			$result = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
 		} catch (Exception $e) {
 			$this->_db_error($sql, $e);
@@ -405,10 +407,7 @@ class AWS_MODEL
 
 		$sql = 'SELECT * FROM `' . $this->get_table($table) . '`';
 
-		if (is_array($where))
-		{
-			$where = $this->where($where);
-		}
+		$where = $this->_build_where($where, $prepared_values);
 		if ($where)
 		{
 			$sql .= ' WHERE ' . $where;
@@ -428,7 +427,7 @@ class AWS_MODEL
 
 		try {
 			$stmt = $pdo->prepare($sql);
-			$stmt->execute();
+			$stmt->execute($prepared_values);
 			$result = $stmt->fetch(PDO::FETCH_ASSOC);
 		} catch (Exception $e) {
 			$this->_db_error($sql, $e);
@@ -449,10 +448,7 @@ class AWS_MODEL
 
 		$sql = 'SELECT `' . $column . '` FROM `' . $this->get_table($table) . '`';
 
-		if (is_array($where))
-		{
-			$where = $this->where($where);
-		}
+		$where = $this->_build_where($where, $prepared_values);
 		if ($where)
 		{
 			$sql .= ' WHERE ' . $where;
@@ -472,7 +468,7 @@ class AWS_MODEL
 
 		try {
 			$stmt = $pdo->prepare($sql);
-			$stmt->execute();
+			$stmt->execute($prepared_values);
 			$result = $stmt->fetch(PDO::FETCH_COLUMN);
 		} catch (Exception $e) {
 			$this->_db_error($sql, $e);
@@ -493,10 +489,7 @@ class AWS_MODEL
 
 		$sql = 'SELECT COUNT(*) AS `n` FROM `' . $this->get_table($table) . '`';
 
-		if (is_array($where))
-		{
-			$where = $this->where($where);
-		}
+		$where = $this->_build_where($where, $prepared_values);
 		if ($where)
 		{
 			$sql .= ' WHERE ' . $where;
@@ -509,7 +502,7 @@ class AWS_MODEL
 
 		try {
 			$stmt = $pdo->prepare($sql);
-			$stmt->execute();
+			$stmt->execute($prepared_values);
 			$result = $stmt->fetchColumn();
 		} catch (Exception $e) {
 			$this->_db_error($sql, $e);
@@ -530,10 +523,7 @@ class AWS_MODEL
 
 		$sql = 'SELECT SUM(`' . $column . '`) AS `n` FROM `' . $this->get_table($table) . '`';
 
-		if (is_array($where))
-		{
-			$where = $this->where($where);
-		}
+		$where = $this->_build_where($where, $prepared_values);
 		if ($where)
 		{
 			$sql .= ' WHERE ' . $where;
@@ -546,7 +536,7 @@ class AWS_MODEL
 
 		try {
 			$stmt = $pdo->prepare($sql);
-			$stmt->execute();
+			$stmt->execute($prepared_values);
 			$result = $stmt->fetchColumn();
 		} catch (Exception $e) {
 			$this->_db_error($sql, $e);
@@ -563,17 +553,10 @@ class AWS_MODEL
 
 	public function fetch_page($table, $where = null, $order_by = null, $page = null, $per_page = null)
 	{
-		if (is_array($where))
-		{
-			$where = $this->where($where);
-		}
-
-		$result = $this->fetch_all($table, $where, $order_by, $page, $per_page);
-
 		$this->_fetch_page_table = $table;
 		$this->_fetch_page_where = $where;
 
-		return $result;
+		return $this->fetch_all($table, $where, $order_by, $page, $per_page);
 	}
 
 
@@ -586,7 +569,7 @@ class AWS_MODEL
 
 		if ($rows_cache)
 		{
-			$cache_key = 'db_rows_cache_' . md5($this->_fetch_page_table . '_' . $this->_fetch_page_where);
+			$cache_key = 'db_rows_cache_' . md5($this->_fetch_page_table . '_' . serialize($this->_fetch_page_where));
 
 			$db_found_rows = AWS_APP::cache()->get($cache_key);
 		}
@@ -609,21 +592,6 @@ class AWS_MODEL
 	{
 		$pdo = AWS_APP::db()->master();
 		return $pdo->quote($string);
-	}
-
-	public function escape($string)
-	{
-		return substr(substr($this->quote($string), 1), 0, -1);
-	}
-
-	public function where($array)
-	{
-		$where = load_class('Services_WhereBuilder')->build($array);
-		if ($where === false)
-		{
-			throw new Zend_Exception('Error while building WHERE clause.');
-		}
-		return $where;
 	}
 
 	function limit_page($page, $per_page)

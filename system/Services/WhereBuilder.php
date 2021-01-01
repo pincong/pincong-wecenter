@@ -56,16 +56,16 @@ class Services_WhereBuilder
 		return true;
 	}
 
-	private static function _convert_data_string($val)
+	private static function _convert_data_string($val, &$prepared_values)
 	{
 		if (!self::_is_safe_string($val))
 		{
-			$val = bin2hex($val);
-			if (!$val)
+			if (!is_array($prepared_values))
 			{
-				return "''";
+				$prepared_values = [];
 			}
-			return '0x' . $val;
+			$prepared_values[] = $val;
+			return '?';
 		}
 		else
 		{
@@ -73,7 +73,7 @@ class Services_WhereBuilder
 		}
 	}
 
-	private static function _convert_data_auto($val)
+	private static function _convert_data_auto($val, &$prepared_values)
 	{
 		if (is_int($val))
 		{
@@ -89,7 +89,7 @@ class Services_WhereBuilder
 		}
 		elseif (is_string($val))
 		{
-			return self::_convert_data_string($val);
+			return self::_convert_data_string($val, $prepared_values);
 		}
 		else
 		{
@@ -97,11 +97,11 @@ class Services_WhereBuilder
 		}
 	}
 
-	private static function _convert_data($val, $type)
+	private static function _convert_data($val, $type, &$prepared_values)
 	{
 		if (!isset($type))
 		{
-			return self::_convert_data_auto($val);
+			return self::_convert_data_auto($val, $prepared_values);
 		}
 
 		if ($type === true)
@@ -128,20 +128,20 @@ class Services_WhereBuilder
 		}
 		elseif ($type == 's')
 		{
-			return self::_convert_data_string(strval($val));
+			return self::_convert_data_string(strval($val), $prepared_values);
 		}
 	}
 
 	// e.g. ['id', 'between', 1, 99]
-	private static function _parse_condition_between($params, $not = false)
+	private static function _parse_condition_between($params, $not, &$prepared_values)
 	{
 		if (count($params) < 4)
 		{
 			return false;
 		}
-		$type = $params[4];
-		$from = self::_convert_data($params[2], $type);
-		$to = self::_convert_data($params[3], $type);
+		$type = $params[4] ?? null;
+		$from = self::_convert_data($params[2], $type, $prepared_values);
+		$to = self::_convert_data($params[3], $type, $prepared_values);
 		$result = "BETWEEN {$from} AND {$to}";
 		if ($not)
 		{
@@ -151,14 +151,14 @@ class Services_WhereBuilder
 	}
 
 	// e.g. ['name', 'like', 'admin%']
-	private static function _parse_condition_like($params, $not = false)
+	private static function _parse_condition_like($params, $not, &$prepared_values)
 	{
 		if (count($params) < 3)
 		{
 			return false;
 		}
-		$type = $params[3];
-		$val = self::_convert_data($params[2], $type);
+		$type = $params[3] ?? null;
+		$val = self::_convert_data($params[2], $type, $prepared_values);
 		$result = "LIKE {$val}";
 		if ($not)
 		{
@@ -168,7 +168,7 @@ class Services_WhereBuilder
 	}
 
 	// e.g. ['id', 'in', [1, 2, 3]]
-	private static function _parse_condition_in($params, $not = false)
+	private static function _parse_condition_in($params, $not, &$prepared_values)
 	{
 		if (count($params) < 3)
 		{
@@ -179,10 +179,10 @@ class Services_WhereBuilder
 		{
 			return false;
 		}
-		$type = $params[3];
+		$type = $params[3] ?? null;
 		foreach ($array as &$val)
 		{
-			$val = self::_convert_data($val, $type);
+			$val = self::_convert_data($val, $type, $prepared_values);
 		}
 		unset($val);
 		$array = implode(', ', $array);
@@ -195,18 +195,18 @@ class Services_WhereBuilder
 	}
 
 	// e.g. ['id', 'eq', 3]
-	private static function _parse_condition_comparison($params, $operator)
+	private static function _parse_condition_comparison($params, $operator, &$prepared_values)
 	{
 		if (count($params) < 3)
 		{
 			return false;
 		}
-		$type = $params[3];
-		$val = self::_convert_data($params[2], $type);
+		$type = $params[3] ?? null;
+		$val = self::_convert_data($params[2], $type, $prepared_values);
 		return $operator . ' ' . $val;
 	}
 
-	private static function _parse_condition($params)
+	private static function _parse_condition($params, &$prepared_values)
 	{
 		$column = $params[0];
 		if (!is_string($column) OR $column == '' OR !self::_is_safe_string($column))
@@ -223,40 +223,40 @@ class Services_WhereBuilder
 				$result = 'IS NOT NULL';
 				break;
 			case 'between':
-				$result = self::_parse_condition_between($params);
+				$result = self::_parse_condition_between($params, 0, $prepared_values);
 				break;
 			case 'notBetween':
-				$result = self::_parse_condition_between($params, 'not');
+				$result = self::_parse_condition_between($params, 'not', $prepared_values);
 				break;
 			case 'like':
-				$result = self::_parse_condition_like($params);
+				$result = self::_parse_condition_like($params, 0, $prepared_values);
 				break;
 			case 'notLike':
-				$result = self::_parse_condition_like($params, 'not');
+				$result = self::_parse_condition_like($params, 'not', $prepared_values);
 				break;
 			case 'in':
-				$result = self::_parse_condition_in($params);
+				$result = self::_parse_condition_in($params, 0, $prepared_values);
 				break;
 			case 'notIn':
-				$result = self::_parse_condition_in($params, 'not');
+				$result = self::_parse_condition_in($params, 'not', $prepared_values);
 				break;
 			case 'eq':
-				$result = self::_parse_condition_comparison($params, '=');
+				$result = self::_parse_condition_comparison($params, '=', $prepared_values);
 				break;
 			case 'notEq':
-				$result = self::_parse_condition_comparison($params, '<>');
+				$result = self::_parse_condition_comparison($params, '<>', $prepared_values);
 				break;
 			case 'lt':
-				$result = self::_parse_condition_comparison($params, '<');
+				$result = self::_parse_condition_comparison($params, '<', $prepared_values);
 				break;
 			case 'gt':
-				$result = self::_parse_condition_comparison($params, '>');
+				$result = self::_parse_condition_comparison($params, '>', $prepared_values);
 				break;
 			case 'lte':
-				$result = self::_parse_condition_comparison($params, '<=');
+				$result = self::_parse_condition_comparison($params, '<=', $prepared_values);
 				break;
 			case 'gte':
-				$result = self::_parse_condition_comparison($params, '>=');
+				$result = self::_parse_condition_comparison($params, '>=', $prepared_values);
 				break;
 			default:
 				return false;
@@ -304,7 +304,7 @@ class Services_WhereBuilder
 		return;
 	}
 
-	private static function _parse_array($array)
+	private static function _parse_array($array, &$prepared_values)
 	{
 		$result = '';
 		for ($i = 0, $l = count($array); $i < $l; $i++)
@@ -314,7 +314,7 @@ class Services_WhereBuilder
 			{
 				if ($i == 0 AND $l > 1 AND in_array($array[$i + 1], self::$condition_operators))
 				{
-					$r = self::_parse_condition($array);
+					$r = self::_parse_condition($array, $prepared_values);
 					if ($r === false)
 					{
 						return false;
@@ -333,7 +333,7 @@ class Services_WhereBuilder
 			}
 			else
 			{
-				$r = self::_parse_array($val);
+				$r = self::_parse_array($val, $prepared_values);
 				if ($r === false)
 				{
 					return false;
@@ -347,13 +347,13 @@ class Services_WhereBuilder
 		return $result;
 	}
 
-	public static function build($array)
+	public static function build($array, &$prepared_values)
 	{
 		if (!is_array($array))
 		{
 			return false;
 		}
-		return self::_parse_array($array);
+		return self::_parse_array($array, $prepared_values);
 	}
 
 }

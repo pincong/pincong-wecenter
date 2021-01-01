@@ -339,35 +339,6 @@ function url_rewrite($path = null)
 	return $base_url . $path;
 }
 
-/**
- * 用于分页查询 SQL 的 limit 参数生成器
- *
- * @param  int
- * @param  int
- * @return string
- */
-function calc_page_limit($page, $per_page)
-{
-	$page = intval($page);
-	if ($page < 1)
-	{
-		$page = 1;
-	}
-
-	$per_page = intval($per_page);
-	if ($per_page < 1)
-	{
-		$per_page = 1;
-	}
-
-	if ($per_page > 1000)
-	{
-		$per_page = 1000;
-	}
-
-	return (($page - 1) * $per_page) . ', ' . ($per_page);
-}
-
 
 /**
  * 格式化输出相应的语言

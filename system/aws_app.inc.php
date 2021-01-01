@@ -210,7 +210,7 @@ class AWS_APP
 		});
 
 		set_exception_handler(function ($exception) {
-			$message = "Application error\n------\n\nMessage: " . $exception->getMessage() . "\nFile: " . $exception->getFile() . "\nLine: " . $exception->getLine() . "\nURI: " . $_SERVER['REQUEST_URI'];
+			$message = "Application error\n------\n\nMessage: " . $exception->getMessage() . "\nFile: " . $exception->getFile() . "\nLine: " . $exception->getLine() . "\nURI: " . $_SERVER['REQUEST_URI'] . "\n------\n" . $exception->getTraceAsString();
 			show_error($message);
 		});
 	}
