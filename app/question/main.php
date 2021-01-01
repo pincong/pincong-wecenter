@@ -98,7 +98,7 @@ class main extends AWS_CONTROLLER
 			$order_by[] = "agree_count " . $sort;
 		}
 
-		$reply_count = $thread_info['answer_count'];
+		$reply_count = $thread_info['reply_count'];
 		$discussion_count = $thread_info['comment_count'];
 		// 判断是否已合并
 		if ($redirect_posts = $this->model('content')->get_redirect_posts('question', $thread_info['id']))
@@ -107,7 +107,7 @@ class main extends AWS_CONTROLLER
 			{
 				$post_ids[] = $val['id'];
 				// 修复合并后回复数
-				$reply_count += $val['answer_count'];
+				$reply_count += $val['reply_count'];
 				$discussion_count += $val['comment_count'];
 			}
 		}

@@ -39,7 +39,7 @@
 							<tr>
 								<td><input type="checkbox" name="question_ids[]" value="<?php echo $val['id']; ?>"></td>
 								<td><a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['id']; ?>" target="_blank"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php echo _t('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a></td>
-								<td><?php if ($val['answer_count']) { ?><?php echo $val['answer_count']; ?><?php } else { ?>0<?php } ?></td>
+								<td><?php if ($val['reply_count']) { ?><?php echo $val['reply_count']; ?><?php } else { ?>0<?php } ?></td>
 								<td><?php echo $val['view_count']; ?></td>
 								<td><a href="<?php echo UF::url($val['user_info']); ?>" target="_blank"><?php echo UF::name($val['user_info']); ?></a></td>
 								<td><?php echo date_friendly($val['add_time']); ?></td>

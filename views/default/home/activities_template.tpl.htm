@@ -16,7 +16,7 @@
 			•
 			<?php echo date_friendly($val['add_time']); ?>
 			•
-			<?php echo _t('%s 个回复', $val['answer_count']); ?>
+			<?php echo _t('%s 个回复', $val['reply_count']); ?>
 		</p>
 		<h4>
 			<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['id']; ?>"><?php echo FORMAT::text($val['title'], true); ?></a>

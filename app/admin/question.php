@@ -79,12 +79,12 @@ class question extends AWS_ADMIN_CONTROLLER
 
 		if (H::GET('answer_count_min'))
 		{
-			$where[] = ['answer_count', 'gte', H::GET('answer_count_min'), 'i'];
+			$where[] = ['reply_count', 'gte', H::GET('answer_count_min'), 'i'];
 		}
 
 		if (H::GET('answer_count_max'))
 		{
-			$where[] = ['answer_count', 'lte', H::GET('answer_count_max'), 'i'];
+			$where[] = ['reply_count', 'lte', H::GET('answer_count_max'), 'i'];
 		}
 
 		if ($question_list = $this->model('question')->fetch_page('question', $where, 'id DESC', H::GET('page'), $this->per_page))

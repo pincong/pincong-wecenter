@@ -37,7 +37,7 @@ class main extends AWS_ADMIN_CONTROLLER
         TPL::assign('users_count', $this->model('system')->count('users'));
         TPL::assign('question_count', $this->model('system')->count('question'));
         TPL::assign('answer_count', $this->model('system')->count('question_reply'));
-        TPL::assign('question_no_answer_count', $this->model('system')->count('question', 'answer_count = 0'));
+        TPL::assign('question_no_answer_count', $this->model('system')->count('question', ['reply_count', 'eq', 0]));
         TPL::assign('topic_count', $this->model('system')->count('topic'));
 
 		TPL::assign('global_failed_login_count', $this->model('login')->get_global_failed_login_count());

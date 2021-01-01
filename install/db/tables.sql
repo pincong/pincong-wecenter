@@ -18,7 +18,7 @@ CREATE TABLE `aws_question` (
   `redirect_id` int(11) DEFAULT '0',
   `title` varchar(240) DEFAULT NULL,
   `message` text,
-  `answer_count` int(11) DEFAULT '0',
+  `reply_count` int(11) DEFAULT '0',
   `comment_count` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
@@ -31,7 +31,7 @@ CREATE TABLE `aws_question` (
   KEY `lock` (`lock`),
   KEY `recommend` (`recommend`),
   KEY `sort` (`sort`),
-  KEY `answer_count` (`answer_count`)
+  KEY `reply_count` (`reply_count`)
 ) DEFAULT CHARSET=utf8mb4;
 
 --
@@ -232,7 +232,7 @@ CREATE TABLE `aws_posts_index` (
   `lock` tinyint(1) DEFAULT '0',
   `recommend` tinyint(1) DEFAULT '0',
   `sort` tinyint(2) DEFAULT '0',
-  `answer_count` int(11) DEFAULT '0',
+  `reply_count` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `post_id` (`post_id`),
   KEY `post_type` (`post_type`),
@@ -246,7 +246,7 @@ CREATE TABLE `aws_posts_index` (
   KEY `lock` (`lock`),
   KEY `recommend` (`recommend`),
   KEY `sort` (`sort`),
-  KEY `answer_count` (`answer_count`)
+  KEY `reply_count` (`reply_count`)
 ) DEFAULT CHARSET=utf8mb4;
 
 --

@@ -72,7 +72,7 @@ class posts_class extends AWS_MODEL
 					'view_count' => $result['view_count'],
 					'uid' => $result['uid'],
 					'agree_count' => $result['agree_count'],
-					'answer_count' => $result['answer_count'],
+					'reply_count' => $result['reply_count'],
 					'lock' => $result['lock'],
 					'recommend' => $result['recommend'],
 				);
@@ -86,7 +86,7 @@ class posts_class extends AWS_MODEL
 					'view_count' => $result['view_count'],
 					'uid' => $result['uid'],
 					'agree_count' => $result['agree_count'],
-					'answer_count' => $result['comments'],
+					'reply_count' => $result['comments'],
 					'lock' => $result['lock'],
 					'recommend' => $result['recommend'],
 				);
@@ -100,7 +100,7 @@ class posts_class extends AWS_MODEL
 					'view_count' => $result['view_count'],
 					'uid' => $result['uid'],
 					'agree_count' => $result['agree_count'],
-					'answer_count' => $result['comment_count'],
+					'reply_count' => $result['comment_count'],
 					'lock' => $result['lock'],
 					'recommend' => $result['recommend'],
 				);
@@ -229,7 +229,8 @@ class posts_class extends AWS_MODEL
 			$explore_list_data[$key]['post_type'] = $data['post_type'];
 			$explore_list_data[$key]['children_reputation'] = $data['reputation'];
 
-			$explore_list_data[$key]['reply_count'] = $data['answer_count'];
+			///////////////////////////////////////////////////////////////
+			$explore_list_data[$key]['reply_count'] = $data['reply_count'];
 
 			$explore_list_data[$key]['hot'] = intval(is_numeric($push_reputation) AND $explore_list_data[$key]['reputation'] >= $push_reputation);
 
@@ -249,19 +250,19 @@ class posts_class extends AWS_MODEL
 			$order_key = 'sort DESC, update_time DESC';
 		}
 
-		if (isset($answer_count))
+		/*if (isset($answer_count))
 		{
 			$answer_count = intval($answer_count);
 
 			if ($answer_count == 0)
 			{
-				$where[] = ['answer_count', 'eq', 0];
+				$where[] = ['reply_count', 'eq', 0];
 			}
 			else if ($answer_count > 0)
 			{
-				$where[] = ['answer_count', 'gte', $answer_count];
+				$where[] = ['reply_count', 'gte', $answer_count];
 			}
-		}
+		}*/
 
 		if ($recommend)
 		{
