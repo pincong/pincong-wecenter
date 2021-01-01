@@ -53,7 +53,7 @@ class reputation_class extends AWS_MODEL
 		{
 			// 被标记的用户不增加声望
 			// reputation_types以外post不增加声望
-			if ($recipient_user['permission']['no_reputation_upvote'] OR $recipient_user['flagged'] OR !$this->check_reputation_type($item_type))
+			if ($recipient_user['permission']['no_reputation_upvote'] OR !$this->check_reputation_type($item_type))
 			{
 				$reputation_value = 0;
 			}
@@ -234,13 +234,6 @@ class reputation_class extends AWS_MODEL
 
 	private function get_initial_reputation(&$vote_user, &$recipient_user, $agree_value, &$result_user_reputation, &$result_content_reputation)
 	{
-		if ($vote_user['flagged'])
-		{
-			$result_user_reputation = 0;
-			$result_content_reputation = 0;
-			return;
-		}
-
 		if (!!$recipient_user AND is_numeric($recipient_user['reputation_factor_receive']))
 		{
 			$user_reputation_factor = $recipient_user['reputation_factor_receive'];

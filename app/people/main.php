@@ -43,10 +43,17 @@ class main extends AWS_CONTROLLER
 
 		$this->crumb(AWS_APP::lang()->_t('用户列表'));
 
+		$admin_permission = $this->user_info['permission']['is_administrator'];
+
 		$all_groups = $this->model('usergroup')->get_all_groups();
 		foreach ($all_groups as $key => $val)
 		{
 			if ($val['type'] == 2)
+			{
+				$custom_group[] = $val;
+			}
+
+			if ($admin_permission AND $val['type'] == 0 AND $val['group_id'] > 0)
 			{
 				$custom_group[] = $val;
 			}
@@ -55,10 +62,13 @@ class main extends AWS_CONTROLLER
 		$order = 'reputation DESC, uid ASC';
 
 		$group_id = intval($_GET['group_id']);
-		if ($group_id > 0 AND $all_groups[$group_id]['type'] == 2)
+		if ($group_id > 0)
 		{
-			$where[] = 'group_id = ' . $group_id;
-			$url_param[] = 'group_id-' . $group_id;
+			if ($all_groups[$group_id]['type'] == 2 OR ($admin_permission AND $all_groups[$group_id]['type'] == 0))
+			{
+				$where[] = '(group_id = ' . $group_id . ' OR flagged = ' . $group_id . ')';
+				$url_param[] = 'group_id-' . $group_id;
+			}
 		}
 
 		$is_forbidden = intval($_GET['forbidden']);
@@ -82,7 +92,6 @@ class main extends AWS_CONTROLLER
 		else
 		{
 			$where[] = 'forbidden = 0';
-			$where[] = 'flagged = 0';
 		}
 
 		if ($_GET['sort_key'] == 'uid')
