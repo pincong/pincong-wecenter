@@ -34,7 +34,7 @@ class ajax extends AWS_CONTROLLER
 		HTTP::no_cache_header();
 	}
 
-	public function process_action()
+	public function login_process_action()
 	{
 		if ($this->user_id)
 		{
@@ -43,7 +43,7 @@ class ajax extends AWS_CONTROLLER
 			), 1, null));
 		}
 
-		if (!$_POST['password'])
+		if (!$_POST['user_name'] OR !$_POST['password'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的帐号或密码')));
 		}
@@ -53,17 +53,17 @@ class ajax extends AWS_CONTROLLER
 		{
 			if ($_POST['captcha_enabled'] == '0')
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请刷新页面重试')));
-				//H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+				//H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请刷新页面重试')));
+				H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 			}
-			if (!AWS_APP::captcha()->is_validate($_POST['captcha']))
+			if (!AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请填写正确的验证码')));
 			}
 		}
 
 
-		$user_info = $this->model('login')->verify($_POST['uid'], $_POST['password']);
+		$user_info = $this->model('login')->check_login_deprecated($_POST['user_name'], $_POST['password']);
 
 		if (is_null($user_info))
 		{
@@ -73,36 +73,45 @@ class ajax extends AWS_CONTROLLER
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的帐号或密码')));
 		}
-
-
-		if ($user_info['forbidden'] OR $user_info['flagged'] > 0)
+		
 		{
+			if ($user_info['forbidden'])
+			{
+				//H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('抱歉, 你的账号已经被禁止登录')));
+				H::ajax_json_output(AWS_APP::RSM(array(
+					'url' => url_rewrite('/people/') . $user_info['url_token']
+				), 1, null));
+			}
+
+			if ($user_info['flagged'] > 0)
+			{
+				H::ajax_json_output(AWS_APP::RSM(array(
+					//'url' => url_rewrite('/')
+					'url' => url_rewrite('/people/') . $user_info['url_token']
+				), 1, null));
+			}
+
+			// 记住我
+			if ($_POST['net_auto_login'])
+			{
+				$expire = 60 * 60 * 24 * 360;
+			}
+
+			//$this->model('account')->update_user_last_login($user_info['uid']);
+			$this->model('login')->cookie_logout();
+			$this->model('login')->cookie_login($user_info['uid'], compile_password($_POST['password'], $user_info['salt']), $expire);
+
+			$url = url_rewrite('/');
+
+			if ($_POST['return_url'] AND is_inside_url($_POST['return_url']))
+			{
+				$url = $_POST['return_url'];
+			}
+
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => url_rewrite('/people/') . $user_info['url_token']
+				'url' => $url
 			), 1, null));
 		}
-
-		//$this->model('account')->update_user_last_login($user_info['uid']);
-
-		// 记住我
-		if ($_POST['remember_me'])
-		{
-			$expire = 60 * 60 * 24 * 360;
-		}
-
-		$this->model('login')->cookie_logout();
-		$this->model('login')->cookie_login($user_info['uid'], $_POST['password'], $expire);
-
-		$url = url_rewrite('/');
-
-		if ($_POST['return_url'] AND is_inside_url($_POST['return_url']))
-		{
-			$url = $_POST['return_url'];
-		}
-
-		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => $url
-		), 1, null));
 	}
 
 }

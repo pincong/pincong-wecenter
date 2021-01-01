@@ -35,7 +35,7 @@ class AWS_CONTROLLER
 			if (!$this->user_info)
 			{
 				// 清除 Session Cookie
-				$this->model('account')->logout();
+				$this->model('login')->logout();
 			}
 			else
 			{
@@ -47,7 +47,7 @@ class AWS_CONTROLLER
 		{
 			if ($this->user_info['forbidden'] OR $this->user_info['flagged'] > 0)
 			{
-				$this->model('account')->logout();
+				$this->model('login')->logout();
 				H::redirect_msg(AWS_APP::lang()->_t('抱歉, 你的账号已经被禁止登录'), '/');
 			}
 

@@ -1,0 +1,76 @@
+<?php TPL::include('global/header_meta.tpl.htm'); ?>
+
+<div class="aw-register-box">
+	<div class="mod-head">
+		<a href="<?php echo base_url(); ?>/"><img src="<?php echo get_setting('login_logo_url'); ?>" alt=""></a>
+		<h1><?php _e('登录'); ?></h1>
+	</div>
+	<div class="mod-body">
+		<form id="login_form" onsubmit="return false" method="post">
+			<ul>
+				<li class="alert alert-danger collapse error_message text-left">
+					<i class="icon icon-delete"></i> <em></em>
+				</li>
+				<li>
+					<img src="<?php echo UF::avatar($this->user, 'max'); ?>" alt="">
+				</li>
+				<li>
+					<input type="text" class="form-control" value="<?php echo $this->user['user_name']; ?>" name="username" readonly style="cursor:default">
+				</li>
+				<li>
+					<input type="password" class="form-control" name="password" placeholder="<?php _e('密码'); ?>" autofocus>
+				</li>
+				<?php if ($this->captcha_required) { ?>
+				<li class="aw-register-verify">
+					<img class="pull-right" id="captcha" onclick="this.src = G_BASE_URL + '/account/captcha/' + Math.floor(Math.random() * 10000);" src="">
+
+					<input type="text" class="form-control" name="captcha" placeholder="<?php _e('验证码'); ?>">
+				</li>
+				<?php } ?>
+				<li class="last">
+					<label><input type="checkbox" name="remember_me"> <?php _e('记住我'); ?></label>
+					<a href="<?php echo url_rewrite(); ?>/login/find_password/" class="pull-right"><?php _e('忘记密码?'); ?></a>
+				</li>
+				<li class="clearfix">
+					<button type="submit" class="btn btn-large btn-blue btn-block"><?php _e('登录'); ?></button>
+				</li>
+			</ul>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+	var _v1 = function(p, s) {
+		p = md5(md5(p) + s);
+		return p;
+	}
+
+	var form = $('#login_form');
+
+	form.submit(function(e) {
+		e.preventDefault();
+
+		var new_form = $('<form>', {action: '<?php echo url_rewrite(); ?>/login/ajax/process/', method: 'post'});
+		new_form.append($('<input>', {name: 'uid', value: '<?php echo $this->user['uid']; ?>'}));
+		var pwd = form.find('input[name=password]').val();
+		new_form.append($('<input>', {name: 'password', value: _v1(pwd, '<?php echo $this->user['salt']; ?>')}));
+		new_form.append($('<input>', {name: 'remember_me', value: form.find('input[name=remember_me]').is(':checked') ? 1 : 0}));
+		<?php if ($this->captcha_required) { ?>
+		new_form.append($('<input>', {name: 'captcha', value: form.find('input[name=captcha]').val()}));
+		<?php } else { ?>
+		new_form.append($('<input>', {name: 'captcha_enabled', value: '0'}));
+		<?php } ?>
+
+		AWS.submit_form(new_form, form.find('input[type=submit]'), form.find('.error_message'), function(err) {
+			if (err) {
+				$('#captcha').click();
+			}
+		});
+
+		return false;
+	});
+});
+</script>
+
+<?php TPL::include('global/footer.tpl.htm'); ?>

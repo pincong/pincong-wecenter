@@ -64,6 +64,7 @@ class main extends AWS_ADMIN_CONTROLLER
         }
 
         TPL::import_css('admin/css/login.css');
+        TPL::import_js('js/md5.js');
 
         TPL::output('admin/login');
     }

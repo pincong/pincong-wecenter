@@ -84,7 +84,7 @@ class password_class extends AWS_MODEL
 			return false;
 		}
 
-		$salt = $this->generate_salt();
+		$salt = $this->generate_salt_deprecated();
 
 		$this->update('users', array(
 			'password' => $this->hash(compile_password($password, $salt)),
@@ -94,7 +94,7 @@ class password_class extends AWS_MODEL
 		return true;
 	}
 
-	public function generate_salt()
+	public function generate_salt_deprecated()
 	{
 		$length = 8;
 		for ($i = 0; $i < $length; $i++)
@@ -103,17 +103,6 @@ class password_class extends AWS_MODEL
 		}
 
 		return $str;
-	}
-
-
-	public function make_cookie($uid, $password, $salt)
-	{
-		$password = compile_password($password, $salt);
-
-		return AWS_APP::crypt()->encode(json_encode(array(
-			'uid' => $uid,
-			'password' => $password
-		)));
 	}
 
 }

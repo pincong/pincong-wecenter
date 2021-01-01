@@ -29,14 +29,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 	public function login_process_action()
 	{
-		if (get_setting('admin_login_seccode') == 'Y' AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请填写正确的验证码')));
-		}
-
-		{
-			$user_info = $this->model('login')->check_login($this->user_info['user_name'], $_POST['password']);
-		}
+		$user_info = $this->model('login')->verify($this->user_info['uid'], $_POST['password']);
 
 		if ($user_info['uid'])
 		{

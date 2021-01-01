@@ -254,7 +254,7 @@ class account_class extends AWS_MODEL
 			return false;
 		}
 
-		$salt = $this->model('password')->generate_salt();
+		$salt = $this->model('password')->generate_salt_deprecated();
 		$password = compile_password($password, $salt);
 
 		if ($uid = $this->insert('users', array(
@@ -520,40 +520,6 @@ class account_class extends AWS_MODEL
 		return $this->update('users', array(
 			'inbox_unread' => ($this->sum('inbox_dialog', 'sender_unread', 'sender_uid = ' . intval($uid)) + $this->sum('inbox_dialog', 'recipient_unread', 'recipient_uid = ' . intval($uid)))
 		), 'uid = ' . intval($uid));
-	}
-
-
-	public function setcookie_login($uid, $password, $salt, $expire = null)
-	{
-		if (!$uid)
-		{
-			return false;
-		}
-
-		if ($expire)
-		{
-			$expire = time() + $expire;
-		}
-
-		HTTP::set_cookie('_user_login', $this->model('password')->make_cookie($uid, $password, $salt), $expire);
-
-		return true;
-	}
-
-	public function setcookie_logout()
-	{
-		HTTP::set_cookie('_user_login', '', time() - 3600);
-	}
-
-	public function logout()
-	{
-		$this->setcookie_logout();
-		$this->setsession_logout();
-	}
-
-	public function setsession_logout()
-	{
-		AWS_APP::user()->clear_session_info();
 	}
 
 	public function get_user_list($where = null, $limit = 10, $orderby = 'uid DESC')

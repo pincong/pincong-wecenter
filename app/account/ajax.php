@@ -211,7 +211,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($this->model('password')->update_user_password($_POST['password'], $this->user_id, $_POST['old_password'], $this->user_info['salt']))
 		{
-			$this->model('account')->logout();
+			$this->model('login')->logout();
 			H::ajax_json_output(AWS_APP::RSM(array(
 				'url' => url_rewrite('/account/password_updated/')
 			), 1, null));

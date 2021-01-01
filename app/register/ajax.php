@@ -140,12 +140,11 @@ class ajax extends AWS_CONTROLLER
 			$this->model('account')->update_user_fields($update_data, $uid);
 		}
 
-		$this->model('account')->setcookie_logout();
-		$this->model('account')->setsession_logout();
+		$this->model('login')->logout();
 
 		$user_info = $this->model('account')->get_user_info_by_uid($uid);
 
-		$this->model('account')->setcookie_login($user_info['uid'], $_POST['password'], $user_info['salt']);
+		$this->model('login')->cookie_login($user_info['uid'], compile_password($_POST['password'], $user_info['salt']));
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'url' => url_rewrite('/home/first_login-TRUE')
