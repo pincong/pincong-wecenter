@@ -64,8 +64,12 @@ class ajax extends AWS_CONTROLLER
 	{
 		$reason = H::POST_S('reason');
 		$detail = H::POST_S('detail');
-		// TODO: 字数选项
-		if (iconv_strlen($reason) > 300 OR iconv_strlen($detail) > 300)
+		$limit = S::get_int('reason_length_limit');
+		if (!$limit)
+		{
+			$limit = 1000;
+		}
+		if (strlen($reason) > $limit OR strlen($detail) > $limit)
 		{
 			H::ajax_error((_t('理由太长')));
 		}

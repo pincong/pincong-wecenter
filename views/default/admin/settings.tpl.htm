@@ -1754,6 +1754,19 @@
 				<tr>
 					<td>
 						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('理由字节数限制'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input name="reason_length_limit" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['reason_length_limit']); ?>"/>
+
+								<div class="help-block"><?php echo _t('用于需要告知理由的操作'); ?></div>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('针对同一个人每日赞同上限'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="same_user_upvotes_per_day" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['same_user_upvotes_per_day']); ?>"/>
