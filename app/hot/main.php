@@ -26,8 +26,10 @@ class main extends AWS_CONTROLLER
 
 		if ($this->user_info['permission']['visit_site'])
 		{
-			$rule_action['actions'][] = 'index';
-			$rule_action['actions'][] = 'list';
+			$rule_action['actions'] = array(
+				'index',
+				'list'
+			);
 		}
 
 		return $rule_action;

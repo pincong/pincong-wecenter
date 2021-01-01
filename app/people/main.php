@@ -27,61 +27,15 @@ class main extends AWS_CONTROLLER
 		if ($this->user_info['permission']['visit_people'] AND $this->user_info['permission']['visit_site'])
 		{
 			$rule_action['actions'] = array(
-				'index',
-				'square'
+				'index'
 			);
 		}
 
 		return $rule_action;
 	}
 
-	public function index_action()
+	private function index_square()
 	{
-		if (is_digits($_GET['id']))
-		{
-			if (!$user = $this->model('account')->get_user_info_by_uid($_GET['id']))
-			{
-				$user = $this->model('account')->get_user_info_by_username($_GET['id']);
-			}
-		}
-		else
-		{
-			$user = $this->model('account')->get_user_info_by_username($_GET['id']);
-		}
-
-		if (!$user)
-		{
-			HTTP::error_404();
-		}
-
-		if (urldecode($user['url_token']) != $_GET['id'])
-		{
-			HTTP::redirect('/people/' . $user['url_token']);
-		}
-
-		$user['reputation_group_name'] = $this->model('usergroup')->get_user_group_name_by_user_info($user);
-
-		$user['data'] = unserialize_array($user['extra_data']);
-
-		$this->model('people')->update_view_count($user['uid'], session_id());
-
-		TPL::assign('user', $user);
-
-		TPL::assign('user_follow_check', $this->model('follow')->user_follow_check($this->user_id, $user['uid']));
-
-		$this->crumb(AWS_APP::lang()->_t('%s 的个人主页', $user['user_name']));
-
-		TPL::import_css('css/user.css');
-
-		TPL::assign('fans_list', $this->model('follow')->get_user_fans($user['uid'], 5));
-		TPL::assign('friends_list', $this->model('follow')->get_user_friends($user['uid'], 5));
-
-		TPL::output('people/index');
-	}
-
-	public function index_square_action()
-	{
-
 		if (!$_GET['page'])
 		{
 			$_GET['page'] = 1;
@@ -173,4 +127,55 @@ class main extends AWS_CONTROLLER
 
 		TPL::output('people/square');
 	}
+
+	public function index_action()
+	{
+		if (!$_GET['id'])
+		{
+			$this->index_square();
+			return;
+		}
+
+		if (is_digits($_GET['id']))
+		{
+			if (!$user = $this->model('account')->get_user_info_by_uid($_GET['id']))
+			{
+				$user = $this->model('account')->get_user_info_by_username($_GET['id']);
+			}
+		}
+		else
+		{
+			$user = $this->model('account')->get_user_info_by_username($_GET['id']);
+		}
+
+		if (!$user)
+		{
+			HTTP::error_404();
+		}
+
+		if (urldecode($user['url_token']) != $_GET['id'])
+		{
+			HTTP::redirect('/people/' . $user['url_token']);
+		}
+
+		$user['reputation_group_name'] = $this->model('usergroup')->get_user_group_name_by_user_info($user);
+
+		$user['data'] = unserialize_array($user['extra_data']);
+
+		$this->model('people')->update_view_count($user['uid'], session_id());
+
+		TPL::assign('user', $user);
+
+		TPL::assign('user_follow_check', $this->model('follow')->user_follow_check($this->user_id, $user['uid']));
+
+		$this->crumb(AWS_APP::lang()->_t('%s 的个人主页', $user['user_name']));
+
+		TPL::import_css('css/user.css');
+
+		TPL::assign('fans_list', $this->model('follow')->get_user_fans($user['uid'], 5));
+		TPL::assign('friends_list', $this->model('follow')->get_user_friends($user['uid'], 5));
+
+		TPL::output('people/index');
+	}
+
 }

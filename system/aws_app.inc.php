@@ -99,12 +99,7 @@ class AWS_APP
 		}
 
 		// 执行
-        if (!$_GET['id'] AND method_exists($handle_controller, load_class('core_uri')->action . '_square_action'))
-        {
-            $action_method = load_class('core_uri')->action . '_square_action';
-        }
-
-        $handle_controller->$action_method();
+		$handle_controller->$action_method();
 	}
 
 	/**

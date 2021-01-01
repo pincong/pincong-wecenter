@@ -26,8 +26,9 @@ class main extends AWS_CONTROLLER
 
 		if ($this->user_info['permission']['visit_site'])
 		{
-			$rule_action['actions'][] = 'square';
-			$rule_action['actions'][] = 'index';
+			$rule_action['actions'] = array(
+				'index'
+			);
 		}
 
 		return $rule_action;
@@ -42,7 +43,10 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		die;
+		TPL::assign('search_engine_list', get_key_value_pairs('search_engine_list'));
+
+		TPL::output('search/square');
+
 		// TODO: 站内搜索
 		/*if ($_POST['q'])
 		{
@@ -71,10 +75,4 @@ class main extends AWS_CONTROLLER
 		TPL::output('search/index');*/
 	}
 
-	public function index_square_action()
-	{
-		TPL::assign('search_engine_list', get_key_value_pairs('search_engine_list'));
-
-		TPL::output('search/square');
-	}
 }

@@ -26,16 +26,96 @@ class main extends AWS_CONTROLLER
 
 		if ($this->user_info['permission']['visit_site'])
 		{
-			$rule_action['actions'][] = 'square';
-			$rule_action['actions'][] = 'index';
+			$rule_action['actions'] = array(
+				'index'
+			);
 		}
 
 		return $rule_action;
 	}
 
+	private function index_square()
+	{
+		$per_page = 20;
+
+		switch ($_GET['channel'])
+		{
+			case 'focus':
+				if ($topics_list = $this->model('topic')->get_focus_topic_list($this->user_id, calc_page_limit($_GET['page'], $per_page)))
+				{
+					$topics_list_total_rows = $this->user_info['topic_focus_count'];
+				}
+
+				TPL::assign('topics_list', $topics_list);
+
+				$url_param[] = 'channel-focus';
+			break;
+
+			case 'hot':
+			default:
+				switch ($_GET['day'])
+				{
+					case 'month':
+						$order = 'discuss_count_last_month DESC';
+
+						$url_param[] = 'day-month';
+					break;
+
+					case 'week':
+						$order = 'discuss_count_last_week DESC';
+
+						$url_param[] = 'day-week';
+					break;
+
+					default:
+						$order = 'discuss_count DESC';
+					break;
+				}
+
+				$cache_key = 'square_hot_topic_list' . md5($order) . '_' . intval($_GET['page']);
+
+				if (!$topics_list = AWS_APP::cache()->get($cache_key))
+				{
+					if ($topics_list = $this->model('topic')->get_topic_list(null, $order, $per_page, $_GET['page']))
+					{
+						$topics_list_total_rows = $this->model('topic')->found_rows();
+
+						AWS_APP::cache()->set('square_hot_topic_list_total_rows', $topics_list_total_rows, get_setting('cache_level_low'));
+					}
+
+					AWS_APP::cache()->set($cache_key, $topics_list, get_setting('cache_level_low'));
+				}
+				else
+				{
+					$topics_list_total_rows = AWS_APP::cache()->get('square_hot_topic_list_total_rows');
+				}
+
+				TPL::assign('topics_list', $topics_list);
+			break;
+		}
+
+		TPL::assign('new_topics', $this->model('topic')->get_topic_list(null, 'topic_id DESC', 10));
+
+		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
+			'base_url' => url_rewrite('/topic/') . implode('__', $url_param),
+			'total_rows' => $topics_list_total_rows,
+			'per_page' => $per_page
+		))->create_links());
+
+		$this->crumb(AWS_APP::lang()->_t('话题广场'));
+
+		TPL::output('topic/square');
+	}
+
 	public function index_action()
 	{
-		if ($_GET['topic_id'] AND is_digits($_GET['topic_id']))
+		if (!$_GET['id'] AND !$_GET['topic_id'])
+		{
+			$this->index_square();
+			return;
+		}
+
+		if ($_GET['topic_id'])
 		{
 			$topic_info = $this->model('topic')->get_topic_by_id($_GET['topic_id']);
 		}
@@ -131,79 +211,6 @@ class main extends AWS_CONTROLLER
 		TPL::assign('redirect_message', $redirect_message);
 
 		TPL::output('topic/index');
-	}
-
-	public function index_square_action()
-	{
-		$per_page = 20;
-
-		switch ($_GET['channel'])
-		{
-			case 'focus':
-				if ($topics_list = $this->model('topic')->get_focus_topic_list($this->user_id, calc_page_limit($_GET['page'], $per_page)))
-				{
-					$topics_list_total_rows = $this->user_info['topic_focus_count'];
-				}
-
-				TPL::assign('topics_list', $topics_list);
-
-				$url_param[] = 'channel-focus';
-			break;
-
-			case 'hot':
-			default:
-				switch ($_GET['day'])
-				{
-					case 'month':
-						$order = 'discuss_count_last_month DESC';
-
-						$url_param[] = 'day-month';
-					break;
-
-					case 'week':
-						$order = 'discuss_count_last_week DESC';
-
-						$url_param[] = 'day-week';
-					break;
-
-					default:
-						$order = 'discuss_count DESC';
-					break;
-				}
-
-				$cache_key = 'square_hot_topic_list' . md5($order) . '_' . intval($_GET['page']);
-
-				if (!$topics_list = AWS_APP::cache()->get($cache_key))
-				{
-					if ($topics_list = $this->model('topic')->get_topic_list(null, $order, $per_page, $_GET['page']))
-					{
-						$topics_list_total_rows = $this->model('topic')->found_rows();
-
-						AWS_APP::cache()->set('square_hot_topic_list_total_rows', $topics_list_total_rows, get_setting('cache_level_low'));
-					}
-
-					AWS_APP::cache()->set($cache_key, $topics_list, get_setting('cache_level_low'));
-				}
-				else
-				{
-					$topics_list_total_rows = AWS_APP::cache()->get('square_hot_topic_list_total_rows');
-				}
-
-				TPL::assign('topics_list', $topics_list);
-			break;
-		}
-
-		TPL::assign('new_topics', $this->model('topic')->get_topic_list(null, 'topic_id DESC', 10));
-
-		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-			'base_url' => url_rewrite('/topic/') . implode('__', $url_param),
-			'total_rows' => $topics_list_total_rows,
-			'per_page' => $per_page
-		))->create_links());
-
-		$this->crumb(AWS_APP::lang()->_t('话题广场'));
-
-		TPL::output('topic/square');
 	}
 
 	public function edit_action()

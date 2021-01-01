@@ -26,7 +26,9 @@ class ajax extends AWS_CONTROLLER
 
 		if ($this->user_info['permission']['visit_site'])
 		{
-			$rule_action['actions'][] = 'list';
+			$rule_action['actions'] = array(
+				'list'
+			);
 		}
 
 		return $rule_action;

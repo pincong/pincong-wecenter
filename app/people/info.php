@@ -27,17 +27,19 @@ class info extends AWS_CONTROLLER
 
 		if ($this->user_info['permission']['visit_people'] AND $this->user_info['permission']['visit_site'])
 		{
-			$rule_action['actions'][] = 'question_discussions';
-			$rule_action['actions'][] = 'answer_discussions';
-			$rule_action['actions'][] = 'questions';
-			$rule_action['actions'][] = 'answers';
-			$rule_action['actions'][] = 'articles';
-			$rule_action['actions'][] = 'article_comments';
-			$rule_action['actions'][] = 'videos';
-			$rule_action['actions'][] = 'video_comments';
-			$rule_action['actions'][] = 'followers';
-			$rule_action['actions'][] = 'received_votes';
-			$rule_action['actions'][] = 'sent_votes';
+			$rule_action['actions'] = array(
+				'question_discussions',
+				'answer_discussions',
+				'questions',
+				'answers',
+				'articles',
+				'article_comments',
+				'videos',
+				'video_comments',
+				'followers',
+				'received_votes',
+				'sent_votes',
+			);
 		}
 
 		$rule_action['redirect'] = false; // 不跳转到登录页面直接输出403

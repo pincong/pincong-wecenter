@@ -27,41 +27,14 @@ class main extends AWS_CONTROLLER
 		if ($this->user_info['permission']['kb_explore'] AND $this->user_info['permission']['visit_site'])
 		{
 			$rule_action['actions'] = array(
-				'index',
-				'square'
+				'index'
 			);
 		}
 
 		return $rule_action;
 	}
 
-	public function index_action()
-	{
-		if (!$this->user_info['permission']['kb_explore'])
-		{
-			H::redirect_msg(AWS_APP::lang()->_t('你的声望还不够'));
-		}
-
-		if (! $item_info = $this->model('kb')->get($_GET['id']))
-		{
-			HTTP::error_404();
-		}
-
-		$uids[] = $item_info['uid'];
-		$uids[] = $item_info['last_uid'];
-		$users_info = $this->model('account')->get_user_info_by_uids($uids);
-
-		$item_info['user_info'] = $users_info['uid'];
-		$item_info['last_user_info'] = $users_info['last_uid'];
-
-		TPL::assign('item_info', $item_info);
-
-		$this->crumb($item_info['title']);
-
-		TPL::output('kb/index');
-	}
-
-	public function index_square_action()
+	private function index_square()
 	{
 		if (!$this->user_info['permission']['kb_explore'])
 		{
@@ -107,6 +80,38 @@ class main extends AWS_CONTROLLER
 		}
 
 		TPL::output('kb/square');
+	}
+
+	public function index_action()
+	{
+		if (!$_GET['id'])
+		{
+			$this->index_square();
+			return;
+		}
+
+		if (!$this->user_info['permission']['kb_explore'])
+		{
+			H::redirect_msg(AWS_APP::lang()->_t('你的声望还不够'));
+		}
+
+		if (! $item_info = $this->model('kb')->get($_GET['id']))
+		{
+			HTTP::error_404();
+		}
+
+		$uids[] = $item_info['uid'];
+		$uids[] = $item_info['last_uid'];
+		$users_info = $this->model('account')->get_user_info_by_uids($uids);
+
+		$item_info['user_info'] = $users_info['uid'];
+		$item_info['last_user_info'] = $users_info['last_uid'];
+
+		TPL::assign('item_info', $item_info);
+
+		$this->crumb($item_info['title']);
+
+		TPL::output('kb/index');
 	}
 
 }
