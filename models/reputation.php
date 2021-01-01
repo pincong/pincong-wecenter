@@ -186,9 +186,11 @@ class reputation_class extends AWS_MODEL
 
 			if (!$vote_user['permission']['no_dynamic_reputation_factor'])
 			{
-				$factor = $this->get_dynamic_factor($vote_user['uid'], $agree_value);
-				$user_reputation_value = $user_reputation_value * $factor;
-				$content_reputation_value = $content_reputation_value * $factor;
+				if ($user_reputation_value)
+				{
+					$factor = $this->get_dynamic_factor($vote_user['uid'], $agree_value);
+					$user_reputation_value = $user_reputation_value * $factor;
+				}
 			}
 			if (!$vote_user['permission']['no_bonus_reputation_factor'])
 			{
