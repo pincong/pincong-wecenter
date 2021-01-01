@@ -188,18 +188,6 @@ $(document).ready(function ()
         $(this).tooltip('show');
     });
 
-    //ie浏览器下input,textarea兼容
-    if (document.all)
-    {
-        AWS.check_placeholder($('input, textarea'));
-
-        // 每隔1s轮询检测placeholder
-        setInterval(function()
-        {
-            AWS.check_placeholder($('input[data-placeholder!="true"], textarea[data-placeholder!="true"]'));
-        }, 1000);
-    }
-
     /*if ($('.aw-back-top').length)
     {
         $(window).scroll(function ()
