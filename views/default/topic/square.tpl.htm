@@ -7,9 +7,9 @@
 				<div class="col-sm-12 col-md-9 aw-main-content">
 					<!-- tab切换 -->
 					<ul class="nav nav-tabs aw-nav-tabs active">
-						<li <?php if ($_GET['day'] == 'month') { ?>class="active"<?php } ?>><a href="topic/channel-hot__day-month"><?php _e('%s 天', 30); ?></a></li>
-						<li <?php if ($_GET['day'] == 'week') { ?>class="active"<?php } ?>><a href="topic/channel-hot__day-week"><?php _e('%s 天', 7); ?></a></li>
-						<li <?php if (!$_GET['day']) { ?>class="active"<?php } ?>><a href="topic/"><?php _e('全部'); ?></a></li>
+						<li <?php if ($_GET['day'] == 'month') { ?>class="active"<?php } ?>><a href="<?php echo url_rewrite(); ?>/topic/channel-hot__day-month"><?php _e('%s 天', 30); ?></a></li>
+						<li <?php if ($_GET['day'] == 'week') { ?>class="active"<?php } ?>><a href="<?php echo url_rewrite(); ?>/topic/channel-hot__day-week"><?php _e('%s 天', 7); ?></a></li>
+						<li <?php if (!$_GET['day']) { ?>class="active"<?php } ?>><a href="<?php echo url_rewrite(); ?>/topic/"><?php _e('全部'); ?></a></li>
 						<?php if ($_GET['channel'] == 'focus') { ?>
 						<h2 class="hidden-xs"><i class="icon icon-topic"></i> <?php _e('我关注的话题'); ?></h2>
 						<?php } else { ?>
@@ -25,14 +25,14 @@
 							<?php foreach ($this->topics_list AS $key => $val) { ?>
 							<div class="aw-item">
 								<!-- 话题图片 -->
-								<a class="img aw-border-radius-5" href="topic/<?php echo urlencode($val['topic_title']); ?>" data-id="<?php echo $val['topic_id']; ?>">
+								<a class="img aw-border-radius-5" href="<?php echo url_rewrite(); ?>/topic/<?php echo urlencode($val['topic_title']); ?>" data-id="<?php echo $val['topic_id']; ?>">
 									<img src="<?php echo get_topic_pic_url($val, 'mid'); ?>" alt="" />
 								</a>
 								<!-- end 话题图片 -->
 								<p class="clearfix">
 									<!-- 话题内容 -->
 									<span class="topic-tag">
-										<a class="text" href="topic/<?php echo urlencode($val['topic_title']); ?>" data-id="<?php echo $val['topic_id']; ?>"><?php echo FORMAT::text($val['topic_title'], false); ?></a>
+										<a class="text" href="<?php echo url_rewrite(); ?>/topic/<?php echo urlencode($val['topic_title']); ?>" data-id="<?php echo $val['topic_id']; ?>"><?php echo FORMAT::text($val['topic_title'], false); ?></a>
 									</span>
 									<!-- end 话题内容 -->
 								</p>
@@ -65,7 +65,7 @@
 								<div class="topic-bar clearfix">
 									<?php foreach ($this->new_topics AS $key => $val) { ?>
 									<span class="topic-tag">
-										<a class="text" href="topic/<?php echo urlencode($val['topic_title']); ?>" data-id="<?php echo $val['topic_id']; ?>"><?php echo FORMAT::text($val['topic_title'], false); ?></a>
+										<a class="text" href="<?php echo url_rewrite(); ?>/topic/<?php echo urlencode($val['topic_title']); ?>" data-id="<?php echo $val['topic_id']; ?>"><?php echo FORMAT::text($val['topic_title'], false); ?></a>
 									</span>
 									<?php } ?>
 								</div>
@@ -77,9 +77,9 @@
 					<div class="aw-mod">
 						<div class="mod-body">
 							<?php if ($_GET['channel'] == 'focus') { ?>
-							<a href="topic/channel-hot"><?php _e('热门话题'); ?></a>
+							<a href="<?php echo url_rewrite(); ?>/topic/channel-hot"><?php _e('热门话题'); ?></a>
 							<?php } else { ?>
-							<a href="topic/channel-focus"><?php _e('我关注的话题'); ?></a>
+							<a href="<?php echo url_rewrite(); ?>/topic/channel-focus"><?php _e('我关注的话题'); ?></a>
 							<?php } ?>
 						</div>
 					</div>

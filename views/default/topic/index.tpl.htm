@@ -58,7 +58,7 @@
 							<?php if ($this->topic_info['topic_description']) { ?>
 							<p><?php echo FORMAT::hyperlink($this->topic_info['topic_description']); ?></p>
 							<?php } else if ($this->topic_info['topic_lock'] == 0 && $this->user_info['permission']['edit_topic']) { ?>
-							<a href="topic/edit/<?php echo $this->topic_info['topic_id']; ?>" class="icon-inverse" class=><i class="icon icon-edit"></i> <?php _e('添加描述'); ?></a>
+							<a href="<?php echo url_rewrite(); ?>/topic/edit/<?php echo $this->topic_info['topic_id']; ?>" class="icon-inverse" class=><i class="icon icon-edit"></i> <?php _e('添加描述'); ?></a>
 							<?php } ?>
 						</div>
 					</div>
@@ -83,12 +83,12 @@
 						<div class="mod-body">
 							<ul>
 							<?php if ($this->topic_info['topic_lock'] == 0 AND $this->user_info['permission']['edit_topic']) { ?>
-								<li><a href="topic/edit/<?php echo $this->topic_info['topic_id']; ?>"><?php _e('编辑话题'); ?></a></li>
+								<li><a href="<?php echo url_rewrite(); ?>/topic/edit/<?php echo $this->topic_info['topic_id']; ?>"><?php _e('编辑话题'); ?></a></li>
 							<?php } ?>
 
 							<?php if ($this->user_info['permission']['manage_topic']) { ?>
 
-								<li><a href="topic/manage/<?php echo $this->topic_info['topic_id']; ?>"><?php _e('管理话题'); ?></a></li>
+								<li><a href="<?php echo url_rewrite(); ?>/topic/manage/<?php echo $this->topic_info['topic_id']; ?>"><?php _e('管理话题'); ?></a></li>
 
 								<li><a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/topic/ajax/lock/', 'topic_id=<?php echo $this->topic_info['topic_id']; ?>');"><?php if ($this->topic_info['topic_lock']) { ?><?php _e('解除锁定'); ?><?php } else { ?><?php _e('锁定话题'); ?><?php } ?></a></li>
 

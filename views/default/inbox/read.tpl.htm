@@ -8,7 +8,7 @@
 					<div class="aw-mod aw-inbox-read">
 						<div class="mod-head common-head">
 							<h2>
-								<a href="inbox/" class="pull-right"><?php _e('返回私信列表'); ?> »</a>
+								<a href="<?php echo url_rewrite(); ?>/inbox/" class="pull-right"><?php _e('返回私信列表'); ?> »</a>
 								<?php _e('私信对话'); ?>：<?php echo UF::name($this->recipient_user); ?>
 							</h2>
 						</div>

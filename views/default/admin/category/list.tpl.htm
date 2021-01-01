@@ -31,7 +31,7 @@
 							<span><?php echo $val['id']; ?></span>
 						</td>
 						<td>
-							<a href="explore/category-<?php echo $val['id']; ?>"><?php echo FORMAT::text($val['title'], false); ?></a>
+							<a href="<?php echo url_rewrite(); ?>/explore/category-<?php echo $val['id']; ?>"><?php echo FORMAT::text($val['title'], false); ?></a>
 						</td>
 						<td>
 							<input type="text" class="form-control sort-action" name="category[<?php echo $val['id']; ?>][sort]" value="<?php echo $val['sort']; ?>" />
@@ -40,7 +40,7 @@
 							<span><?php if ($val['skip']) { ?><?php _e('是'); ?><?php } else { ?><?php _e('否'); ?><?php } ?></span>
 						</td>
 						<td>
-							<a href="admin/category/edit/category_id-<?php echo $val['id']; ?>" data-toggle="tooltip" class="icon icon-edit md-tip" title="<?php _e('编辑'); ?>"></a>
+							<a href="<?php echo url_rewrite(); ?>/admin/category/edit/category_id-<?php echo $val['id']; ?>" data-toggle="tooltip" class="icon icon-edit md-tip" title="<?php _e('编辑'); ?>"></a>
 							<a onclick="AWS.ajax_request(G_BASE_URL + '/admin/ajax/remove_category/', 'category_id=<?php echo $val['id']; ?>');" data-toggle="tooltip" class="icon icon-trash md-tip" title="<?php _e('删除'); ?>"></a>
 							<a data-id="<?php echo $val['id']; ?>" data-name="<?php echo FORMAT::text($val['title'], false); ?>" data-url="admin/category/move_contents/category_id-" data-toggle="tooltip" class="icon icon-transfer md-tip move" title="<?php _e('批量移动'); ?>"></a>
 						</td>

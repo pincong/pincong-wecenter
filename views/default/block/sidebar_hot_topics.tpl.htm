@@ -1,6 +1,6 @@
 <div class="aw-mod aw-text-align-justify">
 	<div class="mod-head">
-		<a href="topic/channel-hot" class="pull-right"><?php _e('更多'); ?> &gt;</a>
+		<a href="<?php echo url_rewrite(); ?>/topic/channel-hot" class="pull-right"><?php _e('更多'); ?> &gt;</a>
 		<h3><?php _e('热门话题'); ?></h3>
 	</div>
 	<div class="mod-body">
@@ -8,12 +8,12 @@
 		<?php foreach($this->sidebar_hot_topics AS $key => $val) { ?>
 			<dl>
 				<dt class="pull-left aw-border-radius-5">
-					<a href="topic/<?php echo FORMAT::text($val['topic_title'], false); ?>"><img alt="" src="<?php echo get_topic_pic_url($val, 'mid'); ?>" /></a>
+					<a href="<?php echo url_rewrite(); ?>/topic/<?php echo FORMAT::text($val['topic_title'], false); ?>"><img alt="" src="<?php echo get_topic_pic_url($val, 'mid'); ?>" /></a>
 				</dt>
 				<dd class="pull-left">
 					<p class="clearfix">
 						<span class="topic-tag">
-							<a href="topic/<?php echo FORMAT::text($val['topic_title'], false); ?>" class="text" data-id="<?php echo $val['topic_id']; ?>"><?php echo FORMAT::text($val['topic_title'], false); ?></a>
+							<a href="<?php echo url_rewrite(); ?>/topic/<?php echo FORMAT::text($val['topic_title'], false); ?>" class="text" data-id="<?php echo $val['topic_id']; ?>"><?php echo FORMAT::text($val['topic_title'], false); ?></a>
 						</span>
 					</p>
 					<p><?php _e('%s 个问题', '<b>' . $val['discuss_count'] . '</b>'); ?>, <?php _e('%s 人关注', '<b>' . $val['focus_count'] . '</b>'); ?></p>

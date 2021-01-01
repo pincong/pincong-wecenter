@@ -11,8 +11,8 @@
 				<span class="pull-left"><?php _e('话题编辑'); ?></span>
 				<?php } else { ?>
 				<ul class="nav nav-tabs">
-					<li><a href="admin/topic/list/"><?php _e('话题管理'); ?></a></li>
-					<li class="active"><a href="admin/topic/edit/"><?php _e('新建话题'); ?></a></li>
+					<li><a href="<?php echo url_rewrite(); ?>/admin/topic/list/"><?php _e('话题管理'); ?></a></li>
+					<li class="active"><a href="<?php echo url_rewrite(); ?>/admin/topic/edit/"><?php _e('新建话题'); ?></a></li>
 				</ul>
 				<?php } ?>
 			</h3>

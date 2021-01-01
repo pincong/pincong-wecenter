@@ -8,12 +8,12 @@
 					<!-- tab 切换 -->
 					<ul class="nav nav-tabs aw-nav-tabs active">
 						<?php if ($this->user_info['permission']['publish_video']) { ?>
-						<li><a href="publish/video/"><?php _e('影片'); ?></a></li>
+						<li><a href="<?php echo url_rewrite(); ?>/publish/video/"><?php _e('影片'); ?></a></li>
 						<?php } ?>
 						<?php if ($this->user_info['permission']['publish_article']) { ?>
-						<li><a href="publish/article/"><?php _e('文章'); ?></a></li>
+						<li><a href="<?php echo url_rewrite(); ?>/publish/article/"><?php _e('文章'); ?></a></li>
 						<?php } ?>
-						<li class="active"><a href="publish/"><?php _e('问题'); ?></a></li>
+						<li class="active"><a href="<?php echo url_rewrite(); ?>/publish/"><?php _e('问题'); ?></a></li>
 						<h2 class="hidden-xs"><i class="icon icon-ask"></i> <?php _e('发起'); ?></h2>
 					</ul>
 					<!-- end tab 切换 -->
@@ -110,7 +110,7 @@
 
 							</div>
 							<div class="mod-footer clearfix">
-								<a href="currency/rule/" target="_blank">[<?php _e(get_setting('currency_rule_name')); ?>]</a>
+								<a href="<?php echo url_rewrite(); ?>/currency/rule/" target="_blank">[<?php _e(get_setting('currency_rule_name')); ?>]</a>
 								<span class="aw-anonymity">
 									<?php if ($this->thread_info['id']) { ?>
 									<label><input type="checkbox" class="pull-left" value="1" name="do_delete" />

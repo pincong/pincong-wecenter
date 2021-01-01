@@ -8,7 +8,7 @@
 				<?php if ($this->related_topics) { ?>
 					<?php foreach($this->related_topics as $key => $val){ ?>
 					<span class="topic-tag" data-id="<?php echo $val['topic_id']; ?>">
-						<a class="text" href="topic/<?php echo urlencode($val['topic_title']); ?>"><?php echo FORMAT::text($val['topic_title'], false); ?></a>
+						<a class="text" href="<?php echo url_rewrite(); ?>/topic/<?php echo urlencode($val['topic_title']); ?>"><?php echo FORMAT::text($val['topic_title'], false); ?></a>
 					</span>
 					<?php } ?>
 				<?php } ?>

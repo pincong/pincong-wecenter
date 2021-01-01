@@ -6,8 +6,8 @@
 		<div class="mod-head">
 			<h3>
 				<ul class="nav nav-tabs">
-					<li class="<?php if ($_GET['act'] == 'list') { ?> active<?php } ?>"><a href="admin/feature/list/"><?php _e('列表'); ?></a></li>
-					<li class="<?php if ($_GET['act'] == 'add') { ?> active<?php } ?>"><a href="admin/feature/add/"><?php _e('添加'); ?></a></li>
+					<li class="<?php if ($_GET['act'] == 'list') { ?> active<?php } ?>"><a href="<?php echo url_rewrite(); ?>/admin/feature/list/"><?php _e('列表'); ?></a></li>
+					<li class="<?php if ($_GET['act'] == 'add') { ?> active<?php } ?>"><a href="<?php echo url_rewrite(); ?>/admin/feature/add/"><?php _e('添加'); ?></a></li>
 				</ul>
 			</h3>
 		</div>
@@ -39,7 +39,7 @@
 							<td><?php echo FORMAT::text($val['title'], false); ?></td>
 							<td><?php echo $val['link']; ?></td>
 							<td><?php echo $val['sort']; ?></td>
-							<td><a href="admin/feature/edit/feature_id-<?php echo $val['id']; ?>" title="<?php _e('编辑'); ?>" class="icon icon-edit md-tip"></a>
+							<td><a href="<?php echo url_rewrite(); ?>/admin/feature/edit/feature_id-<?php echo $val['id']; ?>" title="<?php _e('编辑'); ?>" class="icon icon-edit md-tip"></a>
 							<a onclick="AWS.ajax_request(G_BASE_URL + '/admin/ajax/remove_feature/', 'feature_id=<?php echo $val['id']; ?>');" title="<?php _e('删除'); ?>" class="icon icon-trash md-tip"></td>
 						</tr>
 						<?php } ?>

@@ -4,7 +4,7 @@
 	<a class="aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>" data-reputation="<?php echo UF::reputation($val['user_info']); ?>" href="<?php echo UF::url($val['user_info']); ?>" rel="nofollow"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /><?php if ($val['user_info']['verified']) { ?><em class="aw-verified"><?php echo $val['user_info']['verified']; ?></em><?php } ?></a>
 	<div class="aw-question-content">
 		<h4>
-			<a href="<?php echo $val['post_type']; ?>/<?php echo $val['id']; ?>">
+			<a href="<?php echo url_rewrite(); ?>/<?php echo $val['post_type']; ?>/<?php echo $val['id']; ?>">
 				<?php echo CF::title($val['user_info'], $val['post_type'] . '_' . $val['id'], $val['title']); ?>
 			</a>
 		</h4>
@@ -17,13 +17,13 @@
 			<?php } ?>
 		</div>
 		<?php } else if ($val['post_type'] == 'question') { ?>
-		<a href="question/<?php echo $val['id']; ?>#!answer_form" class="pull-right aw-small-text hidden-xs"><?php _e('回复'); ?></a>
+		<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['id']; ?>#!answer_form" class="pull-right aw-small-text hidden-xs"><?php _e('回复'); ?></a>
 		<?php } ?>
 		<!-- end 贡献 -->
 
 		<p>
 			<?php if ($_GET['category'] != $val['category_id'] AND $val['category_info']['title']) { ?>
-				<a class="aw-question-tags" href="explore/category-<?php echo $val['category_info']['id']; ?>"><?php echo FORMAT::text($val['category_info']['title'], false); ?></a> •
+				<a class="aw-question-tags" href="<?php echo url_rewrite(); ?>/explore/category-<?php echo $val['category_info']['id']; ?>"><?php echo FORMAT::text($val['category_info']['title'], false); ?></a> •
 			<?php } ?>
 
 		<?php if ($val['post_type'] == 'question') { ?>

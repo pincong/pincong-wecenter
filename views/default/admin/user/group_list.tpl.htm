@@ -47,7 +47,7 @@
 									<td><input type="text" name="group[<?php echo $val['group_id']; ?>][reputation_factor]" class="form-control" value="<?php echo $val['reputation_factor']; ?>" /></td>
 									<td><input type="text" name="group[<?php echo $val['group_id']; ?>][reputation_factor_receive]" class="form-control" value="<?php echo $val['reputation_factor_receive']; ?>" placeholder="<?php _e('不使用请留空'); ?>" /></td>
 									<td><input type="text" name="group[<?php echo $val['group_id']; ?>][content_reputation_factor]" class="form-control" value="<?php echo $val['content_reputation_factor']; ?>" placeholder="<?php _e('不使用请留空'); ?>" /></td>
-									<td><a href="admin/user/group_edit/group_id-<?php echo $val['group_id']; ?>" title="<?php _e('权限编辑'); ?>" class="icon icon-edit md-tip"></a></td>
+									<td><a href="<?php echo url_rewrite(); ?>/admin/user/group_edit/group_id-<?php echo $val['group_id']; ?>" title="<?php _e('权限编辑'); ?>" class="icon icon-edit md-tip"></a></td>
 								</tr>
 								<?php } } ?>
 								<tr id="members_add_form" class="collapse">
@@ -101,7 +101,7 @@
 							<td><input type="text" class="form-control" name="group[<?php echo $val['group_id']; ?>][reputation_factor]" value="<?php echo $val['reputation_factor']; ?>" /></td>
 							<td><input type="text" class="form-control" name="group[<?php echo $val['group_id']; ?>][reputation_factor_receive]" value="<?php echo $val['reputation_factor_receive']; ?>" placeholder="<?php _e('不使用请留空'); ?>" /></td>
 							<td><input type="text" class="form-control" name="group[<?php echo $val['group_id']; ?>][content_reputation_factor]" value="<?php echo $val['content_reputation_factor']; ?>" placeholder="<?php _e('不使用请留空'); ?>" /></td>
-							<td><a href="admin/user/group_edit/group_id-<?php echo $val['group_id']; ?>" title="<?php _e('权限编辑'); ?>" class="icon icon-edit md-tip"></a></td>
+							<td><a href="<?php echo url_rewrite(); ?>/admin/user/group_edit/group_id-<?php echo $val['group_id']; ?>" title="<?php _e('权限编辑'); ?>" class="icon icon-edit md-tip"></a></td>
 						</tr>
 						<?php } ?>
 						<tr id="system_group_add_form" class="collapse">
@@ -147,7 +147,7 @@
 							<td><input type="text" class="form-control" name="group[<?php echo $val['group_id']; ?>][reputation_factor]" value="<?php echo $val['reputation_factor']; ?>" /></td>
 							<td><input type="text" class="form-control" name="group[<?php echo $val['group_id']; ?>][reputation_factor_receive]" value="<?php echo $val['reputation_factor_receive']; ?>" placeholder="<?php _e('不使用请留空'); ?>" /></td>
 							<td><input type="text" class="form-control" name="group[<?php echo $val['group_id']; ?>][content_reputation_factor]" value="<?php echo $val['content_reputation_factor']; ?>" placeholder="<?php _e('不使用请留空'); ?>" /></td>
-							<td><a href="admin/user/group_edit/group_id-<?php echo $val['group_id']; ?>" title="<?php _e('权限编辑'); ?>" class="icon icon-edit md-tip"></a></td>
+							<td><a href="<?php echo url_rewrite(); ?>/admin/user/group_edit/group_id-<?php echo $val['group_id']; ?>" title="<?php _e('权限编辑'); ?>" class="icon icon-edit md-tip"></a></td>
 						</tr>
 						<?php } ?>
 						<?php } ?>

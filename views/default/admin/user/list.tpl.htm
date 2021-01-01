@@ -6,11 +6,11 @@
 		<div class="mod-head">
 			<h3>
 				<ul class="nav nav-tabs">
-					<li<?php if (!$_GET['type']) { ?> class="active"<?php } ?>><a href="<?php if ($_GET['type']) { ?>admin/user/list/<?php } else { ?>#list<?php } ?>"<?php if (!$_GET['type']) { ?> data-toggle="tab"<?php } ?>><?php _e('会员列表'); ?></a></li>
-					<li<?php if ($_GET['type'] == 'forbidden') { ?> class="active"<?php } ?>><a href="<?php if ($_GET['type'] == 'forbidden') { ?>#list<?php } else { ?>admin/user/list/type-forbidden<?php } ?>"<?php if ($_GET['type'] == 'forbidden') { ?> data-toggle="tab"<?php } ?>><?php _e('封禁用户'); ?></a></li>
-					<li<?php if ($_GET['type'] == 'flagged') { ?> class="active"<?php } ?>><a href="<?php if ($_GET['type'] == 'flagged') { ?>#list<?php } else { ?>admin/user/list/type-flagged<?php } ?>"<?php if ($_GET['type'] == 'flagged') { ?> data-toggle="tab"<?php } ?>><?php _e('标记用户'); ?></a></li>
+					<li<?php if (!$_GET['type']) { ?> class="active"<?php } ?>><a href="<?php if ($_GET['type']) { ?><?php echo url_rewrite(); ?>/admin/user/list/<?php } else { ?>#list<?php } ?>"<?php if (!$_GET['type']) { ?> data-toggle="tab"<?php } ?>><?php _e('会员列表'); ?></a></li>
+					<li<?php if ($_GET['type'] == 'forbidden') { ?> class="active"<?php } ?>><a href="<?php if ($_GET['type'] == 'forbidden') { ?>#list<?php } else { ?><?php echo url_rewrite(); ?>/admin/user/list/type-forbidden<?php } ?>"<?php if ($_GET['type'] == 'forbidden') { ?> data-toggle="tab"<?php } ?>><?php _e('封禁用户'); ?></a></li>
+					<li<?php if ($_GET['type'] == 'flagged') { ?> class="active"<?php } ?>><a href="<?php if ($_GET['type'] == 'flagged') { ?>#list<?php } else { ?><?php echo url_rewrite(); ?>/admin/user/list/type-flagged<?php } ?>"<?php if ($_GET['type'] == 'flagged') { ?> data-toggle="tab"<?php } ?>><?php _e('标记用户'); ?></a></li>
 					<li><a href="#search" data-toggle="tab"><?php _e('搜索'); ?></a></li>
-					<li><a href="admin/user/user_add/"><?php _e('添加用户'); ?></a></li>
+					<li><a href="<?php echo url_rewrite(); ?>/admin/user/user_add/"><?php _e('添加用户'); ?></a></li>
 				</ul>
 			</h3>
 		</div>
@@ -51,8 +51,8 @@
 								<td><?php echo $val['agree_count']; ?></td>
 								<td><?php echo $val['currency']; ?></td>
 								<td class="nowrap">
-									<a href="admin/user/edit/uid-<?php echo $val['uid']; ?>" class="icon icon-edit md-tip" title="<?php _e('编辑'); ?>"></a>
-									<a href="admin/user/currency_log/uid-<?php echo $val['uid']; ?>" class="icon icon-signup md-tip" title="<?php _e('代币日志'); ?>"></a>
+									<a href="<?php echo url_rewrite(); ?>/admin/user/edit/uid-<?php echo $val['uid']; ?>" class="icon icon-edit md-tip" title="<?php _e('编辑'); ?>"></a>
+									<a href="<?php echo url_rewrite(); ?>/admin/user/currency_log/uid-<?php echo $val['uid']; ?>" class="icon icon-signup md-tip" title="<?php _e('代币日志'); ?>"></a>
 									<?php if ($val['uid'] != $this->user_id) { ?><a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/admin/ajax/forbid_user/' , 'uid=<?php echo $val['uid']; ?>&status=<?php echo intval($val['forbidden']) ? 0 : 1; ?>');" title="<?php if ($val['forbidden']) { ?><?php _e('解除封禁'); ?><?php } else { ?><?php _e('封禁用户'); ?><?php } ?>" class="icon <?php if ($val['forbidden']) { ?>icon-plus<?php } else { ?>icon-forbid<?php } ?> md-tip"><?php } ?>
 									<?php if ($val['uid'] != $this->user_id) { ?><a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/admin/ajax/flag_user/' , 'uid=<?php echo $val['uid']; ?>&status=<?php echo intval($val['flagged']) ? 0 : 1; ?>');" title="<?php if ($val['flagged']) { ?><?php _e('解除标记'); ?><?php } else { ?><?php _e('标记用户'); ?><?php } ?>" class="icon <?php if ($val['flagged']) { ?>icon-plus<?php } else { ?>icon-forbid<?php } ?> md-tip"><?php } ?>
 								</td>

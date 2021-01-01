@@ -22,28 +22,28 @@
 					<li><a href="<?php echo base_url(); ?>/" class="<?php if (!$_GET['app'] OR $_GET['app'] == 'explore') { ?>active<?php } ?>"><i class="icon icon-list"></i> <?php _e('发现'); ?></a></li>
 
 					<?php if (is_numeric(get_setting('push_reputation'))) { ?>
-					<li><a href="hot/"<?php if ($_GET['app'] == 'hot') { ?> class="active"<?php } ?>><i class="icon icon-reader"></i> <?php _e('精选'); ?></a></li>
+					<li><a href="<?php echo url_rewrite(); ?>/hot/"<?php if ($_GET['app'] == 'hot') { ?> class="active"<?php } ?>><i class="icon icon-reader"></i> <?php _e('精选'); ?></a></li>
 					<?php } ?>
 
 					<?php if ($this->user_id) { ?>
-					<li><a href="home/"<?php if ($_GET['app'] == 'home') { ?> class="active"<?php } ?>><i class="icon icon-home"></i> <?php _e('动态'); ?></a></li>
+					<li><a href="<?php echo url_rewrite(); ?>/home/"<?php if ($_GET['app'] == 'home') { ?> class="active"<?php } ?>><i class="icon icon-home"></i> <?php _e('动态'); ?></a></li>
 
 					<li>
-						<a href="notification/" class="<?php if ($_GET['app'] == 'notification') { ?>active<?php } ?>"><i class="icon icon-bell"></i> <?php _e('通知'); ?></a>
+						<a href="<?php echo url_rewrite(); ?>/notification/" class="<?php if ($_GET['app'] == 'notification') { ?>active<?php } ?>"><i class="icon icon-bell"></i> <?php _e('通知'); ?></a>
 						<span class="badge badge-important" style="display:none" id="notifications_unread"><?php echo $this->user_info['notification_unread']; ?></span>
 						<div class="aw-dropdown pull-right hidden-xs">
 							<div class="mod-body">
 								<ul id="header_notification_list"></ul>
 							</div>
 							<div class="mod-footer">
-								<a href="notification/"><?php _e('查看全部'); ?></a>
+								<a href="<?php echo url_rewrite(); ?>/notification/"><?php _e('查看全部'); ?></a>
 							</div>
 						</div>
 					</li>
 
-					<li><a href="inbox/"<?php if ($_GET['app'] == 'inbox') { ?> class="active"<?php } ?>><i class="icon icon-inbox"></i> <?php _e('私信'); ?></a></li>
+					<li><a href="<?php echo url_rewrite(); ?>/inbox/"<?php if ($_GET['app'] == 'inbox') { ?> class="active"<?php } ?>><i class="icon icon-inbox"></i> <?php _e('私信'); ?></a></li>
 					<?php } ?>
-					<li><a href="search/"<?php if ($_GET['app'] == 'search') { ?> class="active"<?php } ?>><i class="icon icon-search"></i> <?php _e('搜索'); ?></a></li>
+					<li><a href="<?php echo url_rewrite(); ?>/search/"<?php if ($_GET['app'] == 'search') { ?> class="active"<?php } ?>><i class="icon icon-search"></i> <?php _e('搜索'); ?></a></li>
 
 				</ul>
 				</nav>
@@ -61,17 +61,17 @@
 					</a>
 					<div class="aw-dropdown dropdown-list pull-right">
 						<ul class="aw-dropdown-list">
-							<li><a href="inbox/"><i class="icon icon-inbox"></i> <?php _e('私信'); ?><span class="badge badge-important collapse" id="inbox_unread">0</span></a></li>
-							<li><a href="account/setting/profile/"><i class="icon icon-setting"></i> <?php _e('设置'); ?></a></li>
+							<li><a href="<?php echo url_rewrite(); ?>/inbox/"><i class="icon icon-inbox"></i> <?php _e('私信'); ?><span class="badge badge-important collapse" id="inbox_unread">0</span></a></li>
+							<li><a href="<?php echo url_rewrite(); ?>/account/setting/profile/"><i class="icon icon-setting"></i> <?php _e('设置'); ?></a></li>
 							<?php if ($this->user_info['permission']['is_administrator']) { ?>
-							<li><a href="admin/"><i class="icon icon-job"></i> <?php _e('管理'); ?></a></li>
+							<li><a href="<?php echo url_rewrite(); ?>/admin/"><i class="icon icon-job"></i> <?php _e('管理'); ?></a></li>
 							<?php } ?>
-							<li><a href="account/logout/"><i class="icon icon-logout"></i> <?php _e('退出'); ?></a></li>
+							<li><a href="<?php echo url_rewrite(); ?>/account/logout/"><i class="icon icon-logout"></i> <?php _e('退出'); ?></a></li>
 						</ul>
 					</div>
 				<?php } else { ?>
-					<a class="login btn btn-normal btn-primary" href="login/"><?php _e('登录'); ?></a>
-					<a class="register btn btn-normal btn-success" href="register/"><?php _e('注册'); ?></a>
+					<a class="login btn btn-normal btn-primary" href="<?php echo url_rewrite(); ?>/login/"><?php _e('登录'); ?></a>
+					<a class="register btn btn-normal btn-success" href="<?php echo url_rewrite(); ?>/register/"><?php _e('注册'); ?></a>
 				<?php } ?>
 				<!-- end 登录&注册栏 -->
 			</div>
@@ -100,9 +100,9 @@
 			<div class="dropdown aw-publish-btn">
 				<a href="javascript:;" class="btn-primary dropdown-toggle" data-toggle="dropdown"><i class="icon icon-ask"></i> <?php _e('发起'); ?></a>
 				<ul class="dropdown-menu">
-					<li><a href="publish/<?php echo $publish_url_params; ?>"><?php _e('问题'); ?></a></li>
-					<li><a href="publish/article/<?php echo $publish_url_params; ?>"><?php _e('文章'); ?></a></li>
-					<li><a href="publish/video/<?php echo $publish_url_params; ?>"><?php _e('影片'); ?></a></li>
+					<li><a href="<?php echo url_rewrite(); ?>/publish/<?php echo $publish_url_params; ?>"><?php _e('问题'); ?></a></li>
+					<li><a href="<?php echo url_rewrite(); ?>/publish/article/<?php echo $publish_url_params; ?>"><?php _e('文章'); ?></a></li>
+					<li><a href="<?php echo url_rewrite(); ?>/publish/video/<?php echo $publish_url_params; ?>"><?php _e('影片'); ?></a></li>
 				</ul>
 			</div>
 			<?php } ?>

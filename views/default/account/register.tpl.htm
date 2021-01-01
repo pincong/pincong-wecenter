@@ -2,7 +2,7 @@
 
 <div class="aw-register-box">
 	<div class="mod-head">
-		<a href=""><img src="<?php echo get_setting('login_logo_url'); ?>" alt="" /></a>
+		<a href="<?php echo base_url(); ?>/"><img src="<?php echo get_setting('login_logo_url'); ?>" alt="" /></a>
 		<h1><?php _e('注册新用户'); ?></h1>
 		<p><?php echo get_setting('register_notice'); ?></p>
 	</div>
@@ -63,7 +63,7 @@
 					<?php } else { ?>
 						<?php echo get_setting('user_agreement_name'); ?>
 					<?php } ?>
-					<a href="login/" class="pull-right">已有账号?</a>
+					<a href="<?php echo url_rewrite(); ?>/login/" class="pull-right">已有账号?</a>
 				</li>
 				<li class="clearfix">
 					<button class="btn btn-large btn-blue btn-block" onclick="AWS.submit_form($('#register_form'), $(this), $('.error_message'), function(){$('#captcha').click()}); return false;"><?php _e('注册'); ?></button>

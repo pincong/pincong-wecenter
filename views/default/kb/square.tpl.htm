@@ -10,7 +10,7 @@
 						<?php foreach ($this->item_list AS $key => $val) { ?>
 						<div class="aw-item aw-padding-x-20">
 							<div class="mod-head">
-								<a class="aw-size-20" href="kb/<?php echo $val['id']; ?>"><?php echo $val['id']; ?>. <?php echo FORMAT::text($val['title'], false); ?></a>
+								<a class="aw-size-20" href="<?php echo url_rewrite(); ?>/kb/<?php echo $val['id']; ?>"><?php echo $val['id']; ?>. <?php echo FORMAT::text($val['title'], false); ?></a>
 							</div>
 							<div class="mod-body aw-padding-x-20 aw-padding-y-10">
 								<div class="aw-size-16 aw-color-000">
@@ -63,7 +63,7 @@
 						<p>&nbsp;</p>
 						<a name="publish_form"></a>
 						<?php if (!$this->user_id) { ?>
-						<p align="center"><?php _e('要添加内容请先<a href="login/">登录</a>或<a href="register/">注册</a>'); ?></p>
+						<p align="center"><?php _e('要添加内容请先<a href="<?php echo url_rewrite(); ?>/login/">登录</a>或<a href="<?php echo url_rewrite(); ?>/register/">注册</a>'); ?></p>
 						<?php } else if (!$this->user_info['permission']['kb_add']) { ?>
 						<p align="center"><?php _e('你的声望无法添加内容'); ?></p>
 						<?php } else { ?>
@@ -75,7 +75,7 @@
 									<input type="checkbox" value="1" name="anonymous" /> <?php _e(get_setting('anonymous_option_name')); ?>
 								</label>
 								<label class="pull-right">
-									<a href="currency/rule/" target="_blank"><?php _e(get_setting('currency_rule_name')); ?></a>
+									<a href="<?php echo url_rewrite(); ?>/currency/rule/" target="_blank"><?php _e(get_setting('currency_rule_name')); ?></a>
 								</label>
 								<?php echo UF::name($this->user_info); ?>
 							</p>

@@ -6,7 +6,7 @@
 		<div class="row">
 			<div class="col-sm-12 aw-global-tips">
 				<div class="alert alert-warning fade in">
-					<a href="article/<?php echo $this->redirected_from['id']; ?>"><?php echo FORMAT::text($this->redirected_from['title'], false); ?></a> <?php _e('已与本文章合并'); ?>
+					<a href="<?php echo url_rewrite(); ?>/article/<?php echo $this->redirected_from['id']; ?>"><?php echo FORMAT::text($this->redirected_from['title'], false); ?></a> <?php _e('已与本文章合并'); ?>
 				</div>
 			</div>
 		</div>
@@ -17,7 +17,7 @@
 		<div class="row">
 			<div class="col-sm-12 aw-global-tips">
 				<div class="alert alert-danger fade in">
-					<?php _e('本文章已被合并到'); ?>: <a href="article/id-<?php echo $this->redirect_info['id']; ?>__rf-<?php echo $this->article_info['id']; ?>"><?php echo FORMAT::text($this->redirect_info['title'], false); ?></a>
+					<?php _e('本文章已被合并到'); ?>: <a href="<?php echo url_rewrite(); ?>/article/id-<?php echo $this->redirect_info['id']; ?>__rf-<?php echo $this->article_info['id']; ?>"><?php echo FORMAT::text($this->redirect_info['title'], false); ?></a>
 				</div>
 			</div>
 		</div>
@@ -33,12 +33,12 @@
 						<?php if ($this->article_topics) { ?>
 							<?php foreach($this->article_topics as $key => $val) { ?>
 							<span class="topic-tag" data-id="<?php echo $val['topic_id']; ?>">
-								<a class="text" href="topic/<?php echo urlencode($val['topic_title']); ?>"><?php echo FORMAT::text($val['topic_title'], false); ?></a>
+								<a class="text" href="<?php echo url_rewrite(); ?>/topic/<?php echo urlencode($val['topic_title']); ?>"><?php echo FORMAT::text($val['topic_title'], false); ?></a>
 							</span>
 							<?php } ?>
 						<?php } else if (!$this->user_id) { ?>
 							<span class="topic-tag">
-								<a href="login/"><span class="icon-inverse"><i class="icon icon-edit"></i> <?php _e('添加话题'); ?></span></a>
+								<a href="<?php echo url_rewrite(); ?>/login/"><span class="icon-inverse"><i class="icon icon-edit"></i> <?php _e('添加话题'); ?></span></a>
 							</span>
 						<?php } ?>
 
@@ -53,7 +53,7 @@
 									<div class="dropdown-menu aw-dropdown pull-right" role="menu" aria-labelledby="dropdownMenu">
 										<ul class="aw-dropdown-list">
 											<li>
-												<a href="content/log/thread_type-article__thread_id-<?php echo $this->article_info['id']; ?>" rel="nofollow" target="_blank"><?php _e('修改记录'); ?></a>
+												<a href="<?php echo url_rewrite(); ?>/content/log/thread_type-article__thread_id-<?php echo $this->article_info['id']; ?>" rel="nofollow" target="_blank"><?php _e('修改记录'); ?></a>
 											</li>
 
 										<?php if ($this->user_info['permission']['lock_post']) { ?>
@@ -149,7 +149,7 @@
 
 								</div>
 
-								<a href="vote/log/item_type-article__item_id-<?php echo $this->article_info['id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
+								<a href="<?php echo url_rewrite(); ?>/vote/log/item_type-article__item_id-<?php echo $this->article_info['id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
 
 								<span class="pull-right more-operate">
 								<?php if ($this->user_id) { ?>
@@ -159,7 +159,7 @@
 									<?php } ?>
 
 									<?php if ($this->article_info['uid'] == $this->user_id OR $this->user_info['permission']['edit_any_post'] OR $this->user_info['permission']['edit_specific_post']) { ?>
-									<a class="aw-small-text" href="modify/article/<?php echo $this->article_info['id']; ?>"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
+									<a class="aw-small-text" href="<?php echo url_rewrite; ?>/modify/article/<?php echo $this->article_info['id']; ?>"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
 									<?php } ?>
 
 									<a href="javascript:;" onclick="AWS.User.add_favorite('article', '<?php echo $this->article_info['id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>
@@ -193,7 +193,7 @@
 
 						<?php if ($_GET['item_id']) { ?>
 						<div class="mod-footer">
-								<a href="article/<?php echo $this->article_info['id']; ?>" class="aw-load-more-content">
+								<a href="<?php echo url_rewrite(); ?>/article/<?php echo $this->article_info['id']; ?>" class="aw-load-more-content">
 									<span><?php _e('查看全部评论'); ?></span>
 								</a>
 						</div>
@@ -211,7 +211,7 @@
 						<?php if ($this->article_info['lock']) { ?>
 						<p align="center"><?php _e('该文章目前已经被锁定, 无法添加新评论'); ?></p>
 						<?php } else if (!$this->user_id) { ?>
-						<p align="center"><?php _e('要回复文章请先<a href="login/">登录</a>或<a href="register/">注册</a>'); ?></p>
+						<p align="center"><?php _e('要回复文章请先<a href="<?php echo url_rewrite(); ?>/login/">登录</a>或<a href="<?php echo url_rewrite(); ?>/register/">注册</a>'); ?></p>
 						<?php } else { ?>
 						<form action="<?php echo url_rewrite(); ?>/publish/ajax/publish_article_comment/" onsubmit="return false;" method="post" id="answer_form" class="question_answer_form">
 						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
@@ -225,7 +225,7 @@
 								</label>
 								<?php } ?>
 								<label class="pull-right">
-									<a href="currency/rule/" target="_blank"><?php _e(get_setting('currency_rule_name')); ?></a>
+									<a href="<?php echo url_rewrite(); ?>/currency/rule/" target="_blank"><?php _e(get_setting('currency_rule_name')); ?></a>
 								</label>
 								<?php echo UF::name($this->user_info); ?>
 							</p>
@@ -264,7 +264,7 @@
 						<?php if ($this->article_info['lock']) { ?>
 						<p align="center"><?php _e('该文章目前已经被锁定, 无法添加新评论'); ?></p>
 						<?php } else if (!$this->user_id) { ?>
-						<p align="center"><?php _e('要回复文章请先<a href="login/">登录</a>或<a href="register/">注册</a>'); ?></p>
+						<p align="center"><?php _e('要回复文章请先<a href="<?php echo url_rewrite(); ?>/login/">登录</a>或<a href="<?php echo url_rewrite(); ?>/register/">注册</a>'); ?></p>
 						<?php } else { ?>
 						<form action="<?php echo url_rewrite(); ?>/publish/ajax/publish_article_comment/" onsubmit="return false;" method="post" id="answer_form_2">
 						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
@@ -343,11 +343,11 @@
 								<?php foreach($this->recommend_posts AS $key => $val) { ?>
 								<li>
 									<?php if ($val['post_type'] == 'question') { ?>
-									<a href="question/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title'], false); ?><?php } ?></a>
+									<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title'], false); ?><?php } ?></a>
 									<?php } elseif ($val['post_type'] == 'article') { ?>
-									<a href="article/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title'], false); ?><?php } ?></a>
+									<a href="<?php echo url_rewrite(); ?>/article/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title'], false); ?><?php } ?></a>
 									<?php } elseif ($val['post_type'] == 'video') { ?>
-									<a href="video/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title'], false); ?><?php } ?></a>
+									<a href="<?php echo url_rewrite(); ?>/video/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title'], false); ?><?php } ?></a>
 									<?php } ?>
 								</li>
 								<?php } ?>
@@ -366,7 +366,7 @@
 						<div class="mod-body aw-size-12">
 							<ul>
 								<?php foreach($this->question_related_list AS $key => $val) { ?>
-								<li><a href="question/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title'], false); ?><?php } ?></a></li>
+								<li><a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title'], false); ?><?php } ?></a></li>
 								<?php } ?>
 							</ul>
 						</div>

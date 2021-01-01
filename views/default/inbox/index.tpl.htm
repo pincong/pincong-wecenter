@@ -9,7 +9,7 @@
 						<div class="mod-head common-head">
 							<h2>
 								<a href="javascript:;" onclick="AWS.User.compose_message();" class="pull-right btn btn-mini btn-success"><?php _e('新私信'); ?></a>
-								<span class="pull-right aw-setting-inbox hidden-xs"><a class="aw-small-text" href="account/setting/privacy/#!inbox"><i class="icon icon-setting"></i> <?php _e('私信设置'); ?></a></span>
+								<span class="pull-right aw-setting-inbox hidden-xs"><a class="aw-small-text" href="<?php echo url_rewrite(); ?>/account/setting/privacy/#!inbox"><i class="icon icon-setting"></i> <?php _e('私信设置'); ?></a></span>
 								<?php _e('私信'); ?>
 							</h2>
 						</div>
@@ -20,9 +20,9 @@
 								<div class="mod-head">
 									<a class="aw-user-img aw-border-radius-5" data-id="<?php echo $val['user_info']['uid']; ?>" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 									<a class="aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
-									<p class="content"><a href="inbox/read/<?php echo $val['id']; ?>"><?php echo $val['last_message']; ?></a></p>
+									<p class="content"><a href="<?php echo url_rewrite(); ?>/inbox/read/<?php echo $val['id']; ?>"><?php echo $val['last_message']; ?></a></p>
 									<p class="aw-small-text">
-										<span class="pull-right"><a href="inbox/read/<?php echo $val['id']; ?>"><?php if ($val['unread']) { ?><?php _e('有'); ?> <?php echo $val['unread']; ?> <?php _e('条新回复'); ?><?php } else { ?><?php _e('共 %s 条对话', $val['count']); ?><?php } ?></a> &nbsp; <a href="javascript:;" class="aw-small-text" onclick="AWS.confirm('<?php _e('确认删除对话?'); ?>', function(){window.location = G_BASE_URL + '/inbox/delete_dialog/dialog_id-<?php echo $val['id']; ?>'});"><?php _e('删除'); ?></a></span>
+										<span class="pull-right"><a href="<?php echo url_rewrite(); ?>/inbox/read/<?php echo $val['id']; ?>"><?php if ($val['unread']) { ?><?php _e('有'); ?> <?php echo $val['unread']; ?> <?php _e('条新回复'); ?><?php } else { ?><?php _e('共 %s 条对话', $val['count']); ?><?php } ?></a> &nbsp; <a href="javascript:;" class="aw-small-text" onclick="AWS.confirm('<?php _e('确认删除对话?'); ?>', function(){window.location = G_BASE_URL + '/inbox/delete_dialog/dialog_id-<?php echo $val['id']; ?>'});"><?php _e('删除'); ?></a></span>
 										<span><?php echo date_friendly($val['update_time']); ?></span>
 									</p>
 								</div>

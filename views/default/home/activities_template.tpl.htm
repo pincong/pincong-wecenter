@@ -20,7 +20,7 @@
 			<?php _e('%s 个回复', $val['answer_count']); ?>
 		</p>
 		<h4>
-			<a href="question/<?php echo $val['id']; ?>"><?php echo FORMAT::text($val['title'], false); ?></a>
+			<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['id']; ?>"><?php echo FORMAT::text($val['title'], false); ?></a>
 		</h4>
 	</div>
 </div>
@@ -40,12 +40,12 @@
 			<?php echo date_friendly($val['add_time']); ?>
 		</p>
 		<h4>
-			<a href="question/<?php echo $val['thread_info']['id']; ?>"><?php if (!$val['thread_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['thread_info']['title'], false); ?><?php } ?></a>
+			<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['thread_info']['id']; ?>"><?php if (!$val['thread_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['thread_info']['title'], false); ?><?php } ?></a>
 		</h4>
 	</div>
 	<div class="mod-body clearfix">
 		<div class="markitup-box">
-			<a class="aw-small-text" href="question/item_id-<?php echo $val['id']; ?>">
+			<a class="aw-small-text" href="<?php echo url_rewrite(); ?>/question/item_id-<?php echo $val['id']; ?>">
 				<?php echo FORMAT::text(cjk_substr($val['message'], 0, 200, 'UTF-8', '...')); ?>
 			</a>
 		</div>
@@ -69,7 +69,7 @@
 			<?php _e('%s 个评论', $val['comments']); ?>
 		</p>
 		<h4>
-			<a href="article/<?php echo $val['id']; ?>"><?php echo FORMAT::text($val['title'], false); ?></a>
+			<a href="<?php echo url_rewrite(); ?>/article/<?php echo $val['id']; ?>"><?php echo FORMAT::text($val['title'], false); ?></a>
 		</h4>
 	</div>
 </div>
@@ -89,12 +89,12 @@
 			<?php echo date_friendly($val['add_time']); ?>
 		</p>
 		<h4>
-			<a href="article/<?php echo $val['thread_info']['id']; ?>"><?php if (!$val['thread_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['thread_info']['title'], false); ?><?php } ?></a>
+			<a href="<?php echo url_rewrite(); ?>/article/<?php echo $val['thread_info']['id']; ?>"><?php if (!$val['thread_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['thread_info']['title'], false); ?><?php } ?></a>
 		</h4>
 	</div>
 	<div class="mod-body clearfix">
 		<div class="markitup-box">
-			<a class="aw-small-text" href="article/item_id-<?php echo $val['id']; ?>">
+			<a class="aw-small-text" href="<?php echo url_rewrite(); ?>/article/item_id-<?php echo $val['id']; ?>">
 				<?php echo FORMAT::text(cjk_substr(strip_ubb($val['message']), 0, 200, 'UTF-8', '...')); ?>
 			</a>
 		</div>
@@ -118,7 +118,7 @@
 			<?php _e('%s 个评论', $val['comment_count']); ?>
 		</p>
 		<h4>
-			<a href="video/<?php echo $val['id']; ?>"><?php echo FORMAT::text($val['title'], false); ?></a>
+			<a href="<?php echo url_rewrite(); ?>/video/<?php echo $val['id']; ?>"><?php echo FORMAT::text($val['title'], false); ?></a>
 		</h4>
 	</div>
 </div>
@@ -138,12 +138,12 @@
 			<?php echo date_friendly($val['add_time']); ?>
 		</p>
 		<h4>
-			<a href="video/<?php echo $val['thread_info']['id']; ?>"><?php if (!$val['thread_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['thread_info']['title'], false); ?><?php } ?></a>
+			<a href="<?php echo url_rewrite(); ?>/video/<?php echo $val['thread_info']['id']; ?>"><?php if (!$val['thread_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['thread_info']['title'], false); ?><?php } ?></a>
 		</h4>
 	</div>
 	<div class="mod-body clearfix">
 		<div class="markitup-box">
-			<a class="aw-small-text" href="video/item_id-<?php echo $val['id']; ?>">
+			<a class="aw-small-text" href="<?php echo url_rewrite(); ?>/video/item_id-<?php echo $val['id']; ?>">
 				<?php echo FORMAT::text(cjk_substr(strip_ubb($val['message']), 0, 200, 'UTF-8', '...')); ?>
 			</a>
 		</div>
