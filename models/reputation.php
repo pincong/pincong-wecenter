@@ -244,23 +244,19 @@ class reputation_class extends AWS_MODEL
 		if ($agree_value > 0 AND $vote_user['permission']['no_upvote_reputation_factor'])
 		{
 			$user_reputation_factor = 0;
-			$content_reputation_factor = 0;
 		}
 		else if ($agree_value < 0 AND $vote_user['permission']['no_downvote_reputation_factor'])
 		{
 			$user_reputation_factor = 0;
-			$content_reputation_factor = 0;
+		}
+
+		if (is_numeric($vote_user['content_reputation_factor']))
+		{
+			$content_reputation_factor = $vote_user['content_reputation_factor'];
 		}
 		else
 		{
-			if (is_numeric($vote_user['content_reputation_factor']))
-			{
-				$content_reputation_factor = $vote_user['content_reputation_factor'];
-			}
-			else
-			{
-				$content_reputation_factor = $user_reputation_factor;
-			}
+			$content_reputation_factor = $user_reputation_factor;
 		}
 
 		$result_user_reputation = $agree_value * $user_reputation_factor;
