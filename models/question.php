@@ -331,7 +331,7 @@ class question_class extends AWS_MODEL
 	// 同时获取用户信息
 	public function get_answer_discussion_by_id($id)
 	{
-		if ($item = $this->fetch_row('question_discussion', "id = " . intval($id)))
+		if ($item = $this->fetch_row('answer_discussion', "id = " . intval($id)))
 		{
 			$item['user_info'] = $this->model('account')->get_user_info_by_uid($item['uid']);
 		}

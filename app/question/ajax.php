@@ -21,21 +21,6 @@ if (!defined('IN_ANWSION'))
 
 class ajax extends AWS_CONTROLLER
 {
-	public function get_access_rule()
-	{
-		$rule_action['rule_type'] = 'white';
-
-		if ($this->user_info['permission']['visit_site'])
-		{
-			$rule_action['actions'] = array(
-				'get_question_discussions',
-				'get_answer_discussions'
-			);
-		}
-
-		return $rule_action;
-	}
-
 	public function setup()
 	{
 		HTTP::no_cache_header();
@@ -158,7 +143,7 @@ class ajax extends AWS_CONTROLLER
 		$item_info['message'] = $this->model('mention')->parse_at_user($item_info['message']);
 		TPL::assign('discussion_info', $item_info);
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'ajax_html' => TPL::process('answer/ajax_answer_discussion')
+			'ajax_html' => TPL::process('question/ajax_answer_discussion')
 		), 1, null));
 	}
 
@@ -307,54 +292,6 @@ class ajax extends AWS_CONTROLLER
 		$this->model('account')->update_question_invite_count($invite_user_info['uid']);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
-	}
-
-	public function get_answer_discussions_action()
-	{
-		$replies_per_page = intval(get_setting('replies_per_page'));
-		if (!$replies_per_page)
-		{
-			$replies_per_page = 100;
-		}
-		$discussions = $this->model('question')->get_answer_discussions($_GET['answer_id'], $_GET['page'], $replies_per_page);
-
-		foreach ($discussions as $key => $val)
-		{
-			$discussions[$key]['message'] = $this->model('mention')->parse_at_user($discussions[$key]['message']);
-		}
-
-		TPL::assign('discussions', $discussions);
-
-		TPL::output("question/answer_discussions_template");
-	}
-
-	public function get_question_discussions_action()
-	{
-		// 判断是否已合并
-		if ($redirect_posts = $this->model('content')->get_redirect_posts('question', $_GET['question_id']))
-		{
-			foreach ($redirect_posts AS $key => $val)
-			{
-				$post_ids[] = $val['id'];
-			}
-		}
-		$post_ids[] = $_GET['question_id'];
-
-		$replies_per_page = intval(get_setting('replies_per_page'));
-		if (!$replies_per_page)
-		{
-			$replies_per_page = 100;
-		}
-		$discussions = $this->model('question')->get_question_discussions($post_ids, $_GET['page'], $replies_per_page);
-
-		foreach ($discussions as $key => $val)
-		{
-			$discussions[$key]['message'] = $this->model('mention')->parse_at_user($discussions[$key]['message']);
-		}
-
-		TPL::assign('discussions', $discussions);
-
-		TPL::output("question/question_discussions_template");
 	}
 
 	public function cancel_question_invite_action()

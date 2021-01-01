@@ -482,9 +482,7 @@ function toggle_disscusion(btn) {
 	if (div.css('display') == 'none') {
 		if (!div.data('initialized')) {
 			div.attr('data-initialized', 'true');
-			var data_url = G_BASE_URL + '/question/ajax/get_question_discussions/question_id-' + btn.data('id');
-			if (btn.data('type') == 'answer')
-				data_url = G_BASE_URL + '/question/ajax/get_answer_discussions/answer_id-' + btn.data('id');
+			var data_url = G_BASE_URL + '/question/info/' + btn.data('type') + '_discussions/parent_id-' + btn.data('id');
 			$.get(data_url, function (result) {
 				div.find('.aw-comment-list').html(result);
 			});

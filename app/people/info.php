@@ -57,7 +57,7 @@ class info extends AWS_CONTROLLER
 		$_GET['page'] = intval($_GET['page']);
 		if ($_GET['page'] < 1)
 		{
-			$_GET['page'] = 0;
+			$_GET['page'] = 0; // 因为followers_action page从0开始
 		}
 
 		$this->per_page = intval(get_setting('contents_per_page'));
