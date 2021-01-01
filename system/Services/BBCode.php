@@ -4,108 +4,181 @@ class Services_BBCode
 {
 	protected $bbcode_table = array();
 
-	private function _code_callback($match)
+	private function _code_callback($matches)
 	{
-		return "<pre>" . unnest_bbcode($match[1]) . "</pre>";
+		if (!trim($matches[1]))
+		{
+			return unnest_bbcode($matches[0]);
+		}
+		return "<pre>" . unnest_bbcode($matches[1]) . "</pre>";
 	}
 
-	private function _url_callback($match)
+	private function _url_callback($matches)
 	{
-		return FORMAT::parse_link(unnest_bbcode($match[1]));
+		if (!trim($matches[1]))
+		{
+			return unnest_bbcode($matches[0]);
+		}
+		return FORMAT::parse_link(unnest_bbcode($matches[1]));
 	}
 
-	private function _url_2_callback($match)
+	private function _url_2_callback($matches)
 	{
-		return FORMAT::parse_link(unnest_bbcode($match[1]), $match[2], true);
+		if (!trim($matches[2]))
+		{
+			return unnest_bbcode($matches[0]);
+		}
+		return FORMAT::parse_link(unnest_bbcode($matches[1]), $matches[2], true);
 	}
 
-	private function _img_callback($match)
+	private function _img_callback($matches)
 	{
-		return FORMAT::parse_image(unnest_bbcode($match[1]));
+		if (!trim($matches[1]))
+		{
+			return unnest_bbcode($matches[0]);
+		}
+		return FORMAT::parse_image(unnest_bbcode($matches[1]));
 	}
 
-	private function _img_2_callback($match)
+	private function _img_2_callback($matches)
 	{
-		return FORMAT::parse_image(unnest_bbcode($match[2]));
+		if (!trim($matches[2]))
+		{
+			return unnest_bbcode($matches[0]);
+		}
+		return FORMAT::parse_image(unnest_bbcode($matches[2]));
 	}
 
-	private function _video_callback($match)
+	private function _video_callback($matches)
 	{
-		return FORMAT::parse_video(unnest_bbcode($match[1]));
+		if (!trim($matches[1]))
+		{
+			return unnest_bbcode($matches[0]);
+		}
+		return FORMAT::parse_video(unnest_bbcode($matches[1]));
 	}
 
 
-	private function _plain_text_callback($match)
+	private function _plain_text_callback($matches)
 	{
-		return $match[1];
+		if (!trim($matches[1]))
+		{
+			return unnest_bbcode($matches[0]);
+		}
+		return $matches[1];
 	}
 
-	private function _plain_text_2_callback($match)
+	private function _plain_text_2_callback($matches)
 	{
-		return $match[2];
+		if (!trim($matches[2]))
+		{
+			return unnest_bbcode($matches[0]);
+		}
+		return $matches[2];
 	}
 
-	private function _hr_callback($match)
+	private function _hr_callback($matches)
 	{
 		return "<hr>";
 	}
 
-	private function _b_callback($match)
+	private function _b_callback($matches)
 	{
-		return "<strong>$match[1]</strong>";
+		if (!trim($matches[1]))
+		{
+			return unnest_bbcode($matches[0]);
+		}
+		return "<strong>$matches[1]</strong>";
 	}
 
-	private function _i_callback($match)
+	private function _i_callback($matches)
 	{
-		return "<em>$match[1]</em>";
+		if (!trim($matches[1]))
+		{
+			return unnest_bbcode($matches[0]);
+		}
+		return "<em>$matches[1]</em>";
 	}
 
-	private function _quote_callback($match)
+	private function _quote_callback($matches)
 	{
-		return "<blockquote><p>$match[1]</p></blockquote>";
+		if (!trim($matches[1]))
+		{
+			return unnest_bbcode($matches[0]);
+		}
+		return "<blockquote><p>$matches[1]</p></blockquote>";
 	}
 
-	private function _center_callback($match)
+	private function _center_callback($matches)
 	{
-		return "<center>$match[1]</center>";
+		if (!trim($matches[1]))
+		{
+			return unnest_bbcode($matches[0]);
+		}
+		return "<center>$matches[1]</center>";
 	}
 
-	private function _s_callback($match)
+	private function _s_callback($matches)
 	{
-		return "<del>$match[1]</del>";
+		if (!trim($matches[1]))
+		{
+			return unnest_bbcode($matches[0]);
+		}
+		return "<del>$matches[1]</del>";
 	}
 
-	private function _u_callback($match)
+	private function _u_callback($matches)
 	{
-		return '<span style="text-decoration:underline;">' . $match[1] . '</span>';
+		if (!trim($matches[1]))
+		{
+			return unnest_bbcode($matches[0]);
+		}
+		return '<span style="text-decoration:underline;">' . $matches[1] . '</span>';
 	}
 
-	private function _list_callback($match)
+	private function _list_callback($matches)
 	{
-		$match[1] = preg_replace_callback("/\[\*\](.*?)\[\/\*\]/is", array(&$this, '_list_element_callback'), $match[1]);
-		return "<ul>" . preg_replace("/[\n\r?]/", "", $match[1]) . "</ul>";
+		if (!trim($matches[1]))
+		{
+			return unnest_bbcode($matches[0]);
+		}
+		$matches[1] = preg_replace_callback("/\[\*\](.*?)\[\/\*\]/is", array(&$this, '_list_element_callback'), $matches[1]);
+		return "<ul>" . preg_replace("/[\n\r?]/", "", $matches[1]) . "</ul>";
 	}
 
-	private function _ul_callback($match)
+	private function _ul_callback($matches)
 	{
-		$match[1] = preg_replace_callback("/\[li\](.*?)\[\/li\]/is", array(&$this, '_list_element_callback'), $match[1]);
-		return "<ul>" . preg_replace("/[\n\r?]/", "", $match[1]) . "</ul>";
+		if (!trim($matches[1]))
+		{
+			return unnest_bbcode($matches[0]);
+		}
+		$matches[1] = preg_replace_callback("/\[li\](.*?)\[\/li\]/is", array(&$this, '_list_element_callback'), $matches[1]);
+		return "<ul>" . preg_replace("/[\n\r?]/", "", $matches[1]) . "</ul>";
 	}
 
-	private function _ol_callback($match)
+	private function _ol_callback($matches)
 	{
-		$match[1] = preg_replace_callback("/\[li\](.*?)\[\/li\]/is", array(&$this, '_list_element_callback'), $match[1]);
-		return "<ol>" . preg_replace("/[\n\r?]/", "", $match[1]) . "</ol>";
+		if (!trim($matches[1]))
+		{
+			return unnest_bbcode($matches[0]);
+		}
+		$matches[1] = preg_replace_callback("/\[li\](.*?)\[\/li\]/is", array(&$this, '_list_element_callback'), $matches[1]);
+		return "<ol>" . preg_replace("/[\n\r?]/", "", $matches[1]) . "</ol>";
 	}
 
-	private function _list_element_callback($match)
+	private function _list_element_callback($matches)
 	{
-		return "<li>" . preg_replace("/[\n\r?]$/", "", $match[1]) . "</li>";
+		return "<li>" . preg_replace("/[\n\r?]$/", "", $matches[1]) . "</li>";
 	}
 
-	private function _list_advance_callback($match)
+	private function _list_advance_callback($matches)
 	{
-		if ($match[1] == '1')
+		if (!trim($matches[2]))
+		{
+			return unnest_bbcode($matches[0]);
+		}
+
+		if ($matches[1] == '1')
 		{
 			$list_type = 'ol';
 		}
@@ -114,9 +187,9 @@ class Services_BBCode
 			$list_type = 'ul';
 		}
 
-		$match[2] = preg_replace_callback("/\[\*\](.*?)\[\/\*\]/is", array(&$this, '_list_element_callback'), $match[2]);
+		$matches[2] = preg_replace_callback("/\[\*\](.*?)\[\/\*\]/is", array(&$this, '_list_element_callback'), $matches[2]);
 
-		return '<' . $list_type . '>' . preg_replace("/[\n\r?]/", "", $match[2]) . '</' . $list_type . '>';
+		return '<' . $list_type . '>' . preg_replace("/[\n\r?]/", "", $matches[2]) . '</' . $list_type . '>';
 	}
 
 	public function __construct()
