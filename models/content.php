@@ -448,16 +448,19 @@ class content_class extends AWS_MODEL
 		if (is_array($data))
 		{
 			$count = intval($data['count']) + 1;
-			$exipre = intval($data['time']) + 60;
-			if ($now >= $exipre)
+			$created_at = intval($data['time']);
+			$exipres_at = $created_at + 60;
+			if ($now >= $exipres_at)
 			{
 				$update = true;
+				$created_at = $now;
 			}
 		}
 		else
 		{
 			$count = 1;
 			$update = true;
+			$created_at = $now;
 		}
 
 		if ($update)
@@ -468,7 +471,7 @@ class content_class extends AWS_MODEL
 		}
 
 		AWS_APP::cache()->set($key, array(
-			'time' => $now,
+			'time' => $created_at,
 			'count' => $count
 		), 3600);
 	}
