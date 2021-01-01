@@ -428,12 +428,13 @@ class account_class extends AWS_MODEL
 	public function update_notification_unread($uid)
 	{
 		return $this->update('users', array(
-			'notification_unread' => $this->count('notification', [['read_flag', 'eq', 0], ['recipients_uid', 'eq', $uid, 'i']])
+			'notification_unread' => $this->count('notification', [['read_flag', 'eq', 0], ['recipient_uid', 'eq', $uid, 'i']])
 		), ['uid', 'eq', $uid, 'i']);
 	}
 
 	public function update_question_invite_count($uid)
 	{
+		// TODO: 'recipients_uid'改成'recipient_uid'
 		return $this->update('users', array(
 			'invite_count' => $this->count('question_invite', ['recipients_uid', 'eq', $uid, 'i'])
 		), ['uid', 'eq', $uid, 'i']);
@@ -442,7 +443,7 @@ class account_class extends AWS_MODEL
 	public function update_inbox_unread($uid)
 	{
 		return $this->update('users', array(
-			'inbox_unread' => ($this->sum('inbox_dialog', 'sender_unread', ['sender_uid', 'eq', $uid, 'i']) + $this->sum('inbox_dialog', 'recipient_unread', ['recipients_uid', 'eq', $uid, 'i']))
+			'inbox_unread' => ($this->sum('inbox_dialog', 'sender_unread', ['sender_uid', 'eq', $uid, 'i']) + $this->sum('inbox_dialog', 'recipient_unread', ['recipient_uid', 'eq', $uid, 'i']))
 		), ['uid', 'eq', $uid, 'i']);
 	}
 
