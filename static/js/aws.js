@@ -503,54 +503,6 @@ var AWS =
 	},
 
 
-	// 回复背景高亮
-	hightlight: function(selector, class_name)
-	{
-		if (selector.hasClass(class_name))
-		{
-			return true;
-		}
-
-		var hightlight_timer_front = setInterval(function ()
-		{
-			selector.addClass(class_name);
-		}, 500);
-
-		var hightlight_timer_background = setInterval(function ()
-		{
-			selector.removeClass(class_name);
-		}, 600);
-
-		setTimeout(function ()
-		{
-			clearInterval(hightlight_timer_front);
-			clearInterval(hightlight_timer_background);
-
-			selector.addClass(class_name);
-		}, 1200);
-
-		setTimeout(function ()
-		{
-			selector.removeClass(class_name);
-		}, 6000);
-	},
-
-	nl2br: function(str)
-	{
-		return str.replace(new RegExp("\r\n|\n\r|\r|\n", "g"), "<br />");
-	},
-
-	content_switcher: function(hide_el, show_el)
-	{
-		hide_el.hide();
-		show_el.fadeIn();
-	},
-
-	htmlspecialchars: function(text)
-	{
-		return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
-	},
-
 	/*
 	 * 用户头像提示box效果
 	 *  @params
@@ -1190,7 +1142,6 @@ AWS.User =
 	{
 		AWS.popup(G_BASE_URL + '/inbox/edit/compose/', function() {
 			if (recipient) {
-				recipient = AWS.htmlspecialchars(recipient);
 				$('#personal_message_recipient').val(recipient);
 			}
 			if (disabled) {
