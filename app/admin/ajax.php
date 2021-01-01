@@ -25,15 +25,15 @@ class ajax extends AWS_ADMIN_CONTROLLER
     public function setup()
     {
         HTTP::no_cache_header();
-    }
 
-    public function login_process_action()
-    {
         if (!$this->user_info['permission']['is_administrator'])
         {
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有访问权限, 请重新登录')));
         }
+    }
 
+    public function login_process_action()
+    {
         if (get_setting('admin_login_seccode') == 'Y' AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
         {
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请填写正确的验证码')));
@@ -59,11 +59,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
     public function save_settings_action()
     {
-        if (!$this->user_info['permission']['is_administrator'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有访问权限, 请重新登录')));
-        }
-
         if ($_POST['upload_dir'])
         {
             $_POST['upload_dir'] = rtrim(trim($_POST['upload_dir']), '\/');
@@ -124,11 +119,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
     public function save_category_sort_action()
     {
-        if (!$this->user_info['permission']['is_administrator'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有访问权限, 请重新登录')));
-        }
-
         if (is_array($_POST['category']))
         {
             foreach ($_POST['category'] as $key => $val)
@@ -142,11 +132,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
     public function save_category_action()
     {
-        if (!$this->user_info['permission']['is_administrator'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有访问权限, 请重新登录')));
-        }
-
         if (trim($_POST['title']) == '')
         {
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入分类名称')));
@@ -168,11 +153,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
     public function remove_category_action()
     {
-        if (!$this->user_info['permission']['is_administrator'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有访问权限, 请重新登录')));
-        }
-
         if (intval($_POST['category_id']) == 1)
         {
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('默认分类不可删除')));
@@ -190,11 +170,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
     public function move_category_contents_action()
     {
-        if (!$this->user_info['permission']['is_administrator'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有访问权限, 请重新登录')));
-        }
-
         if (!$_POST['from_id'] OR !$_POST['target_id'])
         {
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请先选择指定分类和目标分类')));
@@ -212,11 +187,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
     public function save_feature_action()
     {
-        if (!$this->user_info['permission']['is_administrator'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有访问权限, 请重新登录')));
-        }
-
         if (trim($_POST['title']) == '')
         {
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('标题不能为空')));
@@ -249,11 +219,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
     public function remove_feature_action()
     {
-        if (!$this->user_info['permission']['is_administrator'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有访问权限, 请重新登录')));
-        }
-
         $this->model('feature')->delete_feature($_POST['feature_id']);
 
         H::ajax_json_output(AWS_APP::RSM(null, 1, null));
@@ -261,11 +226,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
     public function save_feature_status_action()
     {
-        if (!$this->user_info['permission']['is_administrator'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有访问权限, 请重新登录')));
-        }
-
         if ($_POST['feature_ids'])
         {
             foreach ($_POST['feature_ids'] AS $feature_id => $val)
@@ -279,11 +239,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
     public function save_nav_menu_action()
     {
-        if (!$this->user_info['permission']['is_administrator'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有访问权限, 请重新登录')));
-        }
-
         if ($_POST['nav_sort'])
         {
             if ($menu_ids = explode(',', $_POST['nav_sort']))
@@ -310,11 +265,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
     public function add_nav_menu_action()
     {
-        if (!$this->user_info['permission']['is_administrator'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有访问权限, 请重新登录')));
-        }
-
         switch ($_POST['type'])
         {
             case 'category' :
@@ -343,11 +293,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
     public function remove_nav_menu_action()
     {
-        if (!$this->user_info['permission']['is_administrator'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有访问权限, 请重新登录')));
-        }
-
         $this->model('menu')->remove_nav_menu($_POST['id']);
 
         H::ajax_json_output(AWS_APP::RSM(null, 1, null));
@@ -355,11 +300,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
     public function nav_menu_upload_action()
     {
-        if (!$this->user_info['permission']['is_administrator'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有访问权限, 请重新登录')));
-        }
-
         H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('上传失败')));
 /*
         // TODO: 以后再说
@@ -498,11 +438,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
     public function save_user_group_action()
     {
-        if (!$this->user_info['permission']['is_administrator'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有访问权限, 请重新登录')));
-        }
-
         if ($group_data = $_POST['group'])
         {
             foreach ($group_data as $key => $val)
@@ -556,11 +491,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
     public function save_custom_user_group_action()
     {
-        if (!$this->user_info['permission']['is_administrator'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有访问权限, 请重新登录')));
-        }
-
         if ($group_data = $_POST['group'])
         {
             foreach ($group_data as $key => $val)
@@ -617,11 +547,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
     public function save_internal_user_group_action()
     {
-        if (!$this->user_info['permission']['is_administrator'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有访问权限, 请重新登录')));
-        }
-
         if ($group_data = $_POST['group'])
         {
             foreach ($group_data as $key => $val)
@@ -643,11 +568,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
     public function edit_user_group_permission_action()
     {
-        if (!$this->user_info['permission']['is_administrator'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有访问权限, 请重新登录')));
-        }
-
         $permission_array = array(
 			'is_administrator',
 			'is_moderator',
@@ -731,11 +651,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
                 H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户不存在')));
             }
 
-            if ($user_info['group_id'] == 1 AND !$this->user_info['permission']['is_administrator'])
-            {
-                H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限编辑管理员账号')));
-            }
-
             if ($_POST['user_name'] != $user_info['user_name'] AND $this->model('account')->get_user_info_by_username($_POST['user_name']))
             {
                 H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名已存在')));
@@ -762,11 +677,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
             $update_data['flagged'] = intval($_POST['flagged']);
 
             $update_data['group_id'] = intval($_POST['group_id']);
-
-            if ($update_data['group_id'] == 1 AND !$this->user_info['permission']['is_administrator'])
-            {
-                unset($update_data['group_id']);
-            }
 
             $update_data['sex'] = intval($_POST['sex']);
 
@@ -823,11 +733,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
             if (!$uid)
             {
                 H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('注册失败')));
-            }
-
-            if ($_POST['group_id'] == 1 AND !$this->user_info['permission']['is_administrator'])
-            {
-                $_POST['group_id'] = 4;
             }
 
             if ($_POST['group_id'] != 4)

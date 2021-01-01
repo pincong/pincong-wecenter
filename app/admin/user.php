@@ -20,6 +20,14 @@ if (!defined('IN_ANWSION'))
 
 class user extends AWS_ADMIN_CONTROLLER
 {
+    public function setup()
+    {
+        if (!$this->user_info['permission']['is_administrator'])
+        {
+            H::redirect_msg(AWS_APP::lang()->_t('你没有访问权限, 请重新登录'), '/');
+        }
+    }
+
     public function list_action()
     {
         if ($_POST['action'] == 'search')
@@ -122,11 +130,6 @@ class user extends AWS_ADMIN_CONTROLLER
     {
         $this->crumb(AWS_APP::lang()->_t('用户组管理'));
 
-        if (!$this->user_info['permission']['is_administrator'])
-        {
-            H::redirect_msg(AWS_APP::lang()->_t('你没有访问权限, 请重新登录'), '/');
-        }
-
         TPL::assign('member_group', $this->model('account')->get_user_group_list(1));
         TPL::assign('system_group', $this->model('account')->get_user_group_list(0, 0));
         TPL::assign('custom_group', $this->model('account')->get_user_group_list(0, 1));
@@ -137,11 +140,6 @@ class user extends AWS_ADMIN_CONTROLLER
     public function group_edit_action()
     {
         $this->crumb(AWS_APP::lang()->_t('修改用户组'));
-
-        if (!$this->user_info['permission']['is_administrator'])
-        {
-            H::redirect_msg(AWS_APP::lang()->_t('你没有访问权限, 请重新登录'), '/');
-        }
 
         if (! $group = $this->model('account')->get_user_group_by_id($_GET['group_id']))
         {
@@ -161,11 +159,6 @@ class user extends AWS_ADMIN_CONTROLLER
         if (!$user = $this->model('account')->get_user_info_by_uid($_GET['uid']))
         {
             H::redirect_msg(AWS_APP::lang()->_t('用户不存在'), '/admin/user/list/');
-        }
-
-        if ($user['group_id'] == 1 AND !$this->user_info['permission']['is_administrator'])
-        {
-            H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑管理员账号'), '/admin/user/list/');
         }
 
         $user['recovery_code'] = $this->model('account')->calc_user_recovery_code($user['uid']);
