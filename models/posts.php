@@ -276,26 +276,11 @@ class posts_class extends AWS_MODEL
 		return $explore_list_data;
 	}
 
-	public function get_posts_list($post_type, $page = 1, $per_page = 10, $sort = null, $category_id = null, $answer_count = null, $day = 30, $recommend = false)
+	public function get_posts_list($post_type, $page = 1, $per_page = 10, $order_key = null, $category_id = null, $answer_count = null, $recommend = false)
 	{
-		$order_key = 'sort DESC, add_time DESC';
-
-		switch ($sort)
+		if (!$order_key)
 		{
-			case 'responsed':
-				$answer_count = 1;
-
-				break;
-
-			case 'unresponsive':
-				$answer_count = 0;
-
-				break;
-
-			case 'new' :
-				$order_key = 'sort DESC, update_time DESC';
-
-				break;
+			$order_key = 'sort DESC, update_time DESC';
 		}
 
 		$where = array();

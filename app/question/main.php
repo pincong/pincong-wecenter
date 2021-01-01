@@ -213,77 +213,7 @@ class main extends AWS_CONTROLLER
 
 	public function index_square_action()
 	{
-		$this->crumb(AWS_APP::lang()->_t('问题'), '/question/');
-
-		// 导航
-		TPL::assign('content_nav_menu', $this->model('menu')->get_nav_menu_list('question'));
-
-/*
-		//边栏热门用户
-		TPL::assign('sidebar_hot_users', $this->model('module')->sidebar_hot_users($this->user_id, 5));
-*/
-		//边栏热门话题
-		TPL::assign('sidebar_hot_topics', $this->model('module')->sidebar_hot_topics($_GET['category']));
-
-		//边栏功能
-		TPL::assign('feature_list', $this->model('feature')->get_enabled_feature_list());
-
-		if ($_GET['category'])
-		{
-			$category_info = $this->model('category')->get_category_info($_GET['category']);
-		}
-
-		if ($category_info)
-		{
-			TPL::assign('category_info', $category_info);
-
-			$this->crumb($category_info['title'], '/question/category-' . $category_info['id']);
-
-			$meta_description = $category_info['title'];
-
-			if ($category_info['description'])
-			{
-				$meta_description .= ' - ' . $category_info['description'];
-			}
-
-			TPL::set_meta('description', $meta_description);
-		}
-
-		if (! $_GET['sort_type'])
-		{
-			$_GET['sort_type'] = 'new';
-		}
-
-		if ($_GET['sort_type'] == 'hot')
-		{
-			$question_list = $this->model('posts')->get_hot_posts('question', $category_info['id'], $_GET['day'], $_GET['page'], get_setting('contents_per_page'));
-		}
-		else
-		{
-			$question_list = $this->model('posts')->get_posts_list('question', $_GET['page'], get_setting('contents_per_page'), $_GET['sort_type'], $category_info['id'], $_GET['answer_count'], $_GET['day'], $_GET['recommend']);
-		}
-
-		if ($question_list)
-		{
-			foreach ($question_list AS $key => $val)
-			{
-				if ($val['answer_count'])
-				{
-					$question_list[$key]['answer_users'] = $this->model('question')->get_answer_users_by_question_id($val['question_id'], 2, $val['uid']);
-				}
-			}
-		}
-
-		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-			'base_url' => get_js_url('/question/sort_type-' . preg_replace("/[\(\)\.;']/", '', $_GET['sort_type']) . '__category-' . $category_info['id'] . '__day-' . intval($_GET['day']) . '__recommend-' . $_GET['recommend']),
-			'total_rows' => $this->model('posts')->get_posts_list_total(),
-			'per_page' => get_setting('contents_per_page')
-		))->create_links());
-
-		TPL::assign('posts_list', $question_list);
-		TPL::assign('question_list_bit', TPL::render('explore/ajax/list'));
-
-		TPL::output('question/square');
+		HTTP::redirect('/explore/type-question');
 	}
 
 }

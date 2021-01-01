@@ -73,18 +73,42 @@ class main extends AWS_CONTROLLER
 		// 边栏功能
 		TPL::assign('feature_list', $this->model('feature')->get_enabled_feature_list());
 
-		if (! $_GET['sort_type'] AND !$_GET['recommend'])
+		if ($_GET['type'] == 'question')
 		{
-			$_GET['sort_type'] = 'new';
+			$type = 'question';
+		}
+		else if ($_GET['type'] == 'article')
+		{
+			$type = 'article';
+		}
+		else if ($_GET['type'] == 'video')
+		{
+			$type = 'video';
+		}
+
+		if ($_GET['recommend'])
+		{
+			$recommend = true;
 		}
 
 		if ($_GET['sort_type'] == 'hot')
 		{
-			$posts_list = $this->model('posts')->get_hot_posts(null, $category_info['id'], $_GET['day'], $_GET['page'], get_setting('contents_per_page'));
+			$sort_type = 'hot';
+			$day = intval($_GET['day']);
+		}
+		else if ($_GET['sort_type'] == 'unresponsive')
+		{
+			$sort_type = 'unresponsive';
+			$answer_count = 0;
+		}
+
+		if ($sort_type == 'hot')
+		{
+			$posts_list = $this->model('posts')->get_hot_posts($type, $category_info['id'], $day, $_GET['page'], get_setting('contents_per_page'));
 		}
 		else
 		{
-			$posts_list = $this->model('posts')->get_posts_list(null, $_GET['page'], get_setting('contents_per_page'), $_GET['sort_type'], $category_info['id'], $_GET['answer_count'], $_GET['day'], $_GET['recommend']);
+			$posts_list = $this->model('posts')->get_posts_list($type, $_GET['page'], get_setting('contents_per_page'), null, $category_info['id'], $answer_count, $recommend);
 		}
 
 		if ($posts_list)
@@ -98,8 +122,50 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
+		$base_url = '';
+		if ($type)
+		{
+			if ($base_url)
+			{
+				$base_url .= '__';
+			}
+			$base_url .= 'type-' . $type;
+		}
+		if ($category_info['id'])
+		{
+			if ($base_url)
+			{
+				$base_url .= '__';
+			}
+			$base_url .= 'category-' . $category_info['id'];
+		}
+		if ($sort_type)
+		{
+			if ($base_url)
+			{
+				$base_url .= '__';
+			}
+			$base_url .= 'sort_type-' . $sort_type;
+		}
+		if ($day)
+		{
+			if ($base_url)
+			{
+				$base_url .= '__';
+			}
+			$base_url .= 'day-' . $day;
+		}
+		if ($recommend)
+		{
+			if ($base_url)
+			{
+				$base_url .= '__';
+			}
+			$base_url .= 'recommend-1';
+		}
+
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-			'base_url' => get_js_url('/sort_type-' . preg_replace("/[\(\)\.;']/", '', $_GET['sort_type']) . '__category-' . $category_info['id'] . '__day-' . intval($_GET['day']) . '__recommend-' . intval($_GET['recommend'])),
+			'base_url' => get_js_url('/') . $base_url,
 			'total_rows' => $this->model('posts')->get_posts_list_total(),
 			'per_page' => get_setting('contents_per_page')
 		))->create_links());
