@@ -7,9 +7,7 @@
 				<div class="aw-global-tips">
 					<?php if ($this->redirect_message) { ?>
 					<div class="alert alert-warning fade in">
-						<?php foreach ($this->redirect_message AS $key => $message) { ?>
-						<?php echo $message; ?>
-						<?php } ?>
+						<?php echo FORMAT::text($this->redirect_message, false); ?>
 					</div>
 					<?php } ?>
 				</div>

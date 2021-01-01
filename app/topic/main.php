@@ -35,9 +35,9 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		if (is_digits($_GET['id']))
+		if ($_GET['topic_id'] AND is_digits($_GET['topic_id']))
 		{
-			$topic_info = $this->model('topic')->get_topic_by_id($_GET['id']);
+			$topic_info = $this->model('topic')->get_topic_by_id($_GET['topic_id']);
 		}
 		else
 		{
@@ -53,7 +53,7 @@ class main extends AWS_CONTROLLER
 		{
 			if ($this->model('topic')->get_topic_by_id($topic_info['merged_id']))
 			{
-				HTTP::redirect('/topic/' . $topic_info['merged_id'] . '?rf=' . $topic_info['topic_id']);
+				HTTP::redirect('/topic/topic_id-' . $topic_info['merged_id'] . '__rf-' . $topic_info['topic_id']);
 			}
 			else
 			{
@@ -61,11 +61,11 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		if (is_digits($_GET['rf']) AND $_GET['rf'])
+		if ($_GET['rf'] AND is_digits($_GET['rf']))
 		{
 			if ($from_topic = $this->model('topic')->get_topic_by_id($_GET['rf']))
 			{
-				$redirect_message[] = AWS_APP::lang()->_t('话题 (%s) 已与当前话题合并', $from_topic['topic_title']);
+				$redirect_message = AWS_APP::lang()->_t('话题 (%s) 已与当前话题合并', $from_topic['topic_title']);
 			}
 		}
 
