@@ -77,20 +77,9 @@ class AWS_CONTROLLER
 			TPL::import_js(base_url() . '/language/' . SYSTEM_LANG . '.js');
 		}
 
-		if (HTTP::is_browser('ie', 8))
-		{
-			TPL::import_js(array(
-				'js/jquery.js',
-				'js/respond.js'
-			));
-		}
-		else
-		{
-			TPL::import_js('js/jquery.2.js');
-		}
-
 		// 引入系统 JS 文件
 		TPL::import_js(array(
+			'js/jquery.2.js',
 			'js/jquery.form.js',
 			'js/framework.js',
 			'js/aws.js',
@@ -204,19 +193,11 @@ class AWS_ADMIN_CONTROLLER extends AWS_CONTROLLER
 			TPL::import_js(base_url() . '/language/' . SYSTEM_LANG . '.js');
 		}
 
-		if (HTTP::is_browser('ie', 8))
-		{
-			TPL::import_js('js/jquery.js');
-		}
-		else
-		{
-			TPL::import_js('js/jquery.2.js');
-		}
-
 		TPL::import_js(array(
+			'js/jquery.2.js',
+			'js/jquery.form.js',
 			'admin/js/aws_admin.js',
 			'admin/js/aws_admin_template.js',
-			'js/jquery.form.js',
 			'admin/js/framework.js',
 			'admin/js/global.js',
 		));
