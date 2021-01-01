@@ -83,8 +83,8 @@ class main extends AWS_CONTROLLER
 
 	public function new_action()
 	{
-		$usernames = H::POST_S('usernames');
-		if (!is_array($usernames) OR count($usernames) > 4)
+		$usernames = H::POSTS_S('usernames');
+		if (count($usernames) > 4)
 		{
 			H::redirect_msg(_t('内容错误'));
 		}

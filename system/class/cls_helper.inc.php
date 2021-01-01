@@ -176,93 +176,106 @@ class H
 	}
 
 
-	public static function GET($key, $default = null)
+	public static function GET($key)
 	{
 		if (!isset($_GET[$key]))
 		{
-			return $default;
+			return null;
 		}
 		return $_GET[$key];
 	}
 
-	public static function POST($key, $default = null)
+	public static function POST($key)
 	{
 		if (!isset($_POST[$key]))
 		{
-			return $default;
+			return null;
 		}
 		return $_POST[$key];
 	}
 
-	public static function GET_I($key, $default = 0)
+	public static function GET_I($key)
 	{
 		if (!isset($_GET[$key]))
 		{
-			return $default;
+			return 0;
 		}
 		return self::_convert_request($_GET[$key], 'i');
 	}
 
-	public static function POST_I($key, $default = 0)
-	{
-		if (!isset($_POST[$key]))
-		{
-			return $default;
-		}
-		return self::_convert_request($_POST[$key], 'i');
-	}
-
-	public static function GET_D($key, $default = 0)
+	public static function GET_D($key)
 	{
 		if (!isset($_GET[$key]))
 		{
-			return $default;
+			return 0;
 		}
 		return self::_convert_request($_GET[$key], 'd');
 	}
 
-	public static function POST_D($key, $default = 0)
-	{
-		if (!isset($_POST[$key]))
-		{
-			return $default;
-		}
-		return self::_convert_request($_POST[$key], 'd');
-	}
-
-	public static function GET_S($key, $default = '')
+	public static function GET_S($key)
 	{
 		if (!isset($_GET[$key]))
 		{
-			return $default;
+			return '';
 		}
 		return self::_convert_request($_GET[$key], 's');
 	}
 
-	public static function POST_S($key, $default = '')
+	public static function POST_I($key)
 	{
 		if (!isset($_POST[$key]))
 		{
-			return $default;
+			return 0;
+		}
+		return self::_convert_request($_POST[$key], 'i');
+	}
+
+	public static function POST_D($key)
+	{
+		if (!isset($_POST[$key]))
+		{
+			return 0;
+		}
+		return self::_convert_request($_POST[$key], 'd');
+	}
+
+	public static function POST_S($key)
+	{
+		if (!isset($_POST[$key]))
+		{
+			return '';
 		}
 		return self::_convert_request($_POST[$key], 's');
 	}
 
-	private static function _convert_request($data, $type)
+	public static function POSTS_I($key)
 	{
-		if (is_array($data))
+		if (!isset($_POST[$key]))
 		{
-			foreach ($data as &$val)
-			{
-				$val = self::_convert_request_data($val, $type);
-			}
-			unset($val);
-			return $data;
+			return array();
 		}
-		return self::_convert_request_data($data, $type);
+		return self::_convert_request_array($_POST[$key], 'i');
 	}
 
-	private static function _convert_request_data($val, $type)
+	public static function POSTS_D($key)
+	{
+		if (!isset($_POST[$key]))
+		{
+			return array();
+		}
+		return self::_convert_request_array($_POST[$key], 'd');
+	}
+
+	public static function POSTS_S($key)
+	{
+		if (!isset($_POST[$key]))
+		{
+			return array();
+		}
+		return self::_convert_request_array($_POST[$key], 's');
+	}
+
+	private static function _convert_request($val, $type)
 	{
 		if ($type == 'i') // int
 		{
@@ -283,6 +296,20 @@ class H
 			return '';
 		}
 		return remove_invisible_characters(multibyte_trim($val));
+	}
+
+	private static function _convert_request_array($data, $type)
+	{
+		if (is_array($data))
+		{
+			foreach ($data as &$val)
+			{
+				$val = self::_convert_request($val, $type);
+			}
+			unset($val);
+			return $data;
+		}
+		return array();
 	}
 
 }

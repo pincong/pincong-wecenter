@@ -237,13 +237,13 @@ class ajax extends AWS_CONTROLLER
 
 	private function get_topics()
 	{
-		$topics = H::POST_S('topics');
+		$topics = H::POSTS_S('topics');
 
 		$topics_limit_min = S::get_int('topics_limit_min');
 		$topics_limit_max = S::get_int('topics_limit_max');
 
 		$num_topics = 0;
-		if (is_array($topics))
+		if ($topics)
 		{
 			$topics = array_unique($topics);
 			$num_topics = count($topics);
