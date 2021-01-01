@@ -533,7 +533,7 @@ CREATE TABLE IF NOT EXISTS `aws_users` (
   `friend_count` int(10) DEFAULT '0' COMMENT '观众数',
   `invite_count` int(10) DEFAULT '0' COMMENT '邀请我回答数量',
   `topic_focus_count` int(10) DEFAULT '0' COMMENT '关注话题数量',
-  `group_id` int(10) DEFAULT '4' COMMENT '用户组',
+  `group_id` int(10) DEFAULT '0' COMMENT '用户组',
   `forbidden` tinyint(1) DEFAULT '0' COMMENT '是否禁止用户',
   `flagged` tinyint(1) DEFAULT '0',
   `agree_count` int(10) DEFAULT '0' COMMENT '赞同数量',
