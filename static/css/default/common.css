@@ -458,18 +458,19 @@ a.aw-load-more-content{display: block;}
 /* 评论box */
 .aw-question-detail .aw-comment-box, .aw-question-detail .aw-invite-box{margin:10px 0;}
 .aw-comment-box{position:relative;margin:10px auto;border:1px solid #e6e6e6;background-color: #fff;}
-.aw-comment-box .aw-comment-list{padding: 0 15px;border-bottom: 1px solid #f2f2f2;}
+.aw-comment-box .aw-comment-list{padding: 0 15px;}
 .aw-comment-box .aw-comment-list a{color: #155faa;}
-.aw-comment-box form{padding:15px;background-color: #fafafa;}
+.aw-comment-box form{padding:15px;background-color: #fafafa;border-top: 1px solid #f2f2f2;}
 .aw-comment-box textarea{height: 32px;margin:0;}
-.aw-comment-box p{margin: 10px 0;}
 .aw-comment-box .aw-comment-box-btn{height:auto;overflow:hidden;margin-top:10px;}
 .aw-comment-box .aw-comment-box-btn .btn{margin-left:10px;}
 .aw-comment-box .aw-comment-box-btn .btn.disbaled{pointer-events:none;}
+.aw-comment-box .aw-load-more-content{margin:20px;}
+.aw-comment-box p{margin:10px !important;}
 
-.aw-comment-list .aw-item{padding: 15px 0;border-bottom:1px solid #f5f5f5;line-height: 22px;}
+.aw-comment-list .aw-item{padding: 15px 0;line-height: 22px;}
 .aw-comment-list .aw-item{position: relative;padding-left: 42px;}
-.aw-comment-list .aw-item:last-child{border-bottom:none;}
+.aw-comment-list .aw-item, .aw-comment-list .aw-item:last-child{border-bottom:1px solid #f5f5f5;}
 .aw-comment-list .aw-item .aw-user-img{position: absolute;left: 0;}
 .aw-comment-list .aw-item .aw-user-img img{width: 32px;height: 32px;}
 .aw-comment-list .aw-item .aw-verified{position: absolute;left: -7px;top: 3px;}
@@ -861,8 +862,8 @@ a.aw-load-more-content{display: block;}
 	.aw-topic-list-mod .aw-item {padding-left: 30px;}
 	/* 内容页 */
 	.aw-feed-list .aw-item .mod-head, .aw-feed-list .aw-item .mod-body, .aw-feed-list .aw-item .mod-footer{padding-left: 0;}
-	.aw-feed-list .aw-item .mod-head .aw-user-img{padding-left: 0;} 
-	.aw-feed-list .aw-item .mod-head .aw-user-img img{position: initial;left: initial; top: initial;}
+	.aw-feed-list .aw-item .mod-head .aw-user-img{position: initial;left: initial; top: initial;} 
+	.aw-feed-list .aw-item .mod-head .aw-user-img img{width: 24px;height: 24px;}
 	.aw-feed-list .aw-item .mod-head{margin-bottom: 4px;}
 	/* 讨论 */
 	.aw-comment-list .aw-item{padding-left: 0;}

@@ -224,6 +224,11 @@
 							<!-- 讨论 -->
 							<div class="aw-comment-box" style="display:none">
 								<div class="aw-comment-list"></div>
+								<!-- 加载更多内容 -->
+								<a class="aw-load-more-content">
+									<span><?php _e('更多'); ?></span>
+								</a>
+								<!-- end 加载更多内容 -->
 								<?php if ($this->question_info['lock']) { ?>
 								<p align="center"><?php _e('该主题目前已经被锁定, 无法添加新回复'); ?></p>
 								<?php } else if (!$this->user_id) { ?>
@@ -237,7 +242,7 @@
 												<?php if ($this->user_info['permission']['reply_anonymously']) { ?>
 												<label><input type="checkbox" name="anonymous" value="1"> <?php _e(get_setting('anonymous_option_name')); ?></label>
 												<?php } ?>
-												<a href="javascript:;" class="btn btn-mini btn-success" onclick="AWS.submit_append($(this).closest('form'), $(this), $(this).closest('.aw-comment-box').find('.aw-comment-list'));"><?php _e('讨论'); ?></a>
+												<a href="javascript:;" class="btn btn-mini btn-success" onclick="submit_disscusion($(this));"><?php _e('讨论'); ?></a>
 											</span>
 										</div>
 									</div>
@@ -483,9 +488,7 @@ function toggle_disscusion(btn) {
 		if (!div.data('initialized')) {
 			div.attr('data-initialized', 'true');
 			var data_url = G_BASE_URL + '/question/info/' + btn.data('type') + '_discussions/parent_id-' + btn.data('id');
-			$.get(data_url, function (result) {
-				div.find('.aw-comment-list').html(result);
-			});
+			AWS.load_list_view(data_url, div.find('.aw-load-more-content'), div.find('.aw-comment-list'), 1);
 		}
 		btn.addClass('active');
 		div.fadeIn();
@@ -493,6 +496,16 @@ function toggle_disscusion(btn) {
 		btn.removeClass('active');
 		div.fadeOut();
 	}
+}
+
+function submit_disscusion(btn) {
+	var form = btn.closest('form');
+	var list = btn.closest('.aw-comment-box').find('.aw-comment-list');
+	AWS.submit_append(form, btn, list, function(err) {
+		if (err) return;
+		list.children('p').hide();
+		form.find('textarea').css('height', '34px');
+	});
 }
 
 function reply_callback(err) {
