@@ -5,8 +5,10 @@
 
 favicon.ico
 
-/static/logo/logo.png
-/static/logo/login_logo.png
+/static/logo/*
+!/static/logo/index.html
+!/static/logo/logo.png.sample.png
+!/static/logo/login_logo.png.sample.png
 
 /system/config.inc.php
 /system/config/database.php
