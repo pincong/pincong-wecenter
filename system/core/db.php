@@ -27,7 +27,7 @@ class core_db
 
 		$cfg = load_class('core_config')->get('database');
 
-		if ($cfg->charset)
+		if (isset($cfg->charset))
 		{
 			$cfg->master['charset'] = $cfg->charset;
 
@@ -37,9 +37,9 @@ class core_db
 			}
 		}
 
-		if (!$cfg->master['dsn'])
+		if (!isset($cfg->master['dsn']))
 		{
-			$cfg->master['dsn'] = $this->to_dsn($cfg->dbtype, $cfg->master);
+			$cfg->master['dsn'] = $this->to_dsn($cfg->dbtype ?? null, $cfg->master);
 		}
 
 		try

@@ -224,8 +224,8 @@ class posts_class extends AWS_MODEL
 		foreach ($posts_index as $key => $data)
 		{
 			$explore_list_data[$key] = $info[$data['post_type']][$data['post_id']];
-			$explore_list_data[$key]['last_user_info'] = $users[$explore_list_data[$key]['last_uid']];
-			$explore_list_data[$key]['user_info'] = $users[$data['uid']];
+			$explore_list_data[$key]['last_user_info'] = $users[$explore_list_data[$key]['last_uid']] ?? null;
+			$explore_list_data[$key]['user_info'] = $users[$data['uid']] ?? null;
 			$explore_list_data[$key]['post_type'] = $data['post_type'];
 			$explore_list_data[$key]['children_reputation'] = $data['reputation'];
 

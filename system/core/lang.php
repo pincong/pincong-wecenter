@@ -55,7 +55,7 @@ class core_lang
 			};
 		}
 
-		if ($translate = $this->lang[trim($string)])
+		if ($translate = $this->lang[trim($string)] ?? null)
 		{
 			if (isset($replace))
 			{

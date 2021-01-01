@@ -39,7 +39,7 @@ class AWS_CONTROLLER
 			}
 
 			$user_settings = unserialize_array($this->user_info['settings']);
-			$this->user_info['default_timezone'] = $user_settings['timezone'];
+			$this->user_info['default_timezone'] = $user_settings['timezone'] ?? null;
 
 			if ($this->user_info['default_timezone'])
 			{
@@ -161,6 +161,7 @@ class AWS_CONTROLLER
 	{
 		$this->crumbs[] = htmlspecialchars_decode($name);
 
+		$title = '';
 		foreach ($this->crumbs as $key => $crumb)
 		{
 			$title = $crumb . ' - ' . $title;

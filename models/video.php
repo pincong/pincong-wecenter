@@ -182,8 +182,8 @@ class video_class extends AWS_MODEL
 				$item['at_uid']
 			));
 
-			$item['user_info'] = $user_infos[$item['uid']];
-			$item['at_user_info'] = $user_infos[$item['at_uid']];
+			$item['user_info'] = $user_infos[$item['uid']] ?? null;
+			$item['at_user_info'] = $user_infos[$item['at_uid']] ?? null;
 		}
 
 		return $item;
@@ -214,8 +214,8 @@ class video_class extends AWS_MODEL
 
 			foreach ($list AS $key => $val)
 			{
-				$list[$key]['user_info'] = $user_infos[$val['uid']];
-				$list[$key]['at_user_info'] = $user_infos[$val['at_uid']];
+				$list[$key]['user_info'] = $user_infos[$val['uid']] ?? null;
+				$list[$key]['at_user_info'] = $user_infos[$val['at_uid']] ?? null;
 			}
 		}
 

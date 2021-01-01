@@ -31,7 +31,7 @@ class core_pagination
 			'links' => array()
 		);
 
-		$cur_page = intval($_GET['page']);
+		$cur_page = intval($_GET['page'] ?? null);
 		if ($cur_page < 1)
 		{
 			$cur_page = 1;
@@ -42,7 +42,7 @@ class core_pagination
 		}
 		$result['cur_page'] = $cur_page;
 
-		$num_links = $params['num_links']; // 当前页码前后各显示多少页
+		$num_links = $params['num_links'] ?? null; // 当前页码前后各显示多少页
 		if (!$num_links)
 		{
 			$num_links = 3;

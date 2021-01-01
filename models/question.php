@@ -278,7 +278,7 @@ class question_class extends AWS_MODEL
 			{
 				foreach($list as $key => $val)
 				{
-					$list[$key]['user_info'] = $user_infos[$val['uid']];
+					$list[$key]['user_info'] = $user_infos[$val['uid']] ?? null;
 				}
 			}
 		}
@@ -317,7 +317,7 @@ class question_class extends AWS_MODEL
 			{
 				foreach($list as $key => $val)
 				{
-					$list[$key]['user_info'] = $users_info[$val['uid']];
+					$list[$key]['user_info'] = $users_info[$val['uid']] ?? null;
 				}
 			}
 		}
@@ -354,7 +354,7 @@ class question_class extends AWS_MODEL
 			{
 				foreach($list as $key => $val)
 				{
-					$list[$key]['user_info'] = $users_info[$val['uid']];
+					$list[$key]['user_info'] = $users_info[$val['uid']] ?? null;
 				}
 			}
 		}

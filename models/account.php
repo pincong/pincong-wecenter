@@ -79,12 +79,12 @@ class account_class extends AWS_MODEL
 
 		static $users_info;
 
-		if ($users_info[$uid])
+		if (isset($users_info[$uid]))
 		{
 			return $users_info[$uid];
 		}
 
-		if (! $user_info = $this->fetch_row('users', ['uid', 'eq', $uid]))
+		if (!$user_info = $this->fetch_row('users', ['uid', 'eq', $uid]))
 		{
 			return false;
 		}
@@ -142,12 +142,12 @@ class account_class extends AWS_MODEL
 
 		static $users_info;
 
-		if ($users_info[$uid])
+		if (isset($users_info[$uid]))
 		{
 			return $users_info[$uid];
 		}
 
-		if (! $user_info = $this->fetch_row('users', ['uid', 'eq', $uid]))
+		if (!$user_info = $this->fetch_row('users', ['uid', 'eq', $uid]))
 		{
 			return false;
 		}
@@ -170,7 +170,7 @@ class account_class extends AWS_MODEL
 	 */
 	public function get_user_info_by_uids($uids)
 	{
-		if (! is_array($uids) OR sizeof($uids) == 0)
+		if (!is_array($uids) OR sizeof($uids) == 0)
 		{
 			return false;
 		}
@@ -181,7 +181,7 @@ class account_class extends AWS_MODEL
 
 		static $users_info;
 
-		if ($users_info[implode('_', $uids)])
+		if (isset($users_info[implode('_', $uids)]))
 		{
 			return $users_info[implode('_', $uids)];
 		}
@@ -199,7 +199,7 @@ class account_class extends AWS_MODEL
 
 			foreach ($uids AS $uid)
 			{
-				if ($data[$uid])
+				if (isset($data[$uid]))
 				{
 					$result[$uid] = $data[$uid];
 				}
@@ -387,7 +387,7 @@ class account_class extends AWS_MODEL
 	 */
 	public function update_user_last_login($uid)
 	{
-		if (! $uid)
+		if (!$uid)
 		{
 			return false;
 		}

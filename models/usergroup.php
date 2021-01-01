@@ -257,7 +257,8 @@ class usergroup_class extends AWS_MODEL
 
 	public function get_group_name_by_value_flagged($flagged)
 	{
-		return $this->get_groups_flagged()[intval($flagged)]['group_name'];
+		$group = $this->get_groups_flagged()[intval($flagged)] ?? null;
+		return $group ? $group['group_name'] : null;
 	}
 
 	// 通过声望值得到用户组ID

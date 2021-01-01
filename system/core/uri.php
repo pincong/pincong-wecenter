@@ -103,11 +103,11 @@ class core_uri
 		// 删除空值
 		foreach ($parts AS $key => $val)
 		{
-			if (strstr($val, '-') AND !$start_key)
+			if (strstr($val, '-') AND !isset($start_key))
 			{
 				$start_key = $key;
 			}
-			else if ($start_key)
+			else if (isset($start_key))
 			{
 				$parts[$start_key] .= '/' . $val;
 				unset($parts[$key]);

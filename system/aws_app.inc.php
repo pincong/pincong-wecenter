@@ -84,7 +84,7 @@ class AWS_APP
 				if (isset($access_rule['actions']) AND in_array(self::$uri->action, $access_rule['actions']))
 				{
 					// action 在黑名单中, 不允许
-					self::check_login($uid, $access_rule['redirect']);
+					self::check_login($uid, $access_rule['redirect'] ?? null);
 				}
 			}
 			else // 默认使用白名单
@@ -92,7 +92,7 @@ class AWS_APP
 				if (!isset($access_rule['actions']) OR !in_array(self::$uri->action, $access_rule['actions']))
 				{
 					// action 不在白名单中, 不允许
-					self::check_login($uid, $access_rule['redirect']);
+					self::check_login($uid, $access_rule['redirect'] ?? null);
 				}
 			}
 		}

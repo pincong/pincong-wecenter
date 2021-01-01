@@ -24,7 +24,7 @@ class anonymous_class extends AWS_MODEL
 	{
 		if ($user_info AND $user_info['permission'])
 		{
-			$uid = intval($user_info['permission']['anonymous_uid']);
+			$uid = intval($user_info['permission']['anonymous_uid'] ?? null);
 		}
 		if (!$uid)
 		{

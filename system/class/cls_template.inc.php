@@ -77,12 +77,12 @@ class TPL
 
 			self::assign('template_name', S::get('ui_style'));
 
-			if (!self::$view->_meta_keywords)
+			if (!isset(self::$view->_meta_keywords))
 			{
 				self::set_meta('keywords', S::get('keywords'));
 			}
 
-			if (!self::$view->_meta_description)
+			if (!isset(self::$view->_meta_description))
 			{
 				self::set_meta('description', S::get('description'));
 			}
