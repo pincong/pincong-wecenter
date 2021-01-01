@@ -50,11 +50,6 @@ class ajax extends AWS_CONTROLLER
 
 	public function save_answer_discussion_action()
 	{
-		if (!check_http_referer())
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('错误的请求')));
-		}
-
 		if ($_POST['anonymous'] AND !$this->user_info['permission']['reply_anonymously'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不能匿名')));
@@ -167,11 +162,6 @@ class ajax extends AWS_CONTROLLER
 
 	public function save_question_discussion_action()
 	{
-		if (!check_http_referer())
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('错误的请求')));
-		}
-
 		if ($_POST['anonymous'] AND !$this->user_info['permission']['reply_anonymously'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不能匿名')));
@@ -341,11 +331,6 @@ class ajax extends AWS_CONTROLLER
 	// 只清空不删除
 	public function remove_comment_action()
 	{
-		if (!check_http_referer())
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('错误的请求')));
-		}
-
 		if (! in_array($_GET['type'], array(
 			'answer',
 			'question'

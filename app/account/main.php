@@ -39,6 +39,10 @@ class main extends AWS_CONTROLLER
 		}
 		else
 		{
+			if (!check_http_referer())
+			{
+				H::redirect_msg(AWS_APP::lang()->_t('错误的请求'), '/');
+			}
 			$this->model('login')->logout();
 			$return_url = '/';
 			HTTP::redirect($return_url);

@@ -454,7 +454,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('注册/登录/发言时检查 HTTP referer'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('注册/登录时检查 HTTP referer'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
@@ -467,6 +467,18 @@
 
 									<span class="help-block"><?php _e('网站域名设置错误将会导致无法登录'); ?></span>
 								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('网站域名列表'); ?>:</span>
+							<div class="col-sm-8 col-xs-8">
+								<textarea class="form-control textarea" rows="5" name="website_domains"><?php echo htmlspecialchars($this->setting['website_domains']); ?></textarea>
+								<span class="help-block"><?php _e('每行一个。'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -1096,18 +1108,6 @@
 							<div class="col-sm-5 col-xs-8">
 								<input name="sensitive_words_replacement" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['sensitive_words_replacement']); ?>"/>
 								<span class="help-block"><?php _e('将敏感词替换为别的内容, 留空则不替换'); ?></span>
-							</div>
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('网站域名列表'); ?>:</span>
-							<div class="col-sm-8 col-xs-8">
-								<textarea class="form-control textarea" rows="5" name="website_domains"><?php echo htmlspecialchars($this->setting['website_domains']); ?></textarea>
-								<span class="help-block"><?php _e('每行一个。'); ?></span>
 							</div>
 						</div>
 					</td>
