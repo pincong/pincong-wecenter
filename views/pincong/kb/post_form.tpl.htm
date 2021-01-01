@@ -23,8 +23,10 @@
 		<textarea class="form-control" name="message" rows="15" placeholder=""></textarea>
 	</div>
 	<div class="d-flex justify-content-end align-items-center">
-		<?php if (S::get('image_upload_link')) { ?>
-		<a class="mr-auto" href="<?php echo S::get('image_upload_link'); ?>" <?php if (!is_javascript(S::get('image_upload_link'))) { ?>rel="nofollow noreferrer noopener" target="_blank"<?php } ?>><?php echo _t('上传图片'); ?></a>
+		<?php if (is_javascript(S::get('image_upload_link'))) { ?>
+		<a class="mr-auto" href="<?php echo S::get('image_upload_link'); ?>"><?php echo _t('上传图片'); ?></a>
+		<?php } elseif (S::get('image_upload_link')) { ?>
+		<a class="mr-auto" href="<?php echo S::get('image_upload_link'); ?>" rel="nofollow noreferrer noopener" target="_blank"><?php echo _t('上传图片'); ?> <sup><i class="bi-box-arrow-up-right"></i></sup></a>
 		<?php } ?>
 		<button class="btn btn-primary" type="submit" onclick="AWS.submit_form($(this).closest('form'), $(this), true);"><?php echo _t('添加'); ?></button>
 	</div>

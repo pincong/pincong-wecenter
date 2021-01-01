@@ -6,7 +6,7 @@
 <script src="<?php echo G_STATIC_URL; ?>/js/passwordutil.js?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>"></script>
 
 <main class="container py-5">
-	<div class="d-flex flex-wrap align-items-center border-bottom">
+	<div class="d-flex flex-wrap align-items-center border-bottom pb-2">
 		<h2 class="mr-1 mr-auto"><?php echo _t('私信会话'); ?></h2>
 		<span class="mx-1">
 		<?php foreach($this->conversation['users'] as $user) { ?>
@@ -56,7 +56,7 @@
 				</div>
 			</div>
 			<div class="col overflow-hidden">
-				<div class="alert my-0 <?php if ($myself) { ?>alert-success<?php } else { ?>alert-secondary<?php } ?>">
+				<div class="px-3 py-2 rounded border <?php if ($myself) { ?>border-success<?php } else { ?>border-warning<?php } ?>">
 					<p>
 						<a href="<?php echo UF::url($user); ?>"><?php echo UF::name($user); ?></a>:
 						<?php if (isset($val['plaintext'])) { ?>

@@ -107,11 +107,13 @@
 				<div class="dropdown-menu dropdown-menu-right">
 					<a class="dropdown-item" href="<?php echo UF::url($this->user_info); ?>"><?php echo UF::name($this->user_info); ?></a>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="<?php echo url_rewrite(); ?>/profile/"><?php echo _t('设置'); ?></a>
+					<a class="dropdown-item" href="<?php echo url_rewrite(); ?>/profile/"><i class="bi-gear"></i> <?php echo _t('设置'); ?></a>
+					<div class="dropdown-divider"></div>
 					<?php if ($this->user_info['permission']['is_administrator']) { ?>
-					<a class="dropdown-item" href="<?php echo url_rewrite(); ?>/admin/"><?php echo _t('管理'); ?></a>
+					<a class="dropdown-item" href="<?php echo url_rewrite(); ?>/admin/" target="_blank"><i class="bi-tools"></i> <?php echo _t('管理'); ?> <sup><i class="bi-box-arrow-up-right"></i></sup></a>
+					<div class="dropdown-divider"></div>
 					<?php } ?>
-					<a class="dropdown-item" href="<?php echo url_rewrite(); ?>/account/logout/" onclick="localStorage.clear();AWS.submit_redirect($(this).attr('href'));return false;"><?php echo _t('退出'); ?></a>
+					<a class="dropdown-item" href="<?php echo url_rewrite(); ?>/account/logout/" onclick="localStorage.clear();AWS.submit_redirect($(this).attr('href'));return false;"><i class="bi-door-open"></i> <?php echo _t('退出'); ?></a>
 				</div>
 			</div>
 		<?php } else { ?>
