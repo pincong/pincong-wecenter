@@ -33,11 +33,11 @@ class edit extends AWS_CONTROLLER
 		$id = intval($_GET['id']);
 		if (!$id)
 		{
-			HTTP::error_403();
+			H::error_403();
 		}
 		if (!$reply_info = $this->model('content')->get_reply_info_by_id('answer', $id))
 		{
-			HTTP::error_403();
+			H::error_403();
 		}
 
 		if (!can_edit_post($reply_info['uid'], $this->user_info))
@@ -57,11 +57,11 @@ class edit extends AWS_CONTROLLER
 		$id = intval($_GET['id']);
 		if (!$id)
 		{
-			HTTP::error_403();
+			H::error_403();
 		}
 		if (!$reply_info = $this->model('content')->get_reply_info_by_id('article_comment', $id))
 		{
-			HTTP::error_403();
+			H::error_403();
 		}
 
 		if (!can_edit_post($reply_info['uid'], $this->user_info))
@@ -81,11 +81,11 @@ class edit extends AWS_CONTROLLER
 		$id = intval($_GET['id']);
 		if (!$id)
 		{
-			HTTP::error_403();
+			H::error_403();
 		}
 		if (!$reply_info = $this->model('content')->get_reply_info_by_id('video_comment', $id))
 		{
-			HTTP::error_403();
+			H::error_403();
 		}
 
 		if (!can_edit_post($reply_info['uid'], $this->user_info))

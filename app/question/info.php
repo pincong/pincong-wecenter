@@ -48,7 +48,7 @@ class info extends AWS_CONTROLLER
 		$_GET['parent_id'] = intval($_GET['parent_id']);
 		if ($_GET['parent_id'] < 1)
 		{
-			HTTP::error_404();
+			H::error_404();
 		}
 
 		$this->per_page = S::get_int('replies_per_page');

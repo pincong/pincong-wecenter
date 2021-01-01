@@ -32,12 +32,12 @@ class edit extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['forbid_user'])
 		{
-			HTTP::error_403();
+			H::error_403();
 		}
 
 		if (!$user = $this->model('account')->get_user_info_by_uid($_GET['uid']))
 		{
-			HTTP::error_404();
+			H::error_404();
 		}
 
 		$user['data'] = unserialize_array($user['extra_data']);
@@ -56,12 +56,12 @@ class edit extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['flag_user'])
 		{
-			HTTP::error_403();
+			H::error_403();
 		}
 
 		if (!$user = $this->model('account')->get_user_info_by_uid($_GET['uid']))
 		{
-			HTTP::error_404();
+			H::error_404();
 		}
 
 		$user['data'] = unserialize_array($user['extra_data']);
@@ -80,12 +80,12 @@ class edit extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['delete_user'])
 		{
-			HTTP::error_403();
+			H::error_403();
 		}
 
 		if (!$user = $this->model('account')->get_user_info_by_uid($_GET['uid']))
 		{
-			HTTP::error_404();
+			H::error_404();
 		}
 
 		TPL::assign('user', $user);
@@ -97,12 +97,12 @@ class edit extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['change_user_group'])
 		{
-			HTTP::error_403();
+			H::error_403();
 		}
 
 		if (!$user = $this->model('account')->get_user_info_by_uid($_GET['uid']))
 		{
-			HTTP::error_404();
+			H::error_404();
 		}
 
 		$user_group_list = $this->model('usergroup')->get_normal_group_list();

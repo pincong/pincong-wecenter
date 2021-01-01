@@ -37,7 +37,7 @@ class main extends AWS_CONTROLLER
 
 	public function notify_action()
 	{
-		HTTP::no_cache_header();
+		H::no_cache_header();
 
 		$list = $this->model('notification')->list_notifications($this->user_id, 0, 1, 5);
 
@@ -59,7 +59,7 @@ class main extends AWS_CONTROLLER
 
 	public function list_action()
 	{
-		HTTP::no_cache_header();
+		H::no_cache_header();
 
 		$list = $this->model('notification')->list_notifications($this->user_id, $_GET['flag'], $_GET['page'], S::get_int('notifications_per_page'));
 

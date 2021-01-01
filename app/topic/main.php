@@ -103,7 +103,7 @@ class main extends AWS_CONTROLLER
 
 		if (!$topic_info)
 		{
-			HTTP::error_404();
+			H::error_404();
 		}
 
 		if ($topic_info['merged_id'])
@@ -113,7 +113,7 @@ class main extends AWS_CONTROLLER
 				if (!$_GET['topic_id'])
 				{
 					// 如果未指定$_GET['topic_id']才自动跳转
-					HTTP::redirect('/topic/topic_id-' . $topic_info['merged_id'] . '__rf-' . $topic_info['topic_id']);
+					H::redirect('/topic/topic_id-' . $topic_info['merged_id'] . '__rf-' . $topic_info['topic_id']);
 					return;
 				}
 				TPL::assign('redirect_info', $redirect_info);

@@ -46,14 +46,14 @@ class main extends AWS_CONTROLLER
 		{
 			if (!$reply = $this->model('question')->get_answer_by_id($item_id))
 			{
-				HTTP::error_404();
+				H::error_404();
 			}
 			$_GET['id'] = $reply['question_id'];
 		}
 
 		if (!$thread_info = $this->model('question')->get_question_by_id($_GET['id']))
 		{
-			HTTP::error_404();
+			H::error_404();
 		}
 
 		$replies_per_page = S::get_int('replies_per_page');

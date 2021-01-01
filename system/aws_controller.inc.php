@@ -214,7 +214,7 @@ class AWS_ADMIN_CONTROLLER extends AWS_CONTROLLER
 			}
 			else
 			{
-				HTTP::redirect('/');
+				H::redirect('/');
 			}
 		}
 
@@ -234,7 +234,7 @@ class AWS_ADMIN_CONTROLLER extends AWS_CONTROLLER
 			}
 			else
 			{
-				HTTP::redirect('/admin/login/');
+				H::redirect('/admin/login/');
 			}
 		}
 

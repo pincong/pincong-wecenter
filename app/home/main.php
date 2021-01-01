@@ -24,7 +24,7 @@ class main extends AWS_CONTROLLER
 	{
 		if (! $this->user_id)
 		{
-			HTTP::redirect('/explore/');
+			H::redirect('/explore/');
 		}
 	}
 
@@ -51,6 +51,6 @@ class main extends AWS_CONTROLLER
 
 	public function explore_action()
 	{
-		HTTP::redirect('/explore/');
+		H::redirect('/explore/');
 	}
 }

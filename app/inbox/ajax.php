@@ -24,7 +24,7 @@ class ajax extends AWS_CONTROLLER
 {
 	public function setup()
 	{
-		HTTP::no_cache_header();
+		H::no_cache_header();
 	}
 
 	private function validate_user_pm_settings($recipient_user, $sender_uid)

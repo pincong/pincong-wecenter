@@ -39,7 +39,7 @@ class main extends AWS_CONTROLLER
 	{
 		if (!$item_info = $this->model('content')->get_thread_or_reply_info_by_id($_GET['item_type'], $_GET['item_id']))
 		{
-			HTTP::error_404();
+			H::error_404();
 		}
 
 		$this->crumb(AWS_APP::lang()->_t('投票记录'));
@@ -51,7 +51,7 @@ class main extends AWS_CONTROLLER
 	{
 		if (!$item_info = $this->model('content')->get_thread_or_reply_info_by_id($_GET['item_type'], $_GET['item_id']))
 		{
-			HTTP::error_404();
+			H::error_404();
 		}
 
 		$log_list = $this->model('vote')->list_logs($_GET['item_type'], $_GET['item_id'], $_GET['page'], S::get_int('contents_per_page'));

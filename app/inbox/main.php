@@ -107,11 +107,11 @@ class main extends AWS_CONTROLLER
 
 		if ($_SERVER['HTTP_REFERER'])
 		{
-			HTTP::redirect($_SERVER['HTTP_REFERER']);
+			H::redirect($_SERVER['HTTP_REFERER']);
 		}
 		else
 		{
-			HTTP::redirect('/inbox/');
+			H::redirect('/inbox/');
 		}
 	}
 

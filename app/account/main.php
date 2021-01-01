@@ -21,12 +21,12 @@ class main extends AWS_CONTROLLER
 {
 	public function setup()
 	{
-		HTTP::no_cache_header();
+		H::no_cache_header();
 	}
 
 	public function index_action()
 	{
-		HTTP::redirect('/profile/');
+		H::redirect('/profile/');
 	}
 
 	public function logout_action()
@@ -45,7 +45,7 @@ class main extends AWS_CONTROLLER
 			}
 			$this->model('login')->logout();
 			$return_url = '/';
-			HTTP::redirect($return_url);
+			H::redirect($return_url);
 		}
 	}
 

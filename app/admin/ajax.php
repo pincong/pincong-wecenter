@@ -24,7 +24,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 {
 	public function setup()
 	{
-		HTTP::no_cache_header();
+		H::no_cache_header();
 	}
 
 	public function login_process_action()

@@ -32,12 +32,12 @@ class edit extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['kb_explore'])
 		{
-			HTTP::error_403();
+			H::error_403();
 		}
 
 		if (!$item_info = $this->model('kb')->get($_GET['id']))
 		{
-			HTTP::error_404();
+			H::error_404();
 		}
 
 		TPL::assign('item_info', $item_info);
@@ -49,12 +49,12 @@ class edit extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['kb_explore'])
 		{
-			HTTP::error_403();
+			H::error_403();
 		}
 
 		if (!$item_info = $this->model('kb')->get($_GET['id']))
 		{
-			HTTP::error_404();
+			H::error_404();
 		}
 
 		TPL::assign('item_info', $item_info);

@@ -24,7 +24,7 @@ class ajax extends AWS_CONTROLLER
 {
 	public function setup()
 	{
-		HTTP::no_cache_header();
+		H::no_cache_header();
 	}
 
 	private function get_anonymous_uid($type)

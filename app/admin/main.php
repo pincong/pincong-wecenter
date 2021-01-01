@@ -55,7 +55,7 @@ class main extends AWS_ADMIN_CONTROLLER
     {
         if (AWS_APP::auth()->is_admin())
         {
-            HTTP::redirect('/admin/');
+            H::redirect('/admin/');
         }
 
         TPL::import_css('admin/css/login.css');
@@ -68,7 +68,7 @@ class main extends AWS_ADMIN_CONTROLLER
     {
         $this->model('admin')->admin_logout();
 
-        HTTP::redirect($return_url);
+        H::redirect($return_url);
     }
 
     public function settings_action()

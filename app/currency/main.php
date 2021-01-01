@@ -38,7 +38,7 @@ class main extends AWS_CONTROLLER
 
 	public function setup()
 	{
-		HTTP::no_cache_header();
+		H::no_cache_header();
 	}
 
 	public function rule_action()

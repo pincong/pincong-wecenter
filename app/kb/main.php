@@ -97,7 +97,7 @@ class main extends AWS_CONTROLLER
 
 		if (! $item_info = $this->model('kb')->get($_GET['id']))
 		{
-			HTTP::error_404();
+			H::error_404();
 		}
 
 		$uids[] = $item_info['uid'];

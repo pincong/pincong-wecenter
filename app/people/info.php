@@ -51,7 +51,7 @@ class info extends AWS_CONTROLLER
 		$_GET['uid'] = intval($_GET['uid']);
 		if ($_GET['uid'] < 1)
 		{
-			HTTP::error_404();
+			H::error_404();
 		}
 
 		$_GET['page'] = intval($_GET['page']);

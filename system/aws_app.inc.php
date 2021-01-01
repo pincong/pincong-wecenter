@@ -55,7 +55,7 @@ class AWS_APP
 		self::$uri = load_class('core_uri');
 		if (!self::$uri->parse())
 		{
-			HTTP::error_404();
+			H::error_404();
 		}
 
 		$handle_controller = self::create_controller();
@@ -64,7 +64,7 @@ class AWS_APP
 		// 判断
 		if (!is_object($handle_controller) OR !method_exists($handle_controller, $action_method))
 		{
-			HTTP::error_404();
+			H::error_404();
 		}
 
 		if (method_exists($handle_controller, 'get_access_rule'))
@@ -116,7 +116,7 @@ class AWS_APP
 		{
 			if ($redirect === false) // null 也跳转
 			{
-				HTTP::error_403();
+				H::error_403();
 			}
 			elseif (defined('IN_AJAX') OR $_POST['_post_type'] == 'ajax')
 			{
@@ -124,7 +124,7 @@ class AWS_APP
 			}
 			else
 			{
-				HTTP::redirect('/login/');
+				H::redirect('/login/');
 			}
 		}
 	}

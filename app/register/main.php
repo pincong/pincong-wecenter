@@ -28,11 +28,11 @@ class main extends AWS_CONTROLLER
 
 	public function setup()
 	{
-		HTTP::no_cache_header();
+		H::no_cache_header();
 
 		if ($this->user_id)
 		{
-			HTTP::redirect('/');
+			H::redirect('/');
 		}
 	}
 
@@ -49,7 +49,7 @@ class main extends AWS_CONTROLLER
 			{
 				$register_url = '/';
 			}
-			HTTP::redirect($register_url);
+			H::redirect($register_url);
 		}
 
 		$this->crumb(AWS_APP::lang()->_t('注册'));

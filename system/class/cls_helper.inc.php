@@ -57,7 +57,7 @@ class H
 	 */
 	public static function ajax_json_output($array)
 	{
-		//HTTP::no_cache_header('text/javascript');
+		//H::no_cache_header('text/javascript');
 
 		echo str_replace(array("\r", "\n", "\t"), '', json_encode($array));
 		exit;

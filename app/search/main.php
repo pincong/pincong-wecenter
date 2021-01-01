@@ -36,7 +36,7 @@ class main extends AWS_CONTROLLER
 
 	public function setup()
 	{
-		HTTP::no_cache_header();
+		H::no_cache_header();
 
 		$this->crumb(AWS_APP::lang()->_t('搜索'));
 	}

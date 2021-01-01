@@ -149,15 +149,15 @@ class main extends AWS_CONTROLLER
 			$user = $this->model('account')->get_user_info_by_uid($_GET['id']);
 			if (!$user)
 			{
-				HTTP::error_404();
+				H::error_404();
 			}
-			HTTP::redirect('/people/' . safe_url_encode($user['user_name']));
+			H::redirect('/people/' . safe_url_encode($user['user_name']));
 		}
 
 		$user = $this->model('account')->get_user_info_by_username($_GET['id']);
 		if (!$user)
 		{
-			HTTP::error_404();
+			H::error_404();
 		}
 
 		$user['reputation_group_name'] = $this->model('usergroup')->get_user_group_name_by_user_info($user);
