@@ -20,28 +20,18 @@ if (!defined('IN_ANWSION'))
 
 class search_class extends AWS_MODEL
 {
-	public function get_mixed_result($types, $q, $topic_ids, $page, $limit = 20, $recommend = false)
+	public function get_mixed_result($types, $q, $page, $limit = 20)
 	{
 		$types = explode(',', $types);
 
-		if (in_array('users', $types) AND !$recommend)
+		if (in_array('users', $types))
 		{
 			$result = array_merge((array)$result, (array)$this->search_users($q, $page, $limit));
 		}
 
-		if (in_array('topics', $types) AND !$recommend)
+		if (in_array('topics', $types))
 		{
 			$result = array_merge((array)$result, (array)$this->search_topics($q, $page, $limit));
-		}
-
-		if (in_array('questions', $types))
-		{
-			$result = array_merge((array)$result, (array)$this->search_questions($q, $topic_ids, $page, $limit, $recommend));
-		}
-
-		if (in_array('articles', $types))
-		{
-			$result = array_merge((array)$result, (array)$this->search_articles($q, $topic_ids, $page, $limit, $recommend));
 		}
 
 		return $result;
@@ -78,17 +68,7 @@ class search_class extends AWS_MODEL
 		return $result;
 	}
 
-	public function search_questions($q, $topic_ids = null, $page = 1, $limit = 20, $recommend = false)
-	{
-		return $this->model('search_fulltext')->search_questions($q, $topic_ids, $page, $limit, $recommend);
-	}
-
-	public function search_articles($q, $topic_ids = null, $page = 1, $limit = 20, $recommend = false)
-	{
-		return $this->model('search_fulltext')->search_articles($q, $topic_ids, $page, $limit, $recommend);
-	}
-
-	public function search($q, $search_type, $page = 1, $limit = 20, $topic_ids = null, $recommend = false)
+	public function search($q, $search_type, $page = 1, $limit = 20)
 	{
 		if (!$q)
 		{
@@ -112,10 +92,10 @@ class search_class extends AWS_MODEL
 
 		if (!$search_type)
 		{
-			$search_type = 'users,topics,questions,articles';
+			$search_type = 'users,topics';
 		}
 
-		$result_list = $this->get_mixed_result($search_type, $q, $topic_ids, $page, $limit, $recommend);
+		$result_list = $this->get_mixed_result($search_type, $q, $page, $limit);
 
 		if ($result_list)
 		{
@@ -173,42 +153,11 @@ class search_class extends AWS_MODEL
 				'topic_description' => $result_info['topic_description']
 			);
 		}
-		else if (isset($result_info['answer_count']))
-		{
-			$result_type = 'questions';
-
-			$search_id = $result_info['id'];
-
-			$url = url_rewrite('/question/' . $result_info['id']);
-
-			$name = $result_info['title'];
-
-			$detail = array(
-				'answer_count' => $result_info['answer_count'],	// 回复数
-				'view_count' => $result_info['view_count']
-			);
-		}
-		else if ($result_info['id'])
-		{
-			$result_type = 'articles';
-
-			$search_id = $result_info['id'];
-
-			$url = url_rewrite('/article/' . $result_info['id']);
-
-			$name = $result_info['title'];
-
-			$detail = array(
-				'comments' => $result_info['comments'],
-				'view_count' => $result_info['view_count']
-			);
-		}
 
 		if ($result_type)
 		{
 			return array(
 				'uid' => $result_info['uid'],
-				'score' => $result_info['score'],
 				'type' => $result_type,
 				'url' => $url,
 				'search_id' => $search_id,

@@ -27,39 +27,6 @@ class ajax extends AWS_CONTROLLER
 		HTTP::no_cache_header();
 	}
 
-	public function search_result_action()
-	{
-		if (!in_array($_GET['search_type'], array('questions', 'topics', 'users', 'articles')))
-		{
-			$_GET['search_type'] = null;
-		}
-
-		$search_result = $this->model('search')->search(cjk_substr($_GET['q'], 0, 64), $_GET['search_type'], $_GET['page'], S::get('contents_per_page'), null, $_GET['recommend']);
-
-		if ($this->user_id AND $search_result)
-		{
-			foreach ($search_result AS $key => $val)
-			{
-				switch ($val['type'])
-				{
-					case 'topics':
-						$search_result[$key]['focus'] = $this->model('topic')->has_focus_topic($this->user_id, $val['search_id']);
-
-						break;
-
-					case 'users':
-						$search_result[$key]['focus'] = $this->model('follow')->user_follow_check($this->user_id, $val['search_id']);
-
-						break;
-				}
-			}
-		}
-
-		TPL::assign('search_result', $search_result);
-
-		TPL::output('search/ajax/search_result');
-	}
-
 	public function search_action()
 	{
 		$limit = intval($_GET['limit']);
@@ -67,21 +34,11 @@ class ajax extends AWS_CONTROLLER
 		{
 			$limit = 20;
 		}
-		$result = $this->model('search')->search(cjk_substr($_GET['q'], 0, 64), $_GET['type'], 1, $limit, $_GET['topic_ids'], $_GET['recommend']);
+		$result = $this->model('search')->search(cjk_substr($_GET['q'], 0, 64), $_GET['type'], 1, $limit);
 
 		if (!$result)
 		{
 			$result = array();
-		}
-
-		if ($_GET['is_question_id'] AND is_digits($_GET['q']))
-		{
-			$question_info = $this->model('content')->get_thread_info_by_id('question', $_GET['q']);
-
-			if ($question_info)
-			{
-				$result[] = $this->model('search')->prase_result_info($question_info);
-			}
 		}
 
 		H::ajax_json_output($result);

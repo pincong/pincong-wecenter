@@ -1155,19 +1155,8 @@ AWS.Dropdown =
 	// 下拉菜单功能绑定
 	bind_dropdown_list: function(selector, type)
 	{
-		if (type == 'search')
-		{
-			$(selector).focus(function()
-			{
-				$(selector).parent().find('.aw-dropdown').show();
-			});
-		}
 		$(selector).keyup(function(e)
 		{
-			if (type == 'search')
-			{
-				$(selector).parent().find('.search').show().children('a').text($(selector).val());
-			}
 			if ($(selector).val().length >= 1)
 			{
 				if (e.which != 38 && e.which != 40 && e.which != 188 && e.which != 13)
@@ -1294,7 +1283,7 @@ AWS.Dropdown =
 
 	/* 下拉菜单数据获取 */
 	/*
-	*    type : search, publish, invite, inbox, topic
+	*    type : invite, inbox, topic
 	*/
 	get_dropdown_list: function(selector, type, data)
 	{
@@ -1305,14 +1294,6 @@ AWS.Dropdown =
 		var url;
 		switch (type)
 		{
-			case 'search' :
-				url = G_BASE_URL + '/search/ajax/search/?q=' + encodeURIComponent(data) + '&limit=5';
-			break;
-
-			case 'publish' :
-				url = G_BASE_URL + '/search/ajax/search/?type=questions&q=' + encodeURIComponent(data) + '&limit=5';
-			break;
-
 			case 'invite' :
 			case 'inbox' :
 				url = G_BASE_URL + '/search/ajax/search/?type=users&q=' + encodeURIComponent(data) + '&limit=10';
@@ -1320,14 +1301,6 @@ AWS.Dropdown =
 
 			case 'topic' :
 				url = G_BASE_URL + '/search/ajax/search/?type=topics&q=' + encodeURIComponent(data) + '&limit=10';
-			break;
-
-			case 'questions' :
-				url = G_BASE_URL + '/search/ajax/search/?type=questions&q=' + encodeURIComponent(data) + '&limit=10';
-			break;
-
-			case 'articles' :
-				url = G_BASE_URL + '/search/ajax/search/?type=articles&q=' + encodeURIComponent(data) + '&limit=10';
 			break;
 
 		}
@@ -1339,82 +1312,6 @@ AWS.Dropdown =
 				$(selector).parent().find('.aw-dropdown-list').html(''); // 清空内容
 				switch (type)
 				{
-					case 'search' :
-						$.each(result, function (i, a)
-						{
-							switch (a.type)
-							{
-								case 'questions':
-									if (a.detail.best_answer > 0)
-									{
-										var active = 'active';
-									}
-									else
-									{
-										var active = ''
-									}
-
-									$(selector).parent().find('.aw-dropdown-list').append(Hogan.compile(AW_TEMPLATE.searchDropdownListQuestions).render(
-									{
-										'url': a.url,
-										'active': active,
-										'content': a.name,
-										'discuss_count': a.detail.answer_count
-									}));
-								break;
-
-								case 'articles':
-									$(selector).parent().find('.aw-dropdown-list').append(Hogan.compile(AW_TEMPLATE.searchDropdownListArticles).render(
-									{
-										'url': a.url,
-										'content': a.name,
-										'comments': a.detail.comments
-									}));
-								break;
-
-								case 'topics':
-									$(selector).parent().find('.aw-dropdown-list').append(Hogan.compile(AW_TEMPLATE.searchDropdownListTopics).render(
-									{
-										'url': a.url,
-										'name': a.name,
-										'discuss_count': a.detail.discuss_count,
-										'topic_id': a.detail.topic_id
-									}));
-								break;
-
-								case 'users':
-									if (a.detail.signature == '')
-									{
-										var signature = _t('暂无介绍');
-									}
-									else
-									{
-										var signature = a.detail.signature;
-									}
-
-									$(selector).parent().find('.aw-dropdown-list').append(Hogan.compile(AW_TEMPLATE.searchDropdownListUsers).render(
-									{
-										'url': a.url,
-										'img': a.detail.avatar_file,
-										'name': a.name,
-										'intro': signature
-									}));
-								break;
-							}
-						});
-					break;
-
-					case 'publish' :
-						$.each(result, function (i, a)
-						{
-							$(selector).parent().find('.aw-dropdown-list').append(Hogan.compile(AW_TEMPLATE.questionDropdownList).render(
-							{
-								'url': a.url,
-								'name': a.name
-							}));
-						});
-						break;
-
 					case 'topic' :
 						$.each(result, function (i, a)
 						{
@@ -1423,40 +1320,6 @@ AWS.Dropdown =
 								'name': a['name']
 							}));
 						});
-						break;
-
-					case 'questions' :
-					case 'articles' :
-						$.each(result, function (i, a)
-						{
-							$(selector).parent().find('.aw-dropdown-list').append(Hogan.compile(AW_TEMPLATE.questionDropdownList).render(
-							{
-								'url': '#',
-								'name': a['name']
-							}));
-						});
-						break;
-
-						$(selector).parent().find('.aw-dropdown-list li').click(function()
-						{
-							$('.aw-question-list').append('<li data-id="'+$(this).attr('data-id')+'"><div class="col-sm-9">' + $(this).html() + '</div> <div class="col-sm-3"><a class="btn btn-danger btn-xs">删除</a></div></li>');
-
-							$('.aw-question-list li').find("a").attr('href',function(){
-								return $(this).attr("_href")
-
-							});
-
-							if ($('.question_ids').val() == '')
-							{
-								$('.question_ids').val($(this).attr('data-id') + ',');
-							}
-							else
-							{
-								$('.question_ids').val($('.question_ids').val() + $(this).attr('data-id') + ',');
-							}
-							$(".alert-box").modal('hide');
-						});
-
 						break;
 
 					case 'inbox' :
@@ -1473,21 +1336,14 @@ AWS.Dropdown =
 						break;
 
 				}
-				if (type == 'publish')
-				{
-					$(selector).parent().find('.aw-publish-suggest-question, .aw-publish-suggest-question .aw-dropdown-list').show();
-				}
-				else
-				{
-					$(selector).parent().find('.aw-dropdown, .aw-dropdown-list').show().children().show();
-					$(selector).parent().find('.title').hide();
-					// 关键词高亮
-					$(selector).parent().find('.aw-dropdown-list li.question a').highText(data, 'b', 'active');
-				}
-			}else
+
+				$(selector).parent().find('.aw-dropdown, .aw-dropdown-list').show().children().show();
+				$(selector).parent().find('.title').hide();
+			}
+			else
 			{
 				$(selector).parent().find('.aw-dropdown').show().end().find('.title').html(_t('没有找到相关结果')).show();
-				$(selector).parent().find('.aw-dropdown-list, .aw-publish-suggest-question').hide();
+				$(selector).parent().find('.aw-dropdown-list').hide();
 			}
 		}, 'json');
 
@@ -1834,27 +1690,6 @@ function _t(string, replace)
 			{
 				textObj.value += textFeildValue;
 			}
-		},
-
-		highText: function (searchWords, htmlTag, tagClass)
-		{
-			return this.each(function ()
-			{
-				$(this).html(function high(replaced, search, htmlTag, tagClass)
-				{
-					var pattarn = search.replace(/\b(\w+)\b/g, "($1)").replace(/\s+/g, "|");
-
-					return replaced.replace(new RegExp(pattarn, "ig"), function (keyword)
-					{
-						return $("<" + htmlTag + " class=" + tagClass + ">" + keyword + "</" + htmlTag + ">").outerHTML();
-					});
-				}($(this).text(), searchWords, htmlTag, tagClass));
-			});
-		},
-
-		outerHTML: function (s)
-		{
-			return (s) ? this.before(s).remove() : jQuery("<p>").append(this.eq(0).clone()).html();
 		}
 	});
 

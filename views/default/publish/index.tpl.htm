@@ -30,14 +30,7 @@
 								<h3><?php _e('问题标题'); ?>:</h3>
 								<!-- 问题标题 -->
 								<div class="aw-publish-title<?php if (S::get('category_enable') == 'N') { ?> active<?php } ?>">
-									<div>
-										<input type="text" placeholder="<?php _e('问题标题'); ?>..." name="title" id="question_contents" value="<?php echo FORMAT::text($this->thread_info['title']); ?>" class="form-control" />
-										<div class="aw-publish-suggest-question collapse">
-											<p class="aw-small-text">你的问题可能已经有答案</p>
-											<ul class="aw-dropdown-list">
-											</ul>
-										</div>
-									</div>
+									<input type="text" placeholder="<?php _e('问题标题'); ?>..." name="title" value="<?php echo FORMAT::text($this->thread_info['title']); ?>" class="form-control" />
 									<?php if (!$this->thread_info['id'] AND S::get('category_enable') != 'N') { ?>
 									<div class="dropdown">
 										<div class="dropdown-toggle" data-toggle="dropdown">

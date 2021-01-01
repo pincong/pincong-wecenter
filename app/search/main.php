@@ -48,31 +48,6 @@ class main extends AWS_CONTROLLER
 		TPL::output('search/square');
 
 		// TODO: 站内搜索
-		/*if ($_POST['q'])
-		{
-			$url = '/search/q-' . base64_encode($_POST['q']);
-
-			if ($_GET['recommend'])
-			{
-				$url .= '__recommend-1';
-			}
-
-			HTTP::redirect($url);
-		}
-
-		$keyword = htmlspecialchars(base64_decode($_GET['q']));
-
-		$this->crumb($keyword);
-
-		if (!$keyword)
-		{
-			HTTP::redirect('/');
-		}
-
-		TPL::assign('keyword', $keyword);
-		TPL::assign('split_keyword', implode(' ', $this->model('system')->analysis_keyword($keyword)));
-
-		TPL::output('search/index');*/
 	}
 
 }

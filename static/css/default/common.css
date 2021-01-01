@@ -558,11 +558,6 @@ a.aw-load-more-content{display: block;}
 .aw-auth-img input{width:76px;margin: 0 0 0 5px;}
 .aw-auth-img img{height: 30px;}
 .aw-mod-publish .aw-edit-topic-box .aw-dropdown-list{max-height: 252px;}
-/* 发起已有问题推荐 */
-.aw-publish-suggest-question{margin-bottom: 10px;}
-.aw-publish-suggest-question p{margin:0;padding:5px 10px;border-bottom: 1px solid #dcdcdc;}
-.aw-publish-suggest-question ul li a{display:block;padding:5px 10px;border-bottom: 1px solid #dcdcdc;font-size: 12px;}
-.aw-publish-suggest-question ul li a:hover{background-color: #f5faff;}
 
 /* 热门话题列表 */
 .aw-topic-list .mod-head{margin-bottom: 20px;}
@@ -607,7 +602,6 @@ a.aw-load-more-content{display: block;}
 .aw-mod-topic-manage dl .topic-list label{float: left;margin:4px 14px 6px 0;line-height: 22px;}
 .aw-mod-topic-manage dl .aw-publish-title .dropdown{position: relative;left: 0;width: 40%;}
 .aw-mod-topic-manage dl .aw-publish-title .dropdown .dropdown-toggle{border-radius: 5px;}
-.aw-mod-topic-manage dl .aw-publish-title #question_contents{width: 80%;}
 .aw-mod-topic-manage dl .aw-publish-title #aw-topic-tags-select{width:78%;height:30px;line-height:30px;margin:0;padding-left:10px;border:none;}
 
 

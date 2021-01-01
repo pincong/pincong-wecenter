@@ -1,7 +1,5 @@
 $(function()
 {
-	AWS.Dropdown.bind_dropdown_list($('.aw-mod-publish #question_contents'), 'publish');
-
 	//初始化分类
 	if ($('#category_id').length)
 	{
