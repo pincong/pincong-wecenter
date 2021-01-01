@@ -151,6 +151,7 @@ class account_class extends AWS_MODEL
         $user_group = $this->model('usergroup')->get_user_group_by_user_info($user_info);
         $user_info['reputation_factor'] = $user_group['reputation_factor'];
         $user_info['reputation_factor_receive'] = $user_group['reputation_factor_receive'];
+        $user_info['content_reputation_factor'] = $user_group['content_reputation_factor'];
         $user_info['permission'] = $user_group['permission'];
         $user_info['user_group_name'] = $user_group['group_name'];
         $user_info['user_group_id'] = $user_group['group_id'];
