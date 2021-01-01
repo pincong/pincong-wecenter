@@ -309,7 +309,7 @@ class vote_class extends AWS_MODEL
 
 	private function increase_count_and_reputation(&$type, $item_id, $uid, $item_uid, $factor)
 	{
-		if (!$factor)
+		if (!$factor OR !$this->check_reputation_type($type))
 		{
 			$reputation = 0;
 		}
@@ -335,9 +335,29 @@ class vote_class extends AWS_MODEL
 		$this->model('reputation')->update_user_agree_count_and_reputation($item_uid, 1, $reputation);
 	}
 
+	private function check_reputation_type(&$type)
+	{
+		$reputation_types = get_setting('reputation_types');
+		if (!$reputation_types)
+		{
+			return true;
+		}
+		$reputation_types = explode(',', $reputation_types);
+		if (!is_array($reputation_types))
+		{
+			return false;
+		}
+		$reputation_types = array_map('trim', $reputation_types);
+		if (!in_array($type, $reputation_types))
+		{
+			return false;
+		}
+		return true;
+	}
+
 	private function decrease_count_and_reputation(&$type, $item_id, $uid, $item_uid, $factor)
 	{
-		if (!$factor)
+		if (!$factor OR !$this->check_reputation_type($type))
 		{
 			$reputation = 0;
 		}

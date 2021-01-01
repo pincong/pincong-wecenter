@@ -1307,6 +1307,19 @@
                 <tr>
                     <td>
                         <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('点赞影响声望类型'); ?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="reputation_types" type="text" class="form-control" value="<?php echo $this->setting['reputation_types']; ?>"/>
+
+                                <div class="help-block"><?php _e('用逗号隔开, 留空则不启用, 例: question,answer,article,article_comment,video,video_comment'); ?></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('代币规则名称'); ?>:</span>
                             <div class="col-sm-5 col-xs-8">
                                 <input name="currency_rule_name" type="text" class="form-control" value="<?php echo $this->setting['currency_rule_name']; ?>"/>
