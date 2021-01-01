@@ -2,7 +2,7 @@
 	<div class="mod-head">
 		<!-- 用户头像 -->
 		<a class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($this->comment_info['user_info']); ?>">
-			<img src="<?php echo UF::avatar($this->comment_info['user_info'], 'mid', $this->user_info['permission']['is_administrator']); ?>" alt="" />
+			<img src="<?php echo UF::avatar($this->comment_info['user_info'], 'mid', $this->user_info['permission']['is_moderator']); ?>" alt="" />
 		</a>
 		<!-- end 用户头像 -->
 		<!-- 用户名 -->

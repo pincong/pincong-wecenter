@@ -9,7 +9,7 @@
 					<!-- 用户数据内容 -->
 					<div class="aw-mod aw-user-detail-box">
 						<div class="mod-head">
-							<img src="<?php echo UF::avatar($this->user, 'max', $this->user_info['permission']['is_administrator']); ?>" alt="<?php echo UF::name($this->user); ?>" />
+							<img src="<?php echo UF::avatar($this->user, 'max', $this->user_info['permission']['is_moderator']); ?>" alt="<?php echo UF::name($this->user); ?>" />
 							<span class="pull-right operate">
 							<?php if ($this->user_id AND $this->user['uid'] != $this->user_id) { ?>
 
@@ -78,14 +78,14 @@
 							<br />
 							<a href="user/admin_log/uid-<?php echo $this->user['uid']; ?>" target="_blank"><?php _e('查看管理记录'); ?></a>
 							<?php } ?>
-							<p class="aw-small-text"><?php echo UF::signature($this->user, $this->user_info['permission']['is_administrator']); ?></p>
+							<p class="aw-small-text"><?php echo UF::signature($this->user, $this->user_info['permission']['is_moderator']); ?></p>
 						</div>
 
 						<div class="mod-body clearfix">
 							<div>
 								<span><i class="icon icon-prestige"></i> <?php _e(get_setting('reputation_name')); ?> : <b><?php echo intval($this->user['reputation']); ?></b></span>
 								<span><i class="icon icon-agree"></i> <?php _e('赞同'); ?> : <b><?php echo $this->user['agree_count']; ?></b></span>
-								<?php if($this->user_info['permission']['is_administrator'] OR $this->user['uid'] == $this->user_id) { ?>
+								<?php if($this->user_info['permission']['is_moderator'] OR $this->user['uid'] == $this->user_id) { ?>
 								<span><i class="icon"></i> <?php _e(get_setting('currency_name')); ?> : <b><?php echo $this->user['currency']; ?></b> <?php _e(get_setting('currency_unit')); ?></span>
 								<?php } ?>
 							</div>
@@ -141,7 +141,7 @@
 										<?php if ($this->friends_list) { ?>
 										<p>
 											<?php foreach ($this->friends_list AS $key => $val) { ?>
-												<a class="aw-user-name" data-id="<?php echo $val['uid']; ?>" href="<?php echo UF::url($val); ?>"><img src="<?php echo UF::avatar($val, 'mid', $this->user_info['permission']['is_administrator']); ?>" alt="" /></a>
+												<a class="aw-user-name" data-id="<?php echo $val['uid']; ?>" href="<?php echo UF::url($val); ?>"><img src="<?php echo UF::avatar($val, 'mid', $this->user_info['permission']['is_moderator']); ?>" alt="" /></a>
 											<?php } ?>
 										</p>
 										<?php } ?>
@@ -159,7 +159,7 @@
 										<?php if ($this->fans_list) { ?>
 										<p>
 											<?php foreach ($this->fans_list AS $key => $val) { ?>
-											<?php if (($val['forbidden'] OR $val['flagged'] > 0) AND !$this->user_info['permission']['is_administrator']) continue; ?>
+											<?php if (($val['forbidden'] OR $val['flagged'] > 0) AND !$this->user_info['permission']['is_moderator']) continue; ?>
 												<a class="aw-user-name" data-id="<?php echo $val['uid']; ?>" href="<?php echo UF::url($val); ?>"><img src="<?php echo UF::avatar($val, 'mid'); ?>" alt=""></a>
 											<?php } ?>
 										</p>

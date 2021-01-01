@@ -1,7 +1,7 @@
 <?php if ($this->posts_list) { ?>
 <?php foreach($this->posts_list as $key => $val) { ?>
 <div class="aw-item" data-timestamp="<?php echo $val['add_time']; ?>" data-topic-id="<?php foreach ($val['topics'] AS $k => $v) { ?><?php echo $v['topic_id']; ?>,<?php } ?>">
-	<a class="aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>" href="<?php echo UF::url($val['user_info']); ?>" rel="nofollow"><img src="<?php echo UF::avatar($val['user_info'], 'mid', $this->user_info['permission']['is_administrator']); ?>" alt="" /><?php if ($val['user_info']['verified']) { ?><em class="aw-verified"><?php echo $val['user_info']['verified']; ?></em><?php } ?></a>
+	<a class="aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>" href="<?php echo UF::url($val['user_info']); ?>" rel="nofollow"><img src="<?php echo UF::avatar($val['user_info'], 'mid', $this->user_info['permission']['is_moderator']); ?>" alt="" /><?php if ($val['user_info']['verified']) { ?><em class="aw-verified"><?php echo $val['user_info']['verified']; ?></em><?php } ?></a>
 	<div class="aw-question-content">
 		<h4>
 			<?php if ($val['post_type'] == 'question') { ?>
@@ -23,7 +23,7 @@
 		<div class="pull-right hidden-xs contribute">
 			<span class="pull-right aw-small-text aw-nowrap"><?php _e('贡献'); ?></span>
 			<?php foreach ($val['answer_users'] AS $answer_user) { ?>
-			<a class="aw-user-name" data-id="<?php echo $answer_user['uid']; ?>" href="<?php echo UF::url($answer_user); ?>" rel="nofollow"><img src="<?php echo UF::avatar($answer_user, 'mid', $this->user_info['permission']['is_administrator']); ?>" alt="" /></a>
+			<a class="aw-user-name" data-id="<?php echo $answer_user['uid']; ?>" href="<?php echo UF::url($answer_user); ?>" rel="nofollow"><img src="<?php echo UF::avatar($answer_user, 'mid', $this->user_info['permission']['is_moderator']); ?>" alt="" /></a>
 			<?php } ?>
 		</div>
 		<?php } else if ($val['post_type'] == 'question') { ?>

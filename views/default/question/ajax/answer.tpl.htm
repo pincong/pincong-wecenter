@@ -4,12 +4,12 @@
 
 		<div class="title">
 			<!-- 用户头像 -->
-			<a class="aw-user-img aw-border-radius-5 pull-right" href="<?php echo UF::url($this->answer_info['user_info']); ?>" data-id="<?php echo $this->answer_info['uid']; ?>"><img src="<?php echo UF::avatar($this->answer_info['user_info'], 'mid', $this->user_info['permission']['is_administrator']); ?>" alt="" /></a>
+			<a class="aw-user-img aw-border-radius-5 pull-right" href="<?php echo UF::url($this->answer_info['user_info']); ?>" data-id="<?php echo $this->answer_info['uid']; ?>"><img src="<?php echo UF::avatar($this->answer_info['user_info'], 'mid', $this->user_info['permission']['is_moderator']); ?>" alt="" /></a>
 			<!-- end 用户头像 -->
 			<!-- 用户名 -->
 			<a class="aw-user-name" href="<?php echo UF::url($this->answer_info['user_info']); ?>" data-id="<?php echo $this->answer_info['uid']; ?>"><?php echo UF::name($this->answer_info['user_info']); ?></a>
 			<?php if ($this->answer_info['user_info']['verified']) { ?><em class="aw-verified"><?php echo $this->answer_info['user_info']['verified']; ?></em><?php } ?>
-			<span class="aw-small-text"><?php echo UF::signature($this->answer_info['user_info'], $this->user_info['permission']['is_administrator']); ?></span>
+			<span class="aw-small-text"><?php echo UF::signature($this->answer_info['user_info'], $this->user_info['permission']['is_moderator']); ?></span>
 			<!-- end 用户名 -->
 		</div>
 	</div>

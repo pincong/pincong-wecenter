@@ -43,7 +43,7 @@
 											</li>
 										<?php } ?>
 
-										<?php if ($this->user_info['permission']['is_administrator']) { ?>
+										<?php if ($this->user_info['permission']['is_moderator']) { ?>
 											<li>
 												<a href="javascript:;" onclick="AWS.confirm('<?php _e('确认删除?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/video/ajax/remove_video/', 'video_id=<?php echo $this->video_info['id']; ?>');});"><?php _e('删除影片'); ?></a>
 											</li>
@@ -273,7 +273,7 @@
 						</div>
 						<div class="mod-body">
 							<div class="user-detail">
-								<a class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($this->video_info['user_info']); ?>"><img alt="" src="<?php echo UF::avatar($this->video_info['user_info'], 'mid', $this->user_info['permission']['is_administrator']); ?>" /></a>
+								<a class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($this->video_info['user_info']); ?>"><img alt="" src="<?php echo UF::avatar($this->video_info['user_info'], 'mid', $this->user_info['permission']['is_moderator']); ?>" /></a>
 								<a class="aw-user-name" href="<?php echo UF::url($this->video_info['user_info']); ?>" data-id="<?php echo $this->video_info['user_info']['uid']; ?>">
 									<?php if ($this->video_info['user_info']['flagged'] > 0) { ?>
 										<s><?php echo UF::name($this->video_info['user_info']);?></s>
@@ -290,7 +290,7 @@
 									<a class="icon-inverse follow tooltips icon icon-plus <?php if ($this->user_follow_check) { ?> active<?php } ?>" onclick="AWS.User.follow($(this), 'user', <?php echo $this->video_info['user_info']['uid']; ?>);"></a>
 								<?php } ?>
 							</div>
-							<p class="signature"><?php echo UF::signature($this->video_info['user_info'], $this->user_info['permission']['is_administrator']); ?></p>
+							<p class="signature"><?php echo UF::signature($this->video_info['user_info'], $this->user_info['permission']['is_moderator']); ?></p>
 						</div>
 						<div class="mod-footer clearfix">
 

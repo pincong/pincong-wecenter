@@ -1,6 +1,6 @@
 <?php if ($this->users_list) { ?>
 <?php foreach ($this->users_list AS $key => $val) { ?>
-<?php if (($val['forbidden'] OR $val['flagged'] > 0) AND !$this->user_info['permission']['is_administrator']) continue; ?>
+<?php if (($val['forbidden'] OR $val['flagged'] > 0) AND !$this->user_info['permission']['is_moderator']) continue; ?>
 <li>
 	<div class="mod-head">
 		<a class="aw-user-img pull-left aw-border-radius-5" data-id="<?php echo $val['uid']; ?>" href="<?php echo UF::url($val); ?>">

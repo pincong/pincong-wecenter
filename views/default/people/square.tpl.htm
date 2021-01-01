@@ -15,7 +15,7 @@
 							<div class="aw-item">
 								<span class="aw-user-sort-count aw-border-radius-5<?php if (($key + 1 + ((intval($_GET['page']) - 1) * get_setting('contents_per_page'))) <= 3) { ?> active<?php } ?>"><i class="icon icon-flag"></i> <em><?php if (($key + 1 + ((intval($_GET['page']) - 1) * get_setting('contents_per_page'))) < 99) { echo ($key + 1 + ((intval($_GET['page']) - 1) * get_setting('contents_per_page'))); } else { echo '*'; }; ?></em></span>
 								<a class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val); ?>">
-									<img alt="" src="<?php echo UF::avatar($val, 'mid', $this->user_info['permission']['is_administrator']); ?>" />
+									<img alt="" src="<?php echo UF::avatar($val, 'mid', $this->user_info['permission']['is_moderator']); ?>" />
 								</a>
 								<p class="aw-small-text title">
 									<a href="<?php echo UF::url($val); ?>" class="aw-user-name"><?php echo UF::name($val); ?></a>
@@ -23,11 +23,11 @@
 									<?php if ($val['flagged'] == -1) { ?><sup><?php _e('观察'); ?></sup><?php } ?>
 									<?php if ($val['forbidden']) { ?><sup><?php _e('封禁'); ?></sup><?php } ?>
 								</p>
-								<p class="aw-small-text signature"><?php echo UF::signature($val, $this->user_info['permission']['is_administrator']); ?></p>
+								<p class="aw-small-text signature"><?php echo UF::signature($val, $this->user_info['permission']['is_moderator']); ?></p>
 								<div class="meta">
 									<span><i class="icon icon-prestige"></i> <?php _e(get_setting('reputation_name')); ?> : <b><?php echo intval($val['reputation']); ?></b></span>
 									<span><i class="icon icon-agree"></i> <?php _e('赞同'); ?> : <b><?php echo $val['agree_count']; ?></b></span>
-									<?php if($this->user_info['permission']['is_administrator']) { ?>
+									<?php if($this->user_info['permission']['is_moderator']) { ?>
 									<span><i class="icon"></i> <?php _e(get_setting('currency_name')); ?> : <b><?php echo $val['currency']; ?></b> <?php _e(get_setting('currency_unit')); ?></span>
 									<?php } ?>
 								</div>

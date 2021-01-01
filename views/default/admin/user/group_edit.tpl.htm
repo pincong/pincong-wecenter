@@ -42,11 +42,11 @@
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="is_moderator"<?php if ($this->group_pms['is_administrator']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="is_moderator"<?php if ($this->group_pms['is_moderator']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="is_moderator"<?php if (!$this->group_pms['is_administrator']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="is_moderator"<?php if (!$this->group_pms['is_moderator']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
 									</label>
 								</div>
 							</div>
