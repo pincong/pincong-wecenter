@@ -83,11 +83,6 @@ class main extends AWS_ADMIN_CONTROLLER
             case 'interface':
                 TPL::assign('styles', $this->model('setting')->get_ui_styles());
             break;
-
-            case 'register':
-                //TPL::assign('notification_settings', S::get('new_user_notification_setting'));
-                //TPL::assign('notify_actions', $this->model('notification')->action_details());
-            break;
         }
 
         TPL::assign('setting', S::get_all());

@@ -45,24 +45,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 	public function save_settings_action()
 	{
-		/*if ($_POST['_set_notification_settings'])
-		{
-			if ($notify_actions = $this->model('notification')->get_all_options())
-			{
-				$notification_setting = array();
-
-				foreach ($notify_actions as $key => $val)
-				{
-					if (! isset($_POST['new_user_notification_setting'][$key]))
-					{
-						$notification_setting[] = $key;
-					}
-				}
-			}
-
-			$_POST['new_user_notification_setting'] = $notification_setting;
-		}*/
-
 		$this->model('setting')->set_vars($_POST);
 
 		H::ajax_error((_t('保存设置成功')));

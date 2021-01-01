@@ -32,7 +32,7 @@ class notification_class extends AWS_MODEL
 	}
 
 	public function get_user_ignore_list($uid)
-	{return [];
+	{
 		$item = $this->fetch_row('user_notification_settings', ['uid', 'eq', $uid, 'i']);
 		if (!$item)
 		{
@@ -42,7 +42,7 @@ class notification_class extends AWS_MODEL
 	}
 
 	public function get_users_ignore_lists($uids)
-	{return [];
+	{
 		if (!is_array($uids) OR !count($uids))
 		{
 			return [];
@@ -57,7 +57,7 @@ class notification_class extends AWS_MODEL
 	}
 
 	public function set_user_ignore_list($uid, $array, $unignore = false)
-	{return [];
+	{
 		if (!is_array($array))
 		{
 			$array = [];
@@ -113,7 +113,7 @@ class notification_class extends AWS_MODEL
 			return;
 		}
 
-		/*if (in_array($action, $this->get_user_ignore_list($recipient_uid)))
+		if (in_array($action, $this->get_user_ignore_list($recipient_uid)))
 		{
 			return;
 		}
@@ -121,7 +121,7 @@ class notification_class extends AWS_MODEL
 		if ($this->model('block')->has_user_been_blocked($sender_uid, $recipient_uid))
 		{
 			return;
-		}*/
+		}
 
 		$now = fake_time();
 		$this->insert('notification', array(
@@ -139,7 +139,7 @@ class notification_class extends AWS_MODEL
 
 	public function multi_send($sender_uid, $recipient_uids, $action, $thread_type = null, $thread_id = 0, $item_type = null, $item_id = 0)
 	{
-		/*$lists = $this->get_users_ignore_lists($recipient_uids);
+		$lists = $this->get_users_ignore_lists($recipient_uids);
 		$recipient_uids = [];
 		foreach ($lists as $recipient_uid => $ignored_actions)
 		{
@@ -165,7 +165,7 @@ class notification_class extends AWS_MODEL
 				continue;
 			}
 			$recipient_uids[] = $recipient_uid;
-		}*/
+		}
 
 		$now = fake_time();
 		foreach ($recipient_uids as $recipient_uid)
