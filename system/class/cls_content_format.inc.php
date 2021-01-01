@@ -144,7 +144,7 @@ class CF
 
 		if ($kb = self::get_kb($user_info, $key))
 		{
-			return nl2br(FORMAT::parse_bbcode($kb['message']));
+			return self::kb_tips() . nl2br(FORMAT::parse_bbcode($kb['message']));
 		}
 		return nl2br(FORMAT::parse_bbcode($string));
 	}
@@ -159,7 +159,7 @@ class CF
 
 		if ($kb = self::get_kb($user_info, $key))
 		{
-			return nl2br(FORMAT::parse_bbcode($kb['message']));
+			return self::kb_tips() . nl2br(FORMAT::parse_bbcode($kb['message']));
 		}
 		return nl2br(FORMAT::parse_links($string));
 	}
