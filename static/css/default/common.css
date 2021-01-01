@@ -50,7 +50,7 @@ select{width: auto;}
 html{height: 100%;}
 body{margin: 0;height: 100%;font-size:14px; line-height:160%;color: #666;background:url('img/bg.gif') repeat;}
 /*body, input, button, select, textarea, h1, h2, h3, h4, h5, h6{font-family:'Helvetica Neue', 'STHeiti', '微软雅黑', 'Microsoft YaHei', Helvetica,Arial,sans-serif;}*/
-body{font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;word-wrap:break-word;}
+body{font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;word-wrap:break-word;word-break:break-word;}
 ul, ol{margin:0;padding:0;list-style:none;}
 h1, h2, h3, h4, h5, h6{margin-top:0;font-size:100%;line-height: 1.4;}
 dd{margin-left: 10px;}
