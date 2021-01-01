@@ -26,9 +26,9 @@ class ajax extends AWS_CONTROLLER
 		HTTP::no_cache_header();
 	}
 
-	public function change_uid_action()
+	private function validate_thread($permission_name, $item_type, $item_id, &$item_info_out)
 	{
-		if (!$this->user_info['permission']['is_moderator'])
+		if (!$this->user_info['permission'][$permission_name])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
@@ -38,12 +38,37 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 
-		if (!$item_info = $this->model('content')->get_thread_info_by_id($_POST['item_type'], $_POST['item_id']))
+		if (!$item_info_out = $this->model('content')->get_thread_info_by_id($item_type, $item_id))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
 		}
 
 		set_user_operation_last_time('manage', $this->user_id);
+	}
+
+	private function validate_reply($permission_name, $item_type, $item_id, &$item_info_out)
+	{
+		if (!$this->user_info['permission'][$permission_name])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
+		}
+
+		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
+		if (!$item_info_out = $this->model('content')->get_reply_info_by_id($item_type, $item_id))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
+		}
+
+		set_user_operation_last_time('manage', $this->user_id);
+	}
+
+	public function change_uid_action()
+	{
+		$this->validate_thread('is_moderator', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		$this->model('content')->change_uid(
 			$_POST['item_type'],
@@ -58,22 +83,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function redirect_action()
 	{
-		if (!$this->user_info['permission']['redirect_post'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
-		}
-
-		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
-		if (!$item_info = $this->model('content')->get_thread_info_by_id($_POST['item_type'], $_POST['item_id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
-		}
-
-		set_user_operation_last_time('manage', $this->user_id);
+		$this->validate_thread('redirect_post', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		if (!$redirect_item_info = $this->model('content')->get_thread_info_by_id($_POST['item_type'], $_POST['redirect_id']))
 		{
@@ -97,22 +107,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function unredirect_action()
 	{
-		if (!$this->user_info['permission']['redirect_post'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
-		}
-
-		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
-		if (!$item_info = $this->model('content')->get_thread_info_by_id($_POST['item_type'], $_POST['item_id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
-		}
-
-		set_user_operation_last_time('manage', $this->user_id);
+		$this->validate_thread('redirect_post', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		if (!$item_info['redirect_id'])
 		{
@@ -131,14 +126,11 @@ class ajax extends AWS_CONTROLLER
 
 	public function change_category_action()
 	{
+		$this->validate_thread('change_category', $_POST['item_type'], $_POST['item_id'], $item_info);
+
 		if (!$category_id = intval($_POST['category_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('分类不存在')));
-		}
-
-		if (!$this->user_info['permission']['change_category'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
 		if (!$this->model('category')->check_user_permission($category_id, $this->user_info['permission']))
@@ -146,25 +138,13 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你的声望还不能在这个分类发言')));
 		}
 
-		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
 		if (!$this->model('category')->category_exists($category_id))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('分类不存在')));
 		}
 
-		if (!$item_info = $this->model('content')->get_thread_info_by_id($_POST['item_type'], $_POST['item_id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
-		}
-
 		if ($item_info['category_id'] != $category_id)
 		{
-			set_user_operation_last_time('manage', $this->user_id);
-
 			$this->model('content')->change_category(
 				$_POST['item_type'],
 				$_POST['item_id'],
@@ -179,25 +159,10 @@ class ajax extends AWS_CONTROLLER
 
 	public function lock_action()
 	{
-		if (!$this->user_info['permission']['lock_post'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
-		}
-
-		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
-		if (!$item_info = $this->model('content')->get_thread_info_by_id($_POST['item_type'], $_POST['item_id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
-		}
+		$this->validate_thread('lock_post', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		if (!$item_info['lock'])
 		{
-			set_user_operation_last_time('manage', $this->user_id);
-
 			$this->model('content')->lock(
 				$_POST['item_type'],
 				$_POST['item_id'],
@@ -210,25 +175,10 @@ class ajax extends AWS_CONTROLLER
 
 	public function unlock_action()
 	{
-		if (!$this->user_info['permission']['lock_post'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
-		}
-
-		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
-		if (!$item_info = $this->model('content')->get_thread_info_by_id($_POST['item_type'], $_POST['item_id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
-		}
+		$this->validate_thread('lock_post', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		if ($item_info['lock'])
 		{
-			set_user_operation_last_time('manage', $this->user_id);
-
 			$this->model('content')->unlock(
 				$_POST['item_type'],
 				$_POST['item_id'],
@@ -241,26 +191,10 @@ class ajax extends AWS_CONTROLLER
 
 	public function recommend_action()
 	{
-		if (!$this->user_info['permission']['recommend_post'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有设置推荐的权限')));
-		}
-
-		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
-		$item_info = $this->model('content')->get_thread_info_by_id($_POST['item_type'], $_POST['item_id']);
-		if (!$item_info)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
-		}
+		$this->validate_thread('recommend_post', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		if (!$item_info['recommend'])
 		{
-			set_user_operation_last_time('manage', $this->user_id);
-
 			$this->model('content')->recommend(
 				$_POST['item_type'],
 				$_POST['item_id'],
@@ -273,26 +207,10 @@ class ajax extends AWS_CONTROLLER
 
 	public function unrecommend_action()
 	{
-		if (!$this->user_info['permission']['recommend_post'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有设置推荐的权限')));
-		}
-
-		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
-		$item_info = $this->model('content')->get_thread_info_by_id($_POST['item_type'], $_POST['item_id']);
-		if (!$item_info)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
-		}
+		$this->validate_thread('recommend_post', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		if ($item_info['recommend'])
 		{
-			set_user_operation_last_time('manage', $this->user_id);
-
 			$this->model('content')->unrecommend(
 				$_POST['item_type'],
 				$_POST['item_id'],
@@ -305,23 +223,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function bump_action()
 	{
-		if (!$this->user_info['permission']['bump_sink'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
-		}
-
-		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
-		$item_info = $this->model('content')->get_thread_info_by_id($_POST['item_type'], $_POST['item_id']);
-		if (!$item_info)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
-		}
-
-		set_user_operation_last_time('manage', $this->user_id);
+		$this->validate_thread('bump_sink', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		$this->model('content')->bump(
 			$_POST['item_type'],
@@ -334,23 +236,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function sink_action()
 	{
-		if (!$this->user_info['permission']['bump_sink'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
-		}
-
-		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
-		$item_info = $this->model('content')->get_thread_info_by_id($_POST['item_type'], $_POST['item_id']);
-		if (!$item_info)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
-		}
-
-		set_user_operation_last_time('manage', $this->user_id);
+		$this->validate_thread('bump_sink', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		$this->model('content')->sink(
 			$_POST['item_type'],
@@ -365,26 +251,10 @@ class ajax extends AWS_CONTROLLER
 	// 置顶
 	public function pin_action()
 	{
-		if (!$this->user_info['permission']['pin_post'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有设置置顶的权限')));
-		}
-
-		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
-		$item_info = $this->model('content')->get_thread_info_by_id($_POST['item_type'], $_POST['item_id']);
-		if (!$item_info)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
-		}
+		$this->validate_thread('pin_post', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		if (!$item_info['sort'])
 		{
-			set_user_operation_last_time('manage', $this->user_id);
-
 			$this->model('content')->pin(
 				$_POST['item_type'],
 				$_POST['item_id'],
@@ -398,26 +268,10 @@ class ajax extends AWS_CONTROLLER
 	// 取消置顶
 	public function unpin_action()
 	{
-		if (!$this->user_info['permission']['pin_post'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有设置置顶的权限')));
-		}
-
-		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
-		$item_info = $this->model('content')->get_thread_info_by_id($_POST['item_type'], $_POST['item_id']);
-		if (!$item_info)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
-		}
+		$this->validate_thread('pin_post', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		if ($item_info['sort'])
 		{
-			set_user_operation_last_time('manage', $this->user_id);
-
 			$this->model('content')->unpin(
 				$_POST['item_type'],
 				$_POST['item_id'],
@@ -431,25 +285,10 @@ class ajax extends AWS_CONTROLLER
 
 	public function fold_reply_action()
 	{
-		if (!$this->user_info['permission']['fold_post'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有折叠的权限')));
-		}
-
-		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
-		$item_info = $this->model('content')->get_reply_info_by_id($_POST['item_type'], $_POST['item_id']);
-		if (!$item_info)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
-		}
+		$this->validate_reply('fold_post', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		if (!$item_info['fold'])
 		{
-			set_user_operation_last_time('manage', $this->user_id);
 			switch ($_POST['item_type'])
 			{
 				case 'answer':
@@ -480,25 +319,10 @@ class ajax extends AWS_CONTROLLER
 
 	public function unfold_reply_action()
 	{
-		if (!$this->user_info['permission']['fold_post'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有折叠的权限')));
-		}
-
-		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
-		$item_info = $this->model('content')->get_reply_info_by_id($_POST['item_type'], $_POST['item_id']);
-		if (!$item_info)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
-		}
+		$this->validate_reply('fold_post', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		if ($item_info['fold'])
 		{
-			set_user_operation_last_time('manage', $this->user_id);
 			switch ($_POST['item_type'])
 			{
 				case 'answer':
@@ -526,6 +350,5 @@ class ajax extends AWS_CONTROLLER
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
-
 
 }
