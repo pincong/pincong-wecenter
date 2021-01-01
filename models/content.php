@@ -334,9 +334,9 @@ class content_class extends AWS_MODEL
 
 	/**
 	 * 记录日志
-	 * @param string $thread_type question|article|video
+	 * @param string $thread_type
 	 * @param int $thread_id
-	 * @param string $item_type question|question_discussion|answer|answer_discussion|article|article_comment|video|video_comment
+	 * @param string $item_type
 	 * @param int $item_id
 	 * @param string $note
 	 * @param int $uid
@@ -366,7 +366,7 @@ class content_class extends AWS_MODEL
 	 *
 	 * 得到日志列表
 	 *
-	 * @param string  $thread_type question|article|video
+	 * @param string  $thread_type
 	 * @param int     $thread_id
 	 * @param string  $item_type
 	 * @param int     $item_id

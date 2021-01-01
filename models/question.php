@@ -362,7 +362,7 @@ class question_class extends AWS_MODEL
 
 
 	public function get_answer_users_by_question_id($question_id, $limit, $question_uid)
-	{return [];
+	{
 		$cache_key = 'answer_users_by_question_id_' . md5($question_id . $limit . $question_uid);
 		if ($result = AWS_APP::cache()->get($cache_key))
 		{

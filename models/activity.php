@@ -114,10 +114,10 @@ class activity_class extends AWS_MODEL
 
 	/**
 	 * 记录动态
-	 * @param string $item_type question|answer|article|article_comment|video|video_comment
+	 * @param string $item_type
 	 * @param int $item_id
 	 * @param int $uid
-	 * @param string $thread_type question|article|video
+	 * @param string $thread_type
 	 * @param int $thread_id
 	 * @param int $category_id
 	 */
