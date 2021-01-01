@@ -43,7 +43,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
             $this->model('admin')->set_admin_login($user_info['uid']);
 
             H::ajax_json_output(AWS_APP::RSM(array(
-                'url' => $_POST['url'] ? base64_decode($_POST['url']) : get_js_url('/admin/')
+                'url' => get_js_url('/admin/')
             ), 1, null));
         }
         else

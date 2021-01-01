@@ -9,7 +9,7 @@
 	<div class="mod-body">
 		<form class="aw-register-form" action="register/ajax/register_process/" method="post" id="register_form">
 			<?php if ($this->icode) { ?><input type="hidden" name="icode" id="icode" value="<?php echo $this->icode; ?>" /><?php } ?>
-			<?php if ($this->return_url) { ?><input type="hidden" name="return_url" value="<?php echo $this->return_url; ?>" /><?php } ?>
+			<input type="hidden" name="return_url" value="<?php echo htmlspecialchars($_SERVER['HTTP_REFERER']); ?>" />
 
 			<ul>
 				<li class="alert alert-danger collapse error_message text-left">

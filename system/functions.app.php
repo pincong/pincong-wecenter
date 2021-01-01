@@ -108,13 +108,6 @@ function base_url()
 	return rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
 }
 
-// TODO: 实现或删除
-function base64_current_path()
-{
-	return '';
-}
-
-
 function date_friendly($timestamp)
 {
 	$timestamp = $timestamp + intval(get_setting('time_difference'));

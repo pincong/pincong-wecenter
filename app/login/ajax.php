@@ -102,15 +102,11 @@ class ajax extends AWS_CONTROLLER
 
 			$this->model('account')->setcookie_login($user_info['uid'], $_POST['user_name'], $_POST['password'], $user_info['salt'], $expire);
 
-			if ($_POST['return_url'])
+			$url = get_js_url('/');
+
+			if ($_POST['return_url'] AND is_inside_url($_POST['return_url']))
 			{
-				//$url = get_js_url($_POST['return_url']);
-				// TODO: 检查 $_POST['return_url']
-				$url = get_js_url('/');
-			}
-			else
-			{
-				$url = get_js_url('/');
+				$url = $_POST['return_url'];
 			}
 
 			H::ajax_json_output(AWS_APP::RSM(array(

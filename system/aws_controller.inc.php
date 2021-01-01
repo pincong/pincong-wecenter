@@ -283,7 +283,7 @@ class AWS_ADMIN_CONTROLLER extends AWS_CONTROLLER
 			}
 			else
 			{
-				HTTP::redirect('/admin/login/url-' . base64_current_path());
+				HTTP::redirect('/admin/login/');
 			}
 		}
 

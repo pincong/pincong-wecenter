@@ -41,24 +41,11 @@ class main extends AWS_CONTROLLER
 		AWS_APP::captcha()->generate();
 	}
 
-	public function logout_action($return_url = null)
+	public function logout_action($return_url = '/')
 	{
-		if ($_GET['return_url'])
-		{
-			$url = strip_tags(urldecode($_GET['return_url']));
-		}
-		else if (! $return_url)
-		{
-			$url = '/';
-		}
-		else
-		{
-			$url = $return_url;
-		}
-
 		if ($_GET['key'] != md5(session_id()))
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('正在准备退出, 请稍候...'), '/account/logout/?return_url=' . urlencode($url) . '&key=' . md5(session_id()));
+			H::redirect_msg(AWS_APP::lang()->_t('正在准备退出, 请稍候...'), '/account/logout/?key=' . md5(session_id()));
 		}
 
 		$this->model('account')->logout();
@@ -66,7 +53,7 @@ class main extends AWS_CONTROLLER
 		$this->model('admin')->admin_logout();
 
 		{
-			HTTP::redirect($url);
+			HTTP::redirect($return_url);
 		}
 	}
 
