@@ -1,8 +1,6 @@
 <?php $val = $this->answer_info; ?>
-<div class="aw-item" id="answer_list_<?php echo $val['id']; ?>" data-item-id="<?php echo $val['id']; ?>" data-fold="<?php echo $val['fold']; ?>">
+<div class="aw-item" data-item-id="<?php echo $val['id']; ?>" data-fold="<?php echo $val['fold']; ?>">
 	<div class="mod-head">
-		<a class="anchor" name="answer_<?php echo $val['id']; ?>"></a>
-
 		<div class="title">
 			<!-- 用户头像 -->
 			<a class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>" data-id="<?php echo $val['uid']; ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid', $this->user_info['permission']['is_moderator']); ?>" alt="" /></a>
