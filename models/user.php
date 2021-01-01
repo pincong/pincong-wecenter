@@ -23,7 +23,7 @@ class user_class extends AWS_MODEL
 	{
 		$question_id = intval($question_id);
 		$this->update('question', array(
-			'comment_count' => $this->count('question_discussion', ['question_id', 'eq', $question_id])
+			'comment_count' => $this->count('question_comment', ['question_id', 'eq', $question_id])
 		), ['id', 'eq', $question_id]);
 	}
 
@@ -63,13 +63,13 @@ class user_class extends AWS_MODEL
 
 	public function delete_question_discussions($uid)
 	{
-		$discussions = $this->fetch_all('question_discussion', ['uid', 'eq', $uid, 'i']);
+		$discussions = $this->fetch_all('question_comment', ['uid', 'eq', $uid, 'i']);
 		if (!$discussions)
 		{
 			return;
 		}
 
-		$this->delete('question_discussion', ['uid', 'eq', $uid, 'i']);
+		$this->delete('question_comment', ['uid', 'eq', $uid, 'i']);
 
 		foreach ($discussions AS $key => $val)
 		{

@@ -125,7 +125,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 
 
 			case 'answer':
-				$next_table = 'question_discussion';
+				$next_table = 'question_comment';
 
 				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', H::GET('page'), H::GET('per_page')))
 				{
@@ -145,7 +145,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 			break;
 
 
-			case 'question_discussion':
+			case 'question_comment':
 				$next_table = 'answer_discussion';
 
 				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', H::GET('page'), H::GET('per_page')))

@@ -142,7 +142,7 @@ class publish_class extends AWS_MODEL
 				$this->real_publish_video_comment($data);
 				break;
 
-			case 'question_discussion':
+			case 'question_comment':
 				$this->real_publish_question_discussion($data);
 				break;
 
@@ -544,7 +544,7 @@ class publish_class extends AWS_MODEL
 
 		$now = fake_time();
 
-		$item_id = $this->insert('question_discussion', array(
+		$item_id = $this->insert('question_comment', array(
 			'question_id' => $data['parent_id'],
 			'message' => htmlspecialchars($data['message']),
 			'add_time' => $now,
@@ -556,7 +556,7 @@ class publish_class extends AWS_MODEL
 			return false;
 		}
 
-		$discussion_count = $this->count('question_discussion', ['question_id', 'eq', $data['parent_id'], 'i']);
+		$discussion_count = $this->count('question_comment', ['question_id', 'eq', $data['parent_id'], 'i']);
 
 		// 被合并的主题已锁, 不可讨论, 无需 $thread_info['redirect_id']
 
@@ -764,7 +764,7 @@ class publish_class extends AWS_MODEL
 	{
 		if ($later)
 		{
-			$this->schedule('question_discussion', $this->calc_later_time($later), $data);
+			$this->schedule('question_comment', $this->calc_later_time($later), $data);
 		}
 		else
 		{

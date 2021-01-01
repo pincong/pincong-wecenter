@@ -234,7 +234,7 @@ class ratelimit_class extends AWS_MODEL
 		$time_after = real_time() - 24 * 3600;
 
 		$where = [['add_time', 'gt', $time_after], ['uid', 'eq', $uid]];
-		$count = $this->count('question_discussion', $where);
+		$count = $this->count('question_comment', $where);
 		if ($count >= $limit)
 		{
 			return false;

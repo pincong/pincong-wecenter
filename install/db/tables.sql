@@ -60,7 +60,7 @@ CREATE TABLE `aws_answer` (
 
 
 --
-CREATE TABLE `aws_question_discussion` (
+CREATE TABLE `aws_question_comment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `question_id` int(11) DEFAULT '0',
   `uid` int(11) DEFAULT '0',

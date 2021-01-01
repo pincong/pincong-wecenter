@@ -210,7 +210,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('问题不存在')));
 		}
 
-		if (!$this->model('publish')->check_user_permission('question_discussion', $this->user_info) AND $question_info['uid'] != $this->user_id)
+		if (!$this->model('publish')->check_user_permission('question_comment', $this->user_info) AND $question_info['uid'] != $this->user_id)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不够')));
 		}
@@ -249,7 +249,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (H::POST_I('anonymous'))
 		{
-			$publish_uid = $this->get_anonymous_uid('question_discussion');
+			$publish_uid = $this->get_anonymous_uid('question_comment');
 		}
 		else
 		{
