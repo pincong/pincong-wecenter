@@ -24,9 +24,6 @@ define('G_COOKIE_PREFIX', 'aws');		// 建议修改此处
 define('G_SECUKEY','ABCDEFGHIJKLMNOP');				// 请修改此处
 define('G_COOKIE_HASH_KEY', 'abcdefghijklmnop');	// 请修改此处
 
-// GZIP 压缩输出页面
-define('G_GZIP_COMPRESS', FALSE);
-
 // Cache 命名空间
 define('G_CACHE_NAMESPACE', 'aws');		// 建议修改此处
 

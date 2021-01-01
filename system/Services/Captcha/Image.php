@@ -273,7 +273,7 @@ class Services_Captcha_Image extends Services_Captcha_Word
      * @param string $word Captcha word
      * @throws Services_Captcha_Exception
      */
-    public function &generateImage($word)
+    public function generateImage($word)
     {
         if (!extension_loaded("gd")) {
             throw new Services_Captcha_Exception("Image CAPTCHA requires GD extension");

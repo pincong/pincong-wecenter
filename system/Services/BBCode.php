@@ -288,7 +288,7 @@ class Services_BBCode
 		return $this;
 	}
 
-	public function &parse(&$text)
+	public function parse($text)
 	{
 		if (!$text)
 		{

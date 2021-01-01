@@ -450,7 +450,7 @@ class core_image
 		return $result;
 	}
 
-	private function saveToRemoteStorage($path, &$content)
+	private function saveToRemoteStorage($path, $content)
 	{
 		$path = str_replace($this->local_upload_dir, '', $path);
 		$response = Services_RemoteStorage::put($path, $content);

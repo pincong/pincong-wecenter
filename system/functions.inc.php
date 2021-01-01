@@ -101,41 +101,6 @@ function cjk_substr($string, $start, $length, $charset = 'UTF-8')
 }
 
 /**
- * 根据特定规则对数组进行排序
- *
- * 提取多维数组的某个键名，以便把数组转换成一位数组进行排序（注意：不支持下标，否则排序会出错）
- *
- * @param  array
- * @param  string
- * @param  string
- * @return array
- */
-function aasort($source_array, $order_field, $sort_type = 'DESC')
-{
-	if (! is_array($source_array) or sizeof($source_array) == 0)
-	{
-		return false;
-	}
-
-	foreach ($source_array as $array_key => $array_row)
-	{
-		$sort_array[$array_key] = $array_row[$order_field];
-	}
-
-	$sort_func = ($sort_type == 'ASC' ? 'asort' : 'arsort');
-
-	$sort_func($sort_array);
-
-	// 重组数组
-	foreach ($sort_array as $key => $val)
-	{
-		$sorted_array[$key] = $source_array[$key];
-	}
-
-	return $sorted_array;
-}
-
-/**
  * 检查整型、字符串是否为纯数字（十进制数字，不包括负数和小数）
  *
  * @param integer or string
@@ -348,11 +313,6 @@ function get_month_list($timestamp1, $timestamp2, $year_format = 'Y', $month_for
 }
 
 
-function uniqid_generate($length = 16)
-{
-	return substr(strtolower(md5(uniqid(rand()))), 0, $length);
-}
-
 function rand_minmax($min, $max, $default = 0, $undefined = 0)
 {
 	$min = intval($min);
@@ -382,7 +342,7 @@ function intval_minmax($val, $min, $max)
 }
 
 
-function unserialize_array(&$string)
+function unserialize_array($string)
 {
 	if (isset($string))
 	{
@@ -396,7 +356,7 @@ function unserialize_array(&$string)
 	return array();
 }
 
-function serialize_array(&$array)
+function serialize_array($array)
 {
 	if (is_array($array) AND count($array) > 0)
 	{
@@ -425,15 +385,15 @@ function checksum($string) {
 	return $i;
 }
 
-function &safe_base64_encode($string) {
+function safe_base64_encode($string) {
 	return strtr(rtrim(base64_encode($string), '='), '+/', '._');
 }
 
-function &safe_base64_decode($string) {
+function safe_base64_decode($string) {
 	return base64_decode(strtr($string, '._', '+/'));
 }
 
-function &safe_text($html) {
+function safe_text($html) {
 	return str_replace(
 		array('<', '>', '"', "'"),
 		array('&lt;', '&gt;', '&quot;', '&#39;'),
@@ -441,7 +401,7 @@ function &safe_text($html) {
 	);
 }
 
-function &unnest_bbcode($text) {
+function unnest_bbcode($text) {
 	return str_replace(
 		array('[', ']'),
 		array('&#91;', '&#93;'),
@@ -450,7 +410,7 @@ function &unnest_bbcode($text) {
 }
 
 
-function &truncate_text($string, $length, $ellipsis = '...')
+function truncate_text($string, $length, $ellipsis = '...')
 {
 	if (cjk_strlen($string) <= $length)
 	{

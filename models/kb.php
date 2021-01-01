@@ -40,7 +40,7 @@ class kb_class extends AWS_MODEL
 		return $this->fetch_row('knowledge', ['id', 'eq', $id, 'i']);
 	}
 
-	public function add(&$title, &$message, $uid, $last_uid)
+	public function add($title, $message, $uid, $last_uid)
 	{
 		$now = fake_time();
 
@@ -56,7 +56,7 @@ class kb_class extends AWS_MODEL
 		return $id;
 	}
 
-	public function edit($id, &$title, &$message, $uid, $last_uid)
+	public function edit($id, $title, $message, $uid, $last_uid)
 	{
 		$now = fake_time();
 
@@ -69,7 +69,7 @@ class kb_class extends AWS_MODEL
 		), ['id', 'eq', $id, 'i']);
 	}
 
-	public function remark($id, &$remarks)
+	public function remark($id, $remarks)
 	{
 		$this->update('knowledge', array(
 			'remarks' => htmlspecialchars($remarks),

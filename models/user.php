@@ -399,6 +399,7 @@ class user_class extends AWS_MODEL
 			"edit_title",
 			"edit_signature",
 			"add_blocked",
+			"delete_user",
 		);
 
 		if ($type AND !in_array($type, $valid_types))

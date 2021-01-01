@@ -42,7 +42,7 @@ class reputation_class extends AWS_MODEL
 		return true;
 	}
 
-	private function check_reputation_type(&$item_type)
+	private function check_reputation_type($item_type)
 	{
 		$reputation_types = S::get('reputation_types');
 		if (!$reputation_types)
@@ -63,7 +63,7 @@ class reputation_class extends AWS_MODEL
 	}
 
 	// 更新被赞用户赞数和声望
-	private function update_user_agree_count_and_reputation(&$item_type, &$recipient_user, $agree_value, $reputation_value, $auto_ban)
+	private function update_user_agree_count_and_reputation($item_type, $recipient_user, $agree_value, $reputation_value, $auto_ban)
 	{
 		// 用户已注销
 		if (!$recipient_user)
@@ -98,7 +98,7 @@ class reputation_class extends AWS_MODEL
 	}
 
 	// 更新被赞post赞数和声望(热度)
-	private function update_item_agree_count_and_reputation(&$item_type, $item_id, $agree_value, $reputation_value)
+	private function update_item_agree_count_and_reputation($item_type, $item_id, $agree_value, $reputation_value)
 	{
 		$this->update(
 			$item_type,
@@ -108,7 +108,7 @@ class reputation_class extends AWS_MODEL
 	}
 
 	// 更新posts_index表声望(用于热门排序)
-	private function update_index_reputation(&$item_type, $item_id, &$item_info, $reputation_value)
+	private function update_index_reputation($item_type, $item_id, $item_info, $reputation_value)
 	{
 		switch ($item_type)
 		{
@@ -136,7 +136,7 @@ class reputation_class extends AWS_MODEL
 
 
 	// 根据post字数获得额外奖励声望
-	private function get_bonus_factor(&$item_info)
+	private function get_bonus_factor($item_info)
 	{
 		$bonus_factor = S::get('bonus_factor');
 		if (!is_numeric($bonus_factor))
@@ -201,7 +201,7 @@ class reputation_class extends AWS_MODEL
 	}
 
 
-	private function update_agree_count_and_reputation($item_type, $item_id, &$vote_user, &$recipient_user, $agree_value, $user_reputation_value, $content_reputation_value)
+	private function update_agree_count_and_reputation($item_type, $item_id, $vote_user, $recipient_user, $agree_value, $user_reputation_value, $content_reputation_value)
 	{
 		$auto_ban = false;
 
@@ -256,7 +256,7 @@ class reputation_class extends AWS_MODEL
 	}
 
 
-	private function get_initial_reputation(&$vote_user, &$recipient_user, $agree_value, &$result_user_reputation, &$result_content_reputation)
+	private function get_initial_reputation($vote_user, $recipient_user, $agree_value, &$result_user_reputation, &$result_content_reputation)
 	{
 		if (!!$recipient_user AND is_numeric($recipient_user['reputation_factor_receive']))
 		{

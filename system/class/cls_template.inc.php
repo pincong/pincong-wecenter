@@ -47,7 +47,7 @@ class TPL
 	}
 
 	// 生成基本的 HTML
-	public static function &render($template_filename, $plugin_name = null)
+	public static function render($template_filename, $plugin_name = null)
 	{
 		if (!strstr($template_filename, '.'))
 		{
@@ -96,7 +96,7 @@ class TPL
 	}
 
 	// 进行一些处理 关键词替换等
-	public static function &process($template_filename, $plugin_name = null)
+	public static function process($template_filename, $plugin_name = null)
 	{
 		$output = self::render($template_filename, $plugin_name);
 

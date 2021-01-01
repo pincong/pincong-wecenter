@@ -210,7 +210,7 @@ class question_class extends AWS_MODEL
 		return true;
 	}
 
-	public function clear_question_discussion(&$comment, $log_uid)
+	public function clear_question_discussion($comment, $log_uid)
 	{
 		$this->update('question_discussion', array(
 			'message' => null
@@ -221,7 +221,7 @@ class question_class extends AWS_MODEL
 		return true;
 	}
 
-	public function clear_answer_discussion(&$comment, $log_uid)
+	public function clear_answer_discussion($comment, $log_uid)
 	{
 		$this->update('answer_discussion', array(
 			'message' => null

@@ -86,7 +86,7 @@ class H
 
 
 
-	public static function content_replace(&$content, &$replacing_list)
+	public static function content_replace(&$content, $replacing_list)
 	{
 		if (!$content OR !$replacing_list)
 		{

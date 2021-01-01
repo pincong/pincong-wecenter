@@ -60,7 +60,7 @@ class vote_class extends AWS_MODEL
 		return $list;
 	}
 
-	private function process_currency_agree(&$type, $item_id, $uid, $item_uid, &$permission)
+	private function process_currency_agree($type, $item_id, $uid, $item_uid, $permission)
 	{
 		switch ($type)
 		{
@@ -102,7 +102,7 @@ class vote_class extends AWS_MODEL
 		}
 	}
 
-	private function process_currency_disagree(&$type, $item_id, $uid, $item_uid, &$permission)
+	private function process_currency_disagree($type, $item_id, $uid, $item_uid, $permission)
 	{
 		switch ($type)
 		{

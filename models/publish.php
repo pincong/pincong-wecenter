@@ -26,7 +26,7 @@ class publish_class extends AWS_MODEL
 		return real_time() + $minutes * 60 + rand(-30, 30);
 	}
 
-	private function save_topics($type, $uid, $item_id, &$topics, $permission_create_topic)
+	private function save_topics($type, $uid, $item_id, $topics, $permission_create_topic)
 	{
 		if (is_array($topics))
 		{
@@ -38,7 +38,7 @@ class publish_class extends AWS_MODEL
 		}
 	}
 
-	private function mention_users($thread_type, $thread_id, $reply_type, $reply_id, $sender_uid, $recipient_uid, &$message)
+	private function mention_users($thread_type, $thread_id, $reply_type, $reply_id, $sender_uid, $recipient_uid, $message)
 	{
 		if ($mentioned_uids = $this->model('mention')->get_mentioned_uids($message))
 		{
@@ -53,7 +53,7 @@ class publish_class extends AWS_MODEL
 		}
 	}
 
-	private function notify_users($thread_type, $thread_id, $reply_type, $reply_id, $sender_uid, $recipient_uid, &$message)
+	private function notify_users($thread_type, $thread_id, $reply_type, $reply_id, $sender_uid, $recipient_uid, $message)
 	{
 		if ($recipient_uid)
 		{
@@ -79,7 +79,7 @@ class publish_class extends AWS_MODEL
 
 	}
 
-	private function publish_scheduled_item(&$val)
+	private function publish_scheduled_item($val)
 	{
 		// 暂时用 model('message')->decrypt
 		$data = unserialize_array($this->model('message')->decrypt($val['data']));
@@ -124,7 +124,7 @@ class publish_class extends AWS_MODEL
 		}
 	}
 
-	public function check_user_permission($item_type, &$user_info)
+	public function check_user_permission($item_type, $user_info)
 	{
 		if (!is_array($user_info) OR !is_array($user_info['permission']))
 		{
@@ -157,7 +157,7 @@ class publish_class extends AWS_MODEL
 		}
 	}
 
-	private function schedule($type, $time, &$data)
+	private function schedule($type, $time, $data)
 	{
 		return $this->insert('scheduled_posts', array(
 			'type' => $type,
@@ -170,7 +170,7 @@ class publish_class extends AWS_MODEL
 	}
 
 
-	private function real_publish_question(&$data, $view_count = 0)
+	private function real_publish_question($data, $view_count = 0)
 	{
 		$now = fake_time();
 
@@ -211,7 +211,7 @@ class publish_class extends AWS_MODEL
 		return $item_id;
 	}
 
-	private function real_publish_article(&$data, $view_count = 0)
+	private function real_publish_article($data, $view_count = 0)
 	{
 		$now = fake_time();
 
@@ -247,7 +247,7 @@ class publish_class extends AWS_MODEL
 		return $item_id;
 	}
 
-	private function real_publish_video(&$data, $view_count = 0)
+	private function real_publish_video($data, $view_count = 0)
 	{
 		$now = fake_time();
 
@@ -286,7 +286,7 @@ class publish_class extends AWS_MODEL
 	}
 
 
-	private function real_publish_answer(&$data)
+	private function real_publish_answer($data)
 	{
 		if (!$parent_info = $this->model('content')->get_thread_info_by_id('question', $data['parent_id']))
 		{
@@ -342,7 +342,7 @@ class publish_class extends AWS_MODEL
 		return $item_id;
 	}
 
-	private function real_publish_article_comment(&$data)
+	private function real_publish_article_comment($data)
 	{
 		if (!$parent_info = $this->model('content')->get_thread_info_by_id('article', $data['parent_id']))
 		{
@@ -396,7 +396,7 @@ class publish_class extends AWS_MODEL
 		return $item_id;
 	}
 
-	private function real_publish_video_comment(&$data)
+	private function real_publish_video_comment($data)
 	{
 		if (!$parent_info = $this->model('content')->get_thread_info_by_id('video', $data['parent_id']))
 		{
@@ -451,7 +451,7 @@ class publish_class extends AWS_MODEL
 
 
 
-	private function real_publish_question_discussion(&$data)
+	private function real_publish_question_discussion($data)
 	{
 		if (!$thread_info = $this->model('content')->get_thread_info_by_id('question', $data['parent_id']))
 		{
@@ -501,7 +501,7 @@ class publish_class extends AWS_MODEL
 	}
 
 
-	private function real_publish_answer_discussion(&$data)
+	private function real_publish_answer_discussion($data)
 	{
 		if (!$reply_info = $this->model('content')->get_reply_info_by_id('answer', $data['parent_id']))
 		{

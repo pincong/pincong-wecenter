@@ -27,7 +27,7 @@ class ajax extends AWS_CONTROLLER
 		HTTP::no_cache_header();
 	}
 
-	private function validate_user_pm_settings(&$recipient_user, $sender_uid)
+	private function validate_user_pm_settings($recipient_user, $sender_uid)
 	{
 		$inbox_recv = $recipient_user['inbox_recv'];
 		if ($inbox_recv != 1 AND $inbox_recv != 2 AND $inbox_recv != 3)

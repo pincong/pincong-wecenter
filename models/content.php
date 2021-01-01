@@ -27,7 +27,7 @@ class content_class extends AWS_MODEL
 		return $this->cached_contents[$type . '_' . $item_id];
 	}
 
-	private function cache_content_info($type, $item_id, &$content_info)
+	private function cache_content_info($type, $item_id, $content_info)
 	{
 		$this->cached_contents[$type . '_' . $item_id] = $content_info;
 	}

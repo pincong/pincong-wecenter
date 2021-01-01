@@ -96,8 +96,8 @@ class FORMAT
 		return '<a href="url/link/' . safe_base64_encode(htmlspecialchars_decode($orig_url)) . '" title="' . $url . '" rel="nofollow noreferrer noopener" target="_blank">' . $title . '</a>';
 	}
 
-	// 注意是引用
-	public static function &text(&$text)
+
+	public static function text($text)
 	{
 		if (!$text)
 		{
@@ -136,16 +136,16 @@ class FORMAT
 		return $text;
 	}
 
-	// 注意是引用
-	public static function &message(&$text)
+
+	public static function message($text)
 	{
 		$text = self::text($text);
 
 		return nl2br($text);
 	}
 
-	// 注意是引用
-	public static function &hyperlink(&$text)
+
+	public static function hyperlink($text)
 	{
 		$text = self::text($text);
 
@@ -163,8 +163,8 @@ class FORMAT
 		return self::parse_link($matches[1]);
 	}
 
-	// 注意是引用
-	public static function &bbcode(&$text)
+
+	public static function bbcode($text)
 	{
 		$text = self::text($text);
 

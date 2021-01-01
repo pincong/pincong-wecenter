@@ -23,7 +23,7 @@
  */
 
 // 防止重复提交
-function check_repeat_submission($uid, &$text)
+function check_repeat_submission($uid, $text)
 {
 	$key = 'repeat_submission_digest_' . intval($uid);
 	if ($digest = AWS_APP::cache()->get($key))
@@ -36,7 +36,7 @@ function check_repeat_submission($uid, &$text)
 	return true;
 }
 
-function set_repeat_submission_digest($uid, &$text)
+function set_repeat_submission_digest($uid, $text)
 {
 	$key = 'repeat_submission_digest_' . intval($uid);
 	AWS_APP::cache()->set($key, md5($text), 86400);
@@ -125,7 +125,7 @@ function get_user_group_name_flagged($flagged)
 	return $name;
 }
 
-function can_edit_post($post_uid, &$user_info)
+function can_edit_post($post_uid, $user_info)
 {
 	if (!$user_info OR !$user_info['uid'])
 	{
@@ -163,7 +163,7 @@ function can_edit_post($post_uid, &$user_info)
 	return false;
 }
 
-function &get_anonymous_user_info(&$user_info)
+function get_anonymous_user_info($user_info)
 {
 	static $anonymous_user;
 	if (!isset($anonymous_user))
@@ -175,7 +175,7 @@ function &get_anonymous_user_info(&$user_info)
 }
 
 // 获取主题图片指定尺寸的完整url地址
-function get_topic_pic_url(&$topic_info, $size = 'min')
+function get_topic_pic_url($topic_info, $size = 'min')
 {
 	$all_size = array('min', 'mid', 'max');
 	$size = in_array($size, $all_size) ? $size : $all_size[0];

@@ -10,7 +10,7 @@ class Services_RemoteStorage
 	}
 
 	// 存放/替换
-	public static function put($filename, &$content)
+	public static function put($filename, $content)
 	{
 		return self::request('PUT', $filename, $content);
 	}
@@ -29,7 +29,7 @@ class Services_RemoteStorage
 	}
 
 
-	private static function request($method, &$filename, &$content)
+	private static function request($method, $filename, $content)
 	{
 		$url = self::get_request_url($filename);
 
@@ -66,7 +66,7 @@ class Services_RemoteStorage
 	}
 
 
-	private static function get_request_url(&$filename)
+	private static function get_request_url($filename)
 	{
 		return str_replace('{$filename}', urlencode($filename), G_REMOTE_STORAGE_REQUEST_URL);
 	}

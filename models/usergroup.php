@@ -299,7 +299,7 @@ class usergroup_class extends AWS_MODEL
 	}
 
 	// 得到声望组或特殊组的名字, 不包括系统组
-	public function get_user_group_name_by_user_info(&$user_info)
+	public function get_user_group_name_by_user_info($user_info)
 	{
 		if ($all_groups = $this->get_all_groups())
 		{
@@ -314,7 +314,7 @@ class usergroup_class extends AWS_MODEL
 		return $this->get_group_name_by_reputation($user_info['reputation']);
 	}
 
-	public function get_user_group_by_user_info(&$user_info)
+	public function get_user_group_by_user_info($user_info)
 	{
 		// 如果用户被标记（'flagged'），用户组就等于'flagged'值
 		$group_id = $this->get_group_id_by_value_flagged($user_info['flagged']);

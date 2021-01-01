@@ -14,7 +14,7 @@
 
 class CF
 {
-	private static function &txt_deleted()
+	private static function txt_deleted()
 	{
 		static $text;
 		if (!isset($text))
@@ -23,7 +23,7 @@ class CF
 		}
 		return $text;
 	}
-	private static function &txt_hidden()
+	private static function txt_hidden()
 	{
 		static $text;
 		if (!isset($text))
@@ -33,7 +33,7 @@ class CF
 		return $text;
 	}
 
-	private static function &kb_tips()
+	private static function kb_tips()
 	{
 		static $text;
 		if (!isset($text))
@@ -51,7 +51,7 @@ class CF
 		return $text;
 	}
 
-	private static function &get_kb_item($id)
+	private static function get_kb_item($id)
 	{
 		static $cache;
 
@@ -67,7 +67,7 @@ class CF
 	}
 
 	// 获得知识库 id (替换原内容)
-	private static function get_kb_id(&$user_info, &$key)
+	private static function get_kb_id($user_info, $key)
 	{
 		if ($user_info['forbidden'] != 3)
 		{
@@ -92,7 +92,7 @@ class CF
 		return $kb_id;
 	}
 
-	private static function &get_kb(&$user_info, &$key)
+	private static function get_kb($user_info, $key)
 	{
 		if ($id = self::get_kb_id($user_info, $key))
 		{
@@ -101,7 +101,7 @@ class CF
 	}
 
 	// 标题 (raw text)
-	public static function &page_title(&$user_info, $key, &$string)
+	public static function page_title($user_info, $key, $string)
 	{
 		if ($user_info['forbidden'] == 2)
 		{
@@ -116,7 +116,7 @@ class CF
 	}
 
 	// 标题
-	public static function &title(&$user_info, $key, &$string)
+	public static function title($user_info, $key, $string)
 	{
 		if ($user_info['forbidden'] == 2)
 		{
@@ -135,7 +135,7 @@ class CF
 	}
 
 	// 正文 (不显示已删除) (解析bbcode)
-	public static function &body(&$user_info, $key, &$string)
+	public static function body($user_info, $key, $string)
 	{
 		if ($user_info['forbidden'] == 2)
 		{
@@ -150,7 +150,7 @@ class CF
 	}
 
 	// 正文 (不显示已删除) (解析链接)
-	public static function &body_simple(&$user_info, $key, &$string)
+	public static function body_simple($user_info, $key, $string)
 	{
 		if ($user_info['forbidden'] == 2)
 		{
@@ -165,7 +165,7 @@ class CF
 	}
 
 	// 回复 (解析bbcode)
-	public static function &reply(&$user_info, $key, &$string)
+	public static function reply($user_info, $key, $string)
 	{
 		if ($kb = self::get_kb($user_info, $key))
 		{
@@ -181,7 +181,7 @@ class CF
 	}
 
 	// 回复 (解析链接)
-	public static function &reply_simple(&$user_info, $key, &$string)
+	public static function reply_simple($user_info, $key, $string)
 	{
 		if ($kb = self::get_kb($user_info, $key))
 		{
@@ -196,7 +196,7 @@ class CF
 		return FORMAT::hyperlink($string);
 	}
 
-	public static function skip(&$user_info, $limited = true)
+	public static function skip($user_info, $limited = true)
 	{
 		if ($user_info['forbidden'] == 2)
 		{

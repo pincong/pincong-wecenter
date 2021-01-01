@@ -82,7 +82,7 @@ class category_class extends AWS_MODEL
 		return false;
 	}
 
-	public function check_change_category_permission($new_category_id, $old_category_id, &$user_info)
+	public function check_change_category_permission($new_category_id, $old_category_id, $user_info)
 	{
 		if (!is_array($user_info) OR !is_array($user_info['permission']))
 		{
@@ -103,7 +103,7 @@ class category_class extends AWS_MODEL
 		return true;
 	}
 
-	public function check_user_permission($category_id, &$user_info)
+	public function check_user_permission($category_id, $user_info)
 	{
 		if (!is_array($user_info) OR !is_array($user_info['permission']))
 		{
@@ -112,7 +112,7 @@ class category_class extends AWS_MODEL
 		return !$this->is_restricted($category_id, $user_info['permission']['restricted_categories']);
 	}
 
-	public function check_user_permission_reply($category_id, &$user_info)
+	public function check_user_permission_reply($category_id, $user_info)
 	{
 		if (!is_array($user_info) OR !is_array($user_info['permission']))
 		{
@@ -146,7 +146,7 @@ class category_class extends AWS_MODEL
 		}
 	}
 
-	public function get_allowed_categories(&$user_info)
+	public function get_allowed_categories($user_info)
 	{
 		if (!is_array($user_info) OR !is_array($user_info['permission']))
 		{
@@ -157,7 +157,7 @@ class category_class extends AWS_MODEL
 		return $category_list;
 	}
 
-	public function get_allowed_categories_change(&$user_info)
+	public function get_allowed_categories_change($user_info)
 	{
 		if (!is_array($user_info) OR !is_array($user_info['permission']))
 		{
