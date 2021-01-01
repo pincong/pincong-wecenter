@@ -466,42 +466,6 @@ function &truncate_text($string, $length, $ellipsis = '...')
 }
 
 
-function is_inside_url($url)
-{
-	if (!$url)
-	{
-		return false;
-	}
-
-	// url like '//www.google.com'
-	if (strpos($url, '//') === 0)
-	{
-		$url = 'https:' . $url;
-	}
-
-	// relative url
-	if (stripos($url, 'https://') !== 0 && stripos($url, 'http://') !== 0)
-	{
-		return true;
-	}
-
-	$host = $_SERVER['HTTP_HOST'];
-
-	// url like 'https://www.google.com'
-	if (strcasecmp($url, 'https://' . $host) === 0 || strcasecmp($url, 'http://' . $host) === 0)
-	{
-		return true;
-	}
-
-	// url like 'https://www.google.com/xxx'
-	if (stripos($url, 'https://' . $host . '/') === 0 || stripos($url, 'http://' . $host . '/') === 0)
-	{
-		return true;
-	}
-
-	return false;
-}
-
 function is_javascript($url)
 {
 	if (!$url)

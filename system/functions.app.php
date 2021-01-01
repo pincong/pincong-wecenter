@@ -511,3 +511,53 @@ function fake_time($timestamp = 0)
 	$max = intval(get_setting('random_seconds_max'));
 	return intval($timestamp / 86400) * 86400 + rand($min, $max);
 }
+
+
+function is_inside_url($url)
+{
+	if (!$url)
+	{
+		return false;
+	}
+
+	// url like '//www.google.com'
+	if (strpos($url, '//') === 0)
+	{
+		$url = 'https:' . $url;
+	}
+
+	// relative url
+	if (stripos($url, 'https://') !== 0 && stripos($url, 'http://') !== 0)
+	{
+		return true;
+	}
+
+	static $website_domains;
+	if (!isset($website_domains))
+	{
+		$website_domains = get_setting_array('website_domains', "\n");
+	}
+
+	foreach($website_domains AS $host)
+	{
+		if (!$host)
+		{
+			continue;
+		}
+
+		// url like 'https://www.google.com'
+		if (strcasecmp($url, 'https://' . $host) === 0 || strcasecmp($url, 'http://' . $host) === 0)
+		{
+			return true;
+		}
+
+		// url like 'https://www.google.com/xxx'
+		if (stripos($url, 'https://' . $host . '/') === 0 || stripos($url, 'http://' . $host . '/') === 0)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
