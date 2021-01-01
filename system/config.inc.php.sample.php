@@ -16,6 +16,12 @@ define('G_DEBUG', FALSE);
 
 define('G_ERROR_REPORTING', E_ALL & ~E_NOTICE & ~E_STRICT & ~E_WARNING);
 
+// 指定语言, 或根据 Accept-Language 自动选择
+//define('G_SYSTEM_LANG', 'zh-CN');
+
+// 预设语言
+//define('G_DEFAULT_LANG', 'zh-TW');
+
 // 定义 Cookies 作用域
 define('G_COOKIE_DOMAIN', '');
 

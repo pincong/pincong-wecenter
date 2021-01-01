@@ -72,9 +72,9 @@ class AWS_CONTROLLER
 			'css/link.css',
 		));
 
-		if (defined('SYSTEM_LANG'))
+		if ($lang = AWS_APP::lang()->get_language())
 		{
-			TPL::import_js(base_url() . '/language/' . SYSTEM_LANG . '.js');
+			TPL::import_js('language/' . $lang . '.js');
 		}
 
 		// 引入系统 JS 文件
@@ -171,9 +171,9 @@ class AWS_ADMIN_CONTROLLER extends AWS_CONTROLLER
 
 		TPL::import_clean();
 
-		if (defined('SYSTEM_LANG'))
+		if ($lang = AWS_APP::lang()->get_language())
 		{
-			TPL::import_js(base_url() . '/language/' . SYSTEM_LANG . '.js');
+			TPL::import_js('language/' . $lang . '.js');
 		}
 
 		TPL::import_js(array(

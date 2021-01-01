@@ -16,7 +16,6 @@
 
 define('IN_ANWSION', TRUE);
 define('ENVIRONMENT_PHP_VERSION', '7.0.0');
-//define('SYSTEM_LANG', 'en_US');
 
 if (version_compare(PHP_VERSION, ENVIRONMENT_PHP_VERSION, '<'))
 {

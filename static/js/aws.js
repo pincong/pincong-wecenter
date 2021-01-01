@@ -1619,12 +1619,9 @@ AWS.Init =
 
 function _t(string, replace)
 {
-	if (typeof (aws_lang) != 'undefined')
+	if (window.aws_lang && window.aws_lang[string])
 	{
-		if (typeof (aws_lang[string]) != 'undefined')
-		{
-			string = aws_lang[string];
-		}
+		string = aws_lang[string];
 	}
 
 	if (replace)

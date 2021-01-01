@@ -14,34 +14,98 @@
 
 class core_lang
 {
-	private $lang = array();
+	private $messages = [];
+	private $lang = null;
 
 	public function __construct()
 	{
-		if (!defined('SYSTEM_LANG'))
+		if (defined('G_SYSTEM_LANG') AND !!G_SYSTEM_LANG)
 		{
-			return false;
+			$this->init_language(G_SYSTEM_LANG);
+			return;
 		}
 
-		if (SYSTEM_LANG == '')
+		$preferred = $this->parse_accept_language();
+		foreach ($preferred as $lang)
 		{
-			return false;
+			if ($this->init_language($lang))
+			{
+				return;
+			}
 		}
 
-		$language_file = ROOT_PATH . 'language/' . SYSTEM_LANG . '.php';
-
-		if (file_exists($language_file))
+		if (defined('G_DEFAULT_LANG') AND !!G_DEFAULT_LANG)
 		{
-			require $language_file;
-		}
-
-		if (is_array($language))
-		{
-			$this->lang = $language;
+			$this->init_language(G_DEFAULT_LANG);
+			return;
 		}
 	}
 
-	public function translate($string, $replace = null, $display = false)
+	private function parse_accept_language($limit = 10)
+	{
+		$result = [];
+
+		$accept_language = $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? null;
+		if (!$accept_language)
+		{
+			return $result;
+		}
+
+		$i = 0;
+		$locales = explode(',', $accept_language, $limit);
+		foreach ($locales as $locale)
+		{
+			$i++;
+			if (!$locale)
+			{
+				continue;
+			}
+			if ($i == $limit)
+			{
+				$locale = explode(',', $locale, 2)[0]; // 丢弃超出 $limit
+			}
+			$locale = explode(';', $locale, 2)[0]; // 偷懒不处理 q=
+			$locale = trim($locale);
+			if (!$locale)
+			{
+				continue;
+			}
+			$result[] = $locale;
+		}
+
+		return $result;
+	}
+
+	private function init_language($lang)
+	{
+		if (!is_string($lang))
+		{
+			return false;
+		}
+
+		$language_file = ROOT_PATH . 'language/' . $lang . '.php';
+		if (!file_exists($language_file))
+		{
+			return false;
+		}
+
+		require $language_file;
+		if (!is_array($language))
+		{
+			return false;
+		}
+
+		$this->messages = $language;
+		$this->lang = $lang;
+		return true;
+	}
+
+	public function get_language()
+	{
+		return $this->lang;
+	}
+
+	public function translate($string, $replace = null)
 	{
 		$search = '%s';
 
@@ -55,19 +119,14 @@ class core_lang
 			};
 		}
 
-		if ($translate = $this->lang[trim($string)] ?? null)
+		if ($translate = $this->messages[trim($string)] ?? null)
 		{
 			if (isset($replace))
 			{
 				$translate = str_replace($search, $replace, $translate);
 			}
 
-			if (!$display)
-			{
-				return $translate;
-			}
-
-			echo $translate;
+			return $translate;
 		}
 		else
 		{
@@ -80,8 +139,9 @@ class core_lang
 		}
 	}
 
-	public function _t($string, $replace = null, $display = false)
+	public function _t($string, $replace = null)
 	{
-		return $this->translate($string, $replace, $display);
+		return $this->translate($string, $replace);
 	}
+
 }
