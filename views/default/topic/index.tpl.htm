@@ -22,18 +22,25 @@
 					<div class="aw-mod aw-topic-detail-title">
 						<div class="mod-body">
 							<img src="<?php echo get_topic_pic_url($this->topic_info, 'max'); ?>" alt="<?php echo FORMAT::text($this->topic_info['topic_title']); ?>" />
-							<h2 class="pull-left"><?php echo FORMAT::text($this->topic_info['topic_title']); ?> <?php if ($this->topic_info['topic_lock']) { ?><i class="aw-icon i-lock" title="<?php _e('已锁定'); ?>"></i><?php } ?></h2>
-							<div class="aw-topic-operate aw-small-text">
-								<?php if ($this->user_id) { ?>
-								<a href="javascript:;" onclick="AWS.User.follow($(this), 'topic', <?php echo $this->topic_info['topic_id']; ?>);" class="follow btn btn-normal btn-success<?php if ($this->topic_info['has_focus']) { ?> active<?php } ?>"><span><?php if ($this->topic_info['has_focus']) { ?><?php _e('取消关注'); ?><?php } else { ?><?php _e('关注'); ?><?php } ?></span> <em>|</em> <b><?php echo $this->topic_info['focus_count']; ?></b></a>
-								<?php } ?>
-							</div>
+							<?php if ($this->user_id) { ?>
+							<a class="pull-right aw-small-textfollow btn btn-normal btn-success<?php if ($this->topic_info['has_focus']) { ?> active<?php } ?>" href="javascript:;" onclick="AWS.User.follow($(this), 'topic', <?php echo $this->topic_info['topic_id']; ?>);"><span><?php if ($this->topic_info['has_focus']) { ?><?php _e('取消关注'); ?><?php } else { ?><?php _e('关注'); ?><?php } ?></span> <em>|</em> <b><?php echo $this->topic_info['focus_count']; ?></b></a>
+							<?php } ?>
+							<h2><?php echo FORMAT::text($this->topic_info['topic_title']); ?> <?php if ($this->topic_info['topic_lock']) { ?><i class="aw-icon i-lock" title="<?php _e('已锁定'); ?>"></i><?php } ?></h2>
+
+							<p>
+							<?php if ($this->topic_info['topic_description']) { ?>
+								<?php echo FORMAT::hyperlink($this->topic_info['topic_description']); ?>
+							<?php } ?>
+							<?php if ($this->topic_info['topic_lock'] == 0 AND $this->user_info['permission']['edit_topic']) { ?>
+								<a href="<?php echo url_rewrite(); ?>/topic/edit/<?php echo $this->topic_info['topic_id']; ?>" class="icon-inverse" class=><i class="icon icon-edit"></i><?php if (!$this->topic_info['topic_description']) { ?> <?php _e('添加描述'); ?><?php } ?></a>
+							<?php } ?>
+							</p>
 						</div>
 					</div>
 
 					<div class="aw-mod aw-topic-list-mod">
 						<div class="mod-body">
-							<div class="aw-common-list" id="c_all_list">
+							<div class="aw-common-list">
 								<?php echo $this->all_list_bit; ?>
 							</div>
 						</div>
@@ -45,20 +52,6 @@
 
 				<!-- 侧边栏 -->
 				<div class="col-sm-12 col-md-3 aw-side-bar">
-					<!-- 话题描述 -->
-					<div class="aw-mod aw-text-align-justify">
-						<div class="mod-head">
-							<h3><?php _e('话题描述'); ?></h3>
-						</div>
-						<div class="mod-body">
-							<?php if ($this->topic_info['topic_description']) { ?>
-							<p><?php echo FORMAT::hyperlink($this->topic_info['topic_description']); ?></p>
-							<?php } else if ($this->topic_info['topic_lock'] == 0 && $this->user_info['permission']['edit_topic']) { ?>
-							<a href="<?php echo url_rewrite(); ?>/topic/edit/<?php echo $this->topic_info['topic_id']; ?>" class="icon-inverse" class=><i class="icon icon-edit"></i> <?php _e('添加描述'); ?></a>
-							<?php } ?>
-						</div>
-					</div>
-					<!-- end 话题描述 -->
 
 					<?php TPL::include('topic/related_topics.tpl.htm'); ?>
 

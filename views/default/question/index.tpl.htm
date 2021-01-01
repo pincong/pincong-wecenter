@@ -309,7 +309,7 @@
 						<p align="center"><?php _e('要发言请先<a href="%s0">登录</a>或<a href="%s1">注册</a>', array(url_rewrite() . '/login/', url_rewrite(). '/register/')); ?></p>
 						<?php } else if ($this->user_answered) { ?>
 						<p align="center"><?php _e('一个问题只能回复一次'); ?></p>
-						<?php } else if ((S::get('answer_self_question') == 'N') && ($this->user_id == $this->question_info['uid'])) { ?>
+						<?php } else if ((S::get('answer_self_question') == 'N') AND ($this->user_id == $this->question_info['uid'])) { ?>
 						<p align="center"><?php _e('不能回复自己发布的问题, 你可以修改问题内容'); ?></p>
 						<?php } else { ?>
 						<form action="<?php echo url_rewrite(); ?>/publish/ajax/publish_answer/" onsubmit="return false;" method="post" id="answer_form" class="question_answer_form">
