@@ -411,7 +411,10 @@ class ajax extends AWS_CONTROLLER
 
 		if ($this->model('account')->update_user_password($_POST['password'], $this->user_id, $_POST['old_password'], $this->user_info['salt']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, 1, AWS_APP::lang()->_t('密码修改成功, 请牢记新密码')));
+			$this->model('account')->logout();
+			H::ajax_json_output(AWS_APP::RSM(array(
+				'url' => get_js_url('/account/password_updated/')
+			), 1, null));
 		}
 		else
 		{
