@@ -84,6 +84,7 @@ class main extends AWS_CONTROLLER
 		if ($_GET['sort_key'] == 'agree_count')
 		{
 			$order_by[] = "reputation " . $sort;
+			$order_by[] = "agree_count " . $sort;
 
 			$url_param[] = 'sort_key-agree_count';
 		}

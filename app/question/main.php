@@ -92,6 +92,7 @@ class main extends AWS_CONTROLLER
 		else
 		{
 			$order_by[] = "reputation " . $sort;
+			$order_by[] = "agree_count " . $sort;
 		}
 
 		$reply_count = $question_info['answer_count'];
