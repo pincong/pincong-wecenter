@@ -592,9 +592,12 @@ class question_class extends AWS_MODEL
 		return $comment_id;
 	}
 
-	public function get_question_discussions($question_id)
+	public function get_question_discussions($thread_ids)
 	{
-		return $this->fetch_all('question_discussion', 'question_id = ' . intval($question_id), "id ASC");
+		array_walk_recursive($thread_ids, 'intval_string');
+		$where = 'question_id IN (' . implode(',', $thread_ids) . ')';
+
+		return $this->fetch_all('question_discussion', $where, "id ASC");
 	}
 
 	public function get_question_discussion_by_id($comment_id)

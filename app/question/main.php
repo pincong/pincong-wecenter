@@ -100,13 +100,28 @@ class main extends AWS_CONTROLLER
 			$order_by .= "reputation " . $sort . ", agree_count " . $sort . ", id ASC";
 		}
 
+		$reply_count = $question_info['answer_count'];
+		$discussion_count = $question_info['comment_count'];
+		// 判断是否已合并
+		if ($redirect_posts = $this->model('content')->get_redirect_posts('question', $question_info['id']))
+		{
+			foreach ($redirect_posts AS $key => $val)
+			{
+				$post_ids[] = $val['id'];
+				// 修复合并后回复数
+				$reply_count += $val['answer_count'];
+				$discussion_count += $val['comment_count'];
+			}
+		}
+		$post_ids[] = $question_info['id'];
+
 		if ($item_id)
 		{
 			$answer_list[] = $reply;
 		}
 		else
 		{
-			$answer_list = $this->model('answer')->get_answers($question_info['id'], $_GET['page'], $replies_per_page, $order_by);
+			$answer_list = $this->model('answer')->get_answers($post_ids, $_GET['page'], $replies_per_page, $order_by);
 		}
 
 		if (! is_array($answer_list))
@@ -152,7 +167,8 @@ class main extends AWS_CONTROLLER
 		}
 
 		TPL::assign('answers', $answers);
-		TPL::assign('answer_count', $question_info['answer_count']);
+		TPL::assign('answer_count', $reply_count);
+		TPL::assign('discussion_count', $discussion_count);
 
 
 		if ($this->user_id)
@@ -193,7 +209,7 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
 			'base_url' => get_js_url('/question/') . implode('__', $url_param),
-			'total_rows' => $question_info['answer_count'],
+			'total_rows' => $reply_count,
 			'per_page' => $replies_per_page
 		))->create_links());
 

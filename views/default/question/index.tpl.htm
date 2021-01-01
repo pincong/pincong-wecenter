@@ -136,7 +136,7 @@
 
 								<a href="vote/log/item_type-question__item_id-<?php echo $this->question_info['id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
 
-								<a data-id="<?php echo $this->question_info['id']; ?>" data-type="question" class="aw-add-comment aw-small-text <?php if ($this->question_info['comment_count'] > 0) {?>active<?php }?>" data-comment-count="<?php echo $this->question_info['comment_count']; ?>"><i class="icon icon-comment"></i> <?php if ($this->question_info['comment_count']) { ?><?php _e('%s 条讨论', $this->question_info['comment_count']); ?><?php } else { ?><?php _e('添加讨论'); ?><?php } ?></a>
+								<a data-id="<?php echo $this->question_info['id']; ?>" data-type="question" class="aw-add-comment aw-small-text <?php if ($this->discussion_count > 0) {?>active<?php }?>" data-comment-count="<?php echo $this->discussion_count; ?>"><i class="icon icon-comment"></i> <?php if ($this->discussion_count) { ?><?php _e('%s 条讨论', $this->discussion_count); ?><?php } else { ?><?php _e('添加讨论'); ?><?php } ?></a>
 
 								<?php if ($this->user_id) { ?>
 								<a class="aw-small-text aw-invite-replay"><i class="icon icon-invite"></i> <?php _e('邀请'); ?> <?php if (sizeof($this->invite_users) > 0){ ?><em class="badge badge-info"><?php echo count($this->invite_users); ?></em><?php } ?></a>

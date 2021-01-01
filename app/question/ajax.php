@@ -322,7 +322,17 @@ class ajax extends AWS_CONTROLLER
 
 	public function get_question_discussions_action()
 	{
-		$comments = $this->model('question')->get_question_discussions($_GET['question_id']);
+		// 判断是否已合并
+		if ($redirect_posts = $this->model('content')->get_redirect_posts('question', $_GET['question_id']))
+		{
+			foreach ($redirect_posts AS $key => $val)
+			{
+				$post_ids[] = $val['id'];
+			}
+		}
+		$post_ids[] = $_GET['question_id'];
+
+		$comments = $this->model('question')->get_question_discussions($post_ids);
 
 		$user_infos = $this->model('account')->get_user_info_by_uids(fetch_array_value($comments, 'uid'));
 

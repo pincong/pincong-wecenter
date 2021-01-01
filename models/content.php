@@ -186,6 +186,16 @@ class content_class extends AWS_MODEL
 		return false;
 	}
 
+	public function get_redirect_posts($type, $redirect_id)
+	{
+		$redirect_id = intval($redirect_id);
+		if (!$redirect_id OR !$this->check_thread_type($type))
+		{
+			return false;
+		}
+		return $this->fetch_all($type, 'redirect_id = ' . ($redirect_id));
+	}
+
 	/**
 	 * 记录日志
 	 * @param string $thread_type question|article|video

@@ -231,9 +231,12 @@ class article_class extends AWS_MODEL
 		return $article_comments;
 	}
 
-	public function get_comments($article_id, $page, $per_page, $order = 'id ASC')
+	public function get_comments($thread_ids, $page, $per_page, $order = 'id ASC')
 	{
-		if ($comments = $this->fetch_page('article_comment', 'article_id = ' . intval($article_id), $order, $page, $per_page))
+		array_walk_recursive($thread_ids, 'intval_string');
+		$where = 'article_id IN (' . implode(',', $thread_ids) . ')';
+
+		if ($comments = $this->fetch_page('article_comment', $where, $order, $page, $per_page))
 		{
 			foreach ($comments AS $key => $val)
 			{

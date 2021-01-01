@@ -247,9 +247,12 @@ class video_class extends AWS_MODEL
 		return $video_comments;
 	}
 
-	public function get_comments($video_id, $page, $per_page, $order = 'id ASC')
+	public function get_comments($thread_ids, $page, $per_page, $order = 'id ASC')
 	{
-		if ($comments = $this->fetch_page('video_comment', 'video_id = ' . intval($video_id), $order, $page, $per_page))
+		array_walk_recursive($thread_ids, 'intval_string');
+		$where = 'video_id IN (' . implode(',', $thread_ids) . ')';
+
+		if ($comments = $this->fetch_page('video_comment', $where, $order, $page, $per_page))
 		{
 			foreach ($comments AS $key => $val)
 			{

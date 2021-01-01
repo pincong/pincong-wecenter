@@ -105,6 +105,19 @@ class main extends AWS_CONTROLLER
 
 		$order_by .= "id ASC";
 
+		$reply_count = $video_info['comment_count'];
+		// 判断是否已合并
+		if ($redirect_posts = $this->model('content')->get_redirect_posts('video', $video_info['id']))
+		{
+			foreach ($redirect_posts AS $key => $val)
+			{
+				$post_ids[] = $val['id'];
+				// 修复合并后回复数
+				$reply_count += $val['comment_count'];
+			}
+		}
+		$post_ids[] = $video_info['id'];
+
 		if ($item_id)
 		{
 			// 显示单个评论
@@ -112,7 +125,7 @@ class main extends AWS_CONTROLLER
 		}
 		else
 		{
-			$comments = $this->model('video')->get_comments($video_info['id'], $_GET['page'], $replies_per_page, $order_by);
+			$comments = $this->model('video')->get_comments($post_ids, $_GET['page'], $replies_per_page, $order_by);
 		}
 
 		if ($comments AND $this->user_id)
@@ -139,11 +152,11 @@ class main extends AWS_CONTROLLER
 		$this->model('content')->update_view_count('video', $video_info['id'], session_id());
 
 		TPL::assign('comments', $comments);
-		TPL::assign('comment_count', $video_info['comment_count']);
+		TPL::assign('comment_count', $reply_count);
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
 			'base_url' => get_js_url('/video/') . implode('__', $url_param),
-			'total_rows' => $video_info['comment_count'],
+			'total_rows' => $reply_count,
 			'per_page' => $replies_per_page
 		))->create_links());
 

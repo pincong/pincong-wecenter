@@ -74,9 +74,12 @@ class answer_class extends AWS_MODEL
 		return $this->count('answer', "question_id = " . intval($question_id) . $where);
 	}
 
-	public function get_answers($question_id, $page, $per_page, $order = 'id ASC')
+	public function get_answers($thread_ids, $page, $per_page, $order = 'id ASC')
 	{
-		if ($answer_list = $this->fetch_page('answer', 'question_id = ' . intval($question_id), $order, $page, $per_page))
+		array_walk_recursive($thread_ids, 'intval_string');
+		$where = 'question_id IN (' . implode(',', $thread_ids) . ')';
+
+		if ($answer_list = $this->fetch_page('answer', $where, $order, $page, $per_page))
 		{
 			foreach($answer_list as $key => $val)
 			{
