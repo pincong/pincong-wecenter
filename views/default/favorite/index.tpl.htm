@@ -7,7 +7,7 @@
 				<div class="col-sm-12 col-md-9 aw-main-content">
 					<div class="mod mod-favorite">
 						<div class="mod-head common-head">
-							<h2><?php _e('我的收藏'); ?> <span class="badge"><?php echo count($this->list); ?></span></h2>
+							<h2><?php echo _t('我的收藏'); ?> <span class="badge"><?php echo count($this->list); ?></span></h2>
 						</div>
 						<div class="mod-body">
 
@@ -26,7 +26,7 @@
 										<?php if ($val['type'] == 'answer') { ?>
 										<!-- 回答 -->
 										<h4>
-											<a href="<?php echo url_rewrite(); ?>/question/id-<?php echo $val['item']['question_info']['id']; ?>__item_id-<?php echo $val['item']['id']; ?>"><?php if (!$val['item']['question_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['item']['question_info']['title'], true); ?><?php } ?></a>
+											<a href="<?php echo url_rewrite(); ?>/question/id-<?php echo $val['item']['question_info']['id']; ?>__item_id-<?php echo $val['item']['id']; ?>"><?php if (!$val['item']['question_info']['title']) { ?><s class="aw-deleted"><?php echo _t('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['item']['question_info']['title'], true); ?><?php } ?></a>
 										</h4>
 										<div class="content">
 											<div id="detail_<?php echo $val['item_id']; ?>">
@@ -37,26 +37,26 @@
 										<?php } else if ($val['type'] == 'question') { ?>
 										<!-- 问题 -->
 										<h4>
-											<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['item']['id']; ?>"><?php if (!$val['item']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['item']['title'], true); ?><?php } ?></a>
+											<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['item']['id']; ?>"><?php if (!$val['item']['title']) { ?><s class="aw-deleted"><?php echo _t('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['item']['title'], true); ?><?php } ?></a>
 										</h4>
 										<!-- end 问题 -->
 										<?php } else if ($val['type'] == 'article') { ?>
 										<!-- 文章 -->
 										<h4>
-											<a href="<?php echo url_rewrite(); ?>/article/<?php echo $val['item']['id']; ?>"><?php if (!$val['item']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['item']['title'], true); ?><?php } ?></a>
+											<a href="<?php echo url_rewrite(); ?>/article/<?php echo $val['item']['id']; ?>"><?php if (!$val['item']['title']) { ?><s class="aw-deleted"><?php echo _t('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['item']['title'], true); ?><?php } ?></a>
 										</h4>
 										<!-- end 文章 -->
 										<?php } else if ($val['type'] == 'video') { ?>
 										<!-- 影片 -->
 										<h4>
-											<a href="<?php echo url_rewrite(); ?>/video/<?php echo $val['item']['id']; ?>"><?php if (!$val['item']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['item']['title'], true); ?><?php } ?></a>
+											<a href="<?php echo url_rewrite(); ?>/video/<?php echo $val['item']['id']; ?>"><?php if (!$val['item']['title']) { ?><s class="aw-deleted"><?php echo _t('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['item']['title'], true); ?><?php } ?></a>
 										</h4>
 										<!-- end 影片 -->
 										<?php } ?>
 
 									</div>
 									<div class="mod-footer">
-										<a class="pull-right aw-small-text" onclick="AWS.ajax_request(G_BASE_URL + '/favorite/ajax/remove_favorite_item/', 'item_type=<?php echo $val['type']; ?>&item_id=<?php echo $val['item_id']; ?>');"><?php _e('取消收藏'); ?></a>
+										<a class="pull-right aw-small-text" onclick="AWS.ajax_request(G_BASE_URL + '/favorite/ajax/remove_favorite_item/', 'item_type=<?php echo $val['type']; ?>&item_id=<?php echo $val['item_id']; ?>');"><?php echo _t('取消收藏'); ?></a>
 									</div>
 								</div>
 								<?php } ?>

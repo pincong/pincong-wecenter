@@ -7,11 +7,11 @@
 
 			<div class="aw-mod">
 				<div class="mod-head">
-					<h3><?php _e('私信设置'); ?></h3>
+					<h3><?php echo _t('私信设置'); ?></h3>
 				</div>
 				<div class="mod-body">
 					<dl>
-						<dt><?php _e('谁可以给我发私信'); ?> :</dt>
+						<dt><?php echo _t('谁可以给我发私信'); ?> :</dt>
 						<dd>
 <?php
 	$inbox_recv = $this->user_info['inbox_recv'];
@@ -24,10 +24,10 @@
 		}
 	}
 ?>
-							<label><input type="radio" value="0" name="inbox_recv" /> <?php _e('默认'); ?></label>
-							<label><input type="radio" value="3" name="inbox_recv"<?php if ($inbox_recv == 3) { ?> checked="checked"<?php } ?> /> <?php _e('所有人'); ?></label>
-							<label><input type="radio" value="1" name="inbox_recv"<?php if ($inbox_recv == 1) { ?> checked="checked"<?php } ?> /> <?php _e('我关注的人'); ?></label>
-							<label><input type="radio" value="2" name="inbox_recv"<?php if ($inbox_recv == 2) { ?> checked="checked"<?php } ?> /> <?php _e('拒绝任何人'); ?></label>
+							<label><input type="radio" value="0" name="inbox_recv" /> <?php echo _t('默认'); ?></label>
+							<label><input type="radio" value="3" name="inbox_recv"<?php if ($inbox_recv == 3) { ?> checked="checked"<?php } ?> /> <?php echo _t('所有人'); ?></label>
+							<label><input type="radio" value="1" name="inbox_recv"<?php if ($inbox_recv == 1) { ?> checked="checked"<?php } ?> /> <?php echo _t('我关注的人'); ?></label>
+							<label><input type="radio" value="2" name="inbox_recv"<?php if ($inbox_recv == 2) { ?> checked="checked"<?php } ?> /> <?php echo _t('拒绝任何人'); ?></label>
 						</dd>
 					</dl>
 				</div>
@@ -35,11 +35,11 @@
 
 			<div class="aw-mod">
 				<div class="mod-head">
-					<h3><?php _e('通知设置'); ?></h3>
+					<h3><?php echo _t('通知设置'); ?></h3>
 				</div>
 				<div class="mod-body">
 					<dl>
-						<dt><?php _e('什么情况下给我发送通知'); ?> :</dt>
+						<dt><?php echo _t('什么情况下给我发送通知'); ?> :</dt>
 						<dd>
 							<?php foreach($this->notify_actions as $key => $val) { ?>
 							<span>
@@ -55,7 +55,7 @@
 		</form>
 	</div>
 	<div class="mod-footer clearfix">
-		<a href="javascript:;" class="btn btn-large btn-success pull-right" onclick="AWS.submit_form($('#setting_form'), $(this));"><?php _e('保存'); ?></a>
+		<a href="javascript:;" class="btn btn-large btn-success pull-right" onclick="AWS.submit_form($('#setting_form'), $(this));"><?php echo _t('保存'); ?></a>
 	</div>
 </div>
 

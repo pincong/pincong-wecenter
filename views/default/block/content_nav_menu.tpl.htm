@@ -5,7 +5,7 @@
 
 		<ul class="list">
 			<li class="<?php if (!$_GET['category']) { ?>active<?php } ?>">
-				<a href="<?php echo $this->content_nav_menu['base']['link']; ?>"><?php _e('全部'); ?></a>
+				<a href="<?php echo $this->content_nav_menu['base']['link']; ?>"><?php echo _t('全部'); ?></a>
 			</li>
 			<?php foreach ($this->content_nav_menu as $key => $val) { ?>
 

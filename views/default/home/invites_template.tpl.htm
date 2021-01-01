@@ -2,13 +2,13 @@
 <?php foreach($this->list as $key => $val) { ?>
 <div class="aw-item">
 	<h4>
-		<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['question_info']['id']; ?>"><?php if (!$val['question_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['question_info']['title'], true); ?><?php } ?></a>
+		<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['question_info']['id']; ?>"><?php if (!$val['question_info']['title']) { ?><s class="aw-deleted"><?php echo _t('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['question_info']['title'], true); ?><?php } ?></a>
 	</h4>
 	<p class="aw-small-text">
 		<span class="pull-right">
-			<a class="aw-small-text" onclick="AWS.User.question_invite_delete($(this).parents('div.aw-item'), <?php echo $val['question_invite_id']; ?>)"><?php _e('忽略'); ?></a>
+			<a class="aw-small-text" onclick="AWS.User.question_invite_delete($(this).parents('div.aw-item'), <?php echo $val['question_invite_id']; ?>)"><?php echo _t('忽略'); ?></a>
 		</span>
-		<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>" data-id="<?php echo $val['user_info']['uid']; ?>"><?php echo UF::name($val['user_info']); ?></a> <?php _e('邀请你回复这个问题'); ?>
+		<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>" data-id="<?php echo $val['user_info']['uid']; ?>"><?php echo UF::name($val['user_info']); ?></a> <?php echo _t('邀请你回复这个问题'); ?>
 	</p>
 </div>
 <?php } ?>

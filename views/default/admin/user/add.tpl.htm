@@ -6,11 +6,11 @@
 		<div class="mod-head">
 			<h3>
 				<ul class="nav nav-tabs">
-					<li><a href="<?php echo url_rewrite(); ?>/admin/user/list/"><?php _e('会员列表'); ?></a></li>
-					<li><a href="<?php echo url_rewrite(); ?>/admin/user/list/type-forbidden"><?php _e('封禁用户'); ?></a></li>
-					<li><a href="<?php echo url_rewrite(); ?>/admin/user/list/type-flagged"><?php _e('标记用户'); ?></a></li>
-					<li><a href="#search" data-toggle="tab"><?php _e('搜索'); ?></a></li>
-					<li class="active"><a href="#add" data-toggle="tab"><?php _e('添加用户'); ?></a></li>
+					<li><a href="<?php echo url_rewrite(); ?>/admin/user/list/"><?php echo _t('会员列表'); ?></a></li>
+					<li><a href="<?php echo url_rewrite(); ?>/admin/user/list/type-forbidden"><?php echo _t('封禁用户'); ?></a></li>
+					<li><a href="<?php echo url_rewrite(); ?>/admin/user/list/type-flagged"><?php echo _t('标记用户'); ?></a></li>
+					<li><a href="#search" data-toggle="tab"><?php echo _t('搜索'); ?></a></li>
+					<li class="active"><a href="#add" data-toggle="tab"><?php echo _t('添加用户'); ?></a></li>
 				</ul>
 			</h3>
 		</div>
@@ -23,7 +23,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('用户名'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('用户名'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input class="form-control" name="username" type="text" value="" autocomplete="username" />
 							</div>
@@ -34,7 +34,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('密码'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('密码'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input class="form-control" name="password" type="password" value="" autocomplete="new-password" />
 								<input name="scrambled_password" type="hidden" value="" />
@@ -49,7 +49,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('用户组'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('用户组'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<select class="form-control" name="group_id">
 								<?php foreach ($this->system_group AS $group) { ?>
@@ -64,7 +64,7 @@
 				<tfoot>
 				<tr>
 					<td>
-						<input type="submit" value="<?php _e('添加用户'); ?>" class="btn btn-primary center-block" />
+						<input type="submit" value="<?php echo _t('添加用户'); ?>" class="btn btn-primary center-block" />
 					</td>
 				</tr>
 				</tfoot>
@@ -79,7 +79,7 @@
 					<input name="action" type="hidden" value="search" />
 
 					<div class="form-group">
-						<label class="col-sm-2 col-xs-3 control-label"><?php _e('用户名'); ?>:</label>
+						<label class="col-sm-2 col-xs-3 control-label"><?php echo _t('用户名'); ?>:</label>
 
 						<div class="col-sm-5 col-xs-8">
 							<input class="form-control" type="text" value="<?php echo htmlspecialchars($_GET['user_name']); ?>" name="user_name" />
@@ -87,7 +87,7 @@
 					</div>
 
 					<div class="form-group">
-						<label class="col-sm-2 col-xs-3 control-label"><?php _e('用户组'); ?>:</label>
+						<label class="col-sm-2 col-xs-3 control-label"><?php echo _t('用户组'); ?>:</label>
 
 						<div class="col-sm-5 col-xs-8">
 							<select name="group_id" class="form-control">
@@ -100,7 +100,7 @@
 					</div>
 
 					<div class="form-group">
-						<label class="col-sm-2 col-xs-3 control-label"><?php _e('代币'); ?>:</label>
+						<label class="col-sm-2 col-xs-3 control-label"><?php echo _t('代币'); ?>:</label>
 
 						<div class="col-sm-6 col-xs-9">
 							<div class="row">
@@ -118,7 +118,7 @@
 					</div>
 
 					<div class="form-group">
-						<label class="col-sm-2 col-xs-3 control-label"><?php _e('声望'); ?>:</label>
+						<label class="col-sm-2 col-xs-3 control-label"><?php echo _t('声望'); ?>:</label>
 
 						<div class="col-sm-6 col-xs-9">
 							<div class="row">
@@ -137,7 +137,7 @@
 
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-5 col-xs-8">
-							<button type="button" onclick="AWS.ajax_post($('#search_form'));" class="btn btn-primary"><?php _e('搜索'); ?></button>
+							<button type="button" onclick="AWS.ajax_post($('#search_form'));" class="btn btn-primary"><?php echo _t('搜索'); ?></button>
 						</div>
 					</div>
 				</form>
@@ -177,7 +177,7 @@ $(document).ready(function () {
 			AWS.ajax_post(form);
 		}).catch(function(error) {
 			console.log(error);
-			alert("<?php _e('发生错误'); ?>");
+			alert("<?php echo _t('发生错误'); ?>");
 		});
 
 		return false;

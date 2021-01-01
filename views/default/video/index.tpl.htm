@@ -6,7 +6,7 @@
 		<div class="row">
 			<div class="col-sm-12 aw-global-tips">
 				<div class="alert alert-warning fade in">
-					<a href="<?php echo url_rewrite(); ?>/video/<?php echo $this->redirected_from['id']; ?>"><?php echo CF::title($this->redirected_from); ?></a> <?php _e('已与本影片合并'); ?>
+					<a href="<?php echo url_rewrite(); ?>/video/<?php echo $this->redirected_from['id']; ?>"><?php echo CF::title($this->redirected_from); ?></a> <?php echo _t('已与本影片合并'); ?>
 				</div>
 			</div>
 		</div>
@@ -17,7 +17,7 @@
 		<div class="row">
 			<div class="col-sm-12 aw-global-tips">
 				<div class="alert alert-danger fade in">
-					<?php _e('本影片已被合并到'); ?>: <a href="<?php echo url_rewrite(); ?>/video/id-<?php echo $this->redirect_info['id']; ?>__rf-<?php echo $this->video_info['id']; ?>"><?php echo CF::title($this->redirect_info); ?></a>
+					<?php echo _t('本影片已被合并到'); ?>: <a href="<?php echo url_rewrite(); ?>/video/id-<?php echo $this->redirect_info['id']; ?>__rf-<?php echo $this->video_info['id']; ?>"><?php echo CF::title($this->redirect_info); ?></a>
 				</div>
 			</div>
 		</div>
@@ -38,12 +38,12 @@
 							<?php } ?>
 						<?php } else if (!$this->user_id) { ?>
 							<span class="topic-tag">
-								<a href="<?php echo url_rewrite(); ?>/login/"><span class="icon-inverse"><i class="icon icon-edit"></i> <?php _e('添加话题'); ?></span></a>
+								<a href="<?php echo url_rewrite(); ?>/login/"><span class="icon-inverse"><i class="icon icon-edit"></i> <?php echo _t('添加话题'); ?></span></a>
 							</span>
 						<?php } ?>
 
 						<?php if ($this->user_id AND ($this->user_info['permission']['edit_question_topic'] OR $this->user_id == $this->video_info['uid'])) { ?>
-							<span class="icon-inverse aw-edit-topic"><i class="icon icon-edit"></i> <?php if (!$this->topics) { ?><?php _e('添加话题'); ?><?php } ?></span>
+							<span class="icon-inverse aw-edit-topic"><i class="icon icon-edit"></i> <?php if (!$this->topics) { ?><?php echo _t('添加话题'); ?><?php } ?></span>
 						<?php } ?>
 
 							<div class="operate clearfix">
@@ -53,15 +53,15 @@
 									<div class="dropdown-menu aw-dropdown pull-right" role="menu" aria-labelledby="dropdownMenu">
 										<ul class="aw-dropdown-list">
 											<li>
-												<a href="<?php echo url_rewrite(); ?>/content/log/thread_type-video__thread_id-<?php echo $this->video_info['id']; ?>" rel="nofollow" target="_blank"><?php _e('修改记录'); ?></a>
+												<a href="<?php echo url_rewrite(); ?>/content/log/thread_type-video__thread_id-<?php echo $this->video_info['id']; ?>" rel="nofollow" target="_blank"><?php echo _t('修改记录'); ?></a>
 											</li>
 
 										<?php if ($this->user_info['permission']['lock_post']) { ?>
 											<li>
 												<?php if ($this->video_info['lock']) { ?>
-												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unlock/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>');"><?php _e('取消锁定'); ?></a>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unlock/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>');"><?php echo _t('取消锁定'); ?></a>
 												<?php } else { ?>
-												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/lock/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>');"><?php _e('锁定'); ?></a>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/lock/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>');"><?php echo _t('锁定'); ?></a>
 												<?php } ?>
 											</li>
 										<?php } ?>
@@ -69,33 +69,33 @@
 										<?php if ($this->user_info['permission']['redirect_post']) { ?>
 											<?php if ($this->video_info['redirect_id']) { ?>
 											<li>
-												<a href="javascript:;" onclick="AWS.prompt('<?php _e('请输入主题 ID'); ?>', '<?php echo $this->video_info['redirect_id']; ?>', function(text){AWS.ajax_request(G_BASE_URL + '/content/ajax/redirect/', 'redirect_id=' + encodeURIComponent(text) + '&item_type=video&item_id=<?php echo $this->video_info['id']; ?>');});"><?php _e('更改合并主题'); ?></a>
+												<a href="javascript:;" onclick="AWS.prompt('<?php echo _t('请输入主题 ID'); ?>', '<?php echo $this->video_info['redirect_id']; ?>', function(text){AWS.ajax_request(G_BASE_URL + '/content/ajax/redirect/', 'redirect_id=' + encodeURIComponent(text) + '&item_type=video&item_id=<?php echo $this->video_info['id']; ?>');});"><?php echo _t('更改合并主题'); ?></a>
 											</li>
 											<li>
-												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unredirect/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>');"><?php _e('取消合并'); ?></a>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unredirect/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>');"><?php echo _t('取消合并'); ?></a>
 											</li>
 											<?php } else { ?>
 											<li>
-												<a href="javascript:;" onclick="AWS.prompt('<?php _e('请输入主题 ID'); ?>', '', function(text){AWS.ajax_request(G_BASE_URL + '/content/ajax/redirect/', 'redirect_id=' + encodeURIComponent(text) + '&item_type=video&item_id=<?php echo $this->video_info['id']; ?>');});"><?php _e('合并主题'); ?></a>
+												<a href="javascript:;" onclick="AWS.prompt('<?php echo _t('请输入主题 ID'); ?>', '', function(text){AWS.ajax_request(G_BASE_URL + '/content/ajax/redirect/', 'redirect_id=' + encodeURIComponent(text) + '&item_type=video&item_id=<?php echo $this->video_info['id']; ?>');});"><?php echo _t('合并主题'); ?></a>
 											</li>
 											<?php } ?>
 										<?php } ?>
 
 										<?php if ($this->user_info['permission']['is_moderator']) { ?>
 											<li>
-												<a href="javascript:;" onclick="AWS.confirm('<?php _e('确认删除?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/video/ajax/remove_video/', 'video_id=<?php echo $this->video_info['id']; ?>');});"><?php _e('删除影片'); ?></a>
+												<a href="javascript:;" onclick="AWS.confirm('<?php echo _t('确认删除?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/video/ajax/remove_video/', 'video_id=<?php echo $this->video_info['id']; ?>');});"><?php echo _t('删除影片'); ?></a>
 											</li>
 											<li>
-												<a href="javascript:;" onclick="AWS.prompt('<?php _e('请输入新的 UID'); ?>', '<?php echo $this->video_info['uid']; ?>', function(text){AWS.ajax_request(G_BASE_URL + '/content/ajax/change_uid/', 'uid=' + encodeURIComponent(text) + '&item_type=video&item_id=<?php echo $this->video_info['id']; ?>');});"><?php _e('变更作者'); ?></a>
+												<a href="javascript:;" onclick="AWS.prompt('<?php echo _t('请输入新的 UID'); ?>', '<?php echo $this->video_info['uid']; ?>', function(text){AWS.ajax_request(G_BASE_URL + '/content/ajax/change_uid/', 'uid=' + encodeURIComponent(text) + '&item_type=video&item_id=<?php echo $this->video_info['id']; ?>');});"><?php echo _t('变更作者'); ?></a>
 											</li>
 										<?php } ?>
 
 										<?php if ($this->user_info['permission']['recommend_post']) { ?>
 											<li>
 												<?php if ($this->video_info['recommend']) { ?>
-												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unrecommend/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>');"><?php _e('取消推荐'); ?></a>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unrecommend/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>');"><?php echo _t('取消推荐'); ?></a>
 												<?php } else { ?>
-												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/recommend/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>');"><?php _e('推荐'); ?></a>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/recommend/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>');"><?php echo _t('推荐'); ?></a>
 												<?php } ?>
 											</li>
 										<?php } ?>
@@ -103,16 +103,16 @@
 										<?php if ($this->user_info['permission']['pin_post']) { ?>
 											<li>
 												<?php if ($this->video_info['sort']) { ?>
-												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unpin/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>');"><?php _e('取消置顶'); ?></a>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unpin/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>');"><?php echo _t('取消置顶'); ?></a>
 												<?php } else { ?>
-												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/pin/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>');"><?php _e('置顶'); ?></a>
+												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/pin/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>');"><?php echo _t('置顶'); ?></a>
 												<?php } ?>
 											</li>
 										<?php } ?>
 
 										<?php if ($this->user_info['permission']['change_category']) { ?>
 											<li>
-												<a href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/content/edit/change_category/item_type-video__item_id-<?php echo $this->video_info['id']; ?>__category_id-<?php echo $this->video_info['category_id']; ?>');"><?php _e('变更分类'); ?></a>
+												<a href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/content/edit/change_category/item_type-video__item_id-<?php echo $this->video_info['id']; ?>__category_id-<?php echo $this->video_info['category_id']; ?>');"><?php echo _t('变更分类'); ?></a>
 											</li>
 										<?php } ?>
 										</ul>
@@ -122,9 +122,9 @@
 
 								<?php if ($this->following OR $this->user_info['permission']['follow_thread'] OR $this->video_info['uid'] == $this->user_id) { ?>
 								<?php if ($this->following) { ?>
-									<a class="follow btn btn-normal btn-success pull-right active" href="javascript:;" onclick="(function(selector){AWS.ajax_request(G_BASE_URL + '/content/ajax/unfollow/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>', function(){selector.removeClass('active');selector.addClass('disabled');selector.text('<?php _e('已取消'); ?>')});})($(this))"><?php _e('取消关注'); ?></a>
+									<a class="follow btn btn-normal btn-success pull-right active" href="javascript:;" onclick="(function(selector){AWS.ajax_request(G_BASE_URL + '/content/ajax/unfollow/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>', function(){selector.removeClass('active');selector.addClass('disabled');selector.text('<?php echo _t('已取消'); ?>')});})($(this))"><?php echo _t('取消关注'); ?></a>
 								<?php } else { ?>
-									<a class="follow btn btn-normal btn-success pull-right" href="javascript:;" onclick="(function(selector){AWS.ajax_request(G_BASE_URL + '/content/ajax/follow/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>', function(){selector.addClass('disabled');selector.text('<?php _e('已关注'); ?>')});})($(this))"><?php _e('关注'); ?></a>
+									<a class="follow btn btn-normal btn-success pull-right" href="javascript:;" onclick="(function(selector){AWS.ajax_request(G_BASE_URL + '/content/ajax/follow/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>', function(){selector.addClass('disabled');selector.text('<?php echo _t('已关注'); ?>')});})($(this))"><?php echo _t('关注'); ?></a>
 								<?php } ?>
 								<?php } ?>
 							</div>
@@ -166,20 +166,20 @@
 								<span class="pull-right more-operate">
 								<?php if ($this->user_id) { ?>
 									<?php if ($this->user_info['permission']['bump_post']) { ?>
-									<a href="javascript:;" class="aw-small-text" onclick="AWS.confirm('<?php _e('确认提升?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/content/ajax/bump/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>', true);});"><i class="icon icon-up"></i> <?php _e('提升'); ?></a>
+									<a href="javascript:;" class="aw-small-text" onclick="AWS.confirm('<?php echo _t('确认提升?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/content/ajax/bump/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>', true);});"><i class="icon icon-up"></i> <?php echo _t('提升'); ?></a>
 									<?php } ?>
 									<?php if ($this->user_info['permission']['sink_post']) { ?>
-									<a href="javascript:;" class="aw-small-text" onclick="AWS.confirm('<?php _e('确认下沉?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/content/ajax/sink/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>', true);});"><i class="icon icon-down"></i> <?php _e('下沉'); ?></a>
+									<a href="javascript:;" class="aw-small-text" onclick="AWS.confirm('<?php echo _t('确认下沉?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/content/ajax/sink/', 'item_type=video&item_id=<?php echo $this->video_info['id']; ?>', true);});"><i class="icon icon-down"></i> <?php echo _t('下沉'); ?></a>
 									<?php } ?>
 
 									<?php if (can_edit_post($this->video_info['uid'], $this->user_info)) { ?>
-									<a class="aw-small-text" href="<?php echo url_rewrite(); ?>/modify/video/<?php echo $this->video_info['id']; ?>"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
+									<a class="aw-small-text" href="<?php echo url_rewrite(); ?>/modify/video/<?php echo $this->video_info['id']; ?>"><i class="icon icon-edit"></i> <?php echo _t('编辑'); ?></a>
 									<?php } ?>
 
-									<a href="javascript:;" onclick="AWS.User.add_favorite('video', '<?php echo $this->video_info['id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>
+									<a href="javascript:;" onclick="AWS.User.add_favorite('video', '<?php echo $this->video_info['id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php echo _t('收藏'); ?></a>
 								<?php } ?>
 
-									<a href="javascript:;" class="aw-small-text" onclick="AWS.User.share_out();"><i class="icon icon-share"></i> <?php _e('分享'); ?></a>
+									<a href="javascript:;" class="aw-small-text" onclick="AWS.User.share_out();"><i class="icon icon-share"></i> <?php echo _t('分享'); ?></a>
 
 									<em class="aw-small-text"><?php echo date_friendly($this->video_info['add_time']); ?></em>
 								</span>
@@ -196,7 +196,7 @@
 						<?php } ?>
 
 						<div class="mod-head common-head">
-							<h2><?php _e('%s 个评论', $this->comment_count); ?></h2>
+							<h2><?php echo _t('%s 个评论', $this->comment_count); ?></h2>
 						</div>
 
 						<div class="mod-body aw-feed-list aw-replies">
@@ -208,7 +208,7 @@
 						<?php if ($_GET['item_id']) { ?>
 						<div class="mod-footer">
 								<a href="<?php echo url_rewrite(); ?>/video/<?php echo $this->video_info['id']; ?>" class="aw-load-more-content">
-									<span><?php _e('查看全部评论'); ?></span>
+									<span><?php echo _t('查看全部评论'); ?></span>
 								</a>
 						</div>
 						<?php } ?>
@@ -223,9 +223,9 @@
 					<div class="aw-mod aw-reply-box">
 						<a name="answer_form"></a>
 						<?php if ($this->video_info['lock']) { ?>
-						<p align="center"><?php _e('该主题目前已经被锁定, 无法添加新回复'); ?></p>
+						<p align="center"><?php echo _t('该主题目前已经被锁定, 无法添加新回复'); ?></p>
 						<?php } else if (!$this->user_id) { ?>
-						<p align="center"><?php _e('要发言请先<a href="%s0">登录</a>或<a href="%s1">注册</a>', array(url_rewrite() . '/login/', url_rewrite(). '/register/')); ?></p>
+						<p align="center"><?php echo _t('要发言请先<a href="%s0">登录</a>或<a href="%s1">注册</a>', array(url_rewrite() . '/login/', url_rewrite(). '/register/')); ?></p>
 						<?php } else { ?>
 						<form action="<?php echo url_rewrite(); ?>/publish/ajax/publish_video_comment/" onsubmit="return false;" method="post" id="answer_form" class="question_answer_form">
 						<input type="hidden" name="video_id" value="<?php echo $this->video_info['id']; ?>" />
@@ -234,13 +234,13 @@
 							<p>
 								<?php if ($this->user_info['permission']['reply_anonymously']) { ?>
 								<label class="pull-right">
-									<input type="checkbox" value="1" name="anonymous" /> <?php _e('用这个身份发表'); ?>: <a href="<?php echo UF::url(get_anonymous_user_info($this->user_info)); ?>"><?php echo UF::name(get_anonymous_user_info($this->user_info)); ?></a>
+									<input type="checkbox" value="1" name="anonymous" /> <?php echo _t('用这个身份发表'); ?>: <a href="<?php echo UF::url(get_anonymous_user_info($this->user_info)); ?>"><?php echo UF::name(get_anonymous_user_info($this->user_info)); ?></a>
 								</label>
 								<?php } ?>
 								<?php if ($this->user_info['permission']['follow_thread'] OR $this->video_info['uid'] == $this->user_id) { ?>
 								<?php if (!$this->following) { ?>
 								<label class="pull-right">
-									<input type="checkbox" value="1" name="follow" /> <?php _e('关注主题'); ?>
+									<input type="checkbox" value="1" name="follow" /> <?php echo _t('关注主题'); ?>
 								</label>
 								<?php } ?>
 								<?php } ?>
@@ -259,15 +259,15 @@
 								</div>
 								<div class="mod-body clearfix">
 									<div class="aw-auth-img clearfix">
-										<input id="later_time_input" name="later" class="form-control pull-right" type="text" placeholder="<?php _e('分钟'); ?>" />
-										<label class="pull-right">&nbsp;<?php _e('延迟显示'); ?></label>
+										<input id="later_time_input" name="later" class="form-control pull-right" type="text" placeholder="<?php echo _t('分钟'); ?>" />
+										<label class="pull-right">&nbsp;<?php echo _t('延迟显示'); ?></label>
 										<label id="later_time_label" class="pull-right"></label>
 									</div>
 
-									<a href="javascript:;" onclick="AWS.submit_append($('#answer_form'), $(this), $('.aw-replies'), reply_callback);" class="btn btn-normal btn-success pull-right btn-reply"><?php _e('回复'); ?></a>
+									<a href="javascript:;" onclick="AWS.submit_append($('#answer_form'), $(this), $('.aw-replies'), reply_callback);" class="btn btn-normal btn-success pull-right btn-reply"><?php echo _t('回复'); ?></a>
 									<span class="pull-right">&nbsp;</span>
 
-									<?php if (S::get('image_upload_link')) { ?><a class="pull-right" href="<?php echo S::get('image_upload_link'); ?>" <?php if (!is_javascript(S::get('image_upload_link'))) { ?>rel="nofollow noreferrer noopener" target="_blank"<?php } ?>><?php _e('上传图片'); ?></a><?php } ?>
+									<?php if (S::get('image_upload_link')) { ?><a class="pull-right" href="<?php echo S::get('image_upload_link'); ?>" <?php if (!is_javascript(S::get('image_upload_link'))) { ?>rel="nofollow noreferrer noopener" target="_blank"<?php } ?>><?php echo _t('上传图片'); ?></a><?php } ?>
 
 								</div>
 							</div>
@@ -282,30 +282,30 @@
 					<!-- 回复编辑器 -->
 					<div id="user_reply_box" class="aw-article-reply-box clearfix">
 						<?php if ($this->video_info['lock']) { ?>
-						<p align="center"><?php _e('该主题目前已经被锁定, 无法添加新回复'); ?></p>
+						<p align="center"><?php echo _t('该主题目前已经被锁定, 无法添加新回复'); ?></p>
 						<?php } else if (!$this->user_id) { ?>
-						<p align="center"><?php _e('要发言请先<a href="%s0">登录</a>或<a href="%s1">注册</a>', array(url_rewrite() . '/login/', url_rewrite(). '/register/')); ?></p>
+						<p align="center"><?php echo _t('要发言请先<a href="%s0">登录</a>或<a href="%s1">注册</a>', array(url_rewrite() . '/login/', url_rewrite(). '/register/')); ?></p>
 						<?php } else { ?>
 						<form action="<?php echo url_rewrite(); ?>/publish/ajax/publish_video_comment/" onsubmit="return false;" method="post" id="answer_form_2">
 						<input type="hidden" name="video_id" value="<?php echo $this->video_info['id']; ?>" />
 						<input type="hidden" id="user_reply_box_at_uid" name="at_uid" value="" />
 						<div class="mod-body">
-							<textarea style="min-height:54px" rows="3" name="message" class="form-control autosize" placeholder="<?php _e('写下你的评论...'); ?>" /></textarea>
+							<textarea style="min-height:54px" rows="3" name="message" class="form-control autosize" placeholder="<?php echo _t('写下你的评论...'); ?>" /></textarea>
 						</div>
 						<div class="mod-footer">
 
 							<label class="pull-right">
 								<?php if ($this->user_info['permission']['reply_anonymously']) { ?>
-								&nbsp;<input type="checkbox" value="1" name="anonymous" /> <?php _e('用这个身份发表'); ?>: <a href="<?php echo UF::url(get_anonymous_user_info($this->user_info)); ?>"><?php echo UF::name(get_anonymous_user_info($this->user_info)); ?></a>
+								&nbsp;<input type="checkbox" value="1" name="anonymous" /> <?php echo _t('用这个身份发表'); ?>: <a href="<?php echo UF::url(get_anonymous_user_info($this->user_info)); ?>"><?php echo UF::name(get_anonymous_user_info($this->user_info)); ?></a>
 								<?php } ?>
-								&nbsp;<a href="javascript:;" onclick="AWS.submit_append($('#answer_form_2'), $(this), $('.aw-replies'), reply_callback_2);" class="btn btn-normal btn-success btn-submit btn-reply"><?php _e('回复'); ?></a>
+								&nbsp;<a href="javascript:;" onclick="AWS.submit_append($('#answer_form_2'), $(this), $('.aw-replies'), reply_callback_2);" class="btn btn-normal btn-success btn-submit btn-reply"><?php echo _t('回复'); ?></a>
 							</label>
 
 							<label class="pull-right">
-								<input id="later_time_input_2" class="pull-right form-control" type="text" name="later" placeholder="<?php _e('分钟'); ?>" />
+								<input id="later_time_input_2" class="pull-right form-control" type="text" name="later" placeholder="<?php echo _t('分钟'); ?>" />
 							</label>
 
-							<label class="pull-right">&nbsp;<?php _e('延迟显示'); ?>&nbsp;</label>
+							<label class="pull-right">&nbsp;<?php echo _t('延迟显示'); ?>&nbsp;</label>
 
 							<label id="later_time_label_2" class="pull-right"></label>
 
@@ -322,7 +322,7 @@
 					<!-- 发起人 -->
 					<div class="aw-mod">
 						<div class="mod-head">
-							<h3><?php _e('发起人'); ?></h3>
+							<h3><?php echo _t('发起人'); ?></h3>
 						</div>
 						<div class="mod-body">
 							<div class="user-detail">
@@ -354,7 +354,7 @@
 					<!-- 相关 -->
 					<div class="aw-mod">
 						<div class="mod-head">
-							<h3><?php _e('相关主题'); ?></h3>
+							<h3><?php echo _t('相关主题'); ?></h3>
 						</div>
 						<div class="mod-body">
 							<ul>
@@ -373,7 +373,7 @@
 					<!-- 推荐 -->
 					<div class="aw-mod aw-text-align-justify question-related-list">
 						<div class="mod-head">
-							<h3><?php _e('推荐'); ?></h3>
+							<h3><?php echo _t('推荐'); ?></h3>
 						</div>
 						<div class="mod-body aw-size-12">
 							<ul>
@@ -389,12 +389,12 @@
 					<!-- 状态 -->
 					<div class="aw-mod">
 						<div class="mod-head">
-							<h3><?php _e('状态'); ?></h3>
+							<h3><?php echo _t('状态'); ?></h3>
 						</div>
 						<div class="mod-body">
 							<ul>
-								<li><?php _e('最新活动'); ?>: <span class="aw-text-color-blue"><?php echo date_friendly($this->video_info['update_time']); ?></span></li>
-								<li><?php _e('浏览'); ?>: <span class="aw-text-color-blue"><?php echo $this->video_info['view_count']; ?></span></li>
+								<li><?php echo _t('最新活动'); ?>: <span class="aw-text-color-blue"><?php echo date_friendly($this->video_info['update_time']); ?></span></li>
+								<li><?php echo _t('浏览'); ?>: <span class="aw-text-color-blue"><?php echo $this->video_info['view_count']; ?></span></li>
 							</ul>
 						</div>
 					</div>

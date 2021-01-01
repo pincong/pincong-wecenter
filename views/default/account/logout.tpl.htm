@@ -11,11 +11,11 @@
 		<form id="login_form" method="post" action="<?php echo url_rewrite(); ?>/account/logout/" onsubmit="localStorage.clear();">
 			<ul>
 				<li class="alert alert-danger">
-					<em><?php _e('您即将退出'); ?></em>
+					<em><?php echo _t('您即将退出'); ?></em>
 				</li>
 				<li class="clearfix">
-					<button type="submit" class="btn btn-large btn-blue btn-block"><?php _e('确定'); ?></button>
-					<a href="<?php echo url_rewrite(); ?>/" class="btn btn-large btn-gray btn-block"><?php _e('取消'); ?></a>
+					<button type="submit" class="btn btn-large btn-blue btn-block"><?php echo _t('确定'); ?></button>
+					<a href="<?php echo url_rewrite(); ?>/" class="btn btn-large btn-gray btn-block"><?php echo _t('取消'); ?></a>
 				</li>
 			</ul>
 		</form>

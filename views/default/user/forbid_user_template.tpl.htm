@@ -3,39 +3,39 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>
-				<h3 class="modal-title"><?php _e('封禁用户'); ?></h3>
+				<h3 class="modal-title"><?php echo _t('封禁用户'); ?></h3>
 			</div>
 			<form action="<?php echo url_rewrite(); ?>/user/ajax/forbid_user/" method="post" onsubmit="return false" id="edit_form">
 			<input type="hidden" name="uid" value="<?php echo $this->user['uid']; ?>" />
 			<div class="modal-body">
 				<div class="aw-margin-y-15 aw-margin-top-0 alert alert-danger collapse error_message"><i class="icon icon-delete"></i> <em></em></div>
 				<select class="form-control" name="status" <?php if ($this->banning_reason_list) { ?>onchange="var $reason = $(this).parent().find('select[name=reason]'); if ($(this).val() == 0) {$(this).parent().find('textarea').val(''); $reason.val(''); $reason.css('visibility', 'hidden');} else {$reason.css('visibility', 'visible');}"<?php } ?>>
-					<option value="0" <?php if ($this->user['forbidden'] == 0) { ?>selected="selected"<?php } ?>><?php _e('正常'); ?></option>
-					<option value="1" <?php if ($this->user['forbidden'] == 1) { ?>selected="selected"<?php } ?>><?php _e('禁止登录'); ?></option>
-					<option value="2" <?php if ($this->user['forbidden'] == 2) { ?>selected="selected"<?php } ?>><?php _e('禁止登录 + 隐藏全部发言'); ?></option>
-					<option value="3" <?php if ($this->user['forbidden'] == 3) { ?>selected="selected"<?php } ?>><?php _e('禁止登录 + 替换全部发言'); ?></option>
+					<option value="0" <?php if ($this->user['forbidden'] == 0) { ?>selected="selected"<?php } ?>><?php echo _t('正常'); ?></option>
+					<option value="1" <?php if ($this->user['forbidden'] == 1) { ?>selected="selected"<?php } ?>><?php echo _t('禁止登录'); ?></option>
+					<option value="2" <?php if ($this->user['forbidden'] == 2) { ?>selected="selected"<?php } ?>><?php echo _t('禁止登录 + 隐藏全部发言'); ?></option>
+					<option value="3" <?php if ($this->user['forbidden'] == 3) { ?>selected="selected"<?php } ?>><?php echo _t('禁止登录 + 替换全部发言'); ?></option>
 				</select>
 				<?php if ($this->banning_reason_list) { ?>
 				<div class="aw-margin-y-10">
 					<select class="form-control" name="reason">
-						<option value=""><?php _e('请选择理由...'); ?></option>
+						<option value=""><?php echo _t('请选择理由...'); ?></option>
 						<?php foreach ($this->banning_reason_list as $key => $val) { $val = htmlspecialchars($key); ?>
 						<option value="<?php echo $val; ?>"><?php echo $val; ?></option>
 						<?php } ?>
 					</select>
 				</div>
 				<div class="aw-margin-y-10">
-					<textarea name="detail" class="form-control" rows="3" placeholder="<?php _e('详情...'); ?>"><?php echo FORMAT::text($this->user['data']['banned_detail']); ?></textarea>
+					<textarea name="detail" class="form-control" rows="3" placeholder="<?php echo _t('详情...'); ?>"><?php echo FORMAT::text($this->user['data']['banned_detail']); ?></textarea>
 				</div>
 				<?php } else { ?>
 				<div class="aw-margin-y-10">
-					<textarea name="reason" class="form-control" rows="4" placeholder="<?php _e('详情...'); ?>"><?php echo FORMAT::text($this->user['data']['banned_reason']); ?></textarea>
+					<textarea name="reason" class="form-control" rows="4" placeholder="<?php echo _t('详情...'); ?>"><?php echo FORMAT::text($this->user['data']['banned_reason']); ?></textarea>
 				</div>
 				<?php } ?>
 			</div>
 			<div class="modal-footer">
-				<a data-dismiss="modal" aria-hidden="true" class="aw-small-text"><?php _e('取消'); ?></a>
-				<button class="btn btn-large btn-success" onclick="AWS.submit_form($('#edit_form'), $(this), $('.error_message'));return false;"><?php _e('确定'); ?></button>
+				<a data-dismiss="modal" aria-hidden="true" class="aw-small-text"><?php echo _t('取消'); ?></a>
+				<button class="btn btn-large btn-success" onclick="AWS.submit_form($('#edit_form'), $(this), $('.error_message'));return false;"><?php echo _t('确定'); ?></button>
 			</div>
 			</form>
 		</div>

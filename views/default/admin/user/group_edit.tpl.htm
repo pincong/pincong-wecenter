@@ -7,13 +7,13 @@
 	<div class="mod">
 		<div class="mod-head">
 			<h3>
-				<span class="pull-left"><?php _e('用户组权限'); ?>: (<?php echo $this->group['group_id']; ?>) <?php echo $this->group['group_name']; ?></span>
-				<span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php _e('快速保存'); ?></a></span>
+				<span class="pull-left"><?php echo _t('用户组权限'); ?>: (<?php echo $this->group['group_id']; ?>) <?php echo $this->group['group_name']; ?></span>
+				<span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php echo _t('快速保存'); ?></a></span>
 			</h3>
 		</div>
 		<div class="tab-content mod-content">
 			<?php if ($this->group['group_id'] == 0) { ?>
-				<div class="alert alert-danger"><?php _e('注意: 这个用户组的权限会被会员组覆盖, 除非用户的声望不在会员组范围内才会使用此用户组权限'); ?></div>
+				<div class="alert alert-danger"><?php echo _t('注意: 这个用户组的权限会被会员组覆盖, 除非用户的声望不在会员组范围内才会使用此用户组权限'); ?></div>
 			<?php } ?>
 
 			<table class="table table-striped">
@@ -21,15 +21,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('系统管理员 (后台)'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('系统管理员 (后台)'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="is_administrator"<?php if ($this->group_pms['is_administrator']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="is_administrator"<?php if ($this->group_pms['is_administrator']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="is_administrator"<?php if (!$this->group_pms['is_administrator']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="is_administrator"<?php if (!$this->group_pms['is_administrator']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -39,52 +39,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('系统管理员 (前台)'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('系统管理员 (前台)'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="is_moderator"<?php if ($this->group_pms['is_moderator']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="is_moderator"<?php if ($this->group_pms['is_moderator']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="is_moderator"<?php if (!$this->group_pms['is_moderator']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许封禁用户'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="forbid_user"<?php if ($this->group_pms['forbid_user']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="forbid_user"<?php if (!$this->group_pms['forbid_user']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许取消封禁用户'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="unforbid_user"<?php if ($this->group_pms['unforbid_user']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="unforbid_user"<?php if (!$this->group_pms['unforbid_user']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="is_moderator"<?php if (!$this->group_pms['is_moderator']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -95,15 +58,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许标记用户'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许封禁用户'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="flag_user"<?php if ($this->group_pms['flag_user']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="forbid_user"<?php if ($this->group_pms['forbid_user']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="flag_user"<?php if (!$this->group_pms['flag_user']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="forbid_user"<?php if (!$this->group_pms['forbid_user']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -113,88 +76,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许取消标记用户'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许取消封禁用户'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="unflag_user"<?php if ($this->group_pms['unflag_user']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="unforbid_user"<?php if ($this->group_pms['unforbid_user']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="unflag_user"<?php if (!$this->group_pms['unflag_user']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许刪除用户'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="delete_user"<?php if ($this->group_pms['delete_user']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="delete_user"<?php if (!$this->group_pms['delete_user']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('无视对方声望'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="ignore_reputation"<?php if ($this->group_pms['ignore_reputation']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="ignore_reputation"<?php if (!$this->group_pms['ignore_reputation']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许变更用户组'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="change_user_group"<?php if ($this->group_pms['change_user_group']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="change_user_group"<?php if (!$this->group_pms['change_user_group']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许编辑任何用户'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="edit_user"<?php if ($this->group_pms['edit_user']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="edit_user"<?php if (!$this->group_pms['edit_user']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="unforbid_user"<?php if (!$this->group_pms['unforbid_user']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -205,15 +95,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许编辑任何话题'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许标记用户'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="edit_topic"<?php if ($this->group_pms['edit_topic']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="flag_user"<?php if ($this->group_pms['flag_user']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="edit_topic"<?php if (!$this->group_pms['edit_topic']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="flag_user"<?php if (!$this->group_pms['flag_user']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -223,197 +113,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许管理话题'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许取消标记用户'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="manage_topic"<?php if ($this->group_pms['manage_topic']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="unflag_user"<?php if ($this->group_pms['unflag_user']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="manage_topic"<?php if (!$this->group_pms['manage_topic']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-
-
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许置顶'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="pin_post"<?php if ($this->group_pms['pin_post']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="pin_post"<?php if (!$this->group_pms['pin_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许推荐'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="recommend_post"<?php if ($this->group_pms['recommend_post']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="recommend_post"<?php if (!$this->group_pms['recommend_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许合并'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="redirect_post"<?php if ($this->group_pms['redirect_post']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="redirect_post"<?php if (!$this->group_pms['redirect_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许提升'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="bump_post"<?php if ($this->group_pms['bump_post']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="bump_post"<?php if (!$this->group_pms['bump_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许下沉'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="sink_post"<?php if ($this->group_pms['sink_post']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="sink_post"<?php if (!$this->group_pms['sink_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许锁定'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="lock_post"<?php if ($this->group_pms['lock_post']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="lock_post"<?php if (!$this->group_pms['lock_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许折叠'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="fold_post"<?php if ($this->group_pms['fold_post']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="fold_post"<?php if (!$this->group_pms['fold_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许楼主折叠'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="fold_post_own_thread"<?php if ($this->group_pms['fold_post_own_thread']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="fold_post_own_thread"<?php if (!$this->group_pms['fold_post_own_thread']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许变更分类'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="change_category"<?php if ($this->group_pms['change_category']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="change_category"<?php if (!$this->group_pms['change_category']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('用户受到保护'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="protected"<?php if ($this->group_pms['protected']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="protected"<?php if (!$this->group_pms['protected']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="unflag_user"<?php if (!$this->group_pms['unflag_user']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -424,15 +132,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许编辑任何贴文'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许刪除用户'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="edit_any_post"<?php if ($this->group_pms['edit_any_post']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="delete_user"<?php if ($this->group_pms['delete_user']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="edit_any_post"<?php if (!$this->group_pms['edit_any_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="delete_user"<?php if (!$this->group_pms['delete_user']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -442,15 +150,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许编辑特定贴文'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('无视对方声望'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="edit_specific_post"<?php if ($this->group_pms['edit_specific_post']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="ignore_reputation"<?php if ($this->group_pms['ignore_reputation']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="edit_specific_post"<?php if (!$this->group_pms['edit_specific_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="ignore_reputation"<?php if (!$this->group_pms['ignore_reputation']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -460,34 +168,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许编辑自己的贴文'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许变更用户组'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="edit_own_post"<?php if ($this->group_pms['edit_own_post']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="change_user_group"<?php if ($this->group_pms['change_user_group']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="edit_own_post"<?php if (!$this->group_pms['edit_own_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许匿名发帖'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="post_anonymously"<?php if ($this->group_pms['post_anonymously']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="post_anonymously"<?php if (!$this->group_pms['post_anonymously']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="change_user_group"<?php if (!$this->group_pms['change_user_group']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -497,15 +186,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许匿名回应'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许编辑任何用户'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="reply_anonymously"<?php if ($this->group_pms['reply_anonymously']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="edit_user"<?php if ($this->group_pms['edit_user']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="reply_anonymously"<?php if (!$this->group_pms['reply_anonymously']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="edit_user"<?php if (!$this->group_pms['edit_user']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -516,11 +205,322 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('特定贴文 UID(s)'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许编辑任何话题'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="edit_topic"<?php if ($this->group_pms['edit_topic']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="edit_topic"<?php if (!$this->group_pms['edit_topic']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许管理话题'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="manage_topic"<?php if ($this->group_pms['manage_topic']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="manage_topic"<?php if (!$this->group_pms['manage_topic']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许置顶'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="pin_post"<?php if ($this->group_pms['pin_post']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="pin_post"<?php if (!$this->group_pms['pin_post']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许推荐'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="recommend_post"<?php if ($this->group_pms['recommend_post']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="recommend_post"<?php if (!$this->group_pms['recommend_post']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许合并'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="redirect_post"<?php if ($this->group_pms['redirect_post']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="redirect_post"<?php if (!$this->group_pms['redirect_post']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许提升'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="bump_post"<?php if ($this->group_pms['bump_post']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="bump_post"<?php if (!$this->group_pms['bump_post']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许下沉'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="sink_post"<?php if ($this->group_pms['sink_post']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="sink_post"<?php if (!$this->group_pms['sink_post']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许锁定'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="lock_post"<?php if ($this->group_pms['lock_post']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="lock_post"<?php if (!$this->group_pms['lock_post']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许折叠'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="fold_post"<?php if ($this->group_pms['fold_post']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="fold_post"<?php if (!$this->group_pms['fold_post']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许楼主折叠'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="fold_post_own_thread"<?php if ($this->group_pms['fold_post_own_thread']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="fold_post_own_thread"<?php if (!$this->group_pms['fold_post_own_thread']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许变更分类'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="change_category"<?php if ($this->group_pms['change_category']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="change_category"<?php if (!$this->group_pms['change_category']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('用户受到保护'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="protected"<?php if ($this->group_pms['protected']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="protected"<?php if (!$this->group_pms['protected']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许编辑任何贴文'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="edit_any_post"<?php if ($this->group_pms['edit_any_post']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="edit_any_post"<?php if (!$this->group_pms['edit_any_post']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许编辑特定贴文'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="edit_specific_post"<?php if ($this->group_pms['edit_specific_post']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="edit_specific_post"<?php if (!$this->group_pms['edit_specific_post']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许编辑自己的贴文'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="edit_own_post"<?php if ($this->group_pms['edit_own_post']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="edit_own_post"<?php if (!$this->group_pms['edit_own_post']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许匿名发帖'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="post_anonymously"<?php if ($this->group_pms['post_anonymously']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="post_anonymously"<?php if (!$this->group_pms['post_anonymously']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许匿名回应'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="reply_anonymously"<?php if ($this->group_pms['reply_anonymously']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="reply_anonymously"<?php if (!$this->group_pms['reply_anonymously']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('特定贴文 UID(s)'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="specific_post_uids" class="form-control" value="<?php echo $this->group_pms['specific_post_uids']; ?>" />
 
-								<span class="help-block"><?php _e('多个 UID 请用","隔开, 留空则采用全局设定'); ?></span>
+								<span class="help-block"><?php echo _t('多个 UID 请用","隔开, 留空则采用全局设定'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -528,11 +528,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('匿名用户 UID'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('匿名用户 UID'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="anonymous_uid" class="form-control" value="<?php echo $this->group_pms['anonymous_uid']; ?>" />
 
-								<span class="help-block"><?php _e('留空则采用全局设定'); ?></span>
+								<span class="help-block"><?php echo _t('留空则采用全局设定'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -541,11 +541,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('禁止发布的类型'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('禁止发布的类型'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="unallowed_post_types" class="form-control" value="<?php echo $this->group_pms['unallowed_post_types']; ?>" />
 
-								<span class="help-block"><?php _e('用逗号隔开, 留空则不启用, 例: question,question_discussion'); ?></span>
+								<span class="help-block"><?php echo _t('用逗号隔开, 留空则不启用, 例: question,question_discussion'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -554,11 +554,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('受限分类'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('受限分类'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="restricted_categories" class="form-control" value="<?php echo $this->group_pms['restricted_categories']; ?>" />
 
-								<span class="help-block"><?php _e('禁止发帖的分类 ID (多个分类请用逗号","隔开, 留空为不限制)'); ?></span>
+								<span class="help-block"><?php echo _t('禁止发帖的分类 ID (多个分类请用逗号","隔开, 留空为不限制)'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -567,11 +567,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('受限分类 (回应)'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('受限分类 (回应)'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="restricted_categories_reply" class="form-control" value="<?php echo $this->group_pms['restricted_categories_reply']; ?>" />
 
-								<span class="help-block"><?php _e('禁止回应的分类 ID (多个分类请用逗号","隔开, 留空为不限制)'); ?></span>
+								<span class="help-block"><?php echo _t('禁止回应的分类 ID (多个分类请用逗号","隔开, 留空为不限制)'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -579,11 +579,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('受限分类 (移入)'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('受限分类 (移入)'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="restricted_categories_move_to" class="form-control" value="<?php echo $this->group_pms['restricted_categories_move_to']; ?>" />
 
-								<span class="help-block"><?php _e('禁止移入的分类 ID (多个分类请用逗号","隔开, 留空为不限制)'); ?></span>
+								<span class="help-block"><?php echo _t('禁止移入的分类 ID (多个分类请用逗号","隔开, 留空为不限制)'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -591,11 +591,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('受限分类 (移出)'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('受限分类 (移出)'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="restricted_categories_move_from" class="form-control" value="<?php echo $this->group_pms['restricted_categories_move_from']; ?>" />
 
-								<span class="help-block"><?php _e('禁止移出的分类 ID (多个分类请用逗号","隔开, 留空为不限制)'); ?></span>
+								<span class="help-block"><?php echo _t('禁止移出的分类 ID (多个分类请用逗号","隔开, 留空为不限制)'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -604,11 +604,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('发言间隔限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('发言间隔限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="interval_post" class="form-control" value="<?php echo $this->group_pms['interval_post']; ?>" />
 
-								<span class="help-block"><?php _e('灌水预防机制 (单位: 秒, 设置 0 则采用默认操作间隔限制)'); ?></span>
+								<span class="help-block"><?php echo _t('灌水预防机制 (单位: 秒, 设置 0 则采用默认操作间隔限制)'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -616,11 +616,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('编辑间隔限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('编辑间隔限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="interval_modify" class="form-control" value="<?php echo $this->group_pms['interval_modify']; ?>" />
 
-								<span class="help-block"><?php _e('(单位: 秒, 同上)'); ?></span>
+								<span class="help-block"><?php echo _t('(单位: 秒, 同上)'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -628,11 +628,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('点赞间隔限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('点赞间隔限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="interval_vote" class="form-control" value="<?php echo $this->group_pms['interval_vote']; ?>" />
 
-								<span class="help-block"><?php _e('(单位: 秒, 同上)'); ?></span>
+								<span class="help-block"><?php echo _t('(单位: 秒, 同上)'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -640,11 +640,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('关注间隔限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('关注间隔限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="interval_follow" class="form-control" value="<?php echo $this->group_pms['interval_follow']; ?>" />
 
-								<span class="help-block"><?php _e('(单位: 秒, 同上)'); ?></span>
+								<span class="help-block"><?php echo _t('(单位: 秒, 同上)'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -652,11 +652,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('管理间隔限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('管理间隔限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="interval_manage" class="form-control" value="<?php echo $this->group_pms['interval_manage']; ?>" />
 
-								<span class="help-block"><?php _e('(单位: 秒, 同上)'); ?></span>
+								<span class="help-block"><?php echo _t('(单位: 秒, 同上)'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -665,11 +665,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('每日发帖上限'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('每日发帖上限'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="thread_limit_per_day" class="form-control" value="<?php echo $this->group_pms['thread_limit_per_day']; ?>" />
 
-								<span class="help-block"><?php _e('设置 0 为不限制'); ?></span>
+								<span class="help-block"><?php echo _t('设置 0 为不限制'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -677,11 +677,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('每日回帖上限'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('每日回帖上限'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="reply_limit_per_day" class="form-control" value="<?php echo $this->group_pms['reply_limit_per_day']; ?>" />
 
-								<span class="help-block"><?php _e('设置 0 为不限制'); ?></span>
+								<span class="help-block"><?php echo _t('设置 0 为不限制'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -689,11 +689,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('每日楼中楼讨论上限'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('每日楼中楼讨论上限'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="discussion_limit_per_day" class="form-control" value="<?php echo $this->group_pms['discussion_limit_per_day']; ?>" />
 
-								<span class="help-block"><?php _e('设置 0 为不限制'); ?></span>
+								<span class="help-block"><?php echo _t('设置 0 为不限制'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -701,11 +701,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('每日点赞上限'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('每日点赞上限'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="user_vote_limit_per_day" class="form-control" value="<?php echo $this->group_pms['user_vote_limit_per_day']; ?>" />
 
-								<span class="help-block"><?php _e('设置 0 为不限制'); ?></span>
+								<span class="help-block"><?php echo _t('设置 0 为不限制'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -714,11 +714,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('内容声望低于多少则自动标记'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('内容声望低于多少则自动标记'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="flagging_reputation_lt" class="form-control" value="<?php echo $this->group_pms['flagging_reputation_lt']; ?>" />
 
-								<span class="help-block"><?php _e('留空为不启用, 在下方填写相应用户组 ID'); ?></span>
+								<span class="help-block"><?php echo _t('留空为不启用, 在下方填写相应用户组 ID'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -726,11 +726,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('低内容声望自动标记为用户组 ID'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('低内容声望自动标记为用户组 ID'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="flagging_reputation_lt_group_id" class="form-control" value="<?php echo $this->group_pms['flagging_reputation_lt_group_id']; ?>" />
 
-								<span class="help-block"><?php _e('留空为不启用, 设置 0 为取消标记'); ?></span>
+								<span class="help-block"><?php echo _t('留空为不启用, 设置 0 为取消标记'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -739,11 +739,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('内容声望高于多少则自动标记'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('内容声望高于多少则自动标记'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="flagging_reputation_gt" class="form-control" value="<?php echo $this->group_pms['flagging_reputation_gt']; ?>" />
 
-								<span class="help-block"><?php _e('留空为不启用, 在下方填写相应用户组 ID'); ?></span>
+								<span class="help-block"><?php echo _t('留空为不启用, 在下方填写相应用户组 ID'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -751,11 +751,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('高内容声望自动标记为用户组 ID'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('高内容声望自动标记为用户组 ID'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="flagging_reputation_gt_group_id" class="form-control" value="<?php echo $this->group_pms['flagging_reputation_gt_group_id']; ?>" />
 
-								<span class="help-block"><?php _e('留空为不启用, 设置 0 为取消标记'); ?></span>
+								<span class="help-block"><?php echo _t('留空为不启用, 设置 0 为取消标记'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -764,15 +764,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('非正式用户'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('非正式用户'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="informal_user"<?php if ($this->group_pms['informal_user']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="informal_user"<?php if ($this->group_pms['informal_user']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="informal_user"<?php if (!$this->group_pms['informal_user']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="informal_user"<?php if (!$this->group_pms['informal_user']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -783,15 +783,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('不可与他人互动'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('不可与他人互动'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="inactive_user"<?php if ($this->group_pms['inactive_user']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="inactive_user"<?php if ($this->group_pms['inactive_user']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="inactive_user"<?php if (!$this->group_pms['inactive_user']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="inactive_user"<?php if (!$this->group_pms['inactive_user']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -802,15 +802,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许延迟发布'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许延迟发布'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="post_later"<?php if ($this->group_pms['post_later']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="post_later"<?php if ($this->group_pms['post_later']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="post_later"<?php if (!$this->group_pms['post_later']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="post_later"<?php if (!$this->group_pms['post_later']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -821,15 +821,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许创建新话题'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许创建新话题'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="create_topic"<?php if ($this->group_pms['create_topic']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="create_topic"<?php if ($this->group_pms['create_topic']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="create_topic"<?php if (!$this->group_pms['create_topic']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="create_topic"<?php if (!$this->group_pms['create_topic']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -839,142 +839,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许修改帖子话题'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许修改帖子话题'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="edit_question_topic"<?php if ($this->group_pms['edit_question_topic']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="edit_question_topic"<?php if ($this->group_pms['edit_question_topic']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="edit_question_topic"<?php if (!$this->group_pms['edit_question_topic']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许点赞同'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="vote_agree"<?php if ($this->group_pms['vote_agree']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="vote_agree"<?php if (!$this->group_pms['vote_agree']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许点反对'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="vote_disagree"<?php if ($this->group_pms['vote_disagree']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="vote_disagree"<?php if (!$this->group_pms['vote_disagree']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('影响他人代币'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="affect_currency"<?php if ($this->group_pms['affect_currency']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="affect_currency"<?php if (!$this->group_pms['affect_currency']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('无动态声望系数'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="no_dynamic_reputation_factor"<?php if ($this->group_pms['no_dynamic_reputation_factor']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="no_dynamic_reputation_factor"<?php if (!$this->group_pms['no_dynamic_reputation_factor']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('无奖励声望系数'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="no_bonus_reputation_factor"<?php if ($this->group_pms['no_bonus_reputation_factor']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="no_bonus_reputation_factor"<?php if (!$this->group_pms['no_bonus_reputation_factor']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('无赞同声望系数'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="no_upvote_reputation_factor"<?php if ($this->group_pms['no_upvote_reputation_factor']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="no_upvote_reputation_factor"<?php if (!$this->group_pms['no_upvote_reputation_factor']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('无反对声望系数'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="no_downvote_reputation_factor"<?php if ($this->group_pms['no_downvote_reputation_factor']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="no_downvote_reputation_factor"<?php if (!$this->group_pms['no_downvote_reputation_factor']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="edit_question_topic"<?php if (!$this->group_pms['edit_question_topic']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -985,15 +858,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('收到赞同不计声望'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许点赞同'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="no_reputation_upvote"<?php if ($this->group_pms['no_reputation_upvote']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="vote_agree"<?php if ($this->group_pms['vote_agree']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="no_reputation_upvote"<?php if (!$this->group_pms['no_reputation_upvote']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="vote_agree"<?php if (!$this->group_pms['vote_agree']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -1003,34 +876,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('收到反对不计声望'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许点反对'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="no_reputation_downvote"<?php if ($this->group_pms['no_reputation_downvote']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="vote_disagree"<?php if ($this->group_pms['vote_disagree']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="no_reputation_downvote"<?php if (!$this->group_pms['no_reputation_downvote']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许邀请回答'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="invite_answer"<?php if ($this->group_pms['invite_answer']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="invite_answer"<?php if (!$this->group_pms['invite_answer']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="vote_disagree"<?php if (!$this->group_pms['vote_disagree']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -1040,15 +894,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许关注用户'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('影响他人代币'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="follow_people"<?php if ($this->group_pms['follow_people']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="affect_currency"<?php if ($this->group_pms['affect_currency']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="follow_people"<?php if (!$this->group_pms['follow_people']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="affect_currency"<?php if (!$this->group_pms['affect_currency']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -1058,34 +912,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许关注主题'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('无动态声望系数'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="follow_thread"<?php if ($this->group_pms['follow_thread']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="no_dynamic_reputation_factor"<?php if ($this->group_pms['no_dynamic_reputation_factor']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="follow_thread"<?php if (!$this->group_pms['follow_thread']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许发送私信'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="send_pm"<?php if ($this->group_pms['send_pm']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="send_pm"<?php if (!$this->group_pms['send_pm']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="no_dynamic_reputation_factor"<?php if (!$this->group_pms['no_dynamic_reputation_factor']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -1095,15 +930,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许发送私信 (例外)'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('无奖励声望系数'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="dispatch_pm"<?php if ($this->group_pms['dispatch_pm']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="no_bonus_reputation_factor"<?php if ($this->group_pms['no_bonus_reputation_factor']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="dispatch_pm"<?php if (!$this->group_pms['dispatch_pm']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="no_bonus_reputation_factor"<?php if (!$this->group_pms['no_bonus_reputation_factor']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -1113,15 +948,33 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许接收私信 (例外)'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('无赞同声望系数'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="receive_pm"<?php if ($this->group_pms['receive_pm']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="no_upvote_reputation_factor"<?php if ($this->group_pms['no_upvote_reputation_factor']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="receive_pm"<?php if (!$this->group_pms['receive_pm']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="no_upvote_reputation_factor"<?php if (!$this->group_pms['no_upvote_reputation_factor']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('无反对声望系数'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="no_downvote_reputation_factor"<?php if ($this->group_pms['no_downvote_reputation_factor']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="no_downvote_reputation_factor"<?php if (!$this->group_pms['no_downvote_reputation_factor']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -1132,15 +985,33 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('知识库: 浏览'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('收到赞同不计声望'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="kb_explore"<?php if ($this->group_pms['kb_explore']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="no_reputation_upvote"<?php if ($this->group_pms['no_reputation_upvote']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="kb_explore"<?php if (!$this->group_pms['kb_explore']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="no_reputation_upvote"<?php if (!$this->group_pms['no_reputation_upvote']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('收到反对不计声望'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="no_reputation_downvote"<?php if ($this->group_pms['no_reputation_downvote']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="no_reputation_downvote"<?php if (!$this->group_pms['no_reputation_downvote']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -1151,15 +1022,51 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('知识库: 添加'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许邀请回答'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="kb_add"<?php if ($this->group_pms['kb_add']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="invite_answer"<?php if ($this->group_pms['invite_answer']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="kb_add"<?php if (!$this->group_pms['kb_add']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="invite_answer"<?php if (!$this->group_pms['invite_answer']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许关注用户'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="follow_people"<?php if ($this->group_pms['follow_people']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="follow_people"<?php if (!$this->group_pms['follow_people']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许关注主题'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="follow_thread"<?php if ($this->group_pms['follow_thread']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="follow_thread"<?php if (!$this->group_pms['follow_thread']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -1170,15 +1077,51 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('知识库: 管理'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许发送私信'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="kb_manage"<?php if ($this->group_pms['kb_manage']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="send_pm"<?php if ($this->group_pms['send_pm']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="kb_manage"<?php if (!$this->group_pms['kb_manage']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="send_pm"<?php if (!$this->group_pms['send_pm']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许发送私信 (例外)'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="dispatch_pm"<?php if ($this->group_pms['dispatch_pm']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="dispatch_pm"<?php if (!$this->group_pms['dispatch_pm']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许接收私信 (例外)'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="receive_pm"<?php if ($this->group_pms['receive_pm']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="receive_pm"<?php if (!$this->group_pms['receive_pm']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -1189,15 +1132,72 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('Debug'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('知识库: 浏览'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="debug"<?php if ($this->group_pms['debug']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="kb_explore"<?php if ($this->group_pms['kb_explore']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="debug"<?php if (!$this->group_pms['debug']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="kb_explore"<?php if (!$this->group_pms['kb_explore']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('知识库: 添加'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="kb_add"<?php if ($this->group_pms['kb_add']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="kb_add"<?php if (!$this->group_pms['kb_add']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('知识库: 管理'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="kb_manage"<?php if ($this->group_pms['kb_manage']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="kb_manage"<?php if (!$this->group_pms['kb_manage']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('Debug'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="debug"<?php if ($this->group_pms['debug']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="debug"<?php if (!$this->group_pms['debug']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -1209,15 +1209,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许浏览网站'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许浏览网站'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="visit_site"<?php if ($this->group_pms['visit_site']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="visit_site"<?php if ($this->group_pms['visit_site']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="visit_site"<?php if (!$this->group_pms['visit_site']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="visit_site"<?php if (!$this->group_pms['visit_site']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -1228,15 +1228,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许浏览用户'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许浏览用户'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="visit_people"<?php if ($this->group_pms['visit_people']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="visit_people"<?php if ($this->group_pms['visit_people']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="visit_people"<?php if (!$this->group_pms['visit_people']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="visit_people"<?php if (!$this->group_pms['visit_people']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -1247,15 +1247,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('知识库: 浏览'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('知识库: 浏览'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="kb_explore"<?php if ($this->group_pms['kb_explore']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="kb_explore"<?php if ($this->group_pms['kb_explore']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="kb_explore"<?php if (!$this->group_pms['kb_explore']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="kb_explore"<?php if (!$this->group_pms['kb_explore']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -1266,15 +1266,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('Debug'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('Debug'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="debug"<?php if ($this->group_pms['debug']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+										<input type="radio" value="1" name="debug"<?php if ($this->group_pms['debug']) { ?> checked="checked"<?php } ?>> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="debug"<?php if (!$this->group_pms['debug']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+										<input type="radio" value="0" name="debug"<?php if (!$this->group_pms['debug']) { ?> checked="checked"<?php } ?>> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -1285,7 +1285,7 @@
 				<tfoot>
 				<tr>
 					<td>
-						<input type="button" value="<?php _e('保存设置'); ?>" class="btn btn-primary center-block" onclick="AWS.ajax_post($('#settings_form'));" />
+						<input type="button" value="<?php echo _t('保存设置'); ?>" class="btn btn-primary center-block" onclick="AWS.ajax_post($('#settings_form'));" />
 					</td>
 				</tr>
 				</tfoot>

@@ -9,7 +9,7 @@
 			<h3>
 				<span class="pull-left"><?php echo $this->setting_title; ?></span>
 
-				<span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php _e('快速保存'); ?></a></span>
+				<span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php echo _t('快速保存'); ?></a></span>
 			</h3>
 		</div>
 		<div class="tab-content mod-content">
@@ -26,7 +26,7 @@
 
 		<div class="tab-content mod-content mod-one-btn">
 			<div class="center-block">
-				<input type="button" value="<?php _e('保存设置'); ?>" class="btn btn-primary" onclick="AWS.ajax_post($('#settings_form'));" />
+				<input type="button" value="<?php echo _t('保存设置'); ?>" class="btn btn-primary" onclick="AWS.ajax_post($('#settings_form'));" />
 			</div>
 		</div>
 	</div>

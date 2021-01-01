@@ -6,9 +6,9 @@
 		<div class="mod-head">
 			<h3>
 				<ul class="nav nav-tabs">
-					<li class="active"><a href="#_members" data-toggle="tab" id="members"><?php _e('会员组'); ?></a></li>
-					<li><a href="#_system" data-toggle="tab" id="system"><?php _e('系统组'); ?></a></li>
-					<li><a href="#_custom" data-toggle="tab" id="custom"><?php _e('特殊组'); ?></a></li>
+					<li class="active"><a href="#_members" data-toggle="tab" id="members"><?php echo _t('会员组'); ?></a></li>
+					<li><a href="#_system" data-toggle="tab" id="system"><?php echo _t('系统组'); ?></a></li>
+					<li><a href="#_custom" data-toggle="tab" id="custom"><?php echo _t('特殊组'); ?></a></li>
 				</ul>
 			</h3>
 		</div>
@@ -21,11 +21,11 @@
 								<tr>
 									<th><input type="checkbox" class="check-all"></th>
 									<th>ID</th>
-									<th><?php _e('会员组名称'); ?></th>
-									<th><?php _e('声望介于'); ?></th>
-									<th><?php _e('声望系数'); ?></th>
-									<th><?php _e('声望系数 (接收)'); ?></th>
-									<th><?php _e('內容声望系数'); ?></th>
+									<th><?php echo _t('会员组名称'); ?></th>
+									<th><?php echo _t('声望介于'); ?></th>
+									<th><?php echo _t('声望系数'); ?></th>
+									<th><?php echo _t('声望系数 (接收)'); ?></th>
+									<th><?php echo _t('內容声望系数'); ?></th>
 									<th></th>
 								</tr>
 							</thead>
@@ -47,16 +47,16 @@
 										</div>
 									</td>
 									<td><input type="text" name="group[<?php echo $val['group_id']; ?>][reputation_factor]" class="form-control" value="<?php echo $val['reputation_factor']; ?>" /></td>
-									<td><input type="text" name="group[<?php echo $val['group_id']; ?>][reputation_factor_receive]" class="form-control" value="<?php echo $val['reputation_factor_receive']; ?>" placeholder="<?php _e('不使用请留空'); ?>" /></td>
-									<td><input type="text" name="group[<?php echo $val['group_id']; ?>][content_reputation_factor]" class="form-control" value="<?php echo $val['content_reputation_factor']; ?>" placeholder="<?php _e('不使用请留空'); ?>" /></td>
-									<td><a href="<?php echo url_rewrite(); ?>/admin/user/group_edit/group_id-<?php echo $val['group_id']; ?>" title="<?php _e('权限编辑'); ?>" class="icon icon-edit md-tip"></a></td>
+									<td><input type="text" name="group[<?php echo $val['group_id']; ?>][reputation_factor_receive]" class="form-control" value="<?php echo $val['reputation_factor_receive']; ?>" placeholder="<?php echo _t('不使用请留空'); ?>" /></td>
+									<td><input type="text" name="group[<?php echo $val['group_id']; ?>][content_reputation_factor]" class="form-control" value="<?php echo $val['content_reputation_factor']; ?>" placeholder="<?php echo _t('不使用请留空'); ?>" /></td>
+									<td><a href="<?php echo url_rewrite(); ?>/admin/user/group_edit/group_id-<?php echo $val['group_id']; ?>" title="<?php echo _t('权限编辑'); ?>" class="icon icon-edit md-tip"></a></td>
 								</tr>
 								<?php } } ?>
 								<tr id="members_add_form" class="collapse">
 									<td></td>
 									<td></td>
 									<td>
-										<input type="text" class="form-control" name="group_new[group_name][]" placeholder="<?php _e('用户组名称'); ?>" />
+										<input type="text" class="form-control" name="group_new[group_name][]" placeholder="<?php echo _t('用户组名称'); ?>" />
 									</td>
 									<td class="form-inline">
 										<div class="form-group">
@@ -72,9 +72,9 @@
 							</tbody>
 						</table>
 						<div class="mod-table-foot">
-							<a class="btn btn-primary add"><?php _e('新增'); ?></a>
-							<a class="btn btn-primary" onclick="AWS.ajax_post($('#batchs_form'));"><?php _e('保存'); ?></a>
-							<a class="btn btn-danger" onclick="AWS.ajax_post($('#batchs_form'));"><?php _e('删除'); ?></a>
+							<a class="btn btn-primary add"><?php echo _t('新增'); ?></a>
+							<a class="btn btn-primary" onclick="AWS.ajax_post($('#batchs_form'));"><?php echo _t('保存'); ?></a>
+							<a class="btn btn-danger" onclick="AWS.ajax_post($('#batchs_form'));"><?php echo _t('删除'); ?></a>
 						</div>
 					</form>
 				</div>
@@ -87,10 +87,10 @@
 						<tr>
 							<th><input type="checkbox" class="check-all"></th>
 							<th>ID</th>
-							<th><?php _e('系统组名称'); ?></th>
-							<th><?php _e('声望系数'); ?></th>
-							<th><?php _e('声望系数 (接收)'); ?></th>
-							<th><?php _e('內容声望系数'); ?></th>
+							<th><?php echo _t('系统组名称'); ?></th>
+							<th><?php echo _t('声望系数'); ?></th>
+							<th><?php echo _t('声望系数 (接收)'); ?></th>
+							<th><?php echo _t('內容声望系数'); ?></th>
 							<th></th>
 						</tr>
 					</thead>
@@ -108,18 +108,18 @@
 								<input type="text" class="form-control" name="group[<?php echo $val['group_id']; ?>][reputation_factor]" value="<?php echo $val['reputation_factor']; ?>" />
 							</td>
 							<td>
-								<input type="text" class="form-control" name="group[<?php echo $val['group_id']; ?>][reputation_factor_receive]" value="<?php echo $val['reputation_factor_receive']; ?>" placeholder="<?php _e('不使用请留空'); ?>" />
+								<input type="text" class="form-control" name="group[<?php echo $val['group_id']; ?>][reputation_factor_receive]" value="<?php echo $val['reputation_factor_receive']; ?>" placeholder="<?php echo _t('不使用请留空'); ?>" />
 							</td>
 							<td>
-								<input type="text" class="form-control" name="group[<?php echo $val['group_id']; ?>][content_reputation_factor]" value="<?php echo $val['content_reputation_factor']; ?>" placeholder="<?php _e('不使用请留空'); ?>" />
+								<input type="text" class="form-control" name="group[<?php echo $val['group_id']; ?>][content_reputation_factor]" value="<?php echo $val['content_reputation_factor']; ?>" placeholder="<?php echo _t('不使用请留空'); ?>" />
 							</td>
-							<td><a href="<?php echo url_rewrite(); ?>/admin/user/group_edit/group_id-<?php echo $val['group_id']; ?>" title="<?php _e('权限编辑'); ?>" class="icon icon-edit md-tip"></a></td>
+							<td><a href="<?php echo url_rewrite(); ?>/admin/user/group_edit/group_id-<?php echo $val['group_id']; ?>" title="<?php echo _t('权限编辑'); ?>" class="icon icon-edit md-tip"></a></td>
 						</tr>
 						<?php } ?>
 						<tr id="system_group_add_form" class="collapse">
 							<td></td>
 							<td></td>
-							<td><input type="text" class="form-control" name="group_new[group_name][]" placeholder="<?php _e('用户组名称'); ?>" /></td>
+							<td><input type="text" class="form-control" name="group_new[group_name][]" placeholder="<?php echo _t('用户组名称'); ?>" /></td>
 							<td><input type="text" class="form-control" name="group_new[reputation_factor][]" /></td>
 							<td><input type="text" class="form-control" name="group_new[reputation_factor_receive][]" /></td>
 							<td><input type="text" class="form-control" name="group_new[content_reputation_factor][]" /></td>
@@ -129,9 +129,9 @@
 				</table>
 				</form>
 				<div class="mod-table-foot">
-					<a class="btn btn-primary" onclick="$('#system_group_table').append('<tr>' + $('#system_group_add_form').html() + '</tr>')"><?php _e('新增'); ?></a>
-					<a class="btn btn-primary" onclick="AWS.ajax_post($('#system_group_form'));"><?php _e('保存'); ?></a>
-					<a class="btn btn-danger" onclick="AWS.ajax_post($('#system_group_form'));"><?php _e('删除'); ?></a>
+					<a class="btn btn-primary" onclick="$('#system_group_table').append('<tr>' + $('#system_group_add_form').html() + '</tr>')"><?php echo _t('新增'); ?></a>
+					<a class="btn btn-primary" onclick="AWS.ajax_post($('#system_group_form'));"><?php echo _t('保存'); ?></a>
+					<a class="btn btn-danger" onclick="AWS.ajax_post($('#system_group_form'));"><?php echo _t('删除'); ?></a>
 				</div>
 			</div>
 
@@ -142,10 +142,10 @@
 						<tr>
 							<th><input type="checkbox" class="check-all"></th>
 							<th>ID</th>
-							<th><?php _e('名称'); ?></th>
-							<th><?php _e('声望系数'); ?></th>
-							<th><?php _e('声望系数 (接收)'); ?></th>
-							<th><?php _e('內容声望系数'); ?></th>
+							<th><?php echo _t('名称'); ?></th>
+							<th><?php echo _t('声望系数'); ?></th>
+							<th><?php echo _t('声望系数 (接收)'); ?></th>
+							<th><?php echo _t('內容声望系数'); ?></th>
 							<th></th>
 						</tr>
 					</thead>
@@ -164,19 +164,19 @@
 								<input type="text" class="form-control" name="group[<?php echo $val['group_id']; ?>][reputation_factor]" value="<?php echo $val['reputation_factor']; ?>" />
 							</td>
 							<td>
-								<input type="text" class="form-control" name="group[<?php echo $val['group_id']; ?>][reputation_factor_receive]" value="<?php echo $val['reputation_factor_receive']; ?>" placeholder="<?php _e('不使用请留空'); ?>" />
+								<input type="text" class="form-control" name="group[<?php echo $val['group_id']; ?>][reputation_factor_receive]" value="<?php echo $val['reputation_factor_receive']; ?>" placeholder="<?php echo _t('不使用请留空'); ?>" />
 							</td>
 							<td>
-								<input type="text" class="form-control" name="group[<?php echo $val['group_id']; ?>][content_reputation_factor]" value="<?php echo $val['content_reputation_factor']; ?>" placeholder="<?php _e('不使用请留空'); ?>" />
+								<input type="text" class="form-control" name="group[<?php echo $val['group_id']; ?>][content_reputation_factor]" value="<?php echo $val['content_reputation_factor']; ?>" placeholder="<?php echo _t('不使用请留空'); ?>" />
 							</td>
-							<td><a href="<?php echo url_rewrite(); ?>/admin/user/group_edit/group_id-<?php echo $val['group_id']; ?>" title="<?php _e('权限编辑'); ?>" class="icon icon-edit md-tip"></a></td>
+							<td><a href="<?php echo url_rewrite(); ?>/admin/user/group_edit/group_id-<?php echo $val['group_id']; ?>" title="<?php echo _t('权限编辑'); ?>" class="icon icon-edit md-tip"></a></td>
 						</tr>
 						<?php } ?>
 						<?php } ?>
 						<tr id="custom_group_add_form" class="collapse">
 							<td></td>
 							<td></td>
-							<td><input type="text" class="form-control" name="group_new[group_name][]" placeholder="<?php _e('用户组名称'); ?>" /></td>
+							<td><input type="text" class="form-control" name="group_new[group_name][]" placeholder="<?php echo _t('用户组名称'); ?>" /></td>
 							<td><input type="text" class="form-control" name="group_new[reputation_factor][]" /></td>
 							<td><input type="text" class="form-control" name="group_new[reputation_factor_receive][]" /></td>
 							<td><input type="text" class="form-control" name="group_new[content_reputation_factor][]" /></td>
@@ -186,9 +186,9 @@
 				</table>
 				</form>
 				<div class="mod-table-foot">
-					<a class="btn btn-primary" onclick="$('#custom_group_table').append('<tr>' + $('#custom_group_add_form').html() + '</tr>')"><?php _e('新增'); ?></a>
-					<a class="btn btn-primary" onclick="AWS.ajax_post($('#custom_group_form'));"><?php _e('保存'); ?></a>
-					<a class="btn btn-danger" onclick="AWS.ajax_post($('#custom_group_form'));"><?php _e('删除'); ?></a>
+					<a class="btn btn-primary" onclick="$('#custom_group_table').append('<tr>' + $('#custom_group_add_form').html() + '</tr>')"><?php echo _t('新增'); ?></a>
+					<a class="btn btn-primary" onclick="AWS.ajax_post($('#custom_group_form'));"><?php echo _t('保存'); ?></a>
+					<a class="btn btn-danger" onclick="AWS.ajax_post($('#custom_group_form'));"><?php echo _t('删除'); ?></a>
 				</div>
 			</div>
 		</div>

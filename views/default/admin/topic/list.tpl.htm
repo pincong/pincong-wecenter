@@ -6,9 +6,9 @@
 		<div class="mod-head">
 			<h3>
 				<ul class="nav nav-tabs">
-					<li class="active"><a href="#list" data-toggle="tab"><?php _e('话题管理'); ?></a></li>
-					<li><a href="<?php echo url_rewrite(); ?>/admin/topic/edit/"><?php _e('新建话题'); ?></a></li>
-					<li><a href="#search" data-toggle="tab"><?php _e('搜索'); ?></a></li>
+					<li class="active"><a href="#list" data-toggle="tab"><?php echo _t('话题管理'); ?></a></li>
+					<li><a href="<?php echo url_rewrite(); ?>/admin/topic/edit/"><?php echo _t('新建话题'); ?></a></li>
+					<li><a href="#search" data-toggle="tab"><?php echo _t('搜索'); ?></a></li>
 				</ul>
 			</h3>
 		</div>
@@ -16,7 +16,7 @@
 		<div class="mod-body tab-content">
 			<div class="tab-pane active" id="list">
 				<?php if ($_GET['action'] == 'search') { ?>
-				<div class="alert alert-info"><?php _e('找到 %s 条符合条件的内容', intval($this->topics_count)); ?></div>
+				<div class="alert alert-info"><?php echo _t('找到 %s 条符合条件的内容', intval($this->topics_count)); ?></div>
 				<?php } ?>
 
 				<div class="table-responsive">
@@ -28,12 +28,12 @@
 						<thead>
 							<tr>
 								<th><input type="checkbox" class="check-all"></th>
-								<th><?php _e('话题标题'); ?></th>
-								<th><?php _e('讨论'); ?></th>
-								<th><?php _e('关注'); ?></th>
-								<th><?php _e('合并'); ?></th>
-								<th><?php _e('状态'); ?></th>
-								<th><?php _e('操作'); ?></th>
+								<th><?php echo _t('话题标题'); ?></th>
+								<th><?php echo _t('讨论'); ?></th>
+								<th><?php echo _t('关注'); ?></th>
+								<th><?php echo _t('合并'); ?></th>
+								<th><?php echo _t('状态'); ?></th>
+								<th><?php echo _t('操作'); ?></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -47,17 +47,17 @@
 
 								<td><?php echo $topic_info['focus_count']; ?></td>
 
-								<td><?php if ($topic_info['merged_id']) { ?><?php _e('是'); ?><?php } else { ?><?php _e('否'); ?><?php } ?></td>
+								<td><?php if ($topic_info['merged_id']) { ?><?php echo _t('是'); ?><?php } else { ?><?php echo _t('否'); ?><?php } ?></td>
 
 								<td>
 									<?php if ($topic_info['topic_lock']) { ?>
-									<a onclick="AWS.ajax_request(G_BASE_URL + '/admin/ajax/lock_topic/', 'topic_id=<?php echo $topic_info['topic_id']; ?>&status=0');" title="<?php _e('解除锁定'); ?>" data-toggle="tooltip" class="icon icon-lock md-tip"></a>
+									<a onclick="AWS.ajax_request(G_BASE_URL + '/admin/ajax/lock_topic/', 'topic_id=<?php echo $topic_info['topic_id']; ?>&status=0');" title="<?php echo _t('解除锁定'); ?>" data-toggle="tooltip" class="icon icon-lock md-tip"></a>
 									<?php } else { ?>
-									<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/admin/ajax/lock_topic/', 'topic_id=<?php echo $topic_info['topic_id']; ?>&status=1');" data-toggle="tooltip" title="<?php _e('锁定话题'); ?>" class="icon icon-unlock md-tip"></a>
+									<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/admin/ajax/lock_topic/', 'topic_id=<?php echo $topic_info['topic_id']; ?>&status=1');" data-toggle="tooltip" title="<?php echo _t('锁定话题'); ?>" class="icon icon-unlock md-tip"></a>
 									<?php } ?>
 								</td>
 
-								<td><a href="<?php echo url_rewrite(); ?>/admin/topic/edit/topic_id-<?php echo $topic_info['topic_id']; ?>" class="icon icon-edit md-tip" title="<?php _e('编辑'); ?>" data-toggle="tooltip"></a></td>
+								<td><a href="<?php echo url_rewrite(); ?>/admin/topic/edit/topic_id-<?php echo $topic_info['topic_id']; ?>" class="icon icon-edit md-tip" title="<?php echo _t('编辑'); ?>" data-toggle="tooltip"></a></td>
 							</tr>
 							<?php } ?>
 						</tbody>
@@ -69,8 +69,8 @@
 				<div class="mod-table-foot">
 					<?php TPL::include('global/pagination.tpl.htm'); ?>
 
-					<a class="btn btn-danger" onclick="$('#action').val('remove'); AWS.ajax_post($('#batchs_form'));"><?php _e('删除话题'); ?></a>
-					<a class="btn btn-primary" onclick="$('#action').val('lock'); AWS.ajax_post($('#batchs_form'));"><?php _e('锁定话题'); ?></a>
+					<a class="btn btn-danger" onclick="$('#action').val('remove'); AWS.ajax_post($('#batchs_form'));"><?php echo _t('删除话题'); ?></a>
+					<a class="btn btn-primary" onclick="$('#action').val('lock'); AWS.ajax_post($('#batchs_form'));"><?php echo _t('锁定话题'); ?></a>
 				</div>
 			</div>
 
@@ -80,7 +80,7 @@
 					<input name="action" type="hidden" value="search" />
 
 					<div class="form-group">
-						<label class="col-sm-2 col-xs-3 control-label"><?php _e('关键词'); ?>:</label>
+						<label class="col-sm-2 col-xs-3 control-label"><?php echo _t('关键词'); ?>:</label>
 
 						<div class="col-sm-5 col-xs-8">
 							<input class="form-control" type="text" value="<?php echo htmlspecialchars($_GET['keyword']); ?>" name="keyword" />
@@ -88,7 +88,7 @@
 					</div>
 
 					<div class="form-group">
-						<label class="col-sm-2 col-xs-3 control-label"><?php _e('添加时间范围'); ?>:</label>
+						<label class="col-sm-2 col-xs-3 control-label"><?php echo _t('添加时间范围'); ?>:</label>
 
 						<div class="col-sm-6 col-xs-9">
 							<div class="row">
@@ -108,7 +108,7 @@
 					</div>
 
 					<div class="form-group">
-						<label class="col-sm-2 col-xs-3 control-label"><?php _e('作者'); ?>:</label>
+						<label class="col-sm-2 col-xs-3 control-label"><?php echo _t('作者'); ?>:</label>
 
 						<div class="col-sm-5 col-xs-8">
 							<input class="form-control" type="text" value="<?php echo htmlspecialchars($_GET['user_name']); ?>" name="user_name" />
@@ -116,7 +116,7 @@
 					</div>
 
 					<div class="form-group">
-						<label class="col-sm-2 col-xs-3 control-label"><?php _e('讨论数'); ?>:</label>
+						<label class="col-sm-2 col-xs-3 control-label"><?php echo _t('讨论数'); ?>:</label>
 
 						<div class="col-sm-6 col-xs-9">
 							<div class="row">
@@ -135,7 +135,7 @@
 
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-5 col-xs-8">
-							<button type="button" onclick="AWS.ajax_post($('#search_form'));" class="btn btn-primary"><?php _e('搜索'); ?></button>
+							<button type="button" onclick="AWS.ajax_post($('#search_form'));" class="btn btn-primary"><?php echo _t('搜索'); ?></button>
 						</div>
 					</div>
 				</form>

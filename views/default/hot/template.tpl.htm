@@ -12,9 +12,9 @@
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
 			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
-			<?php _e('发起了问题'); ?>
+			<?php echo _t('发起了问题'); ?>
 			•
-			<?php _e('%s 个回复', $val['answer_count']); ?>
+			<?php echo _t('%s 个回复', $val['answer_count']); ?>
 		</p>
 		<h2 style="font-size:16px;">
 			<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['id']; ?>"><?php echo CF::title($val); ?></a>
@@ -39,12 +39,12 @@
 
 			<!-- 可显示/隐藏的操作box -->
 			<div class="more-operate">
-				<a href="javascript:;" onclick="toggle_disscusion($(this));" data-id="<?php echo $val['id']; ?>" data-type="question" class="aw-add-comment aw-small-text <?php if ($val['comment_count'] > 0) { ?>active<?php } ?>" data-comment-count="<?php echo $val['comment_count']; ?>" style="margin-right: 15px;"><i class="icon icon-comment"></i> <?php if ($val['comment_count']) { ?><?php _e('%s 条讨论', $val['comment_count']); ?><?php } else { ?><?php _e('添加讨论'); ?><?php } ?></a>
+				<a href="javascript:;" onclick="toggle_disscusion($(this));" data-id="<?php echo $val['id']; ?>" data-type="question" class="aw-add-comment aw-small-text <?php if ($val['comment_count'] > 0) { ?>active<?php } ?>" data-comment-count="<?php echo $val['comment_count']; ?>" style="margin-right: 15px;"><i class="icon icon-comment"></i> <?php if ($val['comment_count']) { ?><?php echo _t('%s 条讨论', $val['comment_count']); ?><?php } else { ?><?php echo _t('添加讨论'); ?><?php } ?></a>
 
 				<a href="<?php echo url_rewrite(); ?>/vote/log/item_type-question__item_id-<?php echo $val['id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
 
 				<?php if ($this->user_id) { ?>
-					<a href="javascript:;" onclick="AWS.User.add_favorite('question', '<?php echo $val['id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>
+					<a href="javascript:;" onclick="AWS.User.add_favorite('question', '<?php echo $val['id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php echo _t('收藏'); ?></a>
 				<?php } ?>
 
 			</div>
@@ -57,21 +57,21 @@
 			<div class="aw-comment-list"></div>
 			<!-- 加载更多内容 -->
 			<a class="aw-load-more-content">
-				<span><?php _e('更多'); ?></span>
+				<span><?php echo _t('更多'); ?></span>
 			</a>
 			<!-- end 加载更多内容 -->
 			<?php if ($val['lock']) { ?>
-			<p align="center"><?php _e('该主题目前已经被锁定, 无法添加新回复'); ?></p>
+			<p align="center"><?php echo _t('该主题目前已经被锁定, 无法添加新回复'); ?></p>
 			<?php } else if ($this->user_id) { ?>
 			<form action="<?php echo url_rewrite(); ?>/question/ajax/save_question_discussion/question_id-<?php echo $val['id']; ?>" method="post" onsubmit="return false">
 				<div class="aw-comment-box-main">
-					<textarea class="aw-comment-txt autosize form-control" rows="2" name="message" placeholder="<?php _e('讨论一下...'); ?>"></textarea>
+					<textarea class="aw-comment-txt autosize form-control" rows="2" name="message" placeholder="<?php echo _t('讨论一下...'); ?>"></textarea>
 					<div class="aw-comment-box-btn">
 						<span class="pull-right">
 							<?php if ($this->user_info['permission']['reply_anonymously']) { ?>
-							<label><input type="checkbox" name="anonymous" value="1"> <?php _e('用这个身份发表'); ?>: <a href="<?php echo UF::url(get_anonymous_user_info($this->user_info)); ?>"><?php echo UF::name(get_anonymous_user_info($this->user_info)); ?></a></label>
+							<label><input type="checkbox" name="anonymous" value="1"> <?php echo _t('用这个身份发表'); ?>: <a href="<?php echo UF::url(get_anonymous_user_info($this->user_info)); ?>"><?php echo UF::name(get_anonymous_user_info($this->user_info)); ?></a></label>
 							<?php } ?>
-							<a href="javascript:;" class="btn btn-mini btn-success" onclick="submit_disscusion($(this));"><?php _e('讨论'); ?></a>
+							<a href="javascript:;" class="btn btn-mini btn-success" onclick="submit_disscusion($(this));"><?php echo _t('讨论'); ?></a>
 						</span>
 					</div>
 				</div>
@@ -93,7 +93,7 @@
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
 			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
-			<?php _e('回复了问题'); ?>
+			<?php echo _t('回复了问题'); ?>
 		</p>
 		<h2 style="font-size:16px;">
 			<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['thread_info']['id']; ?>"><?php echo CF::title($val['thread_info']); ?></a>
@@ -128,7 +128,7 @@
 				<a href="<?php echo url_rewrite(); ?>/vote/log/item_type-answer__item_id-<?php echo $val['id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
 
 				<?php if ($this->user_id) { ?>
-					<a href="javascript:;" onclick="AWS.User.add_favorite('answer', '<?php echo $val['id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>
+					<a href="javascript:;" onclick="AWS.User.add_favorite('answer', '<?php echo $val['id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php echo _t('收藏'); ?></a>
 				<?php } ?>
 
 			</div>
@@ -141,21 +141,21 @@
 			<div class="aw-comment-list"></div>
 			<!-- 加载更多内容 -->
 			<a class="aw-load-more-content">
-				<span><?php _e('更多'); ?></span>
+				<span><?php echo _t('更多'); ?></span>
 			</a>
 			<!-- end 加载更多内容 -->
 			<?php if ($val['lock']) { ?>
-			<p align="center"><?php _e('该主题目前已经被锁定, 无法添加新回复'); ?></p>
+			<p align="center"><?php echo _t('该主题目前已经被锁定, 无法添加新回复'); ?></p>
 			<?php } else if ($this->user_id) { ?>
 			<form action="<?php echo url_rewrite(); ?>/question/ajax/save_answer_discussion/answer_id-<?php echo $val['id']; ?>" method="post" onsubmit="return false">
 				<div class="aw-comment-box-main">
-					<textarea class="aw-comment-txt autosize form-control" rows="2" name="message" placeholder="<?php _e('讨论一下...'); ?>"></textarea>
+					<textarea class="aw-comment-txt autosize form-control" rows="2" name="message" placeholder="<?php echo _t('讨论一下...'); ?>"></textarea>
 					<div class="aw-comment-box-btn">
 						<span class="pull-right">
 							<?php if ($this->user_info['permission']['reply_anonymously']) { ?>
-							<label><input type="checkbox" name="anonymous" value="1"> <?php _e('用这个身份发表'); ?>: <a href="<?php echo UF::url(get_anonymous_user_info($this->user_info)); ?>"><?php echo UF::name(get_anonymous_user_info($this->user_info)); ?></a></label>
+							<label><input type="checkbox" name="anonymous" value="1"> <?php echo _t('用这个身份发表'); ?>: <a href="<?php echo UF::url(get_anonymous_user_info($this->user_info)); ?>"><?php echo UF::name(get_anonymous_user_info($this->user_info)); ?></a></label>
 							<?php } ?>
-							<a href="javascript:;" class="btn btn-mini btn-success" onclick="submit_disscusion($(this));"><?php _e('讨论'); ?></a>
+							<a href="javascript:;" class="btn btn-mini btn-success" onclick="submit_disscusion($(this));"><?php echo _t('讨论'); ?></a>
 						</span>
 					</div>
 				</div>
@@ -176,9 +176,9 @@
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
 			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
-			<?php _e('发表了文章'); ?>
+			<?php echo _t('发表了文章'); ?>
 			•
-			<?php _e('%s 个评论', $val['comments']); ?>
+			<?php echo _t('%s 个评论', $val['comments']); ?>
 		</p>
 		<h2 style="font-size:16px;">
 			<a href="<?php echo url_rewrite(); ?>/article/<?php echo $val['id']; ?>"><?php echo CF::title($val); ?></a>
@@ -207,7 +207,7 @@
 				<a href="<?php echo url_rewrite(); ?>/vote/log/item_type-article__item_id-<?php echo $val['id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
 
 				<?php if ($this->user_id) { ?>
-					<a href="javascript:;" onclick="AWS.User.add_favorite('article', '<?php echo $val['id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>
+					<a href="javascript:;" onclick="AWS.User.add_favorite('article', '<?php echo $val['id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php echo _t('收藏'); ?></a>
 				<?php } ?>
 
 			</div>
@@ -228,7 +228,7 @@
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
 			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
-			<?php _e('评论了文章'); ?>
+			<?php echo _t('评论了文章'); ?>
 		</p>
 		<h2 style="font-size:16px;">
 			<a href="<?php echo url_rewrite(); ?>/article/<?php echo $val['thread_info']['id']; ?>"><?php echo CF::title($val['thread_info']); ?></a>
@@ -268,9 +268,9 @@
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
 			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
-			<?php _e('发表了影片'); ?>
+			<?php echo _t('发表了影片'); ?>
 			•
-			<?php _e('%s 个评论', $val['comment_count']); ?>
+			<?php echo _t('%s 个评论', $val['comment_count']); ?>
 		</p>
 		<h2 style="font-size:16px;">
 			<a href="<?php echo url_rewrite(); ?>/video/<?php echo $val['id']; ?>"><?php echo CF::title($val); ?></a>
@@ -299,7 +299,7 @@
 				<a href="<?php echo url_rewrite(); ?>/vote/log/item_type-video__item_id-<?php echo $val['id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
 
 				<?php if ($this->user_id) { ?>
-					<a href="javascript:;" onclick="AWS.User.add_favorite('video', '<?php echo $val['id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>
+					<a href="javascript:;" onclick="AWS.User.add_favorite('video', '<?php echo $val['id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php echo _t('收藏'); ?></a>
 				<?php } ?>
 
 			</div>
@@ -320,7 +320,7 @@
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
 			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
-			<?php _e('评论了影片'); ?>
+			<?php echo _t('评论了影片'); ?>
 		</p>
 		<h2 style="font-size:16px;">
 			<a href="<?php echo url_rewrite(); ?>/video/<?php echo $val['thread_info']['id']; ?>"><?php echo CF::title($val['thread_info']); ?></a>

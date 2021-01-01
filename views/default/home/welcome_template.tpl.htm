@@ -4,10 +4,10 @@
 			<div class="modal-body clearfix">
 				<div class="aw-mod">
 					<div class="mod-head">
-						<h2>Hi , <?php echo UF::name($this->user_info); ?><br/><?php _e('欢迎来到'); ?> <?php echo S::get('site_name'); ?></h2>
+						<h2>Hi , <?php echo UF::name($this->user_info); ?><br/><?php echo _t('欢迎来到'); ?> <?php echo S::get('site_name'); ?></h2>
 						<ul>
 							<li>
-								<?php _e('完善基本资料'); ?>
+								<?php echo _t('完善基本资料'); ?>
 							</li>
 						</ul>
 					</div>
@@ -17,36 +17,36 @@
 						<div class="aw-complete-data">
 							<div class="pull-left side-bar">
 								<img id="aw-upload-img" src="<?php echo UF::avatar($this->user_info, 'max'); ?>" title="" alt=""/>
-								<p class="clearfix text-center"><a class="btn btn-success clearfix" id="welcome_avatar_uploader"><?php _e('上传头像'); ?></a> </p>
-								<p id="aw-img-uploading" class="collapse"><i class="aw-loading"></i><?php _e('文件上传中...'); ?></p>
+								<p class="clearfix text-center"><a class="btn btn-success clearfix" id="welcome_avatar_uploader"><?php echo _t('上传头像'); ?></a> </p>
+								<p id="aw-img-uploading" class="collapse"><i class="aw-loading"></i><?php echo _t('文件上传中...'); ?></p>
 
 							</div>
 							<div class="pull-left form-horizontal">
 								<div class="form-group">
-									<label class="col-sm-2 control-label"><?php _e('性别'); ?>:</label>
+									<label class="col-sm-2 control-label"><?php echo _t('性别'); ?>:</label>
 									<div class="col-sm-10">
 										<label>
 											<input type="radio" name="sex" value="0"<?php if (!$this->user_info['sex']) { ?> checked="checked"<?php } ?> />
-											<?php _e('保密'); ?>
+											<?php echo _t('保密'); ?>
 										</label> &nbsp;
 										<label>
 											<input type="radio" name="sex" value="1"<?php if ($this->user_info['sex'] == 1) { ?> checked="checked"<?php } ?> />
-											<?php _e('男'); ?>
+											<?php echo _t('男'); ?>
 										</label> &nbsp;
 										<label>
 											<input type="radio" name="sex" value="2"<?php if ($this->user_info['sex'] == 2) { ?> checked="checked"<?php } ?> />
-											<?php _e('女'); ?>
+											<?php echo _t('女'); ?>
 										</label> &nbsp;
 										<label>
 											<input type="radio" name="sex" value="3"<?php if ($this->user_info['sex'] == 3) { ?> checked="checked"<?php } ?> />
-											<?php _e('其他'); ?>
+											<?php echo _t('其他'); ?>
 										</label>
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-2 control-label"><?php _e('介绍'); ?>:</label>
+									<label class="col-sm-2 control-label"><?php echo _t('介绍'); ?>:</label>
 									<div class="col-sm-10">
-										<input type="text" class="form-control" placeholder="<?php _e('如：小熊维尼'); ?>" id="welcome_signature" value="" name="signature" />
+										<input type="text" class="form-control" placeholder="<?php echo _t('如：小熊维尼'); ?>" id="welcome_signature" value="" name="signature" />
 									</div>
 								</div>
 							</div>
@@ -54,8 +54,8 @@
 						</form>
 					</div>
 					<div class="mod-footer">
-						<a class="pull-left" data-dismiss="modal" aria-hidden="true"><?php _e('跳过资料填写'); ?></a>
-						<a class="btn btn-large btn-success pull-right" onclick="AWS.submit_form($('#welcome_form'), $(this));"><?php _e('完成'); ?></a>
+						<a class="pull-left" data-dismiss="modal" aria-hidden="true"><?php echo _t('跳过资料填写'); ?></a>
+						<a class="btn btn-large btn-success pull-right" onclick="AWS.submit_form($('#welcome_form'), $(this));"><?php echo _t('完成'); ?></a>
 					</div>
 
 				</div>

@@ -6,15 +6,15 @@
 		<div class="mod-head">
 			<h3>
 				<ul class="nav nav-tabs">
-					<li class="active"><a href="#list" data-toggle="tab"><?php _e('问题列表'); ?></a></li>
-					<li><a href="#search" data-toggle="tab"><?php _e('搜索'); ?></a></li>
+					<li class="active"><a href="#list" data-toggle="tab"><?php echo _t('问题列表'); ?></a></li>
+					<li><a href="#search" data-toggle="tab"><?php echo _t('搜索'); ?></a></li>
 				</ul>
 			</h3>
 		</div>
 		<div class="mod-body tab-content">
 			<div class="tab-pane active" id="list">
 				<?php if ($_GET['action'] == 'search') { ?>
-				<div class="alert alert-info"><?php _e('找到 %s 条符合条件的内容', intval($this->question_count)); ?></div>
+				<div class="alert alert-info"><?php echo _t('找到 %s 条符合条件的内容', intval($this->question_count)); ?></div>
 				<?php } ?>
 
 				<form id="batchs_form" action="<?php echo url_rewrite(); ?>/admin/ajax/question_manage/" method="post">
@@ -25,26 +25,26 @@
 						<thead>
 							<tr>
 								<th><input type="checkbox" class="check-all"></th>
-								<th><?php _e('问题标题'); ?></th>
-								<th><?php _e('回答'); ?></th>
-								<th><?php _e('浏览'); ?></th>
-								<th><?php _e('作者'); ?></th>
-								<th><?php _e('发布时间'); ?></th>
-								<th><?php _e('最后更新'); ?></th>
-								<th><?php _e('操作'); ?></th>
+								<th><?php echo _t('问题标题'); ?></th>
+								<th><?php echo _t('回答'); ?></th>
+								<th><?php echo _t('浏览'); ?></th>
+								<th><?php echo _t('作者'); ?></th>
+								<th><?php echo _t('发布时间'); ?></th>
+								<th><?php echo _t('最后更新'); ?></th>
+								<th><?php echo _t('操作'); ?></th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php foreach ($this->list AS $key => $val) { ?>
 							<tr>
 								<td><input type="checkbox" name="question_ids[]" value="<?php echo $val['id']; ?>"></td>
-								<td><a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['id']; ?>" target="_blank"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a></td>
+								<td><a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['id']; ?>" target="_blank"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php echo _t('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a></td>
 								<td><?php if ($val['answer_count']) { ?><?php echo $val['answer_count']; ?><?php } else { ?>0<?php } ?></td>
 								<td><?php echo $val['view_count']; ?></td>
 								<td><a href="<?php echo UF::url($val['user_info']); ?>" target="_blank"><?php echo UF::name($val['user_info']); ?></a></td>
 								<td><?php echo date_friendly($val['add_time']); ?></td>
 								<td><?php echo date_friendly($val['update_time']); ?></td>
-								<td><a href="<?php echo url_rewrite(); ?>/modify/<?php echo $val['id']; ?>" target="_blank" class="icon icon-edit md-tip" title="<?php _e('编辑'); ?>"></a></td>
+								<td><a href="<?php echo url_rewrite(); ?>/modify/<?php echo $val['id']; ?>" target="_blank" class="icon icon-edit md-tip" title="<?php echo _t('编辑'); ?>"></a></td>
 							</tr>
 							<?php } ?>
 						</tbody>
@@ -55,7 +55,7 @@
 				<div class="mod-table-foot">
 					<?php TPL::include('global/pagination.tpl.htm'); ?>
 
-					<a class="btn btn-danger" onclick="$('#action').val('remove'); AWS.ajax_post($('#batchs_form'));"><?php _e('删除'); ?></a>
+					<a class="btn btn-danger" onclick="$('#action').val('remove'); AWS.ajax_post($('#batchs_form'));"><?php echo _t('删除'); ?></a>
 				</div>
 			</div>
 
@@ -65,7 +65,7 @@
 					<input name="action" type="hidden" value="search" />
 
 					<div class="form-group">
-						<label class="col-sm-2 col-xs-3 control-label"><?php _e('关键词'); ?>:</label>
+						<label class="col-sm-2 col-xs-3 control-label"><?php echo _t('关键词'); ?>:</label>
 
 						<div class="col-sm-5 col-xs-8">
 							<input class="form-control" type="text" value="<?php echo htmlspecialchars($_GET['keyword']); ?>" name="keyword" />
@@ -73,7 +73,7 @@
 					</div>
 
 					<div class="form-group">
-						<label class="col-sm-2 col-xs-3 control-label"><?php _e('分类'); ?>:</label>
+						<label class="col-sm-2 col-xs-3 control-label"><?php echo _t('分类'); ?>:</label>
 
 						<div class="col-sm-5 col-xs-8">
 							<select name="category_id" class="form-control">
@@ -84,7 +84,7 @@
 					</div>
 
 					<div class="form-group">
-						<label class="col-sm-2 col-xs-3 control-label"><?php _e('发起时间范围'); ?>:</label>
+						<label class="col-sm-2 col-xs-3 control-label"><?php echo _t('发起时间范围'); ?>:</label>
 
 						<div class="col-sm-6 col-xs-9">
 							<div class="row">
@@ -104,7 +104,7 @@
 					</div>
 
 					<div class="form-group">
-						<label class="col-sm-2 col-xs-3 control-label"><?php _e('作者'); ?>:</label>
+						<label class="col-sm-2 col-xs-3 control-label"><?php echo _t('作者'); ?>:</label>
 
 						<div class="col-sm-5 col-xs-8">
 							<input class="form-control" type="text" value="<?php echo htmlspecialchars($_GET['user_name']); ?>" name="user_name" />
@@ -112,7 +112,7 @@
 					</div>
 
 					<div class="form-group">
-						<label class="col-sm-2 col-xs-3 control-label"><?php _e('回复数'); ?>:</label>
+						<label class="col-sm-2 col-xs-3 control-label"><?php echo _t('回复数'); ?>:</label>
 
 						<div class="col-sm-6 col-xs-9">
 							<div class="row">
@@ -131,7 +131,7 @@
 
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-5 col-xs-8">
-							<button type="button" onclick="AWS.ajax_post($('#search_form'));" class="btn btn-primary"><?php _e('搜索'); ?></button>
+							<button type="button" onclick="AWS.ajax_post($('#search_form'));" class="btn btn-primary"><?php echo _t('搜索'); ?></button>
 						</div>
 					</div>
 				</form>

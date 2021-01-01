@@ -7,13 +7,13 @@
 				<div class="col-sm-12 col-md-9 aw-main-content">
 					<!-- tab切换 -->
 					<ul class="nav nav-tabs aw-nav-tabs active">
-						<li <?php if ($_GET['day'] == 'month') { ?>class="active"<?php } ?>><a href="<?php echo url_rewrite(); ?>/topic/channel-hot__day-month"><?php _e('%s 天', 30); ?></a></li>
-						<li <?php if ($_GET['day'] == 'week') { ?>class="active"<?php } ?>><a href="<?php echo url_rewrite(); ?>/topic/channel-hot__day-week"><?php _e('%s 天', 7); ?></a></li>
-						<li <?php if (!$_GET['day']) { ?>class="active"<?php } ?>><a href="<?php echo url_rewrite(); ?>/topic/"><?php _e('全部'); ?></a></li>
+						<li <?php if ($_GET['day'] == 'month') { ?>class="active"<?php } ?>><a href="<?php echo url_rewrite(); ?>/topic/channel-hot__day-month"><?php echo _t('%s 天', 30); ?></a></li>
+						<li <?php if ($_GET['day'] == 'week') { ?>class="active"<?php } ?>><a href="<?php echo url_rewrite(); ?>/topic/channel-hot__day-week"><?php echo _t('%s 天', 7); ?></a></li>
+						<li <?php if (!$_GET['day']) { ?>class="active"<?php } ?>><a href="<?php echo url_rewrite(); ?>/topic/"><?php echo _t('全部'); ?></a></li>
 						<?php if ($_GET['channel'] == 'focus') { ?>
-						<h2 class="hidden-xs"><i class="icon icon-topic"></i> <?php _e('我关注的话题'); ?></h2>
+						<h2 class="hidden-xs"><i class="icon icon-topic"></i> <?php echo _t('我关注的话题'); ?></h2>
 						<?php } else { ?>
-						<h2 class="hidden-xs"><i class="icon icon-topic"></i> <?php _e('热门话题'); ?></h2>
+						<h2 class="hidden-xs"><i class="icon icon-topic"></i> <?php echo _t('热门话题'); ?></h2>
 						<?php } ?>
 					</ul>
 					<!-- end tab切换 -->
@@ -37,11 +37,11 @@
 									<!-- end 话题内容 -->
 								</p>
 								<p class="aw-small-text">
-									<span><?php _e('%s 个讨论', $val['discuss_count']); ?></span>
-									<span><?php _e('%s 个关注', $val['focus_count']); ?></span>
+									<span><?php echo _t('%s 个讨论', $val['discuss_count']); ?></span>
+									<span><?php echo _t('%s 个关注', $val['focus_count']); ?></span>
 								</p>
 								<p class="aw-small-text">
-									<?php _e('7 天新增 %s 个讨论', $val['discuss_count_last_week']); ?>, <?php _e('30 天新增 %s 个讨论', $val['discuss_count_last_month']); ?>
+									<?php echo _t('7 天新增 %s 个讨论', $val['discuss_count_last_week']); ?>, <?php echo _t('30 天新增 %s 个讨论', $val['discuss_count_last_month']); ?>
 								</p>
 							</div>
 							<?php } ?>
@@ -58,7 +58,7 @@
 					<!-- 新增话题 -->
 					<div class="aw-mod new-topic">
 						<div class="mod-head">
-							<h3><?php _e('新增话题'); ?></h3>
+							<h3><?php echo _t('新增话题'); ?></h3>
 						</div>
 						<div class="mod-body clearfix">
 							<div class="aw-topic-bar">
@@ -77,9 +77,9 @@
 					<div class="aw-mod">
 						<div class="mod-body">
 							<?php if ($_GET['channel'] == 'focus') { ?>
-							<a href="<?php echo url_rewrite(); ?>/topic/channel-hot"><?php _e('热门话题'); ?></a>
+							<a href="<?php echo url_rewrite(); ?>/topic/channel-hot"><?php echo _t('热门话题'); ?></a>
 							<?php } else { ?>
-							<a href="<?php echo url_rewrite(); ?>/topic/channel-focus"><?php _e('我关注的话题'); ?></a>
+							<a href="<?php echo url_rewrite(); ?>/topic/channel-focus"><?php echo _t('我关注的话题'); ?></a>
 							<?php } ?>
 						</div>
 					</div>

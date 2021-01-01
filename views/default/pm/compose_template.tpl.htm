@@ -4,36 +4,36 @@
 		<form action="<?php echo url_rewrite(); ?>/pm/new/" method="post">
 			<div class="modal-header">
 				<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>
-				<h3 class="modal-title"><?php _e('私信会话'); ?></h3>
+				<h3 class="modal-title"><?php echo _t('私信会话'); ?></h3>
 			</div>
 			<div class="modal-body">
 				<div style="position:relative;">
-					<input class="pm_recipient_input form-control" type="text" placeholder="<?php _e('收件人'); ?>" name="usernames[]" value="" />
+					<input class="pm_recipient_input form-control" type="text" placeholder="<?php echo _t('收件人'); ?>" name="usernames[]" value="" />
 					<div class="pm_recipient_dropdown aw-dropdown">
-						<p class="title"><?php _e('没有找到相关结果'); ?></p>
+						<p class="title"><?php echo _t('没有找到相关结果'); ?></p>
 						<ul class="aw-dropdown-list"></ul>
 					</div>
-					<input class="pm_recipient_input form-control collapse" type="text" placeholder="<?php _e('收件人 (2)'); ?>" name="usernames[]" value="" />
+					<input class="pm_recipient_input form-control collapse" type="text" placeholder="<?php echo _t('收件人 (2)'); ?>" name="usernames[]" value="" />
 					<div class="pm_recipient_dropdown aw-dropdown">
-						<p class="title"><?php _e('没有找到相关结果'); ?></p>
+						<p class="title"><?php echo _t('没有找到相关结果'); ?></p>
 						<ul class="aw-dropdown-list"></ul>
 					</div>
-					<input class="pm_recipient_input form-control collapse" type="text" placeholder="<?php _e('收件人 (3)'); ?>" name="usernames[]" value="" />
+					<input class="pm_recipient_input form-control collapse" type="text" placeholder="<?php echo _t('收件人 (3)'); ?>" name="usernames[]" value="" />
 					<div class="pm_recipient_dropdown aw-dropdown">
-						<p class="title"><?php _e('没有找到相关结果'); ?></p>
+						<p class="title"><?php echo _t('没有找到相关结果'); ?></p>
 						<ul class="aw-dropdown-list"></ul>
 					</div>
-					<input class="pm_recipient_input form-control collapse" type="text" placeholder="<?php _e('收件人 (4)'); ?>" name="usernames[]" value="" />
+					<input class="pm_recipient_input form-control collapse" type="text" placeholder="<?php echo _t('收件人 (4)'); ?>" name="usernames[]" value="" />
 					<div class="pm_recipient_dropdown aw-dropdown">
-						<p class="title"><?php _e('没有找到相关结果'); ?></p>
+						<p class="title"><?php echo _t('没有找到相关结果'); ?></p>
 						<ul class="aw-dropdown-list"></ul>
 					</div>
-					<a class="aw-small-text" href="javascript:;" onclick="var el=$(this),names=$('.pm_recipient_input');for(var i=0,l=names.length;i<l;i++){var n=names.eq(i),c='collapse';if(n.hasClass(c)){n.removeClass(c);if(i+1==l)el.hide();break;}}"> <i class="icon icon-plus"></i><?php _e('增加'); ?></a>
+					<a class="aw-small-text" href="javascript:;" onclick="var el=$(this),names=$('.pm_recipient_input');for(var i=0,l=names.length;i<l;i++){var n=names.eq(i),c='collapse';if(n.hasClass(c)){n.removeClass(c);if(i+1==l)el.hide();break;}}"> <i class="icon icon-plus"></i><?php echo _t('增加'); ?></a>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<a data-dismiss="modal" aria-hidden="true" class="aw-small-text"><?php _e('取消'); ?></a>
-				<button type="submit" class="btn btn-large btn-success"><?php _e('下一步'); ?></button>
+				<a data-dismiss="modal" aria-hidden="true" class="aw-small-text"><?php echo _t('取消'); ?></a>
+				<button type="submit" class="btn btn-large btn-success"><?php echo _t('下一步'); ?></button>
 			</div>
 		</form>
 		</div>

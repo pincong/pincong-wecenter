@@ -37,17 +37,17 @@ var G_BASE_URL = "<?php echo url_rewrite(); ?>";
 		<form id="login_form" onsubmit="return false" method="post">
 			<div class="alert alert-danger collapse error_message"></div>
 			<div class="form-group">
-				<label><?php _e('用户名'); ?></label>
+				<label><?php echo _t('用户名'); ?></label>
 				<input type="text" class="form-control" name="username" autocomplete="username" value="<?php echo UF::name($this->user_info); ?>" readonly />
 				<i class="icon icon-user"></i>
 			</div>
 			<div class="form-group">
-				<label><?php _e('密码'); ?></label>
-				<input type="password" class="form-control" name="password" autocomplete="current-password" placeholder="<?php _e('密码'); ?>" autofocus />
+				<label><?php echo _t('密码'); ?></label>
+				<input type="password" class="form-control" name="password" autocomplete="current-password" placeholder="<?php echo _t('密码'); ?>" autofocus />
 				<i class="icon icon-lock"></i>
 			</div>
 
-			<button type="submit" class="btn btn-primary"><?php _e('登录'); ?></button>
+			<button type="submit" class="btn btn-primary"><?php echo _t('登录'); ?></button>
 		</form>
 
 		<h2 class="text-center aw-small-text">WeCenter Admin Control</h2>
@@ -74,7 +74,7 @@ $(document).ready(function () {
 			AWS.ajax_post(new_form, AWS.ajax_processer, 'error_message');
 		}).catch(function(error) {
 			console.log(error);
-			alert("<?php _e('发生错误'); ?>");
+			alert("<?php echo _t('发生错误'); ?>");
 		});
 
 		return false;

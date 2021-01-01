@@ -12,11 +12,11 @@
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
 			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
-			<?php _e('发起了问题'); ?>
+			<?php echo _t('发起了问题'); ?>
 			•
 			<?php echo date_friendly($val['add_time']); ?>
 			•
-			<?php _e('%s 个回复', $val['answer_count']); ?>
+			<?php echo _t('%s 个回复', $val['answer_count']); ?>
 		</p>
 		<h4>
 			<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['id']; ?>"><?php echo FORMAT::text($val['title'], true); ?></a>
@@ -34,12 +34,12 @@
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
 			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
-			<?php _e('回复了问题'); ?>
+			<?php echo _t('回复了问题'); ?>
 			•
 			<?php echo date_friendly($val['add_time']); ?>
 		</p>
 		<h4>
-			<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['thread_info']['id']; ?>"><?php if (!$val['thread_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['thread_info']['title'], true); ?><?php } ?></a>
+			<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['thread_info']['id']; ?>"><?php if (!$val['thread_info']['title']) { ?><s class="aw-deleted"><?php echo _t('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['thread_info']['title'], true); ?><?php } ?></a>
 		</h4>
 	</div>
 	<div class="mod-body clearfix">
@@ -61,11 +61,11 @@
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
 			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
-			<?php _e('发表了文章'); ?>
+			<?php echo _t('发表了文章'); ?>
 			•
 			<?php echo date_friendly($val['add_time']); ?>
 			•
-			<?php _e('%s 个评论', $val['comments']); ?>
+			<?php echo _t('%s 个评论', $val['comments']); ?>
 		</p>
 		<h4>
 			<a href="<?php echo url_rewrite(); ?>/article/<?php echo $val['id']; ?>"><?php echo FORMAT::text($val['title'], true); ?></a>
@@ -83,12 +83,12 @@
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
 			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
-			<?php _e('评论了文章'); ?>
+			<?php echo _t('评论了文章'); ?>
 			•
 			<?php echo date_friendly($val['add_time']); ?>
 		</p>
 		<h4>
-			<a href="<?php echo url_rewrite(); ?>/article/<?php echo $val['thread_info']['id']; ?>"><?php if (!$val['thread_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['thread_info']['title'], true); ?><?php } ?></a>
+			<a href="<?php echo url_rewrite(); ?>/article/<?php echo $val['thread_info']['id']; ?>"><?php if (!$val['thread_info']['title']) { ?><s class="aw-deleted"><?php echo _t('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['thread_info']['title'], true); ?><?php } ?></a>
 		</h4>
 	</div>
 	<div class="mod-body clearfix">
@@ -110,11 +110,11 @@
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
 			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
-			<?php _e('发表了影片'); ?>
+			<?php echo _t('发表了影片'); ?>
 			•
 			<?php echo date_friendly($val['add_time']); ?>
 			•
-			<?php _e('%s 个评论', $val['comment_count']); ?>
+			<?php echo _t('%s 个评论', $val['comment_count']); ?>
 		</p>
 		<h4>
 			<a href="<?php echo url_rewrite(); ?>/video/<?php echo $val['id']; ?>"><?php echo FORMAT::text($val['title'], true); ?></a>
@@ -132,12 +132,12 @@
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
 			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
-			<?php _e('评论了影片'); ?>
+			<?php echo _t('评论了影片'); ?>
 			•
 			<?php echo date_friendly($val['add_time']); ?>
 		</p>
 		<h4>
-			<a href="<?php echo url_rewrite(); ?>/video/<?php echo $val['thread_info']['id']; ?>"><?php if (!$val['thread_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['thread_info']['title'], true); ?><?php } ?></a>
+			<a href="<?php echo url_rewrite(); ?>/video/<?php echo $val['thread_info']['id']; ?>"><?php if (!$val['thread_info']['title']) { ?><s class="aw-deleted"><?php echo _t('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['thread_info']['title'], true); ?><?php } ?></a>
 		</h4>
 	</div>
 	<div class="mod-body clearfix">

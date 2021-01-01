@@ -20,20 +20,20 @@
 					<input type="text" class="form-control" name="username" autocomplete="username" value="<?php echo $this->user['user_name']; ?>" readonly style="cursor:default">
 				</li>
 				<li>
-					<input type="password" class="form-control" name="password" autocomplete="current-password" placeholder="<?php _e('密码'); ?>" autofocus>
+					<input type="password" class="form-control" name="password" autocomplete="current-password" placeholder="<?php echo _t('密码'); ?>" autofocus>
 				</li>
 				<?php if ($this->captcha_required) { ?>
 				<li class="aw-register-verify">
 					<img class="pull-right" onclick="this.src = G_BASE_URL + '/captcha/' + Math.floor(Math.random() * 10000);" src="<?php echo url_rewrite(); ?>/captcha/">
 
-					<input type="text" class="form-control" name="captcha" placeholder="<?php _e('验证码'); ?>">
+					<input type="text" class="form-control" name="captcha" placeholder="<?php echo _t('验证码'); ?>">
 				</li>
 				<?php } ?>
 				<li class="last">
-					<label><input type="checkbox" name="remember_me"> <?php _e('记住我'); ?></label>
+					<label><input type="checkbox" name="remember_me"> <?php echo _t('记住我'); ?></label>
 				</li>
 				<li class="clearfix">
-					<button type="submit" class="btn btn-large btn-blue btn-block"><?php _e('登录'); ?></button>
+					<button type="submit" class="btn btn-large btn-blue btn-block"><?php echo _t('登录'); ?></button>
 				</li>
 			</ul>
 		</form>
@@ -81,7 +81,7 @@ $(document).ready(function () {
 		var password_version = (<?php echo intval($this->user['password_version']); ?> || 1);
 
 		form.find('.error_message').hide();
-		form.find('.alert-info').show().find('em').text("<?php _e('请稍候...'); ?>");
+		form.find('.alert-info').show().find('em').text("<?php echo _t('请稍候...'); ?>");
 		btn.addClass('disabled');
 
 <?php if ($this->user['password_version'] < 3) { ?>
@@ -115,7 +115,7 @@ $(document).ready(function () {
 					$('.aw-register-verify img').click();
 				});
 			}).catch(function(error) {
-				_alert("<?php _e('无法生成密钥'); ?>");
+				_alert("<?php echo _t('无法生成密钥'); ?>");
 				btn.removeClass('disabled');
 				console.log(error);
 			});
@@ -140,7 +140,7 @@ $(document).ready(function () {
 						_redirect(rsm.next);
 					}).catch(function(error) {
 						console.log(error);
-						alert("<?php _e('无法解密密钥'); ?>");
+						alert("<?php echo _t('无法解密密钥'); ?>");
 						_redirect(rsm.next);
 					});
 				}, function(err) {
@@ -149,7 +149,7 @@ $(document).ready(function () {
 					$('.aw-register-verify img').click();
 				});
 			}).catch(function(error) {
-				_alert("<?php _e('无法 hash 密码'); ?>");
+				_alert("<?php echo _t('无法 hash 密码'); ?>");
 				btn.removeClass('disabled');
 				console.log(error);
 			});

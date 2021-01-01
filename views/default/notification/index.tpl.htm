@@ -9,11 +9,11 @@
 						<div class="mod-head common-head clearfix">
 							<h2>
 								<span class="pull-right hidden-xs">
-									<a class="aw-small-text" href="<?php echo url_rewrite(); ?>/profile/privacy/#!notifications"><i class="icon icon-setting"></i> <?php _e('通知设置'); ?></a>
-									<a onclick="AWS.Message.read_notification(true, 0, true);" class="btn btn-mini btn-success"><?php _e('全部已读'); ?></a>
+									<a class="aw-small-text" href="<?php echo url_rewrite(); ?>/profile/privacy/#!notifications"><i class="icon icon-setting"></i> <?php echo _t('通知设置'); ?></a>
+									<a onclick="AWS.Message.read_notification(true, 0, true);" class="btn btn-mini btn-success"><?php echo _t('全部已读'); ?></a>
 								</span>
 
-								<?php _e('通知'); ?>
+								<?php echo _t('通知'); ?>
 							</h2>
 						</div>
 						<div class="mod-body">
@@ -23,7 +23,7 @@
 						</div>
 						<div class="mod-footer">
 							<a class="aw-load-more-content" id="notifications_more">
-								<span><?php _e('更多'); ?>...</span>
+								<span><?php echo _t('更多'); ?>...</span>
 							</a>
 						</div>
 					</div>

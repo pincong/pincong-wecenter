@@ -40,14 +40,14 @@
 			<?php } else { ?>
 			<a href="<?php echo url_rewrite(); ?>/<?php echo $val['thread_type']; ?>/id-<?php echo $val['thread_info']['id']; ?>__notification_id-<?php echo $val['id']; ?>">
 			<?php } ?>
-				<?php if (!$val['thread_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['thread_info']['title'], true); ?><?php } ?>
+				<?php if (!$val['thread_info']['title']) { ?><s class="aw-deleted"><?php echo _t('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['thread_info']['title'], true); ?><?php } ?>
 			</a>
 		<?php } ?>
 	</span>
 	</p>
 	<p class="more">
 		<span class="aw-small-text"><?php echo date_friendly($val['add_time']); ?></span>
-		<a class="pull-right read aw-small-text" onclick="AWS.Message.read_notification($(this).parents('.notification'), <?php echo $val['id']; ?>, false)"><?php _e('标为已读'); ?></a>
+		<a class="pull-right read aw-small-text" onclick="AWS.Message.read_notification($(this).parents('.notification'), <?php echo $val['id']; ?>, false)"><?php echo _t('标为已读'); ?></a>
 	</p>
 </li>
 <?php } ?>

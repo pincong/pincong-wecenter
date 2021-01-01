@@ -4,12 +4,12 @@
 	<div class="aw-mod">
 		<div class="mod-head">
 			<h4 class="aw-hide-txt">
-				<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title'], true); ?><?php } ?></a>
+				<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php echo _t('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title'], true); ?><?php } ?></a>
 			</h4>
 		</div>
 		<div class="mod-body">
 			<span class="aw-border-radius-5 count pull-left"><i class="icon icon-agree"></i> <?php echo $val['agree_count']; ?></span>
-			<p class="aw-small-text"><?php _e('%s 次浏览', $val['view_count']); ?> • <?php _e('%s 个回复', $val['answer_count']); ?> • <?php echo date_friendly($val['add_time']); ?></p>
+			<p class="aw-small-text"><?php echo _t('%s 次浏览', $val['view_count']); ?> • <?php echo _t('%s 个回复', $val['answer_count']); ?> • <?php echo date_friendly($val['add_time']); ?></p>
 		</div>
 	</div>
 </div>

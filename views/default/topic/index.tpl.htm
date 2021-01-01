@@ -6,7 +6,7 @@
 		<div class="row">
 			<div class="col-sm-12 aw-global-tips">
 				<div class="alert alert-warning fade in">
-					<a href="<?php echo url_rewrite(); ?>/topic/topic_id-<?php echo $this->redirected_from['topic_id']; ?>"><?php echo FORMAT::text($this->redirected_from['topic_title']); ?></a> <?php _e('已与当前话题合并'); ?>
+					<a href="<?php echo url_rewrite(); ?>/topic/topic_id-<?php echo $this->redirected_from['topic_id']; ?>"><?php echo FORMAT::text($this->redirected_from['topic_title']); ?></a> <?php echo _t('已与当前话题合并'); ?>
 				</div>
 			</div>
 		</div>
@@ -17,7 +17,7 @@
 		<div class="row">
 			<div class="col-sm-12 aw-global-tips">
 				<div class="alert alert-danger fade in">
-					<?php _e('当前话题已被合并到'); ?>: <a href="<?php echo url_rewrite(); ?>/topic/topic_id-<?php echo $this->redirect_info['topic_id']; ?>__rf-<?php echo $this->topic_info['topic_id']; ?>"><?php echo FORMAT::text($this->redirect_info['topic_title']); ?></a>
+					<?php echo _t('当前话题已被合并到'); ?>: <a href="<?php echo url_rewrite(); ?>/topic/topic_id-<?php echo $this->redirect_info['topic_id']; ?>__rf-<?php echo $this->topic_info['topic_id']; ?>"><?php echo FORMAT::text($this->redirect_info['topic_title']); ?></a>
 				</div>
 			</div>
 		</div>
@@ -32,16 +32,16 @@
 						<div class="mod-body">
 							<img src="<?php echo get_topic_pic_url($this->topic_info, 'max'); ?>" alt="<?php echo FORMAT::text($this->topic_info['topic_title']); ?>" />
 							<?php if ($this->user_id) { ?>
-							<a class="pull-right aw-small-textfollow btn btn-normal btn-success<?php if ($this->topic_info['has_focus']) { ?> active<?php } ?>" href="javascript:;" onclick="AWS.User.follow($(this), 'topic', <?php echo $this->topic_info['topic_id']; ?>);"><span><?php if ($this->topic_info['has_focus']) { ?><?php _e('取消关注'); ?><?php } else { ?><?php _e('关注'); ?><?php } ?></span> <em>|</em> <b><?php echo $this->topic_info['focus_count']; ?></b></a>
+							<a class="pull-right aw-small-textfollow btn btn-normal btn-success<?php if ($this->topic_info['has_focus']) { ?> active<?php } ?>" href="javascript:;" onclick="AWS.User.follow($(this), 'topic', <?php echo $this->topic_info['topic_id']; ?>);"><span><?php if ($this->topic_info['has_focus']) { ?><?php echo _t('取消关注'); ?><?php } else { ?><?php echo _t('关注'); ?><?php } ?></span> <em>|</em> <b><?php echo $this->topic_info['focus_count']; ?></b></a>
 							<?php } ?>
-							<h2><?php echo FORMAT::text($this->topic_info['topic_title']); ?> <?php if ($this->topic_info['topic_lock']) { ?><i class="aw-icon i-lock" title="<?php _e('已锁定'); ?>"></i><?php } ?></h2>
+							<h2><?php echo FORMAT::text($this->topic_info['topic_title']); ?> <?php if ($this->topic_info['topic_lock']) { ?><i class="aw-icon i-lock" title="<?php echo _t('已锁定'); ?>"></i><?php } ?></h2>
 
 							<p>
 							<?php if ($this->topic_info['topic_description']) { ?>
 								<?php echo FORMAT::hyperlink($this->topic_info['topic_description']); ?>
 							<?php } ?>
 							<?php if ($this->topic_info['topic_lock'] == 0 AND $this->user_info['permission']['edit_topic']) { ?>
-								<a href="<?php echo url_rewrite(); ?>/topic/edit/<?php echo $this->topic_info['topic_id']; ?>" class="icon-inverse" class=><i class="icon icon-edit"></i><?php if (!$this->topic_info['topic_description']) { ?> <?php _e('添加描述'); ?><?php } ?></a>
+								<a href="<?php echo url_rewrite(); ?>/topic/edit/<?php echo $this->topic_info['topic_id']; ?>" class="icon-inverse" class=><i class="icon icon-edit"></i><?php if (!$this->topic_info['topic_description']) { ?> <?php echo _t('添加描述'); ?><?php } ?></a>
 							<?php } ?>
 							</p>
 						</div>
@@ -67,7 +67,7 @@
 					<!-- xx人关注该话题 -->
 					<div class="aw-mod">
 						<div class="mod-head">
-							<h3><?php _e('%s 人关注该话题', $this->topic_info['focus_count']); ?></h3>
+							<h3><?php echo _t('%s 人关注该话题', $this->topic_info['focus_count']); ?></h3>
 						</div>
 					</div>
 					<!-- end xx人关注该话题 -->
@@ -75,22 +75,22 @@
 					<?php if ($this->user_info['permission']['manage_topic'] OR $this->user_info['permission']['edit_topic']) { ?>
 					<div class="aw-mod">
 						<div class="mod-head">
-							<h3><?php _e('管理'); ?></h3>
+							<h3><?php echo _t('管理'); ?></h3>
 						</div>
 
 						<div class="mod-body">
 							<ul>
 							<?php if ($this->topic_info['topic_lock'] == 0 AND $this->user_info['permission']['edit_topic']) { ?>
-								<li><a href="<?php echo url_rewrite(); ?>/topic/edit/<?php echo $this->topic_info['topic_id']; ?>"><?php _e('编辑话题'); ?></a></li>
+								<li><a href="<?php echo url_rewrite(); ?>/topic/edit/<?php echo $this->topic_info['topic_id']; ?>"><?php echo _t('编辑话题'); ?></a></li>
 							<?php } ?>
 
 							<?php if ($this->user_info['permission']['manage_topic']) { ?>
 
-								<li><a href="<?php echo url_rewrite(); ?>/topic/manage/<?php echo $this->topic_info['topic_id']; ?>"><?php _e('管理话题'); ?></a></li>
+								<li><a href="<?php echo url_rewrite(); ?>/topic/manage/<?php echo $this->topic_info['topic_id']; ?>"><?php echo _t('管理话题'); ?></a></li>
 
-								<li><a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/topic/ajax/lock/', 'topic_id=<?php echo $this->topic_info['topic_id']; ?>');"><?php if ($this->topic_info['topic_lock']) { ?><?php _e('解除锁定'); ?><?php } else { ?><?php _e('锁定话题'); ?><?php } ?></a></li>
+								<li><a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/topic/ajax/lock/', 'topic_id=<?php echo $this->topic_info['topic_id']; ?>');"><?php if ($this->topic_info['topic_lock']) { ?><?php echo _t('解除锁定'); ?><?php } else { ?><?php echo _t('锁定话题'); ?><?php } ?></a></li>
 
-								<li><a href="javascript:;" onclick="AWS.confirm('<?php _e('确认删除?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/topic/ajax/remove/', 'topic_id=<?php echo $this->topic_info['topic_id']; ?>');});"><?php _e('删除话题'); ?></a></li>
+								<li><a href="javascript:;" onclick="AWS.confirm('<?php echo _t('确认删除?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/topic/ajax/remove/', 'topic_id=<?php echo $this->topic_info['topic_id']; ?>');});"><?php echo _t('删除话题'); ?></a></li>
 
 							<?php } ?>
 							</ul>

@@ -3,7 +3,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>
-				<h3 class="modal-title"><?php _e('备注'); ?></h3>
+				<h3 class="modal-title"><?php echo _t('备注'); ?></h3>
 			</div>
 			<form action="<?php echo url_rewrite(); ?>/kb/ajax/remark/id-<?php echo $this->item_info['id']; ?>" method="post" onsubmit="return false" id="edit_form">
 			<div class="modal-body">
@@ -11,7 +11,7 @@
 				<textarea name="remarks" id="editor_reply" class="form-control" rows="10"><?php echo FORMAT::text($this->item_info['remarks']); ?></textarea>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-large btn-success" onclick="AWS.submit_form($('#edit_form'), $(this), $('.error_message'));return false;"><?php _e('确定'); ?></button>
+				<button class="btn btn-large btn-success" onclick="AWS.submit_form($('#edit_form'), $(this), $('.error_message'));return false;"><?php echo _t('确定'); ?></button>
 			</div>
 			</form>
 		</div>

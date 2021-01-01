@@ -3,7 +3,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>
-				<h3 class="modal-title"><?php _e('变更分类'); ?></h3>
+				<h3 class="modal-title"><?php echo _t('变更分类'); ?></h3>
 			</div>
 			<form action="<?php echo url_rewrite(); ?>/content/ajax/change_category/" method="post" onsubmit="return false" id="change_category">
 			<input type="hidden" name="item_type" value="<?php echo htmlspecialchars($_GET['item_type']); ?>" />
@@ -11,12 +11,12 @@
 			<div class="modal-body">
 				<div class="aw-margin-y-15 aw-margin-top-0 alert alert-danger collapse error_message"><i class="icon icon-delete"></i> <em></em></div>
 				<select class="form-control" name="category_id">
-					<option value="0">- <?php _e('请选择分类'); ?> -</option>
+					<option value="0">- <?php echo _t('请选择分类'); ?> -</option>
 					<?php TPL::include('block/category_options.tpl.htm'); ?>
 				</select>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-large btn-success" onclick="AWS.submit_form($('#change_category'), $(this), $('.error_message'));return false;"><?php _e('确定'); ?></button>
+				<button class="btn btn-large btn-success" onclick="AWS.submit_form($('#change_category'), $(this), $('.error_message'));return false;"><?php echo _t('确定'); ?></button>
 			</div>
 			</form>
 		</div>

@@ -3,7 +3,7 @@
 <div class="aw-register-box">
 	<div class="mod-head">
 		<a href="<?php echo base_url(); ?>/"><img src="<?php echo S::get('login_logo_url'); ?>" alt="" /></a>
-		<h1><?php _e('注册'); ?></h1>
+		<h1><?php echo _t('注册'); ?></h1>
 	</div>
 	<div class="mod-body">
 		<form id="login_form" onsubmit="return false" method="post" style="display:none">
@@ -15,27 +15,27 @@
 					<i class="icon icon-about"></i> <em></em>
 				</li>
 				<li>
-					<input class="form-control" type="text" name="username" autocomplete="username" placeholder="<?php _e('用户名'); ?>">
+					<input class="form-control" type="text" name="username" autocomplete="username" placeholder="<?php echo _t('用户名'); ?>">
 				</li>
 				<li>
-					<input class="form-control" type="password" name="password" autocomplete="new-password" placeholder="<?php _e('密码'); ?>">
+					<input class="form-control" type="password" name="password" autocomplete="new-password" placeholder="<?php echo _t('密码'); ?>">
 				</li>
 				<li>
-					<input class="form-control" type="password" name="confirm_password" autocomplete="new-password" placeholder="<?php _e('再次输入密码'); ?>">
+					<input class="form-control" type="password" name="confirm_password" autocomplete="new-password" placeholder="<?php echo _t('再次输入密码'); ?>">
 				</li>
 				<?php if ($this->captcha_required) { ?>
 				<li class="aw-register-verify">
 					<img class="pull-right" onclick="this.src = G_BASE_URL + '/captcha/' + Math.floor(Math.random() * 10000);" src="<?php echo url_rewrite(); ?>/captcha/">
 
-					<input type="text" class="form-control" name="captcha" placeholder="<?php _e('验证码'); ?>">
+					<input type="text" class="form-control" name="captcha" placeholder="<?php echo _t('验证码'); ?>">
 				</li>
 				<?php } ?>
 				<li class="last">
 					<label>&nbsp;</label>
-					<a href="<?php echo url_rewrite(); ?>/login/" class="pull-right"><?php _e('已有账号?'); ?></a>
+					<a href="<?php echo url_rewrite(); ?>/login/" class="pull-right"><?php echo _t('已有账号?'); ?></a>
 				</li>
 				<li class="clearfix">
-					<button type="submit" class="btn btn-large btn-blue btn-block"><?php _e('注册'); ?></button>
+					<button type="submit" class="btn btn-large btn-blue btn-block"><?php echo _t('注册'); ?></button>
 				</li>
 			</ul>
 		</form>
@@ -75,11 +75,11 @@ $(document).ready(function () {
 		var confirm_pwd = form.find('input[name=confirm_password]').val();
 
 		if (!usr || !pwd) {
-			_alert("<?php _e('请输入正确的用户名或密码'); ?>");
+			_alert("<?php echo _t('请输入正确的用户名或密码'); ?>");
 			return false;
 		}
 		if (pwd != confirm_pwd) {
-			_alert("<?php _e('两次输入的密码不一致'); ?>");
+			_alert("<?php echo _t('两次输入的密码不一致'); ?>");
 			return false;
 		}
 
@@ -90,7 +90,7 @@ $(document).ready(function () {
 		}
 
 		form.find('.error_message').hide();
-		form.find('.alert-info').show().find('em').text("<?php _e('正在生成密钥, 请稍候...'); ?>");
+		form.find('.alert-info').show().find('em').text("<?php echo _t('正在生成密钥, 请稍候...'); ?>");
 		btn.addClass('disabled');
 
 		setTimeout(function() {
@@ -120,7 +120,7 @@ $(document).ready(function () {
 					$('.aw-register-verify img').click();
 				});
 			}).catch(function(error) {
-				_alert("<?php _e('无法生成密钥'); ?>");
+				_alert("<?php echo _t('无法生成密钥'); ?>");
 				btn.removeClass('disabled');
 				console.log(error);
 			});

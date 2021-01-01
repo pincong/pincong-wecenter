@@ -7,7 +7,7 @@
 	<div class="mod">
 		<div class="mod-head">
 			<h3>
-				<span class="pull-left"><?php _e('分类编辑'); ?></span>
+				<span class="pull-left"><?php echo _t('分类编辑'); ?></span>
 			</h3>
 		</div>
 		<div class="tab-content mod-content">
@@ -15,7 +15,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('ID'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('ID'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<span class="col-sm-1 mod-text-inline"><?php echo $this->category['id']; ?></span>
 							</div>
@@ -25,7 +25,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('分类标题'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('分类标题'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input class="form-control" type="text" name="title" value="<?php echo FORMAT::text($this->category['title']); ?>" />
 							</div>
@@ -36,10 +36,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('分组'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('分组'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<select name="group_id" class="form-control">
-									<option value="0"><?php _e('无'); ?></option>
+									<option value="0"><?php echo _t('无'); ?></option>
 									<?php /*echo $this->category_option;*/ ?>
 								</select>
 							</div>
@@ -50,14 +50,14 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('不在首页显示'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('不在首页显示'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="skip" value="1"<?php if ($this->category['skip']) { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+										<input type="radio" name="skip" value="1"<?php if ($this->category['skip']) { ?> checked="checked"<?php } ?> /> <?php echo _t('是'); ?>
 									</label>
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="skip" value="0"<?php if (!$this->category['skip']) { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+										<input type="radio" name="skip" value="0"<?php if (!$this->category['skip']) { ?> checked="checked"<?php } ?> /> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -68,7 +68,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('简介'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('简介'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<textarea class="form-control" name="description" rows="5"><?php echo FORMAT::text($this->category['description']); ?></textarea>
 							</div>
@@ -79,7 +79,7 @@
 				<tfoot>
 				<tr>
 					<td>
-						<input type="button" value="<?php _e('保存设置'); ?>" class="btn btn-primary center-block" onclick="AWS.ajax_post($('#category_form'));" />
+						<input type="button" value="<?php echo _t('保存设置'); ?>" class="btn btn-primary center-block" onclick="AWS.ajax_post($('#category_form'));" />
 					</td>
 				</tr>
 				</tfoot>

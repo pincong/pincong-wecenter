@@ -8,8 +8,8 @@
 					<div class="aw-mod aw-inbox-read">
 						<div class="mod-head common-head">
 							<h2>
-								<a href="<?php echo url_rewrite(); ?>/pm/" class="pull-right"><?php _e('返回私信列表'); ?> »</a>
-								<span><?php _e('私信会话'); ?>: </span>
+								<a href="<?php echo url_rewrite(); ?>/pm/" class="pull-right"><?php echo _t('返回私信列表'); ?> »</a>
+								<span><?php echo _t('私信会话'); ?>: </span>
 								<span>
 								<?php foreach($this->conversation['users'] as $user) { ?>
 									<?php if ($user['uid'] == $this->user_id) continue; ?>
@@ -22,9 +22,9 @@
 							<!-- 私信内容输入框　-->
 							<form id="pm_form" onsubmit="return false" method="post">
 								<a href="<?php echo UF::url($this->user_info); ?>" class="aw-user-img aw-border-radius-5"><img src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" alt="" /></a>
-								<textarea rows="3" class="form-control autosize" placeholder="<?php _e('想要对ta说点什么'); ?>?" type="text" name="message" /></textarea>
+								<textarea rows="3" class="form-control autosize" placeholder="<?php echo _t('想要对ta说点什么'); ?>?" type="text" name="message" /></textarea>
 								<p>
-									<button type="submit" class="btn btn-mini btn-success" style="visibility:hidden;"><?php _e('发送'); ?></button>
+									<button type="submit" class="btn btn-mini btn-success" style="visibility:hidden;"><?php echo _t('发送'); ?></button>
 								</p>
 							</form>
 							<!-- end 私信内容输入框 -->
@@ -43,26 +43,26 @@
 										<p>
 											<a href="javascript:;"><?php echo UF::name($user); ?></a>:
 											<?php if (isset($val['plaintext'])) { ?>
-											<span style="white-space:pre-wrap;" class="pm_unencrypted_message" data-message="<?php echo safe_text($val['plaintext']); ?>"><i><?php _e('请稍候...'); ?></i></span>
+											<span style="white-space:pre-wrap;" class="pm_unencrypted_message" data-message="<?php echo safe_text($val['plaintext']); ?>"><i><?php echo _t('请稍候...'); ?></i></span>
 											<?php } else if (isset($val['message'])) { ?>
-											<span style="white-space:pre-wrap;" class="pm_message" data-message="<?php echo safe_text($val['message']); ?>"><i><?php _e('待解密'); ?></i></span>
+											<span style="white-space:pre-wrap;" class="pm_message" data-message="<?php echo safe_text($val['message']); ?>"><i><?php echo _t('待解密'); ?></i></span>
 											<?php } else { ?>
-											<span><s><?php _e('已刪除'); ?></s></span>
+											<span><s><?php echo _t('已刪除'); ?></s></span>
 											<?php } ?>
 										</p>
 										<div class="aw-small-text">
 											<span class="pull-right">
 												<?php if ($val['sender_uid'] != $this->user_id) { ?>
-												<a href="javascript:;" onclick="$.scrollTo($('#pm_form').offset()['top'] - 20, 600, {queue:true});$('#pm_form').find('textarea').focus();"><?php _e('回复'); ?></a>
+												<a href="javascript:;" onclick="$.scrollTo($('#pm_form').offset()['top'] - 20, 600, {queue:true});$('#pm_form').find('textarea').focus();"><?php echo _t('回复'); ?></a>
 												<?php } else if (isset($val['message'])) { ?>
-												<a href="javascript:;" onclick="AWS.confirm('<?php _e('确认删除这一条私信?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/pm/ajax/delete/', 'id=<?php echo $val['id']; ?>');});"><?php _e('删除'); ?></a>
+												<a href="javascript:;" onclick="AWS.confirm('<?php echo _t('确认删除这一条私信?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/pm/ajax/delete/', 'id=<?php echo $val['id']; ?>');});"><?php echo _t('删除'); ?></a>
 												<?php } ?>
 											</span>
 											<?php echo date_friendly($val['add_time']); ?>
 										</div>
 										<?php foreach($val['receipts'] as $receipt_uid => $receipt_time) { ?>
 										<?php if ($receipt_uid == $val['sender_uid']) continue; ?>
-										<div class="aw-small-text"><?php _e('%s0 已读于 %s1', [UF::name($this->conversation['users'][$receipt_uid]), date_friendly($receipt_time)]); ?></div>
+										<div class="aw-small-text"><?php echo _t('%s0 已读于 %s1', [UF::name($this->conversation['users'][$receipt_uid]), date_friendly($receipt_time)]); ?></div>
 										<?php } ?>
 										<i class="i-speech-bubble-triangle"></i>
 									</div>
@@ -120,14 +120,14 @@ $(document).ready(function () {
 		e.preventDefault();
 
 		if (Object.keys(public_keys).length < 2) {
-			AWS.alert("<?php _e('当前会话已结束'); ?>");
+			AWS.alert("<?php echo _t('当前会话已结束'); ?>");
 			return false;
 		}
 
 		var msg = form.find('textarea[name=message]').val().trim();
 
 		if (!msg) {
-			AWS.alert("<?php _e('请输入私信内容'); ?>");
+			AWS.alert("<?php echo _t('请输入私信内容'); ?>");
 			return false;
 		}
 
@@ -152,7 +152,7 @@ $(document).ready(function () {
 				btn.removeClass('disabled');
 			});
 		}).catch(function(error) {
-			AWS.alert("<?php _e('端对端加密出错'); ?>");
+			AWS.alert("<?php echo _t('端对端加密出错'); ?>");
 			btn.removeClass('disabled');
 			console.log(error);
 		});
@@ -163,17 +163,17 @@ $(document).ready(function () {
 	function decrypt_key(cb) {
 		var public_key = '<?php echo $this->user_info['public_key']; ?>';
 		if (!public_key) {
-			AWS.alert("<?php _e('缺少公钥和私钥, 请重新登录以生成新的公钥和私钥'); ?>");
+			AWS.alert("<?php echo _t('缺少公钥和私钥, 请重新登录以生成新的公钥和私钥'); ?>");
 			return;
 		}
-		AWS.passwordPrompt("<?php _e('请输入登录密码以解密私钥'); ?>", function(pwd) {
+		AWS.passwordPrompt("<?php echo _t('请输入登录密码以解密私钥'); ?>", function(pwd) {
 			PasswordUtil.password_hash(pwd, public_key).then(function(value) {
 				return PasswordUtil.decrypt_private_key('<?php echo $this->user_info['private_key']; ?>', value);
 			}).then(function(value) {
 				cb(value);
 			}).catch(function(error) {
 				console.log(error);
-				AWS.confirm("<?php _e('无法解密私钥, 要再试一次吗？'); ?>", function() {
+				AWS.confirm("<?php echo _t('无法解密私钥, 要再试一次吗？'); ?>", function() {
 					decrypt_key(cb);
 				});
 			});
@@ -212,12 +212,12 @@ $(document).ready(function () {
 					el.text(value);
 				}).catch(function(error) {
 					console.log(error);
-					el.html("<i><?php _e('无法解密这一条私信'); ?></i>");
+					el.html("<i><?php echo _t('无法解密这一条私信'); ?></i>");
 				});
 			});
 		}).catch(function(error) {
 			console.log(error);
-			AWS.alert("<?php _e('无法读取私钥, 请刷新页面重试'); ?>");
+			AWS.alert("<?php echo _t('无法读取私钥, 请刷新页面重试'); ?>");
 		});
 	}
 

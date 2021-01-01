@@ -7,10 +7,10 @@
 				<div class="col-sm-12 col-md-9 aw-main-content">
 					<!-- tab 切换 -->
 					<ul class="nav nav-tabs aw-nav-tabs active">
-						<li><a href="<?php echo url_rewrite(); ?>/publish/video/"><?php _e('影片'); ?></a></li>
-						<li><a href="<?php echo url_rewrite(); ?>/publish/article/"><?php _e('文章'); ?></a></li>
-						<li class="active"><a href="<?php echo url_rewrite(); ?>/publish/"><?php _e('问题'); ?></a></li>
-						<h2 class="hidden-xs"><i class="icon icon-ask"></i> <?php _e('发起'); ?></h2>
+						<li><a href="<?php echo url_rewrite(); ?>/publish/video/"><?php echo _t('影片'); ?></a></li>
+						<li><a href="<?php echo url_rewrite(); ?>/publish/article/"><?php echo _t('文章'); ?></a></li>
+						<li class="active"><a href="<?php echo url_rewrite(); ?>/publish/"><?php echo _t('问题'); ?></a></li>
+						<h2 class="hidden-xs"><i class="icon icon-ask"></i> <?php echo _t('发起'); ?></h2>
 					</ul>
 					<!-- end tab 切换 -->
 					<form action="<?php echo url_rewrite(); ?>/<?php if ($this->thread_info['id']) { ?>modify/ajax/modify_question/<?php } else { ?>publish/ajax/publish_question/<?php } ?>" method="post" id="question_form" onsubmit="return false;">
@@ -18,23 +18,23 @@
 						<input type="hidden" name="ask_user_id" value="<?php echo intval($_POST['ask_user_id']); ?>" />
 						<?php if (!$this->thread_info['id'] AND S::get('category_enable') != 'N') { ?>
 						<select name="category_id" class="collapse" id="category_id">
-							<option value="0">- <?php _e('请选择分类'); ?> -</option>
+							<option value="0">- <?php echo _t('请选择分类'); ?> -</option>
 							<?php TPL::include('block/category_options.tpl.htm'); ?>
 						</select>
 						<?php } ?>
 						<div class="aw-mod aw-mod-publish">
 							<div class="mod-body">
 								<?php if (isset($_POST['ask_user_name'])) { ?>
-								<h3><?php _e('向 %s 提问', htmlspecialchars($_POST['ask_user_name'])); ?></h3>
+								<h3><?php echo _t('向 %s 提问', htmlspecialchars($_POST['ask_user_name'])); ?></h3>
 								<?php } ?>
-								<h3><?php _e('问题标题'); ?>:</h3>
+								<h3><?php echo _t('问题标题'); ?>:</h3>
 								<!-- 问题标题 -->
 								<div class="aw-publish-title<?php if (S::get('category_enable') == 'N') { ?> active<?php } ?>">
 									<input type="text" name="title" value="<?php echo FORMAT::text($this->thread_info['title']); ?>" class="form-control" />
 									<?php if (!$this->thread_info['id'] AND S::get('category_enable') != 'N') { ?>
 									<div class="dropdown">
 										<div class="dropdown-toggle" data-toggle="dropdown">
-											<span id="aw-topic-tags-select" class="aw-hide-txt"><?php _e('选择分类'); ?></span>
+											<span id="aw-topic-tags-select" class="aw-hide-txt"><?php echo _t('选择分类'); ?></span>
 											<a href="javascript:;"><i class="icon icon-down"></i></a>
 										</div>
 									</div>
@@ -42,7 +42,7 @@
 								</div>
 								<!-- end 问题标题 -->
 
-								<h3><?php _e('问题补充'); ?>:</h3>
+								<h3><?php echo _t('问题补充'); ?>:</h3>
 								<div class="aw-mod aw-editor-box">
 									<div class="mod-head">
 										<div class="wmd-panel">
@@ -50,11 +50,11 @@
 										</div>
 									</div>
 									<div class="mod-body">
-										<?php if (S::get('image_upload_link')) { ?><a class="pull-right" href="<?php echo S::get('image_upload_link'); ?>" <?php if (!is_javascript(S::get('image_upload_link'))) { ?>rel="nofollow noreferrer noopener" target="_blank"<?php } ?>><?php _e('上传图片'); ?></a><?php } ?>
+										<?php if (S::get('image_upload_link')) { ?><a class="pull-right" href="<?php echo S::get('image_upload_link'); ?>" <?php if (!is_javascript(S::get('image_upload_link'))) { ?>rel="nofollow noreferrer noopener" target="_blank"<?php } ?>><?php echo _t('上传图片'); ?></a><?php } ?>
 									</div>
 								</div>
 								<?php if (!$this->thread_info['id']) { ?>
-								<h3><?php _e('添加话题'); ?>:</h3>
+								<h3><?php echo _t('添加话题'); ?>:</h3>
 								<div class="aw-topic-bar" data-type="publish">
 									<div class="tag-bar clearfix">
 										<?php if ($_GET['topic_title']) { ?>
@@ -67,7 +67,7 @@
 										</span>
 										<?php } ?>
 
-										<span class="aw-edit-topic icon-inverse"><i class="icon icon-edit"></i> <?php _e('编辑话题'); ?></span>
+										<span class="aw-edit-topic icon-inverse"><i class="icon icon-edit"></i> <?php echo _t('编辑话题'); ?></span>
 									</div>
 								</div>
 
@@ -77,8 +77,8 @@
 
 								<?php if (!$this->thread_info['id']) { ?>
 								<div class="aw-auth-img clearfix">
-									<input id="later_time_input" name="later" class="form-control pull-right" type="text" placeholder="<?php _e('分钟'); ?>" />
-									<label class="pull-right">&nbsp;<?php _e('延迟显示'); ?></label>
+									<input id="later_time_input" name="later" class="form-control pull-right" type="text" placeholder="<?php echo _t('分钟'); ?>" />
+									<label class="pull-right">&nbsp;<?php echo _t('延迟显示'); ?></label>
 									<label id="later_time_label" class="pull-right"></label>
 								</div>
 								<?php } ?>
@@ -89,16 +89,16 @@
 								<span class="aw-anonymity">
 									<?php if ($this->thread_info['id']) { ?>
 									<label><input type="checkbox" class="pull-left" value="1" name="do_delete" />
-										<?php _e('删除问题'); ?>&nbsp;</label>
+										<?php echo _t('删除问题'); ?>&nbsp;</label>
 									<?php } ?>
 
 									<?php if (!$this->thread_info['id'] AND $this->user_info['permission']['post_anonymously']) { ?>
 									<label><input type="checkbox" class="pull-left" value="1" name="anonymous" />
-										<?php _e('用这个身份发表'); ?>: <a href="<?php echo UF::url(get_anonymous_user_info($this->user_info)); ?>"><?php echo UF::name(get_anonymous_user_info($this->user_info)); ?></a></label>
+										<?php echo _t('用这个身份发表'); ?>: <a href="<?php echo UF::url(get_anonymous_user_info($this->user_info)); ?>"><?php echo UF::name(get_anonymous_user_info($this->user_info)); ?></a></label>
 									<?php } ?>
 
 								</span>
-								<a class="btn btn-large btn-success btn-publish-submit" id="publish_submit" onclick="AWS.submit_form($('#question_form'), $(this)); return false;"><?php _e('确认发起'); ?></a>
+								<a class="btn btn-large btn-success btn-publish-submit" id="publish_submit" onclick="AWS.submit_form($('#question_form'), $(this)); return false;"><?php echo _t('确认发起'); ?></a>
 							</div>
 						</div>
 					</form>
@@ -108,12 +108,12 @@
 					<!-- 问题发起指南 -->
 					<div class="aw-mod publish-help">
 						<div class="mod-head">
-							<h3><?php _e('问题发起指南'); ?></h3>
+							<h3><?php echo _t('问题发起指南'); ?></h3>
 						</div>
 						<div class="mod-body">
-							<p><b>• <?php _e('问题标题'); ?>:</b> <?php _e('请用准确的语言描述您发布的问题思想'); ?></p>
-							<p><b>• <?php _e('问题补充'); ?>:</b> <?php _e('详细补充您的问题内容, 并提供一些相关的素材以供参与者更多的了解您所要问题的主题思想'); ?></p>
-							<p><b>• <?php _e('选择话题'); ?>:</b> <?php _e('选择一个或者多个合适的话题, 让您发布的问题得到更多有相同兴趣的人参与. 所有人可以在您发布问题之后添加和编辑该问题所属的话题'); ?></p>
+							<p><b>• <?php echo _t('问题标题'); ?>:</b> <?php echo _t('请用准确的语言描述您发布的问题思想'); ?></p>
+							<p><b>• <?php echo _t('问题补充'); ?>:</b> <?php echo _t('详细补充您的问题内容, 并提供一些相关的素材以供参与者更多的了解您所要问题的主题思想'); ?></p>
+							<p><b>• <?php echo _t('选择话题'); ?>:</b> <?php echo _t('选择一个或者多个合适的话题, 让您发布的问题得到更多有相同兴趣的人参与. 所有人可以在您发布问题之后添加和编辑该问题所属的话题'); ?></p>
 						</div>
 					</div>
 					<!-- end 问题发起指南 -->

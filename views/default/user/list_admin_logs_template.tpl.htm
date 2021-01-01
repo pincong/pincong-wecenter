@@ -67,7 +67,7 @@
 		•
 		<?php echo date_friendly($val['add_time']); ?>
 		<br>
-		<span class="aw-color-666"><?php _e('管理员'); ?>:</span>
+		<span class="aw-color-666"><?php echo _t('管理员'); ?>:</span>
 		<a href="<?php echo UF::url($val['admin_user_info']); ?>">
 		<?php if ($val['admin_user_info']['forbidden']) { ?>
 			<s><?php echo UF::name($val['admin_user_info']); ?></s>
@@ -79,7 +79,7 @@
 		(<i class="icon icon-prestige"></i><?php echo UF::reputation($val['admin_user_info']); ?>
 		<i class="icon icon-agree"></i><?php echo $val['admin_user_info']['agree_count']; ?>)
 		<br>
-		<span class="aw-color-666"><?php _e('用户'); ?>:</span>
+		<span class="aw-color-666"><?php echo _t('用户'); ?>:</span>
 		<a href="<?php echo UF::url($val['user_info']); ?>">
 		<?php if ($val['user_info']['forbidden']) { ?>
 			<s><?php echo UF::name($val['user_info']); ?></s>
@@ -92,7 +92,7 @@
 		<i class="icon icon-agree"></i><?php echo $val['user_info']['agree_count']; ?>)
 		<?php if($val['detail']) { ?>
 		<br>
-		<span class="aw-color-666"><?php _e('详情'); ?>: </span>
+		<span class="aw-color-666"><?php echo _t('详情'); ?>: </span>
 		<?php echo FORMAT::text($val['detail']); ?>
 		<?php } ?>
 	</p>

@@ -8,20 +8,20 @@
 
 					<div class="aw-mod aw-question-edit">
 						<div class="mod-head common-head">
-							<h2><?php _e('管理记录'); ?></h2>
+							<h2><?php echo _t('管理记录'); ?></h2>
 							<div style="line-height:1.6">
-							<a class="aw-nowrap" href="<?php echo url_rewrite(); ?>/user/admin_log/uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>"><?php _e('全部'); ?></a>&nbsp;
-							<a class="aw-nowrap" href="<?php echo url_rewrite(); ?>/user/admin_log/type-change_group__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>"><?php _e('用户组'); ?></a>&nbsp;
-							<a class="aw-nowrap" href="<?php echo url_rewrite(); ?>/user/admin_log/type-forbid_user__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>"><?php _e('所有封禁'); ?></a>&nbsp;
-							<a class="aw-nowrap" href="<?php echo url_rewrite(); ?>/user/admin_log/type-forbid_user__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>__status-1"><?php _e('禁止登录'); ?></a>&nbsp;
-							<a class="aw-nowrap" href="<?php echo url_rewrite(); ?>/user/admin_log/type-forbid_user__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>__status-2"><?php _e('禁止登录 (隐藏)'); ?></a>&nbsp;
-							<a class="aw-nowrap" href="<?php echo url_rewrite(); ?>/user/admin_log/type-forbid_user__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>__status-3"><?php _e('禁止登录 (替换)'); ?></a>&nbsp;
-							<a class="aw-nowrap" href="<?php echo url_rewrite(); ?>/user/admin_log/type-forbid_user__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>__status-0"><?php _e('取消封禁'); ?></a>&nbsp;
-							<a class="aw-nowrap" href="<?php echo url_rewrite(); ?>/user/admin_log/type-flag_user__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>"><?php _e('所有标记'); ?></a>&nbsp;
+							<a class="aw-nowrap" href="<?php echo url_rewrite(); ?>/user/admin_log/uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>"><?php echo _t('全部'); ?></a>&nbsp;
+							<a class="aw-nowrap" href="<?php echo url_rewrite(); ?>/user/admin_log/type-change_group__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>"><?php echo _t('用户组'); ?></a>&nbsp;
+							<a class="aw-nowrap" href="<?php echo url_rewrite(); ?>/user/admin_log/type-forbid_user__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>"><?php echo _t('所有封禁'); ?></a>&nbsp;
+							<a class="aw-nowrap" href="<?php echo url_rewrite(); ?>/user/admin_log/type-forbid_user__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>__status-1"><?php echo _t('禁止登录'); ?></a>&nbsp;
+							<a class="aw-nowrap" href="<?php echo url_rewrite(); ?>/user/admin_log/type-forbid_user__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>__status-2"><?php echo _t('禁止登录 (隐藏)'); ?></a>&nbsp;
+							<a class="aw-nowrap" href="<?php echo url_rewrite(); ?>/user/admin_log/type-forbid_user__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>__status-3"><?php echo _t('禁止登录 (替换)'); ?></a>&nbsp;
+							<a class="aw-nowrap" href="<?php echo url_rewrite(); ?>/user/admin_log/type-forbid_user__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>__status-0"><?php echo _t('取消封禁'); ?></a>&nbsp;
+							<a class="aw-nowrap" href="<?php echo url_rewrite(); ?>/user/admin_log/type-flag_user__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>"><?php echo _t('所有标记'); ?></a>&nbsp;
 							<?php foreach (get_user_groups_flagged() as $key => $val) { ?>
-							<a class="aw-nowrap" href="<?php echo url_rewrite(); ?>/user/admin_log/type-flag_user__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>__status-<?php echo $val['group_id']; ?>"><?php _e('标记 (%s)', $val['group_name']); ?></a>&nbsp;
+							<a class="aw-nowrap" href="<?php echo url_rewrite(); ?>/user/admin_log/type-flag_user__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>__status-<?php echo $val['group_id']; ?>"><?php echo _t('标记 (%s)', $val['group_name']); ?></a>&nbsp;
 							<?php } ?>
-							<a class="aw-nowrap" href="<?php echo url_rewrite(); ?>/user/admin_log/type-flag_user__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>__status-0"><?php _e('取消标记'); ?></a>&nbsp;
+							<a class="aw-nowrap" href="<?php echo url_rewrite(); ?>/user/admin_log/type-flag_user__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>__status-0"><?php echo _t('取消标记'); ?></a>&nbsp;
 							</div>
 						</div>
 						<div class="mod-body">
@@ -30,7 +30,7 @@
 						<div class="mod-footer">
 							<!-- 加载更多内容 -->
 							<a class="aw-load-more-content" id="bp_log_more">
-								<span><?php _e('更多'); ?>...</span>
+								<span><?php echo _t('更多'); ?>...</span>
 							</a>
 							<!-- end 加载更多内容 -->
 						</div>

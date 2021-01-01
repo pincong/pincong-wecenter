@@ -7,9 +7,9 @@
 		<?php if ($_GET['category'] == 'site') { ?>
 		<div class="mod-head">
 			<h3>
-				<span class="pull-left"><?php _e('站点信息'); ?></span>
+				<span class="pull-left"><?php echo _t('站点信息'); ?></span>
 
-				<span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php _e('快速保存'); ?></a></span>
+				<span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php echo _t('快速保存'); ?></a></span>
 			</h3>
 		</div>
 		<div class="tab-content mod-content">
@@ -17,7 +17,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('网站公告'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('网站公告'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<textarea class="form-control textarea" name="site_announce"><?php echo htmlspecialchars($this->setting['site_announce']); ?></textarea>
 							</div>
@@ -27,7 +27,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('网站 Logo'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('网站 Logo'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="logo_url" class="form-control" type="text" placeholder="/static/logo/logo.png" value="<?php echo htmlspecialchars($this->setting['logo_url']); ?>"/>
 							</div>
@@ -37,7 +37,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('注册/登录 Logo'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('注册/登录 Logo'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="login_logo_url" class="form-control" type="text" placeholder="/static/logo/login_logo.png" value="<?php echo htmlspecialchars($this->setting['login_logo_url']); ?>"/>
 							</div>
@@ -47,7 +47,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('网站名称'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('网站名称'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" class="form-control" name="site_name" value="<?php echo htmlspecialchars($this->setting['site_name']); ?>">
 							</div>
@@ -57,7 +57,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('网站简介'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('网站简介'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<textarea class="form-control textarea" rows="4" name="description"><?php echo htmlspecialchars($this->setting['description']); ?></textarea>
 							</div>
@@ -67,7 +67,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('网站关键词'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('网站关键词'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<textarea class="form-control textarea" rows="4" name="keywords"><?php echo htmlspecialchars($this->setting['keywords']); ?></textarea>
 							</div>
@@ -77,7 +77,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('公司名称'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('公司名称'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="company_name" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['company_name']); ?>"/>
 							</div>
@@ -90,9 +90,9 @@
 		<?php } else if ($_GET['category'] == 'register') { ?>
 		<div class="mod-head">
 			<h3>
-				<span class="pull-left"><?php _e('注册与访问'); ?></span>
+				<span class="pull-left"><?php echo _t('注册与访问'); ?></span>
 
-				<span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php _e('快速保存'); ?></a></span>
+				<span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php echo _t('快速保存'); ?></a></span>
 			</h3>
 		</div>
 		<div class="tab-content mod-content">
@@ -100,41 +100,41 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-3 col-xs-3 control-label"><?php _e('默认时区'); ?>:</span>
+							<span class="col-sm-3 col-xs-3 control-label"><?php echo _t('默认时区'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<select name="default_timezone" class="form-control">
 									<option value=''></option>
-									<option value='Etc/GMT+12'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+12') { ?> selected="selected"<?php } ?>><?php _e('(GMT - 12:00 小时) 安尼威托克岛，卡瓦加兰'); ?></option>
-									<option value='Etc/GMT+11'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+11') { ?> selected="selected"<?php } ?>><?php _e('(GMT - 11:00 小时) 中途岛，萨摩亚'); ?></option>
-									<option value='Etc/GMT+10'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+10') { ?> selected="selected"<?php } ?>><?php _e('(GMT - 10:00 小时) 夏威夷'); ?></option>
-									<option value='Etc/GMT+9'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+9') { ?> selected="selected"<?php } ?>><?php _e('(GMT - 9:00 小时) 阿拉斯加'); ?></option>
-									<option value='Etc/GMT+8'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+8') { ?> selected="selected"<?php } ?>><?php _e('(GMT - 8:00 小时) 太平洋时间'); ?></option>
-									<option value='Etc/GMT+7'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+7') { ?> selected="selected"<?php } ?>><?php _e('(GMT - 7:00 小时) 美国山区时间'); ?></option>
-									<option value='Etc/GMT+6'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+6') { ?> selected="selected"<?php } ?>><?php _e('(GMT - 6:00 小时) 美国中部时间，墨西哥市'); ?></option>
-									<option value='Etc/GMT+5'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+5') { ?> selected="selected"<?php } ?>><?php _e('(GMT - 5:00 小时) 美国东部时间，波哥大，利马'); ?></option>
-									<option value='Etc/GMT+4'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+4') { ?> selected="selected"<?php } ?>><?php _e('(GMT - 4:00 小时) 大西洋时间（加拿大），加拉加斯，拉巴斯'); ?></option>
-									<option value='Canada/Newfoundland'<?php if ($this->setting['default_timezone'] == 'Canada/Newfoundland') { ?> selected="selected"<?php } ?>><?php _e('(GMT - 3:30 小时) 纽芬兰'); ?></option>
-									<option value='Etc/GMT+3'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+3') { ?> selected="selected"<?php } ?>><?php _e('(GMT - 3:00 小时) 巴西，布宜诺斯艾利斯，福克兰群岛'); ?></option>
-									<option value='Etc/GMT+2'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+2') { ?> selected="selected"<?php } ?>><?php _e('(GMT - 2:00 小时) 大西洋中部，亚森欣，圣赫勒拿岛'); ?></option>
-									<option value='Etc/GMT+1'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+1') { ?> selected="selected"<?php } ?>><?php _e('(GMT - 1:00 小时) 亚速群岛，佛得角群岛'); ?></option>
-									<option value='Etc/GMT'<?php if ($this->setting['default_timezone'] == 'Etc/GMT') { ?> selected="selected"<?php } ?>><?php _e('(GMT) 卡萨布兰卡，都柏林，伦敦，里斯本，蒙罗维亚'); ?></option>
-									<option value='Etc/GMT-1'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-1') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 1:00 小时) 布鲁塞尔，哥本哈根，马德里，巴黎'); ?></option>
-									<option value='Etc/GMT-2'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-2') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 2:00 小时) 加里宁格勒，南非'); ?></option>
-									<option value='Etc/GMT-3'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-3') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 3:00 小时) 巴格达，利雅德，莫斯科，奈洛比'); ?></option>
-									<option value='Iran'<?php if ($this->setting['default_timezone'] == 'Iran') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 3:30 小时) 德黑兰'); ?></option>
-									<option value='Etc/GMT-4'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-4') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 4:00 小时) 阿布达比，巴库，马斯喀特，第比利斯'); ?></option>
-									<option value='Asia/Kabul'<?php if ($this->setting['default_timezone'] == 'Asia/Kabul') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 4:30 小时) 喀布尔'); ?></option>
-									<option value='Etc/GMT-5'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-5') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 5:00 小时) 凯萨琳堡，克拉嗤，塔什干'); ?></option>
-									<option value='Asia/Kolkata'<?php if ($this->setting['default_timezone'] == 'Asia/Kolkata') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 5:30 小时) 孟买，加尔各答，马德拉斯，新德里'); ?></option>
-									<option value='Etc/GMT-6'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-6') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 6:00 小时) 阿拉木图，科隆巴，达卡'); ?></option>
-									<option value='Etc/GMT-7'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-7') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 7:00 小时) 曼谷，河内，雅加达'); ?></option>
-									<option value='Etc/GMT-8'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-8') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 8:00 小时) 北京，香港，澳洲伯斯，新加坡，台北'); ?></option>
-									<option value='Etc/GMT-9'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-9') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 9:00 小时) 大阪，札幌，首尔，东京，亚库次克'); ?></option>
-									<option value='Etc/GMT-10'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-10') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 10:00 小时) 墨尔本，巴布亚新几内亚，雪梨'); ?></option>
-									<option value='Etc/GMT-11'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-11') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 11:00 小时) 马加丹，新喀里多尼亚，所罗门群岛'); ?></option>
-									<option value='Etc/GMT-12'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-12') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 12:00 小时) 新西兰，斐济，马绍尔群岛'); ?></option>
-									<option value='Etc/GMT-13'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-13') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 13:00 小时) 堪察加半岛，阿那底河'); ?></option>
-									<option value='Etc/GMT-14'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-14') { ?> selected="selected"<?php } ?>><?php _e('(GMT + 14:00 小时) 圣诞岛'); ?></option>
+									<option value='Etc/GMT+12'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+12') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT - 12:00 小时) 安尼威托克岛，卡瓦加兰'); ?></option>
+									<option value='Etc/GMT+11'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+11') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT - 11:00 小时) 中途岛，萨摩亚'); ?></option>
+									<option value='Etc/GMT+10'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+10') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT - 10:00 小时) 夏威夷'); ?></option>
+									<option value='Etc/GMT+9'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+9') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT - 9:00 小时) 阿拉斯加'); ?></option>
+									<option value='Etc/GMT+8'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+8') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT - 8:00 小时) 太平洋时间'); ?></option>
+									<option value='Etc/GMT+7'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+7') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT - 7:00 小时) 美国山区时间'); ?></option>
+									<option value='Etc/GMT+6'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+6') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT - 6:00 小时) 美国中部时间，墨西哥市'); ?></option>
+									<option value='Etc/GMT+5'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+5') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT - 5:00 小时) 美国东部时间，波哥大，利马'); ?></option>
+									<option value='Etc/GMT+4'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+4') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT - 4:00 小时) 大西洋时间（加拿大），加拉加斯，拉巴斯'); ?></option>
+									<option value='Canada/Newfoundland'<?php if ($this->setting['default_timezone'] == 'Canada/Newfoundland') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT - 3:30 小时) 纽芬兰'); ?></option>
+									<option value='Etc/GMT+3'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+3') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT - 3:00 小时) 巴西，布宜诺斯艾利斯，福克兰群岛'); ?></option>
+									<option value='Etc/GMT+2'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+2') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT - 2:00 小时) 大西洋中部，亚森欣，圣赫勒拿岛'); ?></option>
+									<option value='Etc/GMT+1'<?php if ($this->setting['default_timezone'] == 'Etc/GMT+1') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT - 1:00 小时) 亚速群岛，佛得角群岛'); ?></option>
+									<option value='Etc/GMT'<?php if ($this->setting['default_timezone'] == 'Etc/GMT') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT) 卡萨布兰卡，都柏林，伦敦，里斯本，蒙罗维亚'); ?></option>
+									<option value='Etc/GMT-1'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-1') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT + 1:00 小时) 布鲁塞尔，哥本哈根，马德里，巴黎'); ?></option>
+									<option value='Etc/GMT-2'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-2') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT + 2:00 小时) 加里宁格勒，南非'); ?></option>
+									<option value='Etc/GMT-3'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-3') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT + 3:00 小时) 巴格达，利雅德，莫斯科，奈洛比'); ?></option>
+									<option value='Iran'<?php if ($this->setting['default_timezone'] == 'Iran') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT + 3:30 小时) 德黑兰'); ?></option>
+									<option value='Etc/GMT-4'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-4') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT + 4:00 小时) 阿布达比，巴库，马斯喀特，第比利斯'); ?></option>
+									<option value='Asia/Kabul'<?php if ($this->setting['default_timezone'] == 'Asia/Kabul') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT + 4:30 小时) 喀布尔'); ?></option>
+									<option value='Etc/GMT-5'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-5') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT + 5:00 小时) 凯萨琳堡，克拉嗤，塔什干'); ?></option>
+									<option value='Asia/Kolkata'<?php if ($this->setting['default_timezone'] == 'Asia/Kolkata') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT + 5:30 小时) 孟买，加尔各答，马德拉斯，新德里'); ?></option>
+									<option value='Etc/GMT-6'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-6') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT + 6:00 小时) 阿拉木图，科隆巴，达卡'); ?></option>
+									<option value='Etc/GMT-7'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-7') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT + 7:00 小时) 曼谷，河内，雅加达'); ?></option>
+									<option value='Etc/GMT-8'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-8') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT + 8:00 小时) 北京，香港，澳洲伯斯，新加坡，台北'); ?></option>
+									<option value='Etc/GMT-9'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-9') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT + 9:00 小时) 大阪，札幌，首尔，东京，亚库次克'); ?></option>
+									<option value='Etc/GMT-10'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-10') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT + 10:00 小时) 墨尔本，巴布亚新几内亚，雪梨'); ?></option>
+									<option value='Etc/GMT-11'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-11') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT + 11:00 小时) 马加丹，新喀里多尼亚，所罗门群岛'); ?></option>
+									<option value='Etc/GMT-12'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-12') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT + 12:00 小时) 新西兰，斐济，马绍尔群岛'); ?></option>
+									<option value='Etc/GMT-13'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-13') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT + 13:00 小时) 堪察加半岛，阿那底河'); ?></option>
+									<option value='Etc/GMT-14'<?php if ($this->setting['default_timezone'] == 'Etc/GMT-14') { ?> selected="selected"<?php } ?>><?php echo _t('(GMT + 14:00 小时) 圣诞岛'); ?></option>
 								</select>
 							</div>
 						</div>
@@ -144,11 +144,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-3 col-xs-3 control-label"><?php _e('注册时间间隔限制'); ?>:</span>
+							<span class="col-sm-3 col-xs-3 control-label"><?php echo _t('注册时间间隔限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" class="form-control" name="register_interval" value="<?php echo htmlspecialchars($this->setting['register_interval']); ?>" />
 
-								<span class="help-block"><?php _e('每隔多少秒允许注册一个账号'); ?></span>
+								<span class="help-block"><?php echo _t('每隔多少秒允许注册一个账号'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -156,11 +156,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-3 col-xs-3 control-label"><?php _e('注册时间间隔随机最小值'); ?>:</span>
+							<span class="col-sm-3 col-xs-3 control-label"><?php echo _t('注册时间间隔随机最小值'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="register_interval_min" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['register_interval_min']); ?>"/>
 
-								<div class="help-block"><?php _e('不设置则使用上面的固定值'); ?></div>
+								<div class="help-block"><?php echo _t('不设置则使用上面的固定值'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -168,11 +168,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-3 col-xs-3 control-label"><?php _e('注册时间间隔随机最大值'); ?>:</span>
+							<span class="col-sm-3 col-xs-3 control-label"><?php echo _t('注册时间间隔随机最大值'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="register_interval_max" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['register_interval_max']); ?>"/>
 
-								<div class="help-block"><?php _e('不设置则使用上面的固定值'); ?></div>
+								<div class="help-block"><?php echo _t('不设置则使用上面的固定值'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -181,15 +181,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-3 col-xs-3 control-label"><?php _e('新用户注册显示验证码'); ?>:</span>
+							<span class="col-sm-3 col-xs-3 control-label"><?php echo _t('新用户注册显示验证码'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="register_seccode" value="Y"<?php if ($this->setting['register_seccode'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+										<input type="radio" name="register_seccode" value="Y"<?php if ($this->setting['register_seccode'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="register_seccode" value="N"<?php if ($this->setting['register_seccode'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+										<input type="radio" name="register_seccode" value="N"<?php if ($this->setting['register_seccode'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -200,11 +200,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-3 col-xs-3 control-label"><?php _e('注册类型'); ?>:</span>
+							<span class="col-sm-3 col-xs-3 control-label"><?php echo _t('注册类型'); ?>:</span>
 							<div class="col-sm-8 col-xs-8">
-								<label class="checkbox-inline"><input type="radio" name="register_type" value="open"<?php if ($this->setting['register_type'] == 'open') { ?> checked="checked"<?php } ?> /> <?php _e('开放注册'); ?></label>
-								<label class="checkbox-inline"><input type="radio" name="register_type" value="close"<?php if ($this->setting['register_type'] == 'close') { ?> checked="checked"<?php } ?> /> <?php _e('关闭注册'); ?></label>
-								<label class="checkbox-inline"><input type="radio" name="register_type" value="custom"<?php if ($this->setting['register_type'] == 'custom') { ?> checked="checked"<?php } ?> /> <?php _e('自定义注册'); ?></label>
+								<label class="checkbox-inline"><input type="radio" name="register_type" value="open"<?php if ($this->setting['register_type'] == 'open') { ?> checked="checked"<?php } ?> /> <?php echo _t('开放注册'); ?></label>
+								<label class="checkbox-inline"><input type="radio" name="register_type" value="close"<?php if ($this->setting['register_type'] == 'close') { ?> checked="checked"<?php } ?> /> <?php echo _t('关闭注册'); ?></label>
+								<label class="checkbox-inline"><input type="radio" name="register_type" value="custom"<?php if ($this->setting['register_type'] == 'custom') { ?> checked="checked"<?php } ?> /> <?php echo _t('自定义注册'); ?></label>
 							</div>
 						</div>
 					</td>
@@ -212,7 +212,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-3 col-xs-3 control-label"><?php _e('自定义注册 URL'); ?>:</span>
+							<span class="col-sm-3 col-xs-3 control-label"><?php echo _t('自定义注册 URL'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="register_url" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['register_url']); ?>"/>
 							</div>
@@ -223,12 +223,12 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-3 col-xs-3 control-label"><?php _e('用户名规则'); ?>:</span>
+							<span class="col-sm-3 col-xs-3 control-label"><?php echo _t('用户名规则'); ?>:</span>
 							<div class="col-sm-8 col-xs-8">
-								<label class="checkbox-inline"><input type="radio" value="0" name="username_rule"<?php if ($this->setting['username_rule'] == 0) { ?> checked="checked"<?php } ?> /> <?php _e('不限制'); ?></label>
-								<label class="checkbox-inline"><input type="radio" value="1" name="username_rule"<?php if ($this->setting['username_rule'] == 1) { ?> checked="checked"<?php } ?> /> <?php _e('汉字/字母/数字/下划线'); ?></label>
-								<label class="checkbox-inline"><input type="radio" value="2" name="username_rule"<?php if ($this->setting['username_rule'] == 2) { ?> checked="checked"<?php } ?> /> <?php _e('字母/数字/下划线'); ?></label>
-								<label class="checkbox-inline"><input type="radio" value="3" name="username_rule"<?php if ($this->setting['username_rule'] == 3) { ?> checked="checked"<?php } ?> /> <?php _e('汉字'); ?></label>
+								<label class="checkbox-inline"><input type="radio" value="0" name="username_rule"<?php if ($this->setting['username_rule'] == 0) { ?> checked="checked"<?php } ?> /> <?php echo _t('不限制'); ?></label>
+								<label class="checkbox-inline"><input type="radio" value="1" name="username_rule"<?php if ($this->setting['username_rule'] == 1) { ?> checked="checked"<?php } ?> /> <?php echo _t('汉字/字母/数字/下划线'); ?></label>
+								<label class="checkbox-inline"><input type="radio" value="2" name="username_rule"<?php if ($this->setting['username_rule'] == 2) { ?> checked="checked"<?php } ?> /> <?php echo _t('字母/数字/下划线'); ?></label>
+								<label class="checkbox-inline"><input type="radio" value="3" name="username_rule"<?php if ($this->setting['username_rule'] == 3) { ?> checked="checked"<?php } ?> /> <?php echo _t('汉字'); ?></label>
 							</div>
 						</div>
 					</td>
@@ -236,7 +236,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-3 col-xs-3 control-label"><?php _e('用户名最少字数'); ?>:</span>
+							<span class="col-sm-3 col-xs-3 control-label"><?php echo _t('用户名最少字数'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="username_length_min" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['username_length_min']); ?>"/>
 							</div>
@@ -246,7 +246,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-3 col-xs-3 control-label"><?php _e('用户名最多字数'); ?>:</span>
+							<span class="col-sm-3 col-xs-3 control-label"><?php echo _t('用户名最多字数'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="username_length_max" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['username_length_max']); ?>"/>
 							 </div>
@@ -256,7 +256,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-3 col-xs-3 control-label"><?php _e('用户名最少字节数'); ?>:</span>
+							<span class="col-sm-3 col-xs-3 control-label"><?php echo _t('用户名最少字节数'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="username_bytes_min" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['username_bytes_min']); ?>"/>
 							</div>
@@ -266,11 +266,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-3 col-xs-3 control-label"><?php _e('用户名最多字节数'); ?>:</span>
+							<span class="col-sm-3 col-xs-3 control-label"><?php echo _t('用户名最多字节数'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="username_bytes_max" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['username_bytes_max']); ?>"/>
 
-								<span class="help-block"><?php _e('注: 一个汉字等于 3 个字节'); ?></span>
+								<span class="help-block"><?php echo _t('注: 一个汉字等于 3 个字节'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -278,7 +278,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-3 col-xs-3 control-label"><?php _e('用户协议名称'); ?>:</span>
+							<span class="col-sm-3 col-xs-3 control-label"><?php echo _t('用户协议名称'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="user_agreement_name" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['user_agreement_name']); ?>"/>
 							</div>
@@ -288,7 +288,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-3 col-xs-3 control-label"><?php _e('用户协议链接'); ?>:</span>
+							<span class="col-sm-3 col-xs-3 control-label"><?php echo _t('用户协议链接'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="user_agreement_link" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['user_agreement_link']); ?>"/>
 							</div>
@@ -298,7 +298,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-3 col-xs-3 control-label"><?php _e('注册须知'); ?>:</span>
+							<span class="col-sm-3 col-xs-3 control-label"><?php echo _t('注册须知'); ?>:</span>
 							<div class="col-sm-7 col-xs-8">
 								<textarea class="form-control textarea" rows="5" name="register_notice"><?php echo htmlspecialchars($this->setting['register_notice']); ?></textarea>
 							</div>
@@ -308,11 +308,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-3 col-xs-3 control-label"><?php _e('用户注册名不允许出现以下关键字'); ?>:</span>
+							<span class="col-sm-3 col-xs-3 control-label"><?php echo _t('用户注册名不允许出现以下关键字'); ?>:</span>
 							<div class="col-sm-7 col-xs-8">
 								<textarea class="form-control textarea" rows="5" name="censoruser"><?php echo htmlspecialchars($this->setting['censoruser']); ?></textarea>
 
-								<span class="help-block"><?php _e('每行填写一个关键字, 如: admin, 管理员等'); ?></span>
+								<span class="help-block"><?php echo _t('每行填写一个关键字, 如: admin, 管理员等'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -320,11 +320,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-3 col-xs-3 control-label"><?php _e('用户注册后默认关注的用户 UID'); ?>:</span>
+							<span class="col-sm-3 col-xs-3 control-label"><?php echo _t('用户注册后默认关注的用户 UID'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="def_focus_uids" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['def_focus_uids']); ?>"/>
 
-								<span class="help-block"><?php _e('多个用户 UID 请用 , 隔开'); ?></span>
+								<span class="help-block"><?php echo _t('多个用户 UID 请用 , 隔开'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -332,11 +332,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-3 col-xs-3 control-label"><?php _e('首次登录推荐用户列表'); ?>:</span>
+							<span class="col-sm-3 col-xs-3 control-label"><?php echo _t('首次登录推荐用户列表'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="welcome_recommend_users" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['welcome_recommend_users']); ?>"/>
 
-								<span class="help-block"><?php _e('填写用户名, 若有多个用户名请用 , 隔开, 留空系统自动推荐'); ?></span>
+								<span class="help-block"><?php echo _t('填写用户名, 若有多个用户名请用 , 隔开, 留空系统自动推荐'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -345,11 +345,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-3 col-xs-3 control-label"><?php _e('新用户注册系统发送的欢迎内容'); ?>:</span>
+							<span class="col-sm-3 col-xs-3 control-label"><?php echo _t('新用户注册系统发送的欢迎内容'); ?>:</span>
 							<div class="col-sm-7 col-xs-8">
 								<textarea class="form-control textarea" rows="4" name="welcome_message_pm"><?php echo htmlspecialchars($this->setting['welcome_message_pm']); ?></textarea>
 
-								<span class="help-block"><?php _e('新用户注册欢迎内容, 以下变量可作为内容替换: <br />{username}: 用户名<br />{time}: 发送时间<br />{sitename}: 网站名称'); ?></span>
+								<span class="help-block"><?php echo _t('新用户注册欢迎内容, 以下变量可作为内容替换: <br />{username}: 用户名<br />{time}: 发送时间<br />{sitename}: 网站名称'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -358,7 +358,7 @@
 				<tr>
 					<td>
 						<div class="form-group mod-width">
-							<span class="col-sm-2 col-xs-3 control-label"><?php _e('新用户默认通知设置'); ?>:</span>
+							<span class="col-sm-2 col-xs-3 control-label"><?php echo _t('新用户默认通知设置'); ?>:</span>
 							<div class="col-sm-10 col-xs-8">
 								<input type="hidden" name="_set_notification_settings" value="1" />
 
@@ -375,9 +375,9 @@
 		<?php } else if ($_GET['category'] == 'functions') { ?>
 		<div class="mod-head">
 			<h3>
-				<span class="pull-left"><?php _e('站点功能'); ?></span>
+				<span class="pull-left"><?php echo _t('站点功能'); ?></span>
 
-				<span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php _e('快速保存'); ?></a></span>
+				<span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php echo _t('快速保存'); ?></a></span>
 			</h3>
 		</div>
 		<div class="tab-content mod-content">
@@ -385,18 +385,18 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('开启 Rewrite 伪静态'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('开启 Rewrite 伪静态'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="url_rewrite_enable" value="Y"<?php if ($this->setting['url_rewrite_enable'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+										<input type="radio" name="url_rewrite_enable" value="Y"<?php if ($this->setting['url_rewrite_enable'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="url_rewrite_enable" value="N"<?php if ($this->setting['url_rewrite_enable'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+										<input type="radio" name="url_rewrite_enable" value="N"<?php if ($this->setting['url_rewrite_enable'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('否'); ?>
 									</label>
 
-									<span class="help-block"><?php _e('Rewrite 设置错误将会导致无法登录'); ?></span>
+									<span class="help-block"><?php echo _t('Rewrite 设置错误将会导致无法登录'); ?></span>
 								</div>
 							</div>
 						</div>
@@ -406,18 +406,18 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('注册/登录时检查 HTTP referer'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('注册/登录时检查 HTTP referer'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="check_http_referer" value="Y"<?php if ($this->setting['check_http_referer'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+										<input type="radio" name="check_http_referer" value="Y"<?php if ($this->setting['check_http_referer'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="check_http_referer" value="N"<?php if ($this->setting['check_http_referer'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+										<input type="radio" name="check_http_referer" value="N"<?php if ($this->setting['check_http_referer'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('否'); ?>
 									</label>
 
-									<span class="help-block"><?php _e('网站域名设置错误将会导致无法登录'); ?></span>
+									<span class="help-block"><?php echo _t('网站域名设置错误将会导致无法登录'); ?></span>
 								</div>
 							</div>
 						</div>
@@ -427,10 +427,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('网站域名列表'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('网站域名列表'); ?>:</span>
 							<div class="col-sm-8 col-xs-8">
 								<textarea class="form-control textarea" rows="5" name="website_domains"><?php echo htmlspecialchars($this->setting['website_domains']); ?></textarea>
-								<span class="help-block"><?php _e('每行一个。'); ?></span>
+								<span class="help-block"><?php echo _t('每行一个。'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -439,15 +439,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('开启用户内容替换'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('开启用户内容替换'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="user_content_replace" value="Y"<?php if ($this->setting['user_content_replace'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+										<input type="radio" name="user_content_replace" value="Y"<?php if ($this->setting['user_content_replace'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="user_content_replace" value="N"<?php if ($this->setting['user_content_replace'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+										<input type="radio" name="user_content_replace" value="N"<?php if ($this->setting['user_content_replace'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -457,15 +457,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('开启网页内容替换'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('开启网页内容替换'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="html_content_replace" value="Y"<?php if ($this->setting['html_content_replace'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+										<input type="radio" name="html_content_replace" value="Y"<?php if ($this->setting['html_content_replace'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="html_content_replace" value="N"<?php if ($this->setting['html_content_replace'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+										<input type="radio" name="html_content_replace" value="N"<?php if ($this->setting['html_content_replace'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -475,15 +475,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('开启敏感词替换'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('开启敏感词替换'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="sensitive_words_replace" value="Y"<?php if ($this->setting['sensitive_words_replace'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+										<input type="radio" name="sensitive_words_replace" value="Y"<?php if ($this->setting['sensitive_words_replace'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="sensitive_words_replace" value="N"<?php if ($this->setting['sensitive_words_replace'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+										<input type="radio" name="sensitive_words_replace" value="N"<?php if ($this->setting['sensitive_words_replace'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -494,11 +494,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('通知未读数刷新间隔时间'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('通知未读数刷新间隔时间'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="unread_flush_interval" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['unread_flush_interval']); ?>"/>
 
-								<div class="help-block"><?php _e('单位'); ?>: <?php _e('秒'); ?></div>
+								<div class="help-block"><?php echo _t('单位'); ?>: <?php echo _t('秒'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -507,18 +507,18 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('默认私信选项'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('默认私信选项'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<label class="checkbox-inline">
-									<input type="radio" name="default_inbox_recv" value="3"<?php if ($this->setting['default_inbox_recv'] == '3') { ?> checked="checked"<?php } ?> /> <?php _e('所有人'); ?>
+									<input type="radio" name="default_inbox_recv" value="3"<?php if ($this->setting['default_inbox_recv'] == '3') { ?> checked="checked"<?php } ?> /> <?php echo _t('所有人'); ?>
 								</label>
 
 								<label class="checkbox-inline">
-									<input type="radio" name="default_inbox_recv" value="1"<?php if ($this->setting['default_inbox_recv'] == '1') { ?> checked="checked"<?php } ?> /> <?php _e('我关注的人'); ?>
+									<input type="radio" name="default_inbox_recv" value="1"<?php if ($this->setting['default_inbox_recv'] == '1') { ?> checked="checked"<?php } ?> /> <?php echo _t('我关注的人'); ?>
 								</label>
 
 								<label class="checkbox-inline">
-									<input type="radio" name="default_inbox_recv" value="2"<?php if ($this->setting['default_inbox_recv'] == '2') { ?> checked="checked"<?php } ?> /> <?php _e('拒绝任何人'); ?>
+									<input type="radio" name="default_inbox_recv" value="2"<?php if ($this->setting['default_inbox_recv'] == '2') { ?> checked="checked"<?php } ?> /> <?php echo _t('拒绝任何人'); ?>
 								</label>
 							</div>
 						</div>
@@ -528,10 +528,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('系统时间显示格式'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('系统时间显示格式'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
-								<label><input type="radio" name="time_style" value="Y"<?php if ($this->setting['time_style'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('显示日期和时间'); ?></label>
-								<label class="col-md-offset-1"><input type="radio" name="time_style" value="N"<?php if ($this->setting['time_style'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('只显示日期'); ?></label>
+								<label><input type="radio" name="time_style" value="Y"<?php if ($this->setting['time_style'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('显示日期和时间'); ?></label>
+								<label class="col-md-offset-1"><input type="radio" name="time_style" value="N"<?php if ($this->setting['time_style'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('只显示日期'); ?></label>
 							</div>
 						</div>
 					</td>
@@ -539,11 +539,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('时差'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('时差'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="time_difference" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['time_difference']); ?>"/>
 
-								<div class="help-block"><?php _e('单位: 秒, 只与显示相关'); ?></div>
+								<div class="help-block"><?php echo _t('单位: 秒, 只与显示相关'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -552,11 +552,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码字体列表'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('验证码字体列表'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="captcha_font_ids" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['captcha_font_ids']); ?>"/>
 
-								<div class="help-block"><?php _e('默认 1, 2, 3, 4, 5, 6, 7, 8'); ?></div>
+								<div class="help-block"><?php echo _t('默认 1, 2, 3, 4, 5, 6, 7, 8'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -564,11 +564,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码字体最小值'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('验证码字体最小值'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="captcha_fontsize_min" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['captcha_fontsize_min']); ?>"/>
 
-								<div class="help-block"><?php _e('默认 20'); ?></div>
+								<div class="help-block"><?php echo _t('默认 20'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -576,11 +576,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码字体最大值'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('验证码字体最大值'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="captcha_fontsize_max" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['captcha_fontsize_max']); ?>"/>
 
-								<div class="help-block"><?php _e('默认 22'); ?></div>
+								<div class="help-block"><?php echo _t('默认 22'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -588,11 +588,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码字符数最小值'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('验证码字符数最小值'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="captcha_wordlen_min" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['captcha_wordlen_min']); ?>"/>
 
-								<div class="help-block"><?php _e('默认 4'); ?></div>
+								<div class="help-block"><?php echo _t('默认 4'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -600,11 +600,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码字符数最大值'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('验证码字符数最大值'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="captcha_wordlen_max" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['captcha_wordlen_max']); ?>"/>
 
-								<div class="help-block"><?php _e('默认 4'); ?></div>
+								<div class="help-block"><?php echo _t('默认 4'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -612,11 +612,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码宽度最小值'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('验证码宽度最小值'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="captcha_width_min" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['captcha_width_min']); ?>"/>
 
-								<div class="help-block"><?php _e('默认 100'); ?></div>
+								<div class="help-block"><?php echo _t('默认 100'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -624,11 +624,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码宽度最大值'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('验证码宽度最大值'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="captcha_width_max" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['captcha_width_max']); ?>"/>
 
-								<div class="help-block"><?php _e('默认 100'); ?></div>
+								<div class="help-block"><?php echo _t('默认 100'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -636,11 +636,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码高度最小值'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('验证码高度最小值'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="captcha_height_min" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['captcha_height_min']); ?>"/>
 
-								<div class="help-block"><?php _e('默认 40'); ?></div>
+								<div class="help-block"><?php echo _t('默认 40'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -648,11 +648,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码高度最大值'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('验证码高度最大值'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="captcha_height_max" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['captcha_height_max']); ?>"/>
 
-								<div class="help-block"><?php _e('默认 40'); ?></div>
+								<div class="help-block"><?php echo _t('默认 40'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -660,11 +660,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码噪点最小值'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('验证码噪点最小值'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="captcha_dot_noise_min" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['captcha_dot_noise_min']); ?>"/>
 
-								<div class="help-block"><?php _e('默认 3'); ?></div>
+								<div class="help-block"><?php echo _t('默认 3'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -672,11 +672,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码噪点最大值'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('验证码噪点最大值'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="captcha_dot_noise_max" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['captcha_dot_noise_max']); ?>"/>
 
-								<div class="help-block"><?php _e('默认 6'); ?></div>
+								<div class="help-block"><?php echo _t('默认 6'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -684,11 +684,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码噪线最小值'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('验证码噪线最小值'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="captcha_line_noise_min" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['captcha_line_noise_min']); ?>"/>
 
-								<div class="help-block"><?php _e('默认 1'); ?></div>
+								<div class="help-block"><?php echo _t('默认 1'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -696,11 +696,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('验证码噪线最大值'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('验证码噪线最大值'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="captcha_line_noise_max" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['captcha_line_noise_max']); ?>"/>
 
-								<div class="help-block"><?php _e('默认 2'); ?></div>
+								<div class="help-block"><?php echo _t('默认 2'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -709,15 +709,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('普通用户登录是否需要验证码'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('普通用户登录是否需要验证码'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="login_seccode" value="Y"<?php if ($this->setting['login_seccode'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+										<input type="radio" name="login_seccode" value="Y"<?php if ($this->setting['login_seccode'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="login_seccode" value="N"<?php if ($this->setting['login_seccode'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+										<input type="radio" name="login_seccode" value="N"<?php if ($this->setting['login_seccode'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -728,11 +728,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('限制登录尝试次数'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('限制登录尝试次数'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="limit_login_attempts" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['limit_login_attempts']); ?>"/>
 
-								<div class="help-block"><?php _e('填写 0 则不启用'); ?></div>
+								<div class="help-block"><?php echo _t('填写 0 则不启用'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -740,11 +740,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('限制登录尝试次数间隔时间'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('限制登录尝试次数间隔时间'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="limit_login_attempts_interval" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['limit_login_attempts_interval']); ?>"/>
 
-								<div class="help-block"><?php _e('单位: 分钟'); ?></div>
+								<div class="help-block"><?php echo _t('单位: 分钟'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -753,11 +753,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('全局登录尝试次数'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('全局登录尝试次数'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="limit_global_login_attempts" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['limit_global_login_attempts']); ?>"/>
 
-								<div class="help-block"><?php _e('多次登录失败自动开启验证码, 填写 0 则不启用'); ?></div>
+								<div class="help-block"><?php echo _t('多次登录失败自动开启验证码, 填写 0 则不启用'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -765,11 +765,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('全局登录尝试次数间隔时间'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('全局登录尝试次数间隔时间'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="limit_global_login_attempts_interval" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['limit_global_login_attempts_interval']); ?>"/>
 
-								<div class="help-block"><?php _e('单位: 分钟'); ?></div>
+								<div class="help-block"><?php echo _t('单位: 分钟'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -778,18 +778,18 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('模糊时间'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('模糊时间'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="time_blurring" value="Y"<?php if ($this->setting['time_blurring'] != 'N') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+										<input type="radio" name="time_blurring" value="Y"<?php if ($this->setting['time_blurring'] != 'N') { ?> checked="checked"<?php } ?> /> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="time_blurring" value="N"<?php if ($this->setting['time_blurring'] == 'N') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+										<input type="radio" name="time_blurring" value="N"<?php if ($this->setting['time_blurring'] == 'N') { ?> checked="checked"<?php } ?> /> <?php echo _t('否'); ?>
 									</label>
 								</div>
-								<div class="help-block"><?php _e('将时间模糊至当天0点, 抹去时分秒, 再加上随机秒数'); ?></div>
+								<div class="help-block"><?php echo _t('将时间模糊至当天0点, 抹去时分秒, 再加上随机秒数'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -798,7 +798,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('模糊时间最小随机秒数'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('模糊时间最小随机秒数'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="random_seconds_min" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['random_seconds_min']); ?>"/>
 							</div>
@@ -808,7 +808,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('模糊时间最大随机秒数'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('模糊时间最大随机秒数'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="random_seconds_max" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['random_seconds_max']); ?>"/>
 							</div>
@@ -819,10 +819,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('匿名用户 UID'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('匿名用户 UID'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="anonymous_uid" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['anonymous_uid']); ?>"/>
-								<span class="help-block"><?php _e('留空则不启用'); ?></span>
+								<span class="help-block"><?php echo _t('留空则不启用'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -831,10 +831,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('特定贴文 UID(s)'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('特定贴文 UID(s)'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="specific_post_uids" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['specific_post_uids']); ?>"/>
-								<span class="help-block"><?php _e('多个 UID 请用","隔开, 留空则不启用'); ?></span>
+								<span class="help-block"><?php echo _t('多个 UID 请用","隔开, 留空则不启用'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -843,15 +843,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('启用分类功能'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('启用分类功能'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="category_enable" value="Y"<?php if ($this->setting['category_enable'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+										<input type="radio" name="category_enable" value="Y"<?php if ($this->setting['category_enable'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="category_enable" value="N"<?php if ($this->setting['category_enable'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+										<input type="radio" name="category_enable" value="N"<?php if ($this->setting['category_enable'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -862,10 +862,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('垃圾箱分类 ID'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('垃圾箱分类 ID'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="trash_category_id" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['trash_category_id']); ?>"/>
-								<span class="help-block"><?php _e('将删除的帖子存入垃圾箱, 留空则不启用'); ?></span>
+								<span class="help-block"><?php echo _t('将删除的帖子存入垃圾箱, 留空则不启用'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -874,10 +874,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('用于标记的用户组 ID(s)'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('用于标记的用户组 ID(s)'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="flagged_ids" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['flagged_ids']); ?>"/>
-								<span class="help-block"><?php _e('多个用户组 ID 请用","隔开, 请勿填写管理员用户组 ID'); ?></span>
+								<span class="help-block"><?php echo _t('多个用户组 ID 请用","隔开, 请勿填写管理员用户组 ID'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -886,10 +886,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('自动将新用户标记为'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('自动将新用户标记为'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="new_user_flag_as" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['new_user_flag_as']); ?>"/>
-								<div class="help-block"><?php _e('填写用户组 ID, 留空则不启用, 请勿填写管理员用户组 ID'); ?></div>
+								<div class="help-block"><?php echo _t('填写用户组 ID, 留空则不启用, 请勿填写管理员用户组 ID'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -901,9 +901,9 @@
 		<?php } else if ($_GET['category'] == 'contents') { ?>
 		<div class="mod-head">
 			<h3>
-				<span class="pull-left"><?php _e('内容设置'); ?></span>
+				<span class="pull-left"><?php echo _t('内容设置'); ?></span>
 
-				<span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php _e('快速保存'); ?></a></span>
+				<span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php echo _t('快速保存'); ?></a></span>
 			</h3>
 		</div>
 		<div class="tab-content mod-content">
@@ -911,18 +911,18 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许上传附件'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许上传附件'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="upload_enable" value="Y"<?php if ($this->setting['upload_enable'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+										<input type="radio" name="upload_enable" value="Y"<?php if ($this->setting['upload_enable'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="upload_enable" value="N"<?php if ($this->setting['upload_enable'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+										<input type="radio" name="upload_enable" value="N"<?php if ($this->setting['upload_enable'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('否'); ?>
 									</label>
 								</div>
-								<div class="help-block"><?php _e('允许上传头像/话题图片'); ?></div>
+								<div class="help-block"><?php echo _t('允许上传头像/话题图片'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -930,7 +930,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许的附件文件类型'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许的附件文件类型'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="allowed_upload_types" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['allowed_upload_types']); ?>"/>
 							</div>
@@ -940,11 +940,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许上传最大附件大小'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许上传最大附件大小'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="upload_size_limit" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['upload_size_limit']); ?>"/>
 
-								<div class="help-block"><?php _e('单位'); ?>: KB</div>
+								<div class="help-block"><?php echo _t('单位'); ?>: KB</div>
 							</div>
 						</div>
 					</td>
@@ -952,11 +952,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('上传文件存放路径'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('上传文件存放路径'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="upload_dir" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['upload_dir']); ?>"/>
 
-								<span class="help-block"><?php _e('末尾不带 / 或 \\ '); ?></span>
+								<span class="help-block"><?php echo _t('末尾不带 / 或 \\ '); ?></span>
 							</div>
 						</div>
 					</td>
@@ -964,11 +964,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('上传目录外部访问 URL 地址'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('上传目录外部访问 URL 地址'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="upload_url" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['upload_url']); ?>"/>
 
-								<span class="help-block"><?php _e('末尾不带 / 或 \\'); ?></span>
+								<span class="help-block"><?php echo _t('末尾不带 / 或 \\'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -976,11 +976,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('static 目录资源 URL 地址'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('static 目录资源 URL 地址'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="img_url" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['img_url']); ?>"/>
 
-								<span class="help-block"><?php _e('末尾不带 / 或 \\，留空使用根目录下的 static 资源'); ?></span>
+								<span class="help-block"><?php echo _t('末尾不带 / 或 \\，留空使用根目录下的 static 资源'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -989,10 +989,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('编辑器设置'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('编辑器设置'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
-								<label><input type="radio" name="advanced_editor_enable" value="Y"<?php if ($this->setting['advanced_editor_enable'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('高级编辑器'); ?></label>
-								<label class="col-md-offset-1"><input type="radio" name="advanced_editor_enable" value="N"<?php if ($this->setting['advanced_editor_enable'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('纯文本编辑器'); ?></label>
+								<label><input type="radio" name="advanced_editor_enable" value="Y"<?php if ($this->setting['advanced_editor_enable'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('高级编辑器'); ?></label>
+								<label class="col-md-offset-1"><input type="radio" name="advanced_editor_enable" value="N"<?php if ($this->setting['advanced_editor_enable'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('纯文本编辑器'); ?></label>
 							</div>
 						</div>
 					</td>
@@ -1001,10 +1001,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('站外 URL 白名单'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('站外 URL 白名单'); ?>:</span>
 							<div class="col-sm-8 col-xs-8">
 								<textarea class="form-control textarea" rows="5" name="content_url_whitelist"><?php echo htmlspecialchars($this->setting['content_url_whitelist']); ?></textarea>
-								<span class="help-block"><?php _e('支持普通字符串和正则表达式，每行一个。'); ?></span>
+								<span class="help-block"><?php echo _t('支持普通字符串和正则表达式，每行一个。'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -1013,10 +1013,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('超链接黑名单'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('超链接黑名单'); ?>:</span>
 							<div class="col-sm-8 col-xs-8">
 								<textarea class="form-control textarea" rows="5" name="hyperlink_blacklist"><?php echo htmlspecialchars($this->setting['hyperlink_blacklist']); ?></textarea>
-								<span class="help-block"><?php _e('支持普通字符串和正则表达式，每行一个。'); ?></span>
+								<span class="help-block"><?php echo _t('支持普通字符串和正则表达式，每行一个。'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -1024,10 +1024,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('超链接白名单'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('超链接白名单'); ?>:</span>
 							<div class="col-sm-8 col-xs-8">
 								<textarea class="form-control textarea" rows="5" name="hyperlink_whitelist"><?php echo htmlspecialchars($this->setting['hyperlink_whitelist']); ?></textarea>
-								<span class="help-block"><?php _e('支持普通字符串和正则表达式，每行一个。'); ?></span>
+								<span class="help-block"><?php echo _t('支持普通字符串和正则表达式，每行一个。'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -1036,7 +1036,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('第三方图片上传 URL'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('第三方图片上传 URL'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="image_upload_link" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['image_upload_link']); ?>"/>
 							</div>
@@ -1047,10 +1047,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('搜索引擎 URL'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('搜索引擎 URL'); ?>:</span>
 							<div class="col-sm-8 col-xs-8">
 								<textarea class="form-control textarea" rows="5" name="search_engine_list"><?php echo htmlspecialchars($this->setting['search_engine_list']); ?></textarea>
-								<span class="help-block"><?php _e('以 %s 取代查询，每行一个。e.g. Google, https://www.google.com/search?q=%s%20site:mydomain.com'); ?></span>
+								<span class="help-block"><?php echo _t('以 %s 取代查询，每行一个。e.g. Google, https://www.google.com/search?q=%s%20site:mydomain.com'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -1059,7 +1059,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('功能链接名称'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('功能链接名称'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="feature_list_name" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['feature_list_name']); ?>"/>
 							</div>
@@ -1070,7 +1070,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('知识库已替换提示'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('知识库已替换提示'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="kb_replaced_tips" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['kb_replaced_tips']); ?>"/>
 							</div>
@@ -1081,10 +1081,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('用户封禁理由列表'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('用户封禁理由列表'); ?>:</span>
 							<div class="col-sm-8 col-xs-8">
 								<textarea class="form-control textarea" rows="5" name="banning_reason_list"><?php echo htmlspecialchars($this->setting['banning_reason_list']); ?></textarea>
-								<span class="help-block"><?php _e('每行一个, 不使用请留空'); ?></span>
+								<span class="help-block"><?php echo _t('每行一个, 不使用请留空'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -1096,9 +1096,9 @@
 		<?php } else if ($_GET['category'] == 'currency') { ?>
 		<div class="mod-head">
 			<h3>
-				<span class="pull-left"><?php _e('代币与声望'); ?></span>
+				<span class="pull-left"><?php echo _t('代币与声望'); ?></span>
 
-				<span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php _e('快速保存'); ?></a></span>
+				<span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php echo _t('快速保存'); ?></a></span>
 			</h3>
 		</div>
 		<div class="tab-content mod-content">
@@ -1106,7 +1106,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('声望名称'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('声望名称'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="reputation_name" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['reputation_name']); ?>"/>
 							</div>
@@ -1117,10 +1117,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('声望动态权重参数 (赞同)'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('声望动态权重参数 (赞同)'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="reputation_dynamic_weight_agree" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['reputation_dynamic_weight_agree']); ?>"/>
-								<span class="help-block"><?php _e('数值越大权重下降越快, 留空则不启用'); ?></span>
+								<span class="help-block"><?php echo _t('数值越大权重下降越快, 留空则不启用'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -1128,10 +1128,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('声望动态权重参数 (反对)'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('声望动态权重参数 (反对)'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="reputation_dynamic_weight_disagree" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['reputation_dynamic_weight_disagree']); ?>"/>
-								<span class="help-block"><?php _e('数值越大权重下降越快, 留空则不启用'); ?></span>
+								<span class="help-block"><?php echo _t('数值越大权重下降越快, 留空则不启用'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -1140,10 +1140,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('声望达到多少为正式用户'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('声望达到多少为正式用户'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="reputation_formal_user" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['reputation_formal_user']); ?>"/>
-								<span class="help-block"><?php _e('正式用户受到更多保护, 留空则不启用'); ?></span>
+								<span class="help-block"><?php echo _t('正式用户受到更多保护, 留空则不启用'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -1152,15 +1152,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('自动封禁非正式用户'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('自动封禁非正式用户'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="auto_banning_type" value="ON"<?php if ($this->setting['auto_banning_type'] == 'ON') { ?> checked="checked"<?php } ?> /> <?php _e('ON'); ?>
+										<input type="radio" name="auto_banning_type" value="ON"<?php if ($this->setting['auto_banning_type'] == 'ON') { ?> checked="checked"<?php } ?> /> <?php echo _t('ON'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="auto_banning_type" value="OFF"<?php if ($this->setting['auto_banning_type'] == 'OFF') { ?> checked="checked"<?php } ?> /> <?php _e('OFF'); ?>
+										<input type="radio" name="auto_banning_type" value="OFF"<?php if ($this->setting['auto_banning_type'] == 'OFF') { ?> checked="checked"<?php } ?> /> <?php echo _t('OFF'); ?>
 									</label>
 								</div>
 							</div>
@@ -1170,10 +1170,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('內容声望小于等于多少时自动封禁'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('內容声望小于等于多少时自动封禁'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="auto_banning_reputation" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['auto_banning_reputation']); ?>"/>
-								<div class="help-block"><?php _e('应填写负数, 任意一则贴文的声望'); ?></div>
+								<div class="help-block"><?php echo _t('应填写负数, 任意一则贴文的声望'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1182,10 +1182,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('长文奖励因子'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('长文奖励因子'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="bonus_factor" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['bonus_factor']); ?>"/>
-								<span class="help-block"><?php _e('留空则不启用'); ?></span>
+								<span class="help-block"><?php echo _t('留空则不启用'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -1193,7 +1193,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('长文奖励最小字数'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('长文奖励最小字数'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="bonus_min_count" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['bonus_min_count']); ?>"/>
 							</div>
@@ -1203,7 +1203,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('长文奖励最大字数'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('长文奖励最大字数'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="bonus_max_count" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['bonus_max_count']); ?>"/>
 							</div>
@@ -1214,11 +1214,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('推送声望达到多少的条目'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('推送声望达到多少的条目'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="push_reputation" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['push_reputation']); ?>"/>
 
-								<div class="help-block"><?php _e('留空则不启用'); ?></div>
+								<div class="help-block"><?php echo _t('留空则不启用'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1226,11 +1226,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('推送条目类型'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('推送条目类型'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="push_types" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['push_types']); ?>"/>
 
-								<div class="help-block"><?php _e('用逗号隔开, 留空则推送全部类型, 例: question,answer,article,article_comment,video,video_comment'); ?></div>
+								<div class="help-block"><?php echo _t('用逗号隔开, 留空则推送全部类型, 例: question,answer,article,article_comment,video,video_comment'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1238,11 +1238,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('推送条目分类 ID'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('推送条目分类 ID'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="push_categories" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['push_categories']); ?>"/>
 
-								<div class="help-block"><?php _e('用逗号隔开, 留空则推送全部分类, 例: 1, 2, 3'); ?></div>
+								<div class="help-block"><?php echo _t('用逗号隔开, 留空则推送全部分类, 例: 1, 2, 3'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1251,11 +1251,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('点赞影响声望类型'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('点赞影响声望类型'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="reputation_types" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['reputation_types']); ?>"/>
 
-								<div class="help-block"><?php _e('用逗号隔开, 留空则不启用, 例: question,answer,article,article_comment,video,video_comment'); ?></div>
+								<div class="help-block"><?php echo _t('用逗号隔开, 留空则不启用, 例: question,answer,article,article_comment,video,video_comment'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1264,7 +1264,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('代币规则名称'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('代币规则名称'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="currency_rule_name" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['currency_rule_name']); ?>"/>
 							</div>
@@ -1274,7 +1274,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('代币名称'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('代币名称'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="currency_name" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['currency_name']); ?>"/>
 							</div>
@@ -1284,7 +1284,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('代币单位'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('代币单位'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="currency_unit" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['currency_unit']); ?>"/>
 							</div>
@@ -1294,7 +1294,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('新用户注册默认拥有代币'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('新用户注册默认拥有代币'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="currency_system_config_register" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['currency_system_config_register']); ?>"/>
 							</div>
@@ -1304,7 +1304,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('修改用户名消耗代币'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('修改用户名消耗代币'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="currency_system_config_change_username" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['currency_system_config_change_username']); ?>"/>
 							</div>
@@ -1314,7 +1314,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('内容被评为精选'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('内容被评为精选'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="currency_system_config_hot_post" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['currency_system_config_hot_post']); ?>"/>
 							</div>
@@ -1325,7 +1325,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('发布问题'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('发布问题'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="currency_system_config_new_question" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['currency_system_config_new_question']); ?>"/>
 							</div>
@@ -1335,7 +1335,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('回应'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('回应'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="currency_system_config_reply_question" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['currency_system_config_reply_question']); ?>"/>
 							</div>
@@ -1345,7 +1345,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('收到回应'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('收到回应'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="currency_system_config_question_replied" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['currency_system_config_question_replied']); ?>"/>
 							</div>
@@ -1356,7 +1356,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('发布文章'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('发布文章'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="currency_system_config_new_article" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['currency_system_config_new_article']); ?>"/>
 							</div>
@@ -1366,7 +1366,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('回应'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('回应'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="currency_system_config_reply_article" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['currency_system_config_reply_article']); ?>"/>
 							</div>
@@ -1376,7 +1376,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('收到回应'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('收到回应'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="currency_system_config_article_replied" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['currency_system_config_article_replied']); ?>"/>
 							</div>
@@ -1387,7 +1387,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('发布影片'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('发布影片'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="currency_system_config_new_video" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['currency_system_config_new_video']); ?>"/>
 							</div>
@@ -1397,7 +1397,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('回应'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('回应'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="currency_system_config_reply_video" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['currency_system_config_reply_video']); ?>"/>
 							</div>
@@ -1407,7 +1407,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('收到回应'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('收到回应'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="currency_system_config_video_replied" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['currency_system_config_video_replied']); ?>"/>
 							</div>
@@ -1418,7 +1418,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('赞同'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('赞同'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="currency_system_config_agree" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['currency_system_config_agree']); ?>"/>
 							</div>
@@ -1428,7 +1428,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('收到赞同'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('收到赞同'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="currency_system_config_agreed" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['currency_system_config_agreed']); ?>"/>
 							</div>
@@ -1438,7 +1438,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('反对'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('反对'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="currency_system_config_disagree" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['currency_system_config_disagree']); ?>"/>
 							</div>
@@ -1448,7 +1448,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('收到反对'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('收到反对'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="currency_system_config_disagreed" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['currency_system_config_disagreed']); ?>"/>
 							</div>
@@ -1459,10 +1459,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('回复每个主题只计费一次'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('回复每个主题只计费一次'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
-								<label><input type="radio" name="reply_pay_only_once" value="Y"<?php if ($this->setting['reply_pay_only_once'] == 'Y') { ?> checked="checked"<?php } ?> /><?php _e('是'); ?></label>
-								<label class="col-md-offset-1"><input type="radio" name="reply_pay_only_once" value="N"<?php if ($this->setting['reply_pay_only_once'] != 'Y') { ?> checked="checked"<?php } ?> /><?php _e('否'); ?></label>
+								<label><input type="radio" name="reply_pay_only_once" value="Y"<?php if ($this->setting['reply_pay_only_once'] == 'Y') { ?> checked="checked"<?php } ?> /><?php echo _t('是'); ?></label>
+								<label class="col-md-offset-1"><input type="radio" name="reply_pay_only_once" value="N"<?php if ($this->setting['reply_pay_only_once'] != 'Y') { ?> checked="checked"<?php } ?> /><?php echo _t('否'); ?></label>
 							</div>
 						</div>
 					</td>
@@ -1474,9 +1474,9 @@
 		<?php } else if ($_GET['category'] == 'permissions') { ?>
 		<div class="mod-head">
 			<h3>
-				<span class="pull-left"><?php _e('用户限制'); ?></span>
+				<span class="pull-left"><?php echo _t('用户限制'); ?></span>
 
-				<span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php _e('快速保存'); ?></a></span>
+				<span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php echo _t('快速保存'); ?></a></span>
 			</h3>
 		</div>
 		<div class="tab-content mod-content">
@@ -1484,10 +1484,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('用户对每个问题的回复限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('用户对每个问题的回复限制'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
-								<label><input type="radio" name="answer_unique" value="Y"<?php if ($this->setting['answer_unique'] == 'Y') { ?> checked="checked"<?php } ?> /><?php _e('只允许回复一次'); ?></label>
-								<label class="col-md-offset-1"><input type="radio" name="answer_unique" value="N"<?php if ($this->setting['answer_unique'] != 'Y') { ?> checked="checked"<?php } ?> /><?php _e('不限制'); ?></label>
+								<label><input type="radio" name="answer_unique" value="Y"<?php if ($this->setting['answer_unique'] == 'Y') { ?> checked="checked"<?php } ?> /><?php echo _t('只允许回复一次'); ?></label>
+								<label class="col-md-offset-1"><input type="radio" name="answer_unique" value="N"<?php if ($this->setting['answer_unique'] != 'Y') { ?> checked="checked"<?php } ?> /><?php echo _t('不限制'); ?></label>
 							</div>
 						</div>
 					</td>
@@ -1495,15 +1495,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许用户回复自己发起的问题'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('允许用户回复自己发起的问题'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="answer_self_question" value="Y"<?php if ($this->setting['answer_self_question'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+										<input type="radio" name="answer_self_question" value="Y"<?php if ($this->setting['answer_self_question'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="answer_self_question" value="N"<?php if ($this->setting['answer_self_question'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+										<input type="radio" name="answer_self_question" value="N"<?php if ($this->setting['answer_self_question'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -1513,15 +1513,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('要求问题包含问号'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('要求问题包含问号'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="question_ends_with_question" value="Y"<?php if ($this->setting['question_ends_with_question'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+										<input type="radio" name="question_ends_with_question" value="Y"<?php if ($this->setting['question_ends_with_question'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="question_ends_with_question" value="N"<?php if ($this->setting['question_ends_with_question'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+										<input type="radio" name="question_ends_with_question" value="N"<?php if ($this->setting['question_ends_with_question'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -1532,11 +1532,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('最大@用户数量限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('最大@用户数量限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="max_at_users" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['max_at_users']); ?>"/>
 
-								<div class="help-block"><?php _e('填写 0 则关闭@用户功能'); ?></div>
+								<div class="help-block"><?php echo _t('填写 0 则关闭@用户功能'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1545,11 +1545,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('发帖最小话题数量限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('发帖最小话题数量限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="topics_limit_min" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['topics_limit_min']); ?>"/>
 
-								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+								<div class="help-block"><?php echo _t('填写 0 则不限制'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1557,11 +1557,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('发帖最大话题数量限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('发帖最大话题数量限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="topics_limit_max" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['topics_limit_max']); ?>"/>
 
-								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+								<div class="help-block"><?php echo _t('填写 0 则不限制'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1569,11 +1569,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('话题标题最大字节数限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('话题标题最大字节数限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="topic_title_limit" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['topic_title_limit']); ?>"/>
 
-								<div class="help-block"><?php _e('注: 一个汉字等于 3 个字节, 填写 0 则不限制'); ?></div>
+								<div class="help-block"><?php echo _t('注: 一个汉字等于 3 个字节, 填写 0 则不限制'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1582,11 +1582,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('标题最小字数限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('标题最小字数限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="title_length_min" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['title_length_min']); ?>"/>
 
-								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+								<div class="help-block"><?php echo _t('填写 0 则不限制'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1594,11 +1594,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('标题最大字数限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('标题最大字数限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="title_length_max" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['title_length_max']); ?>"/>
 
-								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+								<div class="help-block"><?php echo _t('填写 0 则不限制'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1607,11 +1607,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('问题正文最小字数限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('问题正文最小字数限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="question_body_length_min" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['question_body_length_min']); ?>"/>
 
-								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+								<div class="help-block"><?php echo _t('填写 0 则不限制'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1619,11 +1619,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('问题正文最大字数限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('问题正文最大字数限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="question_body_length_max" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['question_body_length_max']); ?>"/>
 
-								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+								<div class="help-block"><?php echo _t('填写 0 则不限制'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1631,11 +1631,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('文章正文最小字数限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('文章正文最小字数限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="article_body_length_min" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['article_body_length_min']); ?>"/>
 
-								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+								<div class="help-block"><?php echo _t('填写 0 则不限制'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1643,11 +1643,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('文章正文最大字数限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('文章正文最大字数限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="article_body_length_max" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['article_body_length_max']); ?>"/>
 
-								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+								<div class="help-block"><?php echo _t('填写 0 则不限制'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1655,11 +1655,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('影片正文最小字数限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('影片正文最小字数限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="video_body_length_min" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['video_body_length_min']); ?>"/>
 
-								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+								<div class="help-block"><?php echo _t('填写 0 则不限制'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1667,11 +1667,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('影片正文最大字数限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('影片正文最大字数限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="video_body_length_max" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['video_body_length_max']); ?>"/>
 
-								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+								<div class="help-block"><?php echo _t('填写 0 则不限制'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1680,11 +1680,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('知识库正文最小字数限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('知识库正文最小字数限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="kb_body_length_min" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['kb_body_length_min']); ?>"/>
 
-								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+								<div class="help-block"><?php echo _t('填写 0 则不限制'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1692,11 +1692,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('知识库正文最大字数限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('知识库正文最大字数限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="kb_body_length_max" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['kb_body_length_max']); ?>"/>
 
-								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+								<div class="help-block"><?php echo _t('填写 0 则不限制'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1705,11 +1705,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('问题回复最小字数限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('问题回复最小字数限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="question_reply_length_min" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['question_reply_length_min']); ?>"/>
 
-								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+								<div class="help-block"><?php echo _t('填写 0 则不限制'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1717,11 +1717,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('问题回复最大字数限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('问题回复最大字数限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="question_reply_length_max" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['question_reply_length_max']); ?>"/>
 
-								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+								<div class="help-block"><?php echo _t('填写 0 则不限制'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1729,11 +1729,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('文章回复最小字数限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('文章回复最小字数限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="article_reply_length_min" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['article_reply_length_min']); ?>"/>
 
-								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+								<div class="help-block"><?php echo _t('填写 0 则不限制'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1741,11 +1741,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('文章回复最大字数限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('文章回复最大字数限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="article_reply_length_max" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['article_reply_length_max']); ?>"/>
 
-								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+								<div class="help-block"><?php echo _t('填写 0 则不限制'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1753,11 +1753,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('影片回复最小字数限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('影片回复最小字数限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="video_reply_length_min" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['video_reply_length_min']); ?>"/>
 
-								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+								<div class="help-block"><?php echo _t('填写 0 则不限制'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1765,11 +1765,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('影片回复最大字数限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('影片回复最大字数限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="video_reply_length_max" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['video_reply_length_max']); ?>"/>
 
-								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+								<div class="help-block"><?php echo _t('填写 0 则不限制'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1778,11 +1778,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('楼中楼讨论最小字数限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('楼中楼讨论最小字数限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="discussion_length_min" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['discussion_length_min']); ?>"/>
 
-								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+								<div class="help-block"><?php echo _t('填写 0 则不限制'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1790,11 +1790,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('楼中楼讨论最大字数限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('楼中楼讨论最大字数限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="discussion_length_max" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['discussion_length_max']); ?>"/>
 
-								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+								<div class="help-block"><?php echo _t('填写 0 则不限制'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1803,15 +1803,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('楼中楼讨论自动顶起帖子'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('楼中楼讨论自动顶起帖子'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="discussion_bring_top" value="Y"<?php if ($this->setting['discussion_bring_top'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+										<input type="radio" name="discussion_bring_top" value="Y"<?php if ($this->setting['discussion_bring_top'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="discussion_bring_top" value="N"<?php if ($this->setting['discussion_bring_top'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+										<input type="radio" name="discussion_bring_top" value="N"<?php if ($this->setting['discussion_bring_top'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -1822,11 +1822,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('私信字节数限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('私信字节数限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="pm_length_limit" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['pm_length_limit']); ?>"/>
 
-								<div class="help-block"><?php _e('不能为空'); ?></div>
+								<div class="help-block"><?php echo _t('不能为空'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1835,11 +1835,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('针对同一个人每日赞同上限'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('针对同一个人每日赞同上限'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="same_user_upvotes_per_day" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['same_user_upvotes_per_day']); ?>"/>
 
-								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+								<div class="help-block"><?php echo _t('填写 0 则不限制'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1847,11 +1847,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('针对同一个人每日反对上限'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('针对同一个人每日反对上限'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="same_user_downvotes_per_day" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['same_user_downvotes_per_day']); ?>"/>
 
-								<div class="help-block"><?php _e('填写 0 则不限制'); ?></div>
+								<div class="help-block"><?php echo _t('填写 0 则不限制'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1860,11 +1860,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('默认操作间隔限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('默认操作间隔限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="user_operation_interval" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['user_operation_interval']); ?>"/>
 
-								<div class="help-block"><?php _e('两次操作的时间间隔 (单位: 秒, 设置 0 为不限制)'); ?></div>
+								<div class="help-block"><?php echo _t('两次操作的时间间隔 (单位: 秒, 设置 0 为不限制)'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1873,10 +1873,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('知识库复读限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('知识库复读限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="kb_replies_per_post" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['kb_replies_per_post']); ?>"/>
-								<div class="help-block"><?php _e('每个帖子下面最多允许多少回复被替换, 留空则不限制'); ?></div>
+								<div class="help-block"><?php echo _t('每个帖子下面最多允许多少回复被替换, 留空则不限制'); ?></div>
 							</div>
 						</div>
 					</td>
@@ -1887,9 +1887,9 @@
 		<?php } else if ($_GET['category'] == 'cache') { ?>
 		<div class="mod-head">
 			<h3>
-				<span class="pull-left"><?php _e('性能优化'); ?></span>
+				<span class="pull-left"><?php echo _t('性能优化'); ?></span>
 
-				<span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php _e('快速保存'); ?></a></span>
+				<span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php echo _t('快速保存'); ?></a></span>
 			</h3>
 		</div>
 		<div class="tab-content mod-content">
@@ -1897,11 +1897,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('高级别缓存时间'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('高级别缓存时间'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="cache_level_high" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['cache_level_high']); ?>"/>
 
-								<span class="help-block"><?php _e('单位:秒'); ?></span>
+								<span class="help-block"><?php echo _t('单位:秒'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -1909,11 +1909,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('普通级别缓存时间'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('普通级别缓存时间'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="cache_level_normal" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['cache_level_normal']); ?>"/>
 
-								<span class="help-block"><?php _e('单位:秒'); ?></span>
+								<span class="help-block"><?php echo _t('单位:秒'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -1921,11 +1921,11 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('低级别缓存时间'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('低级别缓存时间'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="cache_level_low" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['cache_level_low']); ?>"/>
 
-								<span class="help-block"><?php _e('单位:秒'); ?></span>
+								<span class="help-block"><?php echo _t('单位:秒'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -1936,9 +1936,9 @@
 		<?php } else if ($_GET['category'] == 'interface') { ?>
 		<div class="mod-head">
 			<h3>
-				<span class="pull-left"><?php _e('界面设置'); ?></span>
+				<span class="pull-left"><?php echo _t('界面设置'); ?></span>
 
-				<span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php _e('快速保存'); ?></a></span>
+				<span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php echo _t('快速保存'); ?></a></span>
 			</h3>
 		</div>
 		<div class="tab-content mod-content">
@@ -1946,7 +1946,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('用户界面风格'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('用户界面风格'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<select class="form-control" name="ui_style">
 								<?php foreach($this->styles as $skey => $val) { ?>
@@ -1960,7 +1960,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('最新动态显示条数'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('最新动态显示条数'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="index_per_page" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['index_per_page']); ?>"/>
 							</div>
@@ -1970,7 +1970,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('通知显示条数'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('通知显示条数'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="notifications_per_page" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['notifications_per_page']); ?>"/>
 							</div>
@@ -1980,7 +1980,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('内容列表页显示条数'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('内容列表页显示条数'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="contents_per_page" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['contents_per_page']); ?>"/>
 							</div>
@@ -1990,7 +1990,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('每页回复显示条数'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('每页回复显示条数'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="replies_per_page" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['replies_per_page']); ?>"/>
 							</div>
@@ -2000,7 +2000,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('推荐用户和话题数量'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('推荐用户和话题数量'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="recommend_users_number" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['recommend_users_number']); ?>"/>
 							</div>
@@ -2013,9 +2013,9 @@
 		<?php } else if ($_GET['category'] == 'video') { ?>
 		<div class="mod-head">
 			<h3>
-				<span class="pull-left"><?php _e('影片处理'); ?></span>
+				<span class="pull-left"><?php echo _t('影片处理'); ?></span>
 
-				<span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php _e('快速保存'); ?></a></span>
+				<span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php echo _t('快速保存'); ?></a></span>
 			</h3>
 		</div>
 		<div class="tab-content mod-content">
@@ -2024,10 +2024,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('示范 URL 列表'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('示范 URL 列表'); ?>:</span>
 							<div class="col-sm-8 col-xs-8">
 								<textarea class="form-control textarea" rows="5" name="video_config_example_url"><?php echo htmlspecialchars($this->setting['video_config_example_url']); ?></textarea>
-								<span class="help-block"><?php _e('e.g. https://www.youtube.com/watch?v=abcdefghijk'); ?></span>
+								<span class="help-block"><?php echo _t('e.g. https://www.youtube.com/watch?v=abcdefghijk'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -2036,10 +2036,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('来源 URL 正则表达式'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('来源 URL 正则表达式'); ?>:</span>
 							<div class="col-sm-8 col-xs-8">
 								<textarea class="form-control textarea" rows="5" name="video_config_url_parsing_rules"><?php echo htmlspecialchars($this->setting['video_config_url_parsing_rules']); ?></textarea>
-								<span class="help-block"><?php _e('e.g. youtube, %(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i'); ?></span>
+								<span class="help-block"><?php echo _t('e.g. youtube, %(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -2048,10 +2048,10 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('IFrame URL 规则'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('IFrame URL 规则'); ?>:</span>
 							<div class="col-sm-8 col-xs-8">
 								<textarea class="form-control textarea" rows="5" name="video_config_iframe_url_rules"><?php echo htmlspecialchars($this->setting['video_config_iframe_url_rules']); ?></textarea>
-								<span class="help-block"><?php _e('e.g. youtube, https://www.youtube.com/embed/{$source}'); ?></span>
+								<span class="help-block"><?php echo _t('e.g. youtube, https://www.youtube.com/embed/{$source}'); ?></span>
 							</div>
 						</div>
 					</td>
@@ -2063,7 +2063,7 @@
 		<?php } ?>
 		<div class="tab-content mod-content mod-one-btn">
 			<div class="center-block">
-				<input type="button" value="<?php _e('保存设置'); ?>" class="btn btn-primary" onclick="AWS.ajax_post($('#settings_form'));" />
+				<input type="button" value="<?php echo _t('保存设置'); ?>" class="btn btn-primary" onclick="AWS.ajax_post($('#settings_form'));" />
 			</div>
 		</div>
 	</div>

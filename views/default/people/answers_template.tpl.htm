@@ -4,7 +4,7 @@
 	<div class="aw-mod">
 		<div class="mod-head">
 			<h4 class="aw-hide-txt">
-				<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['question_id']; ?>"><?php if (!$val['question_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['question_info']['title'], true); ?><?php } ?></a>
+				<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['question_id']; ?>"><?php if (!$val['question_info']['title']) { ?><s class="aw-deleted"><?php echo _t('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['question_info']['title'], true); ?><?php } ?></a>
 			</h4>
 		</div>
 		<div class="mod-body">
@@ -12,7 +12,7 @@
 			<p>
 			<a class="aw-small-text" href="<?php echo url_rewrite(); ?>/question/item_id-<?php echo $val['id']; ?>">
 			<?php if (!$val['message']) { ?>
-				<s class="aw-deleted"><?php _e('已删除'); ?></s>
+				<s class="aw-deleted"><?php echo _t('已删除'); ?></s>
 			<?php } else { ?>
 				<?php echo safe_text(truncate_text($val['message'], 200)); ?>
 			<?php } ?>

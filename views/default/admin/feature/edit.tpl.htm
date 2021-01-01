@@ -6,7 +6,7 @@
 	<div class="mod">
 		<div class="mod-head">
 			<h3>
-				<span class="pull-left"><?php _e('功能链接'); ?></span>
+				<span class="pull-left"><?php echo _t('功能链接'); ?></span>
 			</h3>
 		</div>
 		<div class="tab-content mod-content">
@@ -14,7 +14,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('标题'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('标题'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<textarea class="form-control" name="title"><?php echo FORMAT::text($this->feature['title']); ?></textarea>
 							</div>
@@ -24,7 +24,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('链接'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('链接'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input class="form-control" type="text" value="<?php echo $this->feature['link']; ?>" name="link" />
 							</div>
@@ -34,7 +34,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('排序'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('排序'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input class="form-control" type="text" value="<?php echo $this->feature['sort']; ?>" name="sort" />
 							</div>
@@ -44,7 +44,7 @@
 				<tfoot>
 				<tr>
 					<td>
-						<input type="button" value="<?php _e('保存设置'); ?>" class="btn btn-primary center-block" onclick="AWS.ajax_post($('#settings_form'));" />
+						<input type="button" value="<?php echo _t('保存设置'); ?>" class="btn btn-primary center-block" onclick="AWS.ajax_post($('#settings_form'));" />
 					</td>
 				</tr>
 				</tfoot>

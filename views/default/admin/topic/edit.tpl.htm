@@ -8,11 +8,11 @@
 		<div class="mod-head">
 			<h3>
 				<?php if ($this->topic_info) { ?>
-				<span class="pull-left"><?php _e('话题编辑'); ?></span>
+				<span class="pull-left"><?php echo _t('话题编辑'); ?></span>
 				<?php } else { ?>
 				<ul class="nav nav-tabs">
-					<li><a href="<?php echo url_rewrite(); ?>/admin/topic/list/"><?php _e('话题管理'); ?></a></li>
-					<li class="active"><a href="<?php echo url_rewrite(); ?>/admin/topic/edit/"><?php _e('新建话题'); ?></a></li>
+					<li><a href="<?php echo url_rewrite(); ?>/admin/topic/list/"><?php echo _t('话题管理'); ?></a></li>
+					<li class="active"><a href="<?php echo url_rewrite(); ?>/admin/topic/edit/"><?php echo _t('新建话题'); ?></a></li>
 				</ul>
 				<?php } ?>
 			</h3>
@@ -24,7 +24,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('缩略图'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('缩略图'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<a id="topic_pic_uploader"><img src="<?php echo get_topic_pic_url($this->topic_info, 'mid'); ?>" alt="" id="topic_pic" class="img-polaroid" name="topic_pic" /></a>
 							</div>
@@ -36,7 +36,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('话题标题'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('话题标题'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="topic_title" value="<?php echo FORMAT::text($this->topic_info['topic_title']); ?>" class="form-control" />
 							</div>
@@ -47,7 +47,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('话题描述'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('话题描述'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<textarea class="form-control" name="topic_description"><?php echo FORMAT::text($this->topic_info['topic_description']); ?></textarea>
 							</div>
@@ -59,15 +59,15 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('锁定状态'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('锁定状态'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="topic_lock" value="1"<?php if ($this->topic_info['topic_lock']) { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+										<input type="radio" name="topic_lock" value="1"<?php if ($this->topic_info['topic_lock']) { ?> checked="checked"<?php } ?> /> <?php echo _t('是'); ?>
 									</label>
 
 									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="topic_lock" value="0"<?php if (!$this->topic_info['topic_lock']) { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+										<input type="radio" name="topic_lock" value="0"<?php if (!$this->topic_info['topic_lock']) { ?> checked="checked"<?php } ?> /> <?php echo _t('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -79,7 +79,7 @@
 				<tfoot>
 				<tr>
 					<td>
-						<input type="button" value="<?php _e('保存设置'); ?>" class="btn btn-primary center-block" onclick="AWS.ajax_post($('#settings_form'));" />
+						<input type="button" value="<?php echo _t('保存设置'); ?>" class="btn btn-primary center-block" onclick="AWS.ajax_post($('#settings_form'));" />
 					</td>
 				</tr>
 				</tfoot>

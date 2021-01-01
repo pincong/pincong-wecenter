@@ -1,7 +1,7 @@
 <div class="aw-mod aw-text-align-justify">
 	<div class="mod-head">
-		<a href="<?php echo url_rewrite(); ?>/topic/channel-hot" class="pull-right"><?php _e('更多'); ?> &gt;</a>
-		<h3><?php _e('热门话题'); ?></h3>
+		<a href="<?php echo url_rewrite(); ?>/topic/channel-hot" class="pull-right"><?php echo _t('更多'); ?> &gt;</a>
+		<h3><?php echo _t('热门话题'); ?></h3>
 	</div>
 	<div class="mod-body">
 		<?php if (is_array($this->sidebar_hot_topics)) { ?>
@@ -16,7 +16,7 @@
 							<a href="<?php echo url_rewrite(); ?>/topic/<?php echo FORMAT::text($val['topic_title']); ?>" class="text" data-id="<?php echo $val['topic_id']; ?>"><?php echo FORMAT::text($val['topic_title']); ?></a>
 						</span>
 					</p>
-					<p><?php _e('%s 个问题', '<b>' . $val['discuss_count'] . '</b>'); ?>, <?php _e('%s 人关注', '<b>' . $val['focus_count'] . '</b>'); ?></p>
+					<p><?php echo _t('%s 个问题', '<b>' . $val['discuss_count'] . '</b>'); ?>, <?php echo _t('%s 人关注', '<b>' . $val['focus_count'] . '</b>'); ?></p>
 				</dd>
 			</dl>
 		<?php } ?>

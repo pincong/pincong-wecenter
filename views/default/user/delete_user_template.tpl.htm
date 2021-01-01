@@ -3,19 +3,19 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>
-				<h3 class="modal-title"><?php _e('刪除用户'); ?></h3>
+				<h3 class="modal-title"><?php echo _t('刪除用户'); ?></h3>
 			</div>
 			<form action="<?php echo url_rewrite(); ?>/user/ajax/delete_user/" method="post" onsubmit="return false" id="edit_form">
 			<input type="hidden" name="uid" value="<?php echo $this->user['uid']; ?>" />
 			<div class="modal-body">
 				<div class="aw-margin-y-15 aw-margin-top-0 alert alert-danger collapse error_message"><i class="icon icon-delete"></i> <em></em></div>
 				<div>
-					<textarea name="reason" class="form-control" rows="4" placeholder="<?php _e('理由...'); ?>"><?php echo FORMAT::text($this->user['data']['banned_reason']); ?></textarea>
+					<textarea name="reason" class="form-control" rows="4" placeholder="<?php echo _t('理由...'); ?>"><?php echo FORMAT::text($this->user['data']['banned_reason']); ?></textarea>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<a data-dismiss="modal" aria-hidden="true" class="aw-small-text"><?php _e('取消'); ?></a>
-				<button class="btn btn-large btn-success" onclick="AWS.submit_form($('#edit_form'), $(this), $('.error_message'));return false;"><?php _e('确定'); ?></button>
+				<a data-dismiss="modal" aria-hidden="true" class="aw-small-text"><?php echo _t('取消'); ?></a>
+				<button class="btn btn-large btn-success" onclick="AWS.submit_form($('#edit_form'), $(this), $('.error_message'));return false;"><?php echo _t('确定'); ?></button>
 			</div>
 			</form>
 		</div>

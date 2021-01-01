@@ -5,7 +5,7 @@
 	<div class="mod">
 		<div class="mod-head">
 			<h3>
-				<span class="pull-left"><?php _e('编辑用户资料'); ?></span>
+				<span class="pull-left"><?php echo _t('编辑用户资料'); ?></span>
 			</h3>
 		</div>
 		<div class="tab-content mod-content">
@@ -14,12 +14,12 @@
 					<tr>
 						<td>
 							<div class="form-group">
-								<span class="col-sm-4 col-xs-3 control-label"><?php _e('删除用户'); ?>:</span>
+								<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('删除用户'); ?>:</span>
 								<div class="col-sm-7 col-xs-8">
 									<input type="hidden" name="uid" value="<?php echo $this->user['uid']; ?>" />
-									<label><input name="remove_user" id="remove_user" type="checkbox" value="1" /> <?php _e('确认删除这个用户'); ?></label>
-									<label><input name="remove_user_data" id="remove_user_data" type="checkbox" value="1" /> <?php _e('删除用户发布的内容'); ?></label>
-									<a class="btn btn-danger btn-xs" onclick="if (!document.getElementById('remove_user').checked) { AWS.alert('<?php _e('请先确认删除操作'); ?>'); } else { AWS.ajax_post($('#remove_user_form')); }"><?php _e('删除用户'); ?></a>
+									<label><input name="remove_user" id="remove_user" type="checkbox" value="1" /> <?php echo _t('确认删除这个用户'); ?></label>
+									<label><input name="remove_user_data" id="remove_user_data" type="checkbox" value="1" /> <?php echo _t('删除用户发布的内容'); ?></label>
+									<a class="btn btn-danger btn-xs" onclick="if (!document.getElementById('remove_user').checked) { AWS.alert('<?php echo _t('请先确认删除操作'); ?>'); } else { AWS.ajax_post($('#remove_user_form')); }"><?php echo _t('删除用户'); ?></a>
 								</div>
 							</div>
 						</td>
@@ -33,7 +33,7 @@
 					<tr>
 						<td>
 							<div class="form-group">
-								<span class="col-sm-4 col-xs-3 control-label"><?php _e('用户名'); ?>:</span>
+								<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('用户名'); ?>:</span>
 								<div class="col-sm-5 col-xs-8">
 									<input class="form-control" name="username" type="text" autocomplete="off" value="<?php echo UF::name($this->user); ?>" />
 								</div>
@@ -43,7 +43,7 @@
 					<tr>
 						<td>
 							<div class="form-group">
-								<span class="col-sm-4 col-xs-3 control-label"><?php _e('密码'); ?>:</span>
+								<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('密码'); ?>:</span>
 								<div class="col-sm-5 col-xs-8">
 									<input class="form-control" name="password" type="text" autocomplete="off" value="" />
 									<input name="new_scrambled_password" type="hidden" value="" />
@@ -51,8 +51,8 @@
 									<input name="new_public_key" type="hidden" value="" />
 									<input name="new_private_key" type="hidden" value="" />
 									<p class="filetext"></p>
-									<label><input name="confirm_change_password" type="checkbox" value="1" /> <?php _e('确认修改密码'); ?></label>
-									<a class="btn btn-primary btn-xs" onclick="var el=$(this);PasswordUtil.hash('ripemd', Math.random()).then(function(value){el.closest('form').find('input[name=password]').val(value)})"><?php _e('随机生成'); ?></a>
+									<label><input name="confirm_change_password" type="checkbox" value="1" /> <?php echo _t('确认修改密码'); ?></label>
+									<a class="btn btn-primary btn-xs" onclick="var el=$(this);PasswordUtil.hash('ripemd', Math.random()).then(function(value){el.closest('form').find('input[name=password]').val(value)})"><?php echo _t('随机生成'); ?></a>
 								</div>
 							</div>
 						</td>
@@ -61,7 +61,7 @@
 					<tr>
 						<td>
 							<div class="form-group">
-								<label class="col-sm-4 col-xs-3 control-label"><?php _e('一句话介绍'); ?>:</label>
+								<label class="col-sm-4 col-xs-3 control-label"><?php echo _t('一句话介绍'); ?>:</label>
 
 								<div class="col-sm-5 col-xs-8">
 									<input class="form-control" name="signature" type="text" value="<?php echo FORMAT::text($this->user['signature']); ?>" />
@@ -72,10 +72,10 @@
 					<tr>
 						<td>
 							<div class="form-group">
-								<label class="col-sm-4 col-xs-3 control-label"><?php _e('代币'); ?>:</label>
+								<label class="col-sm-4 col-xs-3 control-label"><?php echo _t('代币'); ?>:</label>
 
 								<div class="col-sm-5 col-xs-8">
-									<?php echo $this->user['currency']; ?> &nbsp; <a class="btn btn-xs btn-danger" href="<?php echo url_rewrite(); ?>/admin/user/currency_log/uid-<?php echo $this->user['uid']; ?>"><?php _e('操作代币'); ?></a>
+									<?php echo $this->user['currency']; ?> &nbsp; <a class="btn btn-xs btn-danger" href="<?php echo url_rewrite(); ?>/admin/user/currency_log/uid-<?php echo $this->user['uid']; ?>"><?php echo _t('操作代币'); ?></a>
 								</div>
 							</div>
 						</td>
@@ -83,7 +83,7 @@
 					<tr>
 						<td>
 							<div class="form-group">
-								<label class="col-sm-4 col-xs-3 control-label"><?php _e('认证头衔'); ?>:</label>
+								<label class="col-sm-4 col-xs-3 control-label"><?php echo _t('认证头衔'); ?>:</label>
 
 								<div class="col-sm-5 col-xs-8">
 									<input class="form-control" name="verified" type="text" value="<?php echo $this->user['verified']; ?>" />
@@ -94,7 +94,7 @@
 					<tr>
 						<td>
 							<div class="form-group">
-								<span class="col-sm-4 col-xs-3 control-label"><?php _e('头像'); ?>:</span>
+								<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('头像'); ?>:</span>
 								<div class="col-sm-2">
 									<p>
 										<img src="<?php echo UF::avatar($this->user, 'mid'); ?>" alt="" class="img-polaroid" />
@@ -104,7 +104,7 @@
 										<input type="file" name="user_avatar" exts="png|jpg|bmp|jpeg" class="mod-input-file">
 									</span><br>
 									<p class="filetext"></p>
-									<label><input name="delete_avatar" type="checkbox" value="1" /> <?php _e('删除头像'); ?></label>
+									<label><input name="delete_avatar" type="checkbox" value="1" /> <?php echo _t('删除头像'); ?></label>
 								</div>
 							</div>
 						</td>
@@ -113,7 +113,7 @@
 					<tr>
 						<td>
 							<div class="form-group">
-								<span class="col-sm-4 col-xs-3 control-label"><?php _e('会员组'); ?>:</span>
+								<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('会员组'); ?>:</span>
 								<div class="col-sm-6 col-xs-8">
 									<div class="btn-group mod-btn">
 										<?php echo $this->member_group['group_name']; ?>
@@ -126,7 +126,7 @@
 					<tr>
 						<td>
 							<div class="form-group">
-								<label class="col-sm-4 col-xs-3 control-label"><?php _e('系统组'); ?>:</label>
+								<label class="col-sm-4 col-xs-3 control-label"><?php echo _t('系统组'); ?>:</label>
 
 								<div class="col-sm-5 col-xs-8">
 									<select name="group_id" class="form-control">
@@ -142,7 +142,7 @@
 					<tr>
 						<td>
 							<div class="form-group">
-								<span class="col-sm-4 col-xs-3 control-label"><?php _e('封禁'); ?>:</span>
+								<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('封禁'); ?>:</span>
 								<div class="col-sm-5 col-xs-8">
 									<input class="form-control" type="text" name="forbidden" value="<?php echo $this->user['forbidden']; ?>" />
 								</div>
@@ -153,7 +153,7 @@
 					<tr>
 						<td>
 							<div class="form-group">
-								<span class="col-sm-4 col-xs-3 control-label"><?php _e('标记'); ?>:</span>
+								<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('标记'); ?>:</span>
 								<div class="col-sm-5 col-xs-8">
 									<input class="form-control" type="text" name="flagged" value="<?php echo $this->user['flagged']; ?>" />
 								</div>
@@ -164,7 +164,7 @@
 					<tr>
 						<td>
 							<div class="form-group">
-								<span class="col-sm-4 col-xs-3 control-label"><?php _e('注册时间'); ?>:</span>
+								<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('注册时间'); ?>:</span>
 								<div class="col-sm-6 col-xs-8">
 									<div class="btn-group mod-btn">
 										<?php echo date_friendly($this->user['reg_time']); ?>
@@ -178,7 +178,7 @@
 					<tr>
 						<td>
 							<div class="form-group">
-								<span class="col-sm-4 col-xs-3 control-label"><?php _e('上次登录时间'); ?>:</span>
+								<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('上次登录时间'); ?>:</span>
 								<div class="col-sm-6 col-xs-8">
 									<div class="btn-group mod-btn">
 										<?php echo date_friendly($this->user['last_login']); ?>
@@ -192,12 +192,12 @@
 					<tr>
 						<td>
 							<div class="form-group">
-								<span class="col-sm-4 col-xs-3 control-label"><?php _e('性别'); ?>:</span>
+								<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('性别'); ?>:</span>
 								<div class="col-sm-8 col-xs-8">
-									<label class="checkbox-inline"><input type="radio" name="sex" value="0"<?php if (!$this->user['sex']) { ?> checked="checked"<?php } ?> /><?php _e('保密'); ?></label>
-									<label class="checkbox-inline"><input type="radio" name="sex" value="1"<?php if ($this->user['sex'] == 1) { ?> checked="checked"<?php } ?> /><?php _e('男'); ?></label>
-									<label class="checkbox-inline"><input type="radio" name="sex" value="2"<?php if ($this->user['sex'] == 2) { ?> checked="checked"<?php } ?> /><?php _e('女'); ?></label>
-									<label class="checkbox-inline"><input type="radio" name="sex" value="3"<?php if ($this->user['sex'] == 3) { ?> checked="checked"<?php } ?> /><?php _e('其他'); ?></label>
+									<label class="checkbox-inline"><input type="radio" name="sex" value="0"<?php if (!$this->user['sex']) { ?> checked="checked"<?php } ?> /><?php echo _t('保密'); ?></label>
+									<label class="checkbox-inline"><input type="radio" name="sex" value="1"<?php if ($this->user['sex'] == 1) { ?> checked="checked"<?php } ?> /><?php echo _t('男'); ?></label>
+									<label class="checkbox-inline"><input type="radio" name="sex" value="2"<?php if ($this->user['sex'] == 2) { ?> checked="checked"<?php } ?> /><?php echo _t('女'); ?></label>
+									<label class="checkbox-inline"><input type="radio" name="sex" value="3"<?php if ($this->user['sex'] == 3) { ?> checked="checked"<?php } ?> /><?php echo _t('其他'); ?></label>
 								</div>
 							</div>
 						</td>
@@ -206,7 +206,7 @@
 					<tr>
 						<td>
 							<div class="form-group">
-								<span class="col-sm-4 col-xs-3 control-label"><?php _e('声望'); ?>:</span>
+								<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('声望'); ?>:</span>
 								<div class="col-sm-5 col-xs-8">
 									<input class="form-control" type="text" name="reputation" value="<?php echo $this->user['reputation']; ?>" />
 								</div>
@@ -217,7 +217,7 @@
 					<tr>
 						<td>
 							<div class="form-group">
-								<span class="col-sm-4 col-xs-3 control-label"><?php _e('赞同数'); ?>:</span>
+								<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('赞同数'); ?>:</span>
 								<div class="col-sm-5 col-xs-8">
 									<input class="form-control" type="text" name="agree_count" value="<?php echo $this->user['agree_count']; ?>" />
 								</div>
@@ -228,7 +228,7 @@
 					<tr>
 						<td>
 							<div class="form-group">
-								<span class="col-sm-4 col-xs-3 control-label"><?php _e('代币'); ?>:</span>
+								<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('代币'); ?>:</span>
 								<div class="col-sm-5 col-xs-8">
 									<input class="form-control" type="text" name="currency" value="<?php echo $this->user['currency']; ?>" />
 								</div>
@@ -239,7 +239,7 @@
 					<tfoot>
 					<tr>
 						<td>
-							<input type="submit" value="<?php _e('保存设置'); ?>" class="btn btn-primary center-block" />
+							<input type="submit" value="<?php echo _t('保存设置'); ?>" class="btn btn-primary center-block" />
 						</td>
 					</tr>
 					</tfoot>
@@ -278,7 +278,7 @@ $(document).ready(function () {
 				AWS.ajax_post(form);
 			}).catch(function(error) {
 				console.log(error);
-				alert("<?php _e('发生错误'); ?>");
+				alert("<?php echo _t('发生错误'); ?>");
 			});
 		} else {
 			AWS.ajax_post(form);

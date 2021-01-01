@@ -10,7 +10,7 @@
 					<a name="c_contents"></a>
 					<div class="aw-mod clearfix">
 						<div class="mod-head common-head">
-							<h2 id="main_title"><?php _e('精选'); ?></h2>
+							<h2 id="main_title"><?php echo _t('精选'); ?></h2>
 						</div>
 
 						<div class="mod-body aw-feed-list clearfix" id="main_contents"></div>
@@ -18,7 +18,7 @@
 						<div class="mod-footer">
 							<!-- 加载更多内容 -->
 							<a id="bp_more" class="aw-load-more-content">
-								<span><?php _e('更多'); ?></span>
+								<span><?php echo _t('更多'); ?></span>
 							</a>
 							<!-- end 加载更多内容 -->
 						</div>
@@ -41,7 +41,7 @@ function remove_discussion(div, type) {
 	var el = div.find('.markitup-box');
 	if (el.html().indexOf('<s class="aw-deleted">') !== -1) return;
 	$.get(G_BASE_URL + '/question/ajax/remove_comment/type-' + type + '__comment_id-' + div.data('item-id'));
-	el.html("<s class=\"aw-deleted\"><?php _e('已删除'); ?></s>");
+	el.html("<s class=\"aw-deleted\"><?php echo _t('已删除'); ?></s>");
 }
 
 function toggle_disscusion(btn) {

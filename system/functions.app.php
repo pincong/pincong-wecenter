@@ -352,11 +352,23 @@ function _e($string, $replace = null)
 {
 	if (!class_exists('AWS_APP', false))
 	{
-		echo load_class('core_lang')->translate($string, $replace, TRUE);
+		echo load_class('core_lang')->translate($string, $replace);
 	}
 	else
 	{
-		echo AWS_APP::lang()->translate($string, $replace, TRUE);
+		echo AWS_APP::lang()->translate($string, $replace);
+	}
+}
+
+function _t($string, $replace = null)
+{
+	if (!class_exists('AWS_APP', false))
+	{
+		return load_class('core_lang')->translate($string, $replace);
+	}
+	else
+	{
+		return AWS_APP::lang()->translate($string, $replace);
 	}
 }
 

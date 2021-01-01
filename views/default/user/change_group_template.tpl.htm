@@ -3,7 +3,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>
-				<h3 class="modal-title"><?php _e('变更用户组'); ?></h3>
+				<h3 class="modal-title"><?php echo _t('变更用户组'); ?></h3>
 			</div>
 			<form action="<?php echo url_rewrite(); ?>/user/ajax/change_group/" method="post" onsubmit="return false" id="edit_form">
 			<input type="hidden" name="uid" value="<?php echo $this->user['uid']; ?>" />
@@ -16,8 +16,8 @@
 				</select>
 			</div>
 			<div class="modal-footer">
-				<a data-dismiss="modal" aria-hidden="true" class="aw-small-text"><?php _e('取消'); ?></a>
-				<button class="btn btn-large btn-success" onclick="AWS.submit_form($('#edit_form'), $(this), $('.error_message'));return false;"><?php _e('确定'); ?></button>
+				<a data-dismiss="modal" aria-hidden="true" class="aw-small-text"><?php echo _t('取消'); ?></a>
+				<button class="btn btn-large btn-success" onclick="AWS.submit_form($('#edit_form'), $(this), $('.error_message'));return false;"><?php echo _t('确定'); ?></button>
 			</div>
 			</form>
 		</div>

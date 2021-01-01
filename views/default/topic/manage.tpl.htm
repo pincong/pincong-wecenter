@@ -7,23 +7,23 @@
 				<div class="col-sm-9 aw-main-content">
 					<div class="aw-mod">
 						<div class="mod-head common-head">
-							<h2><span class="pull-right"><a class="aw-small-text" href="<?php echo url_rewrite(); ?>/topic/<?php echo safe_url_encode($this->topic_info['topic_title']); ?>"><?php _e('返回话题'); ?> »</a></span><?php _e('管理话题'); ?> - <?php echo FORMAT::text($this->topic_info['topic_title']); ?></h2>
+							<h2><span class="pull-right"><a class="aw-small-text" href="<?php echo url_rewrite(); ?>/topic/<?php echo safe_url_encode($this->topic_info['topic_title']); ?>"><?php echo _t('返回话题'); ?> »</a></span><?php echo _t('管理话题'); ?> - <?php echo FORMAT::text($this->topic_info['topic_title']); ?></h2>
 						</div>
 					</div>
 					<div class="aw-mod-topic-manage">
 						<dl class="dl-horizontal">
 							<form action="<?php echo url_rewrite(); ?>/topic/ajax/merge_topic/" method="post" id="merge_topic_form">
 								<input type="hidden" name="target_id" value="<?php echo $this->topic_info['topic_id']; ?>" />
-								<dt><?php _e('话题合并'); ?>:</dt>
+								<dt><?php echo _t('话题合并'); ?>:</dt>
 								<dd>
-									<a class="btn btn-normal btn-success pull-right" onclick="AWS.submit_form($('#merge_topic_form'), $(this));"><?php _e('合并'); ?></a>
-									<input type="text" class="form-control" name="topic_title" placeholder="<?php _e('在此输入要与该话题合并的话题'); ?>..."/>
+									<a class="btn btn-normal btn-success pull-right" onclick="AWS.submit_form($('#merge_topic_form'), $(this));"><?php echo _t('合并'); ?></a>
+									<input type="text" class="form-control" name="topic_title" placeholder="<?php echo _t('在此输入要与该话题合并的话题'); ?>..."/>
 								</dd>
 							</form>
 						</dl>
 						<?php if ($this->merged_topics_info) { ?>
 						<dl class="dl-horizontal">
-							<dt><?php _e('被合并的话题'); ?>:</dt>
+							<dt><?php echo _t('被合并的话题'); ?>:</dt>
 							<dd>
 								<div class="aw-topic-bar active">
 									<div class="topic-bar clearfix">
@@ -45,16 +45,16 @@
 				<div class="col-sm-3 aw-side-bar">
 					<div class="aw-mod topic-edit-help">
 						<div class="mod-head">
-							<h3><?php _e('管理话题指南'); ?></h3>
+							<h3><?php echo _t('管理话题指南'); ?></h3>
 						</div>
 						<div class="mod-body">
-							<p><b>• <?php _e('话题别名'); ?>:</b> <?php _e('如果该话题还有其他的表达方式, 您可以为其创建别名以便其他人能更好的找到该话题'); ?></p>
-							<p><b>• <?php _e('话题合并'); ?>:</b> <?php _e('如果该话题跟另一个话题意义相近, 您可以将此话题合并至其他话题'); ?></p>
+							<p><b>• <?php echo _t('话题别名'); ?>:</b> <?php echo _t('如果该话题还有其他的表达方式, 您可以为其创建别名以便其他人能更好的找到该话题'); ?></p>
+							<p><b>• <?php echo _t('话题合并'); ?>:</b> <?php echo _t('如果该话题跟另一个话题意义相近, 您可以将此话题合并至其他话题'); ?></p>
 						</div>
 						<div class="mod-footer">
 							<?php if ($this->user_info['permission']['manage_topic']) { ?>
-							<a onclick="AWS.ajax_request(G_BASE_URL + '/topic/ajax/lock/', 'topic_id=<?php echo $this->topic_info['topic_id']; ?>');" class="btn btn-success <?php if ($this->topic_info['topic_lock']) { ?>active<?php } ?>"><?php if ($this->topic_info['topic_lock']) { ?><?php _e('解除锁定'); ?><?php } else { ?><?php _e('锁定话题'); ?><?php } ?></a>&nbsp;
-							<a onclick="AWS.confirm('<?php _e('确认删除?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/topic/ajax/remove/', 'topic_id=<?php echo $this->topic_info['topic_id']; ?>');});" class="btn btn-gray"><?php _e('删除话题'); ?></a>
+							<a onclick="AWS.ajax_request(G_BASE_URL + '/topic/ajax/lock/', 'topic_id=<?php echo $this->topic_info['topic_id']; ?>');" class="btn btn-success <?php if ($this->topic_info['topic_lock']) { ?>active<?php } ?>"><?php if ($this->topic_info['topic_lock']) { ?><?php echo _t('解除锁定'); ?><?php } else { ?><?php echo _t('锁定话题'); ?><?php } ?></a>&nbsp;
+							<a onclick="AWS.confirm('<?php echo _t('确认删除?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/topic/ajax/remove/', 'topic_id=<?php echo $this->topic_info['topic_id']; ?>');});" class="btn btn-gray"><?php echo _t('删除话题'); ?></a>
 							<?php } ?>
 						</div>
 					</div>

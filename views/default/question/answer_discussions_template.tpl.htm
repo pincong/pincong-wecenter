@@ -11,10 +11,10 @@
 		<?php if ($this->user_id) { ?>
 		<span class="pull-right">
 		<?php if (can_edit_post($val['uid'], $this->user_info)) { ?>
-		<a href="javascript:;" onclick="remove_discussion($(this).closest('.aw-item'), 'answer');"><?php _e('删除'); ?></a>
+		<a href="javascript:;" onclick="remove_discussion($(this).closest('.aw-item'), 'answer');"><?php echo _t('删除'); ?></a>
 		&nbsp;
 		<?php } ?>
-		<a href="javascript:;" onclick="(function(form){form.find('textarea').focus().insertAtCaret('@<?php echo UF::name($val['user_info']); ?>:');$.scrollTo(form, 300, {queue:true});})($(this).closest('.aw-comment-box').find('form'));"><?php _e('回复'); ?></a>
+		<a href="javascript:;" onclick="(function(form){form.find('textarea').focus().insertAtCaret('@<?php echo UF::name($val['user_info']); ?>:');$.scrollTo(form, 300, {queue:true});})($(this).closest('.aw-comment-box').find('form'));"><?php echo _t('回复'); ?></a>
 		</span>
 		<?php } ?>
 		<!-- 用户名 -->
