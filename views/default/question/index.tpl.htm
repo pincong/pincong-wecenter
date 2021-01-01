@@ -40,7 +40,7 @@
 							<?php } ?>
 						<?php } else if (!$this->user_id) { ?>
 							<span class="topic-tag">
-								<a href="account/login/"><span class="icon-inverse"><i class="icon icon-edit"></i> <?php _e('添加话题')?></span></a>
+								<a href="login/"><span class="icon-inverse"><i class="icon icon-edit"></i> <?php _e('添加话题')?></span></a>
 							</span>
 						<?php } else { ?>
 							<!-- 话题推荐bar -->
@@ -290,7 +290,7 @@
 						<?php if ($this->question_info['lock']) { ?>
 						<p align="center"><?php _e('该问题目前已经被锁定, 无法添加新回复'); ?></p>
 						<?php } else if (!$this->user_id) { ?>
-						<p align="center"><?php _e('要回复问题请先<a href="account/login/">登录</a>或<a href="account/register/">注册</a>'); ?></p>
+						<p align="center"><?php _e('要回复问题请先<a href="login/">登录</a>或<a href="register/">注册</a>'); ?></p>
 						<?php } else if ($this->user_answered) { ?>
 						<p align="center"><?php _e('一个问题只能回复一次'); ?></p>
 						<?php } else if ((get_setting('answer_self_question') == 'N') && ($this->user_id == $this->question_info['uid'])) { ?>

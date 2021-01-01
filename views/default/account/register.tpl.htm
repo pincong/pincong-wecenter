@@ -7,7 +7,7 @@
 		<p><?php echo get_setting('register_notice'); ?></p>
 	</div>
 	<div class="mod-body">
-		<form class="aw-register-form" action="account/ajax/register_process/" method="post" id="register_form">
+		<form class="aw-register-form" action="register/ajax/register_process/" method="post" id="register_form">
 			<?php if ($this->icode) { ?><input type="hidden" name="icode" id="icode" value="<?php echo $this->icode; ?>" /><?php } ?>
 			<?php if ($this->return_url) { ?><input type="hidden" name="return_url" value="<?php echo $this->return_url; ?>" /><?php } ?>
 
@@ -63,7 +63,7 @@
 					<?php } else { ?>
 						<?php echo get_setting('user_agreement_name'); ?>
 					<?php } ?>
-					<a href="account/login/" class="pull-right">已有账号?</a>
+					<a href="login/" class="pull-right">已有账号?</a>
 				</li>
 				<li class="clearfix">
 					<button class="btn btn-large btn-blue btn-block" onclick="AWS.submit_form($('#register_form'), $(this), $('.error_message'), function(){$('#captcha').click()}); return false;"><?php _e('注册'); ?></button>
@@ -113,7 +113,7 @@ $(document).ready(function ()
 							}
 							else
 							{
-								$.post(G_BASE_URL + '/account/ajax/check_username/', 
+								$.post(G_BASE_URL + '/register/ajax/check_username/', 
 									{
 										username: $(this).val().trim()
 									}, function (result)

@@ -70,62 +70,6 @@ class main extends AWS_CONTROLLER
 		}
 	}
 
-	public function login_action()
-	{
-		if ($this->user_id)
-		{
-			HTTP::redirect('/');
-		}
-
-		$this->crumb(AWS_APP::lang()->_t('登录'));
-
-		TPL::import_css('css/register.css');
-
-		if ($_GET['url'])
-		{
-			$return_url = '/'; //htmlspecialchars(base64_decode($_GET['url']));
-		}
-		else
-		{
-			$return_url = '/'; //htmlspecialchars($_SERVER['HTTP_REFERER']);
-		}
-
-		TPL::assign('captcha_required', $this->model('login')->is_captcha_required());
-		TPL::assign('return_url', $return_url);
-
-		TPL::output("account/login");
-	}
-
-	public function register_action()
-	{
-		if ($this->user_id)
-		{
-			HTTP::redirect('/');
-		}
-
-		if (get_setting('register_type') == 'close')
-		{
-			H::redirect_msg(AWS_APP::lang()->_t('本站目前关闭注册'), '/');
-		}
-		else if (get_setting('register_type') == 'invite' AND !$_GET['icode'])
-		{
-			H::redirect_msg(AWS_APP::lang()->_t('本站只接受邀请注册'), '/');
-		}
-
-		if ($_GET['icode'])
-		{
-			{
-				H::redirect_msg(AWS_APP::lang()->_t('邀请码无效或已经使用, 请使用新的邀请码'), '/');
-			}
-		}
-
-		$this->crumb(AWS_APP::lang()->_t('注册'));
-
-		TPL::import_css('css/register.css');
-
-		TPL::output('account/register');
-	}
-
 	public function password_updated_action()
 	{
 		if ($this->user_id)
@@ -133,7 +77,7 @@ class main extends AWS_CONTROLLER
 			HTTP::redirect('/');
 		}
 
-		$url = '/account/login/';
+		$url = '/login/';
 
 		H::redirect_msg(AWS_APP::lang()->_t('密码修改成功, 请使用新密码登录'), $url);
 	}
