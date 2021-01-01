@@ -271,13 +271,6 @@ class topic_class extends AWS_MODEL
 			$result = 'remove';
 		}
 
-		// 更新个人计数
-		$focus_count = $this->count('topic_focus', ['uid', 'eq', $uid, 'i']);
-
-		$this->model('account')->update_user_fields(array(
-			'topic_focus_count' => $focus_count
-		), $uid);
-
 		return $result;
 	}
 

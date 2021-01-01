@@ -14,6 +14,8 @@
 
 define('G_DEBUG', FALSE);
 
+define('G_ERROR_REPORTING', E_ALL & ~E_NOTICE & ~E_STRICT & ~E_WARNING);
+
 // 定义 Cookies 作用域
 define('G_COOKIE_DOMAIN', '');
 

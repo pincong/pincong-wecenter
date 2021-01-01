@@ -57,7 +57,7 @@ class core_token
 		return AWS_APP::crypt()->new_key($passphrase);
 	}
 
-	public function verify($payload, $token, $secret, $single_use = true, $start_time = 0)
+	public function verify(&$payload, $token, $secret, $single_use = true, $start_time = 0)
 	{
 		$token = json_decode(safe_base64_decode($token), true);
 		if (!is_array($token) OR !$token['key'] OR !$token['body'] OR !$token['expire'] OR !$token['time'])

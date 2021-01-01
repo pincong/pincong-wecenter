@@ -33,9 +33,13 @@ define('AWS_PATH', dirname(__FILE__) . '/');
 define('ROOT_PATH', dirname(dirname(__FILE__)) . '/');
 define('TEMP_PATH', dirname(dirname(__FILE__)) . '/tmp/');
 
-//error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_WARNING);
-
 require_once(AWS_PATH . 'config.inc.php');
+if (!defined('G_ERROR_REPORTING'))
+{
+	define('G_ERROR_REPORTING', E_ALL & ~E_NOTICE & ~E_STRICT & ~E_WARNING);
+}
+error_reporting(G_ERROR_REPORTING);
+
 require_once(ROOT_PATH . 'version.php');
 require_once(AWS_PATH . 'functions.inc.php');
 require_once(AWS_PATH . 'functions.app.php');

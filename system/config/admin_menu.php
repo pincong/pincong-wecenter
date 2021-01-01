@@ -223,7 +223,7 @@ $config[] = array(
 		array(
 			'id' => 501,
 			'title' => AWS_APP::lang()->_t('系统维护'),
-			'url' => '/admin/tools/',
+			'url' => '/admin/tools/index/',
 		),
 	)
 );

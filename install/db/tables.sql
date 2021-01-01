@@ -555,7 +555,6 @@ CREATE TABLE `aws_users` (
   `fans_count` int(11) DEFAULT '0' COMMENT '粉丝数',
   `friend_count` int(11) DEFAULT '0' COMMENT '观众数',
   `invite_count` int(11) DEFAULT '0' COMMENT '邀请我回答数量',
-  `topic_focus_count` int(11) DEFAULT '0' COMMENT '关注话题数量',
   `group_id` int(11) DEFAULT '0' COMMENT '用户组ID',
   `flagged` int(11) DEFAULT '0' COMMENT '替代用户组ID',
   `forbidden` tinyint(1) DEFAULT '0',
