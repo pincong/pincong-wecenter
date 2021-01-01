@@ -103,7 +103,7 @@
 			<!-- end 加载更多内容 -->
 			<?php if ($this->question_info['lock'] AND !$this->question_info['redirect_id']) { ?>
 			<p align="center"><?php _e('该主题目前已经被锁定, 无法添加新回复'); ?></p>
-			<?php } else { ?>
+			<?php } else if ($this->user_id) { ?>
 			<form action="<?php echo url_rewrite(); ?>/question/ajax/save_answer_discussion/answer_id-<?php echo $val['id']; ?>" method="post" onsubmit="return false">
 				<div class="aw-comment-box-main">
 					<textarea class="aw-comment-txt autosize form-control" rows="2" name="message" placeholder="<?php _e('讨论一下...'); ?>"></textarea>

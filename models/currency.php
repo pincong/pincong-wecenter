@@ -157,7 +157,7 @@ class currency_class extends AWS_MODEL
 					{
 						$result[$log_id] = array(
 							'title' => $videos[$item['item_id']]['title'],
-							'url' => url_rewrite('/v/' . $item['item_id'])
+							'url' => url_rewrite('/video/' . $item['item_id'])
 						);
 					}
 				break;
@@ -187,7 +187,7 @@ class currency_class extends AWS_MODEL
 					{
 						$result[$log_id] = array(
 							'title' => truncate_text($video_comments[$item['item_id']]['message'], 24),
-							'url' => url_rewrite('/v/' . $video_comments[$item['item_id']]['video_id'])
+							'url' => url_rewrite('/video/' . $video_comments[$item['item_id']]['video_id'])
 						);
 					}
 				break;
