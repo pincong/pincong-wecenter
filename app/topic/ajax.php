@@ -87,11 +87,6 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题不存在')));
 		}
 
-		if (!$_POST['topic_description'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写话题描述')));
-		}
-
 		$this->model('topic')->update_topic($this->user_id, $_POST['topic_id'], null, $_POST['topic_description']);
 
 		set_user_operation_last_time('edit_topic', $this->user_id);

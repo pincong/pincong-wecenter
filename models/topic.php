@@ -248,6 +248,10 @@ class topic_class extends AWS_MODEL
 		{
 			$data['topic_description'] = htmlspecialchars($topic_description);
 		}
+		else
+		{
+			$data['topic_description'] = null;
+		}
 
 		if ($topic_pic)
 		{

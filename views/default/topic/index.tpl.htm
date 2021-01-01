@@ -23,7 +23,7 @@
 				<div class="col-sm-12 col-md-9 aw-main-content">
 					<div class="aw-mod aw-topic-detail-title">
 						<div class="mod-body">
-							<img src="<?php echo get_topic_pic_url($this->topic_info, 'mid'); ?>" alt="<?php echo $this->topic_info['topic_title']; ?>" />
+							<img src="<?php echo get_topic_pic_url($this->topic_info, 'max'); ?>" alt="<?php echo $this->topic_info['topic_title']; ?>" />
 							<h2 class="pull-left"><?php echo $this->topic_info['topic_title']; ?> <?php if ($this->topic_info['topic_lock']) { ?><i class="aw-icon i-lock" title="<?php _e('已锁定'); ?>"></i><?php } ?></h2>
 							<div class="aw-topic-operate aw-small-text">
 								<?php if ($this->user_id) { ?>
@@ -34,44 +34,15 @@
 					</div>
 
 					<div class="aw-mod aw-topic-list-mod">
-						<div class="mod-head">
-							<div class="tabbable">
-								<!-- tab 切换 -->
-								<ul class="nav nav-tabs aw-nav-tabs hidden-xs">
-									<li class="active"><a href="#all" data-toggle="tab"><?php _e('全部内容'); ?></a></li>
-									<li><a href="#about" id="i_about" data-toggle="tab"><?php _e('关于话题'); ?></a></li>
-								</ul>
-								<!-- end tab 切换 -->
+						<div class="mod-body">
+							<div class="aw-common-list" id="c_all_list">
+								<?php echo $this->all_list_bit; ?>
 							</div>
 						</div>
-
-						<div class="mod-body">
-							<!-- tab 切换内容 -->
-							<div class="tab-content">
-								<!-- 全部 -->
-								<div class="tab-pane active" id="all">
-									<div class="aw-mod">
-										<div class="mod-body">
-											<div class="aw-common-list" id="c_all_list">
-												<?php echo $this->all_list_bit; ?>
-											</div>
-										</div>
-										<div class="mod-footer">
-											<a class="aw-load-more-content" id="c_all_more" auto-load="false">
-												<span><?php _e('更多'); ?>...</span>
-											</a>
-										</div>
-									</div>
-								</div>
-								<!-- end 全部 -->
-
-								<div class="tab-pane" id="about">
-									<div class="aw-topic-detail-about text-color-666 markitup-box">
-										<?php echo nl2br(FORMAT::parse_bbcode($this->topic_info['topic_description'])); ?>
-									</div>
-								</div>
-							</div>
-							<!-- end tab 切换内容 -->
+						<div class="mod-footer">
+							<a class="aw-load-more-content" id="c_all_more" auto-load="false">
+								<span><?php _e('更多'); ?>...</span>
+							</a>
 						</div>
 					</div>
 				</div>
@@ -85,7 +56,7 @@
 						</div>
 						<div class="mod-body">
 							<?php if ($this->topic_info['topic_description']) { ?>
-							<p><?php echo cjk_substr(strip_ubb($this->topic_info['topic_description']), 0, 128, 'UTF-8', '... &nbsp; <a href="javascript:;" onclick="$(\'#i_about\').click()">查看全部</a>'); ?></p>
+							<p><?php echo nl2br(FORMAT::parse_link($this->topic_info['topic_description'])); ?></p>
 							<?php } else if ($this->topic_info['topic_lock'] == 0 && $this->user_info['permission']['edit_topic']) { ?>
 							<a href="topic/edit/<?php echo $this->topic_info['topic_id']; ?>" class="icon-inverse" class=><i class="icon icon-edit"></i> <?php _e('添加描述'); ?></a>
 							<?php } ?>
@@ -139,9 +110,7 @@
 
 <script type="text/javascript">
 $(document).ready(function () {
-	if ($('.tabbable').length) {
-		AWS.load_list_view(G_BASE_URL + '/explore/ajax/list/topic_id-<?php echo $this->topic_ids; ?>', $('#c_all_more'), $('#c_all_list'), 2);
-	}
+	AWS.load_list_view(G_BASE_URL + '/explore/ajax/list/topic_id-<?php echo $this->topic_ids; ?>', $('#c_all_more'), $('#c_all_list'), 2);
 });
 </script>
 
