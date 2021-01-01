@@ -516,7 +516,7 @@ CREATE TABLE `aws_users` (
   `agree_count` int(11) DEFAULT '0',
   `reputation` float DEFAULT '0',
   `currency` int(11) DEFAULT '0',
-  `user_update_time` int(11) DEFAULT '0',
+  `user_update_time` int(11) DEFAULT '0' COMMENT '用户最后发言时间',
   `settings` text,
   `verified` varchar(32) DEFAULT NULL COMMENT '认证头衔',
   `signature` varchar(140) DEFAULT NULL COMMENT '个人签名',

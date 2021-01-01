@@ -239,6 +239,10 @@ class publish_class extends AWS_MODEL
 		// 记录用户动态
 		$this->model('activity')->push('question', $item_id, $data['uid']);
 
+		$this->model('account')->update_user_fields(array(
+			'user_update_time' => $now
+		), $data['uid']);
+
 		return $item_id;
 	}
 
@@ -277,6 +281,10 @@ class publish_class extends AWS_MODEL
 
 		// 记录用户动态
 		$this->model('activity')->push('article', $item_id, $data['uid']);
+
+		$this->model('account')->update_user_fields(array(
+			'user_update_time' => $now
+		), $data['uid']);
 
 		return $item_id;
 	}
@@ -318,6 +326,10 @@ class publish_class extends AWS_MODEL
 
 		// 记录用户动态
 		$this->model('activity')->push('video', $item_id, $data['uid']);
+
+		$this->model('account')->update_user_fields(array(
+			'user_update_time' => $now
+		), $data['uid']);
 
 		return $item_id;
 	}
@@ -374,6 +386,10 @@ class publish_class extends AWS_MODEL
 
 		// 记录用户动态
 		$this->model('activity')->push('answer', $item_id, $data['uid']);
+
+		$this->model('account')->update_user_fields(array(
+			'user_update_time' => $now
+		), $data['uid']);
 
 
 		// 删除邀请
@@ -443,6 +459,10 @@ class publish_class extends AWS_MODEL
 		// 记录用户动态
 		$this->model('activity')->push('article_comment', $item_id, $data['uid']);
 
+		$this->model('account')->update_user_fields(array(
+			'user_update_time' => $now
+		), $data['uid']);
+
 		return $item_id;
 	}
 
@@ -506,6 +526,10 @@ class publish_class extends AWS_MODEL
 		// 记录用户动态
 		$this->model('activity')->push('video_comment', $item_id, $data['uid']);
 
+		$this->model('account')->update_user_fields(array(
+			'user_update_time' => $now
+		), $data['uid']);
+
 		return $item_id;
 	}
 
@@ -556,6 +580,10 @@ class publish_class extends AWS_MODEL
 		}
 
 		// TODO: 记录用户动态
+
+		$this->model('account')->update_user_fields(array(
+			'user_update_time' => $now
+		), $data['uid']);
 
 		return $item_id;
 	}
@@ -614,6 +642,10 @@ class publish_class extends AWS_MODEL
 		}
 
 		// TODO: 记录用户动态
+
+		$this->model('account')->update_user_fields(array(
+			'user_update_time' => $now
+		), $data['uid']);
 
 		return $item_id;
 	}
