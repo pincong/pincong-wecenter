@@ -31,7 +31,7 @@ class search_fulltext_class extends AWS_MODEL
 	{
 		if ($search_cache = $this->fetch_row('search_cache', "`hash` = '" . $this->quote($search_hash) . "'"))
 		{
-			return unserialize(gzuncompress(base64_decode($search_cache['data'])));
+			return unserialize(gzuncompress(base64_decode($search_cache['data'])), array('allowed_classes' => false));
 		}
 	}
 

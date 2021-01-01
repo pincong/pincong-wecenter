@@ -133,7 +133,7 @@ class Services_Phpanalysis_Phpanalysis
 			}
 			
 			fseek($this->mainDicHand, $arr['s'], SEEK_SET);
-			$data = @unserialize(fread($this->mainDicHand, $arr['l']));
+			$data = @unserialize(fread($this->mainDicHand, $arr['l']), array('allowed_classes' => false));
 			$this->mainDicInfos[$keynum] = $data;
 		}
 		
@@ -1039,7 +1039,7 @@ class Services_Phpanalysis_Phpanalysis
 				continue;
 			}
 			fseek($this->mainDicHand, $arr['s'], SEEK_SET);
-			$data = @unserialize(fread($this->mainDicHand, $arr['l']));
+			$data = @unserialize(fread($this->mainDicHand, $arr['l']), array('allowed_classes' => false));
 			if (! is_array($data))
 				continue;
 			foreach ($data as $k => $v)

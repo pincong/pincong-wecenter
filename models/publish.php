@@ -82,8 +82,8 @@ class publish_class extends AWS_MODEL
 	private function publish_scheduled_item(&$val)
 	{
 		// 暂时用 model('message')->decrypt
-		$data = unserialize($this->model('message')->decrypt($val['data']));
-		if (!$data OR !$data['uid'])
+		$data = unserialize_array($this->model('message')->decrypt($val['data']));
+		if (!$data['uid'])
 		{
 			return;
 		}

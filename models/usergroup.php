@@ -181,10 +181,7 @@ class usergroup_class extends AWS_MODEL
 		{
 			if ($user_group = $user_group_list[$group_id])
 			{
-				if ($user_group['permission'])
-				{
-					$user_group['permission'] = unserialize($user_group['permission']);
-				}
+				$user_group['permission'] = unserialize_array($user_group['permission']);
 				$user_groups[$group_id] = $user_group;
 			}
 		}

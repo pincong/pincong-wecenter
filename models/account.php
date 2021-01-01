@@ -222,12 +222,7 @@ class account_class extends AWS_MODEL
 			return array('data' => array());
 		}
 
-		$setting['data'] = unserialize($setting['data']);
-
-		if (!$setting['data'])
-		{
-			$setting['data'] = array();
-		}
+		$setting['data'] = unserialize_array($setting['data']);
 
 		return $setting;
 	}
@@ -505,10 +500,7 @@ class account_class extends AWS_MODEL
 			return false;
 		}
 
-		if ($user_info['recent_topics'])
-		{
-			$recent_topics = unserialize($user_info['recent_topics']);
-		}
+		$recent_topics = unserialize_array($user_info['recent_topics']);
 
 		$new_recent_topics[0] = $topic_title;
 

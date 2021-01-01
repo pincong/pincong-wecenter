@@ -58,7 +58,7 @@ class core_user
 			return false;
 		}
 
-		@$this->info_array = unserialize(AWS_APP::crypt()->decode(AWS_APP::session()->client_info));
+		@$this->info_array = unserialize(AWS_APP::crypt()->decode(AWS_APP::session()->client_info), array('allowed_classes' => false));
 		if (!is_array($this->info_array))
 		{
 			$this->info_array = null;

@@ -28,7 +28,7 @@ class setting_class extends AWS_MODEL
 			{
 				if ($val['value'])
 				{
-					$val['value'] = unserialize($val['value']);
+					$val['value'] = unserialize($val['value'], array('allowed_classes' => false));
 				}
 
 				$settings[$val['varname']] = $val['value'];

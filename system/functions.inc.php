@@ -392,7 +392,7 @@ function unserialize_array(&$string)
 {
 	if (isset($string))
 	{
-		@$result = unserialize($string);
+		@$result = unserialize($string, array('allowed_classes' => false));
 		if (!is_array($result))
 		{
 			return array();
