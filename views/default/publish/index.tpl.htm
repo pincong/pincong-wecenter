@@ -36,7 +36,7 @@
 								<!-- 问题标题 -->
 								<div class="aw-publish-title<?php if (get_setting('category_enable') == 'N') { ?> active<?php } ?>">
 									<div>
-										<input type="text" placeholder="<?php _e('问题标题'); ?>..." name="title" id="question_contents" value="<?php echo $this->thread_info['title']; ?>" class="form-control" />
+										<input type="text" placeholder="<?php _e('问题标题'); ?>..." name="title" id="question_contents" value="<?php echo FORMAT::text($this->thread_info['title'], false); ?>" class="form-control" />
 										<div class="aw-publish-suggest-question collapse">
 											<p class="aw-small-text">你的问题可能已经有答案</p>
 											<ul class="aw-dropdown-list">
@@ -58,7 +58,7 @@
 								<div class="aw-mod aw-editor-box">
 									<div class="mod-head">
 										<div class="wmd-panel">
-											<textarea class="wmd-input form-control autosize editor" id="wmd-input" rows="15" name="message"><?php echo $this->thread_info['message']; ?></textarea>
+											<textarea class="wmd-input form-control autosize editor" id="wmd-input" rows="15" name="message"><?php echo FORMAT::text($this->thread_info['message']); ?></textarea>
 										</div>
 									</div>
 									<div class="mod-body">

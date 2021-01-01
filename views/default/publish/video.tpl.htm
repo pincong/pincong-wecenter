@@ -31,7 +31,7 @@
 								<h3><?php _e('标题'); ?>:</h3>
 								<!-- 标题 -->
 								<div class="aw-publish-title<?php if (get_setting('category_enable') == 'N') { ?> active<?php } ?>">
-									<input type="text" name="title" value="<?php echo $this->thread_info['title']; ?>" class="form-control" />
+									<input type="text" name="title" value="<?php echo FORMAT::text($this->thread_info['title'], false); ?>" class="form-control" />
 									<div class="aw-dropdown aw-question-dropdown">
 										<i class="aw-icon i-dropdown-triangle active"></i>
 										<p class="title"><?php _e('没有找到相关结果'); ?></p>
@@ -52,7 +52,7 @@
 								<div class="aw-mod aw-editor-box">
 									<div class="mod-head">
 										<div class="wmd-panel">
-											<textarea class="wmd-input form-control autosize editor" id="wmd-input" rows="4" name="message"><?php echo $this->thread_info['message']; ?></textarea>
+											<textarea class="wmd-input form-control autosize editor" id="wmd-input" rows="4" name="message"><?php echo FORMAT::text($this->thread_info['message']); ?></textarea>
 										</div>
 									</div>
 									<div class="mod-body">

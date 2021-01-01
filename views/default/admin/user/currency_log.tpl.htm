@@ -29,7 +29,7 @@
 						<td><span style="color:<?php if ($val['currency'] > 0) { ?>#F5A900<?php } ?>"><?php echo $val['currency']; ?></span></td>
 						<td><?php echo $val['balance']; ?></td>
 						<td><?php echo $val['note'] ;?></td>
-						<td><?php if ($this->currency_log_detail[$val['id']]) { ?><a href="<?php echo $this->currency_log_detail[$val['id']]['url']; ?>" target="_blank"><?php echo $this->currency_log_detail[$val['id']]['title']; ?></a><?php } else { ?> - <?php } ?></td>
+						<td><?php if ($this->currency_log_detail[$val['id']]) { ?><a href="<?php echo $this->currency_log_detail[$val['id']]['url']; ?>" target="_blank"><?php echo FORMAT::text($this->currency_log_detail[$val['id']]['title'], false); ?></a><?php } else { ?> - <?php } ?></td>
 					</tr>
 					<?php } ?>
 					<?php } ?>

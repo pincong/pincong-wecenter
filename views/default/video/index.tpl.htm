@@ -6,7 +6,7 @@
 		<div class="row">
 			<div class="col-sm-12 aw-global-tips">
 				<div class="alert alert-warning fade in">
-					<a href="video/<?php echo $this->redirected_from['id']; ?>"><?php echo $this->redirected_from['title']; ?></a> <?php _e('已与本影片合并')?>
+					<a href="video/<?php echo $this->redirected_from['id']; ?>"><?php echo FORMAT::text($this->redirected_from['title'], false); ?></a> <?php _e('已与本影片合并')?>
 				</div>
 			</div>
 		</div>
@@ -17,7 +17,7 @@
 		<div class="row">
 			<div class="col-sm-12 aw-global-tips">
 				<div class="alert alert-danger fade in">
-					<?php _e('本影片已被合并到')?>: <a href="video/id-<?php echo $this->redirect_info['id']; ?>__rf-<?php echo $this->video_info['id']; ?>"><?php echo $this->redirect_info['title']; ?></a>
+					<?php _e('本影片已被合并到')?>: <a href="video/id-<?php echo $this->redirect_info['id']; ?>__rf-<?php echo $this->video_info['id']; ?>"><?php echo FORMAT::text($this->redirect_info['title'], false); ?></a>
 				</div>
 			</div>
 		</div>

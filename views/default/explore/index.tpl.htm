@@ -31,7 +31,7 @@
 						<li class="<?php if ($_GET['recommend']) { ?>active<?php } ?>"><a href="recommend-1<?php if ($_GET['type']) { ?>__type-<?php echo htmlspecialchars($_GET['type']); ?><?php } ?><?php if ($this->category_info['id']) { ?>__category-<?php echo $this->category_info['id']; ?><?php } ?>"><?php _e('推荐'); ?></a></li>
 						<li class="<?php if ((!$_GET['sort_type'] OR $_GET['sort_type'] == 'new') AND !$_GET['recommend']) { ?>active<?php } ?>"><a href="sort_type-new<?php if ($_GET['type']) { ?>__type-<?php echo htmlspecialchars($_GET['type']); ?><?php } ?><?php if ($this->category_info['id']) { ?>__category-<?php echo $this->category_info['id']; ?><?php } ?>"><?php _e('最新'); ?></a></li>
 
-						<h2 class="hidden-xs"><?php if ($this->category_info) { ?><?php echo $this->category_info['title']; ?><?php } else { ?><i class="icon icon-list"></i> <?php _e('发现'); ?><?php } ?></h2>
+						<h2 class="hidden-xs"><?php if ($this->category_info) { ?><?php echo FORMAT::text($this->category_info['title'], false); ?><?php } else { ?><i class="icon icon-list"></i> <?php _e('发现'); ?><?php } ?></h2>
 					</ul>
 					<!-- end tab切换 -->
 

@@ -23,7 +23,7 @@
 
 		<p>
 			<?php if ($_GET['category'] != $val['category_id'] AND $val['category_info']['title']) { ?>
-				<a class="aw-question-tags" href="explore/category-<?php echo $val['category_info']['id']; ?>"><?php echo $val['category_info']['title']; ?></a> •
+				<a class="aw-question-tags" href="explore/category-<?php echo $val['category_info']['id']; ?>"><?php echo FORMAT::text($val['category_info']['title'], false); ?></a> •
 			<?php } ?>
 
 		<?php if ($val['post_type'] == 'question') { ?>
