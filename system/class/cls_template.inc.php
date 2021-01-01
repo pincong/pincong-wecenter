@@ -49,7 +49,7 @@ class TPL
 	// 生成基本的 HTML
 	public static function &render($template_filename, $plugin_name = null)
 	{
-		if (!strstr($template_filename, self::$template_ext))
+		if (!strstr($template_filename, '.'))
 		{
 			$template_filename .= self::$template_ext;
 		}
@@ -222,24 +222,6 @@ class TPL
 		{
 			self::$view->_import_css_files = null;
 		}
-	}
-
-	public static function fetch($template_filename)
-	{
-		if (self::$in_app)
-		{
-			if (S::get('ui_style') != 'default')
-			{
-				$custom_template_file = self::$template_path . '/' . S::get('ui_style') . '/' . $template_filename . self::$template_ext;
-
-				if (file_exists($custom_template_file))
-				{
-					return file_get_contents($custom_template_file);
-				}
-			}
-		}
-
-		return file_get_contents(self::$template_path . '/default/' . $template_filename . self::$template_ext);
 	}
 
 }
