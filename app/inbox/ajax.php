@@ -51,7 +51,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能给自己发私信')));
 		}
 
-		if ($this->user_info['group_id'] >= 4) // 对普通用户进行严格的权限检查
+		if (!$this->user_info['permission']['dispatch_pm']) // 对普通用户进行严格的权限检查
 		{
 			if ($recipient_user['forbidden'] OR $recipient_user['flagged'] > 0)
 			{
