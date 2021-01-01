@@ -31,6 +31,8 @@ class topic extends AWS_ADMIN_CONTROLLER
 
 		if ($_POST)
 		{
+			$param = array();
+
 			foreach ($_POST as $key => $val)
 			{
 				if ($key == 'keyword')

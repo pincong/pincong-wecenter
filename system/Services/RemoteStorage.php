@@ -73,6 +73,10 @@ class Services_RemoteStorage
 
 	private static function get_request_headers()
 	{
+		if (!G_REMOTE_STORAGE_REQUEST_HEADERS)
+		{
+			return array();
+		}
 		return G_REMOTE_STORAGE_REQUEST_HEADERS;
 	}
 

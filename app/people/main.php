@@ -60,6 +60,7 @@ class main extends AWS_CONTROLLER
 		}
 
 		$order = 'reputation DESC, uid ASC';
+		$url_param = [];
 
 		$group_id = intval($_GET['group_id']);
 		if ($group_id > 0)

@@ -28,6 +28,8 @@ class article extends AWS_ADMIN_CONTROLLER
 	{
 		if ($this->is_post())
 		{
+			$param = array();
+
 			foreach ($_POST as $key => $val)
 			{
 				if ($key == 'start_date' OR $key == 'end_date')

@@ -38,6 +38,7 @@ class main extends AWS_CONTROLLER
 	{
 		$per_page = S::get_int('contents_per_page');
 
+		$url_param = [];
 		switch ($_GET['channel'])
 		{
 			case 'focus':

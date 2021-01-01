@@ -145,7 +145,7 @@ class core_uri
 		{
 			$this->action = array_pop($parts);
 			$this->controller = array_pop($parts);
-			$this->app = implode($parts, '/');
+			$this->app = implode('/', $parts);
 		}
 
 		$app_dir = ROOT_PATH . 'app/' . $this->app . '/';

@@ -16,7 +16,7 @@
 				<div class="col-md-12">
 					<div id="main"></div>
 					<div class="form-group echart-date">
-						<label class="col-sm-2 col-xs-3 control-label nopadding">统计时间段:</label>
+						<label class="col-sm-2 col-xs-3 control-label nopadding"><?php _e('统计时间段'); ?>:</label>
 						<div class="col-sm-8 col-xs-9">
 							<div class="row">
 								<div class="col-sm-6 mod-double">
@@ -33,7 +33,7 @@
 							</div>
 						</div>
 						<div class="col-sm-1">
-							<a href="javascript:;" class="btn btn-primary btn-sm date-seach">确认查询</a>
+							<a href="javascript:;" class="btn btn-primary btn-sm date-seach"><?php _e('确认查询'); ?></a>
 						</div>
 					</div>
 				</div>
@@ -42,7 +42,7 @@
 				<div class="col-md-12">
 					<div id="main2"></div>
 					<div class="form-group echart-date">
-						<label class="col-sm-2 col-xs-3 control-label nopadding">统计时间段:</label>
+						<label class="col-sm-2 col-xs-3 control-label nopadding"><?php _e('统计时间段'); ?>:</label>
 						<div class="col-sm-8 col-xs-9">
 							<div class="row">
 								<div class="col-sm-6 mod-double">
@@ -59,7 +59,7 @@
 							</div>
 						</div>
 						<div class="col-sm-1">
-							<a href="javascript:;" class="btn btn-primary btn-sm date-seach">确认查询</a>
+							<a href="javascript:;" class="btn btn-primary btn-sm date-seach"><?php _e('确认查询'); ?></a>
 						</div>
 					</div>
 				</div>
@@ -68,7 +68,7 @@
 				<div class="col-md-12">
 					<div id="main3"></div>
 					<div class="form-group echart-date col-xs-offset-1">
-						<label class="col-sm-2 col-xs-3 control-label nopadding">统计时间段:</label>
+						<label class="col-sm-2 col-xs-3 control-label nopadding"><?php _e('统计时间段'); ?>:</label>
 						<div class="col-sm-8 col-xs-9">
 							<div class="row">
 								<div class="col-sm-6 mod-double">
@@ -85,7 +85,7 @@
 							</div>
 						</div>
 						<div class="col-sm-1">
-							<a href="javascript:;" class="btn btn-primary btn-sm date-seach">确认查询</a>
+							<a href="javascript:;" class="btn btn-primary btn-sm date-seach"><?php _e('确认查询'); ?></a>
 						</div>
 					</div>
 				</div>
@@ -105,17 +105,17 @@
 					<table class="table table-striped" id="sorttable">
 						<thead align="center">
 							<tr>
-								<td>话题名称</td>
+								<td><?php _e('话题名称'); ?></td>
 								<td>
-									本周/问题数
+									<?php _e('本周/问题数'); ?>
 									<i class="icon icon-down"></i>
 								</td>
 								<td>
-									本月/问题数
+									<?php _e('本月/问题数'); ?>
 									<i class="icon collapse"></i>
 								</td>
 								<td>
-									全部/问题数
+									<?php _e('全部/问题数'); ?>
 									<i class="icon collapse"></i>
 								</td>
 							</tr>
@@ -124,7 +124,7 @@
 						</tbody>
 					</table>
 					<div class="sorttable-mask collapse">
-						<p>当前周期内没有数据！</p>
+						<p><?php _e('当前周期内没有数据'); ?></p>
 					</div>
 				</div>
 			</div>
@@ -149,7 +149,7 @@
 							</tr>
 							<tr>
 								<td><?php _e('MySQL 版本'); ?></td>
-								<td><?php echo MYSQL_VERSION; ?></td>
+								<td><?php echo AWS_APP::db()->getServerVersion(); ?></td>
 							</tr>
 						</tbody>
 					</table>

@@ -24,6 +24,8 @@ class user extends AWS_ADMIN_CONTROLLER
     {
         if ($_POST['action'] == 'search')
         {
+			$param = array();
+
             foreach ($_POST as $key => $val)
             {
                 if (in_array($key, array('user_name')))

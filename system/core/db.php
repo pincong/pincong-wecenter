@@ -122,4 +122,14 @@ class core_db
 	{
 		return $this->dbh_slave;
 	}
+
+	public function getServerVersion()
+	{
+		try {
+			return $this->dbh_master->getAttribute(PDO::ATTR_SERVER_VERSION);
+		} catch (PDOException $e) {
+			// In case of the driver doesn't support getting attributes
+			return null;
+		}
+	}
 }
