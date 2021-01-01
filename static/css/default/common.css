@@ -457,7 +457,7 @@ a.aw-load-more-content{display: block;}
 .markitup-box ol, .markitup-box ul, .markitup-box dl{padding: 0 40px;}
 .markitup-box ol{list-style: decimal;}
 .markitup-box ul{list-style: disc;}
-.markitup-box blockquote {margin:0; padding: 0 10px;font-size: 15px;color: #777;border-left: 4px solid #ddd;display: inline-block;}
+.markitup-box blockquote {margin:0; padding: 5px 10px;font-size: 15px;color: #777;border-left: 4px solid #ddd;display: inline-block;}
 .markitup-box ghr{margin: 5px 0;border-color: #000;display: inline-block;}
 .markitup-box hr {margin:0;width: 100%;border-color: #000;display: inline-block;}
 

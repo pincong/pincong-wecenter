@@ -106,7 +106,7 @@ class Services_BBCode
 		{
 			return unnest_bbcode($matches[0]);
 		}
-		return "<blockquote><p>$matches[1]</p></blockquote>";
+		return "<blockquote>$matches[1]</blockquote>";
 	}
 
 	private function _center_callback($matches)
