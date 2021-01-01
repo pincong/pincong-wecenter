@@ -41,14 +41,8 @@ class main extends AWS_CONTROLLER
 		switch ($_GET['channel'])
 		{
 			case 'focus':
-				if ($topics_list = $this->model('topic')->get_focus_topic_list($this->user_id, $_GET['page'], $per_page))
-				{
-					$topics_list_total_rows = $this->user_info['topic_focus_count'];
-				}
-
-				TPL::assign('topics_list', $topics_list);
-
 				$url_param[] = 'channel-focus';
+				$topics_list = $this->model('topic')->get_focus_topic_list($this->user_id, $_GET['page'], $per_page);
 			break;
 
 			case 'hot':
@@ -57,13 +51,11 @@ class main extends AWS_CONTROLLER
 				{
 					case 'month':
 						$order = 'discuss_count_last_month DESC';
-
 						$url_param[] = 'day-month';
 					break;
 
 					case 'week':
 						$order = 'discuss_count_last_week DESC';
-
 						$url_param[] = 'day-week';
 					break;
 
@@ -71,28 +63,12 @@ class main extends AWS_CONTROLLER
 						$order = 'discuss_count DESC';
 					break;
 				}
-
-				$cache_key = 'square_hot_topic_list' . md5($order) . '_' . intval($_GET['page']);
-
-				if (!$topics_list = AWS_APP::cache()->get($cache_key))
-				{
-					if ($topics_list = $this->model('topic')->get_topic_list(null, $order, $_GET['page'], $per_page))
-					{
-						$topics_list_total_rows = $this->model('topic')->total_rows();
-
-						AWS_APP::cache()->set('square_hot_topic_list_total_rows', $topics_list_total_rows, S::get('cache_level_low'));
-					}
-
-					AWS_APP::cache()->set($cache_key, $topics_list, S::get('cache_level_low'));
-				}
-				else
-				{
-					$topics_list_total_rows = AWS_APP::cache()->get('square_hot_topic_list_total_rows');
-				}
-
-				TPL::assign('topics_list', $topics_list);
+				$topics_list = $this->model('topic')->get_topic_list(null, $order, $_GET['page'], $per_page);
 			break;
 		}
+
+		$topics_list_total_rows = $this->model('topic')->total_rows();
+		TPL::assign('topics_list', $topics_list);
 
 		TPL::assign('new_topics', $this->model('topic')->get_topic_list(null, 'topic_id DESC', 1, 10));
 
@@ -167,7 +143,7 @@ class main extends AWS_CONTROLLER
 
 		$page_keywords[] = $topic_info['topic_title'];
 
-		if ($related_topics = $this->model('topic')->related_topics($topic_info['topic_id']))
+		if ($related_topics = $this->model('topic')->get_related_topics($topic_info['topic_id']))
 		{
 			foreach ($related_topics AS $key => $val)
 			{
@@ -182,15 +158,8 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('related_topics', $related_topics);
 
+		$topic_ids = $this->model('topic')->get_merged_topic_ids_by_id($topic_info['topic_id']);
 		$topic_ids[] = $topic_info['topic_id'];
-
-		if ($merged_topics = $this->model('topic')->get_merged_topic_ids($topic_info['topic_id']))
-		{
-			foreach ($merged_topics AS $key => $val)
-			{
-				$topic_ids[] = $val['source_id'];
-			}
-		}
 
 		if ($posts_list = $this->model('posts')->get_posts_list_by_topic_ids(null, $topic_ids, 1, S::get_int('contents_per_page')))
 		{
@@ -236,7 +205,7 @@ class main extends AWS_CONTROLLER
 		$this->crumb($topic_info['topic_title']);
 
 		TPL::assign('topic_info', $topic_info);
-		TPL::assign('related_topics', $this->model('topic')->related_topics($_GET['id']));
+		TPL::assign('related_topics', $this->model('topic')->get_related_topics($_GET['id']));
 
 		TPL::output('topic/edit');
 	}
@@ -256,13 +225,8 @@ class main extends AWS_CONTROLLER
 			H::redirect_msg(AWS_APP::lang()->_t('你没有权限进行此操作'));
 		}
 
-		if ($merged_topics = $this->model('topic')->get_merged_topic_ids($topic_info['topic_id']))
+		if ($merged_topic_ids = $this->model('topic')->get_merged_topic_ids_by_id($topic_info['topic_id']))
 		{
-			foreach ($merged_topics AS $key => $val)
-			{
-				$merged_topic_ids[] = $val['source_id'];
-			}
-
 			$merged_topics_info = $this->model('topic')->get_topics_by_ids($merged_topic_ids);
 		}
 

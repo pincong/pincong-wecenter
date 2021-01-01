@@ -152,8 +152,8 @@ class ajax extends AWS_CONTROLLER
 		$_POST['message'] = trim($_POST['message']);
 		$this->validate_body_length($type);
 
-		$topics_limit_min = intval(S::get('topics_limit_min'));
-		$topics_limit_max = intval(S::get('topics_limit_max'));
+		$topics_limit_min = S::get_int('topics_limit_min');
+		$topics_limit_max = S::get_int('topics_limit_max');
 
 		$num_topics = 0;
 		if ($_POST['topics'])

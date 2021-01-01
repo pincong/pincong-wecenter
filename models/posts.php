@@ -187,96 +187,54 @@ class posts_class extends AWS_MODEL
 			return false;
 		}
 
-		foreach ($posts_index as $key => $data)
+		foreach ($posts_index as $data)
 		{
-			switch ($data['post_type'])
-			{
-				case 'question':
-					$question_ids[] = $data['post_id'];
-					break;
-
-				case 'article':
-					$article_ids[] = $data['post_id'];
-					break;
-
-				case 'video':
-					$video_ids[] = $data['post_id'];
-					break;
-
-			}
-
+			$info[$data['post_type']][$data['post_id']] = $data['post_id'];
 			$data_list_uids[$data['uid']] = $data['uid'];
 		}
 
-		if ($question_ids)
+		if (!$info)
 		{
-			$topic_infos['question'] = $this->model('topic')->get_topics_by_item_ids($question_ids, 'question');
+			return false;
+		}
 
-			$question_infos = $this->model('content')->get_posts_by_ids('question', $question_ids);
-			foreach ($question_infos as $key => $val)
+		foreach ($info as $type => $ids)
+		{
+			$threads = $this->model('content')->get_threads_by_ids($type, $ids);
+			if (!$threads)
+			{
+				$threads = array();
+			}
+			foreach ($threads as $val)
 			{
 				$data_list_uids[$val['last_uid']] = $val['last_uid'];
 			}
+			$info[$type] = $threads;
 		}
 
-		if ($article_ids)
+		$users = $this->model('account')->get_user_info_by_uids($data_list_uids);
+		if (!$users)
 		{
-			$topic_infos['article'] = $this->model('topic')->get_topics_by_item_ids($article_ids, 'article');
-
-			$article_infos = $this->model('content')->get_posts_by_ids('article', $article_ids);
-			foreach ($article_infos as $key => $val)
-			{
-				$data_list_uids[$val['last_uid']] = $val['last_uid'];
-			}
+			$users = array();
 		}
-
-		if ($video_ids)
-		{
-			$topic_infos['video'] = $this->model('topic')->get_topics_by_item_ids($video_ids, 'video');
-
-			$video_infos = $this->model('content')->get_posts_by_ids('video', $video_ids);
-			foreach ($video_infos as $key => $val)
-			{
-				$data_list_uids[$val['last_uid']] = $val['last_uid'];
-			}
-		}
-
-		$users_info = $this->model('account')->get_user_info_by_uids($data_list_uids);
 
 		$push_reputation = S::get('push_reputation');
+		$category = (S::get('category_enable') != 'N');
 
 		foreach ($posts_index as $key => $data)
 		{
-			switch ($data['post_type'])
-			{
-				case 'question':
-					$explore_list_data[$key] = $question_infos[$data['post_id']];
-					break;
-
-				case 'article':
-					$explore_list_data[$key] = $article_infos[$data['post_id']];
-					break;
-
-				case 'video':
-					$explore_list_data[$key] = $video_infos[$data['post_id']];
-					break;
-			}
-			$explore_list_data[$key]['last_user_info'] = $users_info[$explore_list_data[$key]['last_uid']];
-
-			$explore_list_data[$key]['user_info'] = $users_info[$data['uid']];
-
+			$explore_list_data[$key] = $info[$data['post_type']][$data['post_id']];
+			$explore_list_data[$key]['last_user_info'] = $users[$explore_list_data[$key]['last_uid']];
+			$explore_list_data[$key]['user_info'] = $users[$data['uid']];
 			$explore_list_data[$key]['post_type'] = $data['post_type'];
-
 			$explore_list_data[$key]['children_reputation'] = $data['reputation'];
 
 			$explore_list_data[$key]['hot'] = intval(is_numeric($push_reputation) AND $explore_list_data[$key]['reputation'] >= $push_reputation);
 
-			if (S::get('category_enable') != 'N')
+			if ($category)
 			{
 				$explore_list_data[$key]['category_info'] = $this->model('category')->get_category_info($data['category_id']);
 			}
-
-			$explore_list_data[$key]['topics'] = $topic_infos[$data['post_type']][$data['post_id']];
 		}
 
 		return $explore_list_data;
@@ -375,26 +333,26 @@ class posts_class extends AWS_MODEL
 			$topic_relation_where[] = ['type', 'eq', $post_type];
 		}
 
-		$topic_relation_query = $this->fetch_page('topic_relation', $topic_relation_where, 'id DESC', $page, $per_page);
-		if ($topic_relation_query)
+		$topic_relations = $this->fetch_page('topic_relation', $topic_relation_where, 'id DESC', $page, $per_page);
+		if ($topic_relations)
 		{
-			foreach ($topic_relation_query AS $key => $val)
+			foreach ($topic_relations AS $key => $val)
 			{
-				$post_ids[$val['type']][$val['item_id']] = $val['item_id'];
+				$info[$val['type']][$val['item_id']] = $val['item_id'];
 			}
 
-			$this->posts_list_total = $this->total_rows();
+			//$this->posts_list_total = $this->total_rows();
 		}
 
-		if (!$post_ids)
+		if (!$info)
 		{
 			return false;
 		}
 
-		foreach ($post_ids AS $key => $val)
+		foreach ($info AS $type => $ids)
 		{
 			$where[] = 'or';
-			$where[] = [['post_id', 'in', $val, 'i'], ['post_type', 'eq', $key]];
+			$where[] = [['post_id', 'in', $ids, 'i'], ['post_type', 'eq', $type]];
 		}
 
 		$result = $this->fetch_all('posts_index', $where, 'update_time DESC');
@@ -404,24 +362,18 @@ class posts_class extends AWS_MODEL
 
 	public function get_recommend_posts_by_topic_ids($topic_ids)
 	{
-		if (!$topic_ids OR !is_array($topic_ids))
+		if (!is_array($topic_ids) OR count($topic_ids) < 1)
 		{
 			return false;
 		}
 
-		$related_topic_ids = array();
-
-		foreach ($topic_ids AS $topic_id)
+		$merged_ids = $this->model('topic')->get_merged_topic_ids_by_ids($topic_ids);
+		if ($merged_ids)
 		{
-			$related_topic_ids = array_merge($related_topic_ids, $this->model('topic')->get_related_topic_ids_by_id($topic_id));
+			$topic_ids = array_merge($topic_ids, $merged_ids);
 		}
 
-		if ($related_topic_ids)
-		{
-			$recommend_posts = $this->model('posts')->get_posts_list_by_topic_ids(null, $related_topic_ids);
-		}
-
-		return $recommend_posts;
+		return $this->model('posts')->get_posts_list_by_topic_ids(null, $topic_ids);
 	}
 
 	public function bring_to_top($post_id, $post_type)

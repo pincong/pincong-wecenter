@@ -34,15 +34,9 @@ class topic_class extends AWS_MODEL
 			return false;
 		}
 
-		// TODO: fetch column
-		if (!$focus_topics = $this->fetch_page('topic_focus', ['uid', 'eq', $uid, 'i'], 'add_time DESC', $page, $per_page))
+		if (!$topic_ids = $this->fetch_column('topic_focus', 'topic_id', ['uid', 'eq', $uid, 'i'], 'add_time DESC', $page, $per_page))
 		{
 			return false;
-		}
-
-		foreach ($focus_topics AS $key => $val)
-		{
-			$topic_ids[] = $val['topic_id'];
 		}
 
 		$topic_list = $this->fetch_all('topic', ['topic_id', 'in', $topic_ids, 'i'], 'discuss_count DESC');
@@ -75,9 +69,18 @@ class topic_class extends AWS_MODEL
 		return $topics[$topic_id];
 	}
 
-	public function get_merged_topic_ids($topic_id)
+	public function get_merged_topic_ids_by_id($topic_id)
 	{
-		return $this->fetch_all('topic_merge', ['target_id', 'eq', $topic_id, 'i']);
+		return $this->fetch_column('topic_merge', 'source_id', ['target_id', 'eq', $topic_id, 'i']);
+	}
+
+	public function get_merged_topic_ids_by_ids($topic_ids)
+	{
+		if (!is_array($topic_ids) OR count($topic_ids) < 1)
+		{
+			return false;
+		}
+		return $this->fetch_column('topic_merge', 'source_id', ['target_id', 'in', $topic_ids, 'i']);
 	}
 
 	public function merge_topic($source_id, $target_id, $uid)
@@ -110,7 +113,7 @@ class topic_class extends AWS_MODEL
 
 	public function get_topics_by_ids($topic_ids)
 	{
-		if (!$topic_ids OR !is_array($topic_ids))
+		if (!is_array($topic_ids) OR count($topic_ids) < 1)
 		{
 			return false;
 		}
@@ -299,7 +302,7 @@ class topic_class extends AWS_MODEL
 
 	public function has_focus_topics($uid, $topic_ids)
 	{
-		if (!is_array($topic_ids))
+		if (!is_array($topic_ids) OR count($topic_ids) < 1)
 		{
 			return false;
 		}
@@ -384,33 +387,6 @@ class topic_class extends AWS_MODEL
 		return true;
 	}
 
-	public function get_item_ids_by_topics_id($topic_id, $type = null, $limit = 50)
-	{
-		return $this->get_item_ids_by_topics_ids(array(
-			$topic_id
-		), $type, $limit);
-	}
-
-	public function get_item_ids_by_topics_ids($topic_ids, $type = null, $limit = 50)
-	{
-		if (!is_array($topic_ids))
-		{
-			return false;
-		}
-
-		//array_walk_recursive($topic_ids, 'intval_string');
-
-		$where[] = ['topic_id', 'in', $topic_ids, 'i'];
-
-		if ($type)
-		{
-			$where[] = ['type', 'eq', $type, 's'];
-		}
-
-		$item_ids = $this->fetch_column('topic_relation', 'item_id', $where, null, $limit);
-
-		return $item_ids;
-	}
 
 	/**
 	 * 获取热门话题
@@ -463,9 +439,7 @@ class topic_class extends AWS_MODEL
 
 	public function save_related_topic($topic_id, $related_id)
 	{
-		$this->pre_save_auto_related_topics($topic_id);
-
-		if (! $related_topic = $this->fetch_row('related_topic', [['topic_id', 'eq', $topic_id, 'i'], ['related_id', 'eq', $related_id, 'i']]))
+		if (!$related_topic = $this->fetch_row('related_topic', [['topic_id', 'eq', $topic_id, 'i'], ['related_id', 'eq', $related_id, 'i']]))
 		{
 			return $this->insert('related_topic', array(
 				'topic_id' => intval($topic_id),
@@ -478,41 +452,12 @@ class topic_class extends AWS_MODEL
 
 	public function remove_related_topic($topic_id, $related_id)
 	{
-		$this->pre_save_auto_related_topics($topic_id);
-
 		return $this->delete('related_topic', [['topic_id', 'eq', $topic_id, 'i'], ['related_id', 'eq', $related_id, 'i']]);
-	}
-
-	public function pre_save_auto_related_topics($topic_id)
-	{
-		if (! $this->is_user_related($topic_id))
-		{
-			if ($auto_related_topics = $this->get_auto_related_topics($topic_id))
-			{
-				foreach ($auto_related_topics as $key => $val)
-				{
-					$this->insert('related_topic', array(
-						'topic_id' => intval($topic_id),
-						'related_id' => $val['topic_id']
-					));
-				}
-			}
-
-			$this->update('topic', array(
-				'user_related' => 1
-			), ['topic_id', 'eq', $topic_id, 'i']);
-		}
 	}
 
 	public function get_related_topics($topic_id)
 	{
-		if ($related_topic = $this->fetch_all('related_topic', ['topic_id', 'eq', $topic_id, 'i']))
-		{
-			foreach ($related_topic as $key => $val)
-			{
-				$topic_ids[] = $val['related_id'];
-			}
-		}
+		$topic_ids = $this->fetch_column('related_topic', 'related_id', ['topic_id', 'eq', $topic_id, 'i']);
 
 		if ($topic_ids)
 		{
@@ -520,50 +465,6 @@ class topic_class extends AWS_MODEL
 		}
 	}
 
-	public function get_auto_related_topics($topic_id)
-	{
-		if (! $question_ids = $this->get_item_ids_by_topics_id($topic_id, 'question', 10))
-		{
-			return false;
-		}
-
-		if ($question_ids)
-		{
-			if ($topics = $this->model('question')->get_question_topic_by_questions($question_ids, 10))
-			{
-				foreach ($topics as $key => $val)
-				{
-					if ($val['topic_id'] == $topic_id)
-					{
-						unset($topics[$key]);
-					}
-				}
-
-				return $topics;
-			}
-		}
-	}
-
-	public function related_topics($topic_id)
-	{
-		if ($this->is_user_related($topic_id))
-		{
-			$related_topic = $this->get_related_topics($topic_id);
-		}
-		else
-		{
-			$related_topic = $this->get_auto_related_topics($topic_id);
-		}
-
-		return $related_topic;
-	}
-
-	public function is_user_related($topic_id)
-	{
-		$topic = $this->get_topic_by_id($topic_id);
-
-		return $topic['user_related'];
-	}
 
 	public function save_topic_relation($uid, $topic_id, $item_id, $type)
 	{
@@ -610,105 +511,11 @@ class topic_class extends AWS_MODEL
 		return $this->fetch_one('topic_relation', 'id', $where);
 	}
 
-	public function get_topics_by_item_id($item_id, $type)
+	public function get_topic_ids_by_item_id($item_id, $type)
 	{
-		$result = $this->get_topics_by_item_ids(array(
-			$item_id
-		), $type);
-
-		return $result[$item_id];
+		return $this->fetch_column('topic_relation', 'topic_id', [['item_id', 'eq', $item_id, 'i'], ['type', 'eq', $type, 's']]);
 	}
 
-	public function get_topics_by_item_ids($item_ids, $type)
-	{
-		if (!is_array($item_ids) OR sizeof($item_ids) == 0)
-		{
-			return false;
-		}
-
-		//array_walk_recursive($item_ids, 'intval_string');
-
-		if (!$item_topics = $this->fetch_all('topic_relation', [['item_id', 'in', $item_ids, 'i'], ['type', 'eq', $type, 's']]))
-		{
-			foreach ($item_ids AS $item_id)
-			{
-				if (!$result[$item_id])
-				{
-					$result[$item_id] = array();
-				}
-			}
-
-			return $result;
-		}
-
-		foreach ($item_topics AS $key => $val)
-		{
-			$topic_ids[] = $val['topic_id'];
-		}
-
-		$topics_info = $this->model('topic')->get_topics_by_ids($topic_ids);
-
-		foreach ($item_topics AS $key => $val)
-		{
-			$result[$val['item_id']][] = $topics_info[$val['topic_id']];
-		}
-
-		foreach ($item_ids AS $item_id)
-		{
-			if (!$result[$item_id])
-			{
-				$result[$item_id] = array();
-			}
-		}
-
-		return $result;
-	}
-
-	public function get_related_topic_ids_by_id($topic_id)
-	{
-		if (!$topic_info = $this->model('topic')->get_topic_by_id($topic_id))
-		{
-			return false;
-		}
-
-		if ($topic_info['merged_id'] AND $topic_info['merged_id'] != $topic_info['topic_id'])
-		{
-			$merged_topic_info = $this->model('topic')->get_topic_by_id($topic_info['merged_id']);
-
-			if ($merged_topic_info)
-			{
-				$topic_info = $merged_topic_info;
-			}
-		}
-
-		$related_topics_ids = array();
-
-		$related_topics = $this->model('topic')->related_topics($topic_info['topic_id']);
-
-		if ($related_topics)
-		{
-			foreach ($related_topics AS $related_topic)
-			{
-				$related_topics_ids[$related_topic['topic_id']] = $related_topic['topic_id'];
-			}
-		}
-
-		$contents_topic_id = $topic_info['topic_id'];
-
-		$merged_topics = $this->model('topic')->get_merged_topic_ids($topic_info['topic_id']);
-
-		if ($merged_topics)
-		{
-			foreach ($merged_topics AS $merged_topic)
-			{
-				$merged_topic_ids[] = $merged_topic['source_id'];
-			}
-
-			$contents_topic_id .= ',' . implode(',', $merged_topic_ids);
-		}
-
-		return array_merge($related_topics_ids, explode(',', $contents_topic_id));
-	}
 
 
 	// e.g. $id=12345, return '000/01/23/'

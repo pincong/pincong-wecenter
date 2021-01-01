@@ -262,6 +262,27 @@ class content_class extends AWS_MODEL
 		return $result;
 	}
 
+	// 不缓存版
+	public function get_threads_by_ids($type, $item_ids)
+	{
+		if (!$item_ids OR !$this->check_thread_type($type))
+		{
+			return false;
+		}
+
+		//array_walk_recursive($item_ids, 'intval_string');
+
+		if ($item_list = $this->fetch_all($type, ['id', 'in', $item_ids, 'i']))
+		{
+			foreach ($item_list AS $key => $val)
+			{
+				$result[$val['id']] = $val;
+			}
+		}
+
+		return $result;
+	}
+
 
 	public function has_user_relpied_to_thread($thread_type, $thread_id, $uid, $check_scheduled_posts = false)
 	{

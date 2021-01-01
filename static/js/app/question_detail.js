@@ -111,19 +111,3 @@ $(function()
 	});
 
 });
-
-function one_click_add_topic(selector, topic_title, question_id)
-{
-	$.post(G_BASE_URL + '/topic/ajax/save_topic_relation/', 'type=question&item_id=' + question_id + '&topic_title=' + topic_title, function (result) {
-		if (result.err)
-		{
-			AWS.alert(result.err);
-		}
-		else
-		{
-			$('.aw-topic-bar .tag-bar').prepend('<span class="topic-tag" data-id="' + result.rsm.topic_id + '"><a class="text" href="topic/' + result.rsm.topic_id + '">' + topic_title + '</a></a></span>').hide().fadeIn();
-
-			selector.hide();
-		}
-	}, 'json');
-}

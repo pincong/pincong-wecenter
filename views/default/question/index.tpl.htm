@@ -29,11 +29,10 @@
 			<div class="aw-content-wrap clearfix">
 				<div class="col-sm-12 col-md-9 aw-main-content">
 					<!-- 话题bar -->
-					<div class="aw-mod aw-topic-bar" id="question_topic_editor" data-type="question" data-id="<?php echo $this->question_info['id']; ?>" data-category-id="<?php echo $this->question_info['category_id']; ?>">
+					<div class="aw-mod aw-topic-bar" data-type="question" data-id="<?php echo $this->question_info['id']; ?>" data-category-id="<?php echo $this->question_info['category_id']; ?>">
 						<div class="tag-bar clearfix">
-
-						<?php if ($this->question_topics) { ?>
-							<?php foreach($this->question_topics as $key => $val) { ?>
+						<?php if ($this->topics) { ?>
+							<?php foreach($this->topics as $key => $val) { ?>
 							<span class="topic-tag" data-id="<?php echo $val['topic_id']; ?>">
 								<a href="<?php echo url_rewrite(); ?>/topic/<?php echo urlencode($val['topic_title']); ?>" class="text"><?php echo FORMAT::text($val['topic_title']); ?></a>
 							</span>
@@ -42,27 +41,10 @@
 							<span class="topic-tag">
 								<a href="<?php echo url_rewrite(); ?>/login/"><span class="icon-inverse"><i class="icon icon-edit"></i> <?php _e('添加话题'); ?></span></a>
 							</span>
-						<?php } else { ?>
-							<!-- 话题推荐bar -->
-							<?php if ($this->user_info['permission']['edit_topic']) { ?>
-							<div class="aw-notopic-sort">
-								<?php if ($this->related_topics) { ?>
-								<span class="pull-left"><?php _e('可能属于这些话题'); ?>&nbsp;:&nbsp;</span>
-								<?php foreach ($this->related_topics AS $key => $topic_title) { ?>
-								<span class="topic-tag">
-									<a onclick="one_click_add_topic($(this), '<?php echo $topic_title; ?>', <?php echo $this->question_info['id']; ?>);" class="text"><?php echo $topic_title; ?></a>
-								</span>
-								<?php } ?>, <?php _e('都不是'); ?>? <a href="javascript:;" onclick="$('#question_topic_editor .aw-edit-topic').click();$(this).parents('.aw-notopic-sort').hide();"> <?php _e('点此添加话题'); ?></a>
-								<?php } else { ?>
-								<?php _e('没有归属话题, 请帮问题添加话题'); ?>, <a href="javascript:;" onclick="$('#question_topic_editor .aw-edit-topic').click(); $(this).parents('.aw-notopic-sort').hide();"><?php _e('点此添加话题'); ?></a>
-								<?php } ?>
-							</div>
-							<?php } ?>
-							<!-- 话题推荐bar -->
 						<?php } ?>
 
-						<?php if ($this->user_id AND ($this->user_info['permission']['edit_topic'] OR $this->user_id == $this->question_info['uid'])) { ?>
-							<span class="icon-inverse aw-edit-topic"<?php if (sizeof($this->question_topics) == 0) { ?> style="display:none"<?php } ?>><i class="icon icon-edit"></i></span>
+						<?php if ($this->user_id AND ($this->user_info['permission']['edit_question_topic'] OR $this->user_id == $this->question_info['uid'])) { ?>
+							<span class="icon-inverse aw-edit-topic"><i class="icon icon-edit"></i> <?php if (!$this->topics) { ?><?php _e('添加话题'); ?><?php } ?></span>
 						<?php } ?>
 
 							<div class="operate clearfix">

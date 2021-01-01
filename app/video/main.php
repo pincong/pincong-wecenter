@@ -51,7 +51,7 @@ class main extends AWS_CONTROLLER
 			$_GET['id'] = $reply['video_id'];
 		}
 
-		if (! $video_info = $this->model('video')->get_video_by_id($_GET['id']))
+		if (! $thread_info = $this->model('video')->get_video_by_id($_GET['id']))
 		{
 			HTTP::error_404();
 		}
@@ -62,7 +62,7 @@ class main extends AWS_CONTROLLER
 			$replies_per_page = 100;
 		}
 
-		$url_param[] = 'id-' . $video_info['id'];
+		$url_param[] = 'id-' . $thread_info['id'];
 
 		if ($_GET['sort'] == 'DESC')
 		{
@@ -94,43 +94,30 @@ class main extends AWS_CONTROLLER
 			$order_by[] = "id " . $sort;
 		}
 
-		$video_info['iframe_url'] = Services_VideoParser::get_iframe_url($video_info['source_type'], $video_info['source']);
+		$thread_info['iframe_url'] = Services_VideoParser::get_iframe_url($thread_info['source_type'], $thread_info['source']);
 
 		if ($this->user_id)
 		{
 			// 当前用户点赞状态 1赞同 -1反对
-			$video_info['vote_value'] = $this->model('vote')->get_user_vote_value_by_id('video', $video_info['id'], $this->user_id);
+			$thread_info['vote_value'] = $this->model('vote')->get_user_vote_value_by_id('video', $thread_info['id'], $this->user_id);
 		}
 
-		TPL::assign('video_info', $video_info);
-		if ($video_info['redirect_id'])
+		TPL::assign('video_info', $thread_info);
+		if ($thread_info['redirect_id'])
 		{
-			TPL::assign('redirect_info', $this->model('content')->get_post_by_id('video', $video_info['redirect_id']));
+			TPL::assign('redirect_info', $this->model('content')->get_post_by_id('video', $thread_info['redirect_id']));
 		}
 		if ($_GET['rf'])
 		{
 			TPL::assign('redirected_from', $this->model('content')->get_post_by_id('video', $_GET['rf']));
 		}
 
-		$video_topics = $this->model('topic')->get_topics_by_item_id($video_info['id'], 'video');
-
-		if ($video_topics)
-		{
-			TPL::assign('video_topics', $video_topics);
-
-			foreach ($video_topics AS $topic_info)
-			{
-				// 推荐相关 下文
-				$video_topic_ids[] = $topic_info['topic_id'];
-			}
-		}
-
-		$page_title = CF::page_title($video_info['user_info'], 'video_' . $video_info['id'], $video_info['title']);
+		$page_title = CF::page_title($thread_info['user_info'], 'video_' . $thread_info['id'], $thread_info['title']);
 		$this->crumb($page_title);
 
-		$reply_count = $video_info['comment_count'];
+		$reply_count = $thread_info['comment_count'];
 		// 判断是否已合并
-		if ($redirect_posts = $this->model('content')->get_redirect_posts('video', $video_info['id']))
+		if ($redirect_posts = $this->model('content')->get_redirect_posts('video', $thread_info['id']))
 		{
 			foreach ($redirect_posts AS $key => $val)
 			{
@@ -139,7 +126,7 @@ class main extends AWS_CONTROLLER
 				$reply_count += $val['comment_count'];
 			}
 		}
-		$post_ids[] = $video_info['id'];
+		$post_ids[] = $thread_info['id'];
 
 		if ($item_id)
 		{
@@ -170,9 +157,9 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		TPL::assign('question_related_list', $this->model('question')->get_related_question_list(null, $video_info['title']));
+		TPL::assign('question_related_list', $this->model('question')->get_related_question_list(null, $thread_info['title']));
 
-		$this->model('content')->update_view_count('video', $video_info['id']);
+		$this->model('content')->update_view_count('video', $thread_info['id']);
 
 		TPL::assign('comments', $comments);
 		TPL::assign('comment_count', $reply_count);
@@ -183,36 +170,38 @@ class main extends AWS_CONTROLLER
 			'per_page' => $replies_per_page
 		)));
 
-		TPL::set_meta('keywords', implode(',', $this->model('system')->analysis_keyword($video_info['title'])));
+		TPL::set_meta('keywords', implode(',', $this->model('system')->analysis_keyword($thread_info['title'])));
 
-		TPL::set_meta('description', $video_info['title'] . ' - ' . truncate_text(str_replace("\r\n", ' ', $video_info['message']), 128));
+		TPL::set_meta('description', $thread_info['title'] . ' - ' . truncate_text(str_replace("\r\n", ' ', $thread_info['message']), 128));
 
 		if (S::get('advanced_editor_enable') == 'Y')
 		{
 			import_editor_static_files();
 		}
 
-		// 推荐相关
-		$recommend_posts = $this->model('posts')->get_recommend_posts_by_topic_ids($video_topic_ids);
+		$topic_ids = $this->model('topic')->get_topic_ids_by_item_id($thread_info['id'], 'video');
+		if ($topic_ids)
+		{
+			TPL::assign('topics', $this->model('topic')->get_topics_by_ids($topic_ids));
+		}
 
+		$recommend_posts = $this->model('posts')->get_recommend_posts_by_topic_ids($topic_ids);
 		if ($recommend_posts)
 		{
 			foreach ($recommend_posts as $key => $value)
 			{
-				if ($value['id'] AND $value['id'] == $video_info['id'])
+				if ($value['post_type'] == 'video' AND $value['id'] == $thread_info['id'])
 				{
 					unset($recommend_posts[$key]);
-
 					break;
 				}
 			}
-
 			TPL::assign('recommend_posts', $recommend_posts);
 		}
 
 		if ($this->user_id)
 		{
-			TPL::assign('following', $this->model('postfollow')->is_following('video', $video_info['id'], $this->user_id));
+			TPL::assign('following', $this->model('postfollow')->is_following('video', $thread_info['id'], $this->user_id));
 		}
 
 		TPL::output('video/index');

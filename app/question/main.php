@@ -51,7 +51,7 @@ class main extends AWS_CONTROLLER
 			$_GET['id'] = $reply['question_id'];
 		}
 
-		if (!$question_info = $this->model('question')->get_question_by_id($_GET['id']))
+		if (!$thread_info = $this->model('question')->get_question_by_id($_GET['id']))
 		{
 			HTTP::error_404();
 		}
@@ -62,7 +62,7 @@ class main extends AWS_CONTROLLER
 			$replies_per_page = 100;
 		}
 
-		$url_param[] = 'id-' . $question_info['id'];
+		$url_param[] = 'id-' . $thread_info['id'];
 
 		if ($_GET['sort'] == 'ASC')
 		{
@@ -94,10 +94,10 @@ class main extends AWS_CONTROLLER
 			$order_by[] = "agree_count " . $sort;
 		}
 
-		$reply_count = $question_info['answer_count'];
-		$discussion_count = $question_info['comment_count'];
+		$reply_count = $thread_info['answer_count'];
+		$discussion_count = $thread_info['comment_count'];
 		// 判断是否已合并
-		if ($redirect_posts = $this->model('content')->get_redirect_posts('question', $question_info['id']))
+		if ($redirect_posts = $this->model('content')->get_redirect_posts('question', $thread_info['id']))
 		{
 			foreach ($redirect_posts AS $key => $val)
 			{
@@ -107,7 +107,7 @@ class main extends AWS_CONTROLLER
 				$discussion_count += $val['comment_count'];
 			}
 		}
-		$post_ids[] = $question_info['id'];
+		$post_ids[] = $thread_info['id'];
 
 		if ($item_id)
 		{
@@ -150,7 +150,7 @@ class main extends AWS_CONTROLLER
 
 		if (S::get('answer_unique') == 'Y')
 		{
-			TPL::assign('user_answered', $this->model('content')->has_user_relpied_to_thread('question', $question_info['id'], $this->user_id));
+			TPL::assign('user_answered', $this->model('content')->has_user_relpied_to_thread('question', $thread_info['id'], $this->user_id));
 		}
 
 		TPL::assign('answers', $answers);
@@ -160,47 +160,28 @@ class main extends AWS_CONTROLLER
 
 		if ($this->user_id)
 		{
-			TPL::assign('invite_users', $this->model('invite')->get_invite_users($question_info['id']));
+			TPL::assign('invite_users', $this->model('invite')->get_invite_users($thread_info['id']));
 
-			TPL::assign('user_follow_check', $this->model('follow')->user_follow_check($this->user_id, $question_info['uid']));
+			TPL::assign('user_follow_check', $this->model('follow')->user_follow_check($this->user_id, $thread_info['uid']));
 
-			$question_info['vote_value'] = $this->model('vote')->get_user_vote_value_by_id('question', $question_info['id'], $this->user_id);
+			$thread_info['vote_value'] = $this->model('vote')->get_user_vote_value_by_id('question', $thread_info['id'], $this->user_id);
 		}
 
-		TPL::assign('question_info', $question_info);
-		if ($question_info['redirect_id'])
+		TPL::assign('question_info', $thread_info);
+		if ($thread_info['redirect_id'])
 		{
-			TPL::assign('redirect_info', $this->model('content')->get_post_by_id('question', $question_info['redirect_id']));
+			TPL::assign('redirect_info', $this->model('content')->get_post_by_id('question', $thread_info['redirect_id']));
 		}
 		if ($_GET['rf'])
 		{
 			TPL::assign('redirected_from', $this->model('content')->get_post_by_id('question', $_GET['rf']));
 		}
 
-		$question_topics = $this->model('topic')->get_topics_by_item_id($question_info['id'], 'question');
+		TPL::assign('question_related_list', $this->model('question')->get_related_question_list($thread_info['id'], $thread_info['title']));
 
-		if (sizeof($question_topics) == 0 AND $this->user_id)
-		{
-			$related_topics = $this->model('question')->get_related_topics($question_info['title']);
+		$this->model('content')->update_view_count('question', $thread_info['id']);
 
-			TPL::assign('related_topics', $related_topics);
-		}
-
-		TPL::assign('question_topics', $question_topics);
-
-		TPL::assign('question_related_list', $this->model('question')->get_related_question_list($question_info['id'], $question_info['title']));
-
-		if ($question_topics)
-		{
-			foreach ($question_topics AS $key => $val)
-			{
-				$question_topic_ids[] = $val['topic_id'];
-			}
-		}
-
-		$this->model('content')->update_view_count('question', $question_info['id']);
-
-		$page_title = CF::page_title($question_info['user_info'], 'question_' . $question_info['id'], $question_info['title']);
+		$page_title = CF::page_title($thread_info['user_info'], 'question_' . $thread_info['id'], $thread_info['title']);
 		$this->crumb($page_title);
 
 		TPL::assign('pagination', AWS_APP::pagination()->create(array(
@@ -209,35 +190,38 @@ class main extends AWS_CONTROLLER
 			'per_page' => $replies_per_page
 		)));
 
-		TPL::set_meta('keywords', implode(',', $this->model('system')->analysis_keyword($question_info['title'])));
+		TPL::set_meta('keywords', implode(',', $this->model('system')->analysis_keyword($thread_info['title'])));
 
-		TPL::set_meta('description', $question_info['title'] . ' - ' . truncate_text(str_replace("\r\n", ' ', $question_info['message']), 128));
+		TPL::set_meta('description', $thread_info['title'] . ' - ' . truncate_text(str_replace("\r\n", ' ', $thread_info['message']), 128));
 
 		if (S::get('advanced_editor_enable') == 'Y')
 		{
 			import_editor_static_files();
 		}
 
-		$recommend_posts = $this->model('posts')->get_recommend_posts_by_topic_ids($question_topic_ids);
+		$topic_ids = $this->model('topic')->get_topic_ids_by_item_id($thread_info['id'], 'question');
+		if ($topic_ids)
+		{
+			TPL::assign('topics', $this->model('topic')->get_topics_by_ids($topic_ids));
+		}
 
+		$recommend_posts = $this->model('posts')->get_recommend_posts_by_topic_ids($topic_ids);
 		if ($recommend_posts)
 		{
 			foreach ($recommend_posts as $key => $value)
 			{
-				if ($value['post_type'] == 'question' AND $value['id'] == $question_info['id'])
+				if ($value['post_type'] == 'question' AND $value['id'] == $thread_info['id'])
 				{
 					unset($recommend_posts[$key]);
-
 					break;
 				}
 			}
-
 			TPL::assign('recommend_posts', $recommend_posts);
 		}
 
 		if ($this->user_id)
 		{
-			TPL::assign('following', $this->model('postfollow')->is_following('question', $question_info['id'], $this->user_id));
+			TPL::assign('following', $this->model('postfollow')->is_following('question', $thread_info['id'], $this->user_id));
 		}
 
 		TPL::output('question/index');

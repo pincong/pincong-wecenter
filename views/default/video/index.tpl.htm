@@ -28,10 +28,10 @@
 		<div class="row">
 			<div class="aw-content-wrap clearfix">
 				<div class="col-sm-12 col-md-9 aw-main-content aw-article-content">
-					<div class="aw-mod aw-topic-bar" id="question_topic_editor" data-type="video" data-id="<?php echo $this->video_info['id']; ?>" data-category-id="<?php echo $this->video_info['category_id']; ?>">
+					<div class="aw-mod aw-topic-bar" data-type="video" data-id="<?php echo $this->video_info['id']; ?>" data-category-id="<?php echo $this->video_info['category_id']; ?>">
 						<div class="tag-bar clearfix">
-						<?php if ($this->video_topics) { ?>
-							<?php foreach($this->video_topics as $key => $val) { ?>
+						<?php if ($this->topics) { ?>
+							<?php foreach($this->topics as $key => $val) { ?>
 							<span class="topic-tag" data-id="<?php echo $val['topic_id']; ?>">
 								<a class="text" href="<?php echo url_rewrite(); ?>/topic/<?php echo urlencode($val['topic_title']); ?>"><?php echo FORMAT::text($val['topic_title']); ?></a>
 							</span>
@@ -42,8 +42,8 @@
 							</span>
 						<?php } ?>
 
-						<?php if ($this->user_id AND ($this->user_info['permission']['edit_topic'] OR $this->user_id == $this->video_info['uid'])) { ?>
-							<span class="icon-inverse aw-edit-topic"><i class="icon icon-edit"></i> <?php if (sizeof($this->video_topics) == 0) { ?><?php _e('添加话题'); ?><?php } ?></span>
+						<?php if ($this->user_id AND ($this->user_info['permission']['edit_question_topic'] OR $this->user_id == $this->video_info['uid'])) { ?>
+							<span class="icon-inverse aw-edit-topic"><i class="icon icon-edit"></i> <?php if (!$this->topics) { ?><?php _e('添加话题'); ?><?php } ?></span>
 						<?php } ?>
 
 							<div class="operate clearfix">
