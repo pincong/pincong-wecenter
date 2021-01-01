@@ -74,7 +74,7 @@
 					</div>
 					<!-- end xx人关注该话题 -->
 
-					<?php if ($this->topic_info['topic_lock'] == 0 AND $this->user_info['permission']['edit_topic']) { ?>
+					<?php if ($this->user_info['permission']['manage_topic'] OR $this->user_info['permission']['edit_topic']) { ?>
 					<div class="aw-mod">
 						<div class="mod-head">
 							<h3><?php _e('管理'); ?></h3>
@@ -82,7 +82,7 @@
 
 						<div class="mod-body">
 							<ul>
-							<?php if ($this->topic_info['topic_lock'] == 0 && $this->user_info['permission']['edit_topic']) { ?>
+							<?php if ($this->topic_info['topic_lock'] == 0 AND $this->user_info['permission']['edit_topic']) { ?>
 								<li><a href="topic/edit/<?php echo $this->topic_info['topic_id']; ?>"><?php _e('编辑话题'); ?></a></li>
 							<?php } ?>
 
