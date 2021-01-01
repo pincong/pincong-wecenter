@@ -164,9 +164,4 @@ class main extends AWS_CONTROLLER
 		TPL::output('video/index');
 	}
 
-	public function index_square_action()
-	{
-		HTTP::redirect('/explore/type-video');
-	}
-
 }

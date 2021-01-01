@@ -159,9 +159,4 @@ class main extends AWS_CONTROLLER
 		TPL::output('article/index');
 	}
 
-	public function index_square_action()
-	{
-		HTTP::redirect('/explore/type-article');
-	}
-
 }
