@@ -53,7 +53,7 @@ class user extends AWS_ADMIN_CONTROLLER
 
         if ($_GET['user_name'])
         {
-            $where[] = "user_name LIKE '%" . $this->model('people')->quote($_GET['user_name']) . "%'";
+            $where[] = "user_name LIKE '%" . $this->model('account')->quote($_GET['user_name']) . "%'";
         }
 
         if ($_GET['group_id'])
@@ -82,14 +82,14 @@ class user extends AWS_ADMIN_CONTROLLER
         }
 
 
-        $user_list = $this->model('people')->fetch_page('users', implode(' AND ', $where), 'uid DESC', $_GET['page'], $this->per_page);
+        $user_list = $this->model('account')->fetch_page('users', implode(' AND ', $where), 'uid DESC', $_GET['page'], $this->per_page);
         foreach($user_list as $key => $val)
         {
             $user_list[$key]['reputation_group_id'] = $this->model('usergroup')->get_group_id_by_reputation($val['reputation']);
             $user_list[$key]['url_token'] = urlencode($val['user_name']);
         }
 
-        $total_rows = $this->model('people')->found_rows();
+        $total_rows = $this->model('account')->found_rows();
 
         $url_param = array();
 

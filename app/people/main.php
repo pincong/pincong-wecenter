@@ -162,8 +162,6 @@ class main extends AWS_CONTROLLER
 
 		$user['data'] = unserialize_array($user['extra_data']);
 
-		$this->model('people')->update_view_count($user['uid']);
-
 		TPL::assign('user', $user);
 
 		TPL::assign('user_follow_check', $this->model('follow')->user_follow_check($this->user_id, $user['uid']));

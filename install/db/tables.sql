@@ -587,7 +587,6 @@ CREATE TABLE IF NOT EXISTS `aws_users` (
   `forbidden` tinyint(1) DEFAULT '0' COMMENT '是否禁止用户',
   `flagged` tinyint(1) DEFAULT '0',
   `agree_count` int(11) DEFAULT '0' COMMENT '赞同数量',
-  `views_count` int(11) DEFAULT '0' COMMENT '个人主页查看数量',
   `reputation` float DEFAULT '0' COMMENT '声望',
   `currency` int(11) DEFAULT '0',
   `user_update_time` int(11) DEFAULT '0',
