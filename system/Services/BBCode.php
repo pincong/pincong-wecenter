@@ -16,7 +16,7 @@ class Services_BBCode
 
 	private function _url_2_callback($match)
 	{
-		return FORMAT::parse_link(unnest_bbcode($match[1]), $match[2]);
+		return FORMAT::parse_link(unnest_bbcode($match[1]), $match[2], true);
 	}
 
 	private function _img_callback($match)

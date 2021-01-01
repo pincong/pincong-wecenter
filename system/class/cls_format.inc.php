@@ -57,7 +57,7 @@ class FORMAT
 	}
 
 
-	public static function parse_link($orig_url, $title = null)
+	public static function parse_link($orig_url, $title = null, $allow_nested = false)
 	{
 		$url = safe_text($orig_url);
 
@@ -65,7 +65,7 @@ class FORMAT
 		{
 			$title = $url;
 		}
-		else
+		else if (!$allow_nested)
 		{
 			$title = safe_text($title);
 		}
