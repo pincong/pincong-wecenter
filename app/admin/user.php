@@ -35,7 +35,7 @@ class user extends AWS_ADMIN_CONTROLLER
             }
 
             H::ajax_json_output(AWS_APP::RSM(array(
-                'url' => get_js_url('/admin/user/list/' . implode('__', $param))
+                'url' => url_rewrite('/admin/user/list/' . implode('__', $param))
             ), 1, null));
         }
 
@@ -102,7 +102,7 @@ class user extends AWS_ADMIN_CONTROLLER
         }
 
         TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-            'base_url' => get_js_url('/admin/user/list/') . implode('__', $url_param),
+            'base_url' => url_rewrite('/admin/user/list/') . implode('__', $url_param),
             'total_rows' => $total_rows,
             'per_page' => $this->per_page
         ))->create_links());
@@ -183,7 +183,7 @@ class user extends AWS_ADMIN_CONTROLLER
         if ($log = $this->model('currency')->fetch_page('currency_log', 'uid = ' . intval($_GET['uid']), 'id DESC', $_GET['page'], 50))
         {
             TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-                'base_url' => get_js_url('/admin/user/currency_log/uid-' . intval($_GET['uid'])),
+                'base_url' => url_rewrite('/admin/user/currency_log/uid-' . intval($_GET['uid'])),
                 'total_rows' => $this->model('currency')->found_rows(),
                 'per_page' => 50
             ))->create_links());

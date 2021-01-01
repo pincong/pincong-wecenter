@@ -43,7 +43,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			$this->model('admin')->set_admin_login($user_info['uid']);
 
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/admin/')
+				'url' => url_rewrite('/admin/')
 			), 1, null));
 		}
 		else
@@ -142,7 +142,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => get_js_url('/admin/category/list/')
+			'url' => url_rewrite('/admin/category/list/')
 		), 1, null));
 	}
 
@@ -208,7 +208,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 		$this->model('feature')->update_feature($feature_id, $update_data);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => get_js_url('/admin/feature/list/')
+			'url' => url_rewrite('/admin/feature/list/')
 		), 1, null));
 	}
 
@@ -404,7 +404,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => get_js_url('/admin/topic/list/')
+			'url' => url_rewrite('/admin/topic/list/')
 		), 1, null));
 	}
 
@@ -750,7 +750,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			}
 
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/admin/user/list/')
+				'url' => url_rewrite('/admin/user/list/')
 			), 1, null));
 		}
 	}
@@ -784,7 +784,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 		$this->model('currency')->process($_POST['uid'], 'AWARD', $_POST['currency'], $_POST['note']);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => get_js_url('/admin/user/currency_log/uid-' . $_POST['uid'])
+			'url' => url_rewrite('/admin/user/currency_log/uid-' . $_POST['uid'])
 		), 1, null));
 	}
 
@@ -809,7 +809,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => get_js_url('/admin/user/list/')
+			'url' => url_rewrite('/admin/user/list/')
 		), 1, null));
 	}
 

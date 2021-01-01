@@ -44,7 +44,7 @@ class article extends AWS_ADMIN_CONTROLLER
 			}
 
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/admin/article/list/' . implode('__', $param))
+				'url' => url_rewrite('/admin/article/list/' . implode('__', $param))
 			), 1, null));
 		}
 
@@ -117,7 +117,7 @@ class article extends AWS_ADMIN_CONTROLLER
 		}
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-			'base_url' => get_js_url('/admin/article/list/') . implode('__', $url_param),
+			'base_url' => url_rewrite('/admin/article/list/') . implode('__', $url_param),
 			'total_rows' => $search_articles_total,
 			'per_page' => $this->per_page
 		))->create_links());

@@ -57,7 +57,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		$topic_info['topic_pic'] = get_topic_pic_url($topic_info, 'mid');
-		$topic_info['url'] = get_js_url('/topic/' . urlencode($topic_info['topic_title']));
+		$topic_info['url'] = url_rewrite('/topic/' . urlencode($topic_info['topic_title']));
 
 		H::ajax_json_output($topic_info);
 	}
@@ -92,7 +92,7 @@ class ajax extends AWS_CONTROLLER
 		set_user_operation_last_time('edit_topic', $this->user_id);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => get_js_url('/topic/' . $_POST['topic_id'])
+			'url' => url_rewrite('/topic/' . $_POST['topic_id'])
 		), 1, null));
 	}
 
@@ -244,7 +244,7 @@ class ajax extends AWS_CONTROLLER
 		$this->model('topic')->remove_topic_by_ids($_POST['topic_id']);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => get_js_url('/topic/')
+			'url' => url_rewrite('/topic/')
 		), 1, null));
 	}
 
@@ -458,7 +458,7 @@ class ajax extends AWS_CONTROLLER
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'topic_id' => $topic_id,
-			'topic_url' => get_js_url('topic/' . $topic_id)
+			'topic_url' => url_rewrite('topic/' . $topic_id)
 		), 1, null));
 	}
 

@@ -142,7 +142,7 @@ class main extends AWS_CONTROLLER
 		$users_list = $this->model('account')->get_user_list($where, calc_page_limit($_GET['page'], get_setting('contents_per_page')), $order);
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-			'base_url' => get_js_url('/people/') . implode('__', $url_param),
+			'base_url' => url_rewrite('/people/') . implode('__', $url_param),
 			'total_rows' => $this->model('account')->get_user_count($where),
 			'per_page' => get_setting('contents_per_page')
 		))->create_links());

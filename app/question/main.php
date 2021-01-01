@@ -214,7 +214,7 @@ class main extends AWS_CONTROLLER
 		$this->crumb($page_title);
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-			'base_url' => get_js_url('/question/') . implode('__', $url_param),
+			'base_url' => url_rewrite('/question/') . implode('__', $url_param),
 			'total_rows' => $reply_count,
 			'per_page' => $replies_per_page
 		))->create_links());

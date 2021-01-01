@@ -39,7 +39,7 @@ class ajax extends AWS_CONTROLLER
 		if ($this->user_id)
 		{
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/')
+				'url' => url_rewrite('/')
 			), 1, null));
 		}
 
@@ -79,15 +79,15 @@ class ajax extends AWS_CONTROLLER
 			{
 				//H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('抱歉, 你的账号已经被禁止登录')));
 				H::ajax_json_output(AWS_APP::RSM(array(
-					'url' => get_js_url('/people/') . $user_info['url_token']
+					'url' => url_rewrite('/people/') . $user_info['url_token']
 				), 1, null));
 			}
 
 			if ($user_info['flagged'] > 0)
 			{
 				H::ajax_json_output(AWS_APP::RSM(array(
-					//'url' => get_js_url('/')
-					'url' => get_js_url('/people/') . $user_info['url_token']
+					//'url' => url_rewrite('/')
+					'url' => url_rewrite('/people/') . $user_info['url_token']
 				), 1, null));
 			}
 
@@ -102,7 +102,7 @@ class ajax extends AWS_CONTROLLER
 
 			$this->model('account')->setcookie_login($user_info['uid'], $_POST['user_name'], $_POST['password'], $user_info['salt'], $expire);
 
-			$url = get_js_url('/');
+			$url = url_rewrite('/');
 
 			if ($_POST['return_url'] AND is_inside_url($_POST['return_url']))
 			{

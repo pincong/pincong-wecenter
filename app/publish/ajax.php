@@ -317,12 +317,12 @@ class ajax extends AWS_CONTROLLER
 		{
 			// 延迟显示
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/publish/delay/')
+				'url' => url_rewrite('/publish/delay/')
 			), 1, null));
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => get_js_url('/question/' . $question_id)
+			'url' => url_rewrite('/question/' . $question_id)
 		), 1, null));
 	}
 
@@ -372,12 +372,12 @@ class ajax extends AWS_CONTROLLER
 		{
 			// 延迟显示
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/publish/delay/')
+				'url' => url_rewrite('/publish/delay/')
 			), 1, null));
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => get_js_url('/article/' . $article_id)
+			'url' => url_rewrite('/article/' . $article_id)
 		), 1, null));
 	}
 
@@ -442,12 +442,12 @@ class ajax extends AWS_CONTROLLER
 		{
 			// 延迟显示
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/publish/delay/')
+				'url' => url_rewrite('/publish/delay/')
 			), 1, null));
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => get_js_url('/video/' . $video_id)
+			'url' => url_rewrite('/video/' . $video_id)
 		), 1, null));
 	}
 
@@ -556,7 +556,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			// 延迟显示
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/publish/delay/')
+				'url' => url_rewrite('/publish/delay/')
 			), 1, null));
 		}
 
@@ -645,7 +645,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			// 延迟显示
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/publish/delay/')
+				'url' => url_rewrite('/publish/delay/')
 			), 1, null));
 		}
 
@@ -734,7 +734,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			// 延迟显示
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/publish/delay/')
+				'url' => url_rewrite('/publish/delay/')
 			), 1, null));
 		}
 

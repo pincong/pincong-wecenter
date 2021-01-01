@@ -10,16 +10,16 @@
 >
 	<channel>
 		<title><?php echo get_setting('site_name'); ?></title>
-		<atom:link href="<?php echo get_js_url('/feed/'); ?>" rel="self" type="application/rss+xml" />
-		<link><?php echo base_url(); ?></link>
+		<atom:link href="<?php echo url_rewrite('/feed/'); ?>" rel="self" type="application/rss+xml" />
+		<link><?php echo base_url(); ?>/</link>
 		<description><?php echo get_setting('description'); ?></description>
 		<?php foreach($this->list as $key => $val){ ?>
 		<item>
 			<title><?php echo FORMAT::text($val['title'], false); ?></title>
-			<link><?php echo get_js_url('/question/' . $val['id']); ?></link>
+			<link><?php echo url_rewrite('/question/' . $val['id']); ?></link>
 			<description><![CDATA[<?php echo FORMAT::bbcode($val['message']); ?>]]></description>
 			<pubDate><?php echo date('D, d M Y', $val['add_time']); ?></pubDate>
-			<guid><?php echo get_js_url('/question/' . $val['id']); ?></guid>
+			<guid><?php echo url_rewrite('/question/' . $val['id']); ?></guid>
 		</item>
 		<?php } ?>
 	</channel>

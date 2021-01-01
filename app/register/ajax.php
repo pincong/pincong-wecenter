@@ -60,7 +60,7 @@ class ajax extends AWS_CONTROLLER
 		if ($this->user_id)
 		{
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/')
+				'url' => url_rewrite('/')
 			), 1, null));
 		}
 
@@ -148,7 +148,7 @@ class ajax extends AWS_CONTROLLER
 		$this->model('account')->setcookie_login($user_info['uid'], $user_info['user_name'], $_POST['password'], $user_info['salt']);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => get_js_url('/home/first_login-TRUE')
+			'url' => url_rewrite('/home/first_login-TRUE')
 		), 1, null));
 
 	}

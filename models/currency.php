@@ -147,7 +147,7 @@ class currency_class extends AWS_MODEL
 					{
 						$result[$log_id] = array(
 							'title' => $questions[$item['item_id']]['title'],
-							'url' => get_js_url('/question/' . $item['item_id'])
+							'url' => url_rewrite('/question/' . $item['item_id'])
 						);
 					}
 				break;
@@ -157,7 +157,7 @@ class currency_class extends AWS_MODEL
 					{
 						$result[$log_id] = array(
 							'title' => $articles[$item['item_id']]['title'],
-							'url' => get_js_url('/article/' . $item['item_id'])
+							'url' => url_rewrite('/article/' . $item['item_id'])
 						);
 					}
 				break;
@@ -167,7 +167,7 @@ class currency_class extends AWS_MODEL
 					{
 						$result[$log_id] = array(
 							'title' => $videos[$item['item_id']]['title'],
-							'url' => get_js_url('/v/' . $item['item_id'])
+							'url' => url_rewrite('/v/' . $item['item_id'])
 						);
 					}
 				break;
@@ -177,7 +177,7 @@ class currency_class extends AWS_MODEL
 					{
 						$result[$log_id] = array(
 							'title' => cjk_substr($answers[$item['item_id']]['message'], 0, 24, 'UTF-8', '...'),
-							'url' => get_js_url('/question/' . $answers[$item['item_id']]['question_id'])
+							'url' => url_rewrite('/question/' . $answers[$item['item_id']]['question_id'])
 						);
 					}
 				break;
@@ -187,7 +187,7 @@ class currency_class extends AWS_MODEL
 					{
 						$result[$log_id] = array(
 							'title' => cjk_substr($article_comments[$item['item_id']]['message'], 0, 24, 'UTF-8', '...'),
-							'url' => get_js_url('/article/' . $article_comments[$item['item_id']]['article_id'])
+							'url' => url_rewrite('/article/' . $article_comments[$item['item_id']]['article_id'])
 						);
 					}
 				break;
@@ -197,7 +197,7 @@ class currency_class extends AWS_MODEL
 					{
 						$result[$log_id] = array(
 							'title' => cjk_substr($video_comments[$item['item_id']]['message'], 0, 24, 'UTF-8', '...'),
-							'url' => get_js_url('/v/' . $video_comments[$item['item_id']]['video_id'])
+							'url' => url_rewrite('/v/' . $video_comments[$item['item_id']]['video_id'])
 						);
 					}
 				break;

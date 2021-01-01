@@ -196,7 +196,7 @@ class main extends AWS_CONTROLLER
 		TPL::assign('new_topics', $this->model('topic')->get_topic_list(null, 'topic_id DESC', 10));
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-			'base_url' => get_js_url('/topic/') . implode('__', $url_param),
+			'base_url' => url_rewrite('/topic/') . implode('__', $url_param),
 			'total_rows' => $topics_list_total_rows,
 			'per_page' => $per_page
 		))->create_links());

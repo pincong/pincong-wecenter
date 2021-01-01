@@ -371,7 +371,7 @@ function content_contains($varname, $content, $any_position = false, $case_sensi
  * @param  string
  * @return string
  */
-function get_js_url($path = null)
+function url_rewrite($path = null)
 {
 	static $base_url;
 	if (!isset($base_url))
@@ -388,11 +388,6 @@ function get_js_url($path = null)
 		return $base_url;
 	}
 	return $base_url . $path;
-}
-
-function url_rewrite($url = null)
-{
-	return get_js_url($url);
 }
 
 /**

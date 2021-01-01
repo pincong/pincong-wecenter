@@ -104,7 +104,7 @@ class HTTP
 		}
 		if (!is_website($url))
 		{
-			return get_js_url($url);
+			return url_rewrite($url);
 		}
 		return $url;
 	}

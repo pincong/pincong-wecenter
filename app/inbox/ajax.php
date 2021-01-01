@@ -120,13 +120,13 @@ class ajax extends AWS_CONTROLLER
 		if ($_POST['dialog_id'])
 		{
 			$rsm = array(
-				'url' => get_js_url('/inbox/read/' . intval($_POST['dialog_id']))
+				'url' => url_rewrite('/inbox/read/' . intval($_POST['dialog_id']))
 			);
 		}
 		else
 		{
 			$rsm = array(
-				'url' => get_js_url('/inbox/')
+				'url' => url_rewrite('/inbox/')
 			);
 		}
 

@@ -268,7 +268,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => get_js_url('/')
+			'url' => url_rewrite('/')
 		), 1, null));
 	}
 

@@ -30,7 +30,7 @@ class main extends AWS_CONTROLLER
 		TPL::assign('list', $this->model('favorite')->get_item_list($this->user_id, calc_page_limit($_GET['page'], get_setting('contents_per_page'))));
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-			'base_url' => get_js_url('/favorite/'),
+			'base_url' => url_rewrite('/favorite/'),
 			'total_rows' => $this->model('favorite')->count_favorite_items($this->user_id),
 			'per_page' => get_setting('contents_per_page')
 		))->create_links());

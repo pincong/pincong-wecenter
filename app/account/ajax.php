@@ -57,7 +57,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => get_js_url('/account/find_password/modify/uid-') . $user_info['uid']
+			'url' => url_rewrite('/account/find_password/modify/uid-') . $user_info['uid']
 		), 1, null));
 	}
 
@@ -98,7 +98,7 @@ class ajax extends AWS_CONTROLLER
 		$this->model('account')->update_user_password_ingore_oldpassword($_POST['password'], $user_info['uid']);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => get_js_url('/account/find_password/process_success/')
+			'url' => url_rewrite('/account/find_password/process_success/')
 		), 1, null));
 	}
 
@@ -213,7 +213,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			$this->model('account')->logout();
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => get_js_url('/account/password_updated/')
+				'url' => url_rewrite('/account/password_updated/')
 			), 1, null));
 		}
 		else

@@ -161,7 +161,7 @@ class main extends AWS_CONTROLLER
 		}
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-			'base_url' => get_js_url('/') . $base_url,
+			'base_url' => url_rewrite('/') . $base_url,
 			'total_rows' => $this->model('posts')->get_posts_list_total(),
 			'per_page' => get_setting('contents_per_page')
 		))->create_links());

@@ -96,7 +96,7 @@ class main extends AWS_CONTROLLER
 		TPL::assign('item_list', $item_list);
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-			'base_url' => get_js_url('/kb/'),
+			'base_url' => url_rewrite('/kb/'),
 			'total_rows' => $count,
 			'per_page' => $per_page
 		))->create_links());

@@ -177,7 +177,7 @@ class main extends AWS_CONTROLLER
 		TPL::assign('comment_count', $reply_count);
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-			'base_url' => get_js_url('/video/') . implode('__', $url_param),
+			'base_url' => url_rewrite('/video/') . implode('__', $url_param),
 			'total_rows' => $reply_count,
 			'per_page' => $replies_per_page
 		))->create_links());
