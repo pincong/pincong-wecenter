@@ -74,15 +74,6 @@ class topic_class extends AWS_MODEL
 		return $this->fetch_column('topic_merge', 'source_id', ['target_id', 'eq', $topic_id, 'i']);
 	}
 
-	public function get_merged_topic_ids_by_ids($topic_ids)
-	{
-		if (!is_array($topic_ids) OR count($topic_ids) < 1)
-		{
-			return false;
-		}
-		return $this->fetch_column('topic_merge', 'source_id', ['target_id', 'in', $topic_ids, 'i']);
-	}
-
 	public function merge_topic($source_id, $target_id, $uid)
 	{
 		if ($this->count('topic', [['topic_id', 'eq', $source_id, 'i'], ['merged_id', 'eq', 0]]))

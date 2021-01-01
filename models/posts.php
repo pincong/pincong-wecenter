@@ -365,20 +365,30 @@ class posts_class extends AWS_MODEL
 			return false;
 		}
 
-		$merged_ids = $this->model('topic')->get_merged_topic_ids_by_ids($topic_ids);
-		if ($merged_ids)
+		$merged_topics = $this->fetch_rows('topic_merge', ['source_id', 'target_id'], [
+			['target_id', 'in', $topic_ids, 'i'],
+			'or',
+			['source_id', 'in', $topic_ids, 'i']
+		]);
+		if ($merged_topics)
 		{
-			$topic_ids = array_merge($topic_ids, $merged_ids);
+			foreach ($merged_topics as $val)
+			{
+				$topic_ids[] = $val['source_id'];
+				$topic_ids[] = $val['target_id'];
+			}
+			$topic_ids = array_unique($topic_ids);
 		}
 
 		$topic_relation_where[] = ['topic_id', 'in', $topic_ids, 'i'];
 		$topic_relation_where[] = ['type', 'eq', $post_type];
 
-		$post_ids = $this->fetch_distinct('topic_relation', 'item_id', $topic_relation_where, 'RAND()', 200);
+		$post_ids = $this->fetch_column('topic_relation', 'item_id', $topic_relation_where, 'RAND()', 200);
 		if (!$post_ids)
 		{
 			return false;
 		}
+		$post_ids = array_unique($post_ids);
 
 		$where = [
 			['post_id', 'notEq', $exclude_post_id, 'i'],
