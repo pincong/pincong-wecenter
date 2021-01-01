@@ -78,52 +78,6 @@ class answer_class extends AWS_MODEL
 		return $this->fetch_one('answer', 'id', "question_id = " . intval($question_id) . " AND uid = " . intval($uid));
 	}
 
-	public function insert_answer_discussion($answer_id, $uid, $message)
-	{
-		if (!$answer_info = $this->model('content')->get_reply_info_by_id('answer', $answer_id))
-		{
-			return false;
-		}
-
-		if (!$question_info = $this->model('content')->get_thread_info_by_id('question', $answer_info['question_id']))
-		{
-			return false;
-		}
-
-		$message = $this->model('mention')->parse_at_user($message, false, false, true);
-
-		$comment_id = $this->insert('answer_discussion', array(
-			'uid' => intval($uid),
-			'answer_id' => intval($answer_id),
-			'message' => htmlspecialchars($message),
-			'add_time' => fake_time()
-		));
-
-		$notification_sent = $this->model('notification')->send(
-			$uid,
-			$answer_info['uid'],
-			'REPLY_USER',
-			'question', $question_info['id'], 'answer', $answer_info['id']);
-
-		if ($mentioned_uids = $this->model('mention')->parse_at_user($message, false, true))
-		{
-			foreach ($mentioned_uids as $user_id)
-			{
-				if (!$notification_sent OR ($user_id != $answer_info['uid']))
-				{
-					$this->model('notification')->send(
-						$uid,
-						$user_id,
-						'MENTION_USER',
-						'question', $question_info['id'], 'answer', $answer_info['id']);
-				}
-			}
-		}
-
-		$this->update_answer_discussion_count($answer_id);
-
-		return $comment_id;
-	}
 
 	public function get_answer_discussions($answer_id)
 	{

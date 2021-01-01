@@ -145,25 +145,17 @@ class ajax extends AWS_CONTROLLER
         set_repeat_submission_digest($this->user_id, $message);
 		set_user_operation_last_time('publish', $this->user_id);
 
-		$this->model('answer')->insert_answer_discussion($_GET['answer_id'], $publish_uid, $message);
+		// TODO: 以$_POST['at_uid']代替
+		$message = $this->model('mention')->parse_at_user($message, false, false, true);
 
-		if (get_setting('discussion_bring_top') == 'Y')
-		{
-			$question_id = $question_info['redirect_id'] ? $question_info['redirect_id'] : $question_info['id'];
-
-			$this->model('posts')->bring_to_top(
-				$question_id,
-				'question'
-			);
-
-			$this->model('question')->update('question', array(
-				'last_uid' => $publish_uid,
-				'update_time' => fake_time()
-			), 'id = ' . intval($question_id));
-		}
+		$this->model('publish')->publish_answer_discussion(array(
+			'parent_id' => $answer_info['id'],
+			'message' => $message,
+			'uid' => $publish_uid,
+		), $this->user_id, false);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'item_id' => intval($_GET['answer_id']),
+			'item_id' => $answer_info['id'],
 			'type_name' => 'answer'
 		), 1, null));
 	}
@@ -246,20 +238,17 @@ class ajax extends AWS_CONTROLLER
         set_repeat_submission_digest($this->user_id, $message);
 		set_user_operation_last_time('publish', $this->user_id);
 
-		$this->model('question')->insert_question_discussion($_GET['question_id'], $publish_uid, $message);
+		// TODO: 以$_POST['at_uid']代替
+		$message = $this->model('mention')->parse_at_user($message, false, false, true);
 
-		if (get_setting('discussion_bring_top') == 'Y')
-		{
-			$this->model('posts')->bring_to_top($question_info['id'], 'question');
-
-			$this->model('question')->update('question', array(
-				'last_uid' => $publish_uid,
-				'update_time' => fake_time()
-			), 'id = ' . intval($question_info['id']));
-		}
+		$this->model('publish')->publish_question_discussion(array(
+			'parent_id' => $question_info['id'],
+			'message' => $message,
+			'uid' => $publish_uid,
+		), $this->user_id, false);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'item_id' => intval($_GET['question_id']),
+			'item_id' => $question_info['id'],
 			'type_name' => 'question'
 		), 1, null));
 	}

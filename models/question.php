@@ -318,48 +318,6 @@ class question_class extends AWS_MODEL
 	}
 
 
-	public function insert_question_discussion($question_id, $uid, $message)
-	{
-		if (!$question_info = $this->model('content')->get_thread_info_by_id('question', $question_id))
-		{
-			return false;
-		}
-
-		$message = $this->model('mention')->parse_at_user($message, false, false, true);
-
-		$comment_id = $this->insert('question_discussion', array(
-			'uid' => intval($uid),
-			'question_id' => intval($question_id),
-			'message' => htmlspecialchars($message),
-			'add_time' => fake_time()
-		));
-
-		$notification_sent = $this->model('notification')->send(
-			$uid,
-			$question_info['uid'],
-			'REPLY_USER',
-			'question', $question_info['id']);
-
-		if ($mentioned_uids = $this->model('mention')->parse_at_user($message, false, true))
-		{
-			foreach ($mentioned_uids as $user_id)
-			{
-				if (!$notification_sent OR ($user_id != $question_info['uid']))
-				{
-					$this->model('notification')->send(
-						$uid,
-						$user_id,
-						'MENTION_USER',
-						'question', $question_info['id']);
-				}
-			}
-		}
-
-		$this->update_question_discussion_count($question_id);
-
-		return $comment_id;
-	}
-
 	public function get_question_discussions($thread_ids)
 	{
 		array_walk_recursive($thread_ids, 'intval_string');
