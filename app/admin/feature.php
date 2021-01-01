@@ -33,7 +33,7 @@ class feature extends AWS_ADMIN_CONTROLLER
 
         TPL::assign('pagination', AWS_APP::pagination()->create(array(
             'base_url' => url_rewrite('/admin/feature/list/'),
-            'total_rows' => $this->model('feature')->found_rows(),
+            'total_rows' => $this->model('feature')->total_rows(),
             'per_page' => 20
         )));
 

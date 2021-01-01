@@ -75,7 +75,7 @@ class topic extends AWS_ADMIN_CONTROLLER
 
 		$topic_list = $this->model('topic')->get_topic_list(implode(' AND ', $where), 'topic_id DESC', $this->per_page, $_GET['page']);
 
-		$total_rows = $this->model('topic')->found_rows();
+		$total_rows = $this->model('topic')->total_rows();
 
 		if ($topic_list)
 		{

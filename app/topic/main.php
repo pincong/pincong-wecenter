@@ -78,7 +78,7 @@ class main extends AWS_CONTROLLER
 				{
 					if ($topics_list = $this->model('topic')->get_topic_list(null, $order, $per_page, $_GET['page']))
 					{
-						$topics_list_total_rows = $this->model('topic')->found_rows();
+						$topics_list_total_rows = $this->model('topic')->total_rows();
 
 						AWS_APP::cache()->set('square_hot_topic_list_total_rows', $topics_list_total_rows, S::get('cache_level_low'));
 					}

@@ -32,7 +32,7 @@ class main extends AWS_CONTROLLER
 
 		if ($inbox_dialog = $this->model('message')->get_inbox_message($_GET['page'], S::get('contents_per_page'), $this->user_id))
 		{
-			$inbox_total_rows = $this->model('message')->found_rows();
+			$inbox_total_rows = $this->model('message')->total_rows();
 
 			foreach ($inbox_dialog as $key => $val)
 			{

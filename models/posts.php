@@ -326,7 +326,7 @@ class posts_class extends AWS_MODEL
 
 		$posts_index = $this->fetch_page('posts_index', implode(' AND ', $where), $order_key, $page, $per_page);
 
-		$this->posts_list_total = $this->found_rows();
+		$this->posts_list_total = $this->total_rows();
 
 		return $this->process_explore_list_data($posts_index);
 	}
@@ -352,7 +352,7 @@ class posts_class extends AWS_MODEL
 
 		$posts_index = $this->fetch_page('posts_index', implode(' AND ', $where), 'reputation DESC', $page, $per_page);
 
-		$this->posts_list_total = $this->found_rows();
+		$this->posts_list_total = $this->total_rows();
 
 		return $this->process_explore_list_data($posts_index);
 	}
@@ -386,7 +386,7 @@ class posts_class extends AWS_MODEL
 				$post_ids[$val['type']][$val['item_id']] = $val['item_id'];
 			}
 
-			$this->posts_list_total = $this->found_rows();
+			$this->posts_list_total = $this->total_rows();
 		}
 
 		if (!$post_ids)

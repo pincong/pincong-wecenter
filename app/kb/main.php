@@ -46,7 +46,7 @@ class main extends AWS_CONTROLLER
 		$per_page = S::get('contents_per_page');
 
 		$item_list = $this->model('kb')->list($_GET['page'], $per_page);
-		$count = $this->model('kb')->found_rows();
+		$count = $this->model('kb')->total_rows();
 
 		if ($item_list)
 		{

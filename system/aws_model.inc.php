@@ -23,15 +23,19 @@
  */
 class AWS_MODEL
 {
-	public $prefix;
-	public $setting;
-
+	private $_prefix;
+	private $_debug;
+	private $_slave_db_available;
 	private $_current_db = 'master';
-	private $_found_rows = 0;
+
+	private $_fetch_page_table;
+	private $_fetch_page_where;
 
 	public function __construct()
 	{
-		$this->prefix = AWS_APP::config()->get('database')->prefix;
+		$this->_prefix = AWS_APP::config()->get('database')->prefix;
+		$this->_debug = !!AWS_APP::config()->get('system')->debug;
+		$this->_slave_db_available = !!AWS_APP::config()->get('database')->slave;
 
 		$this->setup();
 	}
@@ -49,7 +53,7 @@ class AWS_MODEL
 	 */
 	public function get_prefix()
 	{
-		return $this->prefix;
+		return $this->_prefix;
 	}
 
 	/**
@@ -63,7 +67,7 @@ class AWS_MODEL
 	 */
 	public function get_table($name)
 	{
-		return $this->get_prefix() . $name;
+		return $this->_prefix . $name;
 	}
 
 	/**
@@ -81,7 +85,7 @@ class AWS_MODEL
 	/**
 	 * 切换到主数据库
 	 *
-	 * 此功能用于数据库主从分离
+	 * 此功能用于数据库读写分离
 	 *
 	 * @return	object
 	 */
@@ -92,14 +96,14 @@ class AWS_MODEL
 			return $this;
 		}
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			$start_time = microtime(TRUE);
 		}
 
 		AWS_APP::db('master');
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), 'Master DB Seleted');
 		}
@@ -110,25 +114,25 @@ class AWS_MODEL
 	/**
 	 * 切换到从数据库
 	 *
-	 * 此功能用于数据库主从分离
+	 * 此功能用于数据库读写分离
 	 *
 	 * @return	object
 	 */
 	public function slave()
 	{
-		if (!AWS_APP::config()->get('database')->slave OR $this->_current_db == 'slave')
+		if (!$this->_slave_db_available OR $this->_current_db == 'slave')
 		{
 			return $this;
 		}
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			$start_time = microtime(TRUE);
 		}
 
 		AWS_APP::db('slave');
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), 'Slave DB Seleted');
 		}
@@ -192,7 +196,7 @@ class AWS_MODEL
 
 		$sql = 'INSERT INTO `' . $this->get_table($table) . '` (' . implode(', ', array_keys($debug_data)) . ') VALUES (' . implode(', ', $debug_data) . ')';
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			$start_time = microtime(TRUE);
 		}
@@ -203,7 +207,7 @@ class AWS_MODEL
 			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
 		}
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
 		}
@@ -242,7 +246,7 @@ class AWS_MODEL
 
 		$sql = 'UPDATE `' . $this->get_table($table) . '` SET ' . implode(', ', $update_string) . ' WHERE ' . $where;
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			$start_time = microtime(TRUE);
 		}
@@ -253,7 +257,7 @@ class AWS_MODEL
 			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
 		}
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
 		}
@@ -281,7 +285,7 @@ class AWS_MODEL
 
 		$sql = 'DELETE FROM `' . $this->get_table($table) . '` WHERE ' . $where;
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			$start_time = microtime(TRUE);
 		}
@@ -292,7 +296,7 @@ class AWS_MODEL
 			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
 		}
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
 		}
@@ -374,7 +378,7 @@ class AWS_MODEL
 
 		$sql = $select->__toString();
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			$start_time = microtime(TRUE);
 		}
@@ -385,7 +389,7 @@ class AWS_MODEL
 			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
 		}
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
 		}
@@ -428,7 +432,7 @@ class AWS_MODEL
 			$sql .= ' OFFSET ' . $offset;
 		}
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			$start_time = microtime(TRUE);
 		}
@@ -439,7 +443,7 @@ class AWS_MODEL
 			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
 		}
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
 		}
@@ -470,7 +474,7 @@ class AWS_MODEL
 			$sql .= ' WHERE ' . $where;
 		}
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			$start_time = microtime(TRUE);
 		}
@@ -481,7 +485,7 @@ class AWS_MODEL
 			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
 		}
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
 		}
@@ -530,7 +534,7 @@ class AWS_MODEL
 			$sql .= ' OFFSET ' . $offset;
 		}
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			$start_time = microtime(TRUE);
 		}
@@ -541,7 +545,7 @@ class AWS_MODEL
 			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
 		}
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
 		}
@@ -549,25 +553,50 @@ class AWS_MODEL
 		return $result;
 	}
 
+	/*public function found_rows()
+	{
+		$this->slave();
+		return $this->db()->fetchOne('SELECT FOUND_ROWS()');
+	}*/
+
 	/**
-	 * 获取上一次查询中的 FOUND_ROWS() 结果
+	 * 获取上一次查询中的全部 ROWS
 	 *
 	 * 此函数需配合 $this->fetch_page() 使用
 	 *
 	 * @return	int
 	 */
-	public function found_rows()
+	public function total_rows($rows_cache = true)
 	{
-		//$this->slave();
-		//return $this->db()->fetchOne('SELECT FOUND_ROWS()');
+		if (!$this->_fetch_page_table)
+		{
+			return 0;
+		}
 
-		return $this->_found_rows;
+		if ($rows_cache)
+		{
+			$cache_key = 'db_rows_cache_' . md5($this->_fetch_page_table . '_' . $this->_fetch_page_where);
+
+			$db_found_rows = AWS_APP::cache()->get($cache_key);
+		}
+
+		if (!$db_found_rows AND $db_found_rows !== 0)
+		{
+			$db_found_rows = $this->count($this->_fetch_page_table, $this->_fetch_page_where);
+		}
+
+		if ($rows_cache AND $db_found_rows)
+		{
+			AWS_APP::cache()->set($cache_key, $db_found_rows, S::get('cache_level_high'));
+		}
+
+		return $db_found_rows;
 	}
 
 	/**
 	 * 获取查询全部数组数据, 并记录匹配记录总数
 	 *
-	 * 面向对象数据库操作, 查询结果返回数组, 此函数适用于需要分页的场景使用, 配合 $this->found_rows() 获取匹配记录总数
+	 * 面向对象数据库操作, 查询结果返回数组, 此函数适用于需要分页的场景使用, 配合 $this->total_rows() 获取匹配记录总数
 	 *
 	 * @param	string
 	 * @param	string
@@ -577,7 +606,7 @@ class AWS_MODEL
 	 * @param	boolean
 	 * @return	array
 	 */
-	public function fetch_page($table, $where = null, $order = null, $page = null, $limit = 10, $rows_cache = true)
+	public function fetch_page($table, $where = null, $order = null, $page = null, $limit = 10)
 	{
 		$this->slave();
 
@@ -621,7 +650,7 @@ class AWS_MODEL
 
 		$sql = $select->__toString();
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			$start_time = microtime(TRUE);
 		}
@@ -633,30 +662,13 @@ class AWS_MODEL
 			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
 		}
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
 		}
 
-		if ($rows_cache)
-		{
-			$cache_key = 'db_rows_cache_' . md5($table . '_' . $where);
-
-			$db_found_rows = AWS_APP::cache()->get($cache_key);
-		}
-
-		if (!$db_found_rows)
-		{
-			$db_found_rows = $this->count($table, $where);
-		}
-
-		if ($rows_cache AND $db_found_rows)
-		{
-			AWS_APP::cache()->set($cache_key, $db_found_rows, S::get('cache_level_high'));
-		}
-
-		// Found rows
-		$this->_found_rows = $db_found_rows;
+		$this->_fetch_page_table = $table;
+		$this->_fetch_page_where = $where;
 
 		return $result;
 	}
@@ -705,7 +717,7 @@ class AWS_MODEL
 
 		$sql = $select->__toString();
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			$start_time = microtime(TRUE);
 		}
@@ -716,7 +728,7 @@ class AWS_MODEL
 			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
 		}
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
 		}
@@ -770,7 +782,7 @@ class AWS_MODEL
 
 		$sql = $select->__toString();
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			$start_time = microtime(TRUE);
 		}
@@ -781,7 +793,7 @@ class AWS_MODEL
 			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
 		}
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
 		}
@@ -812,7 +824,7 @@ class AWS_MODEL
 
 		$sql = $select->__toString();
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			$start_time = microtime(TRUE);
 		}
@@ -823,7 +835,7 @@ class AWS_MODEL
 			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
 		}
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
 		}
@@ -855,7 +867,7 @@ class AWS_MODEL
 
 		$sql = $select->__toString();
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			$start_time = microtime(TRUE);
 		}
@@ -866,7 +878,7 @@ class AWS_MODEL
 			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
 		}
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
 		}
@@ -900,7 +912,7 @@ class AWS_MODEL
 
 		$sql = $select->__toString();
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			$start_time = microtime(TRUE);
 		}
@@ -911,7 +923,7 @@ class AWS_MODEL
 			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
 		}
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
 		}
@@ -943,7 +955,7 @@ class AWS_MODEL
 
 		$sql = $select->__toString();
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			$start_time = microtime(TRUE);
 		}
@@ -954,7 +966,7 @@ class AWS_MODEL
 			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
 		}
 
-		if (AWS_APP::config()->get('system')->debug)
+		if ($this->_debug)
 		{
 			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
 		}

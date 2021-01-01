@@ -89,7 +89,7 @@ class question extends AWS_ADMIN_CONTROLLER
 
 		if ($question_list = $this->model('question')->fetch_page('question', implode(' AND ', $where), 'id DESC', $_GET['page'], $this->per_page))
 		{
-			$total_rows = $this->model('question')->found_rows();
+			$total_rows = $this->model('question')->total_rows();
 
 			foreach ($question_list AS $key => $val)
 			{

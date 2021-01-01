@@ -89,7 +89,7 @@ class user extends AWS_ADMIN_CONTROLLER
             $user_list[$key]['url_token'] = urlencode($val['user_name']);
         }
 
-        $total_rows = $this->model('account')->found_rows();
+        $total_rows = $this->model('account')->total_rows();
 
         $url_param = array();
 
@@ -197,7 +197,7 @@ class user extends AWS_ADMIN_CONTROLLER
         {
             TPL::assign('pagination', AWS_APP::pagination()->create(array(
                 'base_url' => url_rewrite('/admin/user/currency_log/uid-' . intval($_GET['uid'])),
-                'total_rows' => $this->model('currency')->found_rows(),
+                'total_rows' => $this->model('currency')->total_rows(),
                 'per_page' => 50
             )));
 

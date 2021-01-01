@@ -85,7 +85,7 @@ class article extends AWS_ADMIN_CONTROLLER
 
 		if ($article_list = $this->model('article')->fetch_page('article', implode(' AND ', $where), 'id DESC', $_GET['page'], $this->per_page))
 		{
-			$search_articles_total = $this->model('article')->found_rows();
+			$search_articles_total = $this->model('article')->total_rows();
 		}
 
 		if ($article_list)
