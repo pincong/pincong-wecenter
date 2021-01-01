@@ -311,10 +311,6 @@ class ajax extends AWS_CONTROLLER
 			$comments[$key]['user_info'] = $user_infos[$val['uid']];
 		}
 
-		$answer_info = $this->model('content')->get_reply_info_by_id('answer', $_GET['answer_id']);
-
-		TPL::assign('question', $this->model('content')->get_thread_info_by_id('question', $answer_info['question_id']));
-		TPL::assign('answer_info', $answer_info);
 		TPL::assign('comments', $comments);
 
 		TPL::output("question/answer_discussions_template");
@@ -341,8 +337,6 @@ class ajax extends AWS_CONTROLLER
 			$comments[$key]['message'] = $this->model('mention')->parse_at_user($comments[$key]['message']);
 			$comments[$key]['user_info'] = $user_infos[$val['uid']];
 		}
-
-		TPL::assign('question', $this->model('content')->get_thread_info_by_id('question', $_GET['question_id']));
 
 		TPL::assign('comments', $comments);
 

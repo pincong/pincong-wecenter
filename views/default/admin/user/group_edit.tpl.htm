@@ -223,7 +223,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许置顶帖文'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许置顶'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
@@ -241,7 +241,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许折叠帖文'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许折叠'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
@@ -259,7 +259,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许推荐帖文'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许推荐'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
@@ -277,7 +277,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许锁定帖文'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许锁定'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
@@ -286,6 +286,24 @@
 
 									<label type="button" class="btn mod-btn-color">
 										<input type="radio" value="0" name="lock_post"<?php if (!$this->group_pms['lock_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许合并'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="redirect_post"<?php if ($this->group_pms['redirect_post']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="redirect_post"<?php if (!$this->group_pms['redirect_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
 									</label>
 								</div>
 							</div>
