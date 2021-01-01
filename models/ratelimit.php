@@ -149,13 +149,13 @@ class ratelimit_class extends AWS_MODEL
 		$time_after = real_time() - 24 * 3600;
 
 		$where = [['add_time', 'gt', $time_after], ['uid', 'eq', $uid]];
-		$count = $this->count('answer', $where);
+		$count = $this->count('question_reply', $where);
 		if ($count >= $limit)
 		{
 			return false;
 		}
 
-		$where = [['type', 'eq', 'answer'], ['time', 'gt', $time_after], ['uid', 'eq', $uid]];
+		$where = [['type', 'eq', 'question_reply'], ['time', 'gt', $time_after], ['uid', 'eq', $uid]];
 		$count += $this->count('scheduled_posts', $where);
 		if ($count >= $limit)
 		{

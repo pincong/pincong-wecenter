@@ -83,7 +83,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_error((_t('讨论内容字数不得超过 %s 字', $discussion_length_max)));
 		}
 
-		$answer_info = $this->model('content')->get_reply_info_by_id('answer', H::GET('answer_id'));
+		$answer_info = $this->model('content')->get_reply_info_by_id('question_reply', H::GET('answer_id'));
 		if (!$answer_info)
 		{
 			H::ajax_error((_t('回复不存在')));
@@ -348,7 +348,7 @@ class ajax extends AWS_CONTROLLER
 	public function remove_comment_action()
 	{
 		if (! in_array(H::GET('type'), array(
-			'answer',
+			'question_reply',
 			'question'
 		)))
 		{
@@ -361,7 +361,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_error((_t('讨论不存在')));
 		}
 
-		if (H::GET('type') == 'answer')
+		if (H::GET('type') == 'question_reply')
 		{
 			$comment = $this->model('question')->get_answer_discussion_by_id($comment_id);
 		}
@@ -379,7 +379,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_error((_t('你没有权限删除该讨论')));
 		}
 
-		if (H::GET('type') == 'answer')
+		if (H::GET('type') == 'question_reply')
 		{
 			$this->model('question')->clear_answer_discussion(
 				$comment,

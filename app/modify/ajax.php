@@ -78,7 +78,7 @@ class ajax extends AWS_CONTROLLER
 		switch ($thread_type)
 		{
 			case 'question':
-				$reply_type = 'answer';
+				$reply_type = 'question_reply';
 				break;
 			case 'article':
 				$reply_type = 'article_reply';

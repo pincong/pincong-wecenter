@@ -130,7 +130,7 @@ class publish_class extends AWS_MODEL
 				$this->real_publish_video($data, 1);
 				break;
 
-			case 'answer':
+			case 'question_reply':
 				$this->real_publish_answer($data);
 				break;
 
@@ -353,7 +353,7 @@ class publish_class extends AWS_MODEL
 
 		$now = fake_time();
 
-		$item_id = $this->insert('answer', array(
+		$item_id = $this->insert('question_reply', array(
 			'question_id' => $data['parent_id'],
 			'message' => htmlspecialchars($data['message']),
 			'add_time' => $now,
@@ -366,7 +366,7 @@ class publish_class extends AWS_MODEL
 		}
 
 		$this->update('question', array(
-			'answer_count' => $this->count('answer', ['question_id', 'eq', $data['parent_id'], 'i']),
+			'answer_count' => $this->count('question_reply', ['question_id', 'eq', $data['parent_id'], 'i']),
 			'update_time' => $now,
 			'last_uid' => $data['uid']
 		), ['id', 'eq', $data['parent_id'], 'i']);
@@ -375,8 +375,8 @@ class publish_class extends AWS_MODEL
 
 		if (!$data['permission_inactive_user'])
 		{
-			$this->mention_users('question', $parent_info['id'], 'answer', $item_id, $data['uid'], $data['message']);
-			$this->notify_flowers('question', $parent_info['id'], 'answer', $item_id, $data['uid']);
+			$this->mention_users('question', $parent_info['id'], 'question_reply', $item_id, $data['uid'], $data['message']);
+			$this->notify_flowers('question', $parent_info['id'], 'question_reply', $item_id, $data['uid']);
 		}
 
 		if ($data['follow'])
@@ -385,7 +385,7 @@ class publish_class extends AWS_MODEL
 		}
 
 		// 记录用户动态
-		$this->model('activity')->push('answer', $item_id, $data['uid']);
+		$this->model('activity')->push('question_reply', $item_id, $data['uid']);
 
 		$this->model('account')->update_user_fields(array(
 			'user_update_time' => $now
@@ -591,7 +591,7 @@ class publish_class extends AWS_MODEL
 
 	private function real_publish_answer_discussion($data)
 	{
-		if (!$reply_info = $this->model('content')->get_reply_info_by_id('answer', $data['parent_id']))
+		if (!$reply_info = $this->model('content')->get_reply_info_by_id('question_reply', $data['parent_id']))
 		{
 			return false;
 		}
@@ -629,15 +629,15 @@ class publish_class extends AWS_MODEL
 			$this->model('posts')->bring_to_top($thread_id, 'question');
 		}
 
-		$this->update('answer', array(
+		$this->update('question_reply', array(
 			'comment_count' => $discussion_count,
 		), ['id', 'eq', $data['parent_id'], 'i']);
 
 		if (!$data['permission_inactive_user'])
 		{
-			if (!$this->mention_users('question', $thread_info['id'], 'answer', $reply_info['id'], $data['uid'], $data['message']))
+			if (!$this->mention_users('question', $thread_info['id'], 'question_reply', $reply_info['id'], $data['uid'], $data['message']))
 			{
-				$this->notify_user('question', $thread_info['id'], 'answer', $reply_info['id'], $data['uid'], $reply_info['uid']);
+				$this->notify_user('question', $thread_info['id'], 'question_reply', $reply_info['id'], $data['uid'], $reply_info['uid']);
 			}
 		}
 
@@ -705,7 +705,7 @@ class publish_class extends AWS_MODEL
 	{
 		if ($later)
 		{
-			$this->schedule('answer', $this->calc_later_time($later), $data);
+			$this->schedule('question_reply', $this->calc_later_time($later), $data);
 		}
 		else
 		{

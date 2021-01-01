@@ -145,7 +145,7 @@ class activity_class extends AWS_MODEL
 			{
 				$question_ids[] = $val['item_id'];
 			}
-			elseif ($val['item_type'] == 'answer')
+			elseif ($val['item_type'] == 'question_reply')
 			{
 				$answer_ids[] = $val['item_id'];
 			}
@@ -170,7 +170,7 @@ class activity_class extends AWS_MODEL
 		// 获取问题和回答
 		if ($answer_ids)
 		{
-			$answers = $this->model('content')->get_posts_by_ids('answer', $answer_ids);
+			$answers = $this->model('content')->get_posts_by_ids('question_reply', $answer_ids);
 			foreach ($answers AS $key => $val)
 			{
 				$uids[$val['uid']] = $val['uid'];
@@ -256,10 +256,10 @@ class activity_class extends AWS_MODEL
 				$item = $questions[$val['item_id']];
 				$item['item_type'] = 'question';
 			}
-			elseif ($val['item_type'] == 'answer')
+			elseif ($val['item_type'] == 'question_reply')
 			{
 				$item = $answers[$val['item_id']];
-				$item['item_type'] = 'answer';
+				$item['item_type'] = 'question_reply';
 			}
 			elseif ($val['item_type'] == 'article')
 			{

@@ -137,7 +137,7 @@ class main extends AWS_CONTROLLER
 
 		if ($this->user_id)
 		{
-			$answer_vote_values = $this->model('vote')->get_user_vote_values_by_ids('answer', $answer_ids, $this->user_id);
+			$answer_vote_values = $this->model('vote')->get_user_vote_values_by_ids('question_reply', $answer_ids, $this->user_id);
 		}
 
 		foreach ($answer_list as $answer)

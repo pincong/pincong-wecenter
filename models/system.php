@@ -224,7 +224,7 @@ class system_class extends AWS_MODEL
 			break;
 
 			case 'new_answer':
-				$query = "SELECT COUNT(id) AS count, FROM_UNIXTIME(add_time, '%y-%m') AS statistic_date FROM " . $this->get_table('answer') . " WHERE add_time BETWEEN " . intval($start_time) . " AND " . intval($end_time) . " GROUP BY statistic_date ASC";
+				$query = "SELECT COUNT(id) AS count, FROM_UNIXTIME(add_time, '%y-%m') AS statistic_date FROM " . $this->get_table('question_reply') . " WHERE add_time BETWEEN " . intval($start_time) . " AND " . intval($end_time) . " GROUP BY statistic_date ASC";
 			break;
 
 			case 'new_topic':

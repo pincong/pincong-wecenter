@@ -35,7 +35,7 @@ class edit extends AWS_CONTROLLER
 		{
 			H::error_403();
 		}
-		if (!$reply_info = $this->model('content')->get_reply_info_by_id('answer', $id))
+		if (!$reply_info = $this->model('content')->get_reply_info_by_id('question_reply', $id))
 		{
 			H::error_403();
 		}

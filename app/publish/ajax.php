@@ -72,7 +72,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			case 'question':
 				$thread_id = H::POST('question_id');
-				$reply_type = 'answer';
+				$reply_type = 'question_reply';
 				break;
 			case 'article':
 				$thread_id = H::POST('article_id');

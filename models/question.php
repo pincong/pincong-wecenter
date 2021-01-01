@@ -67,7 +67,7 @@ class question_class extends AWS_MODEL
 
 		if ($parent_ids)
 		{
-			$parents = $this->model('content')->get_posts_by_ids('answer', $parent_ids);
+			$parents = $this->model('content')->get_posts_by_ids('question_reply', $parent_ids);
 			foreach ($list AS $key => $val)
 			{
 				$list[$key]['answer_info'] = $parents[$val['answer_id']];
@@ -107,7 +107,7 @@ class question_class extends AWS_MODEL
 			return $list;
 		}
 
-		$list = $this->fetch_page('answer', ['uid', 'eq', $uid, 'i'], 'id DESC', $page, $per_page);
+		$list = $this->fetch_page('question_reply', ['uid', 'eq', $uid, 'i'], 'id DESC', $page, $per_page);
 		foreach ($list AS $key => $val)
 		{
 			$parent_ids[] = $val['question_id'];
@@ -178,16 +178,16 @@ class question_class extends AWS_MODEL
 
 	public function modify_answer($id, $message, $log_uid)
 	{
-		if (!$reply_info = $this->model('content')->get_reply_info_by_id('answer', $id))
+		if (!$reply_info = $this->model('content')->get_reply_info_by_id('question_reply', $id))
 		{
 			return false;
 		}
 
-		$this->update('answer', array(
+		$this->update('question_reply', array(
 			'message' => htmlspecialchars($message)
 		), ['id', 'eq', $id, 'i']);
 
-		$this->model('content')->log('question', $reply_info['question_id'], 'answer', $id, '编辑', $log_uid);
+		$this->model('content')->log('question', $reply_info['question_id'], 'question_reply', $id, '编辑', $log_uid);
 
 		return true;
 	}
@@ -195,17 +195,17 @@ class question_class extends AWS_MODEL
 
 	public function clear_answer($id, $log_uid)
 	{
-		if (!$reply_info = $this->model('content')->get_reply_info_by_id('answer', $id))
+		if (!$reply_info = $this->model('content')->get_reply_info_by_id('question_reply', $id))
 		{
 			return false;
 		}
 
-		$this->update('answer', array(
+		$this->update('question_reply', array(
 			'message' => null,
 			'fold' => 1
 		), ['id', 'eq', $id, 'i']);
 
-		$this->model('content')->log('question', $reply_info['question_id'], 'answer', $id, '删除', $log_uid);
+		$this->model('content')->log('question', $reply_info['question_id'], 'question_reply', $id, '删除', $log_uid);
 
 		return true;
 	}
@@ -227,7 +227,7 @@ class question_class extends AWS_MODEL
 			'message' => null
 		), ['id', 'eq', $comment['id'], 'i']);
 
-		if ($answer = $this->fetch_row('answer', ['id', 'eq', $comment['answer_id'], 'i']))
+		if ($answer = $this->fetch_row('question_reply', ['id', 'eq', $comment['answer_id'], 'i']))
 		{
 			$this->model('content')->log('question', $answer['question_id'], 'question_discussion', $comment['id'], '删除', $log_uid);
 		}
@@ -250,7 +250,7 @@ class question_class extends AWS_MODEL
 	// 同时获取用户信息
 	public function get_answer_by_id($id)
 	{
-		if ($item = $this->fetch_row('answer', ['id', 'eq', $id, 'i']))
+		if ($item = $this->fetch_row('question_reply', ['id', 'eq', $id, 'i']))
 		{
 			$item['user_info'] = $this->model('account')->get_user_info_by_uid($item['uid']);
 		}
@@ -263,7 +263,7 @@ class question_class extends AWS_MODEL
 	{
 		$where = ['question_id', 'in', $thread_ids, 'i'];
 
-		if ($list = $this->fetch_page('answer', $where, $order, $page, $per_page))
+		if ($list = $this->fetch_page('question_reply', $where, $order, $page, $per_page))
 		{
 			foreach($list as $key => $val)
 			{
@@ -362,14 +362,14 @@ class question_class extends AWS_MODEL
 
 
 	public function get_answer_users_by_question_id($question_id, $limit, $question_uid)
-	{
+	{return [];
 		$cache_key = 'answer_users_by_question_id_' . md5($question_id . $limit . $question_uid);
 		if ($result = AWS_APP::cache()->get($cache_key))
 		{
 			return $result;
 		}
 
-		$answer_uids = $this->fetch_column('answer', 'uid', [['question_id', 'eq', $question_id, 'i'], ['uid', 'notEq', $question_uid, 'i']], 'agree_count DESC', $limit);
+		$answer_uids = $this->fetch_column('question_reply', 'uid', [['question_id', 'eq', $question_id, 'i'], ['uid', 'notEq', $question_uid, 'i']], 'agree_count DESC', $limit);
 		if ($answer_uids)
 		{
 			$result = $this->model('account')->get_user_info_by_uids($answer_uids);

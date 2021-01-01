@@ -24,7 +24,7 @@ class favorite_class extends AWS_MODEL
 	{
 		switch ($type)
 		{
-			case 'answer':
+			case 'question_reply':
 			case 'question':
 			case 'article':
 			case 'video':
@@ -90,7 +90,7 @@ class favorite_class extends AWS_MODEL
 		{
 			switch ($data['type'])
 			{
-				case 'answer':
+				case 'question_reply':
 					$answer_ids[] = $data['item_id'];
 				break;
 
@@ -110,7 +110,7 @@ class favorite_class extends AWS_MODEL
 
 		if ($answer_ids)
 		{
-			if ($answer_infos = $this->model('content')->get_posts_by_ids('answer', $answer_ids))
+			if ($answer_infos = $this->model('content')->get_posts_by_ids('question_reply', $answer_ids))
 			{
 				foreach ($answer_infos AS $key => $data)
 				{
@@ -160,7 +160,7 @@ class favorite_class extends AWS_MODEL
 		{
 			switch ($data['type'])
 			{
-				case 'answer':
+				case 'question_reply':
 					$favorite_items[$key]['item'] = $answer_infos[$data['item_id']];
 					$favorite_items[$key]['user_info'] = $users_info[$answer_infos[$data['item_id']]['uid']];
 					$favorite_items[$key]['item']['question_info'] = $question_infos[$answer_infos[$data['item_id']]['question_id']];

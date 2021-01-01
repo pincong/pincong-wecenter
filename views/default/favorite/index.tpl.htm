@@ -23,7 +23,7 @@
 											<?php echo $val['type']; ?>
 										</p>
 
-										<?php if ($val['type'] == 'answer') { ?>
+										<?php if ($val['type'] == 'question_reply') { ?>
 										<!-- 回答 -->
 										<h4>
 											<a href="<?php echo url_rewrite(); ?>/question/id-<?php echo $val['item']['question_info']['id']; ?>__item_id-<?php echo $val['item']['id']; ?>"><?php if (!$val['item']['question_info']['title']) { ?><s class="aw-deleted"><?php echo _t('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['item']['question_info']['title'], true); ?><?php } ?></a>

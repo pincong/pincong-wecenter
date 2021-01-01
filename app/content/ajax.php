@@ -304,7 +304,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			switch (H::POST('item_type'))
 			{
-				case 'answer':
+				case 'question_reply':
 					$parent_type = 'question';
 					$parent_id = $item_info['question_id'];
 					break;
@@ -354,7 +354,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			switch (H::POST('item_type'))
 			{
-				case 'answer':
+				case 'question_reply':
 					$parent_type = 'question';
 					$parent_id = $item_info['question_id'];
 					break;
