@@ -1,7 +1,7 @@
 <?php if ($this->answers) { ?>
 <?php foreach ($this->answers AS $key => $val) { ?>
 <?php if (CF::skip($val['user_info'])) continue; ?>
-<div class="aw-item" data-item-id="<?php echo $val['id']; ?>" data-fold="<?php echo $val['fold']; ?>">
+<div class="aw-item" data-item-id="<?php echo $val['id']; ?>" data-fold="<?php echo $val['fold']; ?>" <?php if ($this->user_info['permission']['is_moderator']) { ?>data-item-reputation="<?php echo $val['reputation']; ?>"<?php } ?>>
 	<div class="mod-head">
 		<div class="title">
 			<!-- 用户头像 -->

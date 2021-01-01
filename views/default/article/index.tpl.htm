@@ -125,7 +125,7 @@
 						</div>
 
 					</div>
-					<div class="aw-mod aw-question-detail">
+					<div class="aw-mod aw-question-detail" <?php if ($this->user_info['permission']['is_moderator']) { ?>data-item-reputation="<?php echo $this->article_info['reputation']; ?>"<?php } ?>>
 						<div class="mod-head">
 							<h1>
 								<?php echo CF::title($this->article_info['user_info'], 'article_' . $this->article_info['id'], $this->article_info['title']); ?>

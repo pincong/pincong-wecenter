@@ -147,7 +147,7 @@
 						</div>
 					</div>
 					<!-- end 话题bar -->
-					<div class="aw-mod aw-question-detail aw-item">
+					<div class="aw-mod aw-question-detail aw-item" <?php if ($this->user_info['permission']['is_moderator']) { ?>data-item-reputation="<?php echo $this->question_info['reputation']; ?>"<?php } ?>>
 						<div class="mod-head">
 							<h1>
 								<?php echo CF::title($this->question_info['user_info'], 'question_' . $this->question_info['id'], $this->question_info['title']); ?>
