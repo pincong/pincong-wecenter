@@ -357,7 +357,7 @@ class vote_class extends AWS_MODEL
 
 	private function decrease_count_and_reputation(&$type, $item_id, $uid, $item_uid, $factor)
 	{
-		if (!$factor OR !$this->check_reputation_type($type))
+		if (!$factor)
 		{
 			$reputation = 0;
 		}
