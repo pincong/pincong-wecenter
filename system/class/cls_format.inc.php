@@ -14,6 +14,14 @@
 
 class FORMAT
 {
+
+	// 为了防止[video]、[img]、[url]嵌套而产生XSS
+	// $url还需要再htmlspecialchars一次但排除&amp, 见safe_text()
+	// XSS例子: [img]http://localhost/favicon.ico?[url]http://localhost/favicon.ico? onload='alert(1)' onerror='alert(2)'[/url][/img]
+	// 首先被解析成：<img src="http://localhost/favicon.ico?[url]http://localhost/favicon.ico? onload='alert(1)' onerror='alert(2)'[/url]">
+	// 然后被解析成：<img src="http://localhost/favicon.ico?<a href="http://localhost/favicon.ico? onload='alert(1)' onerror='alert(2)'">此处省略</a>">
+	// onload或onerror会被执行
+
 	public static function parse_image($url)
 	{
 		if (stripos($url, 'https://') !== 0 && stripos($url, 'http://') !== 0)
@@ -24,6 +32,9 @@ class FORMAT
 		{
 			return self::parse_link($url);
 		}
+
+		$url = safe_text($url);
+
 		return '<a href="url/img/' . safe_base64_encode(htmlspecialchars_decode($url)) . '" title="' . $url . '" rel="nofollow noreferrer noopener" target="_blank">' . 
 			'<img src="' . $url . '" alt="' . $url . '" style="max-width:100%">' . 
 			'</a>';
@@ -39,6 +50,9 @@ class FORMAT
 		{
 			return self::parse_link($url);
 		}
+
+		$url = safe_text($url);
+
 		return "<video controls preload=\"none\" src=\"$url\" style=\"max-width:100%\"></video>";
 	}
 
@@ -57,6 +71,8 @@ class FORMAT
 
 		if (H::hyperlink_whitelist_check($url))
 		{
+			$url = safe_text($url);
+
 			if (is_inside_url($url))
 			{
 				return '<a href="' . $url . '" title="' . $url . '">' . $title . '</a>';
@@ -68,6 +84,8 @@ class FORMAT
 		{
 			return $title;
 		}
+
+		$url = safe_text($url);
 
 		if (is_inside_url($url))
 		{

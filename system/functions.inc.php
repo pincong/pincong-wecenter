@@ -472,12 +472,20 @@ function checksum($string) {
 	return $i;
 }
 
-function safe_base64_encode($string) {
+function &safe_base64_encode($string) {
 	return strtr(rtrim(base64_encode($string), '='), '+/', '._');
 }
 
-function safe_base64_decode($string) {
+function &safe_base64_decode($string) {
 	return base64_decode(strtr($string, '._', '+/'));
+}
+
+function &safe_text($html) {
+	return str_replace(
+		array('<', '>', '"', "'"),
+		array('&lt;', '&gt;', '&quot;', "&#039;"),
+		$html
+	);
 }
 
 
