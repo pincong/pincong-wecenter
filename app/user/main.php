@@ -20,6 +20,21 @@ if (!defined('IN_ANWSION'))
 
 class main extends AWS_CONTROLLER
 {
+	public function get_access_rule()
+	{
+		$rule_action['rule_type'] = 'white';
+
+		if ($this->user_info['permission']['visit_people'] AND $this->user_info['permission']['visit_site'])
+		{
+			$rule_action['actions'] = array(
+				'admin_log',
+				'list_admin_logs'
+			);
+		}
+
+		return $rule_action;
+	}
+
 	public function admin_log_action()
 	{
 		$this->crumb(_t('管理记录'));

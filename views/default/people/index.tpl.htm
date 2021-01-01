@@ -69,10 +69,8 @@
 								<?php echo FORMAT::text($this->user['data']['banned_reason']); ?> <?php echo FORMAT::text($this->user['data']['banned_detail']); ?>
 							</span>
 							<?php } ?>
-							<?php if ($this->user_id) { ?>
 							<br />
 							<a href="<?php echo url_rewrite(); ?>/user/admin_log/uid-<?php echo $this->user['uid']; ?>" target="_blank"><?php echo _t('管理记录'); ?></a>
-							<?php } ?>
 							<p class="aw-small-text"><?php echo UF::signature($this->user); ?></p>
 						</div>
 
