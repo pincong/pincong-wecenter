@@ -52,9 +52,10 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('本站只能通过邀请注册')));
 		}
 
-		if (!$_POST['username'] OR !$_POST['scrambled_password'] OR !$_POST['client_salt'])
+		if (!$_POST['username'] OR
+			!$this->model('password')->check_structure($_POST['scrambled_password'], $_POST['client_salt']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的用户名或密码')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的用户名和密码')));
 		}
 
 		// 检查验证码

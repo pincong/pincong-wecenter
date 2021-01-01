@@ -645,108 +645,99 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 	public function save_user_action()
 	{
-		if ($_POST['uid'])
+		if (!$user_info = $this->model('account')->get_user_info_by_uid($_POST['uid']))
 		{
-			if (!$user_info = $this->model('account')->get_user_info_by_uid($_POST['uid']))
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户不存在')));
+		}
+
+		if ($_POST['username'] != $user_info['user_name'] AND $this->model('account')->get_user_info_by_username($_POST['username']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名已存在')));
+		}
+
+		if ($_FILES['user_avatar']['name'])
+		{
+			if (!$this->model('avatar')->upload_avatar('user_avatar', $user_info['uid'], $error))
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户不存在')));
+				H::ajax_json_output(AWS_APP::RSM(null, -1, $error));
 			}
+		}
 
-			if ($_POST['user_name'] != $user_info['user_name'] AND $this->model('account')->get_user_info_by_username($_POST['user_name']))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名已存在')));
-			}
-
-			if ($_FILES['user_avatar']['name'])
-			{
-				if (!$this->model('avatar')->upload_avatar('user_avatar', $user_info['uid'], $error))
-				{
-					H::ajax_json_output(AWS_APP::RSM(null, -1, $error));
-				}
-			}
-
-			if ($_POST['verified'])
-			{
-				$update_data['verified'] = htmlspecialchars($_POST['verified']);
-			}
-			else
-			{
-				$update_data['verified'] = null;
-			}
-
-			$update_data['forbidden'] = intval($_POST['forbidden']);
-			$update_data['flagged'] = intval($_POST['flagged']);
-
-			$update_data['group_id'] = intval($_POST['group_id']);
-
-			$update_data['sex'] = intval($_POST['sex']);
-
-			$update_data['reputation'] = floatval($_POST['reputation']);
-			$update_data['agree_count'] = intval($_POST['agree_count']);
-			$update_data['currency'] = intval($_POST['currency']);
-
-			$update_data['signature'] = htmlspecialchars($_POST['signature']);
-
-			$this->model('account')->update_user_fields($update_data, $user_info['uid']);
-
-			if ($_POST['delete_avatar'])
-			{
-				$this->model('avatar')->delete_avatar($user_info['uid']);
-			}
-
-			if ($_POST['password'])
-			{
-				$this->model('password')->update_user_password_ingore_oldpassword($_POST['password'], $user_info['uid']);
-			}
-
-			if ($_POST['user_name'] AND $_POST['user_name'] != $user_info['user_name'])
-			{
-				$this->model('account')->update_user_name($_POST['user_name'], $user_info['uid']);
-			}
-
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户资料更新成功')));
+		if ($_POST['verified'])
+		{
+			$update_data['verified'] = htmlspecialchars($_POST['verified']);
 		}
 		else
 		{
-			$_POST['user_name'] = trim($_POST['user_name']);
-
-			$_POST['password'] = trim($_POST['password']);
-
-			$_POST['group_id'] = intval($_POST['group_id']);
-
-			if (!$_POST['user_name'])
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入用户名')));
-			}
-
-			if ($this->model('account')->username_exists($_POST['user_name']))
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名已经存在')));
-			}
-
-			if (strlen($_POST['password']) < 6)
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('密码长度不符合规则')));
-			}
-
-			$uid = $this->model('account')->user_register_deprecated($_POST['user_name'], $_POST['password']);
-
-			if (!$uid)
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('注册失败')));
-			}
-
-			if ($_POST['group_id'] != 0)
-			{
-				$this->model('account')->update('users', array(
-					'group_id' => $_POST['group_id'],
-				), 'uid = ' . $uid);
-			}
-
-			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => url_rewrite('/admin/user/list/')
-			), 1, null));
+			$update_data['verified'] = null;
 		}
+
+		$update_data['forbidden'] = intval($_POST['forbidden']);
+		$update_data['flagged'] = intval($_POST['flagged']);
+
+		$update_data['group_id'] = intval($_POST['group_id']);
+
+		$update_data['sex'] = intval($_POST['sex']);
+
+		$update_data['reputation'] = floatval($_POST['reputation']);
+		$update_data['agree_count'] = intval($_POST['agree_count']);
+		$update_data['currency'] = intval($_POST['currency']);
+
+		$update_data['signature'] = htmlspecialchars($_POST['signature']);
+
+		$this->model('account')->update_user_fields($update_data, $user_info['uid']);
+
+		if ($_POST['delete_avatar'])
+		{
+			$this->model('avatar')->delete_avatar($user_info['uid']);
+		}
+
+		if ($_POST['confirm_change_password'] AND
+			$this->model('password')->check_structure($_POST['scrambled_password']))
+		{
+			$this->model('password')->update_password($user_info['uid'], $_POST['scrambled_password']);
+		}
+
+		if ($_POST['username'] AND $_POST['username'] != $user_info['user_name'])
+		{
+			$this->model('account')->update_user_name($_POST['username'], $user_info['uid']);
+		}
+
+		H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户资料更新成功')));
+	}
+
+	public function create_user_action()
+	{
+		$_POST['group_id'] = intval($_POST['group_id']);
+
+		if (!$_POST['username'] OR
+			!$this->model('password')->check_structure($_POST['scrambled_password'], $_POST['client_salt']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的用户名和密码')));
+		}
+
+		if ($this->model('account')->username_exists($_POST['username']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名已经存在')));
+		}
+
+		$uid = $this->model('register')->register($_POST['username'], $_POST['scrambled_password'], $_POST['client_salt']);
+
+		if (!$uid)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('注册失败')));
+		}
+
+		if ($_POST['group_id'] != 0)
+		{
+			$this->model('account')->update('users', array(
+				'group_id' => $_POST['group_id'],
+			), 'uid = ' . $uid);
+		}
+
+		H::ajax_json_output(AWS_APP::RSM(array(
+			'url' => url_rewrite('/admin/user/list/')
+		), 1, null));
 	}
 
 	public function forbid_user_action()

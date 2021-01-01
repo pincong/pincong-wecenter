@@ -105,4 +105,52 @@ class password_class extends AWS_MODEL
 		return $str;
 	}
 
+	public function check_structure($scrambled_password, $client_salt = false)
+	{
+		if (!$scrambled_password)
+		{
+			return false;
+		}
+		if ($client_salt === false)
+		{
+			return true;
+		}
+		if (!$client_salt)
+		{
+			return false;
+		}
+		return true;
+	}
+
+	public function change_password($uid, $scrambled_password, $new_scrambled_password, $new_client_salt = null)
+	{
+		if (!$user_info = $this->fetch_row('users', 'uid = ' . intval($uid)))
+		{
+			return false;
+		}
+
+		if (!$this->compare($scrambled_password, $user_info['password']))
+		{
+			return false;
+		}
+
+		return $this->update_password($uid, $new_scrambled_password, $new_client_salt);
+	}
+
+	public function update_password($uid, $new_scrambled_password, $new_client_salt = null)
+	{
+		$data = array(
+			'password' => $this->hash($new_scrambled_password)
+		);
+
+		if (!is_null($new_client_salt))
+		{
+			$data['salt'] = $new_client_salt;
+		}
+
+		$this->update('users', $data, 'uid = ' . intval($uid));
+
+		return true;
+	}
+
 }

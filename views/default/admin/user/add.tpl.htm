@@ -18,14 +18,14 @@
 		<div class="tab-content mod-content">
 			<div class="tab-pane active" id="add">
 			<div class="table-responsive">
-			<form action="<?php echo url_rewrite(); ?>/admin/ajax/save_user/" id="settings_form" method="post">
+			<form action="<?php echo url_rewrite(); ?>/admin/ajax/create_user/" id="settings_form" method="post" onsubmit="return false">
 			<table class="table table-striped">
 				<tr>
 					<td>
 						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('用户名'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
-								<input class="form-control" name="user_name" type="text" value="" />
+								<input class="form-control" name="username" type="text" value="" autocomplete="username" />
 							</div>
 						</div>
 					</td>
@@ -36,7 +36,9 @@
 						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('密码'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
-								<input class="form-control" name="password" type="password" value="" />
+								<input class="form-control" name="password" type="password" value="" autocomplete="new-password" />
+								<input name="scrambled_password" type="hidden" value="" />
+								<input name="client_salt" type="hidden" value="<?php echo $this->client_salt; ?>" />
 							</div>
 						</div>
 					</td>
@@ -60,7 +62,7 @@
 				<tfoot>
 				<tr>
 					<td>
-						<input type="button" value="<?php _e('添加用户'); ?>" class="btn btn-primary center-block" onclick="AWS.ajax_post($('#settings_form'));" />
+						<input type="submit" value="<?php _e('添加用户'); ?>" class="btn btn-primary center-block" />
 					</td>
 				</tr>
 				</tfoot>
@@ -141,5 +143,33 @@
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+	var form = $('#settings_form');
+
+	var _v1 = function(p, s) {
+		p = md5(md5(p) + s);
+		return p;
+	}
+
+	form.submit(function(e) {
+		e.preventDefault();
+
+		form.find('input[name=scrambled_password]').val('');
+
+		var pwd = form.find('input[name=password]').val();
+		if (pwd) {
+			form.find('input[name=scrambled_password]').val(_v1(pwd, '<?php echo $this->client_salt; ?>'));
+		}
+
+		form.find('input[name=password]').val('');
+
+		AWS.ajax_post(form);
+
+		return false;
+	});
+});
+</script>
 
 <?php TPL::include('admin/global/footer.tpl.htm'); ?>

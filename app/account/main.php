@@ -45,11 +45,20 @@ class main extends AWS_CONTROLLER
 		}
 	}
 
-	public function password_updated_action()
+	public function change_password_action()
 	{
-		$url = '/login/';
+		$this->crumb(AWS_APP::lang()->_t('修改密码'));
 
-		H::redirect_msg(AWS_APP::lang()->_t('密码修改成功, 请使用新密码登录'), $url);
+		TPL::import_css('css/register.css');
+
+		if (1)
+		{
+			TPL::import_js('js/md5.js');
+		}
+
+		TPL::assign('client_salt', $this->model('password')->generate_salt_deprecated());
+
+		TPL::output("account/change_password");
 	}
 
 }

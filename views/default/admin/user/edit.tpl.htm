@@ -10,25 +10,23 @@
 		</div>
 		<div class="tab-content mod-content">
 			<form action="<?php echo url_rewrite(); ?>/admin/ajax/remove_user/" method="post" id="remove_user_form">
-			<table class="table">
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('删除用户'); ?>:</span>
-							<div class="col-sm-7 col-xs-8">
-								<input type="hidden" name="uid" value="<?php echo $this->user['uid']; ?>" />
-
-								<label><input name="remove_user" id="remove_user" type="checkbox" value="1" /> <?php _e('确认删除这个用户'); ?></label>
-
-								<a class="btn btn-danger btn-xs" onclick="if (!document.getElementById('remove_user').checked) { AWS.alert('<?php _e('请先确认删除操作'); ?>'); } else { AWS.ajax_post($('#remove_user_form')); }"><?php _e('删除用户'); ?></a>
-
+				<table class="table">
+					<tr>
+						<td>
+							<div class="form-group">
+								<span class="col-sm-4 col-xs-3 control-label"><?php _e('删除用户'); ?>:</span>
+								<div class="col-sm-7 col-xs-8">
+									<input type="hidden" name="uid" value="<?php echo $this->user['uid']; ?>" />
+									<label><input name="remove_user" id="remove_user" type="checkbox" value="1" /> <?php _e('确认删除这个用户'); ?></label>
+									<a class="btn btn-danger btn-xs" onclick="if (!document.getElementById('remove_user').checked) { AWS.alert('<?php _e('请先确认删除操作'); ?>'); } else { AWS.ajax_post($('#remove_user_form')); }"><?php _e('删除用户'); ?></a>
+								</div>
 							</div>
-						</div>
-					</td>
-				</tr>
-			</table>
+						</td>
+					</tr>
+				</table>
 			</form>
-				<form action="<?php echo url_rewrite(); ?>/admin/ajax/save_user/" id="settings_form" enctype="multipart/form-data" method="post" onsubmit="return false">
+
+			<form action="<?php echo url_rewrite(); ?>/admin/ajax/save_user/" id="settings_form" enctype="multipart/form-data" method="post" onsubmit="return false">
 				<table class="table table-striped">
 					<input name="uid" type="hidden" value="<?php echo $this->user['uid']; ?>" />
 					<tr>
@@ -36,7 +34,7 @@
 							<div class="form-group">
 								<span class="col-sm-4 col-xs-3 control-label"><?php _e('用户名'); ?>:</span>
 								<div class="col-sm-5 col-xs-8">
-									<input class="form-control" name="user_name" type="text" value="<?php echo UF::name($this->user); ?>" />
+									<input class="form-control" name="username" type="text" autocomplete="off" value="<?php echo UF::name($this->user); ?>" />
 								</div>
 							</div>
 						</td>
@@ -46,9 +44,10 @@
 							<div class="form-group">
 								<span class="col-sm-4 col-xs-3 control-label"><?php _e('密码'); ?>:</span>
 								<div class="col-sm-5 col-xs-8">
-									<input class="form-control" name="password" type="password" value="" />
-
-									<span class="help-block"><?php _e('不更改请留空'); ?></span>
+									<input class="form-control" name="password" type="text" autocomplete="off" value="" />
+									<input name="scrambled_password" type="hidden" value="" />
+									<p class="filetext"></p>
+									<label><input name="confirm_change_password" type="checkbox" value="1" /> <?php _e('确认修改密码'); ?></label>
 								</div>
 							</div>
 						</td>
@@ -274,17 +273,47 @@
 						</td>
 					</tr>
 
-				<tfoot>
-				<tr>
-					<td>
-						<input type="button" value="<?php _e('保存设置'); ?>" class="btn btn-primary center-block" onclick="AWS.ajax_post($('#settings_form'));" />
-					</td>
-				</tr>
-				</tfoot>
-			</table>
+					<tfoot>
+					<tr>
+						<td>
+							<input type="submit" value="<?php _e('保存设置'); ?>" class="btn btn-primary center-block" />
+						</td>
+					</tr>
+					</tfoot>
+				</table>
 			</form>
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+	var form = $('#settings_form');
+
+	var _v1 = function(p, s) {
+		p = md5(md5(p) + s);
+		return p;
+	}
+
+	form.submit(function(e) {
+		e.preventDefault();
+
+		form.find('input[name=scrambled_password]').val('');
+
+		if (form.find('input[name=confirm_change_password]').is(':checked')) {
+			var pwd = form.find('input[name=password]').val();
+			if (pwd) {
+				form.find('input[name=scrambled_password]').val(_v1(pwd, '<?php echo $this->user['salt']; ?>'));
+			}
+		}
+
+		form.find('input[name=password]').val('');
+
+		AWS.ajax_post(form);
+
+		return false;
+	});
+});
+</script>
 
 <?php TPL::include('admin/global/footer.tpl.htm'); ?>
