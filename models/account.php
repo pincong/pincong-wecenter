@@ -577,7 +577,7 @@ class account_class extends AWS_MODEL
             return false;
         }
 
-        return $this->shutdown_update('users', array(
+        return $this->update('users', array(
             'last_login' => fake_time()
         ), 'uid = ' . intval($uid));
     }
@@ -610,7 +610,7 @@ class account_class extends AWS_MODEL
 
     public function update_notification_unread($uid)
     {
-        return $this->shutdown_update('users', array(
+        return $this->update('users', array(
             'notification_unread' => $this->count('notification', 'read_flag = 0 AND recipient_uid = ' . intval($uid))
         ), 'uid = ' . intval($uid));
     }
@@ -624,7 +624,7 @@ class account_class extends AWS_MODEL
 
     public function update_inbox_unread($uid)
     {
-        return $this->shutdown_update('users', array(
+        return $this->update('users', array(
             'inbox_unread' => ($this->sum('inbox_dialog', 'sender_unread', 'sender_uid = ' . intval($uid)) + $this->sum('inbox_dialog', 'recipient_unread', 'recipient_uid = ' . intval($uid)))
         ), 'uid = ' . intval($uid));
     }

@@ -230,7 +230,7 @@ class search_fulltext_class extends AWS_MODEL
 		switch ($type)
 		{
 			case 'question':
-				return $this->shutdown_update('question', array(
+				return $this->update('question', array(
 					'title_fulltext' => $search_code
 				), 'id = ' . intval($item_id));
 			break;

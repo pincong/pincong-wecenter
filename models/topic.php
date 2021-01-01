@@ -551,7 +551,7 @@ class topic_class extends AWS_MODEL
 				}
 			}
 
-			$this->shutdown_update('topic', array(
+			$this->update('topic', array(
 				'user_related' => 1
 			), 'topic_id = ' . intval($topic_id));
 		}

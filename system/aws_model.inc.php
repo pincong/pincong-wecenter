@@ -27,7 +27,6 @@ class AWS_MODEL
 	public $setting;
 
 	private $_current_db = 'master';
-	private $_shutdown_query = array();
 	private $_found_rows = 0;
 
 	public function __construct()
@@ -260,47 +259,6 @@ class AWS_MODEL
 		}
 
 		return $rows_affected;
-	}
-
-	/**
-	 * 延迟查询
-	 *
-	 * 延迟查询会在页面渲染结束之前运行, 运行之前会将产生的用户先发送到用户浏览器
-	 *
-	 * @param	string
-	 */
-	public function shutdown_query($query)
-	{
-		$this->_shutdown_query[] = $query;
-	}
-
-	/**
-	 * 延迟更新
-	 *
-	 * 延迟更新会在页面渲染结束之前运行, 运行之前会将产生的用户先发送到用户浏览器
-	 *
-	 * @param	string
-	 * @param	array
-	 * @param	string
-	 */
-	public function shutdown_update($table, $data, $where = '')
-	{
-		if (!$where)
-		{
-			throw new Zend_Exception('DB Update no where string.');
-		}
-
-		if ($data)
-		{
-			foreach ($data AS $key => $val)
-			{
-				$update_string[] = '`' . $key . "` = '" . $this->quote($val) . "'";
-			}
-		}
-
-		$sql = 'UPDATE `' . $this->get_table($table) . '` SET ' . implode(', ', $update_string) . ' WHERE ' . $where;
-
-		$this->_shutdown_query[] = $sql;
 	}
 
 	/**
@@ -1038,16 +996,4 @@ class AWS_MODEL
 		return $string;
 	}
 
-	/**
-	 * Model 类析构, 执行延迟查询
-	 */
-	public function __destruct()
-	{
-		$this->master();
-
-		foreach ($this->_shutdown_query AS $key => $query)
-		{
-			$this->query($query);
-		}
-	}
 }

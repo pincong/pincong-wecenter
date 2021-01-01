@@ -166,7 +166,7 @@ class follow_class extends AWS_MODEL
 
 	public function update_user_count($uid)
 	{
-		return $this->shutdown_update('users', array(
+		return $this->update('users', array(
 			'fans_count' => $this->count('user_follow', 'friend_uid = ' . intval($uid)),
 			'friend_count' => $this->count('user_follow', 'fans_uid = ' . intval($uid))
 		), 'uid = ' . intval($uid));
