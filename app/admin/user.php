@@ -30,7 +30,7 @@ class user extends AWS_ADMIN_CONTROLLER
             {
                 if (in_array($key, array('user_name')))
                 {
-                    $val = rawurlencode($val);
+                    $val = safe_url_encode($val);
                 }
 
                 $param[] = $key . '-' . $val;
@@ -88,7 +88,7 @@ class user extends AWS_ADMIN_CONTROLLER
         foreach($user_list as $key => $val)
         {
             $user_list[$key]['reputation_group_id'] = $this->model('usergroup')->get_group_id_by_reputation($val['reputation']);
-            $user_list[$key]['url_token'] = urlencode($val['user_name']);
+            $user_list[$key]['url_token'] = safe_url_encode($val['user_name']);
         }
 
         $total_rows = $this->model('account')->total_rows();

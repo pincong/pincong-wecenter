@@ -39,7 +39,7 @@ class article extends AWS_ADMIN_CONTROLLER
 
 				if ($key == 'keyword' OR $key == 'user_name')
 				{
-					$val = rawurlencode($val);
+					$val = safe_url_encode($val);
 				}
 
 				$param[] = $key . '-' . $val;

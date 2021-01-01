@@ -96,7 +96,7 @@
 					{
 						$publish_url_params .= '__';
 					}
-					$publish_url_params .= 'topic_title-' . urlencode($this->topic_info['topic_title']);
+					$publish_url_params .= 'topic_title-' . safe_url_encode($this->topic_info['topic_title']);
 				}
 			?>
 			<div class="dropdown aw-publish-btn">

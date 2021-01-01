@@ -161,7 +161,7 @@ class main extends AWS_CONTROLLER
 			HTTP::error_404();
 		}
 
-		if (urldecode($user['url_token']) != $_GET['id'])
+		if (safe_url_decode($user['url_token']) != $_GET['id'])
 		{
 			HTTP::redirect('/people/' . $user['url_token']);
 		}

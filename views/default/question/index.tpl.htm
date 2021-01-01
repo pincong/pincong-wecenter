@@ -34,7 +34,7 @@
 						<?php if ($this->topics) { ?>
 							<?php foreach($this->topics as $key => $val) { ?>
 							<span class="topic-tag" data-id="<?php echo $val['topic_id']; ?>">
-								<a href="<?php echo url_rewrite(); ?>/topic/<?php echo urlencode($val['topic_title']); ?>" class="text"><?php echo FORMAT::text($val['topic_title']); ?></a>
+								<a href="<?php echo url_rewrite(); ?>/topic/<?php echo safe_url_encode($val['topic_title']); ?>" class="text"><?php echo FORMAT::text($val['topic_title']); ?></a>
 							</span>
 							<?php } ?>
 						<?php } else if (!$this->user_id) { ?>

@@ -41,7 +41,7 @@
 							<tr>
 								<td><input type="checkbox" name="topic_ids[]" value="<?php echo $topic_info['topic_id']; ?>"></td>
 
-								<td><a href="<?php echo url_rewrite(); ?>/topic/<?php echo urlencode($topic_info['topic_title']); ?>" target="_blank"><?php echo FORMAT::text($topic_info['topic_title']); ?></a></td>
+								<td><a href="<?php echo url_rewrite(); ?>/topic/<?php echo safe_url_encode($topic_info['topic_title']); ?>" target="_blank"><?php echo FORMAT::text($topic_info['topic_title']); ?></a></td>
 
 								<td><?php echo $topic_info['discuss_count']; ?></td>
 
@@ -83,7 +83,7 @@
 						<label class="col-sm-2 col-xs-3 control-label"><?php _e('关键词'); ?>:</label>
 
 						<div class="col-sm-5 col-xs-8">
-							<input class="form-control" type="text" value="<?php echo rawurldecode($_GET['keyword']); ?>" name="keyword" />
+							<input class="form-control" type="text" value="<?php echo htmlspecialchars($_GET['keyword']); ?>" name="keyword" />
 						</div>
 					</div>
 

@@ -64,7 +64,7 @@ class search_class extends AWS_MODEL
 		{
 			$search_id = $result_info['uid'];
 			$name = $result_info['user_name'];
-			$url = url_rewrite('/people/' . urlencode($name));
+			$url = url_rewrite('/people/' . safe_url_encode($name));
 
 			$detail = array(
 				'avatar_file' => UF::avatar($result_info, 'mid'),	// 头像
@@ -78,7 +78,7 @@ class search_class extends AWS_MODEL
 		{
 			$search_id = $result_info['topic_id'];
 			$name = $result_info['topic_title'];
-			$url = url_rewrite('/topic/' . urlencode($name));
+			$url = url_rewrite('/topic/' . safe_url_encode($name));
 
 			$detail = array(
 				'topic_pic'=> get_topic_pic_url($result_info, 'mid'),

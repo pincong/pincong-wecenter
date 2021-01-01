@@ -37,7 +37,7 @@ class topic extends AWS_ADMIN_CONTROLLER
 			{
 				if ($key == 'keyword')
 				{
-					$val = rawurlencode($val);
+					$val = safe_url_encode($val);
 				}
 
 				$param[] = $key . '-' . $val;

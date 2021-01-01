@@ -80,7 +80,7 @@
 						<label class="col-sm-2 col-xs-3 control-label"><?php _e('用户名'); ?>:</label>
 
 						<div class="col-sm-5 col-xs-8">
-							<input class="form-control" type="text" value="<?php echo rawurldecode($_GET['user_name']); ?>" name="user_name" />
+							<input class="form-control" type="text" value="<?php echo htmlspecialchars($_GET['user_name']); ?>" name="user_name" />
 						</div>
 					</div>
 
