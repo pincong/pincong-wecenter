@@ -26,6 +26,10 @@
 									<label class="col-sm-2 control-label"><?php _e('性别'); ?>:</label>
 									<div class="col-sm-10">
 										<label>
+											<input type="radio" name="sex" value="0"<?php if (!$this->user_info['sex']) { ?> checked="checked"<?php } ?> />
+											<?php _e('保密'); ?>
+										</label> &nbsp;
+										<label>
 											<input type="radio" name="sex" value="1"<?php if ($this->user_info['sex'] == 1) { ?> checked="checked"<?php } ?> />
 											<?php _e('男'); ?>
 										</label> &nbsp;
@@ -34,8 +38,8 @@
 											<?php _e('女'); ?>
 										</label> &nbsp;
 										<label>
-											<input type="radio" name="sex" value="3"<?php if (!$this->user_info['sex']) { ?> checked="checked"<?php } ?> />
-											<?php _e('保密'); ?>
+											<input type="radio" name="sex" value="3"<?php if ($this->user_info['sex'] == 3) { ?> checked="checked"<?php } ?> />
+											<?php _e('其他'); ?>
 										</label>
 									</div>
 								</div>

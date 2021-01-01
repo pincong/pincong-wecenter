@@ -678,6 +678,10 @@ class ajax extends AWS_ADMIN_CONTROLLER
 		$update_data['group_id'] = intval($_POST['group_id']);
 
 		$update_data['sex'] = intval($_POST['sex']);
+		if ($update_data['sex'] < 0 OR $update_data['sex'] > 3)
+		{
+			$update_data['sex'] = 0;
+		}
 
 		$update_data['reputation'] = floatval($_POST['reputation']);
 		$update_data['agree_count'] = intval($_POST['agree_count']);

@@ -106,6 +106,10 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		$update_data['sex'] = intval($_POST['sex']);
+		if ($update_data['sex'] < 0 OR $update_data['sex'] > 3)
+		{
+			$update_data['sex'] = 0;
+		}
 
 		$update_data['signature'] = htmlspecialchars($_POST['signature']);
 

@@ -586,7 +586,7 @@ CREATE TABLE IF NOT EXISTS `aws_users` (
   `password` varchar(60) DEFAULT NULL COMMENT '用户密码',
   `salt` varchar(16) DEFAULT NULL COMMENT '用户附加混淆码',
   `avatar_file` varchar(128) DEFAULT NULL COMMENT '头像文件',
-  `sex` tinyint(1) DEFAULT '3' COMMENT '性别',
+  `sex` tinyint(1) DEFAULT '0' COMMENT '性别',
   `reg_time` int(11) DEFAULT '0' COMMENT '注册时间',
   `last_login` int(11) DEFAULT '0' COMMENT '最后登录时间',
   `notification_unread` int(11) DEFAULT '0' COMMENT '未读系统通知',
