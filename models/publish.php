@@ -493,7 +493,7 @@ class publish_class extends AWS_MODEL
 	}
 
 
-	public function publish_answer($data, $real_uid, $later)
+	public function publish_answer($data, $real_uid, $later, $pay)
 	{
 		if ($later)
 		{
@@ -504,12 +504,15 @@ class publish_class extends AWS_MODEL
 			$item_id = $this->real_publish_answer($data);
 		}
 
-		$is_anonymous = ($real_uid != $data['uid']);
-		$this->model('currency')->process($real_uid, 'REPLY_QUESTION', get_setting('currency_system_config_reply_question'), '回应问题', $data['parent_id'], 'question', $is_anonymous);
+		if ($pay)
+		{
+			$is_anonymous = ($real_uid != $data['uid']);
+			$this->model('currency')->process($real_uid, 'REPLY_QUESTION', get_setting('currency_system_config_reply_question'), '回应问题', $data['parent_id'], 'question', $is_anonymous);
+		}
 		return $item_id;
 	}
 
-	public function publish_article_comment($data, $real_uid, $later)
+	public function publish_article_comment($data, $real_uid, $later, $pay)
 	{
 		if ($later)
 		{
@@ -520,12 +523,15 @@ class publish_class extends AWS_MODEL
 			$item_id = $this->real_publish_article_comment($data);
 		}
 
-		$is_anonymous = ($real_uid != $data['uid']);
-		$this->model('currency')->process($real_uid, 'REPLY_ARTICLE', get_setting('currency_system_config_reply_article'), '回应文章', $data['parent_id'], 'article', $is_anonymous);
+		if ($pay)
+		{
+			$is_anonymous = ($real_uid != $data['uid']);
+			$this->model('currency')->process($real_uid, 'REPLY_ARTICLE', get_setting('currency_system_config_reply_article'), '回应文章', $data['parent_id'], 'article', $is_anonymous);
+		}
 		return $item_id;
 	}
 
-	public function publish_video_comment($data, $real_uid, $later)
+	public function publish_video_comment($data, $real_uid, $later, $pay)
 	{
 		if ($later)
 		{
@@ -536,8 +542,11 @@ class publish_class extends AWS_MODEL
 			$item_id = $this->real_publish_video_comment($data);
 		}
 
-		$is_anonymous = ($real_uid != $data['uid']);
-		$this->model('currency')->process($real_uid, 'REPLY_VIDEO', get_setting('currency_system_config_reply_video'), '回应影片', $data['parent_id'], 'video', $is_anonymous);
+		if ($pay)
+		{
+			$is_anonymous = ($real_uid != $data['uid']);
+			$this->model('currency')->process($real_uid, 'REPLY_VIDEO', get_setting('currency_system_config_reply_video'), '回应影片', $data['parent_id'], 'video', $is_anonymous);
+		}
 		return $item_id;
 	}
 

@@ -466,11 +466,6 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
 		}
 
-		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_reply_question'))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
-		}
-
 		if (!$this->model('ratelimit')->check_answer($this->user_id, $this->user_info['permission']['reply_limit_per_day']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天的回复已经达到上限')));
@@ -504,10 +499,21 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能回复自己发布的问题，你可以修改问题内容')));
 		}
 
+		$pay = true;
+		$replied = $this->model('content')->has_user_relpied_to_thread('question', $question_info['id'], $this->user_id, true);
+		if ((get_setting('reply_pay_only_once') == 'Y') AND $replied)
+		{
+			$pay = false;
+		}
+
+		if ($pay AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_reply_question'))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
+		}
+
 		// 判断是否已回复过问题
 		if ((get_setting('answer_unique') == 'Y'))
 		{
-			$replied = $this->model('content')->has_user_relpied_to_thread('question', $question_info['id'], $this->user_id, true);
 			if ($replied == 2)
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你已经使用延迟显示功能回复过该问题')));
@@ -544,7 +550,7 @@ class ajax extends AWS_CONTROLLER
 			'uid' => $publish_uid,
 			'auto_focus' => $auto_focus,
 			'permission_affect_currency' => $this->user_info['permission']['affect_currency'],
-		), $this->user_id, $_POST['later']);
+		), $this->user_id, $_POST['later'], $pay);
 
 		if ($_POST['later'])
 		{
@@ -568,11 +574,6 @@ class ajax extends AWS_CONTROLLER
 		if (!$this->user_info['permission']['comment_article'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
-		}
-
-		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_reply_article'))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
 		}
 
 		if (!$this->model('ratelimit')->check_article_comment($this->user_id, $this->user_info['permission']['reply_limit_per_day']))
@@ -602,9 +603,21 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你的声望还不能在这个分类发言')));
 		}
 
+		$pay = true;
+		$replied = $this->model('content')->has_user_relpied_to_thread('article', $article_info['id'], $this->user_id, true);
+		if ((get_setting('reply_pay_only_once') == 'Y') AND $replied)
+		{
+			$pay = false;
+		}
+
+		if ($pay AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_reply_article'))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
+		}
+
 		if ($_POST['anonymous'])
 		{
-			$publish_uid = $this->get_anonymous_uid('question');
+			$publish_uid = $this->get_anonymous_uid('article_comment');
 		}
 		else
 		{
@@ -626,7 +639,7 @@ class ajax extends AWS_CONTROLLER
 			'uid' => $publish_uid,
 			'at_uid' => $_POST['at_uid'],
 			'permission_affect_currency' => $this->user_info['permission']['affect_currency'],
-		), $this->user_id, $_POST['later']);
+		), $this->user_id, $_POST['later'], $pay);
 
 		if ($_POST['later'])
 		{
@@ -650,11 +663,6 @@ class ajax extends AWS_CONTROLLER
 		if (!$this->user_info['permission']['comment_video'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
-		}
-
-		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_reply_video'))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
 		}
 
 		if (!$this->model('ratelimit')->check_video_comment($this->user_id, $this->user_info['permission']['reply_limit_per_day']))
@@ -684,6 +692,18 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你的声望还不能在这个分类发言')));
 		}
 
+		$pay = true;
+		$replied = $this->model('content')->has_user_relpied_to_thread('video', $video_info['id'], $this->user_id, true);
+		if ((get_setting('reply_pay_only_once') == 'Y') AND $replied)
+		{
+			$pay = false;
+		}
+
+		if ($pay AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_reply_video'))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
+		}
+
 		if ($_POST['anonymous'])
 		{
 			$publish_uid = $this->get_anonymous_uid('video_comment');
@@ -708,7 +728,7 @@ class ajax extends AWS_CONTROLLER
 			'uid' => $publish_uid,
 			'at_uid' => $_POST['at_uid'],
 			'permission_affect_currency' => $this->user_info['permission']['affect_currency'],
-		), $this->user_id, $_POST['later']);
+		), $this->user_id, $_POST['later'], $pay);
 
 		if ($_POST['later'])
 		{
