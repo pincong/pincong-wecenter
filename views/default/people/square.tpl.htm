@@ -18,7 +18,13 @@
 									<img alt="" src="<?php echo UF::avatar($val, 'mid'); ?>" />
 								</a>
 								<p class="aw-small-text title">
-									<a href="<?php echo UF::url($val); ?>" class="aw-user-name" data-id="<?php echo $val['uid']; ?>"><?php echo UF::name($val); ?></a>
+									<a href="<?php echo UF::url($val); ?>" class="aw-user-name" data-id="<?php echo $val['uid']; ?>">
+									<?php if ($val['forbidden']) { ?>
+										<s><?php echo UF::name($val); ?></s>
+									<?php } else { ?>
+										<?php echo UF::name($val); ?>
+									<?php } ?>
+									</a>
 									<?php if ($val['verified']) { ?><em class="aw-verified"><?php echo $val['verified']; ?></em><?php } ?>
 									<?php if ($val['flagged']) { ?><sup><?php echo UF::flagged($val); ?></sup><?php } ?>
 								</p>
