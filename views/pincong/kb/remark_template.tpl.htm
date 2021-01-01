@@ -1,0 +1,8 @@
+<form action="<?php echo url_rewrite(); ?>/kb/ajax/remark/id-<?php echo $this->item_info['id']; ?>" method="post" onsubmit="return false;">
+	<h5 class="mb-4"><?php echo _t('备注'); ?></h5>
+	<textarea class="form-control" name="remarks" rows="10"><?php echo FORMAT::text($this->item_info['remarks']); ?></textarea>
+	<div class="d-flex justify-content-end align-items-center mt-4">
+		<button class="btn btn-secondary mr-auto" type="button" data-dismiss="modal"><?php echo _t('取消'); ?></button>
+		<button class="btn btn-primary" type="button" onclick="AWS.submit_form($(this).closest('form'), $(this), true);return false;"><?php echo _t('确定'); ?></button>
+	</div>
+</form>

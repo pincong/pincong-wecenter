@@ -18,14 +18,14 @@ AWS.scrollTo = function(top, duration, queue) {
 var TPL = {};
 
 TPL['loading'] =
-	'<div id="id_global_loading" class="collapse" style="position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);">' +
+	'<div id="id_global_loading" class="collapse" style="position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2030;">' +
 		'<div class="spinner-border" role="status">' +
 			'<span class="sr-only">Loading...</span>' +
 		'</div>' +
 	'</div>';
 
 TPL['toast'] =
-	'<div class="toast" style="position:fixed;left:50%;top:10%;transform:translate(-50%,-50%);" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">' +
+	'<div class="toast" style="position:fixed;left:50%;top:10%;transform:translate(-50%,-50%);z-index:2020;" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">' +
 		'<div class="toast-body d-flex text-light">' +
 			'<span class="mr-auto" param="text"></span>' +
 			'<button class="close mt-n1 ml-2" data-dismiss="toast" aria-label="Close">' +
@@ -117,6 +117,26 @@ TPL['text_box'] =
 		'</div>' +
 	'</div>';
 
+TPL['popup'] =
+	'<div class="modal fade" tabindex="-1" data-backdrop="static" aria-hidden="true">' +
+		'<div class="modal-dialog modal-lg">' +
+			'<div class="modal-content p-sm-3">' +
+				'<div class="modal-body">' +
+					'<button class="close" type="button" data-dismiss="modal">' +
+						'<span aria-hidden="true">&times;</span>' +
+					'</button>' +
+					'<div param="content"></div>'+
+				'</div>' +
+			'</div>' +
+		'</div>' +
+	'</div>';
+
+
+function get_error_text(jqXHR, textStatus, errorThrown) {
+	console.log(jqXHR, textStatus, errorThrown);
+	return 'ERROR: ' + jqXHR.status + ' ' + jqXHR.statusText;
+}
+
 function show_tpl(tpl_name) {
 	var id = 'id_global_' + tpl_name;
 	var el = $('#' + id);
@@ -160,8 +180,11 @@ function show_text_box(tpl_name, title, text, callback) {
 
 AWS.loading = function(type) {
 	var el = show_tpl('loading');
-	type != 'hide' && (type = 'show');
-	el.collapse(type);
+	if (type == 'hide') {
+		el.removeClass('show');
+	} else {
+		el.addClass('show');
+	}
 }
 
 var toast_timer = null;
@@ -222,6 +245,49 @@ AWS.toast = function(text, color, delay, close_btn) {
 		toast_timer = setTimeout(function() {
 			el.toast('hide');
 		}, delay);
+	}
+}
+
+var popup_xhr = null;
+
+AWS.popup = function(url, callback) {
+	if (popup_xhr) return;
+	AWS.loading('show');
+
+	popup_xhr = $.ajax({
+		type: 'get',
+		url: url,
+		timeout: 60000,
+		success: _success,
+		error: _error,
+	});
+
+	function _success(content, textStatus, jqXHR) {
+		popup_xhr = null;
+		AWS.loading('hide');
+
+		var el = show_tpl('popup');
+
+		var content_el = el.find('*[param="content"]');
+		content = '' + content;
+		content_el.html(content);
+
+		bind_event(el, 'hide.bs.modal', function() {
+			content_el.html('');
+		});
+
+		bind_event(el, 'shown.bs.modal', function() {
+			callback && callback(content_el);
+		});
+
+		el.modal('show');
+	}
+
+	function _error(jqXHR, textStatus, errorThrown) {
+		popup_xhr = null;
+		AWS.loading('hide');
+
+		AWS.alert(get_error_text(jqXHR, textStatus, errorThrown));
 	}
 }
 
@@ -339,9 +405,55 @@ AWS.ajax_request = function(url, params, cb, error_cb) {
 	function _error(jqXHR, textStatus, errorThrown) {
 		AWS.loading('hide');
 
-		console.log(jqXHR.responseText);
-		_show_error('Network error');
+		_show_error(get_error_text(jqXHR, textStatus, errorThrown));
 	}
+}
+
+AWS.submit_form = function(form_el, btn_el, toast_delay, cb, error_cb) {
+	form_el.find('textarea').each(function() {
+		if (this._sceditor) {
+			this._sceditor.updateOriginal();
+		}
+	});
+
+	if (btn_el) {
+		btn_el.addClass('disabled');
+	}
+	if (toast_delay) {
+		AWS.toast('', false);
+	}
+
+	AWS.ajax_request(form_el.attr('action'), form_el.serialize(), function(rsm) {
+		if (btn_el) {
+			btn_el.removeClass('disabled');
+		}
+		if (cb) {
+			form_el.find('textarea').each(function() {
+				$(this).val('');
+				if (this._sceditor) {
+					this._sceditor.val('');
+				}
+			});
+
+			(typeof cb === 'function') && cb(rsm);
+		} else {
+			window.location.reload();
+		}
+	}, function(text) {
+		if (btn_el) {
+			btn_el.removeClass('disabled');
+		}
+		if (toast_delay) {
+			AWS.toast(text, 'danger', toast_delay, toast_delay === true);
+		}
+		if (error_cb) {
+			(typeof error_cb === 'function') && error_cb(text);
+		} else {
+			if (!toast_delay) {
+				AWS.alert(text);
+			}
+		}
+	});
 }
 
 window.AWS = AWS;

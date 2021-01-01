@@ -1,4 +1,4 @@
-<header class="navbar navbar-expand navbar-dark bg-dark">
+<header class="navbar navbar-expand shadow navbar-dark bg-dark">
 	<div class="container-fluid flex-column flex-sm-row justify-content-start">
 		<a class="navbar-brand text-center overflow-hidden text-sm-left mr-0 mr-sm-2" style="<?php echo S::get('logo_link_style'); ?>" href="<?php echo base_url(); ?>/">
 			<img style="max-width:100%;" src="<?php echo S::get('logo_url'); ?>" alt="">
@@ -37,30 +37,30 @@
 			<li class="nav-item dropdown">
 				<a class="nav-link py-1 dropdown-toggle" data-toggle="dropdown"><?php echo _t('主题'); ?><span class="caret"></span></a>
 				<div class="dropdown-menu">
-					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="default">Default</a>
-					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="classic">Classic</a>
-					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="legacy">Legacy</a>
-					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="cerulean">Cerulean</a>
-					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="cosmo">Cosmo</a>
-					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="cyborg">Cyborg</a>
-					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="darkly">Darkly</a>
-					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="flatly">Flatly</a>
-					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="journal">Journal</a>
-					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="litera">Litera</a>
-					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="lumen">Lumen</a>
-					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="lux">Lux</a>
-					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="materia">Materia</a>
-					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="minty">Minty</a>
-					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="pulse">Pulse</a>
-					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="sandstone">Sandstone</a>
-					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="simplex">Simplex</a>
-					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="sketchy">Sketchy</a>
-					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="slate">Slate</a>
-					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="solar">Solar</a>
-					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="spacelab">Spacelab</a>
-					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="superhero">Superhero</a>
-					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="united">United</a>
-					<a class="dropdown-item" href="javascript:;" onclick="AWUtil.change_theme($(this).data('theme'));" data-theme="yeti">Yeti</a>
+					<a class="dropdown-item" href="javascript:;" onclick="UTL.change_theme($(this).data('theme'));" data-theme="default">Default</a>
+					<a class="dropdown-item" href="javascript:;" onclick="UTL.change_theme($(this).data('theme'));" data-theme="classic">Classic</a>
+					<a class="dropdown-item" href="javascript:;" onclick="UTL.change_theme($(this).data('theme'));" data-theme="legacy">Legacy</a>
+					<a class="dropdown-item" href="javascript:;" onclick="UTL.change_theme($(this).data('theme'));" data-theme="cerulean">Cerulean</a>
+					<a class="dropdown-item" href="javascript:;" onclick="UTL.change_theme($(this).data('theme'));" data-theme="cosmo">Cosmo</a>
+					<a class="dropdown-item" href="javascript:;" onclick="UTL.change_theme($(this).data('theme'));" data-theme="cyborg">Cyborg</a>
+					<a class="dropdown-item" href="javascript:;" onclick="UTL.change_theme($(this).data('theme'));" data-theme="darkly">Darkly</a>
+					<a class="dropdown-item" href="javascript:;" onclick="UTL.change_theme($(this).data('theme'));" data-theme="flatly">Flatly</a>
+					<a class="dropdown-item" href="javascript:;" onclick="UTL.change_theme($(this).data('theme'));" data-theme="journal">Journal</a>
+					<a class="dropdown-item" href="javascript:;" onclick="UTL.change_theme($(this).data('theme'));" data-theme="litera">Litera</a>
+					<a class="dropdown-item" href="javascript:;" onclick="UTL.change_theme($(this).data('theme'));" data-theme="lumen">Lumen</a>
+					<a class="dropdown-item" href="javascript:;" onclick="UTL.change_theme($(this).data('theme'));" data-theme="lux">Lux</a>
+					<a class="dropdown-item" href="javascript:;" onclick="UTL.change_theme($(this).data('theme'));" data-theme="materia">Materia</a>
+					<a class="dropdown-item" href="javascript:;" onclick="UTL.change_theme($(this).data('theme'));" data-theme="minty">Minty</a>
+					<a class="dropdown-item" href="javascript:;" onclick="UTL.change_theme($(this).data('theme'));" data-theme="pulse">Pulse</a>
+					<a class="dropdown-item" href="javascript:;" onclick="UTL.change_theme($(this).data('theme'));" data-theme="sandstone">Sandstone</a>
+					<a class="dropdown-item" href="javascript:;" onclick="UTL.change_theme($(this).data('theme'));" data-theme="simplex">Simplex</a>
+					<a class="dropdown-item" href="javascript:;" onclick="UTL.change_theme($(this).data('theme'));" data-theme="sketchy">Sketchy</a>
+					<a class="dropdown-item" href="javascript:;" onclick="UTL.change_theme($(this).data('theme'));" data-theme="slate">Slate</a>
+					<a class="dropdown-item" href="javascript:;" onclick="UTL.change_theme($(this).data('theme'));" data-theme="solar">Solar</a>
+					<a class="dropdown-item" href="javascript:;" onclick="UTL.change_theme($(this).data('theme'));" data-theme="spacelab">Spacelab</a>
+					<a class="dropdown-item" href="javascript:;" onclick="UTL.change_theme($(this).data('theme'));" data-theme="superhero">Superhero</a>
+					<a class="dropdown-item" href="javascript:;" onclick="UTL.change_theme($(this).data('theme'));" data-theme="united">United</a>
+					<a class="dropdown-item" href="javascript:;" onclick="UTL.change_theme($(this).data('theme'));" data-theme="yeti">Yeti</a>
 				</div>
 			</li>
 		</ul>

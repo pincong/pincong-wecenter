@@ -1,0 +1,32 @@
+<?php if (!$this->user_id) { ?>
+<p class="text-center"><?php echo _t('要添加内容请先<a href="<?php echo url_rewrite(); ?>/login/">登录</a>或<a href="<?php echo url_rewrite(); ?>/register/">注册</a>'); ?></p>
+<?php } else if (!$this->user_info['permission']['kb_add']) { ?>
+<p class="text-center"><?php echo _t('你没有权限添加内容'); ?></p>
+<?php } else { ?>
+<form id="id_post_form" action="<?php echo url_rewrite(); ?>/kb/ajax/publish/" method="post" onsubmit="return false;">
+	<div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mb-3">
+		<div>
+			<a href="<?php echo UF::url($this->user_info); ?>">
+				<img class="rounded" style="width:2.375rem;height:2.375rem;" alt="" src="<?php echo UF::avatar($this->user_info, 'mid'); ?>">
+				<span><?php echo UF::name($this->user_info); ?></span>
+			</a>
+		</div>
+		<div class="custom-control custom-checkbox">
+			<input class="custom-control-input" id="for_anonymous" type="checkbox" name="anonymous" value="1">
+			<label class="custom-control-label" for="for_anonymous"><?php echo _t('用这个身份发表'); ?>: <a href="<?php echo UF::url(get_anonymous_user_info($this->user_info)); ?>"><?php echo UF::name(get_anonymous_user_info($this->user_info)); ?></a></label>
+		</div>
+	</div>
+	<div class="form-group">
+		<input class="form-control" type="text" name="title" placeholder="<?php echo _t('请输入标题'); ?>" value="">
+	</div>
+	<div class="form-group">
+		<textarea class="form-control" name="message" rows="15" placeholder=""></textarea>
+	</div>
+	<div class="d-flex justify-content-end align-items-center">
+		<?php if (S::get('image_upload_link')) { ?>
+		<a class="mr-auto" href="<?php echo S::get('image_upload_link'); ?>" <?php if (!is_javascript(S::get('image_upload_link'))) { ?>rel="nofollow noreferrer noopener" target="_blank"<?php } ?>><?php echo _t('上传图片'); ?></a>
+		<?php } ?>
+		<button class="btn btn-primary" type="submit" onclick="AWS.submit_form($(this).closest('form'), $(this), true);"><?php echo _t('添加'); ?></button>
+	</div>
+</form>
+<?php } ?>

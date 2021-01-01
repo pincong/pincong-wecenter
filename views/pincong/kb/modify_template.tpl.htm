@@ -1,0 +1,13 @@
+<form action="<?php echo url_rewrite(); ?>/kb/ajax/modify/id-<?php echo $this->item_info['id']; ?>" method="post" onsubmit="return false;">
+	<h5 class="mb-4"><?php echo _t('编辑'); ?></h5>
+	<input class="form-control mb-2" name="title" type="text" value="<?php echo FORMAT::text($this->item_info['title']); ?>">
+	<textarea class="form-control" name="message" rows="10"><?php echo FORMAT::text($this->item_info['message']); ?></textarea>
+	<div class="d-flex flex-column flex-sm-row justify-content-end align-items-center mt-4">
+		<button class="btn btn-secondary mr-sm-auto" type="button" data-dismiss="modal"><?php echo _t('取消'); ?></button>
+		<div class="custom-control custom-checkbox mr-2">
+			<input class="custom-control-input" id="for_popup_anonymous" type="checkbox" name="anonymous" value="1">
+			<label class="custom-control-label" for="for_popup_anonymous"><?php echo _t('用这个身份发表'); ?>: <a href="<?php echo UF::url(get_anonymous_user_info($this->user_info)); ?>"><?php echo UF::name(get_anonymous_user_info($this->user_info)); ?></a></label>
+		</div>
+		<button class="btn btn-primary" type="button" onclick="AWS.submit_form($(this).closest('form'), $(this), true);return false;"><?php echo _t('确定'); ?></button>
+	</div>
+</form>

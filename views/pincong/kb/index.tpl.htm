@@ -1,0 +1,14 @@
+<?php TPL::include('components/begin.tpl.htm'); ?>
+<?php TPL::include('components/header.tpl.htm'); ?>
+
+<main class="container py-5">
+	<div class="mx-auto px-sm-2 px-md-3" style="max-width:720px;">
+		<div class="mb-5">
+			<h1 class="mb-4" style="font-size:1.75rem;"><?php echo $this->item_info['id']; ?>. <?php echo FORMAT::text($this->item_info['title']); ?></h1>
+			<div style="font-size:1.25rem;"><?php echo FORMAT::bbcode($this->item_info['message']); ?></div>
+		</div>
+	</div>
+</main>
+
+<?php TPL::include('components/footer.tpl.htm'); ?>
+<?php TPL::include('components/end.tpl.htm'); ?>

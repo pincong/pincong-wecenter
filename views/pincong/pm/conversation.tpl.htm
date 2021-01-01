@@ -5,13 +5,13 @@
 <script src="<?php echo G_STATIC_URL; ?>/js/bcrypt.js"></script>
 <script src="<?php echo G_STATIC_URL; ?>/js/passwordutil.js?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>"></script>
 
-<main class="container py-3">
-	<div class="d-flex flex-wrap align-items-center border-bottom py-3">
+<main class="container py-5">
+	<div class="d-flex flex-wrap align-items-center border-bottom">
 		<h2 class="mr-1 mr-auto"><?php echo _t('私信会话'); ?></h2>
 		<span class="mx-1">
 		<?php foreach($this->conversation['users'] as $user) { ?>
 			<?php if ($user['uid'] == $this->user_id) continue; ?>
-			<a class="text-body mr-1" href="<?php echo UF::url($user); ?>"><?php echo UF::name($user); ?></a>
+			<a class="mr-1" href="<?php echo UF::url($user); ?>"><?php echo UF::name($user); ?></a>
 		<?php } ?>
 		</span>
 		<a href="<?php echo url_rewrite(); ?>/pm/"><?php echo _t('返回私信列表'); ?> »</a>
@@ -42,8 +42,7 @@
 	</div>
 
 	<div class="px-3">
-	<?php if ($this->list) { ?>
-		<?php foreach($this->list as $key => $val) { ?>
+	<?php foreach($this->list as $key => $val) { ?>
 		<?php $user = $this->conversation['users'][$val['sender_uid']]; ?>
 		<?php $myself = ($val['sender_uid'] == $this->user_id); ?>
 		<div class="row flex-nowrap my-3">
@@ -69,7 +68,7 @@
 						<?php } ?>
 					</p>
 					<div class="d-flex">
-						<span class="mr-auto text-body"><?php echo date_friendly($val['add_time']); ?></span>
+						<span class="mr-auto"><?php echo date_friendly($val['add_time']); ?></span>
 						<span>
 							<?php if ($val['sender_uid'] != $this->user_id) { ?>
 							<a href="javascript:;" onclick="var form=$('#id_pm_form');AWS.scrollTo(form.offset()['top']-20);form.find('textarea').focus();"><?php echo _t('回复'); ?></a>
@@ -94,7 +93,6 @@
 				</div>
 			</div>
 		</div>
-		<?php } ?>
 	<?php } ?>
 	</div>
 

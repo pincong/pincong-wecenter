@@ -17,8 +17,8 @@
 		</div>
 		<?php } ?>
 		<div class="custom-control custom-checkbox mb-3">
-			<input class="custom-control-input" id="id_agree_checkbox" type="checkbox" name="agree">
-			<label class="custom-control-label" for="id_agree_checkbox"><?php echo _t('我同意'); ?></label>
+			<input class="custom-control-input" id="for_agree" type="checkbox" name="agree">
+			<label class="custom-control-label" for="for_agree"><?php echo _t('我同意'); ?></label>
 			<?php if (S::get('user_agreement_link')) { ?>
 			<a href="<?php echo S::get('user_agreement_link'); ?>" <?php if (!is_javascript(S::get('user_agreement_link'))) { ?>target="_blank"<?php } ?>>
 				<span><?php echo S::get('user_agreement_name'); ?></span>

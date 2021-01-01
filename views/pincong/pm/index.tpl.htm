@@ -5,17 +5,16 @@
 <script src="<?php echo G_STATIC_URL; ?>/js/bcrypt.js"></script>
 <script src="<?php echo G_STATIC_URL; ?>/js/passwordutil.js?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>"></script>
 
-<main class="container py-3">
-	<div class="d-flex flex-wrap align-items-center border-bottom py-3">
+<main class="container py-5">
+	<div class="d-flex flex-wrap align-items-center border-bottom">
 		<h2 class="mr-auto"><?php echo _t('私信'); ?></h2>
 		<a class="mr-3 my-2" href="<?php echo url_rewrite(); ?>/profile/privacy/"><?php echo _t('私信设置'); ?></a>
 		<button class="btn btn-primary" type="button" data-toggle="modal" data-target="#id_pm_compose_modal"><?php echo _t('新私信'); ?></button>
 	</div>
 
 	<div>
-	<?php if ($this->list) { ?>
-		<?php foreach($this->list as $key => $val) { ?>
-		<div class="d-flex border-bottom py-3 my-0 alert rounded-0 <?php if ($val['unread']) { ?>alert-warning<?php } ?>">
+	<?php foreach($this->list as $key => $val) { ?>
+		<div class="d-flex border-bottom rounded-0 p-3 m-0 <?php if ($val['unread']) { ?>alert alert-warning<?php } ?>">
 
 			<div class="mt-1 mr-2" style="max-width:3rem;min-width:3rem;">
 				<div class="d-flex flex-wrap rounded overflow-hidden">
@@ -43,11 +42,11 @@
 				</a>
 
 				<?php if (isset($val['last_message']) AND isset($val['last_message']['plaintext'])) { ?>
-				<a class="cls_pm_unencrypted_message text-body d-block" data-message="<?php echo safe_text($val['last_message']['plaintext']); ?>" href="<?php echo url_rewrite(); ?>/pm/read/<?php echo $val['id']; ?>"><i><?php echo _t('请稍候...'); ?></i></a>
+				<a class="cls_pm_unencrypted_message d-block" data-message="<?php echo safe_text($val['last_message']['plaintext']); ?>" href="<?php echo url_rewrite(); ?>/pm/read/<?php echo $val['id']; ?>"><i><?php echo _t('请稍候...'); ?></i></a>
 				<?php } else if (isset($val['last_message']) AND isset($val['last_message']['message'])) { ?>
-				<a class="cls_pm_message text-body d-block" data-message="<?php echo safe_text($val['last_message']['message']); ?>" href="<?php echo url_rewrite(); ?>/pm/read/<?php echo $val['id']; ?>"><i><?php echo _t('待解密'); ?></i></a>
+				<a class="cls_pm_message d-block" data-message="<?php echo safe_text($val['last_message']['message']); ?>" href="<?php echo url_rewrite(); ?>/pm/read/<?php echo $val['id']; ?>"><i><?php echo _t('待解密'); ?></i></a>
 				<?php } else { ?>
-				<a class="text-body d-block" href="<?php echo url_rewrite(); ?>/pm/read/<?php echo $val['id']; ?>"><s><?php echo _t('已刪除'); ?></s></a>
+				<a class="d-block" href="<?php echo url_rewrite(); ?>/pm/read/<?php echo $val['id']; ?>"><s><?php echo _t('已刪除'); ?></s></a>
 				<?php } ?>
 
 				<div class="d-flex">
@@ -64,7 +63,6 @@
 				</div>
 			</div>
 		</div>
-		<?php } ?>
 	<?php } ?>
 	</div>
 

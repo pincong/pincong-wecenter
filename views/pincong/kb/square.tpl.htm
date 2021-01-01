@@ -1,0 +1,67 @@
+<?php TPL::include('components/begin.tpl.htm'); ?>
+<?php TPL::include('components/header.tpl.htm'); ?>
+
+<?php if ($this->user_id) { ?>
+<?php TPL::include('global/editor_files.tpl.htm'); ?>
+<?php } ?>
+
+<main class="container py-5">
+	<div class="mx-auto px-sm-2 px-md-3 overflow-hidden" style="max-width:720px;">
+	<?php foreach ($this->item_list AS $key => $val) { ?>
+		<div class="mb-5">
+			<h3 class="mb-4">
+				<a href="<?php echo url_rewrite(); ?>/kb/<?php echo $val['id']; ?>"><?php echo $val['id']; ?>. <?php echo FORMAT::text($val['title']); ?></a>
+			</h3>
+			<div class="mb-3" style="font-size:1.25rem;"><?php echo FORMAT::message($val['message']); ?></div>
+			<div><i><?php echo FORMAT::hyperlink($val['remarks']); ?></i></div>
+			<div class="d-flex flex-column flex-sm-row">
+				<div class="mr-2">
+					<span class="text-nowrap">
+						<a href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
+						<span><?php echo _t('发表于'); ?>: <?php echo date_friendly($val['add_time']); ?></span>
+					</span>
+				</div>
+
+				<div class="w-100 mr-2">
+				<?php if ($this->user_id) { ?>
+					<?php if ($val['uid'] == $this->user_id OR $val['last_uid'] == $this->user_id OR $this->user_info['permission']['kb_manage']) { ?>
+					<div class="d-flex text-nowrap justify-content-sm-between">
+						<a class="mr-2" href="javascript:;" onclick="AWS.popup('<?php echo url_rewrite(); ?>/kb/edit/remark/id-<?php echo $val['id']; ?>', function(el){UTL.init_textarea(el.find('form textarea'))});"><?php echo _t('备注'); ?> </a>
+						<a href="javascript:;" onclick="AWS.popup('<?php echo url_rewrite(); ?>/kb/edit/modify/id-<?php echo $val['id']; ?>', function(el){UTL.init_textarea(el.find('form textarea'), <?php echo intval($val['uid'] == $this->user_id) ?>)});"><?php echo _t('编辑'); ?> </a>
+					</div>
+					<?php } ?>
+				<?php } ?>
+				</div>
+
+				<div>
+					<span class="text-nowrap">
+					<?php if ($this->user_id) { ?>
+						<?php if ($this->user_info['permission']['kb_manage']) { ?>
+						<a href="<?php echo UF::url($val['last_user_info']); ?>"><?php echo UF::name($val['last_user_info']); ?></a>
+						<?php } ?>
+					<?php } ?>
+						<span><?php echo _t('最后编辑于'); ?>: <?php echo date_friendly($val['update_time']); ?></span>
+					</span>
+				</div>
+			</div>
+		</div>
+	<?php } ?>
+	</div>
+
+	<div class="d-flex justify-content-center py-3">
+		<?php TPL::include('components/pagination.tpl.htm'); ?>
+	</div>
+
+	<div class="py-3">
+		<?php TPL::include('kb/post_form.tpl.htm'); ?>
+	</div>
+</main>
+
+<script>
+$(document).ready(function () {
+	UTL.create_editor($('#id_post_form').find('textarea[name=message]'));
+});
+</script>
+
+<?php TPL::include('components/footer.tpl.htm'); ?>
+<?php TPL::include('components/end.tpl.htm'); ?>
