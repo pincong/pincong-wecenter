@@ -764,7 +764,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		$answer_info = $this->model('answer')->get_answer_by_id($answer_id);
-		$answer_info['answer_content'] = $this->model('mention')->parse_at_user($answer_info['answer_content']);
+		$answer_info['message'] = $this->model('mention')->parse_at_user($answer_info['message']);
 		TPL::assign('answer_info', $answer_info);
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'ajax_html' => TPL::process('question/ajax/answer')

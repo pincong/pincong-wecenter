@@ -43,13 +43,13 @@
 	</div>
 	<div class="mod-body clearfix">
 		<div id="detail_<?php echo $val['id']; ?>" class="markitup-box">
-			<?php echo nl2br(cjk_substr(strip_ubb($val['answer_content']), 0, 130, 'UTF-8', '...')); ?>
-		<?php if (cjk_strlen($val['answer_content']) > 130) { ?>
+			<?php echo nl2br(cjk_substr(strip_ubb($val['message']), 0, 130, 'UTF-8', '...')); ?>
+		<?php if (cjk_strlen($val['message']) > 130) { ?>
 		<a href="javascript:;" class="showMore" onclick="AWS.content_switcher($('#detail_<?php echo $val['id']; ?>'), $('#detail_more_<?php echo $val['id']; ?>'));"><?php _e('显示全部'); ?> »</a>
 		<?php } ?>
 		</div>
 		<div id="detail_more_<?php echo $val['id']; ?>" class="collapse markitup-box">
-			<?php echo nl2br(strip_ubb($val['answer_content'])); ?>
+			<?php echo nl2br(strip_ubb($val['message'])); ?>
 		</div>
 	</div>
 </div>

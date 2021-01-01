@@ -176,7 +176,7 @@ class currency_class extends AWS_MODEL
 					if ($answers[$item['item_id']])
 					{
 						$result[$log_id] = array(
-							'title' => cjk_substr($answers[$item['item_id']]['answer_content'], 0, 24, 'UTF-8', '...'),
+							'title' => cjk_substr($answers[$item['item_id']]['message'], 0, 24, 'UTF-8', '...'),
 							'url' => get_js_url('/question/' . $answers[$item['item_id']]['question_id'])
 						);
 					}

@@ -186,15 +186,7 @@ class vote_class extends AWS_MODEL
 		$bonus_max_count = intval(get_setting('bonus_max_count'));
 		$bonus_min_count = intval(get_setting('bonus_min_count'));
 
-		// TODO: answer 字段改名以避免特殊处理
-		if ($type == 'answer')
-		{
-			$word_count = strlen($item_info['answer_content']);
-		}
-		else
-		{
-			$word_count = strlen($item_info['message']);
-		}
+		$word_count = strlen($item_info['message']);
 
 		// 字数 = 字节数 / 3
 		$word_count = intval($word_count / 3);

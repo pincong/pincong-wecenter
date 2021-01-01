@@ -34,11 +34,11 @@
 											<a href="javascript:;" class="aw-load-more-content" onclick="$(this).parent().parent().children('.markitup-box').toggle();"><?php _e('内容被折叠'); ?></a>
 										</div>
 										<div class="markitup-box collapse">
-											<?php echo CF::reply($val['user_info'], 'answer_' . $val['id'], $val['answer_content']); ?>
+											<?php echo CF::reply($val['user_info'], 'answer_' . $val['id'], $val['message']); ?>
 										</div>
 									<?php } else { ?>
 										<div class="markitup-box">
-											<?php echo CF::reply($val['user_info'], 'answer_' . $val['id'], $val['answer_content']); ?>
+											<?php echo CF::reply($val['user_info'], 'answer_' . $val['id'], $val['message']); ?>
 										</div>
 									<?php } ?>
 									<!-- end 回答 -->

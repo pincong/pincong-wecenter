@@ -9,7 +9,7 @@
 CREATE TABLE IF NOT EXISTS `aws_answer` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '回答id',
   `question_id` int(11) DEFAULT '0' COMMENT '问题id',
-  `answer_content` text COMMENT '回答内容',
+  `message` text COMMENT '回答内容',
   `add_time` int(10) DEFAULT '0' COMMENT '添加时间',
   `agree_count` int(11) DEFAULT '0' COMMENT '支持人数',
   `reputation` float DEFAULT '0',

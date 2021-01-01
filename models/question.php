@@ -128,7 +128,7 @@ class question_class extends AWS_MODEL
 		}
 
 		$this->update('answer', array(
-			'answer_content' => htmlspecialchars($message)
+			'message' => htmlspecialchars($message)
 		), 'id = ' . intval($answer_id));
 
 		$this->model('content')->log('question', $answer_info['question_id'], '编辑回复', $uid, 'answer', $answer_id);
@@ -145,7 +145,7 @@ class question_class extends AWS_MODEL
 		}
 
 		$this->update('answer', array(
-			'answer_content' => null
+			'message' => null
 		), 'id = ' . intval($answer_id));
 
 		$this->model('content')->log('question', $answer_info['question_id'], '删除回复', $uid, 'answer', $answer_id);

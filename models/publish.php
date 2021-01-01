@@ -234,7 +234,7 @@ class publish_class extends AWS_MODEL
 
 		$item_id = $this->insert('answer', array(
 			'question_id' => $data['parent_id'],
-			'answer_content' => htmlspecialchars($data['message']),
+			'message' => htmlspecialchars($data['message']),
 			'add_time' => $now,
 			'uid' => $data['uid'],
 		));
