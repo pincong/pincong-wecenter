@@ -231,7 +231,7 @@ class question_class extends AWS_MODEL
 
 		$this->delete('question_log', 'item_id = ' . intval($question_id));
 
-		$this->delete('question_discussion', 'question_id = ' . intval($question_id)); // 删除评论
+		$this->delete('question_discussion', 'question_id = ' . intval($question_id)); // 删除讨论
 
 		$this->delete('question_focus', 'question_id = ' . intval($question_id));
 
@@ -653,7 +653,7 @@ class question_class extends AWS_MODEL
 			'message' => null
 		), "id = " . $comment['id']);
 
-		$this->model('content')->log('question', $comment['question_id'], '删除评论', $uid, 'question_discussion', $comment['id']);
+		$this->model('content')->log('question', $comment['question_id'], '删除问题讨论', $uid, 'question_discussion', $comment['id']);
 
 		return true;
 	}
@@ -666,7 +666,7 @@ class question_class extends AWS_MODEL
 
 		if ($answer = $this->fetch_row('answer', 'answer_id = ' . intval($comment['answer_id'])))
 		{
-			$this->model('content')->log('question', $answer['question_id'], '删除回复评论', $uid, 'answer_discussion', $comment['id']);
+			$this->model('content')->log('question', $answer['question_id'], '删除回答讨论', $uid, 'answer_discussion', $comment['id']);
 		}
 
 		return true;

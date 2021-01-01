@@ -78,7 +78,7 @@ class ajax extends AWS_CONTROLLER
 		$message = trim($_POST['message']);
 		if (!$message)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请输入评论内容')));
+			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请输入讨论内容')));
 		}
 
         if (!check_repeat_submission($this->user_id, $message))
@@ -89,18 +89,18 @@ class ajax extends AWS_CONTROLLER
 		$discussion_length_min = intval(get_setting('discussion_length_min'));
 		if ($discussion_length_min AND cjk_strlen($message) < $discussion_length_min)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得少于 %s 字', $discussion_length_min)));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('讨论内容字数不得少于 %s 字', $discussion_length_min)));
 		}
 
 		$discussion_length_max = intval(get_setting('discussion_length_max'));
 		if ($discussion_length_max AND cjk_strlen($message) > $discussion_length_max)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得超过 %s 字', $discussion_length_max)));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('讨论内容字数不得超过 %s 字', $discussion_length_max)));
 		}
 
 		if (!$this->model('ratelimit')->check_answer_discussion($this->user_id, $this->user_info['permission']['discussion_limit_per_day']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日评论回复已经达到上限')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日讨论回复已经达到上限')));
 		}
 
 		$answer_info = $this->model('content')->get_reply_info_by_id('answer', $_GET['answer_id']);
@@ -116,12 +116,12 @@ class ajax extends AWS_CONTROLLER
 
 		if ($question_info['lock'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能评论锁定的问题')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能讨论锁定的问题')));
 		}
 
 		if (!$question_info['question_content'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能评论已删除的问题')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能讨论已删除的问题')));
 		}
 
         set_repeat_submission_digest($this->user_id, $message);
@@ -160,7 +160,7 @@ class ajax extends AWS_CONTROLLER
 		$message = trim($_POST['message']);
 		if (!$message)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入评论内容')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入讨论内容')));
 		}
 
         if (!check_repeat_submission($this->user_id, $message))
@@ -171,18 +171,18 @@ class ajax extends AWS_CONTROLLER
 		$discussion_length_min = intval(get_setting('discussion_length_min'));
 		if ($discussion_length_min AND cjk_strlen($message) < $discussion_length_min)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得少于 %s 字', $discussion_length_min)));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('讨论内容字数不得少于 %s 字', $discussion_length_min)));
 		}
 
 		$discussion_length_max = intval(get_setting('discussion_length_max'));
 		if ($discussion_length_max AND cjk_strlen($message) > $discussion_length_max)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论内容字数不得超过 %s 字', $discussion_length_max)));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('讨论内容字数不得超过 %s 字', $discussion_length_max)));
 		}
 
 		if (!$this->model('ratelimit')->check_question_discussion($this->user_id, $this->user_info['permission']['discussion_limit_per_day']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日评论问题已经达到上限')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日讨论问题已经达到上限')));
 		}
 
 		$question_info = $this->model('content')->get_thread_info_by_id('question', $_GET['question_id']);
@@ -193,12 +193,12 @@ class ajax extends AWS_CONTROLLER
 
 		if ($question_info['lock'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能评论锁定的问题')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能讨论锁定的问题')));
 		}
 
 		if (!$question_info['question_content'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能评论已删除的问题')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能讨论已删除的问题')));
 		}
 
         set_repeat_submission_digest($this->user_id, $message);
@@ -356,7 +356,7 @@ class ajax extends AWS_CONTROLLER
 		$comment_id = intval($_GET['comment_id']);
 		if (!$comment_id)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('讨论不存在')));
 		}
 
 		if ($_GET['type'] == 'answer')
@@ -369,12 +369,12 @@ class ajax extends AWS_CONTROLLER
 		}
 		if (!$comment || !$comment['message'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('评论不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('讨论不存在')));
 		}
 
 		if (! $this->user_info['permission']['edit_any_post'] AND $this->user_id != $comment['uid'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('你没有权限删除该评论')));
+			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('你没有权限删除该讨论')));
 		}
 
 		if ($_GET['type'] == 'answer')

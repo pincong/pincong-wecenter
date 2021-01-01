@@ -74,11 +74,11 @@ var AW_TEMPLATE = {
 				'<div class="aw-comment-list"><p align="center" class="aw-padding10"><i class="aw-loading"></i></p></div>'+
 				'<form action="{{comment_form_action}}" method="post" onsubmit="return false">'+
 					'<div class="aw-comment-box-main">'+
-						'<textarea class="aw-comment-txt form-control" rows="2" name="message" placeholder="' + _t('评论一下') + '..."></textarea>'+
+						'<textarea class="aw-comment-txt form-control" rows="2" name="message" placeholder="' + _t('讨论一下') + '..."></textarea>'+
 						'<div class="aw-comment-box-btn">'+
 							'<span class="pull-right">'+
 								'<!--<label><input type="checkbox" name="anonymous" value="1"> ' + _t('匿名') + '</label>-->' +
-								'<a href="javascript:;" class="btn btn-mini btn-success" onclick="AWS.User.save_comment($(this));">' + _t('评论') + '</a>'+
+								'<a href="javascript:;" class="btn btn-mini btn-success" onclick="AWS.User.save_comment($(this));">' + _t('讨论') + '</a>'+
 							'</span>'+
 						'</div>'+
 					'</div>'+
@@ -106,7 +106,7 @@ var AW_TEMPLATE = {
 	'searchDropdownListUsers' :
 		'<li class="user clearfix"><a href="{{url}}"><img src="{{img}}" />{{name}}<span class="aw-hide-txt">{{intro}}</span></a></li>',
 	'searchDropdownListArticles' :
-		'<li class="question clearfix"><a class="aw-hide-txt pull-left" href="{{url}}">{{content}} </a><span class="pull-right aw-small-text">{{comments}} ' + _t('条评论') + '</span></li>',
+		'<li class="question clearfix"><a class="aw-hide-txt pull-left" href="{{url}}">{{content}} </a><span class="pull-right aw-small-text">{{comments}} ' + _t('条讨论') + '</span></li>',
 	'inviteDropdownList' :
 		'<li class="user"><a data-url="{{url}}" data-id="{{uid}}" data-actions="{{action}}" data-value="{{name}}"><img class="img" src="{{img}}" />{{name}}</a></li>',
 	'editTopicDorpdownList' :

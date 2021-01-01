@@ -34,15 +34,15 @@ class notify_class extends AWS_MODEL
 
 	const TYPE_PEOPLE_FOCUS	= 101;	// 被人关注
 	const TYPE_NEW_ANSWER	= 102;	// 关注的问题增加了新回复
-	const TYPE_QUESTION_COMMENT_AT_ME	= 103;	// 有评论@提到我
+	const TYPE_QUESTION_COMMENT_AT_ME	= 103;	// 有讨论@提到我
 	const TYPE_INVITE_QUESTION	= 104;	// 被人邀请问题问题
-	const TYPE_ANSWER_COMMENT	= 105;	// 我的回复被评论
-	const TYPE_QUESTION_COMMENT	= 106;	// 我的问题被评论
+	const TYPE_ANSWER_COMMENT	= 105;	// 我的回复被讨论
+	const TYPE_QUESTION_COMMENT	= 106;	// 我的问题被讨论
 
 	const TYPE_CONTEXT	= 100;	// 纯文本通知
 
 	const TYPE_ANSWER_AT_ME	= 115;	// 有回答 @ 提到我
-	const TYPE_ANSWER_COMMENT_AT_ME	= 116;	// 有回答评论 @ 提到我
+	const TYPE_ANSWER_COMMENT_AT_ME	= 116;	// 有回答讨论 @ 提到我
 
 	const TYPE_ARTICLE_NEW_COMMENT	= 117; // 文章有新评论
 	const TYPE_ARTICLE_COMMENT_AT_ME	= 118; // 文章评论提到我
@@ -775,12 +775,12 @@ class notify_class extends AWS_MODEL
 							break;
 
 						case self::TYPE_QUESTION_COMMENT_AT_ME:
-							$data[$key]['extend_message'][] = AWS_APP::lang()->_t('他们在问题中的评论提到了你') . ': ' . $users_list;
+							$data[$key]['extend_message'][] = AWS_APP::lang()->_t('他们在问题中的讨论提到了你') . ': ' . $users_list;
 
 							break;
 
 						case self::TYPE_ANSWER_COMMENT_AT_ME:
-							$data[$key]['extend_message'][] = AWS_APP::lang()->_t('他们在回答中的评论提到了你') . ': ' . $users_list;
+							$data[$key]['extend_message'][] = AWS_APP::lang()->_t('他们在回答中的讨论提到了你') . ': ' . $users_list;
 
 							break;
 
@@ -800,7 +800,7 @@ class notify_class extends AWS_MODEL
 							break;
 
 						case self::TYPE_ANSWER_COMMENT:
-							$data[$key]['extend_message'][] = AWS_APP::lang()->_t('%s 个新评论, 按评论人查看', $extend['count']) . ': ' . $users_list;
+							$data[$key]['extend_message'][] = AWS_APP::lang()->_t('%s 个新讨论, 按评论人查看', $extend['count']) . ': ' . $users_list;
 
 							break;
 
@@ -836,7 +836,7 @@ class notify_class extends AWS_MODEL
 
 					case self::TYPE_QUESTION_COMMENT_AT_ME:
 						$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a>';
-						$data[$key]['message'] .= ' ' . AWS_APP::lang()->_t('在问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a> ' . AWS_APP::lang()->_t('中的评论提到了你');
+						$data[$key]['message'] .= ' ' . AWS_APP::lang()->_t('在问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a> ' . AWS_APP::lang()->_t('中的讨论提到了你');
 
 						break;
 
@@ -854,7 +854,7 @@ class notify_class extends AWS_MODEL
 
 					case self::TYPE_ANSWER_COMMENT_AT_ME:
 						$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a>';
-						$data[$key]['message'] .= ' ' . AWS_APP::lang()->_t('在问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a> ' . AWS_APP::lang()->_t('回答评论中提到了你');
+						$data[$key]['message'] .= ' ' . AWS_APP::lang()->_t('在问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a> ' . AWS_APP::lang()->_t('回答讨论中提到了你');
 					break;
 
 					case self::TYPE_INVITE_QUESTION:
@@ -864,13 +864,13 @@ class notify_class extends AWS_MODEL
 
 					case self::TYPE_ANSWER_COMMENT:
 						$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a>';
-						$data[$key]['message'] .= ' ' . AWS_APP::lang()->_t('评论了你在问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a> ' . AWS_APP::lang()->_t('中的回复');
+						$data[$key]['message'] .= ' ' . AWS_APP::lang()->_t('讨论了你在问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a> ' . AWS_APP::lang()->_t('中的回复');
 
 						break;
 
 					case self::TYPE_QUESTION_COMMENT:
 						$data[$key]['message'] = '<a href="' . $val['p_url'] . '">' . $val['p_user_name'] . '</a>';
-						$data[$key]['message'] .= ' ' . AWS_APP::lang()->_t('评论了你发起的问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a>';
+						$data[$key]['message'] .= ' ' . AWS_APP::lang()->_t('讨论了你发起的问题') . ' <a href="' . $val['key_url'] . '">' . $val['title'] . '</a>';
 
 						break;
 

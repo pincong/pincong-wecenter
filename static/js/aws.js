@@ -403,7 +403,7 @@ var AWS =
 		}
 	},
 
-	// 重新加载评论列表
+	// 重新加载讨论列表
 	reload_comments_list: function(item_id, element_id, type_name)
 	{
 		$('#aw-comment-box-' + type_name + '-' + element_id + ' .aw-comment-list').html('<p align="center" class="aw-padding10"><i class="aw-loading"></i></p>');
@@ -1350,7 +1350,7 @@ AWS.User =
 		});
 	},
 
-	// 提交评论
+	// 提交讨论
 	save_comment: function(selector)
 	{
 		AWS.submit(selector.parents('form'), selector, function(err, rsm)
@@ -1361,7 +1361,7 @@ AWS.User =
 		});
 	},
 
-	// 删除评论
+	// 删除讨论
 	remove_comment: function(selector, type, comment_id)
 	{
 		$.get(G_BASE_URL + '/question/ajax/remove_comment/type-' + type + '__comment_id-' + comment_id);
@@ -2019,7 +2019,7 @@ AWS.Message =
 
 AWS.Init =
 {
-	// 初始化问题评论框
+	// 初始化问题讨论框
 	init_comment_box: function(selector)
 	{
 		$(document).on('click', selector, function ()
@@ -2097,12 +2097,12 @@ AWS.Init =
 					}));
 				}
 
-				// 判断是否有评论数据
+				// 判断是否有讨论数据
 				$.get(comment_data_url, function (result)
 				{
 					if ($.trim(result) == '')
 					{
-						result = '<div align="center" class="aw-padding10">' + _t('暂无评论') + '</div>';
+						result = '<div align="center" class="aw-padding10">' + _t('暂无讨论') + '</div>';
 					}
 
 					$(comment_box_id).find('.aw-comment-list').html(result);

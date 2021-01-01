@@ -138,7 +138,7 @@
 
 								<a href="vote/log/item_type-question__item_id-<?php echo $this->question_info['question_id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
 
-								<a data-id="<?php echo $this->question_info['question_id']; ?>" data-type="question" class="aw-add-comment aw-small-text <?php if ($this->question_info['comment_count'] > 0) {?>active<?php }?>" data-comment-count="<?php echo $this->question_info['comment_count']; ?>"><i class="icon icon-comment"></i> <?php if ($this->question_info['comment_count']) { ?><?php _e('%s 条评论', $this->question_info['comment_count']); ?><?php } else { ?><?php _e('添加评论'); ?><?php } ?></a>
+								<a data-id="<?php echo $this->question_info['question_id']; ?>" data-type="question" class="aw-add-comment aw-small-text <?php if ($this->question_info['comment_count'] > 0) {?>active<?php }?>" data-comment-count="<?php echo $this->question_info['comment_count']; ?>"><i class="icon icon-comment"></i> <?php if ($this->question_info['comment_count']) { ?><?php _e('%s 条讨论', $this->question_info['comment_count']); ?><?php } else { ?><?php _e('添加讨论'); ?><?php } ?></a>
 
 								<?php if ($this->user_id) { ?>
 								<a class="aw-small-text aw-invite-replay"><i class="icon icon-invite"></i> <?php _e('邀请'); ?> <?php if (sizeof($this->invite_users) > 0){ ?><em class="badge badge-info"><?php echo count($this->invite_users); ?></em><?php } ?></a>
@@ -424,7 +424,7 @@ $(document).ready(function () {
 		}
 	});
 
-	// 问题页添加评论
+	// 问题页添加讨论
 	AWS.Init.init_comment_box('.aw-add-comment');
 
 	AWS.init_later_time_helper($('#later_time_input'), $('#later_time_label'));
@@ -432,7 +432,7 @@ $(document).ready(function () {
 	AWS.create_editor(document.getElementById('wmd-input'), true);
 
 	<?php if ($_GET['comment_unfold'] == 'question') { ?>
-	// 展开问题评论
+	// 展开问题讨论
 	if ($('.aw-question-detail').find('.aw-add-comment').data('comment-count') > 0)
 	{
 		$('.aw-question-detail').find('.aw-add-comment').click();

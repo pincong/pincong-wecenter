@@ -21,25 +21,25 @@ $config['action_details'][notify_class::TYPE_INVITE_QUESTION] = array(
 $config['action_details'][notify_class::TYPE_QUESTION_COMMENT] = array(
 	'user_setting' => 1,
 	'combine' => 1,
-	'desc' => AWS_APP::lang()->_t('我的问题被评论')
+	'desc' => AWS_APP::lang()->_t('我的问题被讨论')
 );
 
 $config['action_details'][notify_class::TYPE_ANSWER_COMMENT] = array(
 	'user_setting' => 1,
 	'combine' => 1,
-	'desc' => AWS_APP::lang()->_t('我的问题评论被回复')
+	'desc' => AWS_APP::lang()->_t('我的问题讨论被回复')
 );
 
 $config['action_details'][notify_class::TYPE_QUESTION_COMMENT_AT_ME] = array(
 	'user_setting' => 1,
 	'combine' => 1,
-	'desc' => AWS_APP::lang()->_t('有问题评论提到我')
+	'desc' => AWS_APP::lang()->_t('有问题讨论提到我')
 );
 
 $config['action_details'][notify_class::TYPE_ANSWER_COMMENT_AT_ME] = array(
 	'user_setting' => 1,
 	'combine' => 1,
-	'desc' => AWS_APP::lang()->_t('有回答评论提到我')
+	'desc' => AWS_APP::lang()->_t('有回答讨论提到我')
 );
 
 $config['action_details'][notify_class::TYPE_ANSWER_AT_ME] = array(

@@ -155,7 +155,7 @@ class answer_class extends AWS_MODEL
 	{
 		if ($answer_info = $this->model('content')->get_reply_info_by_id('answer', $answer_id))
 		{
-			$this->delete('answer_discussion', 'answer_id = ' . intval($answer_id));	// 删除评论
+			$this->delete('answer_discussion', 'answer_id = ' . intval($answer_id));	// 删除讨论
 
 			//ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_ANSWER . ' AND associate_id = ' . intval($answer_id));
 			//ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action = ' . ACTION_LOG::ANSWER_QUESTION . ' AND associate_attached = ' . intval($answer_id));
