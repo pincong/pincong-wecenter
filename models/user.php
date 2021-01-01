@@ -461,7 +461,7 @@ class user_class extends AWS_MODEL
 			"change_group",
 			"edit_title",
 			"edit_signature",
-			"add_block",
+			"add_blocked",
 		);
 
 		if ($type AND !in_array($type, $valid_types))
