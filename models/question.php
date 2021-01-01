@@ -142,7 +142,8 @@ class question_class extends AWS_MODEL
 		}
 
 		$this->update('answer', array(
-			'message' => null
+			'message' => null,
+			'fold' => 1
 		), 'id = ' . intval($answer_id));
 
 		$this->model('content')->log('question', $answer_info['question_id'], 'answer', $answer_id, '删除', $log_uid);

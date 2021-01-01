@@ -144,7 +144,8 @@ class video_class extends AWS_MODEL
 		}
 
 		$this->update('video_comment', array(
-			'message' => null
+			'message' => null,
+			'fold' => 1
 		), 'id = ' . intval($comment_id));
 
 		$this->model('content')->log('video', $comment_info['video_id'], 'video_comment', $comment_id, '删除', $log_uid);

@@ -139,7 +139,8 @@ class article_class extends AWS_MODEL
 		}
 
 		$this->update('article_comment', array(
-			'message' => null
+			'message' => null,
+			'fold' => 1
 		), 'id = ' . intval($comment_id));
 
 		$this->model('content')->log('article', $comment_info['article_id'], 'article_comment', $comment_id, '删除', $log_uid);
