@@ -226,7 +226,7 @@ class activity_class extends AWS_MODEL
 			foreach ($video_comments AS $key => $val)
 			{
 				$uids[$val['uid']] = $val['uid'];
-				$video_ids[] = $val['video_id'];
+				$video_ids[] = $val['parent_id'];
 			}
 		}
 		if ($video_ids)
@@ -240,7 +240,7 @@ class activity_class extends AWS_MODEL
 			{
 				foreach ($video_comments AS $key => $val)
 				{
-					$video_comments[$key]['thread_info'] = $videos[$val['video_id']];
+					$video_comments[$key]['thread_info'] = $videos[$val['parent_id']];
 				}
 			}
 		}

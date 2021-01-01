@@ -55,7 +55,7 @@ class user_class extends AWS_MODEL
 	{
 		$video_id = intval($video_id);
 		$this->update('video', array(
-			'comment_count' => $this->count('video_reply', ['video_id', 'eq', $video_id])
+			'comment_count' => $this->count('video_reply', ['parent_id', 'eq', $video_id])
 		), ['id', 'eq', $video_id]);
 	}
 
@@ -179,7 +179,7 @@ class user_class extends AWS_MODEL
 
 		foreach ($video_comments AS $key => $val)
 		{
-			$video_ids[$val['video_id']] = $val['video_id'];
+			$video_ids[$val['parent_id']] = $val['parent_id'];
 		}
 
 		if ($video_ids)

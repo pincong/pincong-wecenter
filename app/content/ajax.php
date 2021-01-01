@@ -306,17 +306,16 @@ class ajax extends AWS_CONTROLLER
 			{
 				case 'question_reply':
 					$parent_type = 'question';
-					$parent_id = $item_info['parent_id'];
 					break;
 				case 'article_reply':
 					$parent_type = 'article';
-					$parent_id = $item_info['parent_id'];
 					break;
 				case 'video_reply':
 					$parent_type = 'video';
-					$parent_id = $item_info['video_id'];
 					break;
 			}
+
+			$parent_id = $item_info['parent_id'];
 
 			$parent_info = $this->model('content')->get_thread_info_by_id($parent_type, $parent_id);
 			if (!$parent_info OR $parent_info['uid'] != $this->user_id)
@@ -356,17 +355,16 @@ class ajax extends AWS_CONTROLLER
 			{
 				case 'question_reply':
 					$parent_type = 'question';
-					$parent_id = $item_info['parent_id'];
 					break;
 				case 'article_reply':
 					$parent_type = 'article';
-					$parent_id = $item_info['parent_id'];
 					break;
 				case 'video_reply':
 					$parent_type = 'video';
-					$parent_id = $item_info['video_id'];
 					break;
 			}
+
+			$parent_id = $item_info['parent_id'];
 
 			$parent_info = $this->model('content')->get_thread_info_by_id($parent_type, $parent_id);
 			if (!$parent_info OR $parent_info['uid'] != $this->user_id)

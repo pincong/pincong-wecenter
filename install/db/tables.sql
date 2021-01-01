@@ -199,7 +199,7 @@ CREATE TABLE `aws_video` (
 CREATE TABLE `aws_video_reply` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT '0',
-  `video_id` int(11) DEFAULT '0',
+  `parent_id` int(11) DEFAULT '0',
   `message` text,
   `add_time` int(11) DEFAULT '0',
   `at_uid` int(11) DEFAULT NULL,
@@ -208,7 +208,7 @@ CREATE TABLE `aws_video_reply` (
   `fold` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
-  KEY `video_id` (`video_id`),
+  KEY `parent_id` (`parent_id`),
   KEY `add_time` (`add_time`),
   KEY `agree_count` (`agree_count`),
   KEY `reputation` (`reputation`)

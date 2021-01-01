@@ -126,17 +126,14 @@ class reputation_class extends AWS_MODEL
 		switch ($item_type)
 		{
 			case 'question_reply':
-				$parent_id = $item_info['parent_id'];
 				$parent_type = 'question';
 				break;
 
 			case 'article_reply':
-				$parent_id = $item_info['parent_id'];
 				$parent_type = 'article';
 				break;
 
 			case 'video_reply':
-				$parent_id = $item_info['video_id'];
 				$parent_type = 'video';
 				break;
 
@@ -144,7 +141,7 @@ class reputation_class extends AWS_MODEL
 				return;
 		}
 
-		$this->update('posts_index', '`reputation` = `reputation` + ' . $reputation_value, [['post_id', 'eq', $parent_id], ['post_type', 'eq', $parent_type]]);
+		$this->update('posts_index', '`reputation` = `reputation` + ' . $reputation_value, [['post_id', 'eq', $item_info['parent_id'], 'i'], ['post_type', 'eq', $parent_type]]);
 	}
 
 

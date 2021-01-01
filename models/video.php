@@ -48,7 +48,7 @@ class video_class extends AWS_MODEL
 		$list = $this->fetch_page('video_reply', ['uid', 'eq', $uid, 'i'], 'id DESC', $page, $per_page);
 		foreach ($list AS $key => $val)
 		{
-			$parent_ids[] = $val['video_id'];
+			$parent_ids[] = $val['parent_id'];
 		}
 
 		if ($parent_ids)
@@ -56,7 +56,7 @@ class video_class extends AWS_MODEL
 			$parents = $this->model('content')->get_posts_by_ids('video', $parent_ids);
 			foreach ($list AS $key => $val)
 			{
-				$list[$key]['video_info'] = $parents[$val['video_id']];
+				$list[$key]['video_info'] = $parents[$val['parent_id']];
 			}
 		}
 
@@ -127,7 +127,7 @@ class video_class extends AWS_MODEL
 			'message' => htmlspecialchars($message)
 		), ['id', 'eq', $id, 'i']);
 
-		$this->model('content')->log('video', $reply_info['video_id'], 'video_reply', $id, '编辑', $log_uid);
+		$this->model('content')->log('video', $reply_info['parent_id'], 'video_reply', $id, '编辑', $log_uid);
 
 		return true;
 	}
@@ -144,7 +144,7 @@ class video_class extends AWS_MODEL
 			'fold' => 1
 		), ['id', 'eq', $id, 'i']);
 
-		$this->model('content')->log('video', $reply_info['video_id'], 'video_reply', $id, '删除', $log_uid);
+		$this->model('content')->log('video', $reply_info['parent_id'], 'video_reply', $id, '删除', $log_uid);
 
 		return true;
 	}
@@ -192,7 +192,7 @@ class video_class extends AWS_MODEL
 	// 同时获取用户信息
 	public function get_video_comments($thread_ids, $page, $per_page, $order = 'id ASC')
 	{
-		$where = ['video_id', 'in', $thread_ids, 'i'];
+		$where = ['parent_id', 'in', $thread_ids, 'i'];
 
 		if ($list = $this->fetch_page('video_reply', $where, $order, $page, $per_page))
 		{

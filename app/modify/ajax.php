@@ -98,18 +98,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_error((_t('你没有权限进行此操作')));
 		}
 
-		switch ($thread_type)
-		{
-			case 'question':
-				$thread_id = $reply_info['parent_id'];
-				break;
-			case 'article':
-				$thread_id = $reply_info['parent_id'];
-				break;
-			case 'video':
-				$thread_id = $reply_info['video_id'];
-				break;
-		}
+		$thread_id = $reply_info['parent_id'];
 
 		if (!$tread_info = $this->model('content')->get_thread_info_by_id($thread_type, $thread_id))
 		{
