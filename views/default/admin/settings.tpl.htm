@@ -383,7 +383,7 @@
 								<input type="hidden" name="_set_notification_settings" value="1" />
 
 								<?php foreach($this->notify_actions as $key => $val) { ?>
-								<label><input name="new_user_notification_setting[<?php echo $key;?>]" type="checkbox" value="1"<?php if (!in_array($key, $this->notification_settings)) { ?> checked="checked"<?php } ?> /> <?php _e($val); ?></label>
+								<label><input name="new_user_notification_setting[<?php echo $key; ?>]" type="checkbox" value="1"<?php if (!in_array($key, $this->notification_settings)) { ?> checked="checked"<?php } ?> /> <?php _e($val); ?></label>
 								<?php } ?>
 							</div>
 						</div>
@@ -894,7 +894,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('匿名用户 UID');?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('匿名用户 UID'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="anonymous_uid" type="text" class="form-control" value="<?php echo $this->setting['anonymous_uid']; ?>"/>
 								<span class="help-block"><?php _e('留空则不启用'); ?></span>
@@ -906,7 +906,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('特定发帖用户 UID(s)');?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('特定发帖用户 UID(s)'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="specific_post_uids" type="text" class="form-control" value="<?php echo $this->setting['specific_post_uids']; ?>"/>
 								<span class="help-block"><?php _e('多个用户 UID 请用 , 隔开, 留空则不启用'); ?></span>
@@ -937,7 +937,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('垃圾箱分类 ID');?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('垃圾箱分类 ID'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="trash_category_id" type="text" class="form-control" value="<?php echo $this->setting['trash_category_id']; ?>"/>
 								<span class="help-block"><?php _e('将删除的帖子存入垃圾箱, 留空则不启用'); ?></span>

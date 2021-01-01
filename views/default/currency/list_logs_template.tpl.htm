@@ -4,7 +4,7 @@
 	<td><?php echo date_friendly($val['time']); ?></td>
 	<td><span class="<?php if ($val['currency'] > 0) { ?>aw-text-color-orange<?php } ?>"><?php echo $val['currency']; ?></span></td>
 	<td><?php echo $val['balance']; ?></td>
-	<td><?php echo $val['note'] ;?></td>
+	<td><?php echo FORMAT::text($val['note'], false); ?></td>
 	<td><p><?php if ($this->log_detail[$val['id']]) { ?><a href="<?php echo $this->log_detail[$val['id']]['url']; ?>"><?php echo FORMAT::text($this->log_detail[$val['id']]['title'], false); ?></a><?php } else { ?> - <?php } ?></p></td>
 </tr>
 <?php } ?>

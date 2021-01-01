@@ -68,7 +68,7 @@
 		<br>
 		<span style="color: #666;"><?php _e('用户'); ?>:</span> <a href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
 		<?php if($val['detail']) { ?>
-		<br><span style="color: #666;"><?php _e('详情'); ?>: </span> <?php echo $val['detail']; ?>
+		<br><span style="color: #666;"><?php _e('详情'); ?>: </span> <?php echo FORMAT::text($val['detail'], false); ?>
 		<?php } ?>
 	</p>
 </li>
