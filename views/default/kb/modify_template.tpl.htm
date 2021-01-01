@@ -7,7 +7,7 @@
 			</div>
 			<form action="<?php echo url_rewrite(); ?>/kb/ajax/modify/id-<?php echo $this->item_info['id']; ?>" method="post" onsubmit="return false" id="edit_form">
 			<div class="modal-body">
-				<div class="alert alert-danger collapse error_message"><i class="icon icon-delete"></i> <em></em></div>
+				<div class="aw-margin-y-15 aw-margin-top-0 alert alert-danger collapse error_message"><i class="icon icon-delete"></i> <em></em></div>
 				<input class="form-control" type="text" name="title" value="<?php echo FORMAT::text($this->item_info['title']); ?>" />
 				<textarea name="message" id="editor_reply" class="form-control" rows="10"><?php echo FORMAT::text($this->item_info['message']); ?></textarea>
 			</div>

@@ -76,6 +76,23 @@ class edit extends AWS_CONTROLLER
 		TPL::output("user/flag_user_template");
 	}
 
+	public function delete_user_action()
+	{
+		if (!$this->user_info['permission']['delete_user'])
+		{
+			HTTP::error_403();
+		}
+
+		if (!$user = $this->model('account')->get_user_info_by_uid($_GET['uid']))
+		{
+			HTTP::error_404();
+		}
+
+		TPL::assign('user', $user);
+
+		TPL::output("user/delete_user_template");
+	}
+
 	public function change_group_action()
 	{
 		if (!$this->user_info['permission']['change_user_group'])

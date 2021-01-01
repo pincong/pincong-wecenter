@@ -189,6 +189,35 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
+	public function delete_user_action()
+	{
+		if (!$this->user_info['permission']['delete_user'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+		}
+
+		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
+		$this->get_reason_and_detail(0, $reason, $detail, $log_detail);
+
+		set_user_operation_last_time('manage', $this->user_id);
+
+		$uid = intval($_POST['uid']);
+		$this->get_user_info_and_check_permission($uid, $user_info);
+
+		$this->model('user')->delete_user_by_uid($uid, false);
+		if (!$this->user_info['permission']['is_moderator'])
+		{
+			$this->model('user')->insert_admin_log($uid, $this->user_id, 'delete_user', 0, $log_detail);
+		}
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
+
 	public function edit_verified_title_action()
 	{
 		if (!$this->user_info['permission']['edit_user'])
