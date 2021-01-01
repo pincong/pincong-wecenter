@@ -39,14 +39,8 @@ class info extends AWS_CONTROLLER
 
 	public function setup()
 	{
-		$_GET['page'] = intval($_GET['page']);
-		if ($_GET['page'] < 1)
-		{
-			$_GET['page'] = 1;
-		}
-
-		$_GET['parent_id'] = intval($_GET['parent_id']);
-		if ($_GET['parent_id'] < 1)
+		$this->parent_id = intval($_GET['parent_id']);
+		if ($this->parent_id < 1)
 		{
 			H::error_404();
 		}
@@ -61,14 +55,14 @@ class info extends AWS_CONTROLLER
 	public function question_discussions_action()
 	{
 		// 判断是否已合并
-		if ($redirect_posts = $this->model('content')->get_redirect_posts('question', $_GET['parent_id']))
+		if ($redirect_posts = $this->model('content')->get_redirect_posts('question', $this->parent_id))
 		{
 			foreach ($redirect_posts AS $key => $val)
 			{
 				$post_ids[] = $val['id'];
 			}
 		}
-		$post_ids[] = $_GET['parent_id'];
+		$post_ids[] = $this->parent_id;
 
 		$discussions = $this->model('question')->get_question_discussions($post_ids, $_GET['page'], $this->per_page);
 
@@ -84,7 +78,7 @@ class info extends AWS_CONTROLLER
 
 	public function answer_discussions_action()
 	{
-		$discussions = $this->model('question')->get_answer_discussions($_GET['parent_id'], $_GET['page'], $this->per_page);
+		$discussions = $this->model('question')->get_answer_discussions($this->parent_id, $_GET['page'], $this->per_page);
 
 		foreach ($discussions as $key => $val)
 		{

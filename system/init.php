@@ -46,11 +46,6 @@ require_once(ROOT_PATH . 'version.php');
 require_once(AWS_PATH . 'functions.inc.php');
 require_once(AWS_PATH . 'functions.app.php');
 
-array_walk_recursive($_GET, 'remove_invisible_characters');
-array_walk_recursive($_POST, 'remove_invisible_characters');
-array_walk_recursive($_COOKIE, 'remove_invisible_characters');
-array_walk_recursive($_REQUEST, 'remove_invisible_characters');
-
 load_class('core_autoload');
 
 date_default_timezone_set('UTC');

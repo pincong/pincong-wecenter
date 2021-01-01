@@ -48,10 +48,14 @@ class main extends AWS_CONTROLLER
 			{
 				H::error_404();
 			}
-			$_GET['id'] = $reply['question_id'];
+			$thread_id = $reply['question_id'];
+		}
+		else
+		{
+			$thread_id = $_GET['id'];
 		}
 
-		if (!$thread_info = $this->model('question')->get_question_by_id($_GET['id']))
+		if (!$thread_info = $this->model('question')->get_question_by_id($thread_id))
 		{
 			H::error_404();
 		}

@@ -36,11 +36,6 @@ class main extends AWS_CONTROLLER
 
 	private function index_square()
 	{
-		if (!$_GET['page'])
-		{
-			$_GET['page'] = 1;
-		}
-
 		$this->crumb(AWS_APP::lang()->_t('用户列表'));
 
 		$admin_permission = $this->user_info['permission']['is_administrator'];

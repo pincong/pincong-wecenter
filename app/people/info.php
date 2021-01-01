@@ -48,16 +48,9 @@ class info extends AWS_CONTROLLER
 
 	public function setup()
 	{
-		$_GET['uid'] = intval($_GET['uid']);
-		if ($_GET['uid'] < 1)
+		if (intval($_GET['uid']) < 1)
 		{
 			H::error_404();
-		}
-
-		$_GET['page'] = intval($_GET['page']);
-		if ($_GET['page'] < 1)
-		{
-			$_GET['page'] = 0; // 因为followers_action page从0开始
 		}
 
 		$this->per_page = S::get_int('contents_per_page');

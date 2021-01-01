@@ -120,6 +120,7 @@ class Services_WhereBuilder
 		}
 		elseif ($type == 'd')
 		{
+			$val = floatval($val);
 			if (is_infinite($val) OR is_nan($val))
 			{
 				return 0;

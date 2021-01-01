@@ -75,12 +75,13 @@ class main extends AWS_ADMIN_CONTROLLER
     {
         $this->crumb(AWS_APP::lang()->_t('系统设置'));
 
-        if (!$_GET['category'])
+		$category = $_GET['category'];
+        if (!$category)
         {
-            $_GET['category'] = 'site';
+            $category = 'site';
         }
 
-        switch ($_GET['category'])
+        switch ($category)
         {
             case 'interface':
                 TPL::assign('styles', $this->model('setting')->get_ui_styles());
@@ -94,7 +95,7 @@ class main extends AWS_ADMIN_CONTROLLER
 
         TPL::assign('setting', S::get_all());
 
-        TPL::assign('menu_list', $this->model('admin')->fetch_menu_list('SETTINGS_' . strtoupper($_GET['category'])));
+        TPL::assign('menu_list', $this->model('admin')->fetch_menu_list('SETTINGS_' . strtoupper($category)));
 
         TPL::output('admin/settings');
     }

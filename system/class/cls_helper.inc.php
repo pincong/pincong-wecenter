@@ -136,4 +136,133 @@ class H
 			exit;
 		}
 	}
+
+
+	public static function GET($key)
+	{
+		if (!isset($_GET[$key]))
+		{
+			return null;
+		}
+		return $_GET[$key];
+	}
+
+	public static function POST($key)
+	{
+		if (!isset($_POST[$key]))
+		{
+			return null;
+		}
+		return $_POST[$key];
+	}
+
+	public static function GET_I($key)
+	{
+		if (!isset($_GET[$key]))
+		{
+			return null;
+		}
+		return self::_convert_request($_GET[$key], 'i');
+	}
+
+	public static function POST_I($key)
+	{
+		if (!isset($_POST[$key]))
+		{
+			return null;
+		}
+		return self::_convert_request($_POST[$key], 'i');
+	}
+
+	public static function GET_D($key)
+	{
+		if (!isset($_GET[$key]))
+		{
+			return null;
+		}
+		return self::_convert_request($_GET[$key], 'd');
+	}
+
+	public static function POST_D($key)
+	{
+		if (!isset($_POST[$key]))
+		{
+			return null;
+		}
+		return self::_convert_request($_POST[$key], 'd');
+	}
+
+	public static function GET_S($key)
+	{
+		if (!isset($_GET[$key]))
+		{
+			return null;
+		}
+
+		static $cache;
+		if (isset($cache[$key]))
+		{
+			return $cache[$key];
+		}
+
+		$val = self::_convert_request($_GET[$key], 's');
+		$cache[$key] = $val;
+		return $val;
+	}
+
+	public static function POST_S($key)
+	{
+		if (!isset($_POST[$key]))
+		{
+			return null;
+		}
+
+		static $cache;
+		if (isset($cache[$key]))
+		{
+			return $cache[$key];
+		}
+
+		$val = self::_convert_request($_POST[$key], 's');
+		$cache[$key] = $val;
+		return $val;
+	}
+
+	private static function _convert_request($data, $type)
+	{
+		if (is_array($data))
+		{
+			foreach ($data as &$val)
+			{
+				$val = self::_convert_request_data($val, $type);
+			}
+			unset($val);
+			return $data;
+		}
+		return self::_convert_request_data($data, $type);
+	}
+
+	private static function _convert_request_data($val, $type)
+	{
+		if ($type == 'i') // int
+		{
+			return intval($val);
+		}
+		else if ($type == 'd') // double
+		{
+			$val = floatval($val);
+			if (is_infinite($val) OR is_nan($val))
+			{
+				return 0;
+			}
+			return $val;
+		}
+
+		if (!is_string($val))
+		{
+			return '';
+		}
+		return remove_invisible_characters(multibyte_trim($val));
+	}
+
 }

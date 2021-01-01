@@ -48,10 +48,14 @@ class main extends AWS_CONTROLLER
 			{
 				H::error_404();
 			}
-			$_GET['id'] = $reply['video_id'];
+			$thread_id = $reply['video_id'];
+		}
+		else
+		{
+			$thread_id = $_GET['id'];
 		}
 
-		if (! $thread_info = $this->model('video')->get_video_by_id($_GET['id']))
+		if (! $thread_info = $this->model('video')->get_video_by_id($thread_id))
 		{
 			H::error_404();
 		}

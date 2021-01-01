@@ -29,15 +29,6 @@ class info extends AWS_CONTROLLER
 		return $rule_action;
 	}
 
-	public function setup()
-	{
-		$_GET['page'] = intval($_GET['page']);
-		if ($_GET['page'] < 1)
-		{
-			$_GET['page'] = 0;
-		}
-	}
-
 	public function activities_action()
 	{
 		$per_page = S::get_int('index_per_page');
