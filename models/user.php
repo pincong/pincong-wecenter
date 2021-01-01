@@ -359,7 +359,6 @@ class user_class extends AWS_MODEL
 	}
 
 
-
 	public function forbid_user_by_uid($uid, $status, $admin_uid = null, $reason = null, $detail = null)
 	{
 		if (!$uid)
@@ -442,4 +441,96 @@ class user_class extends AWS_MODEL
 		$this->model('account')->update_user_extra_data($extra_data, $uid);
 	}
 
+	/**
+	 *
+	 * 取得管理记录
+	 *
+	 * @param int     $uid        被操作者UID
+	 * @param int     $admin_uid  操作者UID
+	 * @param string  $type       操作类型
+	 * @param string  $status     状态 (封禁/标记/取消)
+	 * @param int     $page
+	 * @param int     $per_page
+	 *
+	 * @return array
+	 */
+	public function list_admin_logs($uid, $admin_uid, $type, $status, $page, $per_page)
+	{
+		$valid_types = array(
+			"flag_user",
+			"forbid_user",
+			"change_group",
+			"edit_title",
+			"edit_signature"
+		);
+
+		if ($type AND !in_array($type, $valid_types))
+		{
+			return false;
+		}
+
+		$where = array();
+		if ($type)
+		{
+			$where[] = "`type` = '" . ($type) . "'";
+		}
+		if (intval($uid))
+		{
+			$where[] = "uid = " . intval($uid);
+		}
+		if (intval($admin_uid))
+		{
+			$where[] = "admin_uid = " . intval($admin_uid);
+		}
+
+		if ($status != '')
+		{
+			$status = explode(',', $status);
+			if (is_array($status))
+			{
+				array_walk_recursive($status, 'intval_string');
+				$where[] = '`status` IN(' . implode(',', $status) . ')';
+			}
+		}
+
+		$log_list = $this->fetch_page('admin_log', implode(' AND ', $where), 'id DESC', $page, $per_page);
+		if (!$log_list)
+		{
+			return false;
+		}
+
+		foreach ($log_list AS $key => $log)
+		{
+			$user_ids[] = $log['uid'];
+			$user_ids[] = $log['admin_uid'];
+		}
+
+		if ($user_ids)
+		{
+			$users = $this->model('account')->get_user_info_by_uids($user_ids);
+		}
+		else
+		{
+			$users = array();
+		}
+
+		foreach ($log_list as $key => $log)
+		{
+			$log_list[$key]['user_info'] = $users[$log['uid']];
+			$log_list[$key]['admin_user_info'] = $users[$log['admin_uid']];
+		}
+		return $log_list;
+	}
+
+	public function insert_admin_log($uid, $admin_uid, $type, $status, $detail)
+	{
+		$this->model('user')->insert('admin_log', array(
+			'uid' => intval($uid),
+			'admin_uid' => intval($admin_uid),
+			'type' => $type,
+			'status' => intval($status),
+			'detail' => htmlspecialchars($detail),
+			'add_time' => fake_time()
+		));
+	}
 }

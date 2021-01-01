@@ -51,6 +51,30 @@ class ajax extends AWS_CONTROLLER
 		}
 	}
 
+	private function get_reason_and_detail($status, &$reason, &$detail, &$log_detail)
+	{
+		$reason = trim($_POST['reason']);
+		$detail = trim($_POST['detail']);
+		// TODO: 字数选项
+		if (cjk_strlen($reason) > 300 OR cjk_strlen($detail) > 300)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('理由太长')));
+		}
+		if ($status)
+		{
+			if (!$reason)
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写理由')));
+			}
+			$log_detail = trim($reason . ' ' . $detail);
+		}
+		else
+		{
+			// 取消封禁/标记不记录理由和详情
+			$log_detail = '';
+		}
+	}
+
 	public function forbid_user_action()
 	{
 		if (!$this->user_info['permission']['forbid_user'])
@@ -64,20 +88,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		$status = intval($_POST['status']);
-		if ($status)
-		{
-			$reason = trim($_POST['reason']);
-			if (!$reason)
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写理由')));
-			}
-			$detail = trim($_POST['detail']);
-			// TODO: 字数选项
-			if (cjk_strlen($reason) > 300 OR cjk_strlen($detail) > 300)
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('理由太长')));
-			}
-		}
+		$this->get_reason_and_detail($status, $reason, $detail, $log_detail);
 
 		set_user_operation_last_time('manage', $this->user_id);
 
@@ -124,6 +135,8 @@ class ajax extends AWS_CONTROLLER
 
 		$this->model('user')->forbid_user_by_uid($uid, $status, $this->user_id, $reason, $detail);
 
+		$this->model('user')->insert_admin_log($uid, $this->user_id, 'forbid_user', $status, $log_detail);
+
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
@@ -144,20 +157,8 @@ class ajax extends AWS_CONTROLLER
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('操作失败')));
 		}
-		if ($status)
-		{
-			$reason = trim($_POST['reason']);
-			if (!$reason)
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写理由')));
-			}
-			$detail = trim($_POST['detail']);
-			// TODO: 字数选项
-			if (cjk_strlen($reason) > 300 OR cjk_strlen($detail) > 300)
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('理由太长')));
-			}
-		}
+
+		$this->get_reason_and_detail($status, $reason, $detail, $log_detail);
 
 		set_user_operation_last_time('manage', $this->user_id);
 
@@ -181,6 +182,8 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		$this->model('user')->flag_user_by_uid($uid, $status, $this->user_id, $reason, $detail);
+
+		$this->model('user')->insert_admin_log($uid, $this->user_id, 'flag_user', $status, $log_detail);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
@@ -213,6 +216,8 @@ class ajax extends AWS_CONTROLLER
 			'verified' => $text
 		), $_POST['uid']);
 
+		$this->model('user')->insert_admin_log($_POST['uid'], $this->user_id, 'edit_title', 0, $text);
+
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
@@ -243,6 +248,8 @@ class ajax extends AWS_CONTROLLER
 		$this->model('account')->update_user_fields(array(
 			'signature' => $text
 		), $_POST['uid']);
+
+		$this->model('user')->insert_admin_log($_POST['uid'], $this->user_id, 'edit_signature', 0, $text);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
@@ -284,6 +291,7 @@ class ajax extends AWS_CONTROLLER
 			if ($input_group_id == $val['group_id'])
 			{
 				$group_id = $input_group_id;
+				$group_name = $val['group_name'];
 				break;
 			}
 		}
@@ -299,6 +307,8 @@ class ajax extends AWS_CONTROLLER
 				'group_id' => ($group_id),
 				'user_update_time' => fake_time()
 			), $uid);
+
+			$this->model('user')->insert_admin_log($uid, $this->user_id, 'change_group', $group_id, $group_name);
 		}
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}

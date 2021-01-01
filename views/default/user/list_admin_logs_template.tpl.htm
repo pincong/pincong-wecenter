@@ -1,0 +1,73 @@
+<?php if ($this->list) { ?>
+<?php foreach($this->list AS $key => $val) { ?>
+<li>
+	<p class="aw-small-text">
+		<span style="color: #555;"><?php
+		
+			switch ($val['type'])
+			{
+				case 'flag_user':
+				{
+					switch ($val['status'])
+					{
+						case 0:
+							_e('取消标记');
+							break;
+						case -1:
+							_e('标记 (观察)');
+							break;
+						case 1:
+							_e('标记 (禁止登录)');
+							break;
+						case 2:
+							_e('标记 (禁止登录 + 隐藏全部发言)');
+							break;
+						case 3:
+							_e('标记 (禁止登录 + 替换全部发言)');
+							break;
+					}
+					break;
+				}
+				case 'forbid_user':
+				{
+					if ($val['status'])
+					{
+						_e('封禁');
+					}
+					else
+					{
+						_e('取消封禁');
+					}
+					break;
+				}
+				case 'change_group':
+				{
+					_e('变更用户组');
+					break;
+				}
+				case 'edit_title':
+				{
+					_e('修改头衔');
+					break;
+				}
+				case 'edit_signature':
+				{
+					_e('修改签名');
+					break;
+				}
+			}
+		
+		?></span>
+		•
+		<?php echo date_friendly($val['add_time']); ?>
+		<br>
+		<span style="color: #666;"><?php _e('管理员'); ?>:</span> <a href="<?php echo UF::url($val['admin_user_info']); ?>"><?php echo UF::name($val['admin_user_info']); ?></a>
+		<br>
+		<span style="color: #666;"><?php _e('用户'); ?>:</span> <a href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
+		<?php if($val['detail']) { ?>
+		<br><span style="color: #666;"><?php _e('详情'); ?>: </span> <?php echo $val['detail']; ?>
+		<?php } ?>
+	</p>
+</li>
+<?php } ?>
+<?php } ?>

@@ -785,6 +785,26 @@ CREATE TABLE IF NOT EXISTS `aws_knowledge` (
 --
 
 
+--
+CREATE TABLE IF NOT EXISTS `aws_admin_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) DEFAULT '0',
+  `admin_uid` int(11) DEFAULT '0',
+  `type` varchar(64) DEFAULT NULL,
+  `status` int(10) DEFAULT '0',
+  `detail` text,
+  `add_time` int(10) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `admin_uid` (`admin_uid`),
+  KEY `type` (`type`),
+  KEY `status` (`status`),
+  KEY `add_time` (`add_time`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+--
+
+
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

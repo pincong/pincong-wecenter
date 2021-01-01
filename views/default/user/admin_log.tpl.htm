@@ -1,0 +1,46 @@
+<?php TPL::include('global/header.tpl.htm'); ?>
+
+<div class="aw-container-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="col-sm-12 aw-main-content">
+
+					<div class="aw-mod aw-question-edit">
+						<div class="mod-head common-head">
+							<h2><?php _e('管理记录'); ?>
+							<span class="pull-right"> 
+							<a href="user/admin_log/uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>"><?php _e('全部'); ?></a>
+							<a href="user/admin_log/type-flag_user__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>__status--1"><?php _e('观察'); ?></a>
+							<a href="user/admin_log/type-flag_user__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>__status-1,2,3"><?php _e('禁止登录'); ?></a>
+							<a href="user/admin_log/type-flag_user__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>__status-0"><?php _e('取消标记'); ?></a>
+							<a href="user/admin_log/type-change_group__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>"><?php _e('用户组'); ?></a>
+							<a href="user/admin_log/type-forbid_user__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>__status-1"><?php _e('封禁'); ?></a>
+							<a href="user/admin_log/type-forbid_user__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>__status-0"><?php _e('取消封禁'); ?></a>
+							</span></h2>
+						</div>
+						<div class="mod-body">
+							<ul id="c_log_list"></ul>
+						</div>
+						<div class="mod-footer">
+							<!-- 加载更多内容 -->
+							<a class="aw-load-more-content" id="bp_log_more">
+								<span><?php _e('更多'); ?>...</span>
+							</a>
+							<!-- end 加载更多内容 -->
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+	AWS.load_list_view(G_BASE_URL + '/user/list_admin_logs/type-<?php echo htmlspecialchars($_GET['type']); ?>__uid-<?php echo intval($_GET['uid']); ?>__admin_uid-<?php echo intval($_GET['admin_uid']); ?>__status-<?php echo htmlspecialchars($_GET['status']); ?>', $('#bp_log_more'), $('#c_log_list'), 1);
+});
+</script>
+
+<?php TPL::include('global/footer.tpl.htm'); ?>
