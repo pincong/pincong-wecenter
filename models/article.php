@@ -28,7 +28,7 @@ class article_class extends AWS_MODEL
 			return $list;
 		}
 
-		$list = $this->fetch_page('article', 'uid = ' . intval($uid), 'id DESC', $page, $per_page);
+		$list = $this->fetch_page('article', ['uid', 'eq', $uid, 'i'], 'id DESC', $page, $per_page);
 		if (count($list) > 0)
 		{
 			AWS_APP::cache()->set($cache_key, $list, S::get('cache_level_normal'));
@@ -45,7 +45,7 @@ class article_class extends AWS_MODEL
 			return $list;
 		}
 
-		$list = $this->fetch_page('article_comment', 'uid = ' . intval($uid), 'id DESC', $page, $per_page);
+		$list = $this->fetch_page('article_comment', ['uid', 'eq', $uid, 'i'], 'id DESC', $page, $per_page);
 		foreach ($list AS $key => $val)
 		{
 			$parent_ids[] = $val['article_id'];
@@ -80,7 +80,7 @@ class article_class extends AWS_MODEL
 		$this->update('article', array(
 			'title' => htmlspecialchars($title),
 			'message' => htmlspecialchars($message)
-		), 'id = ' . intval($id));
+		), ['id', 'eq', $id, 'i']);
 
 		$this->model('content')->log('article', $id, 'article', $id, '编辑', $log_uid);
 
@@ -103,37 +103,37 @@ class article_class extends AWS_MODEL
 		$trash_category_id = S::get_int('trash_category_id');
 		if ($trash_category_id)
 		{
-			$where = "post_id = " . intval($id) . " AND post_type = 'article'";
+			$where = [['post_id', 'eq', $id, 'i'], ['post_type', 'eq', 'article', false]];
 			$this->update('posts_index', array('category_id' => $trash_category_id), $where);
 			$data['category_id'] = $trash_category_id;
 		}
 
-		$this->update('article', $data, 'id = ' . intval($id));
+		$this->update('article', $data, ['id', 'eq', $id, 'i']);
 
 		$this->model('content')->log('article', $id, 'article', $id, '删除', $log_uid, 'category', $item_info['category_id']);
 
 		return true;
 	}
 
-	public function modify_article_comment($comment_id, $message, $log_uid)
+	public function modify_article_comment($id, $message, $log_uid)
 	{
-		if (!$comment_info = $this->model('content')->get_reply_info_by_id('article_comment', $comment_id))
+		if (!$reply_info = $this->model('content')->get_reply_info_by_id('article_comment', $id))
 		{
 			return false;
 		}
 
 		$this->update('article_comment', array(
 			'message' => htmlspecialchars($message)
-		), 'id = ' . intval($comment_id));
+		), ['id', 'eq', $id, 'i']);
 
-		$this->model('content')->log('article', $comment_info['article_id'], 'article_comment', $comment_id, '编辑', $log_uid);
+		$this->model('content')->log('article', $reply_info['article_id'], 'article_comment', $id, '编辑', $log_uid);
 
 		return true;
 	}
 
-	public function clear_article_comment($comment_id, $log_uid)
+	public function clear_article_comment($id, $log_uid)
 	{
-		if (!$comment_info = $this->model('content')->get_reply_info_by_id('article_comment', $comment_id))
+		if (!$reply_info = $this->model('content')->get_reply_info_by_id('article_comment', $id))
 		{
 			return false;
 		}
@@ -141,9 +141,9 @@ class article_class extends AWS_MODEL
 		$this->update('article_comment', array(
 			'message' => null,
 			'fold' => 1
-		), 'id = ' . intval($comment_id));
+		), ['id', 'eq', $id, 'i']);
 
-		$this->model('content')->log('article', $comment_info['article_id'], 'article_comment', $comment_id, '删除', $log_uid);
+		$this->model('content')->log('article', $reply_info['article_id'], 'article_comment', $id, '删除', $log_uid);
 
 		return true;
 	}
@@ -152,7 +152,7 @@ class article_class extends AWS_MODEL
 	// 同时获取用户信息
 	public function get_article_by_id($id)
 	{
-		if ($item = $this->fetch_row('article', 'id = ' . intval($id)))
+		if ($item = $this->fetch_row('article', ['id', 'eq', $id, 'i']))
 		{
 			$item['user_info'] = $this->model('account')->get_user_info_by_uid($item['uid']);
 		}
@@ -163,7 +163,7 @@ class article_class extends AWS_MODEL
 	// 同时获取用户信息
 	public function get_article_comment_by_id($id)
 	{
-		if ($item = $this->fetch_row('article_comment', 'id = ' . intval($id)))
+		if ($item = $this->fetch_row('article_comment', ['id', 'eq', $id, 'i']))
 		{
 			$user_infos = $this->model('account')->get_user_info_by_uids(array(
 				$item['uid'],
@@ -180,8 +180,8 @@ class article_class extends AWS_MODEL
 	// 同时获取用户信息
 	public function get_article_comments($thread_ids, $page, $per_page, $order = 'id ASC')
 	{
-		array_walk_recursive($thread_ids, 'intval_string');
-		$where = 'article_id IN (' . implode(',', $thread_ids) . ')';
+		//array_walk_recursive($thread_ids, 'intval_string');
+		$where = ['article_id', 'in', $thread_ids, 'i'];
 
 		if ($list = $this->fetch_page('article_comment', $where, $order, $page, $per_page))
 		{

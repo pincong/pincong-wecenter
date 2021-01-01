@@ -28,7 +28,7 @@ class question_class extends AWS_MODEL
 			return $list;
 		}
 
-		$list = $this->fetch_page('question_discussion', 'uid = ' . intval($uid), 'id DESC', $page, $per_page);
+		$list = $this->fetch_page('question_discussion', ['uid', 'eq', $uid, 'i'], 'id DESC', $page, $per_page);
 		foreach ($list AS $key => $val)
 		{
 			$parent_ids[] = $val['question_id'];
@@ -59,7 +59,7 @@ class question_class extends AWS_MODEL
 			return $list;
 		}
 
-		$list = $this->fetch_page('answer_discussion', 'uid = ' . intval($uid), 'id DESC', $page, $per_page);
+		$list = $this->fetch_page('answer_discussion', ['uid', 'eq', $uid, 'i'], 'id DESC', $page, $per_page);
 		foreach ($list AS $key => $val)
 		{
 			$parent_ids[] = $val['answer_id'];
@@ -90,7 +90,7 @@ class question_class extends AWS_MODEL
 			return $list;
 		}
 
-		$list = $this->fetch_page('question', 'uid = ' . intval($uid), 'id DESC', $page, $per_page);
+		$list = $this->fetch_page('question', ['uid', 'eq', $uid, 'i'], 'id DESC', $page, $per_page);
 		if (count($list) > 0)
 		{
 			AWS_APP::cache()->set($cache_key, $list, S::get('cache_level_normal'));
@@ -107,7 +107,7 @@ class question_class extends AWS_MODEL
 			return $list;
 		}
 
-		$list = $this->fetch_page('answer', 'uid = ' . intval($uid), 'id DESC', $page, $per_page);
+		$list = $this->fetch_page('answer', ['uid', 'eq', $uid, 'i'], 'id DESC', $page, $per_page);
 		foreach ($list AS $key => $val)
 		{
 			$parent_ids[] = $val['question_id'];
@@ -142,7 +142,7 @@ class question_class extends AWS_MODEL
 		$this->update('question', array(
 			'title' => htmlspecialchars($title),
 			'message' => htmlspecialchars($message)
-		), 'id = ' . intval($id));
+		), ['id', 'eq', $id, 'i']);
 
 		$this->model('content')->log('question', $id, 'question', $id, '编辑', $log_uid);
 
@@ -166,12 +166,12 @@ class question_class extends AWS_MODEL
 		$trash_category_id = S::get_int('trash_category_id');
 		if ($trash_category_id)
 		{
-			$where = "post_id = " . intval($id) . " AND post_type = 'question'";
+			$where = [['post_id', 'eq', $id, 'i'], ['post_type', 'eq', 'question', false]];
 			$this->update('posts_index', array('category_id' => $trash_category_id), $where);
 			$data['category_id'] = $trash_category_id;
 		}
 
-		$this->update('question', $data, 'id = ' . intval($id));
+		$this->update('question', $data, ['id', 'eq', $id, 'i']);
 
 		$this->model('content')->log('question', $id, 'question', $id, '删除', $log_uid, 'category', $item_info['category_id']);
 
@@ -179,26 +179,26 @@ class question_class extends AWS_MODEL
 	}
 
 
-	public function modify_answer($answer_id, $message, $log_uid)
+	public function modify_answer($id, $message, $log_uid)
 	{
-		if (!$answer_info = $this->model('content')->get_reply_info_by_id('answer', $answer_id))
+		if (!$reply_info = $this->model('content')->get_reply_info_by_id('answer', $id))
 		{
 			return false;
 		}
 
 		$this->update('answer', array(
 			'message' => htmlspecialchars($message)
-		), 'id = ' . intval($answer_id));
+		), ['id', 'eq', $id, 'i']);
 
-		$this->model('content')->log('question', $answer_info['question_id'], 'answer', $answer_id, '编辑', $log_uid);
+		$this->model('content')->log('question', $reply_info['question_id'], 'answer', $id, '编辑', $log_uid);
 
 		return true;
 	}
 
 
-	public function clear_answer($answer_id, $log_uid)
+	public function clear_answer($id, $log_uid)
 	{
-		if (!$answer_info = $this->model('content')->get_reply_info_by_id('answer', $answer_id))
+		if (!$reply_info = $this->model('content')->get_reply_info_by_id('answer', $id))
 		{
 			return false;
 		}
@@ -206,9 +206,9 @@ class question_class extends AWS_MODEL
 		$this->update('answer', array(
 			'message' => null,
 			'fold' => 1
-		), 'id = ' . intval($answer_id));
+		), ['id', 'eq', $id, 'i']);
 
-		$this->model('content')->log('question', $answer_info['question_id'], 'answer', $answer_id, '删除', $log_uid);
+		$this->model('content')->log('question', $reply_info['question_id'], 'answer', $id, '删除', $log_uid);
 
 		return true;
 	}
@@ -217,7 +217,7 @@ class question_class extends AWS_MODEL
 	{
 		$this->update('question_discussion', array(
 			'message' => null
-		), "id = " . $comment['id']);
+		), ['id', 'eq', $comment['id'], 'i']);
 
 		$this->model('content')->log('question', $comment['question_id'], 'question_discussion', $comment['id'], '删除', $log_uid);
 
@@ -228,7 +228,7 @@ class question_class extends AWS_MODEL
 	{
 		$this->update('answer_discussion', array(
 			'message' => null
-		), "id = " . $comment['id']);
+		), ['id', 'eq', $comment['id'], 'i']);
 
 		if ($answer = $this->fetch_row('answer', 'id = ' . intval($comment['answer_id'])))
 		{
@@ -242,7 +242,7 @@ class question_class extends AWS_MODEL
 	// 同时获取用户信息
 	public function get_question_by_id($id)
 	{
-		if ($item = $this->fetch_row('question', 'id = ' . intval($id)))
+		if ($item = $this->fetch_row('question', ['id', 'eq', $id, 'i']))
 		{
 			$item['user_info'] = $this->model('account')->get_user_info_by_uid($item['uid']);
 		}
@@ -253,7 +253,7 @@ class question_class extends AWS_MODEL
 	// 同时获取用户信息
 	public function get_answer_by_id($id)
 	{
-		if ($item = $this->fetch_row('answer', 'id = ' . intval($id)))
+		if ($item = $this->fetch_row('answer', ['id', 'eq', $id, 'i']))
 		{
 			$item['user_info'] = $this->model('account')->get_user_info_by_uid($item['uid']);
 		}
@@ -264,8 +264,8 @@ class question_class extends AWS_MODEL
 	// 同时获取用户信息
 	public function get_answers($thread_ids, $page, $per_page, $order = 'id ASC')
 	{
-		array_walk_recursive($thread_ids, 'intval_string');
-		$where = 'question_id IN (' . implode(',', $thread_ids) . ')';
+		//array_walk_recursive($thread_ids, 'intval_string');
+		$where = ['question_id', 'in', $thread_ids, 'i'];
 
 		if ($list = $this->fetch_page('answer', $where, $order, $page, $per_page))
 		{
@@ -293,7 +293,7 @@ class question_class extends AWS_MODEL
 	// 同时获取用户信息
 	public function get_question_discussion_by_id($id)
 	{
-		if ($item = $this->fetch_row('question_discussion', "id = " . intval($id)))
+		if ($item = $this->fetch_row('question_discussion', ['id', 'eq', $id, 'i']))
 		{
 			$item['user_info'] = $this->model('account')->get_user_info_by_uid($item['uid']);
 		}
@@ -303,8 +303,8 @@ class question_class extends AWS_MODEL
 	// 同时获取用户信息
 	public function get_question_discussions($thread_ids, $page, $per_page, $order = 'id ASC')
 	{
-		array_walk_recursive($thread_ids, 'intval_string');
-		$where = 'question_id IN (' . implode(',', $thread_ids) . ')';
+		//array_walk_recursive($thread_ids, 'intval_string');
+		$where = ['question_id', 'in', $thread_ids, 'i'];
 
 		if ($list = $this->fetch_page('question_discussion', $where, $order, $page, $per_page))
 		{
@@ -331,7 +331,7 @@ class question_class extends AWS_MODEL
 	// 同时获取用户信息
 	public function get_answer_discussion_by_id($id)
 	{
-		if ($item = $this->fetch_row('answer_discussion', "id = " . intval($id)))
+		if ($item = $this->fetch_row('answer_discussion', ['id', 'eq', $id, 'i']))
 		{
 			$item['user_info'] = $this->model('account')->get_user_info_by_uid($item['uid']);
 		}
@@ -341,7 +341,7 @@ class question_class extends AWS_MODEL
 	// 同时获取用户信息
 	public function get_answer_discussions($parent_id, $page, $per_page, $order = 'id ASC')
 	{
-		$where = "answer_id = " . intval($parent_id);
+		$where = ['answer_id', 'eq', $parent_id, 'i'];
 
 		if ($list = $this->fetch_page('answer_discussion', $where, $order, $page, $per_page))
 		{
@@ -407,7 +407,11 @@ class question_class extends AWS_MODEL
 			return false;
 		}
 
-		if ($topic_relation = $this->fetch_all('topic_relation', 'item_id IN(' . implode(',', $question_ids) . ") AND `type` = 'question'"))
+		$where = [
+			['item_id', 'in', $question_ids, 'i'],
+			['type', 'eq', 'question', false]
+		];
+		if ($topic_relation = $this->fetch_all('topic_relation', $where))
 		{
 			foreach ($topic_relation AS $key => $val)
 			{
@@ -438,7 +442,11 @@ class question_class extends AWS_MODEL
 				$question_related_ids[$val['id']] = $val['id'];
 			}
 
-			if (!$topic_ids_query = $this->fetch_all('topic_relation', 'item_id IN(' . implode(',', $question_related_ids) . ") AND `type` = 'question'"))
+			$where = [
+				['item_id', 'in', $question_related_ids, 'i'],
+				['type', 'eq', 'question', false]
+			];
+			if (!$topic_ids_query = $this->fetch_all('topic_relation', $where))
 			{
 				return false;
 			}

@@ -22,7 +22,7 @@ class vote_class extends AWS_MODEL
 {
 	public function get_sent_votes_by_uid($uid, $page, $per_page)
 	{
-		$list = $this->fetch_page('vote', 'uid = ' . intval($uid), 'id DESC', $page, $per_page);
+		$list = $this->fetch_page('vote', ['uid', 'eq', $uid, 'i'], 'id DESC', $page, $per_page);
 		foreach ($list AS $key => $val)
 		{
 			$recipient_uids[] = $val['recipient_uid'];
@@ -42,7 +42,7 @@ class vote_class extends AWS_MODEL
 
 	public function get_received_votes_by_uid($uid, $page, $per_page)
 	{
-		$list = $this->fetch_page('vote', 'recipient_uid = ' . intval($uid), 'id DESC', $page, $per_page);
+		$list = $this->fetch_page('vote', ['recipient_uid', 'eq', $uid, 'i'], 'id DESC', $page, $per_page);
 		foreach ($list AS $key => $val)
 		{
 			$uids[] = $val['uid'];
@@ -167,7 +167,11 @@ class vote_class extends AWS_MODEL
 		$uid = intval($uid);
 		$item_uid = intval($item_uid);
 
-		$where = "`type` = '" . ($type) . "' AND item_id = " . ($item_id) . " AND uid = " . ($uid);
+		$where = [
+			['type', 'eq', $type, false],
+			['item_id', 'eq', $item_id],
+			['uid', 'eq', $uid]
+		];
 		$vote_info = $this->fetch_row('vote', $where, 'id DESC');
 
 		if (!$vote_info OR !$vote_info['value'])
@@ -224,26 +228,26 @@ class vote_class extends AWS_MODEL
 
 	public function get_user_vote_count($uid, $days = null, $value = null, $type = null, $item_id = null)
 	{
-		$where[] = "uid = " . intval($uid);
+		$where[] = ['uid', 'eq', $uid, 'i'];
 		if (isset($value))
 		{
-			$where[] = "value = " . intval($value);
+			$where[] = ['value', 'eq', $value, 'i'];
 		}
 		if (isset($days))
 		{
 			$time_after = real_time() - 24 * 3600 * $days;
-			$where[] = "add_time > " . intval($time_after);
+			$where[] = ['add_time', 'gt', $time_after];
 		}
 		if (isset($type) AND isset($item_id))
 		{
 			if ($this->model('content')->check_thread_or_reply_type($type))
 			{
-				$where[] = "`type` = '" . ($type) . "'";
-				$where[] = "item_id = " . intval($item_id);
+				$where[] = ['type', 'eq', $type, false];
+				$where[] = ['item_id', 'eq', $item_id, 'i'];
 			}
 		}
 
-		return intval($this->count('vote', implode(' AND ', $where)));
+		return intval($this->count('vote', $where));
 	}
 
 
@@ -258,7 +262,10 @@ class vote_class extends AWS_MODEL
 		$uid = intval($uid);
 		$time_after = real_time() - 24 * 3600;
 
-		$where = "add_time > " . $time_after . " AND uid = " . $uid;
+		$where = [
+			['add_time', 'gt', $time_after],
+			['uid', 'eq', $uid]
+		];
 		$count = $this->count('vote', $where);
 		if ($count >= $limit)
 		{
@@ -298,7 +305,12 @@ class vote_class extends AWS_MODEL
 		$uid = intval($uid);
 		$time_after = real_time() - 24 * 3600;
 
-		$where = "add_time > " . $time_after . " AND uid = " . $uid . " AND recipient_uid = " . $recipient_uid . " AND value = " . $value;
+		$where = [
+			['add_time', 'gt', $time_after],
+			['uid', 'eq', $uid],
+			['recipient_uid', 'eq', $recipient_uid],
+			['value', 'eq', $value, 'i']
+		];
 		$count = $this->count('vote', $where);
 		if ($count >= $limit)
 		{
@@ -319,7 +331,11 @@ class vote_class extends AWS_MODEL
 		$item_id = intval($item_id);
 		$uid = intval($uid);
 
-		$where = "`type` = '" . ($type) . "' AND item_id = " . ($item_id) . " AND uid = " . ($uid);
+		$where = [
+			['type', 'eq', $type, false],
+			['item_id', 'eq', $item_id],
+			['uid', 'eq', $uid]
+		];
 		return $this->fetch_one('vote', 'value', $where, 'id DESC');
 	}
 
@@ -341,9 +357,12 @@ class vote_class extends AWS_MODEL
 			return $vote_values;
 		}
 
-		$where = "`type` = '" . ($type) . "' AND uid = " . ($uid) . " AND item_id IN(" . implode(',', $item_ids) . ")";
-		$sql = "SELECT item_id, value FROM " . get_table('vote') . " WHERE " . $where . " ORDER BY id DESC";
-		$rows = $this->query_all($sql);
+		$where = [
+			['type', 'eq', $type, false],
+			['uid', 'eq', $uid, 'i'],
+			['item_id', 'in', $item_ids, 'i']
+		];
+		$rows = $this->fetch_all('vote', $where, 'id DESC');
 		if (!$rows)
 		{
 			return $vote_values;
@@ -373,7 +392,7 @@ class vote_class extends AWS_MODEL
 		{
 			$time_before = 0;
 		}
-		$this->delete('vote', 'add_time < ' . $time_before);
+		$this->delete('vote', ['add_time', 'lt', $time_before]);
 	}
 
 	/**
@@ -394,7 +413,10 @@ class vote_class extends AWS_MODEL
 			return false;
 		}
 
-		$where = "`type` = '" . ($type) . "' AND item_id = " . intval($item_id);
+		$where = [
+			['type', 'eq', $type, false],
+			['item_id', 'eq', $item_id, 'i']
+		];
 
 		$log_list = $this->fetch_page('vote', $where, 'id DESC', $page, $per_page);
 		if (!$log_list)

@@ -228,7 +228,7 @@ class currency_class extends AWS_MODEL
 		{
 			$time_before = 0;
 		}
-		$this->delete('currency_log', 'time < ' . $time_before);
+		$this->delete('currency_log', ['time', 'lt', $time_before]);
 	}
 
 }
