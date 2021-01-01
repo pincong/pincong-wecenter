@@ -14,3 +14,7 @@ Disallow: /admin/
 Disallow: /?/admin/
 Disallow: /ajax/
 Disallow: /*/ajax/
+Disallow: /content/
+Disallow: /vote/
+Disallow: /user/
+Disallow: /people/info/
