@@ -42,22 +42,14 @@ class ajax extends AWS_CONTROLLER
 		}
 	}
 
-	private function validate_thread($permission_name, $interval_name, $item_type, $item_id, &$item_info_out, $ignore_self_uid = false)
+	private function validate_thread($permission_name, $interval_name, $item_type, $item_id, &$item_info_out)
 	{
-		if (!$ignore_self_uid)
-		{
-			$this->validate_permission($permission_name);
-		}
+		$this->validate_permission($permission_name);
 		$this->validate_interval($interval_name);
 
 		if (!$item_info_out = $this->model('content')->get_thread_info_by_id($item_type, $item_id))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
-		}
-
-		if ($ignore_self_uid AND $item_info_out['uid'] != $this->user_id)
-		{
-			$this->validate_permission($permission_name);
 		}
 
 		set_user_operation_last_time($interval_name, $this->user_id);
@@ -372,7 +364,19 @@ class ajax extends AWS_CONTROLLER
 	// 关注主题
 	public function follow_action()
 	{
-		$this->validate_thread('follow_thread', 'follow', $_POST['item_type'], $_POST['item_id'], $item_info, true);
+		$this->validate_interval('follow');
+
+		if (!$item_info = $this->model('content')->get_thread_info_by_id($_POST['item_type'], $_POST['item_id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
+		}
+
+		if ($item_info['uid'] != $this->user_id)
+		{
+			$this->validate_permission('follow_thread');
+		}
+
+		set_user_operation_last_time('follow', $this->user_id);
 
 		$this->model('postfollow')->follow(
 			$_POST['item_type'],
@@ -383,10 +387,17 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
-	// 关注主题
+	// 取消关注主题
 	public function unfollow_action()
 	{
-		$this->validate_thread('follow_thread', 'follow', $_POST['item_type'], $_POST['item_id'], $item_info, true);
+		$this->validate_interval('follow');
+
+		if (!$item_info = $this->model('content')->get_thread_info_by_id($_POST['item_type'], $_POST['item_id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
+		}
+
+		set_user_operation_last_time('follow', $this->user_id);
 
 		$this->model('postfollow')->unfollow(
 			$_POST['item_type'],

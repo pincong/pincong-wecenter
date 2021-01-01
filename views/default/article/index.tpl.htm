@@ -121,7 +121,7 @@
 								</div>
 								<!-- end 下拉菜单 -->
 
-								<?php if ($this->user_info['permission']['follow_thread'] OR $this->article_info['uid'] == $this->user_id) { ?>
+								<?php if ($this->following OR $this->user_info['permission']['follow_thread'] OR $this->article_info['uid'] == $this->user_id) { ?>
 								<?php if ($this->following) { ?>
 									<a class="follow btn btn-normal btn-success pull-right active" href="javascript:;" onclick="(function(selector){AWS.ajax_request(G_BASE_URL + '/content/ajax/unfollow/', 'item_type=article&item_id=<?php echo $this->article_info['id']; ?>', function(){selector.removeClass('active');selector.addClass('disabled');selector.text('<?php _e('已取消'); ?>')});})($(this))"><?php _e('取消关注'); ?></a>
 								<?php } else { ?>
