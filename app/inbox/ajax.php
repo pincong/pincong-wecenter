@@ -27,6 +27,43 @@ class ajax extends AWS_CONTROLLER
 		HTTP::no_cache_header();
 	}
 
+	private function validate_user_pm_settings(&$recipient_user, $sender_uid)
+	{
+		$inbox_recv = $recipient_user['inbox_recv'];
+		if ($inbox_recv != 1 AND $inbox_recv != 2 AND $inbox_recv != 3)
+		{
+			$inbox_recv = intval(get_setting('default_inbox_recv'));
+		}
+
+		if ($inbox_recv == 2) // 2为拒绝任何人
+		{
+			if ($this->user_id == $sender_uid)
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对方设置了拒绝接收任何人的私信')));
+			}
+			else
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你设置了拒绝接收任何人的私信')));
+			}
+		}
+		else if ($inbox_recv != 3) // 3为任何人
+		{
+			return;
+		}
+
+		if (!$this->model('follow')->user_follow_check($recipient_user['uid'], $sender_uid))
+		{
+			if ($this->user_id == $sender_uid)
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对方未关注你, 你无法给 Ta 发送私信')));
+			}
+			else
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你未关注对方, Ta 无法给你发送私信')));
+			}
+		}
+	}
+
 	public function send_action()
 	{
 		$message = $_POST['message'];
@@ -68,25 +105,8 @@ class ajax extends AWS_CONTROLLER
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('这位用户的声望还不能接收你的私信')));
 			}
 
-			$inbox_recv = $recipient_user['inbox_recv'];
-			if ($inbox_recv != 1 AND $inbox_recv != 2 AND $inbox_recv != 3)
-			{
-				$inbox_recv = intval(get_setting('default_inbox_recv'));
-			}
-
-			if ($inbox_recv == 2) // 2为拒绝任何人
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对方设置了拒绝任何人给 Ta 发送私信')));
-			}
-
-			else if ($inbox_recv != 3) // 3为任何人
-			{
-				if (!$this->model('follow')->user_follow_check($recipient_user['uid'], $this->user_id))
-				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对方设置了只有 Ta 关注的人才能给 Ta 发送私信')));
-				}
-			}
-
+			$this->validate_user_pm_settings($recipient_user, $this->user_id);
+			$this->validate_user_pm_settings($this->user_info, $recipient_user['uid']);
 		}
 
 		// !注: 来路检测后面不能再放报错提示
