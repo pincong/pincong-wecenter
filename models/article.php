@@ -53,7 +53,7 @@ class article_class extends AWS_MODEL
 
 		if ($parent_ids)
 		{
-			$parents = $this->get_article_info_by_ids($parent_ids);
+			$parents = $this->model('content')->get_posts_by_ids('article', $parent_ids);
 			foreach ($list AS $key => $val)
 			{
 				$list[$key]['article_info'] = $parents[$val['article_id']];
@@ -174,26 +174,6 @@ class article_class extends AWS_MODEL
 		return $article;
 	}
 
-	public function get_article_info_by_ids($article_ids)
-	{
-		if (!is_array($article_ids) OR sizeof($article_ids) == 0)
-		{
-			return false;
-		}
-
-		array_walk_recursive($article_ids, 'intval_string');
-
-		if ($article_list = $this->fetch_all('article', 'id IN(' . implode(',', $article_ids) . ')'))
-		{
-			foreach ($article_list AS $key => $val)
-			{
-				$result[$val['id']] = $val;
-			}
-		}
-
-		return $result;
-	}
-
 	// 同时获取用户信息
 	public function get_comment_by_id($comment_id)
 	{
@@ -209,27 +189,6 @@ class article_class extends AWS_MODEL
 		}
 
 		return $comment;
-	}
-
-	public function get_comments_by_ids($comment_ids)
-	{
-		if (!is_array($comment_ids) OR !$comment_ids)
-		{
-			return false;
-		}
-
-		array_walk_recursive($comment_ids, 'intval_string');
-
-		if ($comments = $this->fetch_all('article_comment', 'id IN (' . implode(',', $comment_ids) . ')'))
-		{
-			// 不折叠
-			foreach ($comments AS $key => $val)
-			{
-				$article_comments[$val['id']] = $val;
-			}
-		}
-
-		return $article_comments;
 	}
 
 	public function get_comments($thread_ids, $page, $per_page, $order = 'id ASC')
@@ -262,84 +221,6 @@ class article_class extends AWS_MODEL
 		}
 
 		return $comments;
-	}
-
-	public function get_article_list($category_id, $page, $per_page, $order_by, $day = null)
-	{
-		$where = array();
-
-		if ($category_id)
-		{
-			$where[] = 'category_id = ' . intval($category_id);
-		}
-
-		if ($day)
-		{
-			$where[] = 'add_time > ' . (fake_time() - $day * 24 * 60 * 60);
-		}
-
-		return $this->fetch_page('article', implode(' AND ', $where), $order_by, $page, $per_page);
-	}
-
-	public function get_article_list_by_topic_ids($page, $per_page, $order_by, $topic_ids)
-	{
-		if (!$topic_ids)
-		{
-			return false;
-		}
-
-		if (!is_array($topic_ids))
-		{
-			$topic_ids = array(
-				$topic_ids
-			);
-		}
-
-		array_walk_recursive($topic_ids, 'intval_string');
-
-		$result_cache_key = 'article_list_by_topic_ids_' . md5(implode('_', $topic_ids) . $order_by . $page . $per_page);
-
-		$found_rows_cache_key = 'article_list_by_topic_ids_found_rows_' . md5(implode('_', $topic_ids) . $order_by . $page . $per_page);
-
-		if (!$result = AWS_APP::cache()->get($result_cache_key) OR $found_rows = AWS_APP::cache()->get($found_rows_cache_key))
-		{
-			$topic_relation_where[] = '`topic_id` IN(' . implode(',', $topic_ids) . ')';
-			$topic_relation_where[] = "`type` = 'article'";
-
-			if ($topic_relation_query = $this->query_all("SELECT item_id FROM " . get_table('topic_relation') . " WHERE " . implode(' AND ', $topic_relation_where)))
-			{
-				foreach ($topic_relation_query AS $key => $val)
-				{
-					$article_ids[$val['item_id']] = $val['item_id'];
-				}
-			}
-
-			if (!$article_ids)
-			{
-				return false;
-			}
-
-			$where[] = "id IN (" . implode(',', $article_ids) . ")";
-		}
-
-		if (!$result)
-		{
-			$result = $this->fetch_page('article', implode(' AND ', $where), $order_by, $page, $per_page);
-
-			AWS_APP::cache()->set($result_cache_key, $result, get_setting('cache_level_high'));
-		}
-
-
-		if (!$found_rows)
-		{
-			$found_rows = $this->found_rows();
-
-			AWS_APP::cache()->set($found_rows_cache_key, $found_rows, get_setting('cache_level_high'));
-		}
-
-		$this->article_list_total = $found_rows;
-
-		return $result;
 	}
 
 }

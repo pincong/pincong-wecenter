@@ -177,12 +177,12 @@ class notify_class extends AWS_MODEL
 
 		if ($question_ids)
 		{
-			$question_list = $this->model('question')->get_question_info_by_ids($question_ids);
+			$question_list = $this->model('content')->get_posts_by_ids('question', $question_ids);
 		}
 
 		if ($article_ids)
 		{
-			$article_list = $this->model('article')->get_article_info_by_ids($article_ids);
+			$article_list = $this->model('content')->get_posts_by_ids('article', $article_ids);
 		}
 
 		if ($uids)

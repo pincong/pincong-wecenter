@@ -212,7 +212,7 @@ class posts_class extends AWS_MODEL
 		{
 			$topic_infos['question'] = $this->model('topic')->get_topics_by_item_ids($question_ids, 'question');
 
-			$question_infos = $this->model('question')->get_question_info_by_ids($question_ids);
+			$question_infos = $this->model('content')->get_posts_by_ids('question', $question_ids);
 			foreach ($question_infos as $key => $val)
 			{
 				$data_list_uids[$val['last_uid']] = $val['last_uid'];
@@ -223,7 +223,7 @@ class posts_class extends AWS_MODEL
 		{
 			$topic_infos['article'] = $this->model('topic')->get_topics_by_item_ids($article_ids, 'article');
 
-			$article_infos = $this->model('article')->get_article_info_by_ids($article_ids);
+			$article_infos = $this->model('content')->get_posts_by_ids('article', $article_ids);
 			foreach ($article_infos as $key => $val)
 			{
 				$data_list_uids[$val['last_uid']] = $val['last_uid'];
@@ -234,7 +234,7 @@ class posts_class extends AWS_MODEL
 		{
 			$topic_infos['video'] = $this->model('topic')->get_topics_by_item_ids($video_ids, 'video');
 
-			$video_infos = $this->model('video')->get_video_info_by_ids($video_ids);
+			$video_infos = $this->model('content')->get_posts_by_ids('video', $video_ids);
 			foreach ($video_infos as $key => $val)
 			{
 				$data_list_uids[$val['last_uid']] = $val['last_uid'];

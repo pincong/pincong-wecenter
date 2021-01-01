@@ -36,7 +36,7 @@ class question_class extends AWS_MODEL
 
 		if ($parent_ids)
 		{
-			$parents = $this->get_question_info_by_ids($parent_ids);
+			$parents = $this->model('content')->get_posts_by_ids('question', $parent_ids);
 			foreach ($list AS $key => $val)
 			{
 				$list[$key]['question_info'] = $parents[$val['question_id']];
@@ -67,7 +67,7 @@ class question_class extends AWS_MODEL
 
 		if ($parent_ids)
 		{
-			$parents = $this->get_answer_info_by_ids($parent_ids);
+			$parents = $this->model('content')->get_posts_by_ids('answer', $parent_ids);
 			foreach ($list AS $key => $val)
 			{
 				$list[$key]['answer_info'] = $parents[$val['answer_id']];
@@ -115,7 +115,7 @@ class question_class extends AWS_MODEL
 
 		if ($parent_ids)
 		{
-			$parents = $this->get_question_info_by_ids($parent_ids);
+			$parents = $this->model('content')->get_posts_by_ids('question', $parent_ids);
 			foreach ($list AS $key => $val)
 			{
 				$list[$key]['question_info'] = $parents[$val['question_id']];
@@ -251,46 +251,6 @@ class question_class extends AWS_MODEL
 		}
 
 		return $question;
-	}
-
-	public function get_question_info_by_ids($item_ids)
-	{
-		if (!$item_ids)
-		{
-			return false;
-		}
-
-		array_walk_recursive($item_ids, 'intval_string');
-
-		if ($item_list = $this->fetch_all('question', "id IN(" . implode(',', $item_ids) . ")"))
-		{
-			foreach ($item_list AS $key => $val)
-			{
-				$result[$val['id']] = $val;
-			}
-		}
-
-		return $result;
-	}
-
-	public function get_answer_info_by_ids($item_ids)
-	{
-		if (!$item_ids)
-		{
-			return false;
-		}
-
-		array_walk_recursive($item_ids, 'intval_string');
-
-		if ($item_list = $this->fetch_all('answer', "id IN(" . implode(',', $item_ids) . ")"))
-		{
-			foreach ($item_list AS $key => $val)
-			{
-				$result[$val['id']] = $val;
-			}
-		}
-
-		return $result;
 	}
 
 	public function get_related_question_list($question_id, $title, $limit = 10)

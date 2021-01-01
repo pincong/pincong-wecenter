@@ -110,32 +110,32 @@ class currency_class extends AWS_MODEL
 
 		if ($question_ids)
 		{
-			$questions = $this->model('question')->get_question_info_by_ids($question_ids);
+			$questions = $this->model('content')->get_posts_by_ids('question', $question_ids);
 		}
 
 		if ($article_ids)
 		{
-			$articles = $this->model('article')->get_article_info_by_ids($article_ids);
+			$articles = $this->model('content')->get_posts_by_ids('article', $article_ids);
 		}
 
 		if ($video_ids)
 		{
-			$videos = $this->model('video')->get_video_info_by_ids($video_ids);
+			$videos = $this->model('content')->get_posts_by_ids('video', $video_ids);
 		}
 
 		if ($answer_ids)
 		{
-			$answers = $this->model('answer')->get_answers_by_ids($answer_ids);
+			$answers = $this->model('content')->get_posts_by_ids('answer', $answer_ids);
 		}
 
 		if ($article_comment_ids)
 		{
-			$article_comments = $this->model('article')->get_comments_by_ids($article_comment_ids);
+			$article_comments = $this->model('content')->get_posts_by_ids('article_comment', $article_comment_ids);
 		}
 
 		if ($video_comment_ids)
 		{
-			$video_comments = $this->model('video')->get_comments_by_ids($video_comment_ids);
+			$video_comments = $this->model('content')->get_posts_by_ids('video_comment', $video_comment_ids);
 		}
 
 		foreach ($parse_items AS $log_id => $item)

@@ -110,7 +110,7 @@ class favorite_class extends AWS_MODEL
 
 		if ($answer_ids)
 		{
-			if ($answer_infos = $this->model('answer')->get_answers_by_ids($answer_ids))
+			if ($answer_infos = $this->model('content')->get_posts_by_ids('answer', $answer_ids))
 			{
 				foreach ($answer_infos AS $key => $data)
 				{
@@ -123,7 +123,7 @@ class favorite_class extends AWS_MODEL
 
 		if ($question_ids)
 		{
-			if ($question_infos = $this->model('question')->get_question_info_by_ids($question_ids))
+			if ($question_infos = $this->model('content')->get_posts_by_ids('question', $question_ids))
 			{
 				foreach ($question_infos AS $key => $data)
 				{
@@ -134,7 +134,7 @@ class favorite_class extends AWS_MODEL
 
 		if ($article_ids)
 		{
-			if ($article_infos = $this->model('article')->get_article_info_by_ids($article_ids))
+			if ($article_infos = $this->model('content')->get_posts_by_ids('article', $article_ids))
 			{
 				foreach ($article_infos AS $key => $data)
 				{
@@ -145,7 +145,7 @@ class favorite_class extends AWS_MODEL
 
 		if ($video_ids)
 		{
-			if ($video_infos = $this->model('video')->get_video_info_by_ids($video_ids))
+			if ($video_infos = $this->model('content')->get_posts_by_ids('video', $video_ids))
 			{
 				foreach ($video_infos AS $key => $data)
 				{

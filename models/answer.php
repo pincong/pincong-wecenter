@@ -45,35 +45,6 @@ class answer_class extends AWS_MODEL
 		return $answer;
 	}
 
-	public function get_answers_by_ids($answer_ids)
-	{
-		if (!is_array($answer_ids))
-		{
-			return false;
-		}
-
-		if ($answers = $this->fetch_all('answer', "id IN (" . implode(', ', $answer_ids) . ")"))
-		{
-			// 不折叠
-			foreach ($answers AS $key => $val)
-			{
-				$result[$val['id']] = $val;
-			}
-		}
-
-		return $result;
-	}
-
-	public function get_answer_count_by_question_id($question_id, $where = null)
-	{
-		if ($where)
-		{
-			$where = ' AND ' . $where;
-		}
-
-		return $this->count('answer', "question_id = " . intval($question_id) . $where);
-	}
-
 	public function get_answers($thread_ids, $page, $per_page, $order = 'id ASC')
 	{
 		array_walk_recursive($thread_ids, 'intval_string');
