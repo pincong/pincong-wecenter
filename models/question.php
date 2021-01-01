@@ -394,7 +394,7 @@ class question_class extends AWS_MODEL
 			$topic_ids[] = $val['topic_id'];
 		}
 
-		$topic_list = $this->query_all("SELECT * FROM " . $this->get_table('topic') . " WHERE topic_id IN(" . implode(',', $topic_ids) . ") ORDER BY discuss_count DESC", $limit);
+		$topic_list = $this->query_all("SELECT * FROM " . $this->get_table('topic') . " WHERE topic_id IN(" . implode(',', $topic_ids) . ") ORDER BY discuss_count DESC" . ' LIMIT ' . $limit);
 
 		return $topic_list;
 	}
@@ -532,7 +532,7 @@ class question_class extends AWS_MODEL
 				return false;
 			}
 
-			if ($question_list = $this->query_all($this->model('search_fulltext')->bulid_query('question', 'title', $question_keywords), 2000))
+			if ($question_list = $this->query_all($this->model('search_fulltext')->bulid_query('question', 'title', $question_keywords) . ' LIMIT ' . 2000))
 			{
 				$question_list = aasort($question_list, 'score', 'DESC');
 				$question_list = aasort($question_list, 'agree_count', 'DESC');

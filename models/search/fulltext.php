@@ -113,7 +113,7 @@ class search_fulltext_class extends AWS_MODEL
 
 		if (!$result = $this->fetch_cache($search_hash))
 		{
-			if ($result = $this->query_all($this->bulid_query('question', 'title', $q, $where), $this->max_results))
+			if ($result = $this->query_all($this->bulid_query('question', 'title', $q, $where) . ' LIMIT ' . $this->max_results))
 			{
 				$result = aasort($result, 'score', 'DESC');
 			}
@@ -162,7 +162,7 @@ class search_fulltext_class extends AWS_MODEL
 
 		if (!$result = $this->fetch_cache($search_hash))
 		{
-			if ($result = $this->query_all($this->bulid_query('article', 'title', $q, $where), $this->max_results))
+			if ($result = $this->query_all($this->bulid_query('article', 'title', $q, $where) . ' LIMIT ' . $this->max_results))
 			{
 				$result = aasort($result, 'score', 'DESC');
 			}

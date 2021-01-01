@@ -427,23 +427,13 @@ class AWS_MODEL
 	 * @param	string
 	 * @return	array
 	 */
-	public function query_all($sql, $limit = null, $offset = null)
+	public function query_all($sql)
 	{
 		$this->slave();
 
 		if (!$sql)
 		{
 			throw new Exception('Query was empty.');
-		}
-
-		if ($limit)
-		{
-			$sql .= ' LIMIT ' . $limit;
-		}
-
-		if ($offset)
-		{
-			$sql .= ' OFFSET ' . $offset;
 		}
 
 		if ($this->_debug)

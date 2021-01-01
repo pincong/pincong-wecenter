@@ -53,7 +53,7 @@ class search_class extends AWS_MODEL
 			$where[] = "user_name LIKE '" . $this->escape($q) . "%'";
 		}
 
-		return $this->query_all('SELECT uid, user_name FROM ' . get_table('users') . ' WHERE ' . implode(' OR ', $where), calc_page_limit($page, $limit));
+		return $this->query_all('SELECT uid, user_name FROM ' . get_table('users') . ' WHERE ' . implode(' OR ', $where) . ' LIMIT ' . calc_page_limit($page, $limit));
 	}
 
 	public function search_topics($q, $page, $limit = 20)

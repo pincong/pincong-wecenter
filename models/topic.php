@@ -409,7 +409,7 @@ class topic_class extends AWS_MODEL
 
 		$where =['topic_id', 'eq', $topic_id, 'i'];
 
-		$uids = $this->query_all("SELECT DISTINCT uid FROM " . $this->get_table('topic_focus') . " WHERE " . $this->where($where), $limit);
+		$uids = $this->query_all("SELECT DISTINCT uid FROM " . $this->get_table('topic_focus') . " WHERE " . $this->where($where) . ' LIMIT ' . intval($limit));
 
 		if ($uids)
 		{
@@ -433,14 +433,14 @@ class topic_class extends AWS_MODEL
 		return $user_list;
 	}
 
-	public function get_item_ids_by_topics_id($topic_id, $type = null, $limit = null)
+	public function get_item_ids_by_topics_id($topic_id, $type = null, $limit = 50)
 	{
 		return $this->get_item_ids_by_topics_ids(array(
 			$topic_id
 		), $type, $limit);
 	}
 
-	public function get_item_ids_by_topics_ids($topic_ids, $type = null, $limit = null)
+	public function get_item_ids_by_topics_ids($topic_ids, $type = null, $limit = 50)
 	{
 		if (!is_array($topic_ids))
 		{
@@ -456,7 +456,7 @@ class topic_class extends AWS_MODEL
 			$where[] = ['type', 'eq', $type, 's'];
 		}
 
-		if ($result = $this->query_all("SELECT item_id FROM " . $this->get_table('topic_relation') . " WHERE " . $this->where($where), $limit))
+		if ($result = $this->query_all("SELECT item_id FROM " . $this->get_table('topic_relation') . " WHERE " . $this->where($where) . ' LIMIT ' . intval($limit)))
 		{
 			foreach ($result AS $key => $val)
 			{
