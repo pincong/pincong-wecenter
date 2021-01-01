@@ -192,7 +192,7 @@ class reputation_class extends AWS_MODEL
 			}
 			if (!$vote_user['permission']['no_bonus_reputation_factor'])
 			{
-				$factor = $this->get_bonus_reputation($item_info);
+				$factor = $this->get_bonus_factor($item_info);
 				$user_reputation_value = $user_reputation_value * $factor;
 				$content_reputation_value = $content_reputation_value * $factor;
 			}
