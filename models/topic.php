@@ -189,27 +189,15 @@ class topic_class extends AWS_MODEL
 	 *
 	 * 锁定/解锁话题
 	 * @param int $topic_id
-	 * @param int $topic_lock
+	 * @param int $status
 	 *
 	 * @return boolean true|false
 	 */
-	public function lock_topic_by_ids($topic_ids, $topic_lock = 0)
+	public function lock_topic_by_id($topic_id, $status)
 	{
-		if (!$topic_ids)
-		{
-			return false;
-		}
-
-		if (!is_array($topic_ids))
-		{
-			$topic_ids = array(
-				$topic_ids,
-			);
-		}
-
 		return $this->update('topic', array(
-			'topic_lock' => $topic_lock
-		), ['topic_id', 'in', $topic_ids, 'i']);
+			'topic_lock' => intval(!!$status)
+		), ['topic_id', 'eq', $topic_id, 'i']);
 
 	}
 

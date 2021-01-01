@@ -198,6 +198,7 @@ class ajax extends AWS_CONTROLLER
 		));
 	}
 
+/*
 	public function lock_topic_action()
 	{
 		if (!$this->user_info['permission']['manage_topic'])
@@ -209,6 +210,7 @@ class ajax extends AWS_CONTROLLER
 
 		H::ajax_success();
 	}
+*/
 
 	public function lock_action()
 	{
@@ -222,7 +224,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_error((_t('话题不存在')));
 		}
 
-		$this->model('topic')->lock_topic_by_ids(H::POST('topic_id'), !$topic_info['topic_lock']);
+		$this->model('topic')->lock_topic_by_id(H::POST('topic_id'), !$topic_info['topic_lock']);
 
 		H::ajax_success();
 	}

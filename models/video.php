@@ -108,7 +108,7 @@ class video_class extends AWS_MODEL
 			$data['category_id'] = $trash_category_id;
 		}
 
-		$this->update('video', ['id', 'eq', $id, 'i']);
+		$this->update('video', $data, ['id', 'eq', $id, 'i']);
 
 		$this->model('content')->log('video', $id, 'video', $id, '删除', $log_uid, 'category', $item_info['category_id']);
 
