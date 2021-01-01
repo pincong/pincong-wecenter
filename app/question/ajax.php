@@ -63,11 +63,6 @@ class ajax extends AWS_CONTROLLER
 
 	public function save_answer_discussion_action()
 	{
-		if (!$this->user_info['permission']['publish_discussion'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
-		}
-
 		if ($_POST['anonymous'] AND !$this->user_info['permission']['reply_anonymously'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不能匿名')));
@@ -101,16 +96,22 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('讨论内容字数不得超过 %s 字', $discussion_length_max)));
 		}
 
-		if (!$this->model('ratelimit')->check_answer_discussion($this->user_id, $this->user_info['permission']['discussion_limit_per_day']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日讨论回复已经达到上限')));
-		}
-
 		$answer_info = $this->model('content')->get_reply_info_by_id('answer', $_GET['answer_id']);
 		if (!$answer_info)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('回复不存在')));
 		}
+
+		if (!$this->user_info['permission']['publish_discussion'] AND $answer_info['uid'] != $this->user_id)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
+		}
+
+		if (!$this->model('ratelimit')->check_answer_discussion($this->user_id, $this->user_info['permission']['discussion_limit_per_day']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日讨论回复已经达到上限')));
+		}
+
 		$question_info = $this->model('content')->get_thread_info_by_id('question', $answer_info['question_id']);
 		if (!$question_info)
 		{
@@ -164,11 +165,6 @@ class ajax extends AWS_CONTROLLER
 
 	public function save_question_discussion_action()
 	{
-		if (!$this->user_info['permission']['publish_discussion'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
-		}
-
 		if ($_POST['anonymous'] AND !$this->user_info['permission']['reply_anonymously'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不能匿名')));
@@ -202,15 +198,15 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('讨论内容字数不得超过 %s 字', $discussion_length_max)));
 		}
 
-		if (!$this->model('ratelimit')->check_question_discussion($this->user_id, $this->user_info['permission']['discussion_limit_per_day']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日讨论问题已经达到上限')));
-		}
-
 		$question_info = $this->model('content')->get_thread_info_by_id('question', $_GET['question_id']);
 		if (!$question_info)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('问题不存在')));
+		}
+
+		if (!$this->user_info['permission']['publish_discussion'] AND $question_info['uid'] != $this->user_id)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
 		}
 
 		if ($question_info['lock'])
@@ -221,6 +217,11 @@ class ajax extends AWS_CONTROLLER
 		if (!$question_info['title'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能讨论已删除的问题')));
+		}
+
+		if (!$this->model('ratelimit')->check_question_discussion($this->user_id, $this->user_info['permission']['discussion_limit_per_day']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日讨论问题已经达到上限')));
 		}
 
 		if ($_POST['anonymous'])
