@@ -294,7 +294,11 @@ class ajax extends AWS_CONTROLLER
 
 	public function fold_reply_action()
 	{
-		$this->validate_reply('fold_post', 'manage', $_POST['item_type'], $_POST['item_id'], $item_info);
+		$this->validate_interval('manage');
+		if (!$item_info = $this->model('content')->get_reply_info_by_id($_POST['item_type'], $_POST['item_id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
+		}
 
 		if (!$item_info['fold'])
 		{
@@ -314,6 +318,14 @@ class ajax extends AWS_CONTROLLER
 					break;
 			}
 
+			$parent_info = $this->model('content')->get_thread_info_by_id($parent_type, $parent_id);
+			if (!$parent_info OR $parent_info['uid'] != $this->user_id)
+			{
+				$this->validate_permission('fold_post');
+			}
+
+			set_user_operation_last_time('manage', $this->user_id);
+
 			$this->model('content')->fold_reply(
 				$_POST['item_type'],
 				$_POST['item_id'],
@@ -328,7 +340,11 @@ class ajax extends AWS_CONTROLLER
 
 	public function unfold_reply_action()
 	{
-		$this->validate_reply('fold_post', 'manage', $_POST['item_type'], $_POST['item_id'], $item_info);
+		$this->validate_interval('manage');
+		if (!$item_info = $this->model('content')->get_reply_info_by_id($_POST['item_type'], $_POST['item_id']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
+		}
 
 		if ($item_info['fold'])
 		{
@@ -347,6 +363,14 @@ class ajax extends AWS_CONTROLLER
 					$parent_id = $item_info['video_id'];
 					break;
 			}
+
+			$parent_info = $this->model('content')->get_thread_info_by_id($parent_type, $parent_id);
+			if (!$parent_info OR $parent_info['uid'] != $this->user_id)
+			{
+				$this->validate_permission('fold_post');
+			}
+
+			set_user_operation_last_time('manage', $this->user_id);
 
 			$this->model('content')->unfold_reply(
 				$_POST['item_type'],
