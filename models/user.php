@@ -280,9 +280,12 @@ class user_class extends AWS_MODEL
 		$this->delete_video_comments($uid);
 	}
 
-	public function delete_user_by_uid($uid)
+	public function delete_user_by_uid($uid, $delete_user_contents = false)
 	{
-		$this->delete_user_contents($uid);
+		if ($delete_user_contents)
+		{
+			$this->delete_user_contents($uid);
+		}
 
 		$uid = intval($uid);
 

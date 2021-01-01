@@ -781,7 +781,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 		}
 		else
 		{
-			$this->model('user')->delete_user_by_uid($_POST['uid']);
+			$this->model('user')->delete_user_by_uid($_POST['uid'], $_POST['remove_user_data']);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
@@ -804,7 +804,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 			if ($user_info)
 			{
-				$this->model('user')->delete_user_by_uid($uid);
+				$this->model('user')->delete_user_by_uid($uid, $_POST['remove_user_data'][$uid]);
 			}
 			else
 			{

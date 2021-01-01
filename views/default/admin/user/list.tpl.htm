@@ -26,7 +26,8 @@
 					<table class="table table-striped">
 						<thead>
 							<tr>
-								<th><input type="checkbox" class="check-all"></th>
+								<th><input type="checkbox" class="select-all"><br><?php _e('删除'); ?></th>
+								<th><input type="checkbox" class="select-all"><br><?php _e('删除内容'); ?></th>
 								<th>ID</th>
 								<th><?php _e('用户名'); ?></th>
 								<th><?php _e('会员组'); ?></th>
@@ -41,7 +42,8 @@
 						<tbody>
 							<?php foreach ($this->list AS $key => $val) { ?>
 							<tr>
-								<td><input type="checkbox" value="<?php echo $val['uid']; ?>" name="uids[]"></td>
+								<td><input type="checkbox" class="select-user" value="<?php echo $val['uid']; ?>" name="uids[<?php echo $val['uid']; ?>]"></td>
+								<td><input type="checkbox" class="select-user-data" value="1" name="remove_user_data[<?php echo $val['uid']; ?>]"></td>
 								<td><?php echo $val['uid']; ?></td>
 								<td><a href="<?php echo UF::url($val); ?>" target="_blank"><?php if ($val['flagged'] > 0) { ?><s><?php } ?><?php echo UF::name($val); ?><?php if ($val['flagged'] > 0) { ?></s><?php } ?></a> <?php if ($val['flagged'] == -1) { ?><sup><?php _e('观察'); ?></sup><?php } ?></td>
 								<td><?php echo $this->member_group[$val['reputation_group_id']]['group_name']; ?></td>
@@ -146,5 +148,27 @@
 		</div>
 	</div>
 </div>
+
+<script>
+$(document).ready(function () {
+	$('#users_form').find('.select-all').eq(0).on('ifChecked', function (e) {
+		e.preventDefault();
+		$('#users_form').find('.select-user').closest('.icheckbox_square-blue').iCheck('check');
+	});
+	$('#users_form').find('.select-all').eq(0).on('ifUnchecked', function (e) {
+		e.preventDefault();
+		$('#users_form').find('.select-user').closest(".icheckbox_square-blue").iCheck('uncheck');
+	});
+
+	$('#users_form').find('.select-all').eq(1).on('ifChecked', function (e) {
+		e.preventDefault();
+		$('#users_form').find('.select-user-data').closest('.icheckbox_square-blue').iCheck('check');
+	});
+	$('#users_form').find('.select-all').eq(1).on('ifUnchecked', function (e) {
+		e.preventDefault();
+		$('#users_form').find('.select-user-data').closest(".icheckbox_square-blue").iCheck('uncheck');
+	});
+});
+</script>
 
 <?php TPL::include('admin/global/footer.tpl.htm'); ?>
