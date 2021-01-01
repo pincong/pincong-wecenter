@@ -185,8 +185,7 @@ class search_class extends AWS_MODEL
 
 			$detail = array(
 				'answer_count' => $result_info['answer_count'],	// 回复数
-				'comment_count' => $result_info['comment_count'],
-				'agree_count' => $result_info['agree_count']
+				'view_count' => $result_info['view_count']
 			);
 		}
 		else if ($result_info['id'])
@@ -201,7 +200,7 @@ class search_class extends AWS_MODEL
 
 			$detail = array(
 				'comments' => $result_info['comments'],
-				'views' => $result_info['views']
+				'view_count' => $result_info['view_count']
 			);
 		}
 

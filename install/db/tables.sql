@@ -9,37 +9,36 @@
 --
 CREATE TABLE IF NOT EXISTS `aws_question` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(240) DEFAULT NULL COMMENT '问题标题',
-  `message` text COMMENT '问题详细说明',
-  `add_time` int(11) DEFAULT '0' COMMENT '添加时间',
+  `uid` int(11) DEFAULT '0',
+  `category_id` int(11) DEFAULT '0',
+  `add_time` int(11) DEFAULT '0',
   `update_time` int(11) DEFAULT '0',
-  `uid` int(11) DEFAULT '0' COMMENT '发布用户UID',
-  `answer_count` int(11) DEFAULT '0' COMMENT '回答计数',
-  `view_count` int(11) DEFAULT '0' COMMENT '浏览次数',
-  `focus_count` int(11) DEFAULT '0' COMMENT '关注数',
-  `comment_count` int(11) DEFAULT '0' COMMENT '评论数',
-  `category_id` int(11) DEFAULT '0' COMMENT '分类 ID',
-  `agree_count` int(11) DEFAULT '0' COMMENT '回复赞同数总和',
+  `view_count` int(11) DEFAULT '0',
+  `agree_count` int(11) DEFAULT '0',
   `reputation` float DEFAULT '0',
-  `lock` tinyint(1) DEFAULT '0' COMMENT '是否锁定',
-  `title_fulltext` text,
+  `lock` tinyint(1) DEFAULT '0',
   `recommend` tinyint(1) DEFAULT '0',
   `sort` tinyint(2) DEFAULT '0',
   `last_uid` int(11) DEFAULT '0',
   `redirect_id` int(11) DEFAULT '0',
+  `title` varchar(240) DEFAULT NULL,
+  `message` text,
+  `title_fulltext` text,
+  `answer_count` int(11) DEFAULT '0',
+  `comment_count` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `category_id` (`category_id`),
-  KEY `update_time` (`update_time`),
-  KEY `add_time` (`add_time`),
   KEY `uid` (`uid`),
-  KEY `answer_count` (`answer_count`),
+  KEY `category_id` (`category_id`),
+  KEY `add_time` (`add_time`),
+  KEY `update_time` (`update_time`),
+  KEY `view_count` (`view_count`),
   KEY `agree_count` (`agree_count`),
   KEY `reputation` (`reputation`),
-  KEY `title` (`title`),
   KEY `lock` (`lock`),
   KEY `recommend` (`recommend`),
   KEY `sort` (`sort`),
-  FULLTEXT KEY `title_fulltext` (`title_fulltext`)
+  FULLTEXT KEY `title_fulltext` (`title_fulltext`),
+  KEY `answer_count` (`answer_count`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='问题列表';
 
 --
@@ -113,34 +112,34 @@ CREATE TABLE IF NOT EXISTS `aws_answer_discussion` (
 CREATE TABLE IF NOT EXISTS `aws_article` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT '0',
-  `title` varchar(240) DEFAULT NULL,
-  `message` text,
-  `comments` int(11) DEFAULT '0',
-  `views` int(11) DEFAULT '0',
+  `category_id` int(11) DEFAULT '0',
   `add_time` int(11) DEFAULT '0',
-  `lock` int(1) DEFAULT '0',
+  `update_time` int(11) DEFAULT '0',
+  `view_count` int(11) DEFAULT '0',
   `agree_count` int(11) DEFAULT '0',
   `reputation` float DEFAULT '0',
-  `title_fulltext` text,
-  `category_id` int(11) DEFAULT '0',
+  `lock` tinyint(1) DEFAULT '0',
   `recommend` tinyint(1) DEFAULT '0',
   `sort` tinyint(2) DEFAULT '0',
-  `update_time` int(11) DEFAULT '0',
   `last_uid` int(11) DEFAULT '0',
   `redirect_id` int(11) DEFAULT '0',
+  `title` varchar(240) DEFAULT NULL,
+  `message` text,
+  `title_fulltext` text,
+  `comments` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
-  KEY `comments` (`comments`),
-  KEY `views` (`views`),
+  KEY `category_id` (`category_id`),
   KEY `add_time` (`add_time`),
-  KEY `lock` (`lock`),
+  KEY `update_time` (`update_time`),
+  KEY `view_count` (`view_count`),
   KEY `agree_count` (`agree_count`),
   KEY `reputation` (`reputation`),
-  KEY `category_id` (`category_id`),
+  KEY `lock` (`lock`),
   KEY `recommend` (`recommend`),
   KEY `sort` (`sort`),
-  KEY `update_time` (`update_time`),
-  FULLTEXT KEY `title_fulltext` (`title_fulltext`)
+  FULLTEXT KEY `title_fulltext` (`title_fulltext`),
+  KEY `comments` (`comments`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
@@ -172,36 +171,36 @@ CREATE TABLE IF NOT EXISTS `aws_article_comment` (
 CREATE TABLE IF NOT EXISTS `aws_video` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT '0',
-  `title` varchar(240) DEFAULT NULL,
-  `message` text,
-  `source_type` varchar(32) DEFAULT NULL,
-  `source` text,
-  `comment_count` int(11) DEFAULT '0',
+  `category_id` int(11) DEFAULT '0',
+  `add_time` int(11) DEFAULT '0',
+  `update_time` int(11) DEFAULT '0',
   `view_count` int(11) DEFAULT '0',
   `agree_count` int(11) DEFAULT '0',
   `reputation` float DEFAULT '0',
-  `lock` int(1) DEFAULT '0',
-  `title_fulltext` text,
-  `category_id` int(11) DEFAULT '0',
+  `lock` tinyint(1) DEFAULT '0',
   `recommend` tinyint(1) DEFAULT '0',
   `sort` tinyint(2) DEFAULT '0',
-  `add_time` int(11) DEFAULT '0',
-  `update_time` int(11) DEFAULT '0',
   `last_uid` int(11) DEFAULT '0',
   `redirect_id` int(11) DEFAULT '0',
+  `title` varchar(240) DEFAULT NULL,
+  `message` text,
+  `title_fulltext` text,
+  `comment_count` int(11) DEFAULT '0',
+  `source_type` varchar(32) DEFAULT NULL,
+  `source` text,
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
-  KEY `comment_count` (`comment_count`),
+  KEY `category_id` (`category_id`),
+  KEY `add_time` (`add_time`),
+  KEY `update_time` (`update_time`),
   KEY `view_count` (`view_count`),
   KEY `agree_count` (`agree_count`),
   KEY `reputation` (`reputation`),
   KEY `lock` (`lock`),
-  KEY `category_id` (`category_id`),
   KEY `recommend` (`recommend`),
   KEY `sort` (`sort`),
-  KEY `add_time` (`add_time`),
-  KEY `update_time` (`update_time`),
-  FULLTEXT KEY `title_fulltext` (`title_fulltext`)
+  FULLTEXT KEY `title_fulltext` (`title_fulltext`),
+  KEY `comment_count` (`comment_count`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
@@ -224,6 +223,41 @@ CREATE TABLE IF NOT EXISTS `aws_video_comment` (
   KEY `add_time` (`add_time`),
   KEY `agree_count` (`agree_count`),
   KEY `reputation` (`reputation`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+--
+
+
+--
+CREATE TABLE IF NOT EXISTS `aws_posts_index` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `post_id` int(11) DEFAULT '0' ,
+  `post_type` varchar(16) DEFAULT NULL,
+  `uid` int(11) DEFAULT '0',
+  `category_id` int(11) DEFAULT '0',
+  `add_time` int(11) DEFAULT '0',
+  `update_time` int(11) DEFAULT '0',
+  `view_count` int(11) DEFAULT '0',
+  `agree_count` int(11) DEFAULT '0',
+  `reputation` float DEFAULT '0' COMMENT '回复所获声望总和',
+  `lock` tinyint(1) DEFAULT '0',
+  `recommend` tinyint(1) DEFAULT '0',
+  `sort` tinyint(2) DEFAULT '0',
+  `answer_count` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `post_id` (`post_id`),
+  KEY `post_type` (`post_type`),
+  KEY `uid` (`uid`),
+  KEY `category_id` (`category_id`),
+  KEY `add_time` (`add_time`),
+  KEY `update_time` (`update_time`),
+  KEY `view_count` (`view_count`),
+  KEY `agree_count` (`agree_count`),
+  KEY `reputation` (`reputation`),
+  KEY `lock` (`lock`),
+  KEY `recommend` (`recommend`),
+  KEY `sort` (`sort`),
+  KEY `answer_count` (`answer_count`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
@@ -374,41 +408,6 @@ CREATE TABLE IF NOT EXISTS `aws_notification` (
   KEY `read_flag` (`read_flag`),
   KEY `add_time` (`add_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='系统通知';
-
---
-
-
---
-CREATE TABLE IF NOT EXISTS `aws_posts_index` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `post_id` int(11) DEFAULT '0' ,
-  `post_type` varchar(16) DEFAULT NULL,
-  `add_time` int(11) DEFAULT '0',
-  `update_time` int(11) DEFAULT '0',
-  `category_id` int(11) DEFAULT '0',
-  `recommend` tinyint(1) DEFAULT '0',
-  `view_count` int(11) DEFAULT '0',
-  `uid` int(11) DEFAULT '0',
-  `lock` tinyint(1) DEFAULT '0',
-  `sort` tinyint(2) DEFAULT '0',
-  `reputation` float DEFAULT '0' COMMENT '回复所获声望总和',
-  `agree_count` int(11) DEFAULT '0',
-  `answer_count` int(11) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `post_id` (`post_id`),
-  KEY `post_type` (`post_type`),
-  KEY `add_time` (`add_time`),
-  KEY `update_time` (`update_time`),
-  KEY `category_id` (`category_id`),
-  KEY `recommend` (`recommend`),
-  KEY `uid` (`uid`),
-  KEY `lock` (`lock`),
-  KEY `sort` (`sort`),
-  KEY `reputation` (`reputation`),
-  KEY `agree_count` (`agree_count`),
-  KEY `answer_count` (`answer_count`),
-  KEY `view_count` (`view_count`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
 

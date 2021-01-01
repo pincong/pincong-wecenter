@@ -27,9 +27,9 @@
 
 	<p class="aw-text-color-666">
 		<?php if ($val['type'] == 'questions') { ?>
-		<i class="icon icon-reply"></i> <?php _e('%s 个回复', $val['detail']['answer_count']); ?> • <?php _e('%s 人关注', $val['detail']['focus_count']); ?>
+		<i class="icon icon-reply"></i> <?php _e('%s 个回复', $val['detail']['answer_count']); ?> • <?php _e('%s 次查看', $val['detail']['view_count']); ?>
 		<?php } else if ($val['type'] == 'articles') { ?>
-		<i class="icon icon-comment"></i> <?php _e('%s 个回复', $val['detail']['comments']); ?> • <?php _e('%s 次查看', $val['detail']['views']); ?>
+		<i class="icon icon-comment"></i> <?php _e('%s 个回复', $val['detail']['comments']); ?> • <?php _e('%s 次查看', $val['detail']['view_count']); ?>
 		<?php } else if ($val['type'] == 'topics') { ?>
 		<i class="icon icon-topic"></i> <?php _e('%s 个讨论', $val['detail']['discuss_count']); ?>
 		<?php } else if ($val['type'] == 'users') { ?>

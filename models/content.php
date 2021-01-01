@@ -447,20 +447,7 @@ class content_class extends AWS_MODEL
 
 		AWS_APP::cache()->set($key, time(), 60);
 
-		// TODO: 统一字段名称避免特殊处理
-		//$this->query("UPDATE " . $this->get_table($item_type) . " SET view_count = view_count + 1 WHERE id = " . intval($item_id));
-		if ($item_type == 'question')
-		{
-			$this->query("UPDATE " . $this->get_table('question') . " SET view_count = view_count + 1 WHERE id = " . intval($item_id));
-		}
-		elseif ($item_type == 'article')
-		{
-			$this->query("UPDATE " . $this->get_table('article') . " SET views = views + 1 WHERE id = " . intval($item_id));
-		}
-		elseif ($item_type == 'video')
-		{
-			$this->query("UPDATE " . $this->get_table('video') . " SET view_count = view_count + 1 WHERE id = " . intval($item_id));
-		}
+		$this->query("UPDATE " . $this->get_table($item_type) . " SET view_count = view_count + 1 WHERE id = " . intval($item_id));
 
 		return true;
 	}

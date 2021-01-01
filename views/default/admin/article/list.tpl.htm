@@ -39,7 +39,7 @@
 								<td><input type="checkbox" name="article_ids[]" value="<?php echo $val['id']; ?>"></td>
 								<td><a href="<?php echo url_rewrite(); ?>/article/<?php echo $val['id']; ?>" target="_blank"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a></td>
 								<td><?php echo $val['comments']; ?></td>
-								<td><?php echo $val['views']; ?></td>
+								<td><?php echo $val['view_count']; ?></td>
 								<td><a href="<?php echo UF::url($val['user_info']); ?>" target="_blank"><?php echo UF::name($val['user_info']); ?></a></td>
 								<td><?php echo date_friendly($val['add_time']); ?></td>
 								<td><a href="<?php echo url_rewrite(); ?>/modify/article/<?php echo $val['id']; ?>" target="_blank" class="icon icon-edit md-tip" title="编辑"></a></td>

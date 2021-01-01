@@ -83,7 +83,7 @@ class posts_class extends AWS_MODEL
 					'add_time' => $result['add_time'],
 					'update_time' => $result['update_time'],
 					'category_id' => $result['category_id'],
-					'view_count' => $result['views'],
+					'view_count' => $result['view_count'],
 					'uid' => $result['uid'],
 					'agree_count' => $result['agree_count'],
 					'answer_count' => $result['comments'],

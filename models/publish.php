@@ -200,7 +200,7 @@ class publish_class extends AWS_MODEL
 			'category_id' => $data['category_id'],
 			'add_time' => $now,
 			'update_time' => $now,
-			'views' => $view_count,
+			'view_count' => $view_count,
 		));
 
 		if (!$item_id)
