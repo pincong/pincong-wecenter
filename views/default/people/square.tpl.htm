@@ -42,7 +42,7 @@
 									<a href="javascript:;" onclick="AWS.User.follow($(this), 'user', <?php echo $val['uid']; ?>);" class="follow btn btn-normal btn-success<?php if ($val['focus']) { ?> active<?php } ?>"><span><?php if ($val['focus']) { ?><?php _e('取消关注'); ?><?php } else { ?><?php _e('关注'); ?><?php } ?></span> <em>|</em> <b><?php echo $val['fans_count']; ?></b></a>
 									<a onclick="AWS.User.ask_user(<?php echo $val['uid']; ?>, '<?php echo UF::name($val); ?>');" class="aw-small-text"><?php _e('问Ta'); ?></a>
 									<em class="aw-small-text">•</em>
-									<a onclick="AWS.User.compose_message('<?php echo UF::name($val); ?>');" class="aw-small-text"><?php _e('私信'); ?></a>
+									<a onclick="AWS.submit_redirect(G_BASE_URL + '/pm/new/', {'usernames[]': '<?php echo UF::name($val); ?>'});" class="aw-small-text"><?php _e('私信'); ?></a>
 								</div>
 								<?php } ?>
 

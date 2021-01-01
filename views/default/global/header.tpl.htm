@@ -43,7 +43,7 @@
 						</div>
 					</li>
 
-					<li><a href="<?php echo url_rewrite(); ?>/inbox/"<?php if ($_GET['app'] == 'inbox') { ?> class="active"<?php } ?>><i class="icon icon-inbox"></i> <?php _e('私信'); ?></a></li>
+					<li><a href="<?php echo url_rewrite(); ?>/pm/"<?php if ($_GET['app'] == 'pm') { ?> class="active"<?php } ?>><i class="icon icon-inbox"></i> <?php _e('私信'); ?></a></li>
 					<?php } ?>
 					<li><a href="<?php echo url_rewrite(); ?>/search/"<?php if ($_GET['app'] == 'search') { ?> class="active"<?php } ?>><i class="icon icon-search"></i> <?php _e('搜索'); ?></a></li>
 
@@ -63,7 +63,7 @@
 					</a>
 					<div class="aw-dropdown dropdown-list pull-right">
 						<ul class="aw-dropdown-list">
-							<li><a href="<?php echo url_rewrite(); ?>/inbox/"><i class="icon icon-inbox"></i> <?php _e('私信'); ?><span class="badge badge-important collapse" id="inbox_unread">0</span></a></li>
+							<li><a href="<?php echo url_rewrite(); ?>/pm/"><i class="icon icon-inbox"></i> <?php _e('私信'); ?><span class="badge badge-important collapse" id="inbox_unread">0</span></a></li>
 							<li><a href="<?php echo url_rewrite(); ?>/profile/"><i class="icon icon-setting"></i> <?php _e('设置'); ?></a></li>
 							<?php if ($this->user_info['permission']['is_administrator']) { ?>
 							<li><a href="<?php echo url_rewrite(); ?>/admin/"><i class="icon icon-job"></i> <?php _e('管理'); ?></a></li>

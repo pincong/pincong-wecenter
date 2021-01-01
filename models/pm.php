@@ -198,7 +198,15 @@ class pm_class extends AWS_MODEL
 		$data['update_time'] = $ts;
 
 		$this->update('pm_conversation', $data, ['id', 'eq', $conversation_id]);
-		//update inbox
+
+		foreach ($uids as $uid)
+		{
+			if ($uid == $sender_uid)
+			{
+				continue;
+			}
+			$this->update_inbox_unread($uid);
+		}
 
 		return $message_id;
 	}
@@ -384,7 +392,7 @@ class pm_class extends AWS_MODEL
 	{
 		$conversation_id = intval($conversation_id);
 
-		$conversation = $this->get_conversation_by_id($conversation_id);
+		$conversation = $this->get_conversation($conversation_id, $uid, true);
 		if (!$conversation)
 		{
 			return false;
@@ -420,11 +428,10 @@ class pm_class extends AWS_MODEL
 			return false;
 		}
 
+		$unread_message_ids = [];
 		$messages = $this->fetch_all('pm_message', ['conversation_id', 'eq', $conversation_id], 'id DESC', $page, $per_page);
 		if ($messages)
 		{
-			$unread_message_ids = [];
-
 			foreach ($messages as &$val)
 			{
 				if (!$val[$key_receipt])
@@ -440,29 +447,22 @@ class pm_class extends AWS_MODEL
 				$this->update('pm_message', array(
 					$key_receipt => fake_time()
 				), ['id', 'in', $unread_message_ids]);
-
-				$this->update('pm_conversation', array(
-					$key_unread => $this->count('pm_message', [['conversation_id', 'eq', $conversation_id], [$key_receipt, 'eq', 0]])
-				), ['id', 'eq', $conversation_id]);
 			}
 		}
+
+		if ($unread_message_ids OR intval($page) <= 1)
+		{
+			$this->update('pm_conversation', array(
+				$key_unread => $this->count('pm_message', [['conversation_id', 'eq', $conversation_id], [$key_receipt, 'eq', 0]])
+			), ['id', 'eq', $conversation_id]);
+
+			$this->update_inbox_unread($uid);
+		}
+
 		return $messages;
 	}
 
-	public function get_conversation_by_id($id)
-	{
-		$id = intval($id);
-		$val = self::$cached_conversations[$id] ?? null;
-		if (isset($val))
-		{
-			return $val;
-		}
-		$val = $this->fetch_row('pm_conversation', ['id', 'eq', $id]);
-		self::$cached_conversations[$id] = $val;
-		return $val;
-	}
-
-	public function get_conversation_by_id_and_uid($id, $uid)
+	private function get_conversation_by_id_and_uid($id, $uid)
 	{
 		$uid = intval($uid);
 		if ($uid <= 0)
@@ -573,7 +573,47 @@ class pm_class extends AWS_MODEL
 		if ($val['uid_5'] == $uid) $data['uid_5'] = 0;
 		$this->update('pm_conversation', $data, ['id', 'eq', $id]);
 
+		foreach ($val['uids'] as $uid)
+		{
+			$this->update_inbox_unread($uid);
+		}
+
 		return true;
+	}
+
+	private function update_inbox_unread($uid)
+	{
+		$uid = intval($uid);
+		if ($uid <= 0)
+		{
+			return;
+		}
+
+		$sum_1 = $this->sum('pm_conversation', 'unread_1', ['uid_1', 'eq', $uid]);
+		$sum_2 = $this->sum('pm_conversation', 'unread_2', ['uid_2', 'eq', $uid]);
+		$sum_3 = $this->sum('pm_conversation', 'unread_3', ['uid_3', 'eq', $uid]);
+		$sum_4 = $this->sum('pm_conversation', 'unread_4', ['uid_4', 'eq', $uid]);
+		$sum_5 = $this->sum('pm_conversation', 'unread_5', ['uid_5', 'eq', $uid]);
+
+		$this->update('users', array(
+			'inbox_unread' => $sum_1 + $sum_2 + $sum_3 + $sum_4 + $sum_5
+		), ['uid', 'eq', $uid]);
+	}
+
+	public function delete_expired_messages()
+	{
+		$days = S::get_int('expiration_private_messages');
+		if (!$days)
+		{
+			return;
+		}
+		$seconds = $days * 24 * 3600;
+		$time_before = real_time() - $seconds;
+		if ($time_before < 0)
+		{
+			$time_before = 0;
+		}
+		$this->delete('pm_message', ['add_time', 'lt', $time_before]);
 	}
 
 }

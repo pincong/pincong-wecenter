@@ -578,7 +578,6 @@ var AWS =
 								'url' : result.url,
 								'focus': focus,
 								'focusTxt': focusTxt,
-								'pm_disabled': result.pm_disabled,
 								'fansCount': result.fans_count
 							}));
 

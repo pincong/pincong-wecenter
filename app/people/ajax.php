@@ -57,12 +57,6 @@ class ajax extends AWS_CONTROLLER
 		if ($this->user_id != $user_info['uid'])
 		{
 			$user_follow_check = $this->model('follow')->user_follow_check($this->user_id, $user_info['uid']);
-
-			$pm_disabled = !$this->model('message')->test_permission($this->user_info, $user_info);
-		}
-		else
-		{
-			$pm_disabled = true;
 		}
 
 		H::ajax_json_output(array(
@@ -78,7 +72,6 @@ class ajax extends AWS_CONTROLLER
 			'url' => UF::url($user_info),
 			'verified' => $user_info['verified'],
 			'fans_count' => $user_info['fans_count'],
-			'pm_disabled' => $pm_disabled,
 		));
 	}
 
