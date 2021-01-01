@@ -38,6 +38,7 @@ class AWS_APP
 	private static $captcha;
 	private static $user;
 	private static $crypt;
+	private static $token;
 
 	public static $session_type = 'file';
 
@@ -484,6 +485,24 @@ class AWS_APP
 		}
 
 		return self::$crypt;
+	}
+
+	/**
+	 * 加密处理类
+	 *
+	 * 调用 core/token.php
+	 *
+	 * @access	public
+	 * @return	object
+	 */
+	public static function token()
+	{
+		if (!self::$token)
+		{
+			self::$token = load_class('core_token');
+		}
+
+		return self::$token;
 	}
 
 	/**

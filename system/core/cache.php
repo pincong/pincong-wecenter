@@ -118,20 +118,7 @@ class core_cache
 
 		if ($group)
 		{
-			if (is_array($group))
-			{
-				if (count($group) > 0)
-				{
-					foreach ($group as $cg)
-					{
-						$this->setGroup($cg, $key, $lifetime);
-					}
-				}
-			}
-			else
-			{
-				$this->setGroup($group, $key, $lifetime);
-			}
+			$this->setGroup($group, $key, $lifetime);
 		}
 
 		if (AWS_APP::config()->get('system')->debug)

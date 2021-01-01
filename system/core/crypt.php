@@ -14,7 +14,7 @@
 
 class core_crypt
 {
-    private $cipher ="AES-256-CBC";
+    private $cipher = "AES-256-CBC";
     private $default_key;
     private $iv_len;
     public function __construct()
@@ -32,7 +32,7 @@ class core_crypt
         return hash('sha256', $password, true);
     }
 
-    public function encode($data, $key = null)
+    public function encrypt($data, $key = null)
     {
         if (!$key)
         {
@@ -40,22 +40,36 @@ class core_crypt
         }
         $iv = openssl_random_pseudo_bytes($this->iv_len);
         $data = openssl_encrypt($data, $this->cipher, $key, OPENSSL_RAW_DATA, $iv);
-        $data = base64_encode($iv . $data);
+        $data = $iv . $data;
         return $data;
     }
 
-    public function decode($data, $key = null)
+    public function decrypt($data, $key = null)
     {
         if (!$key)
         {
             $key = $this->default_key;
         }
-        $data = base64_decode($data);
         $iv = substr($data, 0, $this->iv_len);
         $data = substr($data, $this->iv_len);
-        $decrypted = openssl_decrypt($data, $this->cipher, $key, OPENSSL_RAW_DATA, $iv);
-        
-        return $decrypted;
+        $data = openssl_decrypt($data, $this->cipher, $key, OPENSSL_RAW_DATA, $iv);
+        return $data;
+    }
+
+    public function encode($data, $key = null)
+    {
+        $data = $this->encrypt($data, $key);
+        $data = base64_encode($data);
+        $data = strtr(rtrim($data, '='), '+/', '._');
+        return $data;
+    }
+
+    public function decode($data, $key = null)
+    {
+        $data = strtr($data, '._', '+/');
+        $data = base64_decode($data);
+        $data = $this->decrypt($data, $key);
+        return $data;
     }
 
 }
