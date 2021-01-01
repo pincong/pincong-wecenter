@@ -74,6 +74,11 @@ class ajax extends AWS_CONTROLLER
 
 	private function do_validate()
 	{
+		if (!check_http_referer())
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('错误的请求')));
+		}
+
 		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_post']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
