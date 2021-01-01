@@ -21,11 +21,11 @@
 									<a href="javascript:;" class="aw-small-text" onclick="AWS.User.edit_signature('<?php echo $this->user['uid']; ?>', decodeURIComponent('<?php echo rawurlencode(FORMAT::text($this->user['signature'])); ?>'));"><i class="icon icon-edit"></i> <?php echo _t('签名'); ?></a>
 								<?php } ?>
 
-								<?php if ($this->user_info['permission']['forbid_user']) { ?>
+								<?php if ($this->user_info['permission']['forbid_user'] OR $this->user_info['permission']['unforbid_user']) { ?>
 									<a href="javascript:;" class="aw-small-text" onclick="AWS.popup(G_BASE_URL + '/user/edit/forbid_user/uid-<?php echo $this->user['uid']; ?>');"><i class="icon icon-forbid"></i> <?php echo _t('封禁'); ?></a>
 								<?php } ?>
 
-								<?php if ($this->user_info['permission']['flag_user']) { ?>
+								<?php if ($this->user_info['permission']['flag_user'] OR $this->user_info['permission']['unflag_user']) { ?>
 									<a href="javascript:;" class="aw-small-text" onclick="AWS.popup(G_BASE_URL + '/user/edit/flag_user/uid-<?php echo $this->user['uid']; ?>');"><i class="icon icon-forbid"></i> <?php echo _t('标记'); ?></a>
 								<?php } ?>
 
@@ -63,7 +63,7 @@
 									<?php } elseif ($this->user['forbidden'] == 3) { ?>
 										<?php echo _t('禁止登录 + 替换全部发言'); ?>
 									<?php } else { ?>
-										<?php echo _t('禁止登录 (自动)'); ?>
+										<?php echo _t('禁止登录'); ?>
 									<?php } ?>
 								</a>
 								<?php echo FORMAT::text($this->user['data']['banned_reason']); ?> <?php echo FORMAT::text($this->user['data']['banned_detail']); ?>
@@ -71,7 +71,7 @@
 							<?php } ?>
 							<?php if ($this->user_id) { ?>
 							<br />
-							<a href="<?php echo url_rewrite(); ?>/user/admin_log/uid-<?php echo $this->user['uid']; ?>" target="_blank"><?php echo _t('查看管理记录'); ?></a>
+							<a href="<?php echo url_rewrite(); ?>/user/admin_log/uid-<?php echo $this->user['uid']; ?>" target="_blank"><?php echo _t('管理记录'); ?></a>
 							<?php } ?>
 							<p class="aw-small-text"><?php echo UF::signature($this->user); ?></p>
 						</div>

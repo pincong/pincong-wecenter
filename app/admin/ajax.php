@@ -531,6 +531,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			'edit_specific_post',
 			'post_anonymously',
 			'reply_anonymously',
+			'flagged_ids',
 			'specific_post_uids',
 			'anonymous_uid',
 			'unallowed_post_types',

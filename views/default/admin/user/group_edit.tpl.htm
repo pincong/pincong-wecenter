@@ -516,6 +516,19 @@
 				<tr>
 					<td>
 						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('可用于标记的用户组 ID(s)'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input type="text" name="flagged_ids" class="form-control" value="<?php echo $this->group_pms['flagged_ids']; ?>" />
+
+								<span class="help-block"><?php echo _t('多个用户组 ID 请用","隔开, 请勿填写管理员用户组 ID, 留空则采用全局设定'); ?></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('特定贴文 UID(s)'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="specific_post_uids" class="form-control" value="<?php echo $this->group_pms['specific_post_uids']; ?>" />
@@ -545,7 +558,7 @@
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="unallowed_post_types" class="form-control" value="<?php echo $this->group_pms['unallowed_post_types']; ?>" />
 
-								<span class="help-block"><?php echo _t('用逗号隔开, 留空则不启用, 例: question,question_discussion'); ?></span>
+								<span class="help-block"><?php echo _t('用逗号隔开, 留空则不启用, 例: question,article'); ?></span>
 							</div>
 						</div>
 					</td>
