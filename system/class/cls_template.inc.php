@@ -108,11 +108,6 @@ class TPL
 			{
 				H::sensitive_words_replace($output);
 			}
-
-			if (AWS_APP::config()->get('system')->debug)
-			{
-				$output .= "\r\n<!-- Template End: " . $display_template_filename . " -->\r\n";
-			}
 		}
 
 		return $output;

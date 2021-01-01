@@ -2,7 +2,7 @@
 <div class="well clearfix" style="margin: 20px;">
 	<b style="font-weight: bold; color: red;">Debug messages:</b><br />
 	<br /><p><b style="font-weight: bold;">Template:</b> <?php echo $this->template_name; ?></p>
-	<br /><p><b style="font-weight: bold;">Loaded Class:</b></p>
+	<br /><p><b style="font-weight: bold;">Loaded Classes:</b></p>
 	<?php foreach (core_autoload::$loaded_class AS $key => $val) { ?>
 		<p><b><?php echo $key; ?></b>: <?php echo $val; ?></p>
 	<?php } ?>
