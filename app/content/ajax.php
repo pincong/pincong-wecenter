@@ -92,7 +92,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($redirect_item_info['redirect_id'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能合并到已经合并的主题')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能合并到被合并的主题')));
 		}
 
 		$this->model('content')->redirect(

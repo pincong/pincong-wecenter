@@ -117,12 +117,12 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('问题不存在')));
 		}
 
-		if ($question_info['lock'])
+		if ($question_info['lock'] AND !$question_info['redirect_id'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能讨论锁定的问题')));
 		}
 
-		if (!$question_info['title'])
+		if (!$question_info['title'] AND !$question_info['redirect_id'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能讨论已删除的问题')));
 		}
@@ -143,7 +143,11 @@ class ajax extends AWS_CONTROLLER
 
 		if (get_setting('discussion_bring_top') == 'Y')
 		{
-			$this->model('posts')->bring_to_top($this->user_id, $question_info['id'], 'question');
+			$this->model('posts')->bring_to_top(
+				$this->user_id,
+				$question_info['redirect_id'] ? $question_info['redirect_id'] : $question_info['id'],
+				'question'
+			);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
