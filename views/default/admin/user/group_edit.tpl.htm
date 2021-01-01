@@ -1317,8 +1317,44 @@
 				</tfoot>
 			</table>
 		</div>
-		</div>
+	</div>
 	</form>
+
+	<?php if ($this->group['group_id'] != -1) { ?>
+	<form action="<?php echo url_rewrite(); ?>/admin/ajax/copy_user_group_permission/" method="post" onsubmit="return false">
+	<input type="hidden" name="group_id_to" value="<?php echo $this->group['group_id']; ?>" />
+	<div class="mod">
+		<div class="mod-head">
+			<h3>
+				<span class="pull-left"><?php echo _t('从其他用户组快速拷贝权限'); ?></span>
+			</h3>
+		</div>
+		<div class="tab-content mod-content">
+			<table class="table table-striped">
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('从用户组 ID'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input type="text" name="group_id_from" class="form-control" value="" />
+								<span class="help-block"><?php echo _t('到用户组 ID'); ?> <?php echo $this->group['group_id']; ?></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tfoot>
+				<tr>
+					<td>
+						<input type="button" value="<?php echo _t('拷贝'); ?>" class="btn btn-primary center-block" onclick="AWS.ajax_post($(this).closest('form'));" />
+					</td>
+				</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+	</form>
+	<?php } ?>
 </div>
 
 <?php TPL::include('admin/global/footer.tpl.htm'); ?>

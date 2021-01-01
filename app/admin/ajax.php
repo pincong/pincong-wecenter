@@ -592,6 +592,45 @@ class ajax extends AWS_ADMIN_CONTROLLER
 		H::ajax_error((_t('用户组权限保存成功')));
 	}
 
+	public function copy_user_group_permission_action()
+	{
+		$from = H::POST('group_id_from');
+		$to = H::POST('group_id_to');
+
+		if (!is_numeric($from) OR !is_numeric($to))
+		{
+			H::ajax_success(); // 不处理
+		}
+		$from = intval($from);
+		$to = intval($to);
+		if ($from < 0 OR $to < 0)
+		{
+			H::ajax_error((_t('请填写正确的用户组 ID')));
+		}
+		if ($from == $to)
+		{
+			H::ajax_success(); // 不处理
+		}
+
+		$pms = $this->model('usergroup')->fetch_one('users_group', 'permission', ['group_id', 'eq', $from]);
+		if (!is_string($pms))
+		{
+			H::ajax_error((_t('用户组不存在')));
+		}
+
+		$res = $this->model('usergroup')->update('users_group', array(
+			'permission' => $pms
+		), ['group_id', 'eq', $to]);
+
+		if (!$res)
+		{
+			H::ajax_error((_t('发生错误')));
+		}
+
+		AWS_APP::cache()->cleanGroup('users_group');
+		H::ajax_success();
+	}
+
 	public function save_user_action()
 	{
 		if (!$user_info = $this->model('account')->get_user_info_by_uid(H::POST('uid')))
