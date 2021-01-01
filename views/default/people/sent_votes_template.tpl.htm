@@ -9,8 +9,36 @@
 		•
 		<?php echo date_friendly($val['add_time']); ?>
 		•
-		<?php echo $val['type']; ?>
-		#<?php echo $val['item_id']; ?>
+		<a href="<?php
+			switch ($val['type'])
+			{
+				case 'question':
+				case 'article':
+				case 'video':
+				{
+					echo $val['type'] . '/id-' . $val['item_id'];
+					break;
+				}
+				case 'answer':
+				{
+					echo 'question/id-null__item_id-' . $val['item_id'];
+					break;
+				}
+				case 'article_comment':
+				{
+					echo 'article/id-null__item_id-' . $val['item_id'];
+					break;
+				}
+				case 'video_comment':
+				{
+					echo 'video/id-null__item_id-' . $val['item_id'];
+					break;
+				}
+			}
+		?>">
+			<?php echo $val['type']; ?>
+			#<?php echo $val['item_id']; ?>
+		</a>
 	</p>
 <?php } ?>
 <?php } ?>

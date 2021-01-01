@@ -42,7 +42,17 @@ class main extends AWS_CONTROLLER
 			$this->model('notify')->read_notification($_GET['notification_id'], $this->user_id);
 		}
 
-		if (! $question_info = $this->model('question')->get_question_info_by_id($_GET['id']))
+		$item_id = intval($_GET['item_id']);
+		if ($item_id)
+		{
+			if (!$reply = $this->model('answer')->get_answer_by_id($item_id))
+			{
+				HTTP::error_404();
+			}
+			$_GET['id'] = $reply['question_id'];
+		}
+
+		if (!$question_info = $this->model('question')->get_question_info_by_id($_GET['id']))
 		{
 			HTTP::error_404();
 		}
@@ -77,10 +87,9 @@ class main extends AWS_CONTROLLER
 			$answer_order_by = "reputation " . $sort . ", agree_count " . $sort . ", answer_id ASC";
 		}
 
-		$item_id = intval($_GET['item_id']);
-		if ($item_id > 0)
+		if ($item_id)
 		{
-			$answer_list = $this->model('answer')->get_answer_list_by_question_id($question_info['question_id'], 1, 'answer_id = ' . $item_id);
+			$answer_list[] = $reply;
 		}
 		else
 		{

@@ -36,24 +36,17 @@ class answer_class extends AWS_MODEL
 
 	public function get_answer_by_id($answer_id)
 	{
-		static $answers;
-
-		if ($answers[$answer_id])
-		{
-			return $answers[$answer_id];
-		}
-
 		if ($answer = $this->fetch_row('answer', 'answer_id = ' . intval($answer_id)))
 		{
+			$answer['user_info'] = $this->model('account')->get_user_info_by_uid($answer['uid']);
+
 			if (-$answer['agree_count'] >= get_setting('downvote_fold'))
 			{
 				$answer['fold'] = -2;
 			}
-
-			$answers[$answer_id] = $answer;
 		}
 
-		return $answers[$answer_id];
+		return $answer;
 	}
 
 	public function get_answers_by_ids($answer_ids)
@@ -85,14 +78,9 @@ class answer_class extends AWS_MODEL
 		return $this->count('answer', "question_id = " . intval($question_id) . $where);
 	}
 
-	public function get_answer_list_by_question_id($question_id, $limit = 20, $where = null, $order = 'answer_id DESC')
+	public function get_answer_list_by_question_id($question_id, $limit = 20, $order = 'answer_id DESC')
 	{
-		if ($where)
-		{
-			$_where = ' AND (' . $where . ')';
-		}
-
-		if ($answer_list = $this->fetch_all('answer', 'question_id = ' . intval($question_id) . $_where, $order, $limit))
+		if ($answer_list = $this->fetch_all('answer', 'question_id = ' . intval($question_id), $order, $limit))
 		{
 			$downvote_fold = get_setting('downvote_fold');
 			foreach($answer_list as $key => $val)

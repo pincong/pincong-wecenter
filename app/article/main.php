@@ -40,7 +40,17 @@ class main extends AWS_CONTROLLER
 			$this->model('notify')->read_notification($_GET['notification_id'], $this->user_id);
 		}
 
-		if (! $article_info = $this->model('article')->get_article_info_by_id($_GET['id']))
+		$item_id = intval($_GET['item_id']);
+		if ($item_id)
+		{
+			if (!$reply = $this->model('article')->get_comment_by_id($item_id))
+			{
+				HTTP::error_404();
+			}
+			$_GET['id'] = $reply['article_id'];
+		}
+
+		if (!$article_info = $this->model('article')->get_article_info_by_id($_GET['id']))
 		{
 			HTTP::error_404();
 		}
@@ -75,9 +85,9 @@ class main extends AWS_CONTROLLER
 		$page_title = CF::page_title($article_info['user_info'], 'article_' . $article_info['id'], $article_info['title']);
 		$this->crumb($page_title, '/article/' . $article_info['id']);
 
-		if ($_GET['item_id'])
+		if ($item_id)
 		{
-			$comments[] = $this->model('article')->get_comment_by_id($_GET['item_id']);
+			$comments[] = $reply;
 		}
 		else
 		{

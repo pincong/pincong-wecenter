@@ -43,6 +43,16 @@ class main extends AWS_CONTROLLER
 		}
 		*/
 
+		$item_id = intval($_GET['item_id']);
+		if ($item_id)
+		{
+			if (!$reply = $this->model('video')->get_comment_by_id($item_id))
+			{
+				HTTP::error_404();
+			}
+			$_GET['id'] = $reply['video_id'];
+		}
+
 		if (! $video_info = $this->model('video')->get_video_info_by_id($_GET['id']))
 		{
 			HTTP::error_404();
@@ -84,10 +94,10 @@ class main extends AWS_CONTROLLER
 		$page_title = CF::page_title($video_info['user_info'], 'video_' . $video_info['id'], $video_info['title']);
 		$this->crumb($page_title, '/video/' . $video_info['id']);
 
-		if ($_GET['item_id'])
+		if ($item_id)
 		{
 			// 显示单个评论
-			$comments[] = $this->model('video')->get_comment_by_id($_GET['item_id']);
+			$comments[] = $reply;
 		}
 		else
 		{
