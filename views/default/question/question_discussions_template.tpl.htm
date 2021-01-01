@@ -23,7 +23,10 @@
 				<?php } ?>
 				</a>
 
-			<?php if ($val['user_info']['flagged'] == -1) { ?><sup><?php _e('观察'); ?></sup><?php } ?> • <?php if ($val['user_info']['forbidden']) { ?><sup><?php _e('封禁'); ?></sup><?php } ?> • <span><?php echo date_friendly($val['add_time']); ?></span>
+				<?php if ($val['user_info']['flagged'] == -1) { ?><sup><?php _e('观察'); ?></sup><?php } ?>
+				<?php if ($val['user_info']['forbidden']) { ?><sup><?php _e('封禁'); ?></sup><?php } ?>
+				•
+				<span><?php echo date_friendly($val['add_time']); ?></span>
 			</p>
 			<p class="clearfix">
 				<?php echo CF::reply_simple($val['user_info'], 'question_discussion_' . $val['id'], $val['message']); ?>
