@@ -34,16 +34,6 @@ class register_class extends AWS_MODEL
 	{
 		if ($uid = $this->insert_user($username, $scrambled_password, $client_salt, $public_key, $private_key))
 		{
-			if ($def_focus_uids_str = S::get('def_focus_uids'))
-			{
-				$def_focus_uids = explode(',', $def_focus_uids_str);
-
-				foreach ($def_focus_uids as $key => $val)
-				{
-					$this->model('userfollow')->user_follow_add($uid, $val);
-				}
-			}
-
 			$this->model('currency')->process($uid, 'REGISTER', S::get('currency_system_config_register'), '初始资本');
 		}
 

@@ -71,7 +71,6 @@ class search_class extends AWS_MODEL
 				'signature' => $result_info['signature'],	// 签名
 				'reputation' =>  intval($result_info['reputation']),	// 声望
 				'agree_count' =>  $result_info['agree_count'],	// 赞同
-				'fans_count' =>  $result_info['fans_count'],	// 关注数
 			);
 		}
 		else if ($result_type == 'topics')

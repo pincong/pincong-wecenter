@@ -155,11 +155,6 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		if ($this->user_id)
-		{
-			TPL::assign('user_follow_check', $this->model('userfollow')->user_follow_check($this->user_id, $thread_info['uid']));
-		}
-
 		$this->model('post')->update_view_count('article', $thread_info['id']);
 
 		TPL::assign('comments', $comments);

@@ -35,7 +35,7 @@
 
 								<a href="javascript:;" class="aw-small-text" onclick="AWS.submit_redirect(G_BASE_URL + '/pm/new/', {'usernames[]': '<?php echo UF::name($this->user); ?>'});"><i class="icon icon-inbox"></i> <?php echo _t('私信'); ?></a>
 								<a href="javascript:;" class="aw-small-text hidden-xs" onclick="AWS.User.ask_user(<?php echo $this->user['uid']; ?>, '<?php echo UF::name($this->user); ?>');"><i class="icon icon-at"></i> <?php echo _t('问Ta'); ?></a>
-								<a href="javascript:;" class="follow btn btn-normal btn-success<?php if ($this->user_follow_check) { ?> active<?php } ?>" onclick="AWS.User.follow($(this), 'user', <?php echo $this->user['uid']; ?>);"><span><?php if ($this->user_follow_check) { ?><?php echo _t('取消关注'); ?><?php } else { ?><?php echo _t('关注'); ?><?php } ?></span> <em>|</em> <b><?php echo $this->user['fans_count']; ?></b></a>
+
 							<?php } else if ($this->user_id == $this->user['uid']) { ?>
 								<a href="<?php echo url_rewrite(); ?>/profile/" class="btn btn-mini btn-success"><?php echo _t('编辑'); ?></a>
 							<?php } ?>
@@ -95,7 +95,6 @@
 								<li><a href="#video_comments" id="page_video_comments" data-toggle="tab"><?php echo _t('影片评论'); ?></a></li>
 								<li><a href="#received_votes" id="page_received_votes" data-toggle="tab"><?php echo _t('收到的赞'); ?></a></li>
 								<li><a href="#sent_votes" id="page_sent_votes" data-toggle="tab"><?php echo _t('送出的赞'); ?></a></li>
-								<li><a href="#focus" id="page_focus" data-toggle="tab"><?php echo _t('关注'); ?></a></li>
 								<?php if ($this->user_id == $this->user['uid']) { ?>
 								<li><a href="#currency" id="page_currency" data-toggle="tab"><?php _e(S::get('currency_name')); ?></a></li>
 								<?php } ?>
@@ -123,40 +122,6 @@
 									</div>
 								</div>
 
-								<div class="aw-mod people-following">
-									<div class="mod-body">
-										<a onclick="$('#page_focus').click();$('#focus .aw-tabs ul li').eq(0).click();$.scrollTo($('#focus').offset()['top'], 600, {queue:true})" class="pull-right aw-size-12"><?php echo _t('更多'); ?> »</a>
-										<span>
-											<?php echo _t('关注 %s 人', '<em class="aw-text-color-blue">' . $this->user['friend_count'] . '</em>'); ?>
-										</span>
-										<?php if ($this->friends_list) { ?>
-										<p>
-											<?php foreach ($this->friends_list AS $key => $val) { ?>
-												<a class="aw-user-name" data-id="<?php echo $val['uid']; ?>" href="<?php echo UF::url($val); ?>"><img src="<?php echo UF::avatar($val, 'mid'); ?>" alt="" /></a>
-											<?php } ?>
-										</p>
-										<?php } ?>
-									</div>
-								</div>
-
-								<hr style="margin:0 20px; border-color: #e2e2e2;">
-
-								<div class="aw-mod people-following">
-									<div class="mod-body">
-										<a onclick="$('#page_focus').click();$('#focus .aw-tabs ul li').eq(1).click();$.scrollTo($('#focus').offset()['top'], 600, {queue:true})" class="pull-right aw-size-12"><?php echo _t('更多'); ?> »</a>
-										<span>
-											<?php echo _t('被 %s 人关注', '<em class="aw-text-color-blue">' . $this->user['fans_count'] . '</em>'); ?>
-										</span>
-										<?php if ($this->fans_list) { ?>
-										<p>
-											<?php foreach ($this->fans_list AS $key => $val) { ?>
-											<?php if ($val['forbidden'] AND !$this->user_info['permission']['is_moderator']) continue; ?>
-												<a class="aw-user-name" data-id="<?php echo $val['uid']; ?>" href="<?php echo UF::url($val); ?>"><img src="<?php echo UF::avatar($val, 'mid'); ?>" alt=""></a>
-											<?php } ?>
-										</p>
-										<?php } ?>
-									</div>
-								</div>
 							<!-- end 概述 -->
 							</div>
 
@@ -350,47 +315,6 @@
 								</div>
 							</div>
 
-							<div class="tab-pane" id="focus">
-								<!-- 自定义切换 -->
-								<div class="aw-mod">
-									<div class="aw-tabs text-center">
-										<ul>
-											<li class="active"><a><?php echo _t('关注的人'); ?></a></li>
-											<li><a><?php echo _t('关注者'); ?></a></li>
-										</ul>
-									</div>
-									<div class="mod-body">
-										<div class="aw-tab-content">
-											<div class="aw-mod aw-user-center-follow-mod">
-												<div class="mod-body">
-													<ul id="contents_user_follows" class="clearfix"></ul>
-												</div>
-												<div class="mod-footer">
-													<!-- 加载更多内容 -->
-													<a class="aw-load-more-content" id="bp_user_follows_more">
-														<span><?php echo _t('更多'); ?></span>
-													</a>
-													<!-- end 加载更多内容 -->
-												</div>
-											</div>
-											<div class="aw-mod aw-user-center-follow-mod collapse">
-												<div class="mod-body">
-													<ul class="clearfix" id="contents_user_fans"></ul>
-												</div>
-												<div class="mod-footer">
-													<!-- 加载更多内容 -->
-													<a class="aw-load-more-content" id="bp_user_fans_more">
-														<span><?php echo _t('更多'); ?></span>
-													</a>
-													<!-- end 加载更多内容 -->
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- end 自定义切换 -->
-							</div>
-
 							<?php if ($this->user_id == $this->user['uid']) { ?>
 							<div class="tab-pane" id="currency">
 								<div class="aw-mod">
@@ -493,14 +417,6 @@ $(document).ready(function () {
 		AWS.load_list_view(G_BASE_URL + '/people/info/sent_votes/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_sent_votes_more'), $('#contents_user_sent_votes'), 1);
 	});
 
-	var page_focus_inited = false;
-	$('#page_focus').click(function() {
-		if (page_focus_inited) return;
-		page_focus_inited = true;
-		AWS.load_list_view(G_BASE_URL + '/people/info/followers/type-following__uid-<?php echo $this->user['uid']; ?>', $('#bp_user_follows_more'), $('#contents_user_follows'), 1);
-		AWS.load_list_view(G_BASE_URL + '/people/info/followers/type-followers__uid-<?php echo $this->user['uid']; ?>', $('#bp_user_fans_more'), $('#contents_user_fans'), 1);
-	});
-
 	<?php if ($this->user_id == $this->user['uid']) { ?>
 	var page_currency_inited = false;
 	$('#page_currency').click(function() {
@@ -518,11 +434,6 @@ $(document).ready(function () {
 	$('#answers .aw-tabs li').click(function() {
 		$(this).addClass('active').siblings().removeClass('active');
 		$('#answers .aw-user-center-follow-mod').eq($(this).index()).show().siblings().hide();
-	});
-
-	$('#focus .aw-tabs li').click(function() {
-		$(this).addClass('active').siblings().removeClass('active');
-		$('#focus .aw-user-center-follow-mod').eq($(this).index()).show().siblings().hide();
 	});
 });
 </script>

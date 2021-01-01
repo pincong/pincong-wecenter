@@ -164,8 +164,6 @@ class main extends AWS_CONTROLLER
 		{
 			TPL::assign('invite_users', $this->model('invite')->get_invite_users($thread_info['id']));
 
-			TPL::assign('user_follow_check', $this->model('userfollow')->user_follow_check($this->user_id, $thread_info['uid']));
-
 			$thread_info['vote_value'] = $this->model('vote')->get_user_vote_value_by_id('question', $thread_info['id'], $this->user_id);
 		}
 

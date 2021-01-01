@@ -36,7 +36,6 @@ class info extends AWS_CONTROLLER
 				'article_comments',
 				'videos',
 				'video_comments',
-				'followers',
 				'received_votes',
 				'sent_votes',
 			);
@@ -124,42 +123,6 @@ class info extends AWS_CONTROLLER
 		TPL::assign('list', $this->model('vote')->get_received_votes_by_uid(H::GET('uid'), H::GET('page'), $this->per_page));
 
 		TPL::output('people/user_votes_template');
-	}
-
-	public function followers_action()
-	{
-		switch (H::GET('type'))
-		{
-			case 'following':
-				$users_list = $this->model('userfollow')->get_user_friends(H::GET('uid'), H::GET('page'), $this->per_page);
-			break;
-
-			case 'followers':
-				$users_list = $this->model('userfollow')->get_user_fans(H::GET('uid'), H::GET('page'), $this->per_page);
-			break;
-		}
-
-		if ($users_list AND $this->user_id)
-		{
-			foreach ($users_list as $key => $val)
-			{
-				$users_ids[] = $val['uid'];
-			}
-
-			if ($users_ids)
-			{
-				$follow_checks = $this->model('userfollow')->users_follow_check($this->user_id, $users_ids);
-
-				foreach ($users_list as $key => $val)
-				{
-					$users_list[$key]['follow_check'] = $follow_checks[$val['uid']];
-				}
-			}
-		}
-
-		TPL::assign('users_list', $users_list);
-
-		TPL::output('people/followers_template');
 	}
 
 }

@@ -87,11 +87,11 @@ class pm_class extends AWS_MODEL
 			return true;
 		}
 
-		if (!$this->model('userfollow')->user_follow_check($recipient_user['uid'], $this->user_id))
+		/*if (!$this->model('userfollow')->user_follow_check($recipient_user['uid'], $this->user_id))
 		{
 			$error = _t('%s 未关注你, 你无法给 Ta 发送私信', $recipient_user['user_name']);
 			return false;
-		}
+		}*/
 
 		return true;
 	}

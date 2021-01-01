@@ -57,25 +57,10 @@ AWS.User = {
 
 		selector.addClass('disabled');
 
-		switch (type) {
-			case 'topic':
-				var url = '/topic/ajax/focus_topic/';
-
-				var data = {
-					'topic_id': data_id
-				};
-
-				break;
-
-			case 'user':
-				var url = '/follow/ajax/follow_people/';
-
-				var data = {
-					'uid': data_id
-				};
-
-				break;
-		}
+		var url = '/topic/ajax/focus_topic/';
+		var data = {
+			'topic_id': data_id
+		};
 
 		$.post(G_BASE_URL + url, data, function(result) {
 			if (result.rsm) {

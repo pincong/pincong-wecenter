@@ -503,11 +503,8 @@ CREATE TABLE `aws_users` (
   `avatar_file` varchar(128) DEFAULT NULL,
   `sex` tinyint(1) DEFAULT '0',
   `reg_time` int(11) DEFAULT '0',
-  `notification_unread` int(11) DEFAULT '0' COMMENT '未读系统通知数量',
   `inbox_unread` int(11) DEFAULT '0' COMMENT '未读短信息数量',
   `inbox_recv` tinyint(1) DEFAULT '0' COMMENT '3-所有人可以发给我, 2-拒绝所有人, 1-我关注的人, 0-系统默认',
-  `fans_count` int(11) DEFAULT '0' COMMENT '粉丝数',
-  `friend_count` int(11) DEFAULT '0' COMMENT '观众数',
   `invite_count` int(11) DEFAULT '0' COMMENT '邀请我回答数量',
   `group_id` int(11) DEFAULT '0' COMMENT '用户组ID',
   `flagged` int(11) DEFAULT '0' COMMENT '替代用户组ID',
@@ -551,21 +548,6 @@ CREATE TABLE `aws_users_group` (
   `permission` text COMMENT '权限设置',
   PRIMARY KEY (`group_id`),
   KEY `type` (`type`)
-) DEFAULT CHARSET=utf8mb4;
-
---
-
-
---
-CREATE TABLE `aws_user_follow` (
-  `follow_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `fans_uid` int(11) DEFAULT '0' COMMENT '关注人的UID',
-  `friend_uid` int(11) DEFAULT '0' COMMENT '被关注人的uid',
-  `add_time` int(11) DEFAULT '0',
-  PRIMARY KEY (`follow_id`),
-  KEY `fans_uid` (`fans_uid`),
-  KEY `friend_uid` (`friend_uid`),
-  KEY `user_follow` (`fans_uid`,`friend_uid`)
 ) DEFAULT CHARSET=utf8mb4;
 
 --

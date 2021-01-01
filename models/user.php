@@ -267,7 +267,6 @@ class user_class extends AWS_MODEL
 		$this->delete('topic_focus', ['uid', 'eq', $uid]);
 
 		$this->delete('question_invite', [['sender_uid', 'eq', $uid], 'or', ['recipients_uid', 'eq', $uid]]);
-		$this->delete('user_follow', [['fans_uid', 'eq', $uid], 'or', ['friend_uid', 'eq', $uid]]);
 
 		$this->update('topic_merge', array('uid' => '-1'), ['uid', 'eq', $uid]);
 		$this->update('topic_relation', array('uid' => '-1'), ['uid', 'eq', $uid]);

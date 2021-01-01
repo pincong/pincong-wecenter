@@ -342,9 +342,6 @@
 								<?php if ($this->video_info['user_info']['verified']) { ?>
 									<em class="aw-verified"><?php echo $this->video_info['user_info']['verified']; ?></em>
 								<?php } ?>
-								<?php if ($this->user_id AND $this->video_info['user_info']['uid'] != $this->user_id) { ?>
-									<a class="icon-inverse follow tooltips icon icon-plus <?php if ($this->user_follow_check) { ?> active<?php } ?>" onclick="AWS.User.follow($(this), 'user', <?php echo $this->video_info['user_info']['uid']; ?>);"></a>
-								<?php } ?>
 							</div>
 							<p class="signature"><?php echo UF::signature($this->video_info['user_info']); ?></p>
 						</div>

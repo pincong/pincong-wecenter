@@ -312,8 +312,8 @@ class activity_class extends AWS_MODEL
 			return $list;
 		}
 
-		$following_uids = $this->model('userfollow')->get_user_friends_ids($uid, 1000);
-		if (!$following_uids)
+		//$following_uids = $this->model('userfollow')->get_user_friends_ids($uid, 1000);
+		//if (!$following_uids)
 		{
 			return array();
 		}
