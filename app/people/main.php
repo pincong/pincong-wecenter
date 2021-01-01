@@ -188,8 +188,6 @@ class main extends AWS_CONTROLLER
 
 		$this->crumb(_t('%s 的个人主页', $user['user_name']));
 
-		TPL::import_css('css/default/user.css');
-
 		TPL::assign('fans_list', $this->model('follow')->get_user_fans($user['uid'], 1, 5));
 		TPL::assign('friends_list', $this->model('follow')->get_user_friends($user['uid'], 1, 5));
 

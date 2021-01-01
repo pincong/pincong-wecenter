@@ -58,11 +58,6 @@ class AWS_CONTROLLER
 		TPL::assign('user_id', $this->user_id);
 		TPL::assign('user_info', $this->user_info);
 
-		if ($lang = AWS_APP::lang()->get_language())
-		{
-			TPL::import_js('language/' . $lang . '.js');
-		}
-
 		// 产生面包屑导航数据
 		$this->crumb(S::get('site_name'));
 

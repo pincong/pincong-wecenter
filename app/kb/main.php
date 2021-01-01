@@ -74,11 +74,6 @@ class main extends AWS_CONTROLLER
 			'per_page' => $per_page
 		)));
 
-		if (S::get('advanced_editor_enable') == 'Y')
-		{
-			import_editor_static_files();
-		}
-
 		TPL::output('kb/square');
 	}
 

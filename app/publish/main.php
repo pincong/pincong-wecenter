@@ -54,13 +54,6 @@ class main extends AWS_CONTROLLER
 			TPL::assign('category_list', $this->model('category')->get_allowed_categories($this->user_info));
 		}
 
-		TPL::import_js('js/app/publish.js');
-
-		if (S::get('advanced_editor_enable') == 'Y')
-		{
-			import_editor_static_files();
-		}
-
 		TPL::assign('thread_info', $thread_info);
 
 		TPL::output('publish/index');
@@ -93,13 +86,6 @@ class main extends AWS_CONTROLLER
 		{
 			TPL::assign('category_current_id', $thread_info['category_id']);
 			TPL::assign('category_list', $this->model('category')->get_allowed_categories($this->user_info));
-		}
-
-		TPL::import_js('js/app/publish.js');
-
-		if (S::get('advanced_editor_enable') == 'Y')
-		{
-			import_editor_static_files();
 		}
 
 		TPL::assign('thread_info', $thread_info);
@@ -135,8 +121,6 @@ class main extends AWS_CONTROLLER
 			TPL::assign('category_current_id', $thread_info['category_id']);
 			TPL::assign('category_list', $this->model('category')->get_allowed_categories($this->user_info));
 		}
-
-		TPL::import_js('js/app/publish.js');
 
 		TPL::assign('thread_info', $thread_info);
 

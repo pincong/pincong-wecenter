@@ -22,8 +22,6 @@ class main extends AWS_CONTROLLER
 	public function setup()
 	{
 		$this->crumb(_t('设置'));
-
-		TPL::import_css('css/default/user-setting.css');
 	}
 
 	public function index_action()

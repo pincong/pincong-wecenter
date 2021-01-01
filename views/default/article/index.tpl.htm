@@ -1,5 +1,12 @@
 <?php TPL::include('global/header.tpl.htm'); ?>
 
+<?php if ($this->user_id) { ?>
+<link rel="stylesheet" href="<?php echo G_STATIC_URL; ?>/editor/sceditor/themes/square.css" />
+<script src="<?php echo G_STATIC_URL; ?>/editor/sceditor/sceditor.js"></script>
+<script src="<?php echo G_STATIC_URL; ?>/editor/sceditor/icons/material.js"></script>
+<script src="<?php echo G_STATIC_URL; ?>/editor/sceditor/formats/bbcode.js"></script>
+<?php } ?>
+
 <div class="aw-container-wrap">
 	<?php if ($this->redirected_from) { ?>
 	<div class="container">

@@ -194,11 +194,6 @@ class main extends AWS_CONTROLLER
 
 		TPL::set_meta('description', $thread_info['title'] . ' - ' . truncate_text(str_replace("\r\n", ' ', $thread_info['message']), 128));
 
-		if (S::get('advanced_editor_enable') == 'Y')
-		{
-			import_editor_static_files();
-		}
-
 		$topic_ids = $this->model('topic')->get_topic_ids_by_item_id($thread_info['id'], 'question');
 		if ($topic_ids)
 		{

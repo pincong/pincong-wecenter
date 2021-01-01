@@ -30,10 +30,6 @@ class main extends AWS_CONTROLLER
 	{
 		$list = $this->model('pm')->get_conversations($this->user_id, H::GET('page'), S::get_int('contents_per_page'));
 
-		TPL::import_js('js/openpgp.min.js');
-		TPL::import_js('js/bcrypt.js');
-		TPL::import_js('js/passwordutil.js');
-
 		TPL::assign('list', $list);
 
 		TPL::assign('pagination', AWS_APP::pagination()->create(array(
@@ -64,10 +60,6 @@ class main extends AWS_CONTROLLER
 			}
 		}
 		$this->crumb(_t('私信会话') . ': ' . implode(', ', $usernames));
-
-		TPL::import_js('js/openpgp.min.js');
-		TPL::import_js('js/bcrypt.js');
-		TPL::import_js('js/passwordutil.js');
 
 		TPL::assign('conversation', $conversation);
 		TPL::assign('list', $list);
@@ -140,10 +132,6 @@ class main extends AWS_CONTROLLER
 			}
 		}
 		$this->crumb(_t('私信会话') . ': ' . implode(', ', $usernames));
-
-		TPL::import_js('js/openpgp.min.js');
-		TPL::import_js('js/bcrypt.js');
-		TPL::import_js('js/passwordutil.js');
 
 		TPL::assign('conversation', $conversation);
 		TPL::assign('list', null);

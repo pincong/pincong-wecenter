@@ -153,65 +153,17 @@ class TPL
 
 	public static function import_css($path)
 	{
-		if (is_array($path))
-		{
-			foreach ($path AS $key => $val)
-			{
-				if (!is_website($val) AND !is_uri_path($val))
-				{
-					$val = G_STATIC_URL . '/' . $val;
-				}
 
-				self::$view->_import_css_files[] = $val;
-			}
-		}
-		else
-		{
-			if (!is_website($path) AND !is_uri_path($path))
-			{
-				$path = G_STATIC_URL . '/' . $path;
-			}
-
-			self::$view->_import_css_files[] = $path;
-		}
 	}
 
 	public static function import_js($path)
 	{
-		if (is_array($path))
-		{
-			foreach ($path AS $key => $val)
-			{
-				if (!is_website($val) AND !is_uri_path($val))
-				{
-					$val = G_STATIC_URL . '/' . $val;
-				}
 
-				self::$view->_import_js_files[] = $val;
-			}
-		}
-		else
-		{
-			if (!is_website($path) AND !is_uri_path($path))
-			{
-				$path = G_STATIC_URL . '/' . $path;
-			}
-
-			self::$view->_import_js_files[] = $path;
-		}
 	}
 
 	public static function import_clean($type = false)
 	{
-		if ($type == 'js' OR !$type)
-		{
-			self::$view->_import_js_files = null;
-		}
 
-		if ($type == 'css' OR !$type)
-		{
-			self::$view->_import_css_files = null;
-		}
 	}
 
 }

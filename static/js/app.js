@@ -646,27 +646,18 @@ AWS.Init = {
 
 				$(this).parents('.aw-topic-bar').find('.aw-edit-topic-box').fadeIn();
 
-				// 是否允许创建新话题
-				if (!G_CAN_CREATE_TOPIC) {
-					$(this).parents('.aw-topic-bar').find('.add').hide();
-				}
-
 				$(this).hide();
 			});
 		}
 }
 
 AWS.init_answer_editor = function() {
-	if (G_ADVANCED_EDITOR_ENABLE == 'Y') {
-		// 初始化编辑器
-		AWS.create_editor(document.getElementById('editor_reply'));
-	}
+	AWS.create_editor(document.getElementById('editor_reply'));
 }
 
 // 创建编辑器
 AWS.create_editor = function(el, max_btn) {
 	if (!el) return;
-	if (G_ADVANCED_EDITOR_ENABLE != 'Y') return;
 
 	var empty_handler = {
 		format: function(element, content) {

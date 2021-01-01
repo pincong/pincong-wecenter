@@ -191,14 +191,6 @@ function get_topic_pic_url($topic_info, $size = 'min')
 	return S::get('upload_url') . $filename . '?' . $topic_info['topic_pic']; // $topic_info['topic_pic'] 随机字符串用于避免 CDN 缓存
 }
 
-function import_editor_static_files()
-{
-	TPL::import_css('editor/sceditor/themes/square.css');
-	TPL::import_js('editor/sceditor/sceditor.js');
-	TPL::import_js('editor/sceditor/icons/material.js');
-	TPL::import_js('editor/sceditor/formats/bbcode.js');
-}
-
 
 /**
  * 获取站点根目录 URL

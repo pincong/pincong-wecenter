@@ -58,12 +58,6 @@ class main extends AWS_ADMIN_CONTROLLER
             H::redirect('/admin/');
         }
 
-        TPL::import_css('admin/css/login.css');
-
-		TPL::import_js('js/openpgp.min.js');
-		TPL::import_js('js/bcrypt.js');
-		TPL::import_js('js/passwordutil.js');
-
         TPL::output('admin/login');
     }
 

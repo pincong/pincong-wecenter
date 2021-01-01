@@ -17,12 +17,6 @@
 <link rel="stylesheet" href="<?php echo G_STATIC_URL; ?>/css/icon.css" />
 <link rel="stylesheet" href="<?php echo G_STATIC_URL; ?>/admin/css/common.css?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>" />
 
-<?php if (is_array($this->_import_css_files)) { ?>
-<?php foreach ($this->_import_css_files AS $import_css) { ?>
-<link rel="stylesheet" href="<?php echo $import_css; ?>?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>" />
-<?php } ?>
-<?php } ?>
-
 <script type="text/javascript">
 var G_BASE_URL = "<?php echo url_rewrite(); ?>";
 var G_STATIC_URL = "<?php echo G_STATIC_URL; ?>";
@@ -35,10 +29,4 @@ var G_STATIC_URL = "<?php echo G_STATIC_URL; ?>";
 <script src="<?php echo G_STATIC_URL; ?>/admin/js/framework.js"></script>
 <script src="<?php echo G_STATIC_URL; ?>/admin/js/aws_admin.js?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>"></script>
 <script src="<?php echo G_STATIC_URL; ?>/admin/js/global.js?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>"></script>
-
-<?php if (is_array($this->_import_js_files)) { ?>
-<?php foreach ($this->_import_js_files AS $import_js) { ?>
-<script src="<?php echo $import_js; ?>?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>"></script>
-<?php } ?>
-<?php } ?>
 </head>

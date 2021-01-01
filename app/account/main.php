@@ -34,7 +34,6 @@ class main extends AWS_CONTROLLER
 		if (!H::is_post())
 		{
 			$this->crumb(_t('退出'));
-			TPL::import_css('css/default/register.css');
 			TPL::output("account/logout");
 		}
 		else
@@ -52,12 +51,6 @@ class main extends AWS_CONTROLLER
 	public function change_password_action()
 	{
 		$this->crumb(_t('修改密码'));
-
-		TPL::import_css('css/default/register.css');
-
-		TPL::import_js('js/openpgp.min.js');
-		TPL::import_js('js/bcrypt.js');
-		TPL::import_js('js/passwordutil.js');
 
 		TPL::assign('token', AWS_APP::form()->create_csrf_token(600, 'account_change_password'));
 

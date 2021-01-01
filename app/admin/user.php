@@ -160,10 +160,6 @@ class user extends AWS_ADMIN_CONTROLLER
         TPL::assign('user', $user);
         TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(402));
 
-		TPL::import_js('js/openpgp.min.js');
-		TPL::import_js('js/bcrypt.js');
-		TPL::import_js('js/passwordutil.js');
-
         TPL::output('admin/user/edit');
     }
 
@@ -174,10 +170,6 @@ class user extends AWS_ADMIN_CONTROLLER
         TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(402));
 
         TPL::assign('system_group', $this->model('usergroup')->get_normal_group_list());
-
-		TPL::import_js('js/openpgp.min.js');
-		TPL::import_js('js/bcrypt.js');
-		TPL::import_js('js/passwordutil.js');
 
         TPL::output('admin/user/add');
     }
