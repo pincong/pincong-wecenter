@@ -547,7 +547,7 @@ class ajax extends AWS_CONTROLLER
 			'parent_id' => $question_info['id'],
 			'message' => $_POST['message'],
 			'uid' => $publish_uid,
-			'follow' => ($_POST['follow'] AND !$_POST['anonymous']),
+			'follow' => ($_POST['follow'] AND !$_POST['anonymous'] AND ($this->user_info['permission']['follow_thread'] OR $question_info['uid'] == $this->user_id)),
 			'permission_affect_currency' => $this->user_info['permission']['affect_currency'],
 		), $this->user_id, $_POST['later'], $pay);
 
@@ -636,7 +636,7 @@ class ajax extends AWS_CONTROLLER
 			'parent_id' => $article_info['id'],
 			'message' => $_POST['message'],
 			'uid' => $publish_uid,
-			'follow' => ($_POST['follow'] AND !$_POST['anonymous']),
+			'follow' => ($_POST['follow'] AND !$_POST['anonymous'] AND ($this->user_info['permission']['follow_thread'] OR $article_info['uid'] == $this->user_id)),
 			'at_uid' => $_POST['at_uid'],
 			'permission_affect_currency' => $this->user_info['permission']['affect_currency'],
 		), $this->user_id, $_POST['later'], $pay);
@@ -726,7 +726,7 @@ class ajax extends AWS_CONTROLLER
 			'parent_id' => $video_info['id'],
 			'message' => $_POST['message'],
 			'uid' => $publish_uid,
-			'follow' => ($_POST['follow'] AND !$_POST['anonymous']),
+			'follow' => ($_POST['follow'] AND !$_POST['anonymous'] AND ($this->user_info['permission']['follow_thread'] OR $video_info['uid'] == $this->user_id)),
 			'at_uid' => $_POST['at_uid'],
 			'permission_affect_currency' => $this->user_info['permission']['affect_currency'],
 		), $this->user_id, $_POST['later'], $pay);

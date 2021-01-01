@@ -26,26 +26,38 @@ class ajax extends AWS_CONTROLLER
 		HTTP::no_cache_header();
 	}
 
-	private function validate_permission($permission_name, $interval_name)
+	private function validate_permission($permission_name)
 	{
 		if (!$this->user_info['permission'][$permission_name])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
+	}
 
+	private function validate_interval($interval_name)
+	{
 		if (!check_user_operation_interval($interval_name, $this->user_id, $this->user_info['permission']['interval_' . $interval_name]))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 	}
 
-	private function validate_thread($permission_name, $interval_name, $item_type, $item_id, &$item_info_out)
+	private function validate_thread($permission_name, $interval_name, $item_type, $item_id, &$item_info_out, $ignore_self_uid = false)
 	{
-		$this->validate_permission($permission_name, $interval_name);
+		if (!$ignore_self_uid)
+		{
+			$this->validate_permission($permission_name);
+		}
+		$this->validate_interval($interval_name);
 
 		if (!$item_info_out = $this->model('content')->get_thread_info_by_id($item_type, $item_id))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
+		}
+
+		if ($ignore_self_uid AND $item_info_out['uid'] != $this->user_id)
+		{
+			$this->validate_permission($permission_name);
 		}
 
 		set_user_operation_last_time($interval_name, $this->user_id);
@@ -53,7 +65,8 @@ class ajax extends AWS_CONTROLLER
 
 	private function validate_reply($permission_name, $interval_name, $item_type, $item_id, &$item_info_out)
 	{
-		$this->validate_permission($permission_name, $interval_name);
+		$this->validate_permission($permission_name);
+		$this->validate_interval($interval_name);
 
 		if (!$item_info_out = $this->model('content')->get_reply_info_by_id($item_type, $item_id))
 		{
@@ -359,7 +372,7 @@ class ajax extends AWS_CONTROLLER
 	// 关注主题
 	public function follow_action()
 	{
-		$this->validate_thread('follow_thread', 'follow', $_POST['item_type'], $_POST['item_id'], $item_info);
+		$this->validate_thread('follow_thread', 'follow', $_POST['item_type'], $_POST['item_id'], $item_info, true);
 
 		$this->model('postfollow')->follow(
 			$_POST['item_type'],
@@ -373,7 +386,7 @@ class ajax extends AWS_CONTROLLER
 	// 关注主题
 	public function unfollow_action()
 	{
-		$this->validate_thread('follow_thread', 'follow', $_POST['item_type'], $_POST['item_id'], $item_info);
+		$this->validate_thread('follow_thread', 'follow', $_POST['item_type'], $_POST['item_id'], $item_info, true);
 
 		$this->model('postfollow')->unfollow(
 			$_POST['item_type'],
