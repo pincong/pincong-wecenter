@@ -499,7 +499,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			$this->model('question')->clear_question(
 				$question_info['id'],
-				$this->user_id
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
 			);
 		}
 		else
@@ -508,7 +508,7 @@ class ajax extends AWS_CONTROLLER
 				$question_info['id'],
 				$_POST['title'],
 				$_POST['message'],
-				$this->user_id
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
 			);
 		}
 
@@ -561,7 +561,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			$this->model('article')->clear_article(
 				$article_info['id'],
-				$this->user_id
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
 			);
 		}
 		else
@@ -570,7 +570,7 @@ class ajax extends AWS_CONTROLLER
 				$article_info['id'],
 				$_POST['title'],
 				$_POST['message'],
-				$this->user_id
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
 			);
 		}
 
@@ -631,7 +631,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			$this->model('video')->clear_video(
 				$video_info['id'],
-				$this->user_id
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
 			);
 		}
 		else
@@ -650,7 +650,7 @@ class ajax extends AWS_CONTROLLER
 				$video_info['id'],
 				$_POST['title'],
 				$_POST['message'],
-				$this->user_id
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
 			);
 		}
 
@@ -977,7 +977,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			$this->model('question')->clear_answer(
 				$answer_info['id'],
-				$this->user_id
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
 			);
 		}
 		else
@@ -985,7 +985,7 @@ class ajax extends AWS_CONTROLLER
 			$this->model('question')->modify_answer(
 				$answer_info['id'],
 				$_POST['message'],
-				$this->user_id
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
 			);
 		}
 
@@ -1037,7 +1037,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			$this->model('article')->clear_article_comment(
 				$comment_info['id'],
-				$this->user_id
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
 			);
 		}
 		else
@@ -1045,7 +1045,7 @@ class ajax extends AWS_CONTROLLER
 			$this->model('article')->modify_article_comment(
 				$comment_info['id'],
 				$_POST['message'],
-				$this->user_id
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
 			);
 		}
 
@@ -1093,7 +1093,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			$this->model('video')->clear_video_comment(
 				$comment_info['id'],
-				$this->user_id
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
 			);
 		}
 		else
@@ -1101,7 +1101,7 @@ class ajax extends AWS_CONTROLLER
 			$this->model('video')->modify_video_comment(
 				$comment_info['id'],
 				$_POST['message'],
-				$this->user_id
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
 			);
 		}
 

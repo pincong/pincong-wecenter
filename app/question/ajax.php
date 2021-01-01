@@ -422,14 +422,14 @@ class ajax extends AWS_CONTROLLER
 		{
 			$this->model('question')->remove_answer_discussion(
 				$comment,
-				$this->user_id
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
 			);
 		}
 		else if ($_GET['type'] == 'question')
 		{
 			$this->model('question')->remove_question_discussion(
 				$comment,
-				$this->user_id
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
 			);
 		}
 

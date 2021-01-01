@@ -45,7 +45,13 @@ class ajax extends AWS_CONTROLLER
 
 		set_user_operation_last_time('manage', $this->user_id);
 
-		$this->model('content')->change_uid($_POST['item_type'], $_POST['item_id'], $_POST['uid'], $item_info['uid'], null);
+		$this->model('content')->change_uid(
+			$_POST['item_type'],
+			$_POST['item_id'],
+			$_POST['uid'],
+			$item_info['uid'],
+			(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
+		);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
@@ -86,7 +92,13 @@ class ajax extends AWS_CONTROLLER
 		{
 			set_user_operation_last_time('manage', $this->user_id);
 
-			$this->model('content')->change_category($_POST['item_type'], $_POST['item_id'], $category_id, $item_info['category_id'], $this->user_id);
+			$this->model('content')->change_category(
+				$_POST['item_type'],
+				$_POST['item_id'],
+				$category_id,
+				$item_info['category_id'],
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
+			);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
@@ -113,7 +125,11 @@ class ajax extends AWS_CONTROLLER
 		{
 			set_user_operation_last_time('manage', $this->user_id);
 
-			$this->model('content')->lock($_POST['item_type'], $_POST['item_id'], $this->user_id);
+			$this->model('content')->lock(
+				$_POST['item_type'],
+				$_POST['item_id'],
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
+			);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
@@ -140,7 +156,11 @@ class ajax extends AWS_CONTROLLER
 		{
 			set_user_operation_last_time('manage', $this->user_id);
 
-			$this->model('content')->unlock($_POST['item_type'], $_POST['item_id'], $this->user_id);
+			$this->model('content')->unlock(
+				$_POST['item_type'],
+				$_POST['item_id'],
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
+			);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
@@ -168,7 +188,11 @@ class ajax extends AWS_CONTROLLER
 		{
 			set_user_operation_last_time('manage', $this->user_id);
 
-			$this->model('content')->recommend($_POST['item_type'], $_POST['item_id'], $this->user_id);
+			$this->model('content')->recommend(
+				$_POST['item_type'],
+				$_POST['item_id'],
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
+			);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
@@ -196,7 +220,11 @@ class ajax extends AWS_CONTROLLER
 		{
 			set_user_operation_last_time('manage', $this->user_id);
 
-			$this->model('content')->unrecommend($_POST['item_type'], $_POST['item_id'], $this->user_id);
+			$this->model('content')->unrecommend(
+				$_POST['item_type'],
+				$_POST['item_id'],
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
+			);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
@@ -222,7 +250,11 @@ class ajax extends AWS_CONTROLLER
 
 		set_user_operation_last_time('manage', $this->user_id);
 
-		$this->model('content')->bump($_POST['item_type'], $_POST['item_id'], $this->user_id);
+		$this->model('content')->bump(
+			$_POST['item_type'],
+			$_POST['item_id'],
+			(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
+		);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
@@ -247,7 +279,11 @@ class ajax extends AWS_CONTROLLER
 
 		set_user_operation_last_time('manage', $this->user_id);
 
-		$this->model('content')->sink($_POST['item_type'], $_POST['item_id'], $this->user_id);
+		$this->model('content')->sink(
+			$_POST['item_type'],
+			$_POST['item_id'],
+			(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
+		);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
@@ -276,7 +312,11 @@ class ajax extends AWS_CONTROLLER
 		{
 			set_user_operation_last_time('manage', $this->user_id);
 
-			$this->model('content')->pin($_POST['item_type'], $_POST['item_id'], $this->user_id);
+			$this->model('content')->pin(
+				$_POST['item_type'],
+				$_POST['item_id'],
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
+			);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
@@ -305,7 +345,11 @@ class ajax extends AWS_CONTROLLER
 		{
 			set_user_operation_last_time('manage', $this->user_id);
 
-			$this->model('content')->unpin($_POST['item_type'], $_POST['item_id'], $this->user_id);
+			$this->model('content')->unpin(
+				$_POST['item_type'],
+				$_POST['item_id'],
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
+			);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
@@ -348,7 +392,14 @@ class ajax extends AWS_CONTROLLER
 					$parent_id = $item_info['video_id'];
 					break;
 			}
-			$this->model('content')->fold_reply($_POST['item_type'], $_POST['item_id'], $parent_type, $parent_id, $this->user_id);
+
+			$this->model('content')->fold_reply(
+				$_POST['item_type'],
+				$_POST['item_id'],
+				$parent_type,
+				$parent_id,
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
+			);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
@@ -390,7 +441,14 @@ class ajax extends AWS_CONTROLLER
 					$parent_id = $item_info['video_id'];
 					break;
 			}
-			$this->model('content')->unfold_reply($_POST['item_type'], $_POST['item_id'], $parent_type, $parent_id, $this->user_id);
+
+			$this->model('content')->unfold_reply(
+				$_POST['item_type'],
+				$_POST['item_id'],
+				$parent_type,
+				$parent_id,
+				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
+			);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
