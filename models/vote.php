@@ -489,6 +489,7 @@ class vote_class extends AWS_MODEL
 		}
 
 		// 曾经投票过
+		$factor = 0; // 重新投票不计声望
 		$vote_value = $vote_info['value'];
 		if ($vote_value == 0) // 已归零 则重新赞同
 		{
@@ -559,6 +560,7 @@ class vote_class extends AWS_MODEL
 		}
 
 		// 曾经投票过
+		$factor = 0; // 重新投票不计声望
 		$vote_value = $vote_info['value'];
 		if ($vote_value == 0) // 已归零 则重新反对
 		{
