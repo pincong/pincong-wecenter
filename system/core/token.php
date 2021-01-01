@@ -118,6 +118,7 @@ class core_token
 			'payload' => $payload,
 			'expire' => $exipre,
 			'time' => $time,
+			'rand' => rand(-2147483648, 2147483647),
 		);
 		$body = $this->_encode($body, $secret);
 		$token = array(

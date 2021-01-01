@@ -21,13 +21,20 @@ class core_form
 		$this->secret = AWS_APP::token()->new_secret('form_csrf_passphrase_' . G_COOKIE_HASH_KEY);
 	}
 
-	public function create_csrf_token($expire)
+	public function create_csrf_token($expire, $type)
 	{
-		return AWS_APP::token()->create(time(), $expire, $this->secret);
+		return AWS_APP::token()->create($type, $expire, $this->secret);
 	}
 
-	public function check_csrf_token($token)
+	public function check_csrf_token($token, $type)
 	{
-		return AWS_APP::token()->check($token, $this->secret);
+		if ($token AND AWS_APP::token()->verify($type_result, $token, $this->secret))
+		{
+			if ($type == $type_result)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }

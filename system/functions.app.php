@@ -457,7 +457,7 @@ function calc_page_limit($page, $per_page)
  */
 function valid_post_hash($token)
 {
-	return AWS_APP::form()->check_csrf_token($token);
+	return AWS_APP::form()->check_csrf_token($token, 'post');
 }
 
 /**
@@ -467,7 +467,7 @@ function valid_post_hash($token)
  */
 function new_post_hash()
 {
-	return AWS_APP::form()->create_csrf_token(3600);
+	return AWS_APP::form()->create_csrf_token(3600, 'post');
 }
 
 
