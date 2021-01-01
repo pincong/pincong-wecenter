@@ -191,6 +191,8 @@ class activity_class extends AWS_MODEL
 				continue;
 			}
 			$item['user_info'] = $users[$item['uid']];
+			$item['item_category_id'] = $val['category_id'];
+			$item['item_thread_id'] = $val['thread_id'];
 			$items[] = $item;
 		}
 

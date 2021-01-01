@@ -5,9 +5,10 @@
 <?php if ($val['user_info']['flagged'] > 1) continue; ?>
 
 <?php if ($val['item_type'] == 'question') { ?>
+<?php if (!$val['title']) continue; ?>
 
 <!-- 问题 -->
-<div class="aw-item">
+<div class="aw-item" data-category-id="<?php echo $val['item_category_id']; ?>">
 	<div class="mod-head">
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
@@ -57,10 +58,11 @@
 <!-- end 问题 -->
 
 <?php } else if ($val['item_type'] == 'answer') { ?>
+<?php if ($val['fold']) continue; ?>
+<?php if (!$val['message']) continue; ?>
 
 <!-- 回答 -->
-<?php if ($val['fold']) continue; ?>
-<div class="aw-item" id="answer_list_<?php echo $val['id']; ?>">
+<div class="aw-item" data-category-id="<?php echo $val['item_category_id']; ?>">
 	<div class="mod-head">
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
@@ -113,9 +115,10 @@
 <!-- end 回答 -->
 
 <?php } else if ($val['item_type'] == 'article') { ?>
+<?php if (!$val['title']) continue; ?>
 
 <!-- 文章 -->
-<div class="aw-item">
+<div class="aw-item" data-category-id="<?php echo $val['item_category_id']; ?>">
 	<div class="mod-head">
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
@@ -163,10 +166,11 @@
 <!-- end 文章 -->
 
 <?php } else if ($val['item_type'] == 'article_comment') { ?>
+<?php if ($val['fold']) continue; ?>
+<?php if (!$val['message']) continue; ?>
 
 <!-- 文章评论 -->
-<?php if ($val['fold']) continue; ?>
-<div class="aw-item">
+<div class="aw-item" data-category-id="<?php echo $val['item_category_id']; ?>">
 	<div class="mod-head">
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
@@ -198,13 +202,15 @@
 
 		</div>
 		<!-- end 社交操作 -->
+	</div>
 </div>
 <!-- end 文章评论 -->
 
 <?php } else if ($val['item_type'] == 'video') { ?>
+<?php if (!$val['title']) continue; ?>
 
 <!-- 影片 -->
-<div class="aw-item">
+<div class="aw-item" data-category-id="<?php echo $val['item_category_id']; ?>">
 	<div class="mod-head">
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
@@ -252,10 +258,11 @@
 <!-- end 影片 -->
 
 <?php } else if ($val['item_type'] == 'video_comment') { ?>
+<?php if ($val['fold']) continue; ?>
+<?php if (!$val['message']) continue; ?>
 
 <!-- 影片评论 -->
-<?php if ($val['fold']) continue; ?>
-<div class="aw-item">
+<div class="aw-item" data-category-id="<?php echo $val['item_category_id']; ?>">
 	<div class="mod-head">
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
@@ -287,6 +294,7 @@
 
 		</div>
 		<!-- end 社交操作 -->
+	</div>
 </div>
 <!-- end 影片评论 -->
 
