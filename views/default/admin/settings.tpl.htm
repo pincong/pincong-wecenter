@@ -1113,48 +1113,6 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('声望达到多少为正式用户'); ?>:</span>
-							<div class="col-sm-5 col-xs-8">
-								<input name="reputation_formal_user" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['reputation_formal_user']); ?>"/>
-								<span class="help-block"><?php echo _t('正式用户受到更多保护, 留空则不启用'); ?></span>
-							</div>
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('自动封禁非正式用户'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="auto_banning_type" value="ON"<?php if ($this->setting['auto_banning_type'] == 'ON') { ?> checked="checked"<?php } ?> /> <?php echo _t('ON'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="auto_banning_type" value="OFF"<?php if ($this->setting['auto_banning_type'] == 'OFF') { ?> checked="checked"<?php } ?> /> <?php echo _t('OFF'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('內容声望小于等于多少时自动封禁'); ?>:</span>
-							<div class="col-sm-5 col-xs-8">
-								<input name="auto_banning_reputation" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['auto_banning_reputation']); ?>"/>
-								<div class="help-block"><?php echo _t('应填写负数, 任意一则贴文的声望'); ?></div>
-							</div>
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td>
-						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('长文奖励因子'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="bonus_factor" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['bonus_factor']); ?>"/>

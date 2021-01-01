@@ -34,7 +34,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你不能对自己进行此操作')));
 		}
 
-		$user_info = $this->model('account')->get_user_info_by_uid($uid);
+		$user_info = $this->model('account')->get_user_and_group_info_by_uid($uid);
 
 		if (!$user_info)
 		{
@@ -53,8 +53,7 @@ class ajax extends AWS_CONTROLLER
 		if (!$this->user_info['permission']['is_moderator'])
 		{
 			// 普通用户不能处理受保护的用户
-			$user_group = $this->model('usergroup')->get_user_group_by_user_info($user_info);
-			if ($user_group AND $user_group['permission']['protected'])
+			if ($user_info['permission']['protected'])
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你没有权限进行此操作')));
 			}
@@ -136,8 +135,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($status AND !$this->user_info['permission']['is_moderator'])
 		{
-			$reputation_formal_user = S::get('reputation_formal_user');
-			if (is_numeric($reputation_formal_user) AND $user_info['reputation'] >= $reputation_formal_user)
+			if (!$user_info['permission']['informal_user'])
 			{
 				if (!$user_info['flagged'])
 				{
@@ -213,6 +211,18 @@ class ajax extends AWS_CONTROLLER
 		if ($status == $user_info['flagged'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('该用户已经处于此状态')));
+		}
+
+		if (!$status)
+		{
+			if ($this->user_info['permission']['flagged_ids'])
+			{
+				$group_ids = array_map('intval', explode(',', $this->user_info['permission']['flagged_ids']));
+				if (!in_array($user_info['flagged'], $group_ids))
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你没有权限进行此操作')));
+				}
+			}
 		}
 
 		$this->model('user')->flag_user_by_uid(
