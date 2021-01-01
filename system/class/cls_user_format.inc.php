@@ -30,7 +30,7 @@ class UF
 
 		$default = G_STATIC_URL . '/common/avatar-' . $size . '-img.png';
 
-		if (!$user_info OR is_null($user_info['avatar_file']) OR (!self::$permissions['is_moderator'] AND ($user_info['forbidden'] OR $user_info['flagged'] > 1)))
+		if (!$user_info OR is_null($user_info['avatar_file']) OR (!self::$permissions['is_moderator'] AND $user_info['forbidden'] > 1))
 		{
 			return $default;
 		}
@@ -57,7 +57,7 @@ class UF
 
 	public static function signature(&$user_info)
 	{
-		if (!$user_info OR (!self::$permissions['is_moderator'] AND ($user_info['forbidden'] OR $user_info['flagged'] > 1)))
+		if (!$user_info OR (!self::$permissions['is_moderator'] AND $user_info['forbidden'] > 1))
 		{
 			return '';
 		}

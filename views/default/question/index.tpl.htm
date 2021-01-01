@@ -392,7 +392,7 @@
 							<div class="user-detail">
 								<a class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($this->question_info['user_info']); ?>"><img alt="" src="<?php echo UF::avatar($this->question_info['user_info'], 'mid'); ?>" /></a>
 								<a class="aw-user-name" href="<?php echo UF::url($this->question_info['user_info']); ?>" data-id="<?php echo $this->question_info['user_info']['uid']; ?>" data-reputation="<?php echo UF::reputation($this->question_info['user_info']); ?>">
-									<?php if ($this->question_info['user_info']['flagged'] > 0) { ?>
+									<?php if ($this->question_info['user_info']['forbidden']) { ?>
 										<s><?php echo UF::name($this->question_info['user_info']); ?></s>
 									<?php } else { ?>
 										<?php echo UF::name($this->question_info['user_info']); ?>

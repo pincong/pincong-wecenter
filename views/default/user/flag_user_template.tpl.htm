@@ -12,9 +12,6 @@
 				<select class="form-control" name="status" <?php if ($this->banning_reason_list) { ?>onchange="var $reason = $(this).parent().find('select[name=reason]'); if ($(this).val() == 0) {$(this).parent().find('textarea').val(''); $reason.val(''); $reason.css('visibility', 'hidden');} else {$reason.css('visibility', 'visible');}"<?php } ?>>
 					<option value="0" <?php if ($this->user['flagged'] == 0) { ?>selected="selected"<?php } ?>><?php _e('正常'); ?></option>
 					<option value="-1" <?php if ($this->user['flagged'] == -1) { ?>selected="selected"<?php } ?>><?php _e('观察'); ?></option>
-					<option value="1" <?php if ($this->user['flagged'] == 1) { ?>selected="selected"<?php } ?>><?php _e('禁止登录'); ?></option>
-					<option value="2" <?php if ($this->user['flagged'] == 2) { ?>selected="selected"<?php } ?>><?php _e('禁止登录 + 隐藏全部发言'); ?></option>
-					<option value="3" <?php if ($this->user['flagged'] == 3) { ?>selected="selected"<?php } ?>><?php _e('禁止登录 + 替换全部发言'); ?></option>
 				</select>
 				<?php if ($this->banning_reason_list) { ?>
 				<div class="aw-margin-y-10">

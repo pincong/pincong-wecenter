@@ -118,7 +118,7 @@ ul,ol{padding:0;list-style:none;}
 .aw-content-wrap .mod-head .nav-tabs{border-bottom:none;}
 .aw-content-wrap .mod-head .nav-tabs li{min-width:89px;height:42px;border-right:1px solid #DDD;list-style:none;text-align:center;cursor:default;}
 .aw-content-wrap .mod-head .nav-tabs li a{margin-top:0;margin-left:0;padding:8px 15px;outline:none;border:none;background:transparent;line-height:29px;}
-.aw-content-wrap .mod > .mod-head, .mod-echat-info .mod-head{margin:10px 0 0;height:44px;border:1px solid #e2e1e1;background:#f4f4f4;color:#333;}
+.aw-content-wrap .mod > .mod-head, .mod-echat-info .mod-head{margin:10px 0 0;min-height:44px;border:1px solid #e2e1e1;background:#f4f4f4;color:#333;}
 .mod-head .dropdown{margin: 5px 10px 0 0}
 .aw-content-wrap .mod-site-save{margin:10px 15px 0 0;}
 .aw-content-wrap .mod-head .pull-left{margin-right:20px;padding-left:15px;font-size:14px;line-height:45px;}
@@ -293,8 +293,6 @@ label,.aw-content-wrap .mod-title,.aw-article-list b,.aw-question-list b{font-we
 	.mod-head .nav-tabs li.active{height: 42px}
 	#add_category_form .col-sm-2{margin-top: 10px;}
 	#add_category_form div{text-align: left;margin-bottom: 10px;}
-	#user_list .mod-head {height:86px}
-	#user_list .mod-head h3 li{display: inline-block;width: 50%}
 	#user_list .pagination{float: left!important;margin-top: 15px;}
 	#tools .col-xs-12{margin-top: 10px;}
 	#tools .col-xs-12 input{margin-left: 73px}

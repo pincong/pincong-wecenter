@@ -2,7 +2,6 @@
 
 <?php if (CF::skip($val['user_info'])) continue; ?>
 <?php if ($val['user_info']['forbidden']) continue; ?>
-<?php if ($val['user_info']['flagged'] > 1) continue; ?>
 
 <?php if ($val['item_type'] == 'question') { ?>
 <?php if (!$val['title']) continue; ?>

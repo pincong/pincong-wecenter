@@ -32,7 +32,7 @@ class AWS_CONTROLLER
 		{
 			$this->user_id = $this->user_info['uid'];
 
-			if ($this->user_info['forbidden'] OR $this->user_info['flagged'] > 0)
+			if ($this->user_info['forbidden'])
 			{
 				$this->model('login')->logout();
 				H::redirect_msg(AWS_APP::lang()->_t('抱歉, 你的账号已经被禁止登录'), '/');

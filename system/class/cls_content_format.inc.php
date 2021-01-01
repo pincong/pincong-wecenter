@@ -69,7 +69,7 @@ class CF
 	// 获得知识库 id (替换原内容)
 	private static function get_kb_id(&$user_info, &$key)
 	{
-		if ($user_info['flagged'] != 3)
+		if ($user_info['forbidden'] != 3)
 		{
 			return 0;
 		}
@@ -103,7 +103,7 @@ class CF
 	// 标题 (raw text)
 	public static function &page_title(&$user_info, $key, &$string)
 	{
-		if ($user_info['flagged'] == 2)
+		if ($user_info['forbidden'] == 2)
 		{
 			return '';
 		}
@@ -118,7 +118,7 @@ class CF
 	// 标题
 	public static function &title(&$user_info, $key, &$string)
 	{
-		if ($user_info['flagged'] == 2)
+		if ($user_info['forbidden'] == 2)
 		{
 			return self::txt_hidden();
 		}
@@ -137,7 +137,7 @@ class CF
 	// 正文 (不显示已删除) (解析bbcode)
 	public static function &body(&$user_info, $key, &$string)
 	{
-		if ($user_info['flagged'] == 2)
+		if ($user_info['forbidden'] == 2)
 		{
 			return '';
 		}
@@ -152,7 +152,7 @@ class CF
 	// 正文 (不显示已删除) (解析链接)
 	public static function &body_simple(&$user_info, $key, &$string)
 	{
-		if ($user_info['flagged'] == 2)
+		if ($user_info['forbidden'] == 2)
 		{
 			return '';
 		}
@@ -198,12 +198,12 @@ class CF
 
 	public static function skip(&$user_info, $limited = true)
 	{
-		if ($user_info['flagged'] == 2)
+		if ($user_info['forbidden'] == 2)
 		{
 			return true;
 		}
 
-		if ($user_info['flagged'] != 3 OR !$limited)
+		if ($user_info['forbidden'] != 3 OR !$limited)
 		{
 			return false;
 		}

@@ -10,7 +10,7 @@
 	</p>
 	<p class="aw-small-text">
 		<a href="<?php echo UF::url($val['user_info']); ?>">
-		<?php if ($val['user_info']['flagged'] > 0) { ?>
+		<?php if ($val['user_info']['forbidden']) { ?>
 			<s><?php echo UF::name($val['user_info']); ?></s>
 		<?php } else { ?>
 			<?php echo UF::name($val['user_info']); ?>

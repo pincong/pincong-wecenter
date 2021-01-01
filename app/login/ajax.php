@@ -102,7 +102,7 @@ class ajax extends AWS_CONTROLLER
 
 		AWS_APP::form()->revoke_csrf_token($_POST['token']);
 
-		if ($user_info['forbidden'] OR $user_info['flagged'] > 0)
+		if ($user_info['forbidden'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(array(
 				'url' => url_rewrite('/people/') . $user_info['url_token']

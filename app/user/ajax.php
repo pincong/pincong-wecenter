@@ -106,7 +106,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		$status = intval($_POST['status']);
-		if (!in_array($status, array(0, 1)))
+		if (!in_array($status, array(0, 1, 2, 3)))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('操作失败')));
 		}
@@ -117,6 +117,22 @@ class ajax extends AWS_CONTROLLER
 
 		$uid = intval($_POST['uid']);
 		$this->get_user_info_and_check_permission($uid, $user_info);
+
+		if ($status AND !$this->user_info['permission']['is_moderator'])
+		{
+			$reputation_formal_user = S::get('reputation_formal_user');
+			if (is_numeric($reputation_formal_user) AND $user_info['reputation'] >= $reputation_formal_user)
+			{
+				if (!$user_info['flagged'])
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('正式用户请先标记为「观察」')));
+				}
+				else if ($this->model('account')->get_user_extra_data($uid)['flagged_by'] == $this->user_id)
+				{
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('只有第二位管理员可以执行此操作')));
+				}
+			}
+		}
 
 		$this->model('user')->forbid_user_by_uid(
 			$uid,
@@ -146,7 +162,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		$status = intval($_POST['status']);
-		if (!in_array($status, array(-1, 0, 1, 2, 3)))
+		if (!in_array($status, array(-1, 0)))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('操作失败')));
 		}
@@ -157,22 +173,6 @@ class ajax extends AWS_CONTROLLER
 
 		$uid = intval($_POST['uid']);
 		$this->get_user_info_and_check_permission($uid, $user_info);
-
-		if ($status > 0 AND !$this->user_info['permission']['is_moderator'])
-		{
-			$reputation_formal_user = S::get('reputation_formal_user');
-			if (is_numeric($reputation_formal_user) AND $user_info['reputation'] >= $reputation_formal_user)
-			{
-				if ($user_info['flagged'] == 0)
-				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('正式用户请先标记为「观察」')));
-				}
-				else if ($user_info['flagged'] < 0 AND $this->model('account')->get_user_extra_data($uid)['flagged_by'] == $this->user_id)
-				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('只有第二位管理员可以执行此操作')));
-				}
-			}
-		}
 
 		$this->model('user')->flag_user_by_uid(
 			$uid,

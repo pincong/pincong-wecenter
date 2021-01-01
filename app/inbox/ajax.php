@@ -90,7 +90,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->user_info['permission']['dispatch_pm']) // 对普通用户进行严格的权限检查
 		{
-			if ($recipient_user['forbidden'] OR $recipient_user['flagged'] > 0)
+			if ($recipient_user['forbidden'])
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对方的账号已经被禁止登录')));
 			}

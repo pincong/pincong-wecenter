@@ -22,7 +22,7 @@
 								<?php } ?>
 
 								<?php if ($this->user_info['permission']['forbid_user']) { ?>
-									<a href="javascript:;" class="aw-small-text" onclick="AWS.popup(G_BASE_URL + '/user/edit/forbid_user/uid-<?php echo $this->user['uid']; ?>');"><i class="icon icon-forbid"></i> <?php if ($this->user['forbidden']) { ?><?php _e('解封'); ?><?php } else { ?><?php _e('封禁'); ?><?php } ?></a>
+									<a href="javascript:;" class="aw-small-text" onclick="AWS.popup(G_BASE_URL + '/user/edit/forbid_user/uid-<?php echo $this->user['uid']; ?>');"><i class="icon icon-forbid"></i> <?php _e('封禁'); ?></a>
 								<?php } ?>
 
 								<?php if ($this->user_info['permission']['flag_user']) { ?>
@@ -41,17 +41,28 @@
 							<?php if ($this->user['flagged']) { ?>
 							<br />
 							<span class="aw-small-text">
-								<a href="<?php echo url_rewrite(); ?>/people/<?php echo $this->user['data']['flagged_by']; ?>"><?php _e('管理员'); ?></a><?php _e('标记'); ?>
-								<?php if ($this->user['flagged'] == -1) { ?>
-									(<?php _e('观察'); ?>)
-								<?php } elseif ($this->user['flagged'] == 1) { ?>
-									(<?php _e('禁止登录'); ?>)
-								<?php } elseif ($this->user['flagged'] == 2) { ?>
-									(<?php _e('禁止登录 + 隐藏全部发言'); ?>)
-								<?php } elseif ($this->user['flagged'] == 3) { ?>
-									(<?php _e('禁止登录 + 替换全部发言'); ?>)
-								<?php } ?>
-								: <?php echo FORMAT::text($this->user['data']['flagged_reason']); ?> <?php echo FORMAT::text($this->user['data']['flagged_detail']); ?>
+								<a class="aw-nowrap" href="<?php echo url_rewrite(); ?>/people/<?php echo $this->user['data']['flagged_by']; ?>">
+									<?php _e('标记'); ?>
+									<?php if ($this->user['flagged'] == -1) { ?>
+										(<?php _e('观察'); ?>)
+									<?php } ?>
+								</a>
+								<?php echo FORMAT::text($this->user['data']['flagged_reason']); ?> <?php echo FORMAT::text($this->user['data']['flagged_detail']); ?>
+							</span>
+							<?php } ?>
+							<?php if ($this->user['forbidden']) { ?>
+							<br />
+							<span class="aw-small-text">
+								<a class="aw-nowrap" href="<?php echo url_rewrite(); ?>/people/<?php echo $this->user['data']['banned_by']; ?>">
+									<?php if ($this->user['forbidden'] == 1) { ?>
+										<?php _e('禁止登录'); ?>
+									<?php } elseif ($this->user['forbidden'] == 2) { ?>
+										<?php _e('禁止登录 + 隐藏全部发言'); ?>
+									<?php } elseif ($this->user['forbidden'] == 3) { ?>
+										<?php _e('禁止登录 + 替换全部发言'); ?>
+									<?php } ?>
+								</a>
+								<?php echo FORMAT::text($this->user['data']['banned_reason']); ?> <?php echo FORMAT::text($this->user['data']['banned_detail']); ?>
 							</span>
 							<?php } ?>
 							<?php if ($this->user_id) { ?>
@@ -139,7 +150,7 @@
 										<?php if ($this->fans_list) { ?>
 										<p>
 											<?php foreach ($this->fans_list AS $key => $val) { ?>
-											<?php if (($val['forbidden'] OR $val['flagged'] > 0) AND !$this->user_info['permission']['is_moderator']) continue; ?>
+											<?php if ($val['forbidden'] AND !$this->user_info['permission']['is_moderator']) continue; ?>
 												<a class="aw-user-name" data-id="<?php echo $val['uid']; ?>" href="<?php echo UF::url($val); ?>"><img src="<?php echo UF::avatar($val, 'mid'); ?>" alt=""></a>
 											<?php } ?>
 										</p>
