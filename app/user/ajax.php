@@ -162,7 +162,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		$status = intval($_POST['status']);
-		if (!in_array($status, array(-1, 0)))
+		if ($status AND !$this->model('usergroup')->get_group_id_by_value_flagged($status))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('操作失败')));
 		}

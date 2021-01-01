@@ -334,7 +334,7 @@
 										<?php echo UF::name($this->video_info['user_info']); ?>
 									<?php } ?>
 								</a>
-								<?php if ($this->video_info['user_info']['flagged'] == -1) { ?><sup><?php _e('观察'); ?></sup><?php } ?>
+								<?php if ($this->video_info['user_info']['flagged']) { ?><sup><?php echo UF::flagged($this->video_info['user_info']); ?></sup><?php } ?>
 								<?php if ($this->video_info['user_info']['verified']) { ?>
 									<em class="aw-verified"><?php echo $this->video_info['user_info']['verified']; ?></em>
 								<?php } ?>

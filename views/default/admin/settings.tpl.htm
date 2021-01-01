@@ -196,24 +196,6 @@
 						</div>
 					</td>
 				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-3 col-xs-3 control-label"><?php _e('自动观察新用户'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="new_user_watching" value="Y"<?php if ($this->setting['new_user_watching'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="new_user_watching" value="N"<?php if ($this->setting['new_user_watching'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
 
 				<tr>
 					<td>
@@ -1007,6 +989,30 @@
 							<div class="col-sm-5 col-xs-8">
 								<input name="trash_category_id" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['trash_category_id']); ?>"/>
 								<span class="help-block"><?php _e('将删除的帖子存入垃圾箱, 留空则不启用'); ?></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('用于标记的用户组 ID(s)'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input name="flagged_ids" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['flagged_ids']); ?>"/>
+								<span class="help-block"><?php _e('多个用户组 ID 请用","隔开, 请勿填写管理员用户组 ID'); ?></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('自动将新用户标记为'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input name="new_user_flag_as" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['new_user_flag_as']); ?>"/>
+								<div class="help-block"><?php _e('填写用户组 ID, 留空则不启用, 请勿填写管理员用户组 ID'); ?></div>
 							</div>
 						</div>
 					</td>

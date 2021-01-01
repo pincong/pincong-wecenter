@@ -75,11 +75,7 @@ class register_class extends AWS_MODEL
 			return false;
 		}
 
-		$flagged = 0;
-		if (S::get('new_user_watching') == 'Y')
-		{
-			$flagged = -1;
-		}
+		$flagged = S::get_int('new_user_flag_as');
 
 		$uid = $this->insert('users', array(
 			'user_name' => htmlspecialchars($username),

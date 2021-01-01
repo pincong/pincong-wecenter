@@ -11,7 +11,9 @@
 				<div class="alert alert-danger collapse error_message"><i class="icon icon-delete"></i> <em></em></div>
 				<select class="form-control" name="status" <?php if ($this->banning_reason_list) { ?>onchange="var $reason = $(this).parent().find('select[name=reason]'); if ($(this).val() == 0) {$(this).parent().find('textarea').val(''); $reason.val(''); $reason.css('visibility', 'hidden');} else {$reason.css('visibility', 'visible');}"<?php } ?>>
 					<option value="0" <?php if ($this->user['flagged'] == 0) { ?>selected="selected"<?php } ?>><?php _e('正常'); ?></option>
-					<option value="-1" <?php if ($this->user['flagged'] == -1) { ?>selected="selected"<?php } ?>><?php _e('观察'); ?></option>
+					<?php foreach (get_user_groups_flagged() as $key => $val) { ?>
+					<option value="<?php echo $val['group_id']; ?>" <?php if ($this->user['flagged'] == $val['group_id']) { ?>selected="selected"<?php } ?>><?php echo $val['group_name']; ?></option>
+					<?php } ?>
 				</select>
 				<?php if ($this->banning_reason_list) { ?>
 				<div class="aw-margin-y-10">

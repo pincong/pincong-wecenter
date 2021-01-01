@@ -12,8 +12,8 @@
 						case 0:
 							_e('取消标记');
 							break;
-						case -1:
-							_e('标记 (观察)');
+						default:
+							_e('标记 (%s)', get_user_group_name_flagged($val['status']));
 							break;
 					}
 					break;
@@ -70,7 +70,7 @@
 			<?php echo UF::name($val['admin_user_info']); ?>
 		<?php } ?>
 		</a>
-		<?php if ($val['admin_user_info']['flagged'] == -1) { ?><sup><?php _e('观察'); ?></sup><?php } ?>
+		<?php if ($val['admin_user_info']['flagged']) { ?><sup><?php echo UF::flagged($val['admin_user_info']); ?></sup><?php } ?>
 		(<i class="icon icon-prestige"></i><?php echo UF::reputation($val['admin_user_info']); ?>
 		<i class="icon icon-agree"></i><?php echo $val['admin_user_info']['agree_count']; ?>)
 		<br>
@@ -82,7 +82,7 @@
 			<?php echo UF::name($val['user_info']); ?>
 		<?php } ?>
 		</a>
-		<?php if ($val['user_info']['flagged'] == -1) { ?><sup><?php _e('观察'); ?></sup><?php } ?>
+		<?php if ($val['user_info']['flagged']) { ?><sup><?php echo UF::flagged($val['user_info']); ?></sup><?php } ?>
 		(<i class="icon icon-prestige"></i><?php echo UF::reputation($val['user_info']); ?>
 		<i class="icon icon-agree"></i><?php echo $val['user_info']['agree_count']; ?>)
 		<?php if($val['detail']) { ?>

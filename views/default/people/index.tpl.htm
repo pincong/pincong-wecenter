@@ -43,9 +43,7 @@
 							<span class="aw-small-text">
 								<a class="aw-nowrap" href="<?php echo url_rewrite(); ?>/people/<?php echo $this->user['data']['flagged_by']; ?>">
 									<?php _e('标记'); ?>
-									<?php if ($this->user['flagged'] == -1) { ?>
-										(<?php _e('观察'); ?>)
-									<?php } ?>
+									(<?php echo UF::flagged($this->user); ?>)
 								</a>
 								<?php echo FORMAT::text($this->user['data']['flagged_reason']); ?> <?php echo FORMAT::text($this->user['data']['flagged_detail']); ?>
 							</span>

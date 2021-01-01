@@ -189,6 +189,77 @@ class usergroup_class extends AWS_MODEL
 		return $user_group;
 	}
 
+	private function check_value_flagged($flagged)
+	{
+		static $correct_ids;
+		if (!isset($correct_ids))
+		{
+			$correct_ids = S::get('flagged_ids');
+			if ($correct_ids)
+			{
+				$correct_ids = array_map('intval', explode(',', $correct_ids));
+			}
+			if (!is_array($correct_ids))
+			{
+				$correct_ids = array();
+			}
+		}
+
+		if (in_array($flagged, $correct_ids))
+		{
+			return true;
+		}
+		return false;
+	}
+
+	public function get_groups_flagged()
+	{
+		static $groups;
+		if (isset($groups))
+		{
+			return $groups;
+		}
+		$groups = $this->get_all_groups();
+		if (!is_array($groups))
+		{
+			$groups = array();
+		}
+		foreach ($groups as $key => $val)
+		{
+			if (!$this->check_value_flagged(intval($val['group_id'])))
+			{
+				unset($groups[$key]);
+			}
+		}
+		return $groups;
+	}
+
+	// 通过'flagged'值得到用户组ID
+	public function get_group_id_by_value_flagged($flagged)
+	{
+		$flagged = intval($flagged);
+		if (!$flagged OR !$this->check_value_flagged($flagged))
+		{
+			return 0;
+		}
+		if ($all_groups = $this->get_all_groups())
+		{
+			foreach ($all_groups as $key => $val)
+			{
+				if ($val['group_id'] == $flagged)
+				{
+					return $flagged;
+				}
+			}
+		}
+		return 0;
+	}
+
+	public function get_group_name_by_value_flagged($flagged)
+	{
+		return $this->get_groups_flagged()[intval($flagged)]['group_name'];
+	}
+
 	// 通过声望值得到用户组ID
 	public function get_group_id_by_reputation($reputation)
 	{
@@ -245,8 +316,15 @@ class usergroup_class extends AWS_MODEL
 
 	public function get_user_group_by_user_info(&$user_info)
 	{
-		$group_id = intval($user_info['group_id']);
+		// 如果用户被标记（'flagged'），用户组就等于'flagged'值
+		$group_id = $this->get_group_id_by_value_flagged($user_info['flagged']);
+
 		if (!$group_id)
+		{
+			$group_id = intval($user_info['group_id']);
+		}
+
+		if (!$group_id) // $group_id 0 表示普通会员
 		{
 			$group_id = $this->get_group_id_by_reputation($user_info['reputation']);
 		}

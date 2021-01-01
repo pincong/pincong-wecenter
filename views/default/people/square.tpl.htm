@@ -20,7 +20,7 @@
 								<p class="aw-small-text title">
 									<a href="<?php echo UF::url($val); ?>" class="aw-user-name" data-id="<?php echo $val['uid']; ?>"><?php echo UF::name($val); ?></a>
 									<?php if ($val['verified']) { ?><em class="aw-verified"><?php echo $val['verified']; ?></em><?php } ?>
-									<?php if ($val['flagged'] == -1) { ?><sup><?php _e('观察'); ?></sup><?php } ?>
+									<?php if ($val['flagged']) { ?><sup><?php echo UF::flagged($val); ?></sup><?php } ?>
 								</p>
 								<p class="aw-small-text signature"><?php echo UF::signature($val); ?></p>
 								<div class="meta">

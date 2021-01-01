@@ -110,6 +110,21 @@ function check_http_referer()
 	return $empty;
 }
 
+function get_user_groups_flagged()
+{
+	return AWS_APP::model('usergroup')->get_groups_flagged();
+}
+
+function get_user_group_name_flagged($flagged)
+{
+	$name = AWS_APP::model('usergroup')->get_group_name_by_value_flagged($flagged);
+	if (!$name)
+	{
+		return '?';
+	}
+	return $name;
+}
+
 function can_edit_post($post_uid, &$user_info)
 {
 	if (!$user_info OR !$user_info['uid'])

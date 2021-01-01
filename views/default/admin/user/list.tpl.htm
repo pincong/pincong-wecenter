@@ -45,7 +45,7 @@
 								<td><input type="checkbox" class="select-user" value="<?php echo $val['uid']; ?>" name="uids[<?php echo $val['uid']; ?>]"></td>
 								<td><input type="checkbox" class="select-user-data" value="1" name="remove_user_data[<?php echo $val['uid']; ?>]"></td>
 								<td><a href="<?php echo url_rewrite(); ?>/admin/user/edit/uid-<?php echo $val['uid']; ?>" title="<?php _e('编辑'); ?>"><?php echo $val['uid']; ?></a></td>
-								<td><a href="<?php echo UF::url($val); ?>" target="_blank"><?php if ($val['forbidden']) { ?><s><?php } ?><?php echo UF::name($val); ?><?php if ($val['forbidden']) { ?></s><?php } ?></a> <?php if ($val['flagged'] == -1) { ?><sup><?php _e('观察'); ?></sup><?php } ?></td>
+								<td><a href="<?php echo UF::url($val); ?>" target="_blank"><?php if ($val['forbidden']) { ?><s><?php } ?><?php echo UF::name($val); ?><?php if ($val['forbidden']) { ?></s><?php } ?></a> <?php if ($val['flagged']) { ?><sup><?php echo UF::flagged($val); ?></sup><?php } ?></td>
 								<td><?php echo $this->member_group[$val['reputation_group_id']]['group_name']; ?></td>
 								<td><?php echo $this->system_group[$val['group_id']]['group_name']; ?></td>
 								<td><?php echo date_friendly($val['reg_time']); ?></td>

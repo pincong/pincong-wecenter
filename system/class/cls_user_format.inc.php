@@ -95,4 +95,13 @@ class UF
 		return intval($user_info['reputation']);
 	}
 
+	public static function flagged(&$user_info)
+	{
+		if (!$user_info OR !$user_info['flagged'])
+		{
+			return '';
+		}
+		return get_user_group_name_flagged($user_info['flagged']);
+	}
+
 }
