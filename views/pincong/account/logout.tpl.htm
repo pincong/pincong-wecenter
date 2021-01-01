@@ -1,0 +1,27 @@
+<?php TPL::include('components/begin.tpl.htm'); ?>
+
+<main class="d-flex flex-column justify-content-center h-100">
+	<div class="text-center mb-4">
+		<a href="<?php echo base_url(); ?>/">
+			<img class="mb-4" src="<?php echo S::get('login_logo_url'); ?>" alt="">
+		</a>
+		<div class="mb-3">
+			<img style="min-height:6rem;" src="<?php echo UF::avatar($this->user_info, 'max'); ?>" alt="">
+		</div>
+	</div>
+
+	<form class="w-100 mx-auto px-3 mb-5" style="max-width:21rem;" onsubmit="localStorage.clear();" method="post" action="<?php echo url_rewrite(); ?>/account/logout/">
+		<div class="text-center text-danger mb-3">
+			<span><?php echo _t('您即将退出'); ?></span>
+		</div>
+		<button class="btn btn-primary btn-block mb-3" type="submit"><?php echo _t('确定'); ?></button>
+		<a class="btn btn-outline-secondary btn-block" href="<?php echo url_rewrite(); ?>/"><?php echo _t('取消'); ?></a>
+	</form>
+
+	<div class="text-center">
+		<p class="mb-4"></p>
+		<p class="text-muted mb-3">&copy; <?php echo date('Y'); ?></p>
+	</div>
+</main>
+
+<?php TPL::include('components/end.tpl.htm'); ?>

@@ -1,0 +1,59 @@
+<?php TPL::include('components/begin.tpl.htm'); ?>
+
+<main class="d-flex flex-column justify-content-center h-100">
+	<div class="text-center mb-4">
+		<a href="<?php echo base_url(); ?>/">
+			<img class="mb-4" src="<?php echo S::get('login_logo_url'); ?>" alt="">
+		</a>
+		<h1 class="h3 font-weight-normal mb-3"><?php echo _t('登录'); ?></h1>
+	</div>
+
+	<form class="w-100 mx-auto px-3 mb-5" style="max-width:21rem;display:none;" id="id_login_form" onsubmit="return false;" method="post">
+		<div class="mb-3">
+			<input class="form-control" type="text" name="username" autocomplete="username" placeholder="<?php echo _t('用户名'); ?>" oninput="$(this).closest('form').find('input[name=password]').val('');" autofocus>
+		</div>
+		<div style="display:none;">
+			<input type="password" name="password" autocomplete="current-password">
+		</div>
+		<?php if ($this->captcha_required) { ?>
+		<div class="mb-3">
+			<img class="d-block mx-auto mb-1" style="cursor:pointer;" src="<?php echo url_rewrite(); ?>/captcha/" onclick="$(this).attr('src', '<?php echo base_url(); ?>/captcha/' + Math.floor(Math.random() * 10000));">
+			<input class="form-control" type="text" name="captcha" placeholder="<?php echo _t('验证码'); ?>">
+		</div>
+		<?php } ?>
+		<button class="btn btn-primary btn-block" type="submit"><?php echo _t('下一步'); ?></button>
+	</form>
+
+	<div class="text-center">
+		<p class="mb-4"><a href="<?php echo url_rewrite(); ?>/register/"><?php echo _t('注册新用户'); ?></a></p>
+		<p class="text-muted mb-3">&copy; <?php echo date('Y'); ?></p>
+	</div>
+</main>
+
+<script>
+$(document).ready(function () {
+	var form = $('#id_login_form').show();
+
+	form.submit(function(e) {
+		e.preventDefault();
+
+		form.find('input[name=password]').val('');
+
+		var new_form = $('<form>', {action: '<?php echo url_rewrite(); ?>/login/', method: 'post'});
+		new_form.append($('<input>', {name: 'token', value: '<?php echo $this->token; ?>'}));
+
+		new_form.append($('<input>', {name: 'username', value: form.find('input[name=username]').val()}));
+		<?php if ($this->captcha_required) { ?>
+		new_form.append($('<input>', {name: 'captcha', value: form.find('input[name=captcha]').val()}));
+		<?php } else { ?>
+		new_form.append($('<input>', {name: 'captcha_enabled', value: '0'}));
+		<?php } ?>
+
+		new_form.appendTo('body').submit().remove();
+
+		return false;
+	});
+});
+</script>
+
+<?php TPL::include('components/end.tpl.htm'); ?>

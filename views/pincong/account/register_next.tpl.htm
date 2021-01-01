@@ -1,0 +1,136 @@
+<?php TPL::include('components/begin.tpl.htm'); ?>
+
+<script src="<?php echo G_STATIC_URL; ?>/js/openpgp.min.js"></script>
+<script src="<?php echo G_STATIC_URL; ?>/js/bcrypt.js"></script>
+<script src="<?php echo G_STATIC_URL; ?>/js/passwordutil.js?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>"></script>
+
+<main class="d-flex flex-column justify-content-center h-100">
+	<div class="text-center mb-4">
+		<a href="<?php echo base_url(); ?>/">
+			<img class="mb-4" src="<?php echo S::get('login_logo_url'); ?>" alt="">
+		</a>
+		<h1 class="h3 font-weight-normal mb-3"><?php echo _t('注册'); ?></h1>
+	</div>
+
+	<form class="w-100 mx-auto px-3 mb-5" style="max-width:21rem;display:none;" id="id_login_form" onsubmit="return false;" method="post">
+		<div class="mb-3">
+			<input class="form-control" type="text" name="username" autocomplete="username" placeholder="<?php echo _t('用户名'); ?>">
+		</div>
+		<div class="mb-3">
+			<input class="form-control" type="password" name="password" autocomplete="new-password" placeholder="<?php echo _t('密码'); ?>">
+		</div>
+		<div class="mb-3">
+			<input class="form-control" type="password" name="confirm_password" autocomplete="new-password" placeholder="<?php echo _t('再次输入密码'); ?>">
+		</div>
+		<?php if ($this->captcha_required) { ?>
+		<div class="mb-3">
+			<img class="d-block mx-auto mb-1" style="cursor:pointer;" src="<?php echo url_rewrite(); ?>/captcha/" onclick="$(this).attr('src', '<?php echo base_url(); ?>/captcha/' + Math.floor(Math.random() * 10000));">
+			<input class="form-control" type="text" name="captcha" placeholder="<?php echo _t('验证码'); ?>">
+		</div>
+		<?php } ?>
+		<button class="btn btn-primary btn-block" type="submit"><?php echo _t('注册'); ?></button>
+	</form>
+
+	<div class="text-center">
+		<p class="mb-4"><a href="<?php echo url_rewrite(); ?>/login/"><?php echo _t('已有账号?'); ?></a></p>
+		<p class="text-muted mb-3">&copy; <?php echo date('Y'); ?></p>
+	</div>
+</main>
+
+<script>
+$(document).ready(function () {
+	var form = $('#id_login_form').show();
+	var btn = form.find('button[type=submit]');
+
+	var _reload_captcha = function() {
+		form.find('input[name=captcha]').parent().find('img').click();
+	}
+
+	var _store = function(private_key) {
+		localStorage.setItem('<?php echo G_COOKIE_PREFIX; ?>_private_key', private_key);
+	}
+
+	var _redirect = function(url) {
+		url || (url = '<?php echo url_rewrite(); ?>/');
+		window.location = url;
+	}
+
+	form.submit(function(e) {
+		e.preventDefault();
+
+		var usr = form.find('input[name=username]').val();
+		var pwd = form.find('input[name=password]').val();
+		var confirm_pwd = form.find('input[name=confirm_password]').val();
+
+		if (!usr || !pwd) {
+			AWS.toast("<?php echo _t('请输入正确的用户名或密码'); ?>", 'danger');
+			return false;
+		}
+		if (pwd != confirm_pwd) {
+			AWS.toast("<?php echo _t('两次输入的密码不一致'); ?>", 'danger');
+			return false;
+		}
+		if (pwd.length < 8) {
+			AWS.toast("<?php echo _t('密码长度不能少于8个字符'); ?>", 'danger');
+			return false;
+		}
+		if (/^(.)\1+$/.test(pwd)) {
+			AWS.toast("<?php echo _t('密码不能是单一的字符'); ?>", 'danger');
+			return false;
+		}
+		if (/^[0-9]+$/.test(pwd)) {
+			AWS.toast("<?php echo _t('密码不能是纯数字'); ?>", 'danger');
+			return false;
+		}
+		if (/^[a-z]+$/.test(pwd)) {
+			AWS.toast("<?php echo _t('密码不能是纯小写字母'); ?>", 'danger');
+			return false;
+		}
+
+		var params = {
+			captcha: form.find('input[name=captcha]').val(),
+			token: '<?php echo $this->token; ?>',
+			username: usr,
+		}
+
+		AWS.toast("<?php echo _t('正在生成公钥和私钥, 请稍候...'); ?>");
+		btn.addClass('disabled');
+
+		setTimeout(function() {
+			var private_key;
+			PasswordUtil.random_string(45).then(function(value) {
+				params.client_salt = value;
+				return PasswordUtil.password_hash(pwd, params.client_salt);
+			}).then(function(value) {
+				params.scrambled_password = value;
+				return PasswordUtil.generate_key();
+			}).then(function(value) {
+				params.public_key = value[0];
+				private_key = value[1];
+				return PasswordUtil.password_hash(pwd, params.public_key);
+			}).then(function(value) {
+				return PasswordUtil.encrypt_private_key(private_key, value);
+			}).then(function(value) {
+				params.private_key = value;
+				AWS.ajax_request('<?php echo url_rewrite(); ?>/register/ajax/process/', params, function(rsm) {
+					_store(private_key);
+					rsm || (rsm = {});
+					_redirect(rsm.next);
+				}, function(err) {
+					AWS.toast(err, 'danger');
+					btn.removeClass('disabled');
+					_reload_captcha();
+				});
+			}).catch(function(error) {
+				AWS.toast("<?php echo _t('无法生成公钥和私钥'); ?>", 'danger');
+				btn.removeClass('disabled');
+				console.log(error);
+			});
+		}, 0);
+
+		return false;
+	});
+});
+</script>
+
+<?php TPL::include('components/end.tpl.htm'); ?>

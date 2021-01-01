@@ -1,0 +1,154 @@
+<?php TPL::include('components/begin.tpl.htm'); ?>
+
+<script src="<?php echo G_STATIC_URL; ?>/js/openpgp.min.js"></script>
+<script src="<?php echo G_STATIC_URL; ?>/js/bcrypt.js"></script>
+<script src="<?php echo G_STATIC_URL; ?>/js/passwordutil.js?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>"></script>
+
+<main class="d-flex flex-column justify-content-center h-100">
+	<div class="text-center mb-4">
+		<a href="<?php echo base_url(); ?>/">
+			<img class="mb-4" src="<?php echo S::get('login_logo_url'); ?>" alt="">
+		</a>
+		<div class="mb-3">
+			<img style="min-height:6rem;" src="<?php echo UF::avatar($this->user, 'max'); ?>" alt="">
+		</div>
+	</div>
+
+	<form class="w-100 mx-auto px-3 mb-5" style="max-width:21rem;display:none;" id="id_login_form" onsubmit="return false;" method="post">
+		<div class="mb-3">
+			<input class="form-control" type="text" name="username" autocomplete="username" value="<?php echo $this->user['user_name']; ?>" readonly style="cursor:default;">
+		</div>
+		<div class="mb-3">
+			<input class="form-control" type="password" name="password" autocomplete="current-password" placeholder="<?php echo _t('密码'); ?>" autofocus>
+		</div>
+		<?php if ($this->captcha_required) { ?>
+		<div class="mb-3">
+			<img class="d-block mx-auto mb-1" style="cursor:pointer;" src="<?php echo url_rewrite(); ?>/captcha/" onclick="$(this).attr('src', '<?php echo base_url(); ?>/captcha/' + Math.floor(Math.random() * 10000));">
+			<input class="form-control" type="text" name="captcha" placeholder="<?php echo _t('验证码'); ?>">
+		</div>
+		<?php } ?>
+		<div class="custom-control custom-checkbox mb-3">
+			<input class="custom-control-input" id="id_remember_me_checkbox" type="checkbox" name="remember_me">
+			<label class="custom-control-label" for="id_remember_me_checkbox"><?php echo _t('记住我'); ?></label>
+		</div>
+		<button class="btn btn-primary btn-block" type="submit"><?php echo _t('登录'); ?></button>
+	</form>
+
+	<div class="text-center">
+		<p class="mb-4"></p>
+		<p class="text-muted mb-3">&copy; <?php echo date('Y'); ?></p>
+	</div>
+</main>
+
+<script>
+$(document).ready(function () {
+	var form = $('#id_login_form').show();
+	var btn = form.find('button[type=submit]');
+
+	var _reload_captcha = function() {
+		form.find('input[name=captcha]').parent().find('img').click();
+	}
+
+	var _store = function(private_key) {
+		localStorage.setItem('<?php echo G_COOKIE_PREFIX; ?>_private_key', private_key);
+	}
+
+	var _redirect = function(url) {
+		url || (url = '<?php echo url_rewrite(); ?>/');
+		window.location = url;
+	}
+
+	form.submit(function(e) {
+		e.preventDefault();
+
+		var pwd = form.find('input[name=password]').val();
+
+		var params = {
+			captcha: form.find('input[name=captcha]').val(),
+			captcha_enabled: <?php echo intval($this->captcha_required); ?>,
+			uid: '<?php echo $this->user['uid']; ?>',
+			remember_me: form.find('input[name=remember_me]').is(':checked') ? 1 : 0,
+			token: '<?php echo $this->token; ?>',
+		}
+
+		var client_salt = '<?php echo $this->user['salt']; ?>';
+		var password_version = (<?php echo intval($this->user['password_version']); ?> || 1);
+
+		AWS.toast("<?php echo _t('请稍候...'); ?>");
+		btn.addClass('disabled');
+
+<?php if ($this->user['password_version'] < 3) { ?>
+		setTimeout(function() {
+			var private_key;
+			PasswordUtil.password_hash(pwd, client_salt, password_version).then(function(value) {
+				params.scrambled_password = value;
+				return PasswordUtil.random_string(45);
+			}).then(function(value) {
+				params.new_client_salt = value;
+				return PasswordUtil.password_hash(pwd, params.new_client_salt);
+			}).then(function(value) {
+				params.new_scrambled_password = value;
+				return PasswordUtil.generate_key();
+			}).then(function(value) {
+				params.new_public_key = value[0];
+				private_key = value[1];
+				return PasswordUtil.password_hash(pwd, params.new_public_key);
+			}).then(function(value) {
+				return PasswordUtil.encrypt_private_key(private_key, value);
+			}).then(function(value) {
+				params.new_private_key = value;
+				AWS.ajax_request('<?php echo url_rewrite(); ?>/login/ajax/process/', params, function(rsm) {
+					_store(private_key);
+					rsm || (rsm = {});
+					_redirect(rsm.next);
+				}, function(err) {
+					AWS.toast(err, 'danger', true);
+					btn.removeClass('disabled');
+					_reload_captcha();
+				});
+			}).catch(function(error) {
+				AWS.toast("<?php echo _t('演算过程中发生故障, 请刷新页面重试'); ?>", 'danger', true);
+				btn.removeClass('disabled');
+				console.log(error);
+			});
+		}, 0);
+
+<?php } else { ?>
+		setTimeout(function() {
+			PasswordUtil.password_hash(pwd, client_salt).then(function(value) {
+				params.scrambled_password = value;
+				AWS.ajax_request('<?php echo url_rewrite(); ?>/login/ajax/process/', params, function(rsm) {
+					rsm || (rsm = {});
+					if (!rsm.private_key) {
+						_redirect(rsm.next);
+						return;
+					}
+					PasswordUtil.password_hash(pwd, '<?php echo $this->user['public_key']; ?>').then(function(value) {
+						return PasswordUtil.decrypt_private_key(rsm.private_key, value);
+					}).then(function(value) {
+						_store(value);
+						_redirect(rsm.next);
+					}).catch(function(error) {
+						console.log(error);
+						alert("<?php echo _t('无法解密私钥'); ?>");
+						_redirect(rsm.next);
+					});
+				}, function(err) {
+					AWS.toast(err, 'danger', true);
+					btn.removeClass('disabled');
+					_reload_captcha();
+				});
+			}).catch(function(error) {
+				AWS.toast("<?php echo _t('演算过程中发生故障, 请刷新页面重试'); ?>", 'danger', true);
+				btn.removeClass('disabled');
+				console.log(error);
+			});
+		}, 0);
+
+<?php } ?>
+		return false;
+	});
+});
+</script>
+
+<?php TPL::include('components/end.tpl.htm'); ?>

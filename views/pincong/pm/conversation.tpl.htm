@@ -19,11 +19,11 @@
 
 	<div class="px-3">
 		<div class="row flex-nowrap my-3">
-			<div class="col-auto p-0">
+			<div class="col-auto p-0 pt-1">
 				<div class="d-none d-sm-block overflow-hidden" style="width:2.5rem">
 				</div>
 			</div>
-			<div class="col overflow-hidden">
+			<div class="col overflow-hidden pt-1">
 				<form id="id_pm_form" onsubmit="return false;" method="post">
 					<textarea class="form-control" name="message" rows="5" placeholder="<?php echo _t('想要对ta说点什么'); ?>?"></textarea>
 					<div class="text-right my-3">
@@ -31,7 +31,7 @@
 					</div>
 				</form>
 			</div>
-			<div class="col-auto p-0">
+			<div class="col-auto p-0 pt-1">
 				<div class="overflow-hidden" style="width:2.5rem">
 					<a href="<?php echo UF::url($this->user_info); ?>">
 						<img class="rounded" style="max-width:100%;" src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" alt="<?php echo UF::name($this->user_info); ?>">
@@ -102,6 +102,7 @@
 		<?php TPL::include('components/pagination.tpl.htm'); ?>
 	</div>
 </main>
+
 <script>
 $(document).ready(function () {
 	var form = $('#id_pm_form');

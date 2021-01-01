@@ -24,6 +24,16 @@ TPL['loading'] =
 		'</div>' +
 	'</div>';
 
+TPL['toast'] =
+	'<div class="toast" style="position:fixed;left:50%;top:10%;transform:translate(-50%,-50%);" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">' +
+		'<div class="toast-body d-flex text-light">' +
+			'<span class="mr-auto" param="text"></span>' +
+			'<button class="close mt-n1 ml-2" data-dismiss="toast" aria-label="Close">' +
+				'<span aria-hidden="true">&times;</span>' +
+			'</button>' +
+		'</div>' +
+	'</div>';
+
 TPL['alert'] =
 	'<div class="modal fade" tabindex="-1" aria-hidden="true">' +
 		'<div class="modal-dialog">' +
@@ -116,25 +126,29 @@ function show_tpl(tpl_name) {
 	return el;
 }
 
+function bind_event(el, name, fn) {
+	return el.off(name).on(name, fn);
+}
+
 function show_text_box(tpl_name, title, text, callback) {
 	var el = show_tpl(tpl_name);
 
 	var title_el = el.find('*[param="title"]');
-	!title && (title = '');
-	title_el.text(title);
+	title = '' + title;
+	title_el.html(title);
 
 	var text_el = el.find('*[param="text"]');
 	if (!callback && typeof text === 'function') {
 		callback = text;
-		text = null;
+		text = '';
 	}
-	!text && (text = '');
+	text = '' + text;
 	text_el.val(text);
 
 	el.find('.modal-body textarea').css('height', 'auto');
 
-	el.on('hide.bs.modal', function() {
-		title_el.text('');
+	bind_event(el, 'hide.bs.modal', function() {
+		title_el.html('');
 		text_el.val('');
 	});
 
@@ -150,15 +164,76 @@ AWS.loading = function(type) {
 	el.collapse(type);
 }
 
+var toast_timer = null;
+
+AWS.toast = function(text, color, delay, close_btn) {
+	if (toast_timer) {
+		clearTimeout(toast_timer);
+		toast_timer = null;
+	}
+
+	var el = show_tpl('toast');
+
+	var text_el = el.find('*[param="text"]');
+	text = '' + text;
+
+	if (typeof color != 'string') {
+		close_btn = delay;
+		delay = color;
+		color = null;
+	}
+
+	var body_el = el.find('.toast-body');
+	if (color != 'success' && color != 'warning' && color != 'danger') {
+		color ='info';
+	}
+
+	var hide = false;
+	if (typeof delay == 'boolean') {
+		if (!delay) hide = true;
+		else delay = false;
+	} else {
+		delay = Number(delay) || 3000;
+	}
+
+	bind_event(el, 'hide.bs.toast', function() {
+		text_el.html('');
+	});
+
+	if (hide) {
+		el.toast('hide');
+		return;
+	}
+
+	text_el.html(text);
+	body_el.removeClass('bg-info').removeClass('bg-success').removeClass('bg-warning').removeClass('bg-danger');
+	body_el.addClass('bg-' + color);
+
+	var close_btn_el = el.find('.toast-body .close');
+	if (!close_btn) {
+		close_btn_el.addClass('d-none');
+	} else {
+		close_btn_el.removeClass('d-none');
+	}
+
+	el.toast('show');
+
+	if (delay > 0) {
+		toast_timer = setTimeout(function() {
+			el.toast('hide');
+		}, delay);
+	}
+}
+
 AWS.alert = function(title) {
 	var el = show_tpl('alert');
 
 	var title_el = el.find('*[param="title"]');
-	!title && (title = '');
-	title_el.text(title);
+	title = '' + title;
+	title_el.html(title);
 
-	el.on('hide.bs.modal', function() {
-		title_el.text('');
+	bind_event(el, 'hide.bs.modal', function() {
+		title_el.html('');
 	});
 
 	el.modal('show');
@@ -168,11 +243,11 @@ AWS.confirm = function(title, callback) {
 	var el = show_tpl('confirm');
 
 	var title_el = el.find('*[param="title"]');
-	!title && (title = '');
-	title_el.text(title);
+	title = '' + title;
+	title_el.html(title);
 
-	el.on('hide.bs.modal', function() {
-		title_el.text('');
+	bind_event(el, 'hide.bs.modal', function() {
+		title_el.html('');
 	});
 
 	el.find('.modal-footer .btn-primary').click(function() {
