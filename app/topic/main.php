@@ -161,6 +161,8 @@ class main extends AWS_CONTROLLER
 				}
 
 				TPL::assign('topics_list', $topics_list);
+
+				$url_param[] = 'channel-focus';
 			break;
 
 			case 'hot':
@@ -169,10 +171,14 @@ class main extends AWS_CONTROLLER
 				{
 					case 'month':
 						$order = 'discuss_count_last_month DESC';
+
+						$url_param[] = 'day-month';
 					break;
 
 					case 'week':
 						$order = 'discuss_count_last_week DESC';
+
+						$url_param[] = 'day-week';
 					break;
 
 					default:
@@ -205,7 +211,7 @@ class main extends AWS_CONTROLLER
 		TPL::assign('new_topics', $this->model('topic')->get_topic_list(null, 'topic_id DESC', 10));
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-			'base_url' => get_js_url('/topic/channel-' . $_GET['channel'] . '__topic_id-' . $_GET['topic_id'] . '__day-' . $_GET['day']),
+			'base_url' => get_js_url('/topic/') . implode('__', $url_param),
 			'total_rows' => $topics_list_total_rows,
 			'per_page' => $per_page
 		))->create_links());

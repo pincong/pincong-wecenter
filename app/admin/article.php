@@ -112,7 +112,7 @@ class article extends AWS_ADMIN_CONTROLLER
 		{
 			if (!in_array($key, array('app', 'c', 'act', 'page')))
 			{
-				$url_param[] = $key . '-' . $val;
+				$url_param[] = htmlspecialchars($key) . '-' . htmlspecialchars($val);
 			}
 		}
 

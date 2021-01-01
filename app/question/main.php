@@ -63,13 +63,17 @@ class main extends AWS_CONTROLLER
 			$replies_per_page = 100;
 		}
 
-		if (! $_GET['sort'] OR $_GET['sort'] != 'ASC')
+		$url_param[] = 'id-' . $question_info['id'];
+
+		if ($_GET['sort'] == 'ASC')
 		{
-			$sort = 'DESC';
+			$sort = 'ASC';
+
+			$url_param[] = 'sort-ASC';
 		}
 		else
 		{
-			$sort = 'ASC';
+			$sort = 'DESC';
 		}
 
 		$this->model('content')->update_view_count('question', $question_info['id'], session_id());
@@ -77,6 +81,8 @@ class main extends AWS_CONTROLLER
 		if ($_GET['fold'])
 		{
 			$order_by = "fold ASC, ";
+
+			$url_param[] = 'fold-1';
 		}
 		else
 		{
@@ -86,6 +92,8 @@ class main extends AWS_CONTROLLER
 		if ($_GET['sort_key'] == 'add_time')
 		{
 			$order_by .= "id " . $sort;
+
+			$url_param[] = 'sort_key-add_time';
 		}
 		else
 		{
@@ -184,7 +192,7 @@ class main extends AWS_CONTROLLER
 		$this->crumb($page_title);
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-			'base_url' => get_js_url('/question/id-' . $question_info['id'] . '__sort_key-' . $_GET['sort_key'] . '__sort-' . $_GET['sort']),
+			'base_url' => get_js_url('/question/') . implode('__', $url_param),
 			'total_rows' => $question_info['answer_count'],
 			'per_page' => $replies_per_page
 		))->create_links());

@@ -64,6 +64,8 @@ class main extends AWS_CONTROLLER
 			$replies_per_page = 100;
 		}
 
+		$url_param[] = 'id-' . $video_info['id'];
+
 		$video_info['iframe_url'] = Services_VideoParser::get_iframe_url($video_info['source_type'], $video_info['source']);
 
 		if ($this->user_id)
@@ -93,6 +95,8 @@ class main extends AWS_CONTROLLER
 		if ($_GET['fold'])
 		{
 			$order_by = "fold ASC, ";
+
+			$url_param[] = 'fold-1';
 		}
 		else
 		{
@@ -138,7 +142,7 @@ class main extends AWS_CONTROLLER
 		TPL::assign('comment_count', $video_info['comment_count']);
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-			'base_url' => get_js_url('/video/id-' . $video_info['id']),
+			'base_url' => get_js_url('/video/') . implode('__', $url_param),
 			'total_rows' => $video_info['comment_count'],
 			'per_page' => $replies_per_page
 		))->create_links());

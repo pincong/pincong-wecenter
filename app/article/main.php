@@ -61,6 +61,8 @@ class main extends AWS_CONTROLLER
 			$replies_per_page = 100;
 		}
 
+		$url_param[] = 'id-' . $article_info['id'];
+
 		if ($this->user_id)
 		{
 			$article_info['vote_value'] = $this->model('vote')->get_user_vote_value_by_id('article', $article_info['id'], $this->user_id);
@@ -86,6 +88,8 @@ class main extends AWS_CONTROLLER
 		if ($_GET['fold'])
 		{
 			$order_by = "fold ASC, ";
+
+			$url_param[] = 'fold-1';
 		}
 		else
 		{
@@ -136,7 +140,7 @@ class main extends AWS_CONTROLLER
 		TPL::assign('comments_count', $article_info['comments']);
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-			'base_url' => get_js_url('/article/id-' . $article_info['id']),
+			'base_url' => get_js_url('/article/') . implode('__', $url_param),
 			'total_rows' => $article_info['comments'],
 			'per_page' => $replies_per_page
 		))->create_links());
