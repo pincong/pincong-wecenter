@@ -42,6 +42,7 @@ class AWS_APP
 
 	private static $models = array();
 
+	private static $debug_mode;
 	public static $_debug = array();
 
 	/**
@@ -133,7 +134,9 @@ class AWS_APP
 	 */
 	private static function init()
 	{
-		set_exception_handler(array('AWS_APP', 'exception_handle'));
+		self::$debug_mode = !!self::config()->get('system')->debug;
+
+		self::set_handlers();
 
 		self::$config = load_class('core_config');
 		self::$db = load_class('core_db');
@@ -146,15 +149,15 @@ class AWS_APP
 		}
 
 		if ($img_url = S::get('img_url'))
-        {
-            define('G_STATIC_URL', $img_url);
-        }
-        else
-        {
-            define('G_STATIC_URL', base_url() . '/static');
-        }
+		{
+			define('G_STATIC_URL', $img_url);
+		}
+		else
+		{
+			define('G_STATIC_URL', base_url() . '/static');
+		}
 
-		if (self::config()->get('system')->debug)
+		if (self::$debug_mode)
 		{
 			if ($cornd_timer = self::cache()->getGroup('crond'))
 			{
@@ -190,19 +193,26 @@ class AWS_APP
 		return false;
 	}
 
-	/**
-	 * 异常处理
-	 *
-	 * 获取系统异常 & 处理
-	 *
-	 * @access	public
-	 * @param	object
-	 */
-	public static function exception_handle($exception)
+	private static function set_handlers()
 	{
-		$exception_message = "Application error\n------\nMessage: " . $exception->getMessage() . "\nFile: " . $exception->getFile() . "\nLine: " . $exception->getLine() . "\nURI: " . $_SERVER['REQUEST_URI'] . "\n------\n" . $exception->getTraceAsString();
+		set_error_handler(function ($errno, $errstr, $errfile, $errline) {
+			if (!(error_reporting() & $errno))
+			{
+				return false;
+			}
 
-		show_error($exception_message);
+			if (!self::$debug_mode)
+			{
+				return;
+			}
+			$message = friendly_error_type($errno) . ": " . $errstr . " File: " . $errfile . " Line: " . $errline;
+			AWS_APP::debug_log('error', 0, $message);
+		});
+
+		set_exception_handler(function ($exception) {
+			$message = "Application error\n------\n\nMessage: " . $exception->getMessage() . "\nFile: " . $exception->getFile() . "\nLine: " . $exception->getLine() . "\nURI: " . $_SERVER['REQUEST_URI'];
+			show_error($message);
+		});
 	}
 
 	/**
@@ -452,10 +462,13 @@ class AWS_APP
 	 */
 	public static function debug_log($type, $expend_time, $message)
 	{
+		$root_dir = rtrim(ROOT_PATH, '/\\');
+		$message = str_replace($root_dir, '', $message);
+
 		self::$_debug[$type][] = array(
 			'expend_time' => $expend_time,
 			'log_time' => microtime(true),
-			'message' => $message
+			'message' => htmlspecialchars($message)
 		);
 	}
 
