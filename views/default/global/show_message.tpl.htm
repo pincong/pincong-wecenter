@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" />
 		<title><?php if ($this->url_bit) { ?><?php _e('请稍候...'); ?><?php } else { ?><?php _e('提示信息'); ?><?php } ?></title>
 		<?php if ($this->url_bit) { ?>
-		<meta http-equiv="refresh" content="<?php echo $this->interval; ?>; url=<?php echo $this->url_bit; ?>" />
+		<meta http-equiv="refresh" content="<?php echo $this->interval; ?>; url=<?php echo htmlspecialchars($this->url_bit); ?>" />
 		<?php } ?>
 
 		<link rel="stylesheet" type="text/css" href="<?php echo G_STATIC_URL; ?>/css/icon.css" />
@@ -27,28 +27,6 @@
 		}
 
 		</style>
-
-		<?php if ($this->url_bit) { ?>
-		<script type='text/javascript'>
-		//<![CDATA[
-		// Fix Mozilla bug: 209020
-		if (navigator.product == 'Gecko' )
-		{
-			var navstring = navigator.userAgent.toLowerCase();
-			var geckonum = navstring.replace( /.*gecko\/(\d+)/, "$1" );
-
-			setTimeout("moz_redirect()", 5000);
-		}
-
-		function moz_redirect()
-		{
-			var url_bit = "<?php echo $this->url_bit; ?>";
-
-			window.location = url_bit.replace( new RegExp( "&amp;", "g" ) , '&' );
-		}
-		//>
-		</script>
-		<?php } ?>
 	</head>
 
 	<body>
@@ -62,7 +40,7 @@
 				<br />
 				<?php if ($this->url_bit) { ?>
 				<br />
-				<span class='desc'>(<a href="<?php echo $this->url_bit; ?>"><?php _e('如果不想等待, 请点击这里'); ?></a>)</span>
+				<span class='desc'>(<a href="<?php echo htmlspecialchars($this->url_bit); ?>"><?php _e('如果不想等待, 请点击这里'); ?></a>)</span>
 				<?php } ?>
 			</div>
 		</div>

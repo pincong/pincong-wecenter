@@ -35,7 +35,7 @@ class edit extends AWS_CONTROLLER
 			H::error_403();
 		}
 
-		if (!$user = $this->model('account')->get_user_info_by_uid($_GET['uid']))
+		if (!$user = $this->model('account')->get_user_info_by_uid(H::GET('uid')))
 		{
 			H::error_404();
 		}
@@ -59,7 +59,7 @@ class edit extends AWS_CONTROLLER
 			H::error_403();
 		}
 
-		if (!$user = $this->model('account')->get_user_info_by_uid($_GET['uid']))
+		if (!$user = $this->model('account')->get_user_info_by_uid(H::GET('uid')))
 		{
 			H::error_404();
 		}
@@ -83,7 +83,7 @@ class edit extends AWS_CONTROLLER
 			H::error_403();
 		}
 
-		if (!$user = $this->model('account')->get_user_info_by_uid($_GET['uid']))
+		if (!$user = $this->model('account')->get_user_info_by_uid(H::GET('uid')))
 		{
 			H::error_404();
 		}
@@ -100,7 +100,7 @@ class edit extends AWS_CONTROLLER
 			H::error_403();
 		}
 
-		if (!$user = $this->model('account')->get_user_info_by_uid($_GET['uid']))
+		if (!$user = $this->model('account')->get_user_info_by_uid(H::GET('uid')))
 		{
 			H::error_404();
 		}

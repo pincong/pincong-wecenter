@@ -28,17 +28,17 @@ class ajax extends AWS_CONTROLLER
 
 	public function follow_people_action()
 	{
-		if (! $_POST['uid'] OR $_POST['uid'] == $this->user_id)
+		if (! H::POST('uid') OR H::POST('uid') == $this->user_id)
 		{
 			die;
 		}
 
 		// 首先判断是否存在关注
-		if ($this->model('follow')->user_follow_check($this->user_id, $_POST['uid']))
+		if ($this->model('follow')->user_follow_check($this->user_id, H::POST('uid')))
 		{
 			$action = 'remove';
 
-			$this->model('follow')->user_follow_del($this->user_id, $_POST['uid']);
+			$this->model('follow')->user_follow_del($this->user_id, H::POST('uid'));
 		}
 		else
 		{
@@ -49,9 +49,9 @@ class ajax extends AWS_CONTROLLER
 
 			$action = 'add';
 
-			if ($this->model('follow')->user_follow_add($this->user_id, $_POST['uid']))
+			if ($this->model('follow')->user_follow_add($this->user_id, H::POST('uid')))
 			{
-				$this->model('notification')->send($this->user_id, $_POST['uid'], 'FOLLOW_USER');
+				$this->model('notification')->send($this->user_id, H::POST('uid'), 'FOLLOW_USER');
 			}
 
 		}

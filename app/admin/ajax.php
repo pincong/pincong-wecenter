@@ -29,7 +29,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 	public function login_process_action()
 	{
-		$user_info = $this->model('login')->verify($this->user_info['uid'], $_POST['scrambled_password']);
+		$user_info = $this->model('login')->verify($this->user_info['uid'], H::POST('scrambled_password'));
 
 		if ($user_info['uid'])
 		{
@@ -72,15 +72,15 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 	public function article_manage_action()
 	{
-		if (!$_POST['article_ids'])
+		if (!H::POST('article_ids'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择文章进行操作')));
 		}
 
-		switch ($_POST['action'])
+		switch (H::POST('action'))
 		{
 			case 'del':
-				foreach ($_POST['article_ids'] AS $article_id)
+				foreach (H::POST('article_ids') AS $article_id)
 				{
 					$this->model('article')->clear_article($article_id, null);
 				}
@@ -92,9 +92,9 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 	public function save_category_sort_action()
 	{
-		if (is_array($_POST['category']))
+		if (is_array(H::POST('category')))
 		{
-			foreach ($_POST['category'] as $key => $val)
+			foreach (H::POST('category') as $key => $val)
 			{
 				$this->model('category')->set_category_sort($key, $val['sort']);
 			}
@@ -105,18 +105,18 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 	public function save_category_action()
 	{
-		if (trim($_POST['title']) == '')
+		if (!$title = H::POST_S('title'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入分类名称')));
 		}
 
-		if ($_POST['category_id'])
+		if (H::POST('category_id'))
 		{
-			$this->model('category')->update_category_info($_POST['category_id'], $_POST['title'], $_POST['group_id'], $_POST['description'], $_POST['skip']);
+			$this->model('category')->update_category_info(H::POST('category_id'), $title, H::POST('group_id'), H::POST_S('description'), H::POST('skip'));
 		}
 		else
 		{
-			$this->model('category')->add_category($_POST['title'], $_POST['group_id'], $_POST['description'], $_POST['skip']);
+			$this->model('category')->add_category($title, H::POST('group_id'), H::POST_S('description'), H::POST('skip'));
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
@@ -126,61 +126,62 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 	public function remove_category_action()
 	{
-		if (intval($_POST['category_id']) == 1)
+		$category_id = H::POST_I('category_id');
+		if ($category_id == 1)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('默认分类不可删除')));
 		}
 
-		if ($this->model('category')->contents_exists($_POST['category_id']))
+		if ($this->model('category')->contents_exists($category_id))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('分类下存在内容, 请先批量移动问题到其它分类, 再删除当前分类')));
 		}
 
-		$this->model('category')->delete_category($_POST['category_id']);
+		$this->model('category')->delete_category($category_id);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
 	public function move_category_contents_action()
 	{
-		if (!$_POST['from_id'] OR !$_POST['target_id'])
+		if (!H::POST('from_id') OR !H::POST('target_id'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请先选择指定分类和目标分类')));
 		}
 
-		if ($_POST['target_id'] == $_POST['from_id'])
+		if (H::POST('target_id') == H::POST('from_id'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('指定分类不能与目标分类相同')));
 		}
 
-		$this->model('category')->move_contents($_POST['from_id'], $_POST['target_id']);
+		$this->model('category')->move_contents(H::POST('from_id'), H::POST('target_id'));
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
 	public function save_feature_action()
 	{
-		if (trim($_POST['title']) == '')
+		if (!$title = H::POST_S('title'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('标题不能为空')));
 		}
 
-		if ($_GET['feature_id'])
+		if (H::GET('feature_id'))
 		{
-			$feature = $this->model('feature')->get_feature_by_id($_GET['feature_id']);
+			$feature = $this->model('feature')->get_feature_by_id(H::GET('feature_id'));
 
 			$feature_id = $feature['id'];
 		}
 
-		if (!$_GET['feature_id'])
+		if (!H::GET('feature_id'))
 		{
-			$feature_id = $this->model('feature')->add_feature($_POST['title']);
+			$feature_id = $this->model('feature')->add_feature($title);
 		}
 
 		$update_data = array(
-			'title' => $_POST['title'],
-			'link' => $_POST['link'],
-			'sort' => intval($_POST['sort'])
+			'title' => $title,
+			'link' => H::POST_S('link'),
+			'sort' => H::POST_I('sort')
 		);
 
 		$this->model('feature')->update_feature($feature_id, $update_data);
@@ -192,18 +193,18 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 	public function remove_feature_action()
 	{
-		$this->model('feature')->delete_feature($_POST['feature_id']);
+		$this->model('feature')->delete_feature(H::POST('feature_id'));
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
 	public function save_feature_status_action()
 	{
-		if ($_POST['feature_ids'])
+		if (H::POST('feature_ids'))
 		{
-			foreach ($_POST['feature_ids'] AS $feature_id => $val)
+			foreach (H::POST('feature_ids') AS $feature_id => $val)
 			{
-				$this->model('feature')->update_feature_enabled($feature_id, $_POST['enabled_status'][$feature_id]);
+				$this->model('feature')->update_feature_enabled($feature_id, H::POST('enabled_status')[$feature_id]);
 			}
 		}
 
@@ -212,9 +213,9 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 	public function save_nav_menu_action()
 	{
-		if ($_POST['nav_sort'])
+		if (H::POST('nav_sort'))
 		{
-			if ($menu_ids = explode(',', $_POST['nav_sort']))
+			if ($menu_ids = explode(',', H::POST('nav_sort')))
 			{
 				foreach($menu_ids as $key => $val)
 				{
@@ -225,9 +226,9 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			}
 		}
 
-		if ($_POST['nav_menu'])
+		if (H::POST('nav_menu'))
 		{
-			foreach($_POST['nav_menu'] as $key => $val)
+			foreach(H::POST('nav_menu') as $key => $val)
 			{
 				$this->model('menu')->update_nav_menu($key, $val);
 			}
@@ -238,18 +239,18 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 	public function add_nav_menu_action()
 	{
-		switch ($_POST['type'])
+		switch (H::POST('type'))
 		{
 			case 'category' :
-				$type_id = intval($_POST['type_id']);
+				$type_id = H::POST_I('type_id');
 				$category = $this->model('category')->get_category_info($type_id);
 				$title = $category['title'];
 			break;
 
 			case 'custom' :
-				$title = trim($_POST['title']);
-				$description = trim($_POST['description']);
-				$link = trim($_POST['link']);
+				$title = H::POST_S('title');
+				$description = H::POST_S('description');
+				$link = H::POST_S('link');
 				$type_id = 0;
 			break;
 		}
@@ -259,14 +260,14 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入导航标题')));
 		}
 
-		$this->model('menu')->add_nav_menu($title, $description, $_POST['type'], $type_id, $link);
+		$this->model('menu')->add_nav_menu($title, $description, H::POST('type'), $type_id, $link);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
 	public function remove_nav_menu_action()
 	{
-		$this->model('menu')->remove_nav_menu($_POST['id']);
+		$this->model('menu')->remove_nav_menu(H::POST('id'));
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
@@ -274,67 +275,22 @@ class ajax extends AWS_ADMIN_CONTROLLER
 	public function nav_menu_upload_action()
 	{
 		H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('上传失败')));
-/*
+
 		// TODO: 以后再说
-		AWS_APP::upload()->initialize(array(
-			'allowed_types' => S::get('allowed_upload_types'),
-			'upload_path' => S::get('upload_dir') . '/nav_menu',
-			'is_image' => TRUE,
-			'file_name' => intval($_GET['id']) . '.jpg',
-			'encrypt_name' => FALSE
-		))->do_upload('aws_upload_file');
-
-		if (AWS_APP::upload()->get_error())
-		{
-			switch (AWS_APP::upload()->get_error())
-			{
-				default:
-					H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('错误代码') . ': ' . AWS_APP::upload()->get_error()));
-				break;
-
-				case 'upload_invalid_filetype':
-					H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('文件类型无效')));
-				break;
-			}
-		}
-
-		if (! $upload_data = AWS_APP::upload()->data())
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('上传失败, 请与管理员联系')));
-		}
-
-		if ($upload_data['is_image'] == 1)
-		{
-			AWS_APP::image()->initialize(array(
-				'quality' => 90,
-				'source_image' => $upload_data['full_path'],
-				'new_image' => $upload_data['full_path'],
-				'width' => 50,
-				'height' => 50
-			))->resize();
-		}
-
-		$this->model('menu')->update_nav_menu($_GET['id'], array('icon' => basename($upload_data['full_path'])));
-
-		echo htmlspecialchars(json_encode(array(
-			'success' => true,
-			'thumb' => S::get('upload_url') . '/nav_menu/' . basename($upload_data['full_path'])
-		)), ENT_NOQUOTES);
-*/
 	}
 
 
 	public function question_manage_action()
 	{
-		if (!$_POST['question_ids'])
+		if (!H::POST('question_ids'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择问题进行操作')));
 		}
 
-		switch ($_POST['action'])
+		switch (H::POST('action'))
 		{
 			case 'remove':
-				foreach ($_POST['question_ids'] AS $question_id)
+				foreach (H::POST('question_ids') AS $question_id)
 				{
 					$this->model('question')->clear_question($question_id, null);
 				}
@@ -346,39 +302,40 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 	public function lock_topic_action()
 	{
-		$this->model('topic')->lock_topic_by_ids($_POST['topic_id'], $_POST['status']);
+		$this->model('topic')->lock_topic_by_ids(H::POST('topic_id'), H::POST('status'));
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
 	public function save_topic_action()
 	{
-		if ($_POST['topic_id'])
+		$topic_title = H::POST_S('topic_title');
+		if (H::POST('topic_id'))
 		{
-			if (!$topic_info = $this->model('topic')->get_topic_by_id($_POST['topic_id']))
+			if (!$topic_info = $this->model('topic')->get_topic_by_id(H::POST('topic_id')))
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('话题不存在')));
 			}
 
-			if ($topic_info['topic_title'] != $_POST['topic_title'] AND $this->model('topic')->get_topic_by_title($_POST['topic_title']))
+			if ($topic_info['topic_title'] != htmlspecialchars($topic_title) AND $this->model('topic')->get_topic_by_title($topic_title))
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('同名话题已经存在')));
 			}
 
-			$this->model('topic')->update_topic($this->user_id, $topic_info['topic_id'], $_POST['topic_title'], $_POST['topic_description']);
+			$this->model('topic')->update_topic($this->user_id, $topic_info['topic_id'], $topic_title, H::POST_S('topic_description'));
 
-			$this->model('topic')->lock_topic_by_ids($topic_info['topic_id'], $_POST['topic_lock']);
+			$this->model('topic')->lock_topic_by_ids($topic_info['topic_id'], H::POST('topic_lock'));
 
 			$topic_id = $topic_info['topic_id'];
 		}
 		else
 		{
-			if ($this->model('topic')->get_topic_by_title($_POST['topic_title']))
+			if ($this->model('topic')->get_topic_by_title($topic_title))
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('同名话题已经存在')));
 			}
 
-			$topic_id = $this->model('topic')->save_topic($_POST['topic_title'], $this->user_id, true, $_POST['topic_description']);
+			$topic_id = $this->model('topic')->save_topic($topic_title, $this->user_id, true, H::POST_S('topic_description'));
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
@@ -388,20 +345,20 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 	public function topic_manage_action()
 	{
-		if (!$_POST['topic_ids'])
+		if (!H::POST('topic_ids'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择话题进行操作')));
 		}
 
-		switch($_POST['action'])
+		switch(H::POST('action'))
 		{
 			case 'remove' :
-				$this->model('topic')->remove_topic_by_ids($_POST['topic_ids']);
+				$this->model('topic')->remove_topic_by_ids(H::POST('topic_ids'));
 
 				break;
 
 			case 'lock' :
-				$this->model('topic')->lock_topic_by_ids($_POST['topic_ids'], 1);
+				$this->model('topic')->lock_topic_by_ids(H::POST('topic_ids'), 1);
 
 				break;
 		}
@@ -411,7 +368,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 	public function save_user_group_action()
 	{
-		if ($group_data = $_POST['group'])
+		if ($group_data = H::POST('group'))
 		{
 			foreach ($group_data as $key => $val)
 			{
@@ -424,7 +381,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			}
 		}
 
-		if ($group_new = $_POST['group_new'])
+		if ($group_new = H::POST('group_new'))
 		{
 			foreach ($group_new['group_name'] as $key => $val)
 			{
@@ -442,7 +399,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			}
 		}
 
-		if ($group_ids = $_POST['group_ids'])
+		if ($group_ids = H::POST('group_ids'))
 		{
 			foreach ($group_ids as $key => $id)
 			{
@@ -457,7 +414,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 	public function save_custom_user_group_action()
 	{
-		if ($group_data = $_POST['group'])
+		if ($group_data = H::POST('group'))
 		{
 			foreach ($group_data as $key => $val)
 			{
@@ -470,7 +427,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			}
 		}
 
-		if ($group_new = $_POST['group_new'])
+		if ($group_new = H::POST('group_new'))
 		{
 			foreach ($group_new['group_name'] as $key => $val)
 			{
@@ -486,7 +443,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			}
 		}
 
-		if ($group_ids = $_POST['group_ids'])
+		if ($group_ids = H::POST('group_ids'))
 		{
 			foreach ($group_ids as $key => $id)
 			{
@@ -501,7 +458,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 	public function save_internal_user_group_action()
 	{
-		if ($group_data = $_POST['group'])
+		if ($group_data = H::POST('group'))
 		{
 			foreach ($group_data as $key => $val)
 			{
@@ -514,7 +471,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			}
 		}
 
-		if ($group_new = $_POST['group_new'])
+		if ($group_new = H::POST('group_new'))
 		{
 			foreach ($group_new['group_name'] as $key => $val)
 			{
@@ -530,7 +487,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			}
 		}
 
-		if ($group_ids = $_POST['group_ids'])
+		if ($group_ids = H::POST('group_ids'))
 		{
 			foreach ($group_ids as $key => $id)
 			{
@@ -618,13 +575,13 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 		foreach ($permission_array as $permission)
 		{
-			if ($_POST[$permission])
+			if (H::POST($permission))
 			{
-				$group_setting[$permission] = $_POST[$permission];
+				$group_setting[$permission] = H::POST($permission);
 			}
 		}
 
-		$this->model('usergroup')->update_user_group_data($_POST['group_id'], array(
+		$this->model('usergroup')->update_user_group_data(H::POST('group_id'), array(
 			'permission' => serialize($group_setting)
 		));
 
@@ -635,12 +592,13 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 	public function save_user_action()
 	{
-		if (!$user_info = $this->model('account')->get_user_info_by_uid($_POST['uid']))
+		if (!$user_info = $this->model('account')->get_user_info_by_uid(H::POST('uid')))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户不存在')));
 		}
 
-		if ($_POST['username'] != $user_info['user_name'] AND $this->model('account')->get_user_info_by_username($_POST['username']))
+		$username = H::POST_S('username');
+		if ($username != $user_info['user_name'] AND $this->model('account')->get_user_info_by_username($username))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名已存在')));
 		}
@@ -653,48 +611,48 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			}
 		}
 
-		if ($_POST['verified'])
+		if (H::POST('verified'))
 		{
-			$update_data['verified'] = htmlspecialchars($_POST['verified']);
+			$update_data['verified'] = htmlspecialchars(H::POST_S('verified'));
 		}
 		else
 		{
 			$update_data['verified'] = null;
 		}
 
-		$update_data['forbidden'] = intval($_POST['forbidden']);
-		$update_data['flagged'] = intval($_POST['flagged']);
+		$update_data['forbidden'] = H::POST_I('forbidden');
+		$update_data['flagged'] = H::POST_I('flagged');
 
-		$update_data['group_id'] = intval($_POST['group_id']);
+		$update_data['group_id'] = H::POST_I('group_id');
 
-		$update_data['sex'] = intval($_POST['sex']);
+		$update_data['sex'] = H::POST_I('sex');
 		if ($update_data['sex'] < 0 OR $update_data['sex'] > 3)
 		{
 			$update_data['sex'] = 0;
 		}
 
-		$update_data['reputation'] = floatval($_POST['reputation']);
-		$update_data['agree_count'] = intval($_POST['agree_count']);
-		$update_data['currency'] = intval($_POST['currency']);
+		$update_data['reputation'] = H::POST_D('reputation');
+		$update_data['agree_count'] = H::POST_I('agree_count');
+		$update_data['currency'] = H::POST_I('currency');
 
-		$update_data['signature'] = htmlspecialchars($_POST['signature']);
+		$update_data['signature'] = htmlspecialchars(H::POST_S('signature'));
 
 		$this->model('account')->update_user_fields($update_data, $user_info['uid']);
 
-		if ($_POST['delete_avatar'])
+		if (H::POST('delete_avatar'))
 		{
 			$this->model('avatar')->delete_avatar($user_info['uid']);
 		}
 
-		if ($_POST['confirm_change_password'] AND
-			$this->model('password')->check_structure($_POST['scrambled_password'], $_POST['client_salt']))
+		if (H::POST('confirm_change_password') AND
+			$this->model('password')->check_structure(H::POST('scrambled_password'), H::POST('client_salt')))
 		{
-			$this->model('password')->update_password($user_info['uid'], $_POST['scrambled_password'], $_POST['client_salt']);
+			$this->model('password')->update_password($user_info['uid'], H::POST('scrambled_password'), H::POST('client_salt'));
 		}
 
-		if ($_POST['username'] AND $_POST['username'] != $user_info['user_name'])
+		if ($username AND $username != $user_info['user_name'])
 		{
-			$this->model('account')->update_user_name($_POST['username'], $user_info['uid']);
+			$this->model('account')->update_user_name($username, $user_info['uid']);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户资料更新成功')));
@@ -702,30 +660,31 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 	public function create_user_action()
 	{
-		$_POST['group_id'] = intval($_POST['group_id']);
+		$group_id = H::POST_I('group_id');
 
-		if (!$_POST['username'] OR
-			!$this->model('password')->check_structure($_POST['scrambled_password'], $_POST['client_salt']))
+		$username = H::POST_S('username');
+		if (!$username OR
+			!$this->model('password')->check_structure(H::POST('scrambled_password'), H::POST('client_salt')))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的用户名和密码')));
 		}
 
-		if ($this->model('account')->username_exists($_POST['username']))
+		if ($this->model('account')->username_exists($username))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名已经存在')));
 		}
 
-		$uid = $this->model('register')->register($_POST['username'], $_POST['scrambled_password'], $_POST['client_salt']);
+		$uid = $this->model('register')->register($username, H::POST('scrambled_password'), H::POST('client_salt'));
 
 		if (!$uid)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('注册失败')));
 		}
 
-		if ($_POST['group_id'] != 0)
+		if ($group_id)
 		{
 			$this->model('account')->update('users', array(
-				'group_id' => $_POST['group_id'],
+				'group_id' => $group_id,
 			), ['uid', 'eq', $uid, 'i']);
 		}
 
@@ -736,33 +695,30 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 	public function currency_process_action()
 	{
-		if (!$_POST['uid'])
+		if (!H::POST('uid'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择用户进行操作')));
 		}
 
-		if (!$_POST['note'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请填写理由')));
-		}
+		$note = H::POST_S('note');
 
-		$this->model('currency')->process($_POST['uid'], 'AWARD', $_POST['currency'], htmlspecialchars($_POST['note']));
+		$this->model('currency')->process(H::POST('uid'), 'AWARD', H::POST('currency'), htmlspecialchars($note));
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => url_rewrite('/admin/user/currency_log/uid-' . $_POST['uid'])
+			'url' => url_rewrite('/admin/user/currency_log/uid-' . H::POST('uid'))
 		), 1, null));
 	}
 
 	public function remove_user_action()
 	{
-		if (!$_POST['uid'])
+		if (!H::POST('uid'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('错误的请求')));
 		}
 
 		@set_time_limit(0);
 
-		$user_info = $this->model('account')->get_user_info_by_uid($_POST['uid']);
+		$user_info = $this->model('account')->get_user_info_by_uid(H::POST('uid'));
 
 		if (!$user_info)
 		{
@@ -770,7 +726,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 		}
 		else
 		{
-			$this->model('user')->delete_user_by_uid($_POST['uid'], $_POST['remove_user_data']);
+			$this->model('user')->delete_user_by_uid(H::POST('uid'), H::POST('remove_user_data'));
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
@@ -780,20 +736,26 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 	public function remove_users_action()
 	{
-		if (!is_array($_POST['uids']) OR !$_POST['uids'])
+		$uids = H::POST('uids');
+		if (!is_array($uids) OR !$uids)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请选择要删除的用户')));
 		}
 
+		if (!$remove_user_data = H::POST('remove_user_data'))
+		{
+			$remove_user_data = [];
+		}
+
 		@set_time_limit(0);
 
-		foreach ($_POST['uids'] AS $uid)
+		foreach ($uids AS $uid)
 		{
 			$user_info = $this->model('account')->get_user_info_by_uid($uid);
 
 			if ($user_info)
 			{
-				$this->model('user')->delete_user_by_uid($uid, $_POST['remove_user_data'][$uid]);
+				$this->model('user')->delete_user_by_uid($uid, $remove_user_data[$uid] ?? null);
 			}
 			else
 			{
@@ -808,7 +770,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 	{
 		$topic_statistic = array();
 
-		if ($topic_list = $this->model('topic')->get_hot_topics(null, intval_minmax($_GET['limit'], 1, 50), $_GET['tag']))
+		if ($topic_list = $this->model('topic')->get_hot_topics(null, intval_minmax(H::GET('limit'), 1, 50), H::GET('tag')))
 		{
 			foreach ($topic_list AS $key => $val)
 			{
@@ -826,19 +788,19 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 	public function statistic_action()
 	{
-		if (!$start_time = strtotime($_GET['start_date'] . ' 00:00:00'))
+		if (!$start_time = strtotime(H::GET('start_date') . ' 00:00:00'))
 		{
 			$start_time = strtotime('-12 months');
 		}
 
-		if (!$end_time = strtotime($_GET['end_date'] . ' 23:59:59'))
+		if (!$end_time = strtotime(H::GET('end_date') . ' 23:59:59'))
 		{
 			$end_time = time();
 		}
 
-		if ($_GET['tag'])
+		if (H::GET('tag'))
 		{
-			$statistic_tag = explode(',', $_GET['tag']);
+			$statistic_tag = explode(',', H::GET('tag'));
 		}
 
 		if (!$month_list = get_month_list($start_time, $end_time, 'y'))

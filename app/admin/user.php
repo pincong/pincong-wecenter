@@ -22,7 +22,7 @@ class user extends AWS_ADMIN_CONTROLLER
 {
     public function list_action()
     {
-        if ($_POST['action'] == 'search')
+        if (H::POST('action') == 'search')
         {
 			$param = array();
 
@@ -43,48 +43,48 @@ class user extends AWS_ADMIN_CONTROLLER
 
         $where = array();
 
-        if ($_GET['type'] == 'forbidden')
+        if (H::GET('type') == 'forbidden')
         {
             $where[] = ['forbidden', 'notEq', 0];
         }
 
-        if ($_GET['type'] == 'flagged')
+        if (H::GET('type') == 'flagged')
         {
             $where[] = ['flagged', 'notEq', 0];
         }
 
-        if ($_GET['user_name'])
+        if (H::GET('user_name'))
         {
-            $where[] = ['user_name', 'like', '%' . escape_like_clause(htmlspecialchars($_GET['user_name'])) . '%', 's'];
+            $where[] = ['user_name', 'like', '%' . escape_like_clause(htmlspecialchars(H::GET('user_name'))) . '%', 's'];
         }
 
-        if ($_GET['group_id'])
+        if (H::GET('group_id'))
         {
-            $where[] = ['group_id', 'eq', $_GET['group_id'], 'i'];
+            $where[] = ['group_id', 'eq', H::GET('group_id'), 'i'];
         }
 
-        if ($_GET['currency_min'])
+        if (H::GET('currency_min'))
         {
-            $where[] = ['currency', 'gte', $_GET['currency_min'], 'i'];
+            $where[] = ['currency', 'gte', H::GET('currency_min'), 'i'];
         }
 
-        if ($_GET['currency_max'])
+        if (H::GET('currency_max'))
         {
-            $where[] = ['currency', 'lte', $_GET['currency_max'], 'i'];
+            $where[] = ['currency', 'lte', H::GET('currency_max'), 'i'];
         }
 
-        if ($_GET['reputation_min'])
+        if (H::GET('reputation_min'))
         {
-            $where[] = ['reputation', 'gte', $_GET['reputation_min'], 'i'];
+            $where[] = ['reputation', 'gte', H::GET('reputation_min'), 'i'];
         }
 
-        if ($_GET['reputation_max'])
+        if (H::GET('reputation_max'))
         {
-            $where[] = ['reputation', 'lte', $_GET['reputation_max'], 'i'];
+            $where[] = ['reputation', 'lte', H::GET('reputation_max'), 'i'];
         }
 
 
-        $user_list = $this->model('account')->fetch_page('users', $where, 'uid DESC', $_GET['page'], $this->per_page);
+        $user_list = $this->model('account')->fetch_page('users', $where, 'uid DESC', H::GET('page'), $this->per_page);
         foreach($user_list as $key => $val)
         {
             $user_list[$key]['reputation_group_id'] = $this->model('usergroup')->get_group_id_by_reputation($val['reputation']);
@@ -134,7 +134,7 @@ class user extends AWS_ADMIN_CONTROLLER
     {
         $this->crumb(AWS_APP::lang()->_t('修改用户组'));
 
-        if (! $group = $this->model('usergroup')->get_user_group_by_id($_GET['group_id']))
+        if (! $group = $this->model('usergroup')->get_user_group_by_id(H::GET('group_id')))
         {
             H::redirect_msg(AWS_APP::lang()->_t('用户组不存在'), '/admin/user/group_list/');
         }
@@ -149,7 +149,7 @@ class user extends AWS_ADMIN_CONTROLLER
     {
         $this->crumb(AWS_APP::lang()->_t('编辑用户资料'));
 
-        if (!$user = $this->model('account')->get_user_info_by_uid($_GET['uid']))
+        if (!$user = $this->model('account')->get_user_info_by_uid(H::GET('uid')))
         {
             H::redirect_msg(AWS_APP::lang()->_t('用户不存在'), '/admin/user/list/');
         }
@@ -194,10 +194,10 @@ class user extends AWS_ADMIN_CONTROLLER
 
     public function currency_log_action()
     {
-        if ($log = $this->model('currency')->fetch_page('currency_log', ['uid', 'eq', $_GET['uid'], 'i'], 'id DESC', $_GET['page'], 50))
+        if ($log = $this->model('currency')->fetch_page('currency_log', ['uid', 'eq', H::GET('uid'), 'i'], 'id DESC', H::GET('page'), 50))
         {
             TPL::assign('pagination', AWS_APP::pagination()->create(array(
-                'base_url' => url_rewrite('/admin/user/currency_log/uid-' . intval($_GET['uid'])),
+                'base_url' => url_rewrite('/admin/user/currency_log/uid-' . H::GET_I('uid')),
                 'total_rows' => $this->model('currency')->total_rows(),
                 'per_page' => 50
             )));
@@ -214,7 +214,7 @@ class user extends AWS_ADMIN_CONTROLLER
             TPL::assign('currency_log_detail', $this->model('currency')->parse_log_items($parse_items));
         }
 
-        TPL::assign('user', $this->model('account')->get_user_info_by_uid($_GET['uid']));
+        TPL::assign('user', $this->model('account')->get_user_info_by_uid(H::GET('uid')));
         TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(402));
 
         $this->crumb(AWS_APP::lang()->_t('代币日志'));

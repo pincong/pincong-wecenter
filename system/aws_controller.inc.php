@@ -106,23 +106,6 @@ class AWS_CONTROLLER
 	 */
 	public function setup() {}
 
-	/**
-	 * 判断当前访问类型是否为 POST
-	 *
-	 * 调用 $_SERVER['REQUEST_METHOD']
-	 *
-	 * @access	public
-	 * @return	boolean
-	 */
-	public function is_post()
-	{
-		if ($_SERVER['REQUEST_METHOD'] == 'POST')
-		{
-			return TRUE;
-		}
-
-		return FALSE;
-	}
 
 	/**
 	 * 调用系统 Model

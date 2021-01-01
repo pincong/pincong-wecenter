@@ -57,7 +57,7 @@ class main extends AWS_CONTROLLER
 		$order = 'reputation DESC, uid ASC';
 		$url_param = [];
 
-		$group_id = intval($_GET['group_id']);
+		$group_id = H::GET_I('group_id');
 		if ($group_id > 0)
 		{
 			if ($all_groups[$group_id]['type'] == 2 OR ($admin_permission AND $all_groups[$group_id]['type'] == 0))
@@ -67,8 +67,8 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		$is_forbidden = intval($_GET['forbidden']);
-		$is_flagged = intval($_GET['flagged']);
+		$is_forbidden = H::GET_I('forbidden');
+		$is_flagged = H::GET_I('flagged');
 		if ($is_forbidden OR $is_flagged)
 		{
 			$order = 'user_update_time ASC, uid ASC';
@@ -90,13 +90,13 @@ class main extends AWS_CONTROLLER
 			$where[] = ['forbidden', 'eq', 0];
 		}
 
-		if ($_GET['sort_key'] == 'uid')
+		if (H::GET('sort_key') == 'uid')
 		{
 			$order = 'uid ASC';
 			$url_param[] = 'sort_key-uid';
 		}
 
-		$users_list = $this->model('account')->get_user_list($where, $order, $_GET['page'], S::get_int('contents_per_page'));
+		$users_list = $this->model('account')->get_user_list($where, $order, H::GET('page'), S::get_int('contents_per_page'));
 
 		TPL::assign('pagination', AWS_APP::pagination()->create(array(
 			'base_url' => url_rewrite('/people/') . implode('__', $url_param),
@@ -133,15 +133,15 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		if (!$_GET['id'])
+		if (!H::GET('id'))
 		{
 			$this->index_square();
 			return;
 		}
 
-		if (is_numeric($_GET['id']))
+		if (is_numeric(H::GET('id')))
 		{
-			$user = $this->model('account')->get_user_info_by_uid($_GET['id']);
+			$user = $this->model('account')->get_user_info_by_uid(H::GET('id'));
 			if (!$user)
 			{
 				H::error_404();
@@ -149,7 +149,7 @@ class main extends AWS_CONTROLLER
 			H::redirect('/people/' . safe_url_encode($user['user_name']));
 		}
 
-		$user = $this->model('account')->get_user_info_by_username($_GET['id']);
+		$user = $this->model('account')->get_user_info_by_username(H::GET('id'));
 		if (!$user)
 		{
 			H::error_404();

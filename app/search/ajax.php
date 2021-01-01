@@ -29,12 +29,12 @@ class ajax extends AWS_CONTROLLER
 
 	public function search_action()
 	{
-		$limit = intval($_GET['limit']);
+		$limit = H::GET_I('limit');
 		if (!$limit OR $limit > 20)
 		{
 			$limit = 20;
 		}
-		$result = $this->model('search')->search(iconv_substr($_GET['q'], 0, 64), $_GET['type'], 1, $limit);
+		$result = $this->model('search')->search(iconv_substr(H::GET_S('q'), 0, 64), H::GET('type'), 1, $limit);
 
 		if (!$result)
 		{

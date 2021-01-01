@@ -26,11 +26,11 @@ class ajax extends AWS_CONTROLLER
 		H::no_cache_header();
 	}
 
-	private function validate_title_length()
+	private function validate_title_length($title)
 	{
-		$length_min = intval(S::get('title_length_min'));
-		$length_max = intval(S::get('title_length_max'));
-		$length = iconv_strlen($_POST['title']);
+		$length_min = S::get_int('title_length_min');
+		$length_max = S::get_int('title_length_max');
+		$length = iconv_strlen($title);
 		if ($length_min AND $length < $length_min)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('标题字数不得小于 %s 字', $length_min)));
@@ -41,11 +41,11 @@ class ajax extends AWS_CONTROLLER
 		}
 	}
 
-	private function validate_body_length()
+	private function validate_body_length($message)
 	{
-		$length_min = intval(S::get('kb_body_length_min'));
-		$length_max = intval(S::get('kb_body_length_max'));
-		$length = iconv_strlen($_POST['message']);
+		$length_min = S::get_int('kb_body_length_min');
+		$length_max = S::get_int('kb_body_length_max');
+		$length = iconv_strlen($message);
 		if ($length_min AND $length < $length_min)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('正文字数不得小于 %s 字', $length_min)));
@@ -56,26 +56,24 @@ class ajax extends AWS_CONTROLLER
 		}
 	}
 
-	private function do_validate()
+	private function do_validate(&$title, &$message)
 	{
-		$_POST['title'] = trim($_POST['title']);
-		if (!$_POST['title'])
+		if (!$title = H::POST_S('title'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请输入标题')));
 		}
 		if (!$this->user_info['permission']['kb_manage'])
 		{
-			$this->validate_title_length();
+			$this->validate_title_length($title);
 		}
 
-		$_POST['message'] = trim($_POST['message']);
-		if (!$_POST['message'])
+		if (!$message = H::POST_S('message'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请输入内容')));
 		}
 		if (!$this->user_info['permission']['kb_manage'])
 		{
-			$this->validate_body_length();
+			$this->validate_body_length($message);
 		}
 	}
 
@@ -86,15 +84,15 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('没有权限')));
 		}
 
-		$this->do_validate();
+		$this->do_validate($title, $message);
 
-		if (!check_repeat_submission($this->user_id, $_POST['title']))
+		if (!check_repeat_submission($this->user_id, $title))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请不要重复提交')));
 		}
-		set_repeat_submission_digest($this->user_id, $_POST['title']);
+		set_repeat_submission_digest($this->user_id, $title);
 
-		if ($_POST['anonymous'])
+		if (H::POST_I('anonymous'))
 		{
 			if (!$uid = $this->model('anonymous')->get_anonymous_uid($this->user_info))
 			{
@@ -106,14 +104,14 @@ class ajax extends AWS_CONTROLLER
 			$uid = $this->user_id;
 		}
 
-		$this->model('kb')->add($_POST['title'], $_POST['message'], $uid, $this->user_id);
+		$this->model('kb')->add($title, $message, $uid, $this->user_id);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
 	public function modify_action()
 	{
-		if (!$item_info = $this->model('kb')->get($_GET['id']))
+		if (!$item_info = $this->model('kb')->get(H::GET('id')))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('内容不存在')));
 		}
@@ -123,9 +121,9 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('没有权限')));
 		}
 
-		$this->do_validate();
+		$this->do_validate($title, $message);
 
-		if ($_POST['anonymous'])
+		if (H::POST_I('anonymous'))
 		{
 			if (!$uid = $this->model('anonymous')->get_anonymous_uid($this->user_info))
 			{
@@ -137,14 +135,14 @@ class ajax extends AWS_CONTROLLER
 			$uid = $item_info['uid'];
 		}
 
-		$this->model('kb')->edit($item_info['id'], $_POST['title'], $_POST['message'], $uid, $this->user_id);
+		$this->model('kb')->edit($item_info['id'], $title, $message, $uid, $this->user_id);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
 	public function remark_action()
 	{
-		if (!$item_info = $this->model('kb')->get($_GET['id']))
+		if (!$item_info = $this->model('kb')->get(H::GET('id')))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('内容不存在')));
 		}
@@ -154,7 +152,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('没有权限')));
 		}
 
-		$this->model('kb')->remark($item_info['id'], $_POST['remarks']);
+		$this->model('kb')->remark($item_info['id'], H::POST_S('remarks'));
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}

@@ -38,7 +38,7 @@ class category extends AWS_ADMIN_CONTROLLER
 
     public function edit_action()
     {
-        if (!$category_info = $this->model('category')->get_category_info($_GET['category_id']))
+        if (!$category_info = $this->model('category')->get_category_info(H::GET('category_id')))
         {
             H::redirect_msg(AWS_APP::lang()->_t('指定分类不存在'), '/admin/category/list/');
         }

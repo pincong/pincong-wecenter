@@ -33,7 +33,7 @@ class info extends AWS_CONTROLLER
 	{
 		$per_page = S::get_int('index_per_page');
 
-		TPL::assign('list', $this->model('activity')->list_activities($this->user_id, $_GET['page'], $per_page));
+		TPL::assign('list', $this->model('activity')->list_activities($this->user_id, H::GET('page'), $per_page));
 
 		TPL::output('home/activities_template');
 	}
@@ -43,7 +43,7 @@ class info extends AWS_CONTROLLER
 	{
 		$per_page = S::get_int('contents_per_page');
 
-		if ($list = $this->model('invite')->get_invite_question_list($this->user_id, $_GET['page'], $per_page));
+		if ($list = $this->model('invite')->get_invite_question_list($this->user_id, H::GET('page'), $per_page));
 		{
 			foreach($list as $key => $val)
 			{
@@ -76,7 +76,7 @@ class info extends AWS_CONTROLLER
 	{
 		$per_page = S::get_int('contents_per_page');
 
-		$list = $this->model('postfollow')->get_following_posts($this->user_id, $_GET['type'], $_GET['page'], $per_page);
+		$list = $this->model('postfollow')->get_following_posts($this->user_id, H::GET('type'), H::GET('page'), $per_page);
 
 		TPL::assign('list', $list);
 

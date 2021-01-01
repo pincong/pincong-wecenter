@@ -35,7 +35,7 @@ class edit extends AWS_CONTROLLER
 			H::error_403();
 		}
 
-		if (!$item_info = $this->model('kb')->get($_GET['id']))
+		if (!$item_info = $this->model('kb')->get(H::GET('id')))
 		{
 			H::error_404();
 		}
@@ -52,7 +52,7 @@ class edit extends AWS_CONTROLLER
 			H::error_403();
 		}
 
-		if (!$item_info = $this->model('kb')->get($_GET['id']))
+		if (!$item_info = $this->model('kb')->get(H::GET('id')))
 		{
 			H::error_404();
 		}

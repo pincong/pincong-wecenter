@@ -41,9 +41,9 @@ class main extends AWS_CONTROLLER
 			$this->crumb(AWS_APP::lang()->_t('发现'));
 		}
 
-		if ($_GET['category'])
+		if (H::GET('category'))
 		{
-			$category_info = $this->model('category')->get_category_info($_GET['category']);
+			$category_info = $this->model('category')->get_category_info(H::GET('category'));
 		}
 
 		if ($category_info)
@@ -71,30 +71,30 @@ class main extends AWS_CONTROLLER
 		// 边栏功能
 		TPL::assign('feature_list', $this->model('feature')->get_enabled_feature_list());
 
-		if ($_GET['type'] == 'question')
+		if (H::GET('type') == 'question')
 		{
 			$type = 'question';
 		}
-		else if ($_GET['type'] == 'article')
+		else if (H::GET('type') == 'article')
 		{
 			$type = 'article';
 		}
-		else if ($_GET['type'] == 'video')
+		else if (H::GET('type') == 'video')
 		{
 			$type = 'video';
 		}
 
-		if ($_GET['recommend'])
+		if (H::GET('recommend'))
 		{
 			$recommend = true;
 		}
 
-		if ($_GET['sort_type'] == 'hot')
+		if (H::GET('sort_type') == 'hot')
 		{
 			$sort_type = 'hot';
-			$day = intval($_GET['day']);
+			$day = H::GET_I('day');
 		}
-		else if ($_GET['sort_type'] == 'unresponsive')
+		else if (H::GET('sort_type') == 'unresponsive')
 		{
 			$sort_type = 'unresponsive';
 			$answer_count = 0;
@@ -102,11 +102,11 @@ class main extends AWS_CONTROLLER
 
 		if ($sort_type == 'hot')
 		{
-			$posts_list = $this->model('posts')->get_hot_posts($type, $category_info['id'], $day, $_GET['page'], S::get_int('contents_per_page'));
+			$posts_list = $this->model('posts')->get_hot_posts($type, $category_info['id'], $day, H::GET('page'), S::get_int('contents_per_page'));
 		}
 		else
 		{
-			$posts_list = $this->model('posts')->get_posts_list($type, $_GET['page'], S::get_int('contents_per_page'), null, $category_info['id'], $answer_count, $recommend);
+			$posts_list = $this->model('posts')->get_posts_list($type, H::GET('page'), S::get_int('contents_per_page'), null, $category_info['id'], $answer_count, $recommend);
 		}
 
 		if ($posts_list)

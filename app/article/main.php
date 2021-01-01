@@ -36,12 +36,12 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		if ($this->user_id AND $_GET['notification_id'])
+		if ($this->user_id AND H::GET('notification_id'))
 		{
-			$this->model('notification')->mark_as_read($_GET['notification_id'], $this->user_id);
+			$this->model('notification')->mark_as_read(H::GET('notification_id'), $this->user_id);
 		}
 
-		$item_id = intval($_GET['item_id']);
+		$item_id = H::GET_I('item_id');
 		if ($item_id)
 		{
 			if (!$reply = $this->model('article')->get_article_comment_by_id($item_id))
@@ -52,7 +52,7 @@ class main extends AWS_CONTROLLER
 		}
 		else
 		{
-			$thread_id = $_GET['id'];
+			$thread_id = H::GET('id');
 		}
 
 		if (!$thread_info = $this->model('article')->get_article_by_id($thread_id))
@@ -68,7 +68,7 @@ class main extends AWS_CONTROLLER
 
 		$url_param[] = 'id-' . $thread_info['id'];
 
-		if ($_GET['sort'] == 'DESC')
+		if (H::GET('sort') == 'DESC')
 		{
 			$sort = 'DESC';
 
@@ -79,14 +79,14 @@ class main extends AWS_CONTROLLER
 			$sort = 'ASC';
 		}
 
-		if ($_GET['fold'])
+		if (H::GET('fold'))
 		{
 			$order_by[] = "fold ASC";
 
 			$url_param[] = 'fold-1';
 		}
 
-		if ($_GET['sort_key'] == 'agree_count')
+		if (H::GET('sort_key') == 'agree_count')
 		{
 			$order_by[] = "reputation " . $sort;
 			$order_by[] = "agree_count " . $sort;
@@ -108,9 +108,9 @@ class main extends AWS_CONTROLLER
 		{
 			TPL::assign('redirect_info', $this->model('content')->get_post_by_id('article', $thread_info['redirect_id']));
 		}
-		if ($_GET['rf'])
+		if (H::GET('rf'))
 		{
-			TPL::assign('redirected_from', $this->model('content')->get_post_by_id('article', $_GET['rf']));
+			TPL::assign('redirected_from', $this->model('content')->get_post_by_id('article', H::GET('rf')));
 		}
 
 		$page_title = CF::page_title($thread_info['user_info'], 'article_' . $thread_info['id'], $thread_info['title']);
@@ -135,7 +135,7 @@ class main extends AWS_CONTROLLER
 		}
 		else
 		{
-			$comments = $this->model('article')->get_article_comments($post_ids, $_GET['page'], $replies_per_page, implode(', ', $order_by));
+			$comments = $this->model('article')->get_article_comments($post_ids, H::GET('page'), $replies_per_page, implode(', ', $order_by));
 		}
 
 		if ($comments AND $this->user_id)

@@ -69,12 +69,12 @@ class main extends AWS_CONTROLLER
 			H::redirect_msg(AWS_APP::lang()->_t('错误的请求'), '/');
 		}
 
-		if (!$_POST['agree'])
+		if (!H::POST_I('agree'))
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('你必需同意 %s 才能继续', S::get('user_agreement_name')), '/register/');
 		}
 
-		if (!AWS_APP::form()->check_csrf_token($_POST['token'], 'register_index'))
+		if (!AWS_APP::form()->check_csrf_token(H::POST('token'), 'register_index'))
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('页面停留时间过长, 请刷新页面重试'), '/register/');
 		}
@@ -84,7 +84,7 @@ class main extends AWS_CONTROLLER
 		// 检查验证码
 		if ($captcha_required)
 		{
-			if (!AWS_APP::captcha()->is_valid($_POST['captcha'], H::get_cookie('captcha')))
+			if (!AWS_APP::captcha()->is_valid(H::POST('captcha'), H::get_cookie('captcha')))
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('请填写正确的验证码'), '/register/');
 			}

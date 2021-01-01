@@ -22,7 +22,6 @@ class search_class extends AWS_MODEL
 {
 	public function search($q, $search_type, $page = 1, $limit = 20)
 	{
-		$q = trim($q);
 		if (!$q)
 		{
 			return false;

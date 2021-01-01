@@ -26,7 +26,7 @@ class question extends AWS_ADMIN_CONTROLLER
 
 	public function question_list_action()
 	{
-		if ($this->is_post())
+		if (H::is_post())
 		{
 			$param = array();
 
@@ -52,44 +52,44 @@ class question extends AWS_ADMIN_CONTROLLER
 
 		$where = array();
 
-		if ($_GET['keyword'])
+		if (H::GET('keyword'))
 		{
-			$where[] = ['title', 'like', '%' . escape_like_clause(htmlspecialchars($_GET['keyword'])) . '%', 's'];
+			$where[] = ['title', 'like', '%' . escape_like_clause(htmlspecialchars(H::GET('keyword'))) . '%', 's'];
 		}
 
-		if ($_GET['category_id'])
+		if (H::GET('category_id'))
 		{
 			$where[] = ['category_id', 'eq', $category_id, 'i'];
 		}
 
-		if (base64_decode($_GET['start_date']))
+		if (base64_decode(H::GET('start_date')))
 		{
-			$where[] = ['add_time', 'gte', strtotime(base64_decode($_GET['start_date']))];
+			$where[] = ['add_time', 'gte', strtotime(base64_decode(H::GET('start_date')))];
 		}
 
-		if (base64_decode($_GET['end_date']))
+		if (base64_decode(H::GET('end_date')))
 		{
-			$where[] = ['add_time', 'lte', strtotime('+1 day', strtotime(base64_decode($_GET['end_date'])))];
+			$where[] = ['add_time', 'lte', strtotime('+1 day', strtotime(base64_decode(H::GET('end_date'))))];
 		}
 
-		if ($_GET['user_name'])
+		if (H::GET('user_name'))
 		{
-			$user_info = $this->model('account')->get_user_info_by_username($_GET['user_name']);
+			$user_info = $this->model('account')->get_user_info_by_username(H::GET('user_name'));
 
 			$where[] = ['uid', 'eq', $user_info['uid'], 'i'];
 		}
 
-		if ($_GET['answer_count_min'])
+		if (H::GET('answer_count_min'))
 		{
-			$where[] = ['answer_count', 'gte', $_GET['answer_count_min'], 'i'];
+			$where[] = ['answer_count', 'gte', H::GET('answer_count_min'), 'i'];
 		}
 
-		if ($_GET['answer_count_max'])
+		if (H::GET('answer_count_max'))
 		{
-			$where[] = ['answer_count', 'lte', $_GET['answer_count_max'], 'i'];
+			$where[] = ['answer_count', 'lte', H::GET('answer_count_max'), 'i'];
 		}
 
-		if ($question_list = $this->model('question')->fetch_page('question', $where, 'id DESC', $_GET['page'], $this->per_page))
+		if ($question_list = $this->model('question')->fetch_page('question', $where, 'id DESC', H::GET('page'), $this->per_page))
 		{
 			$total_rows = $this->model('question')->total_rows();
 
@@ -129,7 +129,7 @@ class question extends AWS_ADMIN_CONTROLLER
 
 		TPL::assign('question_count', $total_rows);
 		TPL::assign('category_list', $this->model('category')->get_category_list());
-		TPL::assign('keyword', $_GET['keyword']);
+		TPL::assign('keyword', H::GET('keyword'));
 		TPL::assign('list', $question_list);
 
 		TPL::output('admin/question/question_list');

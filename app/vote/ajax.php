@@ -48,7 +48,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日赞同/反对已经达到上限')));
 		}
 
-		$item_info = $this->model('content')->get_thread_or_reply_info_by_id($_POST['type'], $_POST['item_id']);
+		$item_info = $this->model('content')->get_thread_or_reply_info_by_id(H::POST('type'), H::POST('item_id'));
 		if (!$item_info)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
@@ -65,14 +65,14 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		// 恶意行为
-		if ($this->model('vote')->get_user_vote_count($this->user_id, null, null, $_POST['type'], $_POST['item_id']) >= 4)
+		if ($this->model('vote')->get_user_vote_count($this->user_id, null, null, H::POST('type'), H::POST('item_id')) >= 4)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能反复赞同/反对')));
 		}
 
 		set_user_operation_last_time('vote', $this->user_id);
 
-		$this->model('vote')->vote($_POST['type'], $_POST['item_id'], $this->user_id, $item_info['uid'], 1);
+		$this->model('vote')->vote(H::POST('type'), H::POST('item_id'), $this->user_id, $item_info['uid'], 1);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
@@ -99,7 +99,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日赞同/反对已经达到上限')));
 		}
 
-		$item_info = $this->model('content')->get_thread_or_reply_info_by_id($_POST['type'], $_POST['item_id']);
+		$item_info = $this->model('content')->get_thread_or_reply_info_by_id(H::POST('type'), H::POST('item_id'));
 		if (!$item_info)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
@@ -116,14 +116,14 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		// 恶意行为
-		if ($this->model('vote')->get_user_vote_count($this->user_id, null, null, $_POST['type'], $_POST['item_id']) >= 4)
+		if ($this->model('vote')->get_user_vote_count($this->user_id, null, null, H::POST('type'), H::POST('item_id')) >= 4)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能反复赞同/反对')));
 		}
 
 		set_user_operation_last_time('vote', $this->user_id);
 
-		$this->model('vote')->vote($_POST['type'], $_POST['item_id'], $this->user_id, $item_info['uid'], -1);
+		$this->model('vote')->vote(H::POST('type'), H::POST('item_id'), $this->user_id, $item_info['uid'], -1);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}

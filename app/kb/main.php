@@ -45,7 +45,7 @@ class main extends AWS_CONTROLLER
 
 		$per_page = S::get_int('contents_per_page');
 
-		$item_list = $this->model('kb')->list($_GET['page'], $per_page);
+		$item_list = $this->model('kb')->list(H::GET('page'), $per_page);
 		$count = $this->model('kb')->total_rows();
 
 		if ($item_list)
@@ -84,7 +84,7 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		if (!$_GET['id'])
+		if (!H::GET('id'))
 		{
 			$this->index_square();
 			return;
@@ -95,7 +95,7 @@ class main extends AWS_CONTROLLER
 			H::redirect_msg(AWS_APP::lang()->_t('你的声望还不够'));
 		}
 
-		if (! $item_info = $this->model('kb')->get($_GET['id']))
+		if (! $item_info = $this->model('kb')->get(H::GET('id')))
 		{
 			H::error_404();
 		}

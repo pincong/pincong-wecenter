@@ -38,8 +38,6 @@ class account_class extends AWS_MODEL
 	 */
 	public function username_exists($user_name)
 	{
-		$user_name = trim($user_name);
-
 		return $this->fetch_one('users', 'uid', ['user_name', 'eq', htmlspecialchars($user_name), 's']);
 	}
 

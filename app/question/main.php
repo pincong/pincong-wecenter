@@ -36,12 +36,12 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		if ($this->user_id AND $_GET['notification_id'])
+		if ($this->user_id AND H::GET('notification_id'))
 		{
-			$this->model('notification')->mark_as_read($_GET['notification_id'], $this->user_id);
+			$this->model('notification')->mark_as_read(H::GET('notification_id'), $this->user_id);
 		}
 
-		$item_id = intval($_GET['item_id']);
+		$item_id = H::GET_I('item_id');
 		if ($item_id)
 		{
 			if (!$reply = $this->model('question')->get_answer_by_id($item_id))
@@ -52,7 +52,7 @@ class main extends AWS_CONTROLLER
 		}
 		else
 		{
-			$thread_id = $_GET['id'];
+			$thread_id = H::GET('id');
 		}
 
 		if (!$thread_info = $this->model('question')->get_question_by_id($thread_id))
@@ -68,7 +68,7 @@ class main extends AWS_CONTROLLER
 
 		$url_param[] = 'id-' . $thread_info['id'];
 
-		if ($_GET['sort'] == 'ASC')
+		if (H::GET('sort') == 'ASC')
 		{
 			$sort = 'ASC';
 
@@ -79,14 +79,14 @@ class main extends AWS_CONTROLLER
 			$sort = 'DESC';
 		}
 
-		if ($_GET['fold'])
+		if (H::GET('fold'))
 		{
 			$order_by[] = "fold ASC";
 
 			$url_param[] = 'fold-1';
 		}
 
-		if ($_GET['sort_key'] == 'add_time')
+		if (H::GET('sort_key') == 'add_time')
 		{
 			$order_by[] = "id " . $sort;
 
@@ -119,7 +119,7 @@ class main extends AWS_CONTROLLER
 		}
 		else
 		{
-			$answer_list = $this->model('question')->get_answers($post_ids, $_GET['page'], $replies_per_page, implode(', ', $order_by));
+			$answer_list = $this->model('question')->get_answers($post_ids, H::GET('page'), $replies_per_page, implode(', ', $order_by));
 		}
 
 		if (! is_array($answer_list))
@@ -176,9 +176,9 @@ class main extends AWS_CONTROLLER
 		{
 			TPL::assign('redirect_info', $this->model('content')->get_post_by_id('question', $thread_info['redirect_id']));
 		}
-		if ($_GET['rf'])
+		if (H::GET('rf'))
 		{
-			TPL::assign('redirected_from', $this->model('content')->get_post_by_id('question', $_GET['rf']));
+			TPL::assign('redirected_from', $this->model('content')->get_post_by_id('question', H::GET('rf')));
 		}
 
 		$this->model('content')->update_view_count('question', $thread_info['id']);

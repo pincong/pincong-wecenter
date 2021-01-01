@@ -77,16 +77,21 @@ class invite_class extends AWS_MODEL
 		$this->model('account')->update_question_invite_count($recipients_uid);
 	}
 
-	public function has_question_invite($question_id, $recipients_uid, $sender_uid = null)
+	public function has_question_invite($question_id, $recipients_uid)
 	{
-		if (!$sender_uid)
+		$where = [['question_id', 'eq', $question_id, 'i'], ['recipients_uid', 'eq', $recipients_uid, 'i']];
+		if ($this->fetch_one('question_invite', 'question_invite_id', $where))
 		{
-			return $this->fetch_one('question_invite', 'question_invite_id', [['question_id', 'eq', $question_id, 'i'], ['recipients_uid', 'eq', $recipients_uid, 'i']]);
+			return true;
 		}
-		else
+
+		$where = [['question_id', 'eq', $question_id, 'i'], ['uid', 'eq', $recipients_uid, 'i']];
+		if ($this->fetch_one('answer', 'id', $where))
 		{
-			return $this->fetch_one('question_invite', 'question_invite_id', [['question_id', 'eq', $question_id, 'i'], ['sender_uid', 'eq', $sender_uid, 'i'], ['recipients_uid', 'eq', $recipients_uid, 'i']]);
+			return true;
 		}
+
+		return false;
 	}
 
 	public function get_invite_users($question_id, $limit = 10)

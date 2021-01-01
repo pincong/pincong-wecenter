@@ -32,7 +32,7 @@ class ajax extends AWS_CONTROLLER
 		$inbox_recv = $recipient_user['inbox_recv'];
 		if ($inbox_recv != 1 AND $inbox_recv != 2 AND $inbox_recv != 3)
 		{
-			$inbox_recv = intval(S::get('default_inbox_recv'));
+			$inbox_recv = S::get_int('default_inbox_recv');
 		}
 
 		if ($inbox_recv == 2) // 2为拒绝任何人
@@ -66,8 +66,8 @@ class ajax extends AWS_CONTROLLER
 
 	public function send_action()
 	{
-		$message = $_POST['message'];
-		if (trim($message) == '')
+		$message = H::POST_S('message');
+		if (!$message)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入私信内容')));
 		}
@@ -78,7 +78,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('私信字数不得多于 %s 字', $length_limit)));
 		}
 
-		if (!$recipient_user = $this->model('account')->get_user_info_by_username($_POST['recipient']))
+		if (!$recipient_user = $this->model('account')->get_user_info_by_username(H::POST_S('recipient')))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('接收私信的用户不存在')));
 		}
@@ -111,10 +111,10 @@ class ajax extends AWS_CONTROLLER
 
 		$this->model('message')->send_message($this->user_id, $recipient_user['uid'], $message);
 
-		if ($_POST['dialog_id'])
+		if ($dialog_id = H::POST_I('dialog_id'))
 		{
 			$rsm = array(
-				'url' => url_rewrite('/inbox/read/' . intval($_POST['dialog_id']))
+				'url' => url_rewrite('/inbox/read/' . $dialog_id)
 			);
 		}
 		else

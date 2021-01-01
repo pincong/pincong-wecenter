@@ -28,7 +28,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function mark_as_read_action()
 	{
-		$this->model('notification')->mark_as_read($_GET['notification_id'], $this->user_id);
+		$this->model('notification')->mark_as_read(H::GET('notification_id'), $this->user_id);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}

@@ -30,11 +30,11 @@ class main extends AWS_CONTROLLER
 
 	public function img_action()
 	{
-		if (!$_GET['id'])
+		if (!H::GET('id'))
 		{
 			die;
 		}
-		$url = safe_base64_decode($_GET['id']);
+		$url = safe_base64_decode(H::GET('id'));
 		if (!$url OR !content_url_whitelist_check($url))
 		{
 			die;
@@ -45,11 +45,11 @@ class main extends AWS_CONTROLLER
 
 	public function link_action()
 	{
-		if (!$_GET['id'])
+		if (!H::GET('id'))
 		{
 			die;
 		}
-		$url = safe_base64_decode($_GET['id']);
+		$url = safe_base64_decode(H::GET('id'));
 		if (!$url OR is_inside_url($url))
 		{
 			die;

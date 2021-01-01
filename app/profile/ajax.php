@@ -68,7 +68,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		$this->model('account')->update_user_fields(array(
-			'inbox_recv' => intval($_POST['inbox_recv'])
+			'inbox_recv' => H::POST_I('inbox_recv')
 		), $this->user_id);
 
 		$this->model('account')->update_notification_setting_fields($notification_setting, $this->user_id);
@@ -78,10 +78,9 @@ class ajax extends AWS_CONTROLLER
 
 	public function profile_setting_action()
 	{
-		if ($_POST['user_name'])
+		if ($user_name = H::POST_S('user_name'))
 		{
-			$user_name = trim($_POST['user_name']);
-			if ($user_name AND $user_name != $this->user_info['user_name'])
+			if ($user_name != $this->user_info['user_name'])
 			{
 				if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_change_username'))
 				{
@@ -105,18 +104,18 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		$update_data['sex'] = intval($_POST['sex']);
+		$update_data['sex'] = H::POST_I('sex');
 		if ($update_data['sex'] < 0 OR $update_data['sex'] > 3)
 		{
 			$update_data['sex'] = 0;
 		}
 
-		$update_data['signature'] = htmlspecialchars($_POST['signature']);
+		$update_data['signature'] = htmlspecialchars(H::POST_S('signature'));
 
 		// 更新主表
 		$this->model('account')->update_user_fields($update_data, $this->user_id);
 
-		$this->model('account')->set_default_timezone($_POST['default_timezone'], $this->user_id);
+		$this->model('account')->set_default_timezone(H::POST_S('default_timezone'), $this->user_id);
 
 		H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('个人资料保存成功')));
 	}

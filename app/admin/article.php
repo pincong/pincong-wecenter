@@ -26,7 +26,7 @@ class article extends AWS_ADMIN_CONTROLLER
 
 	public function list_action()
 	{
-		if ($this->is_post())
+		if (H::is_post())
 		{
 			$param = array();
 
@@ -53,39 +53,39 @@ class article extends AWS_ADMIN_CONTROLLER
 
 		$where = array();
 
-		if ($_GET['keyword'])
+		if (H::GET('keyword'))
 		{
-			$where[] = ['title', 'like', '%' . escape_like_clause(htmlspecialchars($_GET['keyword'])) . '%', 's'];
+			$where[] = ['title', 'like', '%' . escape_like_clause(htmlspecialchars(H::GET('keyword'))) . '%', 's'];
 		}
 
-		if ($_GET['start_date'])
+		if (H::GET('start_date'))
 		{
-			$where[] = ['add_time', 'gte', strtotime(base64_decode($_GET['start_date']))];
+			$where[] = ['add_time', 'gte', strtotime(base64_decode(H::GET('start_date')))];
 		}
 
-		if ($_GET['end_date'])
+		if (H::GET('end_date'))
 		{
-			$where[] = ['add_time', 'lte', strtotime('+1 day', strtotime(base64_decode($_GET['end_date'])))];
+			$where[] = ['add_time', 'lte', strtotime('+1 day', strtotime(base64_decode(H::GET('end_date'))))];
 		}
 
-		if ($_GET['user_name'])
+		if (H::GET('user_name'))
 		{
-			$user_info = $this->model('account')->get_user_info_by_username($_GET['user_name']);
+			$user_info = $this->model('account')->get_user_info_by_username(H::GET('user_name'));
 
 			$where[] = ['uid', 'eq', $user_info['uid'], 'i'];
 		}
 
-		if ($_GET['comment_count_min'])
+		if (H::GET('comment_count_min'))
 		{
-			$where[] = ['comments', 'gte', $_GET['comment_count_min'], 'i'];
+			$where[] = ['comments', 'gte', H::GET('comment_count_min'), 'i'];
 		}
 
-		if ($_GET['answer_count_max'])
+		if (H::GET('answer_count_max'))
 		{
-			$where[] = ['comments', 'lte', $_GET['comment_count_max'], 'i'];
+			$where[] = ['comments', 'lte', H::GET('comment_count_max'), 'i'];
 		}
 
-		if ($article_list = $this->model('article')->fetch_page('article', $where, 'id DESC', $_GET['page'], $this->per_page))
+		if ($article_list = $this->model('article')->fetch_page('article', $where, 'id DESC', H::GET('page'), $this->per_page))
 		{
 			$search_articles_total = $this->model('article')->total_rows();
 		}

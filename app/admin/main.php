@@ -75,7 +75,7 @@ class main extends AWS_ADMIN_CONTROLLER
     {
         $this->crumb(AWS_APP::lang()->_t('系统设置'));
 
-		$category = $_GET['category'];
+		$category = H::GET('category');
         if (!$category)
         {
             $category = 'site';

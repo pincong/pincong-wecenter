@@ -30,7 +30,7 @@ class edit extends AWS_CONTROLLER
 
 	public function answer_action()
 	{
-		$id = intval($_GET['id']);
+		$id = H::GET_I('id');
 		if (!$id)
 		{
 			H::error_403();
@@ -54,7 +54,7 @@ class edit extends AWS_CONTROLLER
 
 	public function article_comment_action()
 	{
-		$id = intval($_GET['id']);
+		$id = H::GET_I('id');
 		if (!$id)
 		{
 			H::error_403();
@@ -78,7 +78,7 @@ class edit extends AWS_CONTROLLER
 
 	public function video_comment_action()
 	{
-		$id = intval($_GET['id']);
+		$id = H::GET_I('id');
 		if (!$id)
 		{
 			H::error_403();

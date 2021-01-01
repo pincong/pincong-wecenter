@@ -43,7 +43,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function topic_info_action()
 	{
-		$topic_info = $this->model('topic')->get_topic_by_id($_GET['topic_id']);
+		$topic_info = $this->model('topic')->get_topic_by_id(H::GET('topic_id'));
 
 		$topic_info['type'] = 'topic';
 
@@ -76,23 +76,23 @@ class ajax extends AWS_CONTROLLER
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 			}
 
-			if ($this->model('topic')->has_lock_topic($_POST['topic_id']))
+			if ($this->model('topic')->has_lock_topic(H::POST('topic_id')))
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定的话题不能编辑')));
 			}
 		}
 
-		if (!$topic_info = $this->model('topic')->get_topic_by_id($_POST['topic_id']))
+		if (!$topic_info = $this->model('topic')->get_topic_by_id(H::POST('topic_id')))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题不存在')));
 		}
 
-		$this->model('topic')->update_topic($this->user_id, $_POST['topic_id'], null, $_POST['topic_description']);
+		$this->model('topic')->update_topic($this->user_id, H::POST('topic_id'), null, H::POST_S('topic_description'));
 
 		set_user_operation_last_time('edit_topic', $this->user_id);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => url_rewrite('/topic/topic_id-' . $_POST['topic_id'])
+			'url' => url_rewrite('/topic/topic_id-' . H::POST('topic_id'))
 		), 1, null));
 	}
 
@@ -104,18 +104,18 @@ class ajax extends AWS_CONTROLLER
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 			}
-			else if ($this->model('topic')->has_lock_topic($_GET['topic_id']))
+			else if ($this->model('topic')->has_lock_topic(H::GET('topic_id')))
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定的话题不能编辑')));
 			}
 		}
 
-		if (!$this->model('topic')->get_topic_by_id($_GET['topic_id']))
+		if (!$this->model('topic')->get_topic_by_id(H::GET('topic_id')))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题不存在')));
 		}
 
-		if (!$topic_title = trim($_POST['topic_title']))
+		if (!$topic_title = H::POST_S('topic_title'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入话题标题')));
 		}
@@ -125,12 +125,12 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题标题字数超出限制')));
 		}
 
-		if (! $related_id = $this->model('topic')->save_topic($topic_title, $this->user_id, $this->user_info['permission']['create_topic']))
+		if (!$related_id = $this->model('topic')->save_topic($topic_title, $this->user_id, $this->user_info['permission']['create_topic']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题已锁定或没有创建话题权限')));
 		}
 
-		if (!$this->model('topic')->save_related_topic($_GET['topic_id'], $related_id))
+		if (!$this->model('topic')->save_related_topic(H::GET('topic_id'), $related_id))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经存在相同推荐话题')));
 		}
@@ -148,13 +148,13 @@ class ajax extends AWS_CONTROLLER
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 			}
-			else if ($this->model('topic')->has_lock_topic($_GET['topic_id']))
+			else if ($this->model('topic')->has_lock_topic(H::GET('topic_id')))
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定的话题不能编辑')));
 			}
 		}
 
-		$this->model('topic')->remove_related_topic($_GET['topic_id'], $_GET['related_id']);
+		$this->model('topic')->remove_related_topic(H::GET('topic_id'), H::GET('related_id'));
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
@@ -172,71 +172,71 @@ class ajax extends AWS_CONTROLLER
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 			}
-			else if ($this->model('topic')->has_lock_topic($_GET['topic_id']))
+			else if ($this->model('topic')->has_lock_topic(H::GET('topic_id')))
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定的话题不能编辑')));
 			}
 		}
 
-		if (!$topic_info = $this->model('topic')->get_topic_by_id($_GET['topic_id']))
+		if (!$topic_info = $this->model('topic')->get_topic_by_id(H::GET('topic_id')))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题不存在')));
 		}
 
-		if (!$this->model('topic')->upload_image('aws_upload_file', $_GET['topic_id'], $error))
+		if (!$this->model('topic')->upload_image('aws_upload_file', H::GET('topic_id'), $error))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', $error));
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'thumb' => S::get('upload_url') . '/topic/' . $this->model('topic')->get_image_path($_GET['topic_id'], 'mid') . '?' . rand(1, 999)
+			'thumb' => S::get('upload_url') . '/topic/' . $this->model('topic')->get_image_path(H::GET('topic_id'), 'mid') . '?' . rand(1, 999)
 		), '1', null));
 	}
 
 	public function focus_topic_action()
 	{
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'type' => $this->model('topic')->add_focus_topic($this->user_id, intval($_POST['topic_id']))
+			'type' => $this->model('topic')->add_focus_topic($this->user_id, H::POST_I('topic_id'))
 		), '1', null));
 	}
 
 	public function lock_topic_action()
 	{
-		if (! $this->user_info['permission']['manage_topic'])
+		if (!$this->user_info['permission']['manage_topic'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
-		$this->model('topic')->lock_topic_by_id($_GET['topic_id'], $this->model('topic')->has_lock_topic($_GET['topic_id']));
+		$this->model('topic')->lock_topic_by_id(H::GET('topic_id'), $this->model('topic')->has_lock_topic(H::GET('topic_id')));
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1));
 	}
 
 	public function lock_action()
 	{
-		if (! $this->user_info['permission']['manage_topic'])
+		if (!$this->user_info['permission']['manage_topic'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
-		if (! $topic_info = $this->model('topic')->get_topic_by_id($_POST['topic_id']))
+		if (!$topic_info = $this->model('topic')->get_topic_by_id(H::POST('topic_id')))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('话题不存在')));
 		}
 
-		$this->model('topic')->lock_topic_by_ids($_POST['topic_id'], !$topic_info['topic_lock']);
+		$this->model('topic')->lock_topic_by_ids(H::POST('topic_id'), !$topic_info['topic_lock']);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
 	public function remove_action()
 	{
-		if (! $this->user_info['permission']['manage_topic'])
+		if (!$this->user_info['permission']['manage_topic'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
-		$this->model('topic')->remove_topic_by_ids($_POST['topic_id']);
+		$this->model('topic')->remove_topic_by_ids(H::POST('topic_id'));
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'url' => url_rewrite('/topic/')
@@ -250,12 +250,12 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定的话题不能编辑')));
 		}
 
-		if (!$topic_info = $this->model('topic')->get_topic_by_title($_POST['topic_title']))
+		if (!$topic_info = $this->model('topic')->get_topic_by_title(H::POST_S('topic_title')))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题不存在')));
 		}
 
-		if ($topic_info['topic_id'] == $_POST['target_id'])
+		if ($topic_info['topic_id'] == H::POST('target_id'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题合并不能与自己合并')));
 		}
@@ -267,7 +267,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('该话题已经与 %s 合并', $merged_topic_info['topic_title'])));
 		}
 
-		$this->model('topic')->merge_topic($topic_info['topic_id'], $_POST['target_id'], $this->user_id);
+		$this->model('topic')->merge_topic($topic_info['topic_id'], H::POST('target_id'), $this->user_id);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
@@ -279,19 +279,19 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
-		$this->model('topic')->remove_merge_topic($_POST['source_id'], $_POST['target_id']);
+		$this->model('topic')->remove_merge_topic(H::POST('source_id'), H::POST('target_id'));
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
 	public function remove_topic_relation_action()
 	{
-		if (!$_POST['topic_id'] OR !$_POST['item_id'] OR !$_POST['type'])
+		if (!H::POST('topic_id') OR !H::POST('item_id') OR !H::POST('type'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定的项目不存在')));
 		}
 
-		if (!$thread_info = $this->model('content')->get_thread_info_by_id($_POST['type'], $_POST['item_id']))
+		if (!$thread_info = $this->model('content')->get_thread_info_by_id(H::POST('type'), H::POST('item_id')))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定的项目不存在')));
 		}
@@ -301,14 +301,14 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
-		$this->model('topic')->remove_topic_relation($this->user_id, $_POST['topic_id'], $_POST['item_id'], $_POST['type']);
+		$this->model('topic')->remove_topic_relation($this->user_id, H::POST('topic_id'), H::POST('item_id'), H::POST('type'));
 
 		H::ajax_json_output(AWS_APP::RSM(null, -1, null));
 	}
 
 	public function save_topic_relation_action()
 	{
-		if (!$_POST['topic_title'] OR !$_POST['item_id'] OR !$_POST['type'])
+		if (!H::POST('item_id') OR !H::POST('type'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定的项目不存在')));
 		}
@@ -318,7 +318,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 
-		if (!$topic_title = trim($_POST['topic_title']))
+		if (!$topic_title = H::POST_S('topic_title'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入话题标题')));
 		}
@@ -328,7 +328,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题标题字数超出限制')));
 		}
 
-		if (!$thread_info = $this->model('content')->get_thread_info_by_id($_POST['type'], $_POST['item_id']))
+		if (!$thread_info = $this->model('content')->get_thread_info_by_id(H::POST('type'), H::POST('item_id')))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定的项目不存在')));
 		}
@@ -347,7 +347,7 @@ class ajax extends AWS_CONTROLLER
 		if ($topics_limit_max)
 		{
 			$num_topics = 0;
-			if ($topic_ids = $this->model('topic')->get_topic_ids_by_item_id($_POST['item_id'], $_POST['type']))
+			if ($topic_ids = $this->model('topic')->get_topic_ids_by_item_id(H::POST('item_id'), H::POST('type')))
 			{
 				$num_topics = sizeof($topic_ids);
 			}
@@ -362,7 +362,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题已锁定或没有创建话题权限, 不能添加话题')));
 		}
 
-		$this->model('topic')->save_topic_relation($this->user_id, $topic_id, $_POST['item_id'], $_POST['type']);
+		$this->model('topic')->save_topic_relation($this->user_id, $topic_id, H::POST('item_id'), H::POST('type'));
 
 		set_user_operation_last_time('edit_topic', $this->user_id);
 

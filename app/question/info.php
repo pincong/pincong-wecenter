@@ -39,7 +39,7 @@ class info extends AWS_CONTROLLER
 
 	public function setup()
 	{
-		$this->parent_id = intval($_GET['parent_id']);
+		$this->parent_id = H::GET_I('parent_id');
 		if ($this->parent_id < 1)
 		{
 			H::error_404();
@@ -64,7 +64,7 @@ class info extends AWS_CONTROLLER
 		}
 		$post_ids[] = $this->parent_id;
 
-		$discussions = $this->model('question')->get_question_discussions($post_ids, $_GET['page'], $this->per_page);
+		$discussions = $this->model('question')->get_question_discussions($post_ids, H::GET('page'), $this->per_page);
 
 		foreach ($discussions as $key => $val)
 		{
@@ -78,7 +78,7 @@ class info extends AWS_CONTROLLER
 
 	public function answer_discussions_action()
 	{
-		$discussions = $this->model('question')->get_answer_discussions($this->parent_id, $_GET['page'], $this->per_page);
+		$discussions = $this->model('question')->get_answer_discussions($this->parent_id, H::GET('page'), $this->per_page);
 
 		foreach ($discussions as $key => $val)
 		{

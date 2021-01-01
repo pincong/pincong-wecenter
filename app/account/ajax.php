@@ -34,29 +34,29 @@ class ajax extends AWS_CONTROLLER
 
 	public function change_password_action()
 	{
-		if (!$_POST['scrambled_password'] OR
-			!$this->model('password')->check_structure($_POST['new_scrambled_password'], $_POST['client_salt']))
+		if (!H::POST('scrambled_password') OR
+			!$this->model('password')->check_structure(H::POST('new_scrambled_password'), H::POST('client_salt')))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的密码')));
 		}
 
-		if (!AWS_APP::form()->check_csrf_token($_POST['token'], 'account_change_password', false))
+		if (!AWS_APP::form()->check_csrf_token(H::POST('token'), 'account_change_password', false))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('页面停留时间过长, 请刷新页面重试')));
 		}
 
-		if ($this->model('password')->change_password($this->user_id, $_POST['scrambled_password'], $_POST['new_scrambled_password'], $_POST['client_salt']))
+		if ($this->model('password')->change_password($this->user_id, H::POST('scrambled_password'), H::POST('new_scrambled_password'), H::POST('client_salt')))
 		{
-			AWS_APP::form()->revoke_csrf_token($_POST['token']);
+			AWS_APP::form()->revoke_csrf_token(H::POST('token'));
 
 			// 记住我
-			if ($_POST['remember_me'])
+			if (H::POST_I('remember_me'))
 			{
 				$expire = 60 * 60 * 24 * 360;
 			}
 
 			$this->model('login')->cookie_logout();
-			$this->model('login')->cookie_login($this->user_id, $_POST['new_scrambled_password'], $expire);
+			$this->model('login')->cookie_login($this->user_id, H::POST('new_scrambled_password'), $expire);
 
 			H::ajax_json_output(AWS_APP::RSM(array(
 				'url' => url_rewrite('/account/password_updated/')

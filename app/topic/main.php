@@ -39,16 +39,16 @@ class main extends AWS_CONTROLLER
 		$per_page = S::get_int('contents_per_page');
 
 		$url_param = [];
-		switch ($_GET['channel'])
+		switch (H::GET('channel'))
 		{
 			case 'focus':
 				$url_param[] = 'channel-focus';
-				$topics_list = $this->model('topic')->get_focus_topic_list($this->user_id, $_GET['page'], $per_page);
+				$topics_list = $this->model('topic')->get_focus_topic_list($this->user_id, H::GET('page'), $per_page);
 			break;
 
 			case 'hot':
 			default:
-				switch ($_GET['day'])
+				switch (H::GET('day'))
 				{
 					case 'month':
 						$order = 'discuss_count_last_month DESC';
@@ -64,7 +64,7 @@ class main extends AWS_CONTROLLER
 						$order = 'discuss_count DESC';
 					break;
 				}
-				$topics_list = $this->model('topic')->get_topic_list(null, $order, $_GET['page'], $per_page);
+				$topics_list = $this->model('topic')->get_topic_list(null, $order, H::GET('page'), $per_page);
 			break;
 		}
 
@@ -86,19 +86,19 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		if (!$_GET['id'] AND !$_GET['topic_id'])
+		if (!H::GET('id') AND !H::GET('topic_id'))
 		{
 			$this->index_square();
 			return;
 		}
 
-		if ($_GET['topic_id'])
+		if (H::GET('topic_id'))
 		{
-			$topic_info = $this->model('topic')->get_topic_by_id($_GET['topic_id']);
+			$topic_info = $this->model('topic')->get_topic_by_id(H::GET('topic_id'));
 		}
 		else
 		{
-			$topic_info = $this->model('topic')->get_topic_by_title($_GET['id']);
+			$topic_info = $this->model('topic')->get_topic_by_title(H::GET('id'));
 		}
 
 		if (!$topic_info)
@@ -110,9 +110,9 @@ class main extends AWS_CONTROLLER
 		{
 			if ($topic_info['merged_id'] != $topic_info['topic_id'] AND $redirect_info = $this->model('topic')->get_topic_by_id($topic_info['merged_id']))
 			{
-				if (!$_GET['topic_id'])
+				if (!H::GET('topic_id'))
 				{
-					// 如果未指定$_GET['topic_id']才自动跳转
+					// 如果未指定H::GET('topic_id')才自动跳转
 					H::redirect('/topic/topic_id-' . $topic_info['merged_id'] . '__rf-' . $topic_info['topic_id']);
 					return;
 				}
@@ -125,13 +125,13 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		if ($_GET['rf'])
+		if (H::GET('rf'))
 		{
-			TPL::assign('redirected_from', $this->model('topic')->get_topic_by_id($_GET['rf']));
+			TPL::assign('redirected_from', $this->model('topic')->get_topic_by_id(H::GET('rf')));
 		}
 
 		$url_param[] = 'topic_id-' . $topic_info['topic_id'];
-		$type = $_GET['type'];
+		$type = H::GET('type');
 		if ($type AND $this->model('content')->check_thread_type($type))
 		{
 			$url_param[] = 'type-' . $type;
@@ -177,7 +177,7 @@ class main extends AWS_CONTROLLER
 		$topic_ids = $this->model('topic')->get_merged_topic_ids_by_id($topic_info['topic_id']);
 		$topic_ids[] = $topic_info['topic_id'];
 
-		if ($posts_list = $this->model('posts')->get_posts_list_by_topic_ids($type, $topic_ids, $_GET['page'], S::get_int('contents_per_page')))
+		if ($posts_list = $this->model('posts')->get_posts_list_by_topic_ids($type, $topic_ids, H::GET('page'), S::get_int('contents_per_page')))
 		{
 			foreach ($posts_list AS $key => $val)
 			{
@@ -202,7 +202,7 @@ class main extends AWS_CONTROLLER
 
 	public function edit_action()
 	{
-		if (! $topic_info = $this->model('topic')->get_topic_by_id($_GET['id']))
+		if (! $topic_info = $this->model('topic')->get_topic_by_id(H::GET('id')))
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('话题不存在'), '/');
 		}
@@ -213,7 +213,7 @@ class main extends AWS_CONTROLLER
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('你没有权限进行此操作'));
 			}
-			else if ($this->model('topic')->has_lock_topic($_GET['id']))
+			else if ($this->model('topic')->has_lock_topic(H::GET('id')))
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('已锁定的话题不能编辑'));
 			}
@@ -223,14 +223,14 @@ class main extends AWS_CONTROLLER
 		$this->crumb($topic_info['topic_title']);
 
 		TPL::assign('topic_info', $topic_info);
-		TPL::assign('related_topics', $this->model('topic')->get_related_topics($_GET['id']));
+		TPL::assign('related_topics', $this->model('topic')->get_related_topics(H::GET('id')));
 
 		TPL::output('topic/edit');
 	}
 
 	public function manage_action()
 	{
-		if (! $topic_info = $this->model('topic')->get_topic_by_id($_GET['id']))
+		if (! $topic_info = $this->model('topic')->get_topic_by_id(H::GET('id')))
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('话题不存在'), '/');
 		}

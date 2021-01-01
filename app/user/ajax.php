@@ -63,8 +63,8 @@ class ajax extends AWS_CONTROLLER
 
 	private function get_reason_and_detail($status, &$reason, &$detail, &$log_detail)
 	{
-		$reason = trim($_POST['reason']);
-		$detail = trim($_POST['detail']);
+		$reason = H::POST_S('reason');
+		$detail = H::POST_S('detail');
 		// TODO: 字数选项
 		if (iconv_strlen($reason) > 300 OR iconv_strlen($detail) > 300)
 		{
@@ -105,7 +105,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 
-		$status = intval($_POST['status']);
+		$status = H::POST_I('status');
 		if (!in_array($status, array(0, 1, 2, 3)))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('操作失败')));
@@ -115,7 +115,7 @@ class ajax extends AWS_CONTROLLER
 
 		set_user_operation_last_time('manage', $this->user_id);
 
-		$uid = intval($_POST['uid']);
+		$uid = H::POST_I('uid');
 		$this->get_user_info_and_check_permission($uid, $user_info);
 
 		if ($status AND !$this->user_info['permission']['is_moderator'])
@@ -161,7 +161,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 
-		$status = intval($_POST['status']);
+		$status = H::POST_I('status');
 		if ($status AND !$this->model('usergroup')->get_group_id_by_value_flagged($status))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('操作失败')));
@@ -171,7 +171,7 @@ class ajax extends AWS_CONTROLLER
 
 		set_user_operation_last_time('manage', $this->user_id);
 
-		$uid = intval($_POST['uid']);
+		$uid = H::POST_I('uid');
 		$this->get_user_info_and_check_permission($uid, $user_info);
 
 		$this->model('user')->flag_user_by_uid(
@@ -205,7 +205,7 @@ class ajax extends AWS_CONTROLLER
 
 		set_user_operation_last_time('manage', $this->user_id);
 
-		$uid = intval($_POST['uid']);
+		$uid = H::POST_I('uid');
 		$this->get_user_info_and_check_permission($uid, $user_info);
 
 		$this->model('user')->delete_user_by_uid($uid, false);
@@ -230,7 +230,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 
-		$text = trim($_POST['text']);
+		$text = H::POST_S('text');
 		if (!$text)
 		{
 			$text = null;
@@ -244,11 +244,11 @@ class ajax extends AWS_CONTROLLER
 
 		$this->model('account')->update_user_fields(array(
 			'verified' => $text
-		), $_POST['uid']);
+		), H::POST('uid'));
 
 		if (!$this->user_info['permission']['is_moderator'])
 		{
-			$this->model('user')->insert_admin_log($_POST['uid'], $this->user_id, 'edit_title', 0, $text);
+			$this->model('user')->insert_admin_log(H::POST('uid'), $this->user_id, 'edit_title', 0, $text);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
@@ -266,7 +266,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 
-		$text = trim($_POST['text']);
+		$text = H::POST_S('text');
 		if (!$text)
 		{
 			$text = null;
@@ -280,11 +280,11 @@ class ajax extends AWS_CONTROLLER
 
 		$this->model('account')->update_user_fields(array(
 			'signature' => $text
-		), $_POST['uid']);
+		), H::POST('uid'));
 
 		if (!$this->user_info['permission']['is_moderator'])
 		{
-			$this->model('user')->insert_admin_log($_POST['uid'], $this->user_id, 'edit_signature', 0, $text);
+			$this->model('user')->insert_admin_log(H::POST('uid'), $this->user_id, 'edit_signature', 0, $text);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
@@ -304,10 +304,10 @@ class ajax extends AWS_CONTROLLER
 
 		set_user_operation_last_time('manage', $this->user_id);
 
-		$uid = intval($_POST['uid']);
+		$uid = H::POST_I('uid');
 		$this->get_user_info_and_check_permission($uid, $user_info);
 
-		$input_group_id = intval($_POST['group_id']);
+		$input_group_id = H::POST_I('group_id');
 		$group_id = null;
 
 		$user_group_list = $this->model('usergroup')->get_normal_group_list();

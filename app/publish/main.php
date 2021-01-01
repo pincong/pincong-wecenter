@@ -45,7 +45,7 @@ class main extends AWS_CONTROLLER
 		$thread_info = array(
 			'title' => '',
 			'message' => '',
-			'category_id' => intval($_GET['category_id'])
+			'category_id' => H::GET_I('category_id')
 		);
 
 		if (S::get('category_enable') != 'N')
@@ -88,7 +88,7 @@ class main extends AWS_CONTROLLER
 		$thread_info = array(
 			'title' => '',
 			'message' => '',
-			'category_id' => intval($_GET['category_id'])
+			'category_id' => H::GET_I('category_id')
 		);
 
 		if (S::get('category_enable') != 'N')
@@ -131,7 +131,7 @@ class main extends AWS_CONTROLLER
 		$thread_info = array(
 			'title' => '',
 			'message' => '',
-			'category_id' => intval($_GET['category_id'])
+			'category_id' => H::GET_I('category_id')
 		);
 
 		if (S::get('category_enable') != 'N')

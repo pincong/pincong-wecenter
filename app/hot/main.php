@@ -55,7 +55,7 @@ class main extends AWS_CONTROLLER
 	{
 		$per_page = S::get_int('index_per_page');
 
-		TPL::assign('list', $this->model('activity')->list_hot_activities($_GET['category'], $_GET['page'], $per_page));
+		TPL::assign('list', $this->model('activity')->list_hot_activities(H::GET('category'), H::GET('page'), $per_page));
 
 		TPL::output('hot/template');
 	}

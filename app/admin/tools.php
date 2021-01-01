@@ -36,7 +36,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 
     public function init_action()
     {
-        H::redirect_msg(AWS_APP::lang()->_t('正在准备...'), '/admin/tools/' . $_POST['action'] . '/page-1__per_page-' . $_POST['per_page']);
+        H::redirect_msg(AWS_APP::lang()->_t('正在准备...'), '/admin/tools/' . H::POST('action') . '/page-1__per_page-' . H::POST('per_page'));
     }
 
     public function cache_clean_action()
@@ -48,14 +48,14 @@ class tools extends AWS_ADMIN_CONTROLLER
 
     public function update_question_search_index_action()
     {
-        if ($questions_list = $this->model('question')->fetch_page('question', null, 'id ASC', $_GET['page'], $_GET['per_page']))
+        if ($questions_list = $this->model('question')->fetch_page('question', null, 'id ASC', H::GET('page'), H::GET('per_page')))
         {
             foreach ($questions_list as $key => $val)
             {
                 $this->model('posts')->set_posts_index($val['id'], 'question', $val);
             }
 
-            H::redirect_msg(AWS_APP::lang()->_t('正在更新问题搜索索引') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/update_question_search_index/page-' . ($_GET['page'] + 1) . '__per_page-' . $_GET['per_page']);
+            H::redirect_msg(AWS_APP::lang()->_t('正在更新问题搜索索引') . ', ' . AWS_APP::lang()->_t('批次: %s', H::GET('page')), '/admin/tools/update_question_search_index/page-' . (H::GET('page') + 1) . '__per_page-' . H::GET('per_page'));
         }
         else
         {
@@ -65,14 +65,14 @@ class tools extends AWS_ADMIN_CONTROLLER
 
     public function update_article_search_index_action()
     {
-        if ($article_list = $this->model('question')->fetch_page('article', null, 'id ASC', $_GET['page'], $_GET['per_page']))
+        if ($article_list = $this->model('question')->fetch_page('article', null, 'id ASC', H::GET('page'), H::GET('per_page')))
         {
             foreach ($article_list as $key => $val)
             {
                 $this->model('posts')->set_posts_index($val['id'], 'article', $val);
             }
 
-            H::redirect_msg(AWS_APP::lang()->_t('正在更新文章搜索索引') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/update_article_search_index/page-' . ($_GET['page'] + 1) . '__per_page-' . $_GET['per_page']);
+            H::redirect_msg(AWS_APP::lang()->_t('正在更新文章搜索索引') . ', ' . AWS_APP::lang()->_t('批次: %s', H::GET('page')), '/admin/tools/update_article_search_index/page-' . (H::GET('page') + 1) . '__per_page-' . H::GET('per_page'));
         }
         else
         {
@@ -82,9 +82,9 @@ class tools extends AWS_ADMIN_CONTROLLER
 
     public function update_topic_discuss_count_action()
     {
-        if ($this->model('system')->update_topic_discuss_count($_GET['page'], $_GET['per_page']))
+        if ($this->model('system')->update_topic_discuss_count(H::GET('page'), H::GET('per_page')))
         {
-            H::redirect_msg(AWS_APP::lang()->_t('正在更新话题统计') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/update_topic_discuss_count/page-' . ($_GET['page'] + 1) . '__per_page-' . $_GET['per_page']);
+            H::redirect_msg(AWS_APP::lang()->_t('正在更新话题统计') . ', ' . AWS_APP::lang()->_t('批次: %s', H::GET('page')), '/admin/tools/update_topic_discuss_count/page-' . (H::GET('page') + 1) . '__per_page-' . H::GET('per_page'));
         }
         else
         {
@@ -94,7 +94,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 
 	public function blur_time_action()
 	{
-		$table = $_GET['table'];
+		$table = H::GET('table');
 		if (!$table)
 		{
 			$table = 'question';
@@ -105,7 +105,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 			case 'question':
 				$next_table = 'answer';
 
-				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', $_GET['page'], $_GET['per_page']))
+				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', H::GET('page'), H::GET('per_page')))
 				{
 					foreach ($list as $key => $val)
 					{
@@ -115,11 +115,11 @@ class tools extends AWS_ADMIN_CONTROLLER
 						), ['id', 'eq', $val['id'], 'i']);
 					}
 
-					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/blur_time/page-' . ($_GET['page'] + 1) . '__table-'.$table.'__per_page-' . $_GET['per_page']);
+					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', H::GET('page')), '/admin/tools/blur_time/page-' . (H::GET('page') + 1) . '__table-'.$table.'__per_page-' . H::GET('per_page'));
 				}
 				else
 				{
-					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/blur_time/page-1__table-'.$next_table.'__per_page-' . $_GET['per_page']);
+					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/blur_time/page-1__table-'.$next_table.'__per_page-' . H::GET('per_page'));
 				}
 			break;
 
@@ -127,7 +127,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 			case 'answer':
 				$next_table = 'question_discussion';
 
-				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', $_GET['page'], $_GET['per_page']))
+				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', H::GET('page'), H::GET('per_page')))
 				{
 					foreach ($list as $key => $val)
 					{
@@ -136,11 +136,11 @@ class tools extends AWS_ADMIN_CONTROLLER
 						), ['id', 'eq', $val['id'], 'i']);
 					}
 
-					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/blur_time/page-' . ($_GET['page'] + 1) . '__table-'.$table.'__per_page-' . $_GET['per_page']);
+					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', H::GET('page')), '/admin/tools/blur_time/page-' . (H::GET('page') + 1) . '__table-'.$table.'__per_page-' . H::GET('per_page'));
 				}
 				else
 				{
-					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/blur_time/page-1__table-'.$next_table.'__per_page-' . $_GET['per_page']);
+					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/blur_time/page-1__table-'.$next_table.'__per_page-' . H::GET('per_page'));
 				}
 			break;
 
@@ -148,7 +148,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 			case 'question_discussion':
 				$next_table = 'answer_discussion';
 
-				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', $_GET['page'], $_GET['per_page']))
+				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', H::GET('page'), H::GET('per_page')))
 				{
 					foreach ($list as $key => $val)
 					{
@@ -157,11 +157,11 @@ class tools extends AWS_ADMIN_CONTROLLER
 						), ['id', 'eq', $val['id'], 'i']);
 					}
 
-					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/blur_time/page-' . ($_GET['page'] + 1) . '__table-'.$table.'__per_page-' . $_GET['per_page']);
+					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', H::GET('page')), '/admin/tools/blur_time/page-' . (H::GET('page') + 1) . '__table-'.$table.'__per_page-' . H::GET('per_page'));
 				}
 				else
 				{
-					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/blur_time/page-1__table-'.$next_table.'__per_page-' . $_GET['per_page']);
+					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/blur_time/page-1__table-'.$next_table.'__per_page-' . H::GET('per_page'));
 				}
 			break;
 
@@ -169,7 +169,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 			case 'answer_discussion':
 				$next_table = 'article';
 
-				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', $_GET['page'], $_GET['per_page']))
+				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', H::GET('page'), H::GET('per_page')))
 				{
 					foreach ($list as $key => $val)
 					{
@@ -178,11 +178,11 @@ class tools extends AWS_ADMIN_CONTROLLER
 						), ['id', 'eq', $val['id'], 'i']);
 					}
 
-					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/blur_time/page-' . ($_GET['page'] + 1) . '__table-'.$table.'__per_page-' . $_GET['per_page']);
+					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', H::GET('page')), '/admin/tools/blur_time/page-' . (H::GET('page') + 1) . '__table-'.$table.'__per_page-' . H::GET('per_page'));
 				}
 				else
 				{
-					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/blur_time/page-1__table-'.$next_table.'__per_page-' . $_GET['per_page']);
+					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/blur_time/page-1__table-'.$next_table.'__per_page-' . H::GET('per_page'));
 				}
 			break;
 
@@ -190,7 +190,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 			case 'article':
 				$next_table = 'article_comment';
 
-				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', $_GET['page'], $_GET['per_page']))
+				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', H::GET('page'), H::GET('per_page')))
 				{
 					foreach ($list as $key => $val)
 					{
@@ -200,11 +200,11 @@ class tools extends AWS_ADMIN_CONTROLLER
 						), ['id', 'eq', $val['id'], 'i']);
 					}
 
-					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/blur_time/page-' . ($_GET['page'] + 1) . '__table-'.$table.'__per_page-' . $_GET['per_page']);
+					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', H::GET('page')), '/admin/tools/blur_time/page-' . (H::GET('page') + 1) . '__table-'.$table.'__per_page-' . H::GET('per_page'));
 				}
 				else
 				{
-					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/blur_time/page-1__table-'.$next_table.'__per_page-' . $_GET['per_page']);
+					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/blur_time/page-1__table-'.$next_table.'__per_page-' . H::GET('per_page'));
 				}
 			break;
 
@@ -212,7 +212,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 			case 'article_comment':
 				$next_table = 'video';
 
-				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', $_GET['page'], $_GET['per_page']))
+				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', H::GET('page'), H::GET('per_page')))
 				{
 					foreach ($list as $key => $val)
 					{
@@ -221,11 +221,11 @@ class tools extends AWS_ADMIN_CONTROLLER
 						), ['id', 'eq', $val['id'], 'i']);
 					}
 
-					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/blur_time/page-' . ($_GET['page'] + 1) . '__table-'.$table.'__per_page-' . $_GET['per_page']);
+					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', H::GET('page')), '/admin/tools/blur_time/page-' . (H::GET('page') + 1) . '__table-'.$table.'__per_page-' . H::GET('per_page'));
 				}
 				else
 				{
-					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/blur_time/page-1__table-'.$next_table.'__per_page-' . $_GET['per_page']);
+					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/blur_time/page-1__table-'.$next_table.'__per_page-' . H::GET('per_page'));
 				}
 			break;
 
@@ -233,7 +233,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 			case 'video':
 				$next_table = 'video_comment';
 
-				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', $_GET['page'], $_GET['per_page']))
+				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', H::GET('page'), H::GET('per_page')))
 				{
 					foreach ($list as $key => $val)
 					{
@@ -243,11 +243,11 @@ class tools extends AWS_ADMIN_CONTROLLER
 						), ['id', 'eq', $val['id'], 'i']);
 					}
 
-					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/blur_time/page-' . ($_GET['page'] + 1) . '__table-'.$table.'__per_page-' . $_GET['per_page']);
+					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', H::GET('page')), '/admin/tools/blur_time/page-' . (H::GET('page') + 1) . '__table-'.$table.'__per_page-' . H::GET('per_page'));
 				}
 				else
 				{
-					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/blur_time/page-1__table-'.$next_table.'__per_page-' . $_GET['per_page']);
+					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/blur_time/page-1__table-'.$next_table.'__per_page-' . H::GET('per_page'));
 				}
 			break;
 
@@ -255,7 +255,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 			case 'video_comment':
 				$next_table = 'posts_index';
 
-				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', $_GET['page'], $_GET['per_page']))
+				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', H::GET('page'), H::GET('per_page')))
 				{
 					foreach ($list as $key => $val)
 					{
@@ -264,11 +264,11 @@ class tools extends AWS_ADMIN_CONTROLLER
 						), ['id', 'eq', $val['id'], 'i']);
 					}
 
-					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/blur_time/page-' . ($_GET['page'] + 1) . '__table-'.$table.'__per_page-' . $_GET['per_page']);
+					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', H::GET('page')), '/admin/tools/blur_time/page-' . (H::GET('page') + 1) . '__table-'.$table.'__per_page-' . H::GET('per_page'));
 				}
 				else
 				{
-					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/blur_time/page-1__table-'.$next_table.'__per_page-' . $_GET['per_page']);
+					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/blur_time/page-1__table-'.$next_table.'__per_page-' . H::GET('per_page'));
 				}
 			break;
 
@@ -276,7 +276,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 			case 'posts_index':
 				$next_table = '1'; // finish
 
-				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', $_GET['page'], $_GET['per_page']))
+				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', H::GET('page'), H::GET('per_page')))
 				{
 					foreach ($list as $key => $val)
 					{
@@ -286,11 +286,11 @@ class tools extends AWS_ADMIN_CONTROLLER
 						), ['id', 'eq', $val['id'], 'i']);
 					}
 
-					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/blur_time/page-' . ($_GET['page'] + 1) . '__table-'.$table.'__per_page-' . $_GET['per_page']);
+					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', H::GET('page')), '/admin/tools/blur_time/page-' . (H::GET('page') + 1) . '__table-'.$table.'__per_page-' . H::GET('per_page'));
 				}
 				else
 				{
-					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/blur_time/page-1__table-'.$next_table.'__per_page-' . $_GET['per_page']);
+					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/blur_time/page-1__table-'.$next_table.'__per_page-' . H::GET('per_page'));
 				}
 			break;
 
@@ -303,7 +303,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 
 	public function flush_avatars_action()
 	{
-		if ($users = $this->model('system')->fetch_page('users', null, 'uid ASC', $_GET['page'], $_GET['per_page']))
+		if ($users = $this->model('system')->fetch_page('users', null, 'uid ASC', H::GET('page'), H::GET('per_page')))
 		{
 			$local_upload_dir = S::get('upload_dir');
 			foreach ($users as $key => $val)
@@ -341,7 +341,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 				}
 			}
 
-			H::redirect_msg(AWS_APP::lang()->_t('正在刷新头像') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/flush_avatars/page-' . ($_GET['page'] + 1) . '__per_page-' . $_GET['per_page']);
+			H::redirect_msg(AWS_APP::lang()->_t('正在刷新头像') . ', ' . AWS_APP::lang()->_t('批次: %s', H::GET('page')), '/admin/tools/flush_avatars/page-' . (H::GET('page') + 1) . '__per_page-' . H::GET('per_page'));
 		}
 		else
 		{
@@ -351,13 +351,13 @@ class tools extends AWS_ADMIN_CONTROLLER
 
 	public function move_to_trash_action()
 	{
-		$trash_category_id = intval(S::get('trash_category_id'));
+		$trash_category_id = S::get_int('trash_category_id');
 		if (!$trash_category_id)
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('垃圾箱没有启用, 无法继续'), '/admin/tools/');
 		}
 
-		$table = $_GET['table'];
+		$table = H::GET('table');
 		if (!$table)
 		{
 			$table = 'question';
@@ -368,7 +368,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 			case 'question':
 				$next_table = 'article';
 
-				if ($list = AWS_APP::model()->fetch_page($table, '`title` IS NULL', 'id ASC', $_GET['page'], $_GET['per_page']))
+				if ($list = AWS_APP::model()->fetch_page($table, '`title` IS NULL', 'id ASC', H::GET('page'), H::GET('per_page')))
 				{
 					foreach ($list as $key => $val)
 					{
@@ -381,11 +381,11 @@ class tools extends AWS_ADMIN_CONTROLLER
 						), [['post_type', 'eq', 'question'], ['post_id', 'eq', $val['id'], 'i']]);
 					}
 
-					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/move_to_trash/page-' . ($_GET['page'] + 1) . '__table-'.$table.'__per_page-' . $_GET['per_page']);
+					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', H::GET('page')), '/admin/tools/move_to_trash/page-' . (H::GET('page') + 1) . '__table-'.$table.'__per_page-' . H::GET('per_page'));
 				}
 				else
 				{
-					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/move_to_trash/page-1__table-'.$next_table.'__per_page-' . $_GET['per_page']);
+					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/move_to_trash/page-1__table-'.$next_table.'__per_page-' . H::GET('per_page'));
 				}
 			break;
 
@@ -393,7 +393,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 			case 'article':
 				$next_table = 'video';
 
-				if ($list = AWS_APP::model()->fetch_page($table, '`title` IS NULL', 'id ASC', $_GET['page'], $_GET['per_page']))
+				if ($list = AWS_APP::model()->fetch_page($table, '`title` IS NULL', 'id ASC', H::GET('page'), H::GET('per_page')))
 				{
 					foreach ($list as $key => $val)
 					{
@@ -406,11 +406,11 @@ class tools extends AWS_ADMIN_CONTROLLER
 						), [['post_type', 'eq', 'article'], ['post_id', 'eq', $val['id'], 'i']]);
 					}
 
-					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/move_to_trash/page-' . ($_GET['page'] + 1) . '__table-'.$table.'__per_page-' . $_GET['per_page']);
+					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', H::GET('page')), '/admin/tools/move_to_trash/page-' . (H::GET('page') + 1) . '__table-'.$table.'__per_page-' . H::GET('per_page'));
 				}
 				else
 				{
-					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/move_to_trash/page-1__table-'.$next_table.'__per_page-' . $_GET['per_page']);
+					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/move_to_trash/page-1__table-'.$next_table.'__per_page-' . H::GET('per_page'));
 				}
 			break;
 
@@ -418,7 +418,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 			case 'video':
 				$next_table = '1'; // finish
 
-				if ($list = AWS_APP::model()->fetch_page($table, '`title` IS NULL', 'id ASC', $_GET['page'], $_GET['per_page']))
+				if ($list = AWS_APP::model()->fetch_page($table, '`title` IS NULL', 'id ASC', H::GET('page'), H::GET('per_page')))
 				{
 					foreach ($list as $key => $val)
 					{
@@ -431,11 +431,11 @@ class tools extends AWS_ADMIN_CONTROLLER
 						), [['post_type', 'eq', 'video'], ['post_id', 'eq', $val['id'], 'i']]);
 					}
 
-					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/move_to_trash/page-' . ($_GET['page'] + 1) . '__table-'.$table.'__per_page-' . $_GET['per_page']);
+					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', H::GET('page')), '/admin/tools/move_to_trash/page-' . (H::GET('page') + 1) . '__table-'.$table.'__per_page-' . H::GET('per_page'));
 				}
 				else
 				{
-					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/move_to_trash/page-1__table-'.$next_table.'__per_page-' . $_GET['per_page']);
+					H::redirect_msg(AWS_APP::lang()->_t('准备继续...'), '/admin/tools/move_to_trash/page-1__table-'.$next_table.'__per_page-' . H::GET('per_page'));
 				}
 			break;
 

@@ -27,7 +27,7 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		TPL::assign('list', $this->model('favorite')->get_item_list($this->user_id, $_GET['page'], S::get_int('contents_per_page')));
+		TPL::assign('list', $this->model('favorite')->get_item_list($this->user_id, H::GET('page'), S::get_int('contents_per_page')));
 
 		TPL::assign('pagination', AWS_APP::pagination()->create(array(
 			'base_url' => url_rewrite('/favorite/'),

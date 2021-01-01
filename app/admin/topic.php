@@ -50,32 +50,32 @@ class topic extends AWS_ADMIN_CONTROLLER
 
 		$where = array();
 
-		if ($_GET['keyword'])
+		if (H::GET('keyword'))
 		{
-			$where[] = ['topic_title', 'like', '%' . escape_like_clause(htmlspecialchars($_GET['keyword'])) . '%', 's'];
+			$where[] = ['topic_title', 'like', '%' . escape_like_clause(htmlspecialchars(H::GET('keyword'))) . '%', 's'];
 		}
 
-		if ($_GET['discuss_count_min'] OR $_GET['discuss_count_min'] == '0')
+		if (H::GET('discuss_count_min') OR H::GET('discuss_count_min') == '0')
 		{
-			$where[] = ['discuss_count', 'gte', $_GET['discuss_count_min'], 'i'];
+			$where[] = ['discuss_count', 'gte', H::GET('discuss_count_min'), 'i'];
 		}
 
-		if ($_GET['discuss_count_max'] OR $_GET['discuss_count_max'] == '0')
+		if (H::GET('discuss_count_max') OR H::GET('discuss_count_max') == '0')
 		{
-			$where[] = ['discuss_count', 'lte', $_GET['discuss_count_max'], 'i'];
+			$where[] = ['discuss_count', 'lte', H::GET('discuss_count_max'), 'i'];
 		}
 
-		if (base64_decode($_GET['start_date']))
+		if (base64_decode(H::GET('start_date')))
 		{
-			$where[] = ['add_time', 'gte', strtotime(base64_decode($_GET['start_date']))];
+			$where[] = ['add_time', 'gte', strtotime(base64_decode(H::GET('start_date')))];
 		}
 
-		if (base64_decode($_GET['end_date']))
+		if (base64_decode(H::GET('end_date')))
 		{
-			$where[] = ['add_time', 'lte', strtotime('+1 day', strtotime(base64_decode($_GET['end_date'])))];
+			$where[] = ['add_time', 'lte', strtotime('+1 day', strtotime(base64_decode(H::GET('end_date'))))];
 		}
 
-		$topic_list = $this->model('topic')->get_topic_list($where, 'topic_id DESC', $_GET['page'], $this->per_page);
+		$topic_list = $this->model('topic')->get_topic_list($where, 'topic_id DESC', H::GET('page'), $this->per_page);
 
 		$total_rows = $this->model('topic')->total_rows();
 
@@ -126,11 +126,11 @@ class topic extends AWS_ADMIN_CONTROLLER
 
 	public function edit_action()
 	{
-		if ($_GET['topic_id'])
+		if (H::GET('topic_id'))
 		{
 			$this->crumb(AWS_APP::lang()->_t('话题编辑'));
 
-			$topic_info = $this->model('topic')->get_topic_by_id($_GET['topic_id']);
+			$topic_info = $this->model('topic')->get_topic_by_id(H::GET('topic_id'));
 
 			if (!$topic_info)
 			{

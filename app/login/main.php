@@ -38,7 +38,7 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		if ($_POST['username'])
+		if (H::is_post())
 		{
 			$this->next_action();
 			return;
@@ -61,7 +61,7 @@ class main extends AWS_CONTROLLER
 			H::redirect_msg(AWS_APP::lang()->_t('错误的请求'), '/');
 		}
 
-		if (!AWS_APP::form()->check_csrf_token($_POST['token'], 'login_index'))
+		if (!AWS_APP::form()->check_csrf_token(H::POST('token'), 'login_index'))
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('页面停留时间过长, 请刷新页面重试'), '/login/');
 		}
@@ -71,17 +71,17 @@ class main extends AWS_CONTROLLER
 		// 检查验证码
 		if ($captcha_required)
 		{
-			if ($_POST['captcha_enabled'] == '0')
+			if (H::POST('captcha_enabled') == '0')
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('请填写验证码'), '/login/');
 			}
-			if (!AWS_APP::captcha()->is_valid($_POST['captcha'], H::get_cookie('captcha')))
+			if (!AWS_APP::captcha()->is_valid(H::POST('captcha'), H::get_cookie('captcha')))
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('请填写正确的验证码'), '/login/');
 			}
 		}
 
-		if (!$user_info = $this->model('account')->get_user_info_by_username($_POST['username']))
+		if (!$user_info = $this->model('account')->get_user_info_by_username(H::POST_S('username')))
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('用户名不存在'), '/login/');
 		}

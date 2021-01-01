@@ -37,7 +37,7 @@ class main extends AWS_CONTROLLER
 
 	public function log_action()
 	{
-		if (!$item_info = $this->model('content')->get_thread_or_reply_info_by_id($_GET['item_type'], $_GET['item_id']))
+		if (!$item_info = $this->model('content')->get_thread_or_reply_info_by_id(H::GET('item_type'), H::GET('item_id')))
 		{
 			H::error_404();
 		}
@@ -49,12 +49,12 @@ class main extends AWS_CONTROLLER
 
 	public function list_logs_action()
 	{
-		if (!$item_info = $this->model('content')->get_thread_or_reply_info_by_id($_GET['item_type'], $_GET['item_id']))
+		if (!$item_info = $this->model('content')->get_thread_or_reply_info_by_id(H::GET('item_type'), H::GET('item_id')))
 		{
 			H::error_404();
 		}
 
-		$log_list = $this->model('vote')->list_logs($_GET['item_type'], $_GET['item_id'], $_GET['page'], S::get_int('contents_per_page'));
+		$log_list = $this->model('vote')->list_logs(H::GET('item_type'), H::GET('item_id'), H::GET('page'), S::get_int('contents_per_page'));
 
 		TPL::assign('list', $log_list);
 

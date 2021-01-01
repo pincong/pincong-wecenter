@@ -138,94 +138,82 @@ class H
 	}
 
 
-	public static function GET($key)
+	public static function is_post()
+	{
+		return ($_SERVER['REQUEST_METHOD'] == 'POST');
+	}
+
+
+	public static function GET($key, $default = null)
 	{
 		if (!isset($_GET[$key]))
 		{
-			return null;
+			return $default;
 		}
 		return $_GET[$key];
 	}
 
-	public static function POST($key)
+	public static function POST($key, $default = null)
 	{
 		if (!isset($_POST[$key]))
 		{
-			return null;
+			return $default;
 		}
 		return $_POST[$key];
 	}
 
-	public static function GET_I($key)
+	public static function GET_I($key, $default = 0)
 	{
 		if (!isset($_GET[$key]))
 		{
-			return null;
+			return $default;
 		}
 		return self::_convert_request($_GET[$key], 'i');
 	}
 
-	public static function POST_I($key)
+	public static function POST_I($key, $default = 0)
 	{
 		if (!isset($_POST[$key]))
 		{
-			return null;
+			return $default;
 		}
 		return self::_convert_request($_POST[$key], 'i');
 	}
 
-	public static function GET_D($key)
+	public static function GET_D($key, $default = 0)
 	{
 		if (!isset($_GET[$key]))
 		{
-			return null;
+			return $default;
 		}
 		return self::_convert_request($_GET[$key], 'd');
 	}
 
-	public static function POST_D($key)
+	public static function POST_D($key, $default = 0)
 	{
 		if (!isset($_POST[$key]))
 		{
-			return null;
+			return $default;
 		}
 		return self::_convert_request($_POST[$key], 'd');
 	}
 
-	public static function GET_S($key)
+	public static function GET_S($key, $default = '')
 	{
 		if (!isset($_GET[$key]))
 		{
-			return null;
+			return $default;
 		}
-
-		static $cache;
-		if (isset($cache[$key]))
-		{
-			return $cache[$key];
-		}
-
-		$val = self::_convert_request($_GET[$key], 's');
-		$cache[$key] = $val;
-		return $val;
+		return self::_convert_request($_GET[$key], 's');
 	}
 
-	public static function POST_S($key)
+	public static function POST_S($key, $default = '')
 	{
 		if (!isset($_POST[$key]))
 		{
-			return null;
+			return $default;
 		}
-
-		static $cache;
-		if (isset($cache[$key]))
-		{
-			return $cache[$key];
-		}
-
-		$val = self::_convert_request($_POST[$key], 's');
-		$cache[$key] = $val;
-		return $val;
+		return self::_convert_request($_POST[$key], 's');
 	}
 
 	private static function _convert_request($data, $type)

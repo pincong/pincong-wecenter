@@ -29,7 +29,7 @@ class feature extends AWS_ADMIN_CONTROLLER
     {
         $this->crumb(AWS_APP::lang()->_t('功能链接'));
 
-        $feature_list = $this->model('feature')->get_feature_list($_GET['page'], $this->per_page);
+        $feature_list = $this->model('feature')->get_feature_list(H::GET('page'), $this->per_page);
 
         TPL::assign('pagination', AWS_APP::pagination()->create(array(
             'base_url' => url_rewrite('/admin/feature/list/'),
@@ -53,7 +53,7 @@ class feature extends AWS_ADMIN_CONTROLLER
     {
         $this->crumb(AWS_APP::lang()->_t('编辑'));
 
-        TPL::assign('feature', $this->model('feature')->get_feature_by_id($_GET['feature_id']));
+        TPL::assign('feature', $this->model('feature')->get_feature_by_id(H::GET('feature_id')));
 
         TPL::output('admin/feature/edit');
     }

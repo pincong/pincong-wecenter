@@ -30,7 +30,7 @@ class edit extends AWS_CONTROLLER
 
 	public function change_category_action()
 	{
-		TPL::assign('category_current_id', intval($_GET['category_id']));
+		TPL::assign('category_current_id', H::GET_I('category_id'));
 		TPL::assign('category_list', $this->model('category')->get_allowed_categories_change($this->user_info));
 
 		TPL::output("content/change_category_template");

@@ -30,7 +30,7 @@ class main extends AWS_CONTROLLER
 	{
 		$this->model('account')->update_inbox_unread($this->user_id);
 
-		if ($inbox_dialog = $this->model('message')->get_inbox_message($_GET['page'], S::get_int('contents_per_page'), $this->user_id))
+		if ($inbox_dialog = $this->model('message')->get_inbox_message(H::GET('page'), S::get_int('contents_per_page'), $this->user_id))
 		{
 			$inbox_total_rows = $this->model('message')->total_rows();
 
@@ -103,7 +103,7 @@ class main extends AWS_CONTROLLER
 
 	public function delete_dialog_action()
 	{
-		$this->model('message')->delete_dialog($_GET['dialog_id'], $this->user_id);
+		$this->model('message')->delete_dialog(H::GET('dialog_id'), $this->user_id);
 
 		if ($_SERVER['HTTP_REFERER'])
 		{
@@ -117,7 +117,7 @@ class main extends AWS_CONTROLLER
 
 	public function read_action()
 	{
-		if (!$dialog = $this->model('message')->get_dialog_by_id($_GET['id']))
+		if (!$dialog = $this->model('message')->get_dialog_by_id(H::GET('id')))
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('指定的站内信不存在'), '/inbox/');
 		}
@@ -136,9 +136,9 @@ class main extends AWS_CONTROLLER
 			$recipient_user = $this->model('account')->get_user_info_by_uid($dialog['recipient_uid']);
 		}
 
-		$this->model('message')->set_message_read($_GET['id'], $this->user_id);
+		$this->model('message')->set_message_read(H::GET('id'), $this->user_id);
 
-		if ($list = $this->model('message')->get_message_by_dialog_id($_GET['id']))
+		if ($list = $this->model('message')->get_message_by_dialog_id(H::GET('id')))
 		{
 			foreach ($list as $key => $val)
 			{

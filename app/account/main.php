@@ -31,7 +31,7 @@ class main extends AWS_CONTROLLER
 
 	public function logout_action()
 	{
-		if ($_SERVER['REQUEST_METHOD'] != 'POST')
+		if (!H::is_post())
 		{
 			$this->crumb(AWS_APP::lang()->_t('退出'));
 			TPL::import_css('css/register.css');

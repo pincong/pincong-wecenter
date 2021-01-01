@@ -50,7 +50,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function save_answer_discussion_action()
 	{
-		if ($_POST['anonymous'] AND !$this->user_info['permission']['reply_anonymously'])
+		if (H::POST_I('anonymous') AND !$this->user_info['permission']['reply_anonymously'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不能匿名')));
 		}
@@ -60,7 +60,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 
-		$message = trim($_POST['message']);
+		$message = H::POST_S('message');
 		if (!$message)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('请输入讨论内容')));
@@ -71,19 +71,19 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请不要重复提交')));
         }
 
-		$discussion_length_min = intval(S::get('discussion_length_min'));
+		$discussion_length_min = S::get_int('discussion_length_min');
 		if ($discussion_length_min AND iconv_strlen($message) < $discussion_length_min)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('讨论内容字数不得少于 %s 字', $discussion_length_min)));
 		}
 
-		$discussion_length_max = intval(S::get('discussion_length_max'));
+		$discussion_length_max = S::get_int('discussion_length_max');
 		if ($discussion_length_max AND iconv_strlen($message) > $discussion_length_max)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('讨论内容字数不得超过 %s 字', $discussion_length_max)));
 		}
 
-		$answer_info = $this->model('content')->get_reply_info_by_id('answer', $_GET['answer_id']);
+		$answer_info = $this->model('content')->get_reply_info_by_id('answer', H::GET('answer_id'));
 		if (!$answer_info)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('回复不存在')));
@@ -131,7 +131,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你的声望还不能在这个分类发言')));
 		}
 
-		if ($_POST['anonymous'])
+		if (H::POST_I('anonymous'))
 		{
 			$publish_uid = $this->get_anonymous_uid('answer_discussion');
 		}
@@ -143,7 +143,7 @@ class ajax extends AWS_CONTROLLER
         set_repeat_submission_digest($this->user_id, $message);
 		set_user_operation_last_time('publish', $this->user_id);
 
-		// TODO: 以$_POST['at_uid']代替
+		// TODO: 以H::POST('at_uid')代替
 		$message1 = $this->model('mention')->parse_at_user($message, false, false, true);
 
 		$item_id = $this->model('publish')->publish_answer_discussion(array(
@@ -162,7 +162,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function save_question_discussion_action()
 	{
-		if ($_POST['anonymous'] AND !$this->user_info['permission']['reply_anonymously'])
+		if (H::POST_I('anonymous') AND !$this->user_info['permission']['reply_anonymously'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不能匿名')));
 		}
@@ -172,7 +172,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 
-		$message = trim($_POST['message']);
+		$message = H::POST_S('message');
 		if (!$message)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入讨论内容')));
@@ -183,19 +183,19 @@ class ajax extends AWS_CONTROLLER
             H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请不要重复提交')));
         }
 
-		$discussion_length_min = intval(S::get('discussion_length_min'));
+		$discussion_length_min = S::get_int('discussion_length_min');
 		if ($discussion_length_min AND iconv_strlen($message) < $discussion_length_min)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('讨论内容字数不得少于 %s 字', $discussion_length_min)));
 		}
 
-		$discussion_length_max = intval(S::get('discussion_length_max'));
+		$discussion_length_max = S::get_int('discussion_length_max');
 		if ($discussion_length_max AND iconv_strlen($message) > $discussion_length_max)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('讨论内容字数不得超过 %s 字', $discussion_length_max)));
 		}
 
-		$question_info = $this->model('content')->get_thread_info_by_id('question', $_GET['question_id']);
+		$question_info = $this->model('content')->get_thread_info_by_id('question', H::GET('question_id'));
 		if (!$question_info)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('问题不存在')));
@@ -226,7 +226,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日讨论问题已经达到上限')));
 		}
 
-		if ($_POST['anonymous'])
+		if (H::POST_I('anonymous'))
 		{
 			$publish_uid = $this->get_anonymous_uid('question_discussion');
 		}
@@ -238,7 +238,7 @@ class ajax extends AWS_CONTROLLER
         set_repeat_submission_digest($this->user_id, $message);
 		set_user_operation_last_time('publish', $this->user_id);
 
-		// TODO: 以$_POST['at_uid']代替
+		// TODO: 以H::POST('at_uid')代替
 		$message1 = $this->model('mention')->parse_at_user($message, false, false, true);
 
 		$item_id = $this->model('publish')->publish_question_discussion(array(
@@ -263,7 +263,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有删除问题的权限')));
 		}
 
-		if ($question_info = $this->model('content')->get_thread_info_by_id('question', $_POST['question_id']))
+		if ($question_info = $this->model('content')->get_thread_info_by_id('question', H::POST('question_id')))
 		{
 			$this->model('question')->clear_question($question_info['id'], null);
 		}
@@ -280,12 +280,12 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
 		}
 
-		if (!$question_info = $this->model('content')->get_thread_info_by_id('question', $_POST['question_id']))
+		if (!$question_info = $this->model('content')->get_thread_info_by_id('question', H::POST('question_id')))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在或已被删除')));
 		}
 
-		if (!$invite_user_info = $this->model('account')->get_user_info_by_uid($_POST['uid']))
+		if (!$invite_user_info = $this->model('account')->get_user_info_by_uid(H::POST('uid')))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('用户不存在')));
 		}
@@ -295,12 +295,12 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能邀请自己回复问题')));
 		}
 
-		if ($this->model('invite')->has_question_invite($_POST['question_id'], $invite_user_info['uid']))
+		if ($this->model('invite')->has_question_invite(H::POST('question_id'), $invite_user_info['uid']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已邀请过该用户')));
 		}
 
-		$this->model('invite')->add_invite($_POST['question_id'], $this->user_id, $invite_user_info['uid']);
+		$this->model('invite')->add_invite(H::POST('question_id'), $this->user_id, $invite_user_info['uid']);
 
 		$this->model('account')->update_question_invite_count($invite_user_info['uid']);
 
@@ -309,16 +309,16 @@ class ajax extends AWS_CONTROLLER
 
 	public function cancel_question_invite_action()
 	{
-		$this->model('invite')->cancel_question_invite($_GET['question_id'], $this->user_id, $_GET['recipients_uid']);
+		$this->model('invite')->cancel_question_invite(H::GET('question_id'), $this->user_id, H::GET('recipients_uid'));
 
-		$this->model('account')->update_question_invite_count($_GET['recipients_uid']);
+		$this->model('account')->update_question_invite_count(H::GET('recipients_uid'));
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
 	public function question_invite_delete_action()
 	{
-		$question_invite_id = intval($_POST['question_invite_id']);
+		$question_invite_id = H::POST_I('question_invite_id');
 
 		$this->model('invite')->delete_question_invite($question_invite_id, $this->user_id);
 
@@ -331,7 +331,7 @@ class ajax extends AWS_CONTROLLER
 	// 只清空不删除
 	public function remove_comment_action()
 	{
-		if (! in_array($_GET['type'], array(
+		if (! in_array(H::GET('type'), array(
 			'answer',
 			'question'
 		)))
@@ -339,17 +339,17 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('错误的请求')));
 		}
 
-		$comment_id = intval($_GET['comment_id']);
+		$comment_id = H::GET_I('comment_id');
 		if (!$comment_id)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('讨论不存在')));
 		}
 
-		if ($_GET['type'] == 'answer')
+		if (H::GET('type') == 'answer')
 		{
 			$comment = $this->model('question')->get_answer_discussion_by_id($comment_id);
 		}
-		else if ($_GET['type'] == 'question')
+		else if (H::GET('type') == 'question')
 		{
 			$comment = $this->model('question')->get_question_discussion_by_id($comment_id);
 		}
@@ -363,14 +363,14 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('你没有权限删除该讨论')));
 		}
 
-		if ($_GET['type'] == 'answer')
+		if (H::GET('type') == 'answer')
 		{
 			$this->model('question')->clear_answer_discussion(
 				$comment,
 				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
 			);
 		}
-		else if ($_GET['type'] == 'question')
+		else if (H::GET('type') == 'question')
 		{
 			$this->model('question')->clear_question_discussion(
 				$comment,

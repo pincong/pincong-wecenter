@@ -26,13 +26,13 @@ class publish_class extends AWS_MODEL
 		return real_time() + $minutes * 60 + rand(-30, 30);
 	}
 
-	private function save_topics($type, $uid, $item_id, $topics, $permission_create_topic)
+	private function save_topics($type, $uid, $item_id, $topics)
 	{
 		if (is_array($topics))
 		{
 			foreach ($topics AS $topic_title)
 			{
-				$topic_id = $this->model('topic')->save_topic($topic_title, $uid, $permission_create_topic);
+				$topic_id = $this->model('topic')->save_topic($topic_title, $uid, true);
 				$this->model('topic')->save_topic_relation($uid, $topic_id, $item_id, $type);
 			}
 		}

@@ -29,7 +29,7 @@ class main extends AWS_CONTROLLER
 
 	public function list_admin_logs_action()
 	{
-		$log_list = $this->model('user')->list_admin_logs($_GET['uid'], $_GET['admin_uid'], $_GET['type'], $_GET['status'], $_GET['page'], S::get_int('contents_per_page'));
+		$log_list = $this->model('user')->list_admin_logs(H::GET('uid'), H::GET('admin_uid'), H::GET('type'), H::GET('status'), H::GET('page'), S::get_int('contents_per_page'));
 
 		TPL::assign('list', $log_list);
 
