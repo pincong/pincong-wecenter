@@ -14,7 +14,7 @@
 			<tbody>
 			<tr>
 				<td>
-					<form action="admin/tools/init/" method="post">
+					<form action="<?php echo url_rewrite(); ?>/admin/tools/init/" method="post">
 						<input type="hidden" name="action" value="cache_clean" />
 						<div class="form-group">
 							<span class="col-sm-3 col-xs-3 control-label middle"><?php _e('缓存清理'); ?>:</span>
@@ -31,7 +31,7 @@
 
 			<tr>
 				<td>
-					<form action="admin/tools/init/" method="post" target="_blank">
+					<form action="<?php echo url_rewrite(); ?>/admin/tools/init/" method="post" target="_blank">
 						<input type="hidden" name="action" value="update_question_search_index" />
 
 						<div class="form-group">
@@ -57,7 +57,7 @@
 
 			<tr>
 				<td>
-					<form action="admin/tools/init/" method="post" target="_blank">
+					<form action="<?php echo url_rewrite(); ?>/admin/tools/init/" method="post" target="_blank">
 						<input type="hidden" name="action" value="update_article_search_index" />
 
 						<div class="form-group">
@@ -83,7 +83,7 @@
 
 			<tr>
 				<td>
-					<form action="admin/tools/init/" method="post" target="_blank">
+					<form action="<?php echo url_rewrite(); ?>/admin/tools/init/" method="post" target="_blank">
 						<input type="hidden" name="action" value="update_topic_discuss_count" />
 						<div class="form-group">
 							<span class="col-sm-3 col-xs-3 control-label middle"><?php _e('更新话题统计'); ?>:</span>
@@ -107,7 +107,7 @@
 
 			<tr>
 				<td>
-					<form action="admin/tools/init/" method="post" target="_blank">
+					<form action="<?php echo url_rewrite(); ?>/admin/tools/init/" method="post" target="_blank">
 						<input type="hidden" name="action" value="blur_time" />
 						<div class="form-group">
 							<span class="col-sm-3 col-xs-3 control-label middle"><?php _e('模糊时间'); ?>:</span>
@@ -131,7 +131,7 @@
 
 			<tr>
 				<td>
-					<form action="admin/tools/init/" method="post" target="_blank">
+					<form action="<?php echo url_rewrite(); ?>/admin/tools/init/" method="post" target="_blank">
 						<input type="hidden" name="action" value="flush_avatars" />
 						<div class="form-group">
 							<span class="col-sm-3 col-xs-3 control-label middle"><?php _e('刷新头像'); ?>:</span>
@@ -155,7 +155,7 @@
 
 			<tr>
 				<td>
-					<form action="admin/tools/init/" method="post" target="_blank">
+					<form action="<?php echo url_rewrite(); ?>/admin/tools/init/" method="post" target="_blank">
 						<input type="hidden" name="action" value="move_to_trash" />
 						<div class="form-group">
 							<span class="col-sm-3 col-xs-3 control-label middle"><?php _e('移至垃圾箱'); ?>:</span>

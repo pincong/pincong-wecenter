@@ -35,7 +35,7 @@
 						<div class="mod-body">
 							<div class="aw-mod aw-editor-box">
 								<div class="mod-head">
-									<form id="topic_form" action="topic/ajax/edit_topic/" method="post" onsubmit="return false">
+									<form id="topic_form" action="<?php echo url_rewrite(); ?>/topic/ajax/edit_topic/" method="post" onsubmit="return false">
 											<div class="wmd-panel">
 												<textarea class="wmd-input form-control autosize editor" id="wmd-input" rows="15" name="topic_description">&nbsp;&nbsp;<?php echo FORMAT::text($this->topic_info['topic_description'], false); ?></textarea>
 											</div>

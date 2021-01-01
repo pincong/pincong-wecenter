@@ -7,7 +7,7 @@
 			<div class="mod-head">
 				<h3><?php _e('修改密码'); ?></h3>
 			</div>
-			<form class="form-horizontal" action="account/ajax/modify_password/" method="post" id="setting_form">
+			<form class="form-horizontal" action="<?php echo url_rewrite(); ?>/account/ajax/modify_password/" method="post" id="setting_form">
 				<div class="mod-body">
 					<div class="form-group">
 						<label class="control-label" for="input-password-old"><?php _e('当前密码'); ?></label>

@@ -15,7 +15,7 @@
 		<div class="mod-body tab-content">
 			<div class="tab-pane active" id="_members">
 				<div class="table-responsive">
-					<form id="batchs_form" action="admin/ajax/save_user_group/" method="post" onsubmit="return false;">
+					<form id="batchs_form" action="<?php echo url_rewrite(); ?>/admin/ajax/save_user_group/" method="post" onsubmit="return false;">
 						<table class="table table-striped" id="members_table">
 							<thead>
 								<tr>
@@ -79,7 +79,7 @@
 			</div>
 
 			<div class="tab-pane" id="_system">
-				<form id="system_group_form" method="post" action="admin/ajax/save_internal_user_group/">
+				<form id="system_group_form" method="post" action="<?php echo url_rewrite(); ?>/admin/ajax/save_internal_user_group/">
 				<table id="system_group_table" class="table table-striped">
 					<thead>
 						<tr>
@@ -124,7 +124,7 @@
 			</div>
 
 			<div class="tab-pane" id="_custom">
-				<form id="custom_group_form" method="post" action="admin/ajax/save_custom_user_group/">
+				<form id="custom_group_form" method="post" action="<?php echo url_rewrite(); ?>/admin/ajax/save_custom_user_group/">
 				<table id="custom_group_table" class="table table-striped">
 					<thead>
 						<tr>

@@ -217,7 +217,7 @@
 						<?php } else if (!$this->user_id) { ?>
 						<p align="center"><?php _e('要回复影片请先<a href="login/">登录</a>或<a href="register/">注册</a>'); ?></p>
 						<?php } else { ?>
-						<form action="publish/ajax/publish_video_comment/" onsubmit="return false;" method="post" id="answer_form" class="question_answer_form">
+						<form action="<?php echo url_rewrite(); ?>/publish/ajax/publish_video_comment/" onsubmit="return false;" method="post" id="answer_form" class="question_answer_form">
 						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
 						<input type="hidden" name="video_id" value="<?php echo $this->video_info['id']; ?>" />
 						<div class="mod-head">
@@ -270,7 +270,7 @@
 						<?php } else if (!$this->user_id) { ?>
 						<p align="center"><?php _e('要回复文章请先<a href="login/">登录</a>或<a href="register/">注册</a>'); ?></p>
 						<?php } else { ?>
-						<form action="publish/ajax/publish_video_comment/" onsubmit="return false;" method="post" id="answer_form_2">
+						<form action="<?php echo url_rewrite(); ?>/publish/ajax/publish_video_comment/" onsubmit="return false;" method="post" id="answer_form_2">
 						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
 						<input type="hidden" name="video_id" value="<?php echo $this->video_info['id']; ?>" />
 						<input type="hidden" id="user_reply_box_at_uid" name="at_uid" value="" />

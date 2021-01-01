@@ -9,7 +9,7 @@
 			</h3>
 		</div>
 		<div class="tab-content mod-content">
-			<form action="admin/ajax/remove_user/" method="post" id="remove_user_form">
+			<form action="<?php echo url_rewrite(); ?>/admin/ajax/remove_user/" method="post" id="remove_user_form">
 			<table class="table">
 				<tr>
 					<td>
@@ -28,7 +28,7 @@
 				</tr>
 			</table>
 			</form>
-				<form action="admin/ajax/save_user/" id="settings_form" enctype="multipart/form-data" method="post" onsubmit="return false">
+				<form action="<?php echo url_rewrite(); ?>/admin/ajax/save_user/" id="settings_form" enctype="multipart/form-data" method="post" onsubmit="return false">
 				<table class="table table-striped">
 					<input name="uid" type="hidden" value="<?php echo $this->user['uid']; ?>" />
 					<tr>

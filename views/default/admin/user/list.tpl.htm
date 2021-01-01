@@ -22,7 +22,7 @@
 
 				<div class="table-responsive">
 				<?php if ($this->list) { ?>
-					<form method="post" action="admin/ajax/remove_users/" id="users_form">
+					<form method="post" action="<?php echo url_rewrite(); ?>/admin/ajax/remove_users/" id="users_form">
 					<table class="table table-striped">
 						<thead>
 							<tr>
@@ -75,7 +75,7 @@
 			</div>
 
 			<div class="tab-pane" id="search">
-				<form method="post" action="admin/user/list/" onsubmit="return false;" id="search_form" class="form-horizontal" role="form">
+				<form method="post" action="<?php echo url_rewrite(); ?>/admin/user/list/" onsubmit="return false;" id="search_form" class="form-horizontal" role="form">
 
 					<input name="action" type="hidden" value="search" />
 

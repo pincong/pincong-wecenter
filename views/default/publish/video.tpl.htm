@@ -17,7 +17,7 @@
 						<h2 class="hidden-xs"><i class="icon icon-ask"></i> <?php _e('发起'); ?></h2>
 					</ul>
 					<!-- end tab 切换 -->
-					<form action="<?php if ($this->thread_info['id']) { ?>modify/ajax/modify_video/<?php } else { ?>publish/ajax/publish_video/<?php } ?>" method="post" id="question_form" onsubmit="return false;">
+					<form action="<?php echo url_rewrite(); ?>/<?php if ($this->thread_info['id']) { ?>modify/ajax/modify_video/<?php } else { ?>publish/ajax/publish_video/<?php } ?>" method="post" id="question_form" onsubmit="return false;">
 						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
 						<input type="hidden" name="video_id" id="video_id" value="<?php echo $this->thread_info['id']; ?>" />
 						<?php if (!$this->thread_info['id'] AND get_setting('category_enable') != 'N') { ?>

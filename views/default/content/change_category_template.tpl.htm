@@ -5,7 +5,7 @@
 				<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>
 				<h3 class="modal-title"><?php _e('变更分类'); ?></h3>
 			</div>
-			<form action="content/ajax/change_category/" method="post" onsubmit="return false" id="change_category">
+			<form action="<?php echo url_rewrite(); ?>/content/ajax/change_category/" method="post" onsubmit="return false" id="change_category">
 			<input type="hidden" name="item_type" value="<?php echo htmlspecialchars($_GET['item_type']); ?>" />
 			<input type="hidden" name="item_id" value="<?php echo intval($_GET['item_id']); ?>" />
 			<div class="modal-body">

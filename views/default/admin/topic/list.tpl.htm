@@ -20,7 +20,7 @@
 				<?php } ?>
 
 				<div class="table-responsive">
-				<form id="batchs_form" action="admin/ajax/topic_manage/" method="post">
+				<form id="batchs_form" action="<?php echo url_rewrite(); ?>/admin/ajax/topic_manage/" method="post">
 					<input type="hidden" id="action" name="action" value="" />
 				<?php if ($this->list) { ?>
 
@@ -75,7 +75,7 @@
 			</div>
 
 			<div class="tab-pane" id="search">
-				<form method="post" action="admin/topic/list/" onsubmit="return false;" id="search_form" class="form-horizontal" role="form">
+				<form method="post" action="<?php echo url_rewrite(); ?>/admin/topic/list/" onsubmit="return false;" id="search_form" class="form-horizontal" role="form">
 
 					<input name="action" type="hidden" value="search" />
 

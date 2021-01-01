@@ -18,7 +18,7 @@
 		<div class="tab-content mod-content">
 			<div class="tab-pane active" id="add">
 			<div class="table-responsive">
-			<form action="admin/ajax/save_user/" id="settings_form" method="post">
+			<form action="<?php echo url_rewrite(); ?>/admin/ajax/save_user/" id="settings_form" method="post">
 			<table class="table table-striped">
 				<tr>
 					<td>
@@ -70,7 +70,7 @@
 			</div>
 
 			<div class="tab-pane" id="search">
-				<form method="post" action="admin/user/list/" onsubmit="return false;" id="search_form" class="form-horizontal" role="form">
+				<form method="post" action="<?php echo url_rewrite(); ?>/admin/user/list/" onsubmit="return false;" id="search_form" class="form-horizontal" role="form">
 
 					<input name="action" type="hidden" value="search" />
 

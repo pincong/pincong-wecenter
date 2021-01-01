@@ -12,7 +12,7 @@
 					</div>
 					<div class="aw-mod-topic-manage">
 						<dl class="dl-horizontal">
-							<form action="topic/ajax/merge_topic/" method="post" id="merge_topic_form">
+							<form action="<?php echo url_rewrite(); ?>/topic/ajax/merge_topic/" method="post" id="merge_topic_form">
 								<input type="hidden" name="target_id" value="<?php echo $this->topic_info['topic_id']; ?>" />
 								<dt><?php _e('话题合并'); ?>:</dt>
 								<dd>

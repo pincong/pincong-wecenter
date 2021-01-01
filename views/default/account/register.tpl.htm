@@ -7,7 +7,7 @@
 		<p><?php echo get_setting('register_notice'); ?></p>
 	</div>
 	<div class="mod-body">
-		<form class="aw-register-form" action="register/ajax/register_process/" method="post" id="register_form">
+		<form class="aw-register-form" action="<?php echo url_rewrite(); ?>/register/ajax/register_process/" method="post" id="register_form">
 			<?php if ($this->icode) { ?><input type="hidden" name="icode" id="icode" value="<?php echo $this->icode; ?>" /><?php } ?>
 			<input type="hidden" name="return_url" value="<?php echo htmlspecialchars($_SERVER['HTTP_REFERER']); ?>" />
 

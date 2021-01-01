@@ -5,7 +5,7 @@
 				<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>
 				<h3 class="modal-title"><?php _e('备注'); ?></h3>
 			</div>
-			<form action="kb/ajax/remark/id-<?php echo $this->item_info['id']; ?>" method="post" onsubmit="return false" id="edit_form">
+			<form action="<?php echo url_rewrite(); ?>/kb/ajax/remark/id-<?php echo $this->item_info['id']; ?>" method="post" onsubmit="return false" id="edit_form">
 			<div class="modal-body">
 				<div class="alert alert-danger collapse error_message"><i class="icon icon-delete"></i> <em></em></div>
 				<textarea name="remarks" id="editor_reply" class="form-control" rows="10"><?php echo FORMAT::text($this->item_info['remarks'], false); ?></textarea>

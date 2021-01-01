@@ -14,7 +14,7 @@
 						</div>
 						<div class="mod-body">
 							<!-- 私信内容输入框　-->
-							<form action="inbox/ajax/send/" method="post" id="recipient_form">
+							<form action="<?php echo url_rewrite(); ?>/inbox/ajax/send/" method="post" id="recipient_form">
 								<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
 								<input type="hidden" name="dialog_id" value="<?php echo $this->dialog_id; ?>" />
 								<input type="hidden" name="recipient" value="<?php echo UF::name($this->recipient_user); ?>" />

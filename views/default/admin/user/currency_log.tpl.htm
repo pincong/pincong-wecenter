@@ -36,7 +36,7 @@
 				</tbody>
 			</table>
 			<div class="mod-table-foot">
-				<form id="currency_form" action="admin/ajax/currency_process/" method="post" onsubmit="return false">
+				<form id="currency_form" action="<?php echo url_rewrite(); ?>/admin/ajax/currency_process/" method="post" onsubmit="return false">
 				<input name="uid" type="hidden" value="<?php echo $this->user['uid']; ?>">
 					<div class="col-sm-10 col-md-2 clearfix">
 						<div class="form-group">

@@ -17,7 +17,7 @@
 				<div class="alert alert-info"><?php _e('找到 %s 条符合条件的内容', intval($this->question_count)); ?></div>
 				<?php } ?>
 
-				<form id="batchs_form" action="admin/ajax/question_manage/" method="post">
+				<form id="batchs_form" action="<?php echo url_rewrite(); ?>/admin/ajax/question_manage/" method="post">
 				<input type="hidden" id="action" name="action" value="" />
 				<div class="table-responsive">
 				<?php if ($this->list) { ?>
@@ -62,7 +62,7 @@
 			</div>
 
 			<div class="tab-pane" id="search">
-				<form method="post" action="admin/question/question_list/" onsubmit="return false;" id="search_form" class="form-horizontal" role="form">
+				<form method="post" action="<?php echo url_rewrite(); ?>/admin/question/question_list/" onsubmit="return false;" id="search_form" class="form-horizontal" role="form">
 
 					<input name="action" type="hidden" value="search" />
 

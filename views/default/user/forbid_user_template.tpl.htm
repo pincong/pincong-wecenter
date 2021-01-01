@@ -5,7 +5,7 @@
 				<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>
 				<h3 class="modal-title"><?php _e('封禁用户'); ?></h3>
 			</div>
-			<form action="user/ajax/forbid_user/" method="post" onsubmit="return false" id="edit_form">
+			<form action="<?php echo url_rewrite(); ?>/user/ajax/forbid_user/" method="post" onsubmit="return false" id="edit_form">
 			<input type="hidden" name="uid" value="<?php echo $this->user['uid']; ?>" />
 			<div class="modal-body">
 				<div class="alert alert-danger collapse error_message"><i class="icon icon-delete"></i> <em></em></div>

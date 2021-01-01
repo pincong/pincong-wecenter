@@ -24,7 +24,7 @@
 					</tr>
 					</thead>
 					<tbody>
-					<form id="category_form" action="admin/ajax/save_category_sort/" method="post" onsubmit="return false">
+					<form id="category_form" action="<?php echo url_rewrite(); ?>/admin/ajax/save_category_sort/" method="post" onsubmit="return false">
 					<?php foreach ($this->category_list AS $key => $val) { ?>
 					<tr>
 						<td>
@@ -51,7 +51,7 @@
 					<tfoot class="mod-foot-center">
 					<tr>
 						<td colspan="5">
-						<form id="add_category_form" action="admin/ajax/save_category/" method="post" onsubmit="return false">
+						<form id="add_category_form" action="<?php echo url_rewrite(); ?>/admin/ajax/save_category/" method="post" onsubmit="return false">
 							<div class="form-group col-sm-6">
 								<span class="col-sm-5 mod-category-foot"><?php _e('分类标题'); ?></span>
 								<div class="col-sm-6">

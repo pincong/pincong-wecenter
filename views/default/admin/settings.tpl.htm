@@ -2,7 +2,7 @@
 <?php TPL::include('admin/global/nav_menu.tpl.htm'); ?>
 
 <div class="aw-content-wrap">
-	<form action="admin/ajax/save_settings/" id="settings_form" method="post" onsubmit="return false">
+	<form action="<?php echo url_rewrite(); ?>/admin/ajax/save_settings/" id="settings_form" method="post" onsubmit="return false">
 	<div class="mod">
 		<?php if ($_GET['category'] == 'site') { ?>
 		<div class="mod-head">
