@@ -225,6 +225,15 @@ class publish_class extends AWS_MODEL
 			return false;
 		}
 
+		// 给题主增加游戏币
+		if ($data['permission_affect_currency'] AND $data['uid'] != $parent_info['uid'])
+		{
+			if (!$this->model('content')->has_user_relpied_to_thread('question', $data['parent_id'], $data['uid']))
+			{
+				$this->model('currency')->process($parent_info['uid'], 'QUESTION_REPLIED', get_setting('currency_system_config_question_replied'), '问题收到回应', $data['parent_id'], 'question');
+			}
+		}
+
 		$now = fake_time();
 
 		$item_id = $this->insert('answer', array(
@@ -286,13 +295,6 @@ class publish_class extends AWS_MODEL
 		// 记录用户动态
 		$this->model('activity')->push('answer', $item_id, $data['uid']);
 
-		if ($data['permission_affect_currency'] AND $data['uid'] != $parent_info['uid'])
-		{
-			if (!$this->model('content')->has_user_relpied_to_thread('question', $data['parent_id'], $data['uid']))
-			{
-				$this->model('currency')->process($parent_info['uid'], 'QUESTION_REPLIED', get_setting('currency_system_config_question_replied'), '问题收到回应', $data['parent_id'], 'question');
-			}
-		}
 		return $item_id;
 	}
 
@@ -301,6 +303,15 @@ class publish_class extends AWS_MODEL
 		if (!$parent_info = $this->model('content')->get_thread_info_by_id('article', $data['parent_id']))
 		{
 			return false;
+		}
+
+		// 给题主增加游戏币
+		if ($data['permission_affect_currency'] AND $data['uid'] != $parent_info['uid'])
+		{
+			if (!$this->model('content')->has_user_relpied_to_thread('article', $data['parent_id'], $data['uid']))
+			{
+				$this->model('currency')->process($parent_info['uid'], 'ARTICLE_REPLIED', get_setting('currency_system_config_article_replied'), '文章收到回应', $data['parent_id'], 'article');
+			}
 		}
 
 		$now = fake_time();
@@ -360,13 +371,6 @@ class publish_class extends AWS_MODEL
 		// 记录用户动态
 		$this->model('activity')->push('article_comment', $item_id, $data['uid']);
 
-		if ($data['permission_affect_currency'] AND $data['uid'] != $parent_info['uid'])
-		{
-			if (!$this->model('content')->has_user_relpied_to_thread('article', $data['parent_id'], $data['uid']))
-			{
-				$this->model('currency')->process($parent_info['uid'], 'ARTICLE_REPLIED', get_setting('currency_system_config_article_replied'), '文章收到回应', $data['parent_id'], 'article');
-			}
-		}
 		return $item_id;
 	}
 
@@ -375,6 +379,15 @@ class publish_class extends AWS_MODEL
 		if (!$parent_info = $this->model('content')->get_thread_info_by_id('video', $data['parent_id']))
 		{
 			return false;
+		}
+
+		// 给题主增加游戏币
+		if ($data['permission_affect_currency'] AND $data['uid'] != $parent_info['uid'])
+		{
+			if (!$this->model('content')->has_user_relpied_to_thread('video', $data['parent_id'], $data['uid']))
+			{
+				$this->model('currency')->process($parent_info['uid'], 'VIDEO_REPLIED', get_setting('currency_system_config_video_replied'), '影片收到回应', $data['parent_id'], 'video');
+			}
 		}
 
 		$now = fake_time();
@@ -433,13 +446,6 @@ class publish_class extends AWS_MODEL
 		// 记录用户动态
 		$this->model('activity')->push('video_comment', $item_id, $data['uid']);
 
-		if ($data['permission_affect_currency'] AND $data['uid'] != $parent_info['uid'])
-		{
-			if (!$this->model('content')->has_user_relpied_to_thread('video', $data['parent_id'], $data['uid']))
-			{
-				$this->model('currency')->process($parent_info['uid'], 'VIDEO_REPLIED', get_setting('currency_system_config_video_replied'), '影片收到回应', $data['parent_id'], 'video');
-			}
-		}
 		return $item_id;
 	}
 
