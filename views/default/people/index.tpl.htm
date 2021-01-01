@@ -38,17 +38,6 @@
 							</span>
 							<span class="aw-nowrap"><?php echo UF::name($this->user); ?></span>
 							<?php if ($this->user['verified']) { ?><em class="aw-verified"><?php echo $this->user['verified']; ?></em><?php } ?>
-							<!-- 封禁 -->
-							<?php if ($this->user['forbidden'] == -1) { ?>
-								<span class="aw-small-text"><?php _e('系统自动封禁'); ?></span>
-								<br />
-								<span class="aw-small-text"><?php _e('封禁理由'); ?> : <?php _e('累计收到反对票的数量过多'); ?></span>
-							<?php } else if ($this->user['forbidden']) { ?>
-								<span class="aw-small-text"><a href="<?php echo url_rewrite(); ?>/people/<?php echo $this->user['data']['banned_by']; ?>"><?php _e('管理员'); ?></a><?php _e('封禁'); ?></span>
-								<br />
-								<span class="aw-small-text"><?php _e('封禁理由'); ?> : <?php echo FORMAT::text($this->user['data']['banned_reason']); ?> <?php echo FORMAT::text($this->user['data']['banned_detail']); ?></span>
-							<?php } ?>
-							<!-- end 封禁 -->
 							<?php if ($this->user['flagged']) { ?>
 							<br />
 							<span class="aw-small-text">

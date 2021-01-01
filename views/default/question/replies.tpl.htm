@@ -17,7 +17,6 @@
 			<?php } ?>
 			</a>
 			<?php if ($val['user_info']['flagged'] == -1) { ?><sup><?php _e('观察'); ?></sup><?php } ?>
-			<?php if ($val['user_info']['forbidden']) { ?><sup><?php _e('封禁'); ?></sup><?php } ?>
 			<?php if ($val['user_info']['verified']) { ?><em class="aw-verified"><?php echo $val['user_info']['verified']; ?></em><?php } ?>
 			<span class="aw-small-text"><?php echo UF::signature($val['user_info']); ?></span>
 			<!-- end 用户名 -->

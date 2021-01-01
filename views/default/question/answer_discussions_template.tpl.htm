@@ -27,7 +27,6 @@
 		</a>
 		<?php if ($val['user_info']['verified']) { ?><em class="aw-verified"><?php echo $val['user_info']['verified']; ?></em><?php } ?>
 		<?php if ($val['user_info']['flagged'] == -1) { ?><sup><?php _e('观察'); ?></sup><?php } ?>
-		<?php if ($val['user_info']['forbidden']) { ?><sup><?php _e('封禁'); ?></sup><?php } ?>
 		<!-- end 用户名 -->
 		•
 		<span><?php echo date_friendly($val['add_time']); ?></span>
