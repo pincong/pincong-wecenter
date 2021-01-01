@@ -24,9 +24,9 @@
 <link href="<?php echo G_STATIC_URL; ?>/css/<?php echo $this->template_name; ?>/<?php echo $this->template_name; ?>.css" rel="stylesheet" type="text/css" />
 <?php } ?>
 
-<?php if (get_setting('custom_css')) { ?>
+<?php if (S::get('custom_css')) { ?>
 <style>
-<?php echo get_setting('custom_css'); ?>
+<?php echo S::get('custom_css'); ?>
 
 </style>
 <?php } ?>
@@ -44,9 +44,9 @@
 	var G_FLAGGED = "";
 <?php } ?>
 	var G_UNREAD_NOTIFICATION = 0;
-	var G_NOTIFICATION_INTERVAL = <?php echo intval(get_setting('unread_flush_interval')) * 1000; ?>;
+	var G_NOTIFICATION_INTERVAL = <?php echo S::get_int('unread_flush_interval') * 1000; ?>;
 	var G_CAN_CREATE_TOPIC = "<?php echo $this->user_info['permission']['create_topic']; ?>";
-	var G_ADVANCED_EDITOR_ENABLE = "<?php echo get_setting('advanced_editor_enable'); ?>";
+	var G_ADVANCED_EDITOR_ENABLE = "<?php echo S::get('advanced_editor_enable'); ?>";
 </script>
 <?php if (is_array($this->_import_js_files)) { ?>
 <?php foreach ($this->_import_js_files AS $import_js) { ?>
@@ -57,6 +57,6 @@
 	<script type="text/javascript" src="<?php echo G_STATIC_URL; ?>/js/respond.js"></script>
 <![endif]-->
 
-<?php echo get_setting('custom_head'); ?>
+<?php echo S::get('custom_head'); ?>
 
 </head>

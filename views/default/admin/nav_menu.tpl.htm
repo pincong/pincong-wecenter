@@ -35,7 +35,7 @@
 										<input class="form-control" type="text" name="nav_menu[<?php echo $val['id']; ?>][title]" value="<?php echo FORMAT::text($val['title']); ?>" />
 									</label>
 									<div class="pull-left aw-nav-menu-img">
-										<a id="aw-nav-menu-img-upload-<?php echo $val['id']; ?>"><img src="<?php if ($val['icon']) { ?><?php echo get_setting('upload_url'); ?>/nav_menu/<?php echo $val['icon']; ?><?php } else { ?><?php echo G_STATIC_URL; ?>/common/default_class_imgs.png<?php } ?>" alt="" id="aw-nav-menu-img-<?php echo $val['id']; ?>" /></a>
+										<a id="aw-nav-menu-img-upload-<?php echo $val['id']; ?>"><img src="<?php if ($val['icon']) { ?><?php echo S::get('upload_url'); ?>/nav_menu/<?php echo $val['icon']; ?><?php } else { ?><?php echo G_STATIC_URL; ?>/common/default_class_imgs.png<?php } ?>" alt="" id="aw-nav-menu-img-<?php echo $val['id']; ?>" /></a>
 									</div>
 								</div>
 

@@ -56,7 +56,7 @@ class main extends AWS_CONTROLLER
 			HTTP::error_404();
 		}
 
-		$replies_per_page = intval(get_setting('replies_per_page'));
+		$replies_per_page = intval(S::get('replies_per_page'));
 		if (!$replies_per_page)
 		{
 			$replies_per_page = 100;
@@ -187,7 +187,7 @@ class main extends AWS_CONTROLLER
 
 		TPL::set_meta('description', $video_info['title'] . ' - ' . truncate_text(str_replace("\r\n", ' ', $video_info['message']), 128));
 
-		if (get_setting('advanced_editor_enable') == 'Y')
+		if (S::get('advanced_editor_enable') == 'Y')
 		{
 			import_editor_static_files();
 		}

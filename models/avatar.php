@@ -69,7 +69,7 @@ class avatar_class extends AWS_MODEL
 
 		foreach(AWS_APP::config()->get('image')->avatar_thumbnail as $key => $val)
 		{
-			@unlink(get_setting('upload_dir') . '/avatar/' . $this->get_avatar_path($uid, $key));
+			@unlink(S::get('upload_dir') . '/avatar/' . $this->get_avatar_path($uid, $key));
 		}
 
 		return $this->model('account')->update_user_fields(array('avatar_file' => null), $uid);
@@ -91,15 +91,15 @@ class avatar_class extends AWS_MODEL
 			return false;
 		}
 
-		$local_upload_dir = get_setting('upload_dir');
+		$local_upload_dir = S::get('upload_dir');
 		$save_dir = $local_upload_dir . '/avatar/' . $this->get_avatar_dir($uid);
 		$filename = $this->get_avatar_filename($uid, 'real');
 
 		AWS_APP::upload()->initialize(array(
-			'allowed_types' => get_setting('allowed_upload_types'),
+			'allowed_types' => S::get('allowed_upload_types'),
 			'upload_path' => $save_dir,
 			'is_image' => TRUE,
-			'max_size' => get_setting('upload_size_limit'),
+			'max_size' => S::get('upload_size_limit'),
 			'file_name' => $filename,
 			'encrypt_name' => FALSE
 		))->do_upload($field);
@@ -113,7 +113,7 @@ class avatar_class extends AWS_MODEL
 					return false;
 
 				case 'upload_invalid_filesize':
-					$error = AWS_APP::lang()->_t('文件尺寸过大, 最大允许尺寸为 %s KB', get_setting('upload_size_limit'));
+					$error = AWS_APP::lang()->_t('文件尺寸过大, 最大允许尺寸为 %s KB', S::get('upload_size_limit'));
 					return false;
 
 				default:

@@ -116,19 +116,19 @@ class H
 	// 命中返回 true, 未命中返回 false
 	public static function content_url_whitelist_check($content_url)
 	{
-		return content_contains('content_url_whitelist', $content_url);
+		return S::content_contains('content_url_whitelist', $content_url);
 	}
 
 	// 命中返回 true, 未命中返回 false
 	public static function hyperlink_blacklist_check($hyperlink)
 	{
-		return content_contains('hyperlink_blacklist', $hyperlink);
+		return S::content_contains('hyperlink_blacklist', $hyperlink);
 	}
 
 	// 命中返回 true, 未命中返回 false
 	public static function hyperlink_whitelist_check($hyperlink)
 	{
-		return content_contains('hyperlink_whitelist', $hyperlink);
+		return S::content_contains('hyperlink_whitelist', $hyperlink);
 	}
 
 }

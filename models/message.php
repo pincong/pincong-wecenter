@@ -274,7 +274,7 @@ class message_class extends AWS_MODEL
 
 	public function delete_expired_messages()
 	{
-		$days = intval(get_setting('expiration_private_messages'));
+		$days = S::get_int('expiration_private_messages');
 		if (!$days)
 		{
 			return;

@@ -28,7 +28,7 @@ class main extends AWS_ADMIN_CONTROLLER
             $writable_check = array(
                 'cache' => is_really_writable(ROOT_PATH . 'cache/'),
                 'tmp' => is_really_writable(ROOT_PATH . './tmp/'),
-                get_setting('upload_dir') => is_really_writable(get_setting('upload_dir'))
+                S::get('upload_dir') => is_really_writable(S::get('upload_dir'))
             );
 
             TPL::assign('writable_check', $writable_check);
@@ -87,12 +87,12 @@ class main extends AWS_ADMIN_CONTROLLER
             break;
 
             case 'register':
-                TPL::assign('notification_settings', get_setting('new_user_notification_setting'));
+                TPL::assign('notification_settings', S::get('new_user_notification_setting'));
                 TPL::assign('notify_actions', $this->model('notification')->notify_action_details);
             break;
         }
 
-        TPL::assign('setting', get_settings());
+        TPL::assign('setting', S::get_all());
 
         TPL::assign('menu_list', $this->model('admin')->fetch_menu_list('SETTINGS_' . strtoupper($_GET['category'])));
 
@@ -107,7 +107,7 @@ class main extends AWS_ADMIN_CONTROLLER
 
         TPL::assign('category_list', $this->model('category')->get_category_list());
 
-        TPL::assign('setting', get_settings());
+        TPL::assign('setting', S::get_all());
 
         TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(307));
 

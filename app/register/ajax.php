@@ -68,7 +68,7 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		$register_interval = rand_minmax(get_setting('register_interval_min'), get_setting('register_interval_max'), get_setting('register_interval'));
+		$register_interval = rand_minmax(S::get('register_interval_min'), S::get('register_interval_max'), S::get('register_interval'));
 		if (!check_user_operation_interval('register', 0, $register_interval, false))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('本站已开启注册频率限制, 请稍后再试')));

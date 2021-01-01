@@ -34,7 +34,7 @@ class ajax extends AWS_CONTROLLER
 			$_GET['search_type'] = null;
 		}
 
-		$search_result = $this->model('search')->search(cjk_substr($_GET['q'], 0, 64), $_GET['search_type'], $_GET['page'], get_setting('contents_per_page'), null, $_GET['recommend']);
+		$search_result = $this->model('search')->search(cjk_substr($_GET['q'], 0, 64), $_GET['search_type'], $_GET['page'], S::get('contents_per_page'), null, $_GET['recommend']);
 
 		if ($this->user_id AND $search_result)
 		{

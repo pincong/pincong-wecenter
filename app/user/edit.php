@@ -43,7 +43,7 @@ class edit extends AWS_CONTROLLER
 		$user['data'] = unserialize_array($user['extra_data']);
 		TPL::assign('user', $user);
 
-		$banning_reason_list = get_key_value_pairs('banning_reason_list', null, true);
+		$banning_reason_list = S::get_key_value_pairs('banning_reason_list', null, true);
 		if (count($banning_reason_list > 0))
 		{
 			TPL::assign('banning_reason_list', $banning_reason_list);
@@ -67,7 +67,7 @@ class edit extends AWS_CONTROLLER
 		$user['data'] = unserialize_array($user['extra_data']);
 		TPL::assign('user', $user);
 
-		$banning_reason_list = get_key_value_pairs('banning_reason_list', null, true);
+		$banning_reason_list = S::get_key_value_pairs('banning_reason_list', null, true);
 		if (count($banning_reason_list > 0))
 		{
 			TPL::assign('banning_reason_list', $banning_reason_list);

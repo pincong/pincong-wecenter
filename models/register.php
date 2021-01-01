@@ -22,7 +22,7 @@ class register_class extends AWS_MODEL
 
 	public function is_captcha_required()
 	{
-		if (get_setting('register_seccode') == 'Y')
+		if (S::get('register_seccode') == 'Y')
 		{
 			return true;
 		}
@@ -34,10 +34,10 @@ class register_class extends AWS_MODEL
 	{
 		if ($uid = $this->insert_user($username, $scrambled_password, $client_salt))
 		{
-			$this->model('account')->update_notification_setting_fields(get_setting('new_user_notification_setting'), $uid);
+			$this->model('account')->update_notification_setting_fields(S::get('new_user_notification_setting'), $uid);
 			//$this->model('search_fulltext')->push_index('user', $username, $uid);
 
-			if ($def_focus_uids_str = get_setting('def_focus_uids'))
+			if ($def_focus_uids_str = S::get('def_focus_uids'))
 			{
 				$def_focus_uids = explode(',', $def_focus_uids_str);
 
@@ -47,7 +47,7 @@ class register_class extends AWS_MODEL
 				}
 			}
 
-			$this->model('currency')->process($uid, 'REGISTER', get_setting('currency_system_config_register'), '初始资本');
+			$this->model('currency')->process($uid, 'REGISTER', S::get('currency_system_config_register'), '初始资本');
 		}
 
 		return $uid;
@@ -76,7 +76,7 @@ class register_class extends AWS_MODEL
 		}
 
 		$flagged = 0;
-		if (get_setting('new_user_watching') == 'Y')
+		if (S::get('new_user_watching') == 'Y')
 		{
 			$flagged = -1;
 		}
@@ -115,16 +115,16 @@ class register_class extends AWS_MODEL
             return AWS_APP::lang()->_t('用户名不能以数字或下划线开头');
         }
 
-        $length_min = intval(get_setting('username_length_min'));
-        $length_max = intval(get_setting('username_length_max'));
+        $length_min = S::get_int('username_length_min');
+        $length_max = S::get_int('username_length_max');
         $length = cjk_strlen($user_name);
         if ($length < $length_min OR $length > $length_max)
         {
             return AWS_APP::lang()->_t('用户名字数不符合规则');
         }
 
-        $bytes_min = intval(get_setting('username_bytes_min'));
-        $bytes_max = intval(get_setting('username_bytes_max'));
+        $bytes_min = S::get_int('username_bytes_min');
+        $bytes_max = S::get_int('username_bytes_max');
         $bytes = strlen($user_name);
         if ( ($bytes_min AND $bytes < $bytes_min) OR
             ($bytes_max AND $bytes > $bytes_max) )
@@ -132,7 +132,7 @@ class register_class extends AWS_MODEL
             return AWS_APP::lang()->_t('用户名长度不符合规则');
         }
 
-        switch(get_setting('username_rule'))
+        switch(S::get('username_rule'))
         {
             case 1:
                 if (!preg_match('/^[\x{4e00}-\x{9fa5}_a-zA-Z0-9]+$/u', $user_name))
@@ -170,7 +170,7 @@ class register_class extends AWS_MODEL
      */
     public function check_username_sensitive_words($user_name)
     {
-        return content_contains('censoruser', $user_name, true);
+        return S::content_contains('censoruser', $user_name, true);
     }
 
 }

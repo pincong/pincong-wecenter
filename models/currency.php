@@ -200,7 +200,7 @@ class currency_class extends AWS_MODEL
 
     public function check_balance_for_operation($currency, $key)
     {
-        $reward = intval(get_setting($key));
+        $reward = S::get_int($key);
         if ($reward >= 0)
         {
             return true;
@@ -217,7 +217,7 @@ class currency_class extends AWS_MODEL
 
 	public function delete_expired_logs()
 	{
-		$days = intval(get_setting('expiration_currency_logs'));
+		$days = S::get_int('expiration_currency_logs');
 		if (!$days)
 		{
 			return;

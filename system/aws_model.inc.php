@@ -652,7 +652,7 @@ class AWS_MODEL
 
 		if ($rows_cache AND $db_found_rows)
 		{
-			AWS_APP::cache()->set($cache_key, $db_found_rows, get_setting('cache_level_high'));
+			AWS_APP::cache()->set($cache_key, $db_found_rows, S::get('cache_level_high'));
 		}
 
 		// Found rows

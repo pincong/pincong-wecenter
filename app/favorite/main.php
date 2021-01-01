@@ -27,12 +27,12 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		TPL::assign('list', $this->model('favorite')->get_item_list($this->user_id, calc_page_limit($_GET['page'], get_setting('contents_per_page'))));
+		TPL::assign('list', $this->model('favorite')->get_item_list($this->user_id, calc_page_limit($_GET['page'], S::get('contents_per_page'))));
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
 			'base_url' => url_rewrite('/favorite/'),
 			'total_rows' => $this->model('favorite')->count_favorite_items($this->user_id),
-			'per_page' => get_setting('contents_per_page')
+			'per_page' => S::get('contents_per_page')
 		))->create_links());
 
 		TPL::output('favorite/index');

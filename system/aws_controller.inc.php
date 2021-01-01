@@ -99,7 +99,7 @@ class AWS_CONTROLLER
 		));
 
 		// 产生面包屑导航数据
-		$this->crumb(get_setting('site_name'));
+		$this->crumb(S::get('site_name'));
 
 		// 执行控制器 Setup 动作
 		if ($process_setup)
@@ -194,7 +194,7 @@ class AWS_ADMIN_CONTROLLER extends AWS_CONTROLLER
 			return false;
 		}
 
-		$this->per_page = get_setting('contents_per_page');
+		$this->per_page = S::get('contents_per_page');
 
 		TPL::import_clean();
 

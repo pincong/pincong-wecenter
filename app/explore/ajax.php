@@ -39,7 +39,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		$topic_ids = explode(',', $_GET['topic_id']);
 
-		$posts_list = $this->model('posts')->get_posts_list_by_topic_ids(null, $topic_ids, $_GET['page'], get_setting('contents_per_page'));
+		$posts_list = $this->model('posts')->get_posts_list_by_topic_ids(null, $topic_ids, $_GET['page'], S::get('contents_per_page'));
 
 		if ($posts_list)
 		{

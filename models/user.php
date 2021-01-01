@@ -297,8 +297,8 @@ class user_class extends AWS_MODEL
 		// 自动封禁/解封, $forbidden == -1 表示已被系统自动封禁
 		if (!$forbidden OR $forbidden == -1)
 		{
-			$auto_banning_agree_count = intval(get_setting('auto_banning_agree_count'));
-			$auto_banning_reputation = intval(get_setting('auto_banning_reputation'));
+			$auto_banning_agree_count = S::get_int('auto_banning_agree_count');
+			$auto_banning_reputation = S::get_int('auto_banning_reputation');
 
 			if ($auto_banning_type == 'AND')
 			{

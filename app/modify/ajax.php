@@ -29,8 +29,8 @@ class ajax extends AWS_CONTROLLER
 
 	private function validate_title_length($type, &$length)
 	{
-		$length_min = intval(get_setting('title_length_min'));
-		$length_max = intval(get_setting('title_length_max'));
+		$length_min = intval(S::get('title_length_min'));
+		$length_max = intval(S::get('title_length_max'));
 		$length = cjk_strlen($_POST['title']);
 		if ($length_min AND $length < $length_min)
 		{
@@ -44,8 +44,8 @@ class ajax extends AWS_CONTROLLER
 
 	private function validate_body_length($type)
 	{
-		$length_min = intval(get_setting($type . '_body_length_min'));
-		$length_max = intval(get_setting($type . '_body_length_max'));
+		$length_min = intval(S::get($type . '_body_length_min'));
+		$length_max = intval(S::get($type . '_body_length_max'));
 		$length = cjk_strlen($_POST['message']);
 		if ($length_min AND $length < $length_min)
 		{
@@ -59,8 +59,8 @@ class ajax extends AWS_CONTROLLER
 
 	private function validate_reply_length($type)
 	{
-		$length_min = intval(get_setting($type . '_reply_length_min'));
-		$length_max = intval(get_setting($type . '_reply_length_max'));
+		$length_min = intval(S::get($type . '_reply_length_min'));
+		$length_max = intval(S::get($type . '_reply_length_max'));
 		$length = cjk_strlen($_POST['message']);
 		if ($length_min AND $length < $length_min)
 		{
@@ -91,7 +91,7 @@ class ajax extends AWS_CONTROLLER
 		}
 		$this->validate_title_length($type, $title_length);
 
-		if ($type == 'question' AND get_setting('question_ends_with_question') == 'Y')
+		if ($type == 'question' AND S::get('question_ends_with_question') == 'Y')
 		{
 			$question_mark = cjk_substr($_POST['title'], $title_length - 1, 1);
 			if ($question_mark != '？' AND $question_mark != '?' AND $question_mark != '¿')

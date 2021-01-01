@@ -277,8 +277,8 @@ class ajax extends AWS_ADMIN_CONTROLLER
 /*
 		// TODO: 以后再说
 		AWS_APP::upload()->initialize(array(
-			'allowed_types' => get_setting('allowed_upload_types'),
-			'upload_path' => get_setting('upload_dir') . '/nav_menu',
+			'allowed_types' => S::get('allowed_upload_types'),
+			'upload_path' => S::get('upload_dir') . '/nav_menu',
 			'is_image' => TRUE,
 			'file_name' => intval($_GET['id']) . '.jpg',
 			'encrypt_name' => FALSE
@@ -318,7 +318,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 		echo htmlspecialchars(json_encode(array(
 			'success' => true,
-			'thumb' => get_setting('upload_url') . '/nav_menu/' . basename($upload_data['full_path'])
+			'thumb' => S::get('upload_url') . '/nav_menu/' . basename($upload_data['full_path'])
 		)), ENT_NOQUOTES);
 */
 	}

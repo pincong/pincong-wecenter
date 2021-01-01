@@ -21,7 +21,7 @@ class activity_class extends AWS_MODEL
 {
 	public function check_push_category($category_id)
 	{
-		$push_categories = get_setting('push_categories');
+		$push_categories = S::get('push_categories');
 		if (!$push_categories)
 		{
 			return true;
@@ -41,7 +41,7 @@ class activity_class extends AWS_MODEL
 
 	public function check_push_type($type)
 	{
-		$push_types = get_setting('push_types');
+		$push_types = S::get('push_types');
 		if (!$push_types)
 		{
 			return true;
@@ -62,7 +62,7 @@ class activity_class extends AWS_MODEL
 	// 推入精选
 	public function push_item_with_high_reputation($item_type, $item_id, $item_reputation, $item_uid)
 	{
-		$push_reputation = get_setting('push_reputation');
+		$push_reputation = S::get('push_reputation');
 
 		if (!is_numeric($push_reputation) OR $item_reputation < $push_reputation)
 		{
@@ -90,7 +90,7 @@ class activity_class extends AWS_MODEL
 
 		$this->log($item_type, $item_id, 0, $parent_info['thread_type'], $parent_info['thread_id'], $category_id);
 
-		$this->model('currency')->process($item_uid, 'HOT_POST', get_setting('currency_system_config_hot_post'), '内容被评为精选', $item_id, $item_type);
+		$this->model('currency')->process($item_uid, 'HOT_POST', S::get('currency_system_config_hot_post'), '内容被评为精选', $item_id, $item_type);
 	}
 
 
@@ -314,7 +314,7 @@ class activity_class extends AWS_MODEL
 		$list = $this->query_activities($where, $page, $per_page);
 		if (count($list) > 0)
 		{
-			AWS_APP::cache()->set($cache_key, $list, get_setting('cache_level_normal'));
+			AWS_APP::cache()->set($cache_key, $list, S::get('cache_level_normal'));
 		}
 
 		return $list;
@@ -343,7 +343,7 @@ class activity_class extends AWS_MODEL
 		$list = $this->query_activities($where, $page, $per_page);
 		if (count($list) > 0)
 		{
-			AWS_APP::cache()->set($cache_key, $list, get_setting('cache_level_normal'));
+			AWS_APP::cache()->set($cache_key, $list, S::get('cache_level_normal'));
 		}
 
 		return $list;
@@ -351,7 +351,7 @@ class activity_class extends AWS_MODEL
 
 	public function delete_expired_data()
 	{
-		$days = intval(get_setting('expiration_user_actions'));
+		$days = S::get_int('expiration_user_actions');
 		if (!$days)
 		{
 			return;

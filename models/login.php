@@ -22,7 +22,7 @@ class login_class extends AWS_MODEL
 	// 得到全部用户某段时间内失败登录次数
 	public function get_global_failed_login_count()
 	{
-		$attempts_interval = intval(get_setting('limit_global_login_attempts_interval')) * 60;
+		$attempts_interval = S::get_int('limit_global_login_attempts_interval') * 60;
 		$time_after = real_time() - $attempts_interval;
 		$where = 'type = "login" AND time >= ' . $time_after;
 		return $this->count('failed_login', $where);
@@ -30,12 +30,12 @@ class login_class extends AWS_MODEL
 
 	public function is_captcha_required()
 	{
-		if (get_setting('login_seccode') == 'Y')
+		if (S::get('login_seccode') == 'Y')
 		{
 			return true;
 		}
 
-		if ($max_attempts = intval(get_setting('limit_global_login_attempts')))
+		if ($max_attempts = S::get_int('limit_global_login_attempts'))
 		{
 			if ($this->get_global_failed_login_count() >= $max_attempts)
 			{
@@ -80,9 +80,9 @@ class login_class extends AWS_MODEL
 
 		$uid = intval($user_info['uid']);
 
-		if ($max_attempts = intval(get_setting('limit_login_attempts')))
+		if ($max_attempts = S::get_int('limit_login_attempts'))
 		{
-			$attempts_interval = intval(get_setting('limit_login_attempts_interval')) * 60;
+			$attempts_interval = S::get_int('limit_login_attempts_interval') * 60;
 			$time_after = real_time() - $attempts_interval;
 
 			$where = 'uid =' . $uid . ' AND type = "login" AND time >= ' . $time_after;
@@ -133,7 +133,7 @@ class login_class extends AWS_MODEL
 
 	public function delete_expired_data()
 	{
-		$days = intval(get_setting('expiration_failed_login_attempts'));
+		$days = S::get_int('expiration_failed_login_attempts');
 		if (!$days)
 		{
 			return;

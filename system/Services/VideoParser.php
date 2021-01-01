@@ -7,7 +7,7 @@ class Services_VideoParser
 		static $kvps;
 		if (!$kvps)
 		{
-			$kvps = get_key_value_pairs('video_config_iframe_url_rules');
+			$kvps = S::get_key_value_pairs('video_config_iframe_url_rules');
 		}
 
 		if (!$source = trim($source))
@@ -34,7 +34,7 @@ class Services_VideoParser
 		static $kvps;
 		if (!$kvps)
 		{
-			$kvps = get_key_value_pairs('video_config_url_parsing_rules');
+			$kvps = S::get_key_value_pairs('video_config_url_parsing_rules');
 		}
 
 		foreach ($kvps as $type => $regex)

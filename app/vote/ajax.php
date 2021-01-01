@@ -40,7 +40,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_agree'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', S::get('currency_name'))));
 		}
 
 		if (!$this->model('vote')->check_user_vote_rate_limit($this->user_id, $this->user_info['permission']))
@@ -91,7 +91,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_disagree'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', S::get('currency_name'))));
 		}
 
 		if (!$this->model('vote')->check_user_vote_rate_limit($this->user_id, $this->user_info['permission']))

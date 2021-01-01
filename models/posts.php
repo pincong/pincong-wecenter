@@ -110,7 +110,7 @@ class posts_class extends AWS_MODEL
 				return false;
 		}
 
-		if (!$post_data AND get_setting('time_blurring') != 'N')
+		if (!$post_data AND S::get('time_blurring') != 'N')
 		{
 			// 用于模糊时间的排序
 			$last_update_time = $this->get_last_update_time();
@@ -243,7 +243,7 @@ class posts_class extends AWS_MODEL
 
 		$users_info = $this->model('account')->get_user_info_by_uids($data_list_uids);
 
-		$push_reputation = get_setting('push_reputation');
+		$push_reputation = S::get('push_reputation');
 
 		foreach ($posts_index as $key => $data)
 		{
@@ -271,7 +271,7 @@ class posts_class extends AWS_MODEL
 
 			$explore_list_data[$key]['hot'] = intval(is_numeric($push_reputation) AND $explore_list_data[$key]['reputation'] >= $push_reputation);
 
-			if (get_setting('category_enable') != 'N')
+			if (S::get('category_enable') != 'N')
 			{
 				$explore_list_data[$key]['category_info'] = $this->model('category')->get_category_info($data['category_id']);
 			}

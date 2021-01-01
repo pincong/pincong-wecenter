@@ -28,8 +28,8 @@ class ajax extends AWS_CONTROLLER
 
 	private function validate_title_length()
 	{
-		$length_min = intval(get_setting('title_length_min'));
-		$length_max = intval(get_setting('title_length_max'));
+		$length_min = intval(S::get('title_length_min'));
+		$length_max = intval(S::get('title_length_max'));
 		$length = cjk_strlen($_POST['title']);
 		if ($length_min AND $length < $length_min)
 		{
@@ -43,8 +43,8 @@ class ajax extends AWS_CONTROLLER
 
 	private function validate_body_length()
 	{
-		$length_min = intval(get_setting('kb_body_length_min'));
-		$length_max = intval(get_setting('kb_body_length_max'));
+		$length_min = intval(S::get('kb_body_length_min'));
+		$length_max = intval(S::get('kb_body_length_max'));
 		$length = cjk_strlen($_POST['message']);
 		if ($length_min AND $length < $length_min)
 		{

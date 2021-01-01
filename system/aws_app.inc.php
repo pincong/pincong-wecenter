@@ -41,7 +41,6 @@ class AWS_APP
 
 	private static $models = array();
 
-	public static $settings = array();
 	public static $_debug = array();
 
 	/**
@@ -136,14 +135,14 @@ class AWS_APP
 		self::$config = load_class('core_config');
 		self::$db = load_class('core_db');
 
-		self::$settings = self::model('setting')->get_settings();
+		S::init();
 
-		if ($default_timezone = get_setting('default_timezone'))
+		if ($default_timezone = S::get('default_timezone'))
 		{
 			date_default_timezone_set($default_timezone);
 		}
 
-		if ($img_url = get_setting('img_url'))
+		if ($img_url = S::get('img_url'))
         {
             define('G_STATIC_URL', $img_url);
         }

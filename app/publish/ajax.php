@@ -49,8 +49,8 @@ class ajax extends AWS_CONTROLLER
 
 	private function validate_title_length($type, &$length)
 	{
-		$length_min = intval(get_setting('title_length_min'));
-		$length_max = intval(get_setting('title_length_max'));
+		$length_min = intval(S::get('title_length_min'));
+		$length_max = intval(S::get('title_length_max'));
 		$length = cjk_strlen($_POST['title']);
 		if ($length_min AND $length < $length_min)
 		{
@@ -64,8 +64,8 @@ class ajax extends AWS_CONTROLLER
 
 	private function validate_body_length($type)
 	{
-		$length_min = intval(get_setting($type . '_body_length_min'));
-		$length_max = intval(get_setting($type . '_body_length_max'));
+		$length_min = intval(S::get($type . '_body_length_min'));
+		$length_max = intval(S::get($type . '_body_length_max'));
 		$length = cjk_strlen($_POST['message']);
 		if ($length_min AND $length < $length_min)
 		{
@@ -79,8 +79,8 @@ class ajax extends AWS_CONTROLLER
 
 	private function validate_reply_length($type)
 	{
-		$length_min = intval(get_setting($type . '_reply_length_min'));
-		$length_max = intval(get_setting($type . '_reply_length_max'));
+		$length_min = intval(S::get($type . '_reply_length_min'));
+		$length_max = intval(S::get($type . '_reply_length_max'));
 		$length = cjk_strlen($_POST['message']);
 		if ($length_min AND $length < $length_min)
 		{
@@ -135,7 +135,7 @@ class ajax extends AWS_CONTROLLER
 		}
 		$this->validate_title_length($type, $title_length);
 
-		if ($type == 'question' AND get_setting('question_ends_with_question') == 'Y')
+		if ($type == 'question' AND S::get('question_ends_with_question') == 'Y')
 		{
 			$question_mark = cjk_substr($_POST['title'], $title_length - 1, 1);
 			if ($question_mark != '？' AND $question_mark != '?' AND $question_mark != '¿')
@@ -152,8 +152,8 @@ class ajax extends AWS_CONTROLLER
 		$_POST['message'] = trim($_POST['message']);
 		$this->validate_body_length($type);
 
-		$topics_limit_min = intval(get_setting('topics_limit_min'));
-		$topics_limit_max = intval(get_setting('topics_limit_max'));
+		$topics_limit_min = intval(S::get('topics_limit_min'));
+		$topics_limit_max = intval(S::get('topics_limit_max'));
 
 		$num_topics = 0;
 		if ($_POST['topics'])
@@ -171,7 +171,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($num_topics)
 		{
-			$topic_title_limit = intval(get_setting('topic_title_limit'));
+			$topic_title_limit = intval(S::get('topic_title_limit'));
 			foreach ($_POST['topics'] AS $key => $topic_title)
 			{
 				$topic_title = trim($topic_title);
@@ -209,7 +209,7 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		if (get_setting('category_enable') == 'N')
+		if (S::get('category_enable') == 'N')
 		{
 			$_POST['category_id'] = 1;
 		}
@@ -279,7 +279,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_new_question'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', S::get('currency_name'))));
 		}
 
 		$this->validate_thread('question');
@@ -330,7 +330,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_new_article'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', S::get('currency_name'))));
 		}
 
 		$this->validate_thread('article');
@@ -391,7 +391,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_new_video'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', S::get('currency_name'))));
 		}
 
 		$this->validate_thread('video');
@@ -476,25 +476,25 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		// 判断是否是问题发起者
-		if (get_setting('answer_self_question') == 'N' AND $question_info['uid'] == $this->user_id)
+		if (S::get('answer_self_question') == 'N' AND $question_info['uid'] == $this->user_id)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能回复自己发布的问题，你可以修改问题内容')));
 		}
 
 		$pay = true;
 		$replied = $this->model('content')->has_user_relpied_to_thread('question', $question_info['id'], $this->user_id, true);
-		if ((get_setting('reply_pay_only_once') == 'Y') AND $replied)
+		if ((S::get('reply_pay_only_once') == 'Y') AND $replied)
 		{
 			$pay = false;
 		}
 
 		if ($pay AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_reply_question'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', S::get('currency_name'))));
 		}
 
 		// 判断是否已回复过问题
-		if ((get_setting('answer_unique') == 'Y'))
+		if ((S::get('answer_unique') == 'Y'))
 		{
 			if ($replied == 2)
 			{
@@ -579,14 +579,14 @@ class ajax extends AWS_CONTROLLER
 
 		$pay = true;
 		$replied = $this->model('content')->has_user_relpied_to_thread('article', $article_info['id'], $this->user_id, true);
-		if ((get_setting('reply_pay_only_once') == 'Y') AND $replied)
+		if ((S::get('reply_pay_only_once') == 'Y') AND $replied)
 		{
 			$pay = false;
 		}
 
 		if ($pay AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_reply_article'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', S::get('currency_name'))));
 		}
 
 		if ($_POST['anonymous'])
@@ -663,14 +663,14 @@ class ajax extends AWS_CONTROLLER
 
 		$pay = true;
 		$replied = $this->model('content')->has_user_relpied_to_thread('video', $video_info['id'], $this->user_id, true);
-		if ((get_setting('reply_pay_only_once') == 'Y') AND $replied)
+		if ((S::get('reply_pay_only_once') == 'Y') AND $replied)
 		{
 			$pay = false;
 		}
 
 		if ($pay AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_reply_video'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', S::get('currency_name'))));
 		}
 
 		if ($_POST['anonymous'])

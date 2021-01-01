@@ -327,7 +327,7 @@
 						<p align="center"><?php _e('要发言请先<a href="%s0">登录</a>或<a href="%s1">注册</a>', array(url_rewrite() . '/login/', url_rewrite(). '/register/')); ?></p>
 						<?php } else if ($this->user_answered) { ?>
 						<p align="center"><?php _e('一个问题只能回复一次'); ?></p>
-						<?php } else if ((get_setting('answer_self_question') == 'N') && ($this->user_id == $this->question_info['uid'])) { ?>
+						<?php } else if ((S::get('answer_self_question') == 'N') && ($this->user_id == $this->question_info['uid'])) { ?>
 						<p align="center"><?php _e('不能回复自己发布的问题, 你可以修改问题内容'); ?></p>
 						<?php } else { ?>
 						<form action="<?php echo url_rewrite(); ?>/publish/ajax/publish_answer/" onsubmit="return false;" method="post" id="answer_form" class="question_answer_form">
@@ -348,7 +348,7 @@
 								<?php } ?>
 								<?php } ?>
 								<label class="pull-right">
-									<a href="<?php echo url_rewrite(); ?>/currency/rule/" target="_blank"><?php _e(get_setting('currency_rule_name')); ?></a>
+									<a href="<?php echo url_rewrite(); ?>/currency/rule/" target="_blank"><?php _e(S::get('currency_rule_name')); ?></a>
 								</label>
 								<?php echo UF::name($this->user_info); ?>
 							</p>
@@ -370,7 +370,7 @@
 									<a href="javascript:;" onclick="AWS.submit_append($('#answer_form'), $(this), $('.aw-replies'), reply_callback);" class="btn btn-normal btn-success pull-right btn-reply"><?php _e('回复'); ?></a>
 									<span class="pull-right">&nbsp;</span>
 
-									<?php if (get_setting('image_upload_link')) { ?><a class="pull-right" href="<?php echo get_setting('image_upload_link'); ?>" <?php if (!is_javascript(get_setting('image_upload_link'))) { ?>rel="nofollow noreferrer noopener" target="_blank"<?php } ?>><?php _e('上传图片'); ?></a><?php } ?>
+									<?php if (S::get('image_upload_link')) { ?><a class="pull-right" href="<?php echo S::get('image_upload_link'); ?>" <?php if (!is_javascript(S::get('image_upload_link'))) { ?>rel="nofollow noreferrer noopener" target="_blank"<?php } ?>><?php _e('上传图片'); ?></a><?php } ?>
 
 								</div>
 							</div>
@@ -489,7 +489,7 @@ function toggle_disscusion(btn) {
 		if (!div.data('initialized')) {
 			div.attr('data-initialized', 'true');
 			var data_url = G_BASE_URL + '/question/info/' + btn.data('type') + '_discussions/parent_id-' + btn.data('id');
-			var per_page = <?php echo intval(get_setting('replies_per_page')); ?> || 100;
+			var per_page = <?php echo S::get_int('replies_per_page'); ?> || 100;
 			var count = parseInt(btn.data('comment-count')) || 0;
 			var pages = Math.ceil(count / per_page);
 			AWS.load_list_view(data_url, div.find('.aw-load-more-content'), div.find('.aw-comment-list'), 1, pages);
@@ -514,7 +514,7 @@ function submit_disscusion(btn) {
 
 function reply_callback(err) {
 	if (err) return;
-<?php if (get_setting('answer_unique') == 'Y') { ?>
+<?php if (S::get('answer_unique') == 'Y') { ?>
 	$('.question_answer_form').detach();
 	if ($('.aw-reply-box.question').length)
 	{

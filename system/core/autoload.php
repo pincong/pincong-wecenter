@@ -17,6 +17,7 @@ class core_autoload
 	public static $loaded_class = array();
 
 	private static $aliases = array(
+		'S'					=> 'class/cls_settings.inc.php',
 		'TPL'				=> 'class/cls_template.inc.php',
 		'FORMAT'			=> 'class/cls_format.inc.php',
 		'UF'				=> 'class/cls_user_format.inc.php',
@@ -37,13 +38,13 @@ class core_autoload
 		spl_autoload_register(array($this, 'loader'));
 	}
 
-    private static function loader($class_name)
+	private static function loader($class_name)
 	{
 		if (preg_match('#[^a-zA-Z0-9_\\\\]#', $class_name))
 		{
 			return false;
 		}
-		
+
 		$require_file = AWS_PATH . str_replace(array('_', '\\'), '/', $class_name) . '.php';
 
 		if (file_exists($require_file))

@@ -21,14 +21,14 @@ class core_captcha
 	{
 		$this->secret = AWS_APP::token()->new_secret('captcha_passphrase_' . G_COOKIE_HASH_KEY);
 
-		$fontsize = rand_minmax(get_setting('captcha_fontsize_min'), get_setting('captcha_fontsize_max'), rand(20, 22));
-		$wordlen = rand_minmax(get_setting('captcha_wordlen_min'), get_setting('captcha_wordlen_max'), 4);
+		$fontsize = rand_minmax(S::get('captcha_fontsize_min'), S::get('captcha_fontsize_max'), rand(20, 22));
+		$wordlen = rand_minmax(S::get('captcha_wordlen_min'), S::get('captcha_wordlen_max'), 4);
 
-		$width = rand_minmax(get_setting('captcha_width_min'), get_setting('captcha_width_max'), 100);
-		$height = rand_minmax(get_setting('captcha_height_min'), get_setting('captcha_height_max'), 40);
+		$width = rand_minmax(S::get('captcha_width_min'), S::get('captcha_width_max'), 100);
+		$height = rand_minmax(S::get('captcha_height_min'), S::get('captcha_height_max'), 40);
 
-		$dot_noise = rand_minmax(get_setting('captcha_dot_noise_min'), get_setting('captcha_dot_noise_max'), rand(3, 6));
-		$line_noise = rand_minmax(get_setting('captcha_line_noise_min'), get_setting('captcha_line_noise_max'), rand(1, 2));
+		$dot_noise = rand_minmax(S::get('captcha_dot_noise_min'), S::get('captcha_dot_noise_max'), rand(3, 6));
+		$line_noise = rand_minmax(S::get('captcha_line_noise_min'), S::get('captcha_line_noise_max'), rand(1, 2));
 
 		$this->captcha = new Services_Captcha_Image();
 
@@ -45,7 +45,7 @@ class core_captcha
 
 	public function get_font()
 	{
-		$captcha_font_ids = get_setting('captcha_font_ids');
+		$captcha_font_ids = S::get('captcha_font_ids');
 		if (!$captcha_font_ids)
 		{
 			$captcha_font_ids = '1, 2, 3, 4, 5, 6, 7, 8';

@@ -119,11 +119,11 @@ class FORMAT
 		static $replacing_list;
 		if (!isset($replace))
 		{
-			$user_content_replace = get_setting('user_content_replace');
+			$user_content_replace = S::get('user_content_replace');
 			if (isset($user_content_replace))
 			{
 				$replace = ($user_content_replace == 'Y');
-				$replacing_list = get_key_value_pairs('content_replacing_list', '<>', true);
+				$replacing_list = S::get_key_value_pairs('content_replacing_list', '<>', true);
 			}
 		}
 

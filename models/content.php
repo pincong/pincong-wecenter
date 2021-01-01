@@ -418,7 +418,7 @@ class content_class extends AWS_MODEL
 
 	public function delete_expired_logs()
 	{
-		$days = intval(get_setting('expiration_content_logs'));
+		$days = S::get_int('expiration_content_logs');
 		if (!$days)
 		{
 			return;

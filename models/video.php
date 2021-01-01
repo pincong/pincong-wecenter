@@ -31,7 +31,7 @@ class video_class extends AWS_MODEL
 		$list = $this->fetch_page('video', 'uid = ' . intval($uid), 'id DESC', $page, $per_page);
 		if (count($list) > 0)
 		{
-			AWS_APP::cache()->set($cache_key, $list, get_setting('cache_level_normal'));
+			AWS_APP::cache()->set($cache_key, $list, S::get('cache_level_normal'));
 		}
 
 		return $list;
@@ -62,7 +62,7 @@ class video_class extends AWS_MODEL
 
 		if (count($list) > 0)
 		{
-			AWS_APP::cache()->set($cache_key, $list, get_setting('cache_level_normal'));
+			AWS_APP::cache()->set($cache_key, $list, S::get('cache_level_normal'));
 		}
 
 		return $list;
@@ -103,7 +103,7 @@ class video_class extends AWS_MODEL
 			'source' => null,
 		);
 
-		$trash_category_id = intval(get_setting('trash_category_id'));
+		$trash_category_id = S::get_int('trash_category_id');
 		if ($trash_category_id)
 		{
 			$where = "post_id = " . intval($id) . " AND post_type = 'video'";

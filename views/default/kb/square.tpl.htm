@@ -75,7 +75,7 @@
 									<input type="checkbox" value="1" name="anonymous" /> <?php _e('用这个身份发表'); ?>: <a href="<?php echo UF::url(get_anonymous_user_info($this->user_info)); ?>"><?php echo UF::name(get_anonymous_user_info($this->user_info)); ?></a>
 								</label>
 								<label class="pull-right">
-									<a href="<?php echo url_rewrite(); ?>/currency/rule/" target="_blank"><?php _e(get_setting('currency_rule_name')); ?></a>
+									<a href="<?php echo url_rewrite(); ?>/currency/rule/" target="_blank"><?php _e(S::get('currency_rule_name')); ?></a>
 								</label>
 								<?php echo UF::name($this->user_info); ?>
 							</p>
@@ -94,7 +94,7 @@
 									<a href="javascript:;" onclick="AWS.submit($('#publish_form'), $(this));" class="btn btn-normal btn-success pull-right btn-reply"><?php _e('添加'); ?></a>
 									<span class="pull-right">&nbsp;</span>
 
-									<?php if (get_setting('image_upload_link')) { ?><a class="pull-right" href="<?php echo get_setting('image_upload_link'); ?>" <?php if (!is_javascript(get_setting('image_upload_link'))) { ?>rel="nofollow noreferrer noopener" target="_blank"<?php } ?>><?php _e('上传图片'); ?></a><?php } ?>
+									<?php if (S::get('image_upload_link')) { ?><a class="pull-right" href="<?php echo S::get('image_upload_link'); ?>" <?php if (!is_javascript(S::get('image_upload_link'))) { ?>rel="nofollow noreferrer noopener" target="_blank"<?php } ?>><?php _e('上传图片'); ?></a><?php } ?>
 								</div>
 							</div>
 						</div>

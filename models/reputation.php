@@ -22,7 +22,7 @@ class reputation_class extends AWS_MODEL
 {
 	private function check_reputation_type(&$item_type)
 	{
-		$reputation_types = get_setting('reputation_types');
+		$reputation_types = S::get('reputation_types');
 		if (!$reputation_types)
 		{
 			return true;
@@ -63,7 +63,7 @@ class reputation_class extends AWS_MODEL
 		$this->query($sql);
 
 		// 如果开启了自动封禁功能
-		if ($auto_banning_type = get_setting('auto_banning_type'))
+		if ($auto_banning_type = S::get('auto_banning_type'))
 		{
 			if ($auto_banning_type != 'OFF')
 			{
@@ -114,14 +114,14 @@ class reputation_class extends AWS_MODEL
 	// 根据post字数获得额外奖励声望
 	private function get_bonus_factor(&$item_info)
 	{
-		$bonus_factor = get_setting('bonus_factor');
+		$bonus_factor = S::get('bonus_factor');
 		if (!is_numeric($bonus_factor))
 		{
 			return 1;
 		}
 
-		$bonus_max_count = intval(get_setting('bonus_max_count'));
-		$bonus_min_count = intval(get_setting('bonus_min_count'));
+		$bonus_max_count = S::get_int('bonus_max_count');
+		$bonus_min_count = S::get_int('bonus_min_count');
 
 		$message = $item_info['message'];
 		if (!$message)
@@ -157,11 +157,11 @@ class reputation_class extends AWS_MODEL
 		// 1赞同 -1反对
 		if ($agree_value > 0)
 		{
-			$arg = get_setting('reputation_dynamic_weight_agree');
+			$arg = S::get('reputation_dynamic_weight_agree');
 		}
 		else
 		{
-			$arg = get_setting('reputation_dynamic_weight_disagree');
+			$arg = S::get('reputation_dynamic_weight_disagree');
 		}
 
 		if (is_numeric($arg))

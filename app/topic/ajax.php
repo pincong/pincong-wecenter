@@ -125,7 +125,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题标题不能包含 / - &')));
 		}
 
-		if (get_setting('topic_title_limit') AND strlen($topic_title) > get_setting('topic_title_limit'))
+		if (S::get('topic_title_limit') AND strlen($topic_title) > S::get('topic_title_limit'))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题标题字数超出限制')));
 		}
@@ -166,7 +166,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function upload_topic_pic_action()
 	{
-		if (get_setting('upload_enable') == 'N')
+		if (S::get('upload_enable') == 'N')
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('本站未开启上传功能')));
 		}
@@ -194,7 +194,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'thumb' => get_setting('upload_url') . '/topic/' . $this->model('topic')->get_image_path($_GET['topic_id'], 'mid') . '?' . rand(1, 999)
+			'thumb' => S::get('upload_url') . '/topic/' . $this->model('topic')->get_image_path($_GET['topic_id'], 'mid') . '?' . rand(1, 999)
 		), '1', null));
 	}
 
@@ -413,7 +413,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题标题不能包含 / - &')));
 		}
 
-		if (get_setting('topic_title_limit') AND strlen($topic_title) > get_setting('topic_title_limit') AND !$this->model('topic')->get_topic_id_by_title($topic_title))
+		if (S::get('topic_title_limit') AND strlen($topic_title) > S::get('topic_title_limit') AND !$this->model('topic')->get_topic_id_by_title($topic_title))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题标题字数超出限制')));
 		}
@@ -442,9 +442,9 @@ class ajax extends AWS_CONTROLLER
 			break;
 		}
 
-		if (sizeof($this->model('topic')->get_topics_by_item_id($_POST['item_id'], $_POST['type'])) >= get_setting('question_topics_limit') AND get_setting('question_topics_limit'))
+		if (sizeof($this->model('topic')->get_topics_by_item_id($_POST['item_id'], $_POST['type'])) >= S::get('question_topics_limit') AND S::get('question_topics_limit'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('单个问题或文章话题数量最多为 %s 个, 请调整话题数量', get_setting('question_topics_limit'))));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('单个问题或文章话题数量最多为 %s 个, 请调整话题数量', S::get('question_topics_limit'))));
 		}
 
 		if (! $topic_id = $this->model('topic')->save_topic($topic_title, $this->user_id, $this->user_info['permission']['create_topic']))

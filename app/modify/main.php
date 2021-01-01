@@ -37,7 +37,7 @@ class main extends AWS_CONTROLLER
 			H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑这个问题'), '/question/' . $thread_info['id']);
 		}
 
-		if (get_setting('category_enable') != 'N')
+		if (S::get('category_enable') != 'N')
 		{
 			TPL::assign('category_current_id', $thread_info['category_id']);
 			TPL::assign('category_list', $this->model('category')->get_category_list_by_user_permission($this->user_info['permission']));
@@ -45,7 +45,7 @@ class main extends AWS_CONTROLLER
 
 		TPL::import_js('js/app/publish.js');
 
-		if (get_setting('advanced_editor_enable') == 'Y')
+		if (S::get('advanced_editor_enable') == 'Y')
 		{
 			import_editor_static_files();
 		}
@@ -69,7 +69,7 @@ class main extends AWS_CONTROLLER
 			H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑这个文章'), '/article/' . $thread_info['id']);
 		}
 
-		if (get_setting('category_enable') != 'N')
+		if (S::get('category_enable') != 'N')
 		{
 			TPL::assign('category_current_id', $thread_info['category_id']);
 			TPL::assign('category_list', $this->model('category')->get_category_list_by_user_permission($this->user_info['permission']));
@@ -77,7 +77,7 @@ class main extends AWS_CONTROLLER
 
 		TPL::import_js('js/app/publish.js');
 
-		if (get_setting('advanced_editor_enable') == 'Y')
+		if (S::get('advanced_editor_enable') == 'Y')
 		{
 			import_editor_static_files();
 		}
@@ -101,7 +101,7 @@ class main extends AWS_CONTROLLER
 			H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑这个影片'), '/video/' . $thread_info['id']);
 		}
 
-		if (get_setting('category_enable') != 'N')
+		if (S::get('category_enable') != 'N')
 		{
 			TPL::assign('category_current_id', $thread_info['category_id']);
 			TPL::assign('category_list', $this->model('category')->get_category_list_by_user_permission($this->user_info['permission']));

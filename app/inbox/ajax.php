@@ -32,7 +32,7 @@ class ajax extends AWS_CONTROLLER
 		$inbox_recv = $recipient_user['inbox_recv'];
 		if ($inbox_recv != 1 AND $inbox_recv != 2 AND $inbox_recv != 3)
 		{
-			$inbox_recv = intval(get_setting('default_inbox_recv'));
+			$inbox_recv = intval(S::get('default_inbox_recv'));
 		}
 
 		if ($inbox_recv == 2) // 2为拒绝任何人
@@ -72,7 +72,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入私信内容')));
 		}
 
-		$length_limit = get_setting('pm_length_limit');
+		$length_limit = S::get('pm_length_limit');
 		if (cjk_strlen($message) > $length_limit)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('私信字数不得多于 %s 字', $length_limit)));

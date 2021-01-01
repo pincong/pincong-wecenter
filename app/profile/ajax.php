@@ -29,7 +29,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function avatar_upload_action()
 	{
-		if (get_setting('upload_enable') == 'N')
+		if (S::get('upload_enable') == 'N')
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('本站未开启上传功能')));
 		}
@@ -47,7 +47,7 @@ class ajax extends AWS_CONTROLLER
 		set_user_operation_last_time('profile', $this->user_id);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'thumb' => get_setting('upload_url') . '/avatar/' . $this->model('avatar')->get_avatar_path($this->user_id, 'max') . '?' . rand(1, 999)
+			'thumb' => S::get('upload_url') . '/avatar/' . $this->model('avatar')->get_avatar_path($this->user_id, 'max') . '?' . rand(1, 999)
 		), 1, null));
 	}
 
@@ -85,7 +85,7 @@ class ajax extends AWS_CONTROLLER
 			{
 				if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_change_username'))
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', S::get('currency_name'))));
 				}
 				if ($check_result = $this->model('register')->check_username_char($user_name))
 				{
@@ -101,7 +101,7 @@ class ajax extends AWS_CONTROLLER
 				}
 				$this->model('account')->update_user_name($user_name, $this->user_id);
 
-				$this->model('currency')->process($this->user_id, 'CHANGE_USERNAME', get_setting('currency_system_config_change_username'), '修改用户名');
+				$this->model('currency')->process($this->user_id, 'CHANGE_USERNAME', S::get('currency_system_config_change_username'), '修改用户名');
 			}
 		}
 

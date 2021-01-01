@@ -93,7 +93,7 @@ class mention_class extends AWS_MODEL
 	public function get_mentioned_uids($content)
 	{
 		$result = array();
-		$max_at_users = intval(get_setting('max_at_users'));
+		$max_at_users = S::get_int('max_at_users');
 		if ($max_at_users <= 0)
 		{
 			return $result;

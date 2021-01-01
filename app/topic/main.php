@@ -80,10 +80,10 @@ class main extends AWS_CONTROLLER
 					{
 						$topics_list_total_rows = $this->model('topic')->found_rows();
 
-						AWS_APP::cache()->set('square_hot_topic_list_total_rows', $topics_list_total_rows, get_setting('cache_level_low'));
+						AWS_APP::cache()->set('square_hot_topic_list_total_rows', $topics_list_total_rows, S::get('cache_level_low'));
 					}
 
-					AWS_APP::cache()->set($cache_key, $topics_list, get_setting('cache_level_low'));
+					AWS_APP::cache()->set($cache_key, $topics_list, S::get('cache_level_low'));
 				}
 				else
 				{
@@ -192,7 +192,7 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		if ($posts_list = $this->model('posts')->get_posts_list_by_topic_ids(null, $topic_ids, 1, get_setting('contents_per_page')))
+		if ($posts_list = $this->model('posts')->get_posts_list_by_topic_ids(null, $topic_ids, 1, S::get('contents_per_page')))
 		{
 			foreach ($posts_list AS $key => $val)
 			{

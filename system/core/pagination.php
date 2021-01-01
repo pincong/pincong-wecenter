@@ -55,9 +55,9 @@ class core_pagination
 	 */
 	public function __construct($params = array())
 	{
-		if (file_exists(ROOT_PATH . 'views/' . get_setting('ui_style') . '/config/pagination.php'))
+		if (file_exists(ROOT_PATH . 'views/' . S::get('ui_style') . '/config/pagination.php'))
 		{
-			include(ROOT_PATH . 'views/' . get_setting('ui_style') . '/config/pagination.php');
+			include(ROOT_PATH . 'views/' . S::get('ui_style') . '/config/pagination.php');
 		}
 		else
 		{

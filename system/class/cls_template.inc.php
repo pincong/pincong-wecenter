@@ -65,9 +65,9 @@ class TPL
 
 		if (self::$in_app)
 		{
-			if (!$plugin_name AND get_setting('ui_style') != 'default')
+			if (!$plugin_name AND S::get('ui_style') != 'default')
 			{
-				$custom_template_filename =  get_setting('ui_style') . '/' . $template_filename;
+				$custom_template_filename =  S::get('ui_style') . '/' . $template_filename;
 
 				if (file_exists(self::$template_path . '/' . $custom_template_filename))
 				{
@@ -75,16 +75,16 @@ class TPL
 				}
 			}
 
-			self::assign('template_name', get_setting('ui_style'));
+			self::assign('template_name', S::get('ui_style'));
 
 			if (!self::$view->_meta_keywords)
 			{
-				self::set_meta('keywords', get_setting('keywords'));
+				self::set_meta('keywords', S::get('keywords'));
 			}
 
 			if (!self::$view->_meta_description)
 			{
-				self::set_meta('description', get_setting('description'));
+				self::set_meta('description', S::get('description'));
 			}
 		}
 		else
@@ -107,14 +107,14 @@ class TPL
 			if ($template_dirs[0] != 'admin')
 			{
 				// 其实这两个功能是一样的, 为了避免替换内容过多难以维护而设置两个list
-				if (get_setting('html_content_replace') == 'Y')
+				if (S::get('html_content_replace') == 'Y')
 				{
-					$replacing_list = get_key_value_pairs('html_replacing_list', '<>', true);
+					$replacing_list = S::get_key_value_pairs('html_replacing_list', '<>', true);
 					H::content_replace($output, $replacing_list);
 				}
-				if (get_setting('sensitive_words_replace') == 'Y')
+				if (S::get('sensitive_words_replace') == 'Y')
 				{
-					$replacing_list = get_key_value_pairs('sensitive_words', '<>', true);
+					$replacing_list = S::get_key_value_pairs('sensitive_words', '<>', true);
 					H::content_replace($output, $replacing_list);
 				}
 			}
@@ -228,9 +228,9 @@ class TPL
 	{
 		if (self::$in_app)
 		{
-			if (get_setting('ui_style') != 'default')
+			if (S::get('ui_style') != 'default')
 			{
-				$custom_template_file = self::$template_path . '/' . get_setting('ui_style') . '/' . $template_filename . self::$template_ext;
+				$custom_template_file = self::$template_path . '/' . S::get('ui_style') . '/' . $template_filename . self::$template_ext;
 
 				if (file_exists($custom_template_file))
 				{

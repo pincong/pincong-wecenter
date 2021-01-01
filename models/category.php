@@ -49,7 +49,7 @@ class category_class extends AWS_MODEL
 			{
 				$category_list = $this->fetch_category();
 
-				AWS_APP::cache()->set('category_list', $category_list, get_setting('cache_level_low'), 'category');
+				AWS_APP::cache()->set('category_list', $category_list, S::get('cache_level_low'), 'category');
 			}
 		}
 

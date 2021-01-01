@@ -190,7 +190,7 @@ class notification_class extends AWS_MODEL
 
 	public function delete_expired_data()
 	{
-		$days = intval(get_setting('expiration_notifications'));
+		$days = S::get_int('expiration_notifications');
 		if (!$days)
 		{
 			return;

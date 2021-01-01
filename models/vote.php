@@ -95,10 +95,10 @@ class vote_class extends AWS_MODEL
 				break;
 		}
 
-		$this->model('currency')->process($uid, 'AGREE', get_setting('currency_system_config_agree'), $note_agree, $item_id, $type);
+		$this->model('currency')->process($uid, 'AGREE', S::get('currency_system_config_agree'), $note_agree, $item_id, $type);
 		if ($permission['affect_currency'])
 		{
-			$this->model('currency')->process($item_uid, 'AGREED', get_setting('currency_system_config_agreed'), $note_item_agreed, $item_id, $type);
+			$this->model('currency')->process($item_uid, 'AGREED', S::get('currency_system_config_agreed'), $note_item_agreed, $item_id, $type);
 		}
 	}
 
@@ -137,10 +137,10 @@ class vote_class extends AWS_MODEL
 				break;
 		}
 
-		$this->model('currency')->process($uid, 'DISAGREE', get_setting('currency_system_config_disagree'), $note_disagree, $item_id, $type);
+		$this->model('currency')->process($uid, 'DISAGREE', S::get('currency_system_config_disagree'), $note_disagree, $item_id, $type);
 		if ($permission['affect_currency'])
 		{
-			$this->model('currency')->process($item_uid, 'DISAGREED', get_setting('currency_system_config_disagreed'), $note_item_disagreed, $item_id, $type);
+			$this->model('currency')->process($item_uid, 'DISAGREED', S::get('currency_system_config_disagreed'), $note_item_disagreed, $item_id, $type);
 		}
 	}
 
@@ -273,11 +273,11 @@ class vote_class extends AWS_MODEL
 	{
 		if ($value == 1)
 		{
-			$limit = intval(get_setting('same_user_upvotes_per_day'));
+			$limit = S::get_int('same_user_upvotes_per_day');
 		}
 		elseif ($value == -1)
 		{
-			$limit = intval(get_setting('same_user_downvotes_per_day'));
+			$limit = S::get_int('same_user_downvotes_per_day');
 		}
 		else
 		{
@@ -362,7 +362,7 @@ class vote_class extends AWS_MODEL
 
 	public function delete_expired_votes()
 	{
-		$days = intval(get_setting('expiration_votes'));
+		$days = S::get_int('expiration_votes');
 		if (!$days)
 		{
 			return;

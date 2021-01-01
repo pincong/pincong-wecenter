@@ -309,7 +309,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 	{
 		if ($users = $this->model('system')->fetch_page('users', null, 'uid ASC', $_GET['page'], $_GET['per_page']))
 		{
-			$local_upload_dir = get_setting('upload_dir');
+			$local_upload_dir = S::get('upload_dir');
 			foreach ($users as $key => $val)
 			{
 				$file_exists = false;
@@ -355,7 +355,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 
 	public function move_to_trash_action()
 	{
-		$trash_category_id = intval(get_setting('trash_category_id'));
+		$trash_category_id = intval(S::get('trash_category_id'));
 		if (!$trash_category_id)
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('垃圾箱没有启用, 无法继续'), '/admin/tools/');

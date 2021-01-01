@@ -56,7 +56,7 @@ class main extends AWS_CONTROLLER
 			HTTP::error_404();
 		}
 
-		$replies_per_page = intval(get_setting('replies_per_page'));
+		$replies_per_page = intval(S::get('replies_per_page'));
 		if (!$replies_per_page)
 		{
 			$replies_per_page = 100;
@@ -148,7 +148,7 @@ class main extends AWS_CONTROLLER
 			$answers[] = $answer;
 		}
 
-		if (get_setting('answer_unique') == 'Y')
+		if (S::get('answer_unique') == 'Y')
 		{
 			TPL::assign('user_answered', $this->model('content')->has_user_relpied_to_thread('question', $question_info['id'], $this->user_id));
 		}
@@ -213,7 +213,7 @@ class main extends AWS_CONTROLLER
 
 		TPL::set_meta('description', $question_info['title'] . ' - ' . truncate_text(str_replace("\r\n", ' ', $question_info['message']), 128));
 
-		if (get_setting('advanced_editor_enable') == 'Y')
+		if (S::get('advanced_editor_enable') == 'Y')
 		{
 			import_editor_static_files();
 		}

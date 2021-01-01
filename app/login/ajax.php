@@ -76,7 +76,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (is_null($user_info))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('该账号已经连续多次尝试登录失败, 为了安全起见, 该账号 %s 分钟内禁止登录', get_setting('limit_login_attempts_interval'))));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('该账号已经连续多次尝试登录失败, 为了安全起见, 该账号 %s 分钟内禁止登录', S::get('limit_login_attempts_interval'))));
 		}
 		elseif (!$user_info)
 		{

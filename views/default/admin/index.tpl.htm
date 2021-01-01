@@ -165,7 +165,7 @@
 					<table class="table table-striped">
 						<tbody>
 							<tr>
-								<td><?php _e('%s 分钟内登录失败总数', get_setting('limit_global_login_attempts_interval')); ?></td>
+								<td><?php _e('%s 分钟内登录失败总数', S::get('limit_global_login_attempts_interval')); ?></td>
 								<td><?php echo $this->global_failed_login_count; ?></td>
 							</tr>
 							<tr>

@@ -1,13 +1,13 @@
 <?php TPL::include('global/header_meta.tpl.htm'); ?>
 
 <body>
-<?php echo get_setting('custom_body_top'); ?>
+<?php echo S::get('custom_body_top'); ?>
 
 	<div class="aw-top-menu-wrap">
 		<div class="container">
 			<!-- logo -->
 			<div class="aw-logo hidden-xs">
-				<a href="<?php echo base_url(); ?>/" style="background:url('<?php echo get_setting('logo_url'); ?>') no-repeat;"></a>
+				<a href="<?php echo base_url(); ?>/" style="background:url('<?php echo S::get('logo_url'); ?>') no-repeat;"></a>
 			</div>
 			<!-- end logo -->
 			<!-- 导航 -->
@@ -23,7 +23,7 @@
 				<ul class="nav navbar-nav">
 					<li><a href="<?php echo base_url(); ?>/" class="<?php if (!$_GET['app'] OR $_GET['app'] == 'explore') { ?>active<?php } ?>"><i class="icon icon-list"></i> <?php _e('发现'); ?></a></li>
 
-					<?php if (is_numeric(get_setting('push_reputation'))) { ?>
+					<?php if (is_numeric(S::get('push_reputation'))) { ?>
 					<li><a href="<?php echo url_rewrite(); ?>/hot/"<?php if ($_GET['app'] == 'hot') { ?> class="active"<?php } ?>><i class="icon icon-reader"></i> <?php _e('精选'); ?></a></li>
 					<?php } ?>
 

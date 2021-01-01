@@ -160,7 +160,7 @@ class usergroup_class extends AWS_MODEL
 					$user_group_list[$val['group_id']] = $val;
 				}
 
-				AWS_APP::cache()->set('user_group_list', $user_group_list, get_setting('cache_level_normal'), 'users_group');
+				AWS_APP::cache()->set('user_group_list', $user_group_list, S::get('cache_level_normal'), 'users_group');
 			}
 		}
 

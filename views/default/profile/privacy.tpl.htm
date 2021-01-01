@@ -17,7 +17,7 @@
 	$inbox_recv = $this->user_info['inbox_recv'];
 	if ($inbox_recv != 1 AND $inbox_recv != 2 AND $inbox_recv != 3)
 	{
-		$inbox_recv = intval(get_setting('default_inbox_recv'));
+		$inbox_recv = S::get_int('default_inbox_recv');
 		if (!$inbox_recv)
 		{
 			$inbox_recv = 1;

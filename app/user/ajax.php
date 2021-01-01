@@ -160,7 +160,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($status > 0 AND !$this->user_info['permission']['is_moderator'])
 		{
-			$reputation_formal_user = get_setting('reputation_formal_user');
+			$reputation_formal_user = S::get('reputation_formal_user');
 			if (is_numeric($reputation_formal_user) AND $user_info['reputation'] >= $reputation_formal_user)
 			{
 				if ($user_info['flagged'] == 0)

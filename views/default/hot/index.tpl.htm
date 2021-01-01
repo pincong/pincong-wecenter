@@ -50,7 +50,7 @@ function toggle_disscusion(btn) {
 		if (!div.data('initialized')) {
 			div.attr('data-initialized', 'true');
 			var data_url = G_BASE_URL + '/question/info/' + btn.data('type') + '_discussions/parent_id-' + btn.data('id');
-			var per_page = <?php echo intval(get_setting('replies_per_page')); ?> || 100;
+			var per_page = <?php echo S::get_int('replies_per_page'); ?> || 100;
 			var count = parseInt(btn.data('comment-count')) || 0;
 			var pages = Math.ceil(count / per_page);
 			AWS.load_list_view(data_url, div.find('.aw-load-more-content'), div.find('.aw-comment-list'), 1, pages);

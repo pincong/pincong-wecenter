@@ -43,7 +43,7 @@ class main extends AWS_CONTROLLER
 
 	public function rule_action()
 	{
-		$this->crumb(AWS_APP::lang()->_t(get_setting('currency_rule_name')));
+		$this->crumb(AWS_APP::lang()->_t(S::get('currency_rule_name')));
 
 		TPL::output('currency/rule');
 	}

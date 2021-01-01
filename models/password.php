@@ -37,7 +37,7 @@ class password_class extends AWS_MODEL
 
 	public function hash($string)
 	{
-		$rounds = intval(get_setting('server_side_bcrypt_rounds'));
+		$rounds = S::get_int('server_side_bcrypt_rounds');
 		if (!$rounds)
 			$rounds = 10;
 		if ($rounds < 4)
@@ -51,7 +51,7 @@ class password_class extends AWS_MODEL
 
 	public function generate_client_salt()
 	{
-		$rounds = intval(get_setting('client_side_bcrypt_rounds'));
+		$rounds = S::get_int('client_side_bcrypt_rounds');
 		if (!$rounds)
 			$rounds = 10;
 		if ($rounds < 4)

@@ -51,7 +51,7 @@ function check_user_operation_interval($op_name, $uid, $interval, $check_default
 	$interval = intval($interval);
 	if (!$interval AND $check_default_value)
 	{
-		$interval = intval(get_setting('user_operation_interval'));
+		$interval = S::get_int('user_operation_interval');
 	}
 	if ($interval <= 0)
 	{
@@ -74,14 +74,14 @@ function set_user_operation_last_time($op_name, $uid)
 
 function check_http_referer()
 {
-	if (get_setting('check_http_referer') != 'Y')
+	if (S::get('check_http_referer') != 'Y')
 	{
 		return true;
 	}
 	static $website_domains;
 	if (!isset($website_domains))
 	{
-		$website_domains = get_setting_array('website_domains', "\n");
+		$website_domains = S::get_array('website_domains', "\n");
 	}
 	if (!$website_domains)
 	{
@@ -134,7 +134,7 @@ function can_edit_post($post_uid, &$user_info)
 		$specific_post_uids = array_map('trim', explode(',', $user_info['permission']['specific_post_uids']));
 		if (!$specific_post_uids)
 		{
-			$specific_post_uids = get_setting_array('specific_post_uids');
+			$specific_post_uids = S::get_array('specific_post_uids');
 		}
 		if (!is_array($specific_post_uids))
 		{
@@ -173,7 +173,7 @@ function get_topic_pic_url(&$topic_info, $size = 'min')
 	}
 
 	$filename = '/topic/' . AWS_APP::model('topic')->get_image_path($topic_info['topic_id'], $size);
-	return get_setting('upload_url') . $filename . '?' . $topic_info['topic_pic']; // $topic_info['topic_pic'] 随机字符串用于避免 CDN 缓存
+	return S::get('upload_url') . $filename . '?' . $topic_info['topic_pic']; // $topic_info['topic_pic'] 随机字符串用于避免 CDN 缓存
 }
 
 function import_editor_static_files()
@@ -202,9 +202,9 @@ function base_url()
 
 function date_friendly($timestamp)
 {
-	$timestamp = $timestamp + intval(get_setting('time_difference'));
+	$timestamp = $timestamp + S::get_int('time_difference');
 
-	if (get_setting('time_style') == 'N')
+	if (S::get('time_style') == 'N')
 	{
 		return date('Y-m-d', $timestamp);
 	}
@@ -307,138 +307,14 @@ function get_table($name)
  */
 function get_setting($varname)
 {
-	return AWS_APP::$settings[$varname];
+	return S::get($varname);
 }
 
 function get_settings()
 {
-	return AWS_APP::$settings;
+	return S::get_all();
 }
 
-
-function get_setting_array($varname, $separator = ',')
-{
-	return array_map('trim', explode($separator, AWS_APP::$settings[$varname]));
-}
-
-/**
- * 获取全局配置项 key-value pairs
- *
- * e.g. "Google google.com\nFacebook facebook.com"
- * return array("Google" => "google.com", "Facebook" => "facebook.com")
- *
- * @param  string
- * @return mixed
- */
-function get_key_value_pairs($varname, $separator = ',', $allow_empty_separator = false)
-{
-	$result = array();
-
-	$rows = explode("\n", get_setting($varname));
-	foreach($rows as $row)
-	{
-		$row = trim($row);
-		if (!$row AND $row !== '0')
-		{
-			continue;
-		}
-
-		if (!$separator AND $separator !== '0')
-		{
-			if ($allow_empty_separator)
-			{
-				$result[$row] = null;
-			}
-			continue;
-		}
-
-		$pos = strpos($row, $separator);
-		if (!$pos)
-		{
-			if ($allow_empty_separator AND is_bool($pos))
-			{
-				$result[$row] = null;
-			}
-			continue;
-		}
-		else
-		{
-			$key = substr($row, 0, $pos);
-			$value = substr($row, $pos + strlen($separator));
-			$result[trim($key)] = trim($value);
-		}
-	}
-
-	return $result;
-}
-
-/**
- * 检查 $content 是否包含 get_setting($varname)
- *
- * 命中返回 true, 未命中返回 false
- *
- * @param  string
- * @param  string
- * @param  boolean    true: 可出现在 $content 的任意位置, false: 只能出现在 $content 的开头
- * @param  boolean
- * @return boolean
- */
-function content_contains($varname, $content, $any_position = false, $case_sensitive = false)
-{
-	if (!$content)
-	{
-		return false;
-	}
-
-	if (!$rows = get_setting($varname))
-	{
-		return false;
-	}
-
-	$rows = explode("\n", $rows);
-
-	foreach($rows AS $row)
-	{
-		$row = trim($row);
-
-		if (!$row)
-		{
-			continue;
-		}
-
-		// 正则表达式
-		if (substr($row, 0, 1) == '{' AND substr($row, -1, 1) == '}')
-		{
-			if (preg_match(substr($row, 1, -1), $content))
-			{
-				return true;
-			}
-
-			continue;
-		}
-
-		if ($case_sensitive)
-		{
-			$pos = strpos($content, $row);
-		}
-		else
-		{
-			$pos = stripos($content, $row);
-		}
-
-		if ($any_position AND $pos > 0)
-		{
-			return true;
-		}
-
-		if ($pos === 0)
-		{
-			return true;
-		}
-	}
-
-	return false;
-}
 
 
 /**
@@ -453,7 +329,7 @@ function url_rewrite($path = null)
 	if (!isset($base_url))
 	{
 		$base_url = base_url();
-		if (get_setting('url_rewrite_enable') != 'Y')
+		if (S::get('url_rewrite_enable') != 'Y')
 		{
 			$base_url = $base_url . '/?';
 		}
@@ -528,12 +404,12 @@ function fake_time($timestamp = 0)
 		$timestamp = time();
 	}
 
-	if (get_setting('time_blurring') == 'N')
+	if (S::get('time_blurring') == 'N')
 	{
 		return $timestamp;
 	}
-	$min = intval(get_setting('random_seconds_min'));
-	$max = intval(get_setting('random_seconds_max'));
+	$min = S::get_int('random_seconds_min');
+	$max = S::get_int('random_seconds_max');
 	return intval($timestamp / 86400) * 86400 + rand($min, $max);
 }
 
@@ -560,7 +436,7 @@ function is_inside_url($url)
 	static $website_domains;
 	if (!isset($website_domains))
 	{
-		$website_domains = get_setting_array('website_domains', "\n");
+		$website_domains = S::get_array('website_domains', "\n");
 	}
 
 	foreach($website_domains AS $host)

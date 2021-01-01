@@ -38,13 +38,13 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		if (get_setting('register_type') == 'close')
+		if (S::get('register_type') == 'close')
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('本站目前关闭注册'), '/');
 		}
-		else if (get_setting('register_type') == 'custom')
+		else if (S::get('register_type') == 'custom')
 		{
-			$register_url = get_setting('register_url');
+			$register_url = S::get('register_url');
 			if (!$register_url)
 			{
 				$register_url = '/';
@@ -71,7 +71,7 @@ class main extends AWS_CONTROLLER
 
 		if (!$_POST['agree'])
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('你必需同意 %s 才能继续', get_setting('user_agreement_name')), '/register/');
+			H::redirect_msg(AWS_APP::lang()->_t('你必需同意 %s 才能继续', S::get('user_agreement_name')), '/register/');
 		}
 
 		if (!AWS_APP::form()->check_csrf_token($_POST['token'], 'register_index'))

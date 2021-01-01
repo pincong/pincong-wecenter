@@ -28,7 +28,7 @@ class anonymous_class extends AWS_MODEL
 		}
 		if (!$uid)
 		{
-			$uid = intval(get_setting('anonymous_uid'));
+			$uid = S::get_int('anonymous_uid');
 		}
 		if ($uid < 0)
 		{

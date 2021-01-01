@@ -31,7 +31,7 @@ class feature_class extends AWS_MODEL
 		{
 			$list = $this->fetch_all('feature', 'enabled = 1', 'sort DESC');
 
-			AWS_APP::cache()->set('feature_list', $list, get_setting('cache_level_low'), 'feature_list');
+			AWS_APP::cache()->set('feature_list', $list, S::get('cache_level_low'), 'feature_list');
 		}
 		return $list;
 	}

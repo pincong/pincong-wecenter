@@ -41,13 +41,13 @@ class UF
 		$dir3 = substr($uid, 5, 2);
 
 		$filename = '/avatar/' . $dir1 . '/' . $dir2 . '/' . $dir3 . '/' . substr($uid, - 2) . '_avatar_' . $size . '.jpg';
-		return get_setting('upload_url') . $filename . '?' . $user_info['avatar_file']; // $user_info['avatar_file'] 随机字符串用于避免 CDN 缓存
+		return S::get('upload_url') . $filename . '?' . $user_info['avatar_file']; // $user_info['avatar_file'] 随机字符串用于避免 CDN 缓存
 
-		//$path = get_setting('upload_dir') . $filename;
+		//$path = S::get('upload_dir') . $filename;
 
 		//if (file_exists($path))
 		//{
-		//	return get_setting('upload_url') . $filename . '?' . $user_info['avatar_file']; // $user_info['avatar_file'] 随机字符串用于避免 CDN 缓存
+		//	return S::get('upload_url') . $filename . '?' . $user_info['avatar_file']; // $user_info['avatar_file'] 随机字符串用于避免 CDN 缓存
 		//}
 		//else
 		//{

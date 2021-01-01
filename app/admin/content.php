@@ -28,7 +28,7 @@ class content extends AWS_ADMIN_CONTROLLER
 		TPL::assign('setting_key', $setting_key);
 		TPL::assign('setting_title', $setting_title);
 		TPL::assign('menu_list', $this->model('admin')->fetch_menu_list('content_' . $setting_key));
-		TPL::assign('settings', get_settings());
+		TPL::assign('settings', S::get_all());
 		TPL::output('admin/custom_content');
 	}
 
@@ -40,7 +40,7 @@ class content extends AWS_ADMIN_CONTROLLER
 		TPL::assign('setting_key', $setting_key);
 		TPL::assign('setting_title', $setting_title);
 		TPL::assign('menu_list', $this->model('admin')->fetch_menu_list('content_' . $setting_key));
-		TPL::assign('settings', get_settings());
+		TPL::assign('settings', S::get_all());
 		TPL::output('admin/custom_content');
 	}
 
@@ -52,7 +52,7 @@ class content extends AWS_ADMIN_CONTROLLER
 		TPL::assign('setting_key', $setting_key);
 		TPL::assign('setting_title', $setting_title);
 		TPL::assign('menu_list', $this->model('admin')->fetch_menu_list('content_' . $setting_key));
-		TPL::assign('settings', get_settings());
+		TPL::assign('settings', S::get_all());
 		TPL::output('admin/custom_content');
 	}
 
@@ -64,7 +64,7 @@ class content extends AWS_ADMIN_CONTROLLER
 		TPL::assign('setting_key', $setting_key);
 		TPL::assign('setting_title', $setting_title);
 		TPL::assign('menu_list', $this->model('admin')->fetch_menu_list('content_' . $setting_key));
-		TPL::assign('settings', get_settings());
+		TPL::assign('settings', S::get_all());
 		TPL::output('admin/custom_content');
 	}
 
@@ -76,7 +76,7 @@ class content extends AWS_ADMIN_CONTROLLER
 		TPL::assign('setting_key', $setting_key);
 		TPL::assign('setting_title', $setting_title);
 		TPL::assign('menu_list', $this->model('admin')->fetch_menu_list('content_' . $setting_key));
-		TPL::assign('settings', get_settings());
+		TPL::assign('settings', S::get_all());
 		TPL::output('admin/custom_content');
 	}
 
@@ -88,7 +88,7 @@ class content extends AWS_ADMIN_CONTROLLER
 		TPL::assign('setting_key', $setting_key);
 		TPL::assign('setting_title', $setting_title);
 		TPL::assign('menu_list', $this->model('admin')->fetch_menu_list('content_' . $setting_key));
-		TPL::assign('settings', get_settings());
+		TPL::assign('settings', S::get_all());
 		TPL::output('admin/custom_content');
 	}
 
@@ -100,7 +100,7 @@ class content extends AWS_ADMIN_CONTROLLER
 		TPL::assign('setting_key', $setting_key);
 		TPL::assign('setting_title', $setting_title);
 		TPL::assign('menu_list', $this->model('admin')->fetch_menu_list('content_' . $setting_key));
-		TPL::assign('settings', get_settings());
+		TPL::assign('settings', S::get_all());
 		TPL::output('admin/custom_content');
 	}
 
@@ -112,7 +112,7 @@ class content extends AWS_ADMIN_CONTROLLER
 		TPL::assign('setting_key', $setting_key);
 		TPL::assign('setting_title', $setting_title);
 		TPL::assign('menu_list', $this->model('admin')->fetch_menu_list('content_' . $setting_key));
-		TPL::assign('settings', get_settings());
+		TPL::assign('settings', S::get_all());
 		TPL::output('admin/custom_content');
 	}
 }

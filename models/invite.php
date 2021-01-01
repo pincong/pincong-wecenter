@@ -105,7 +105,7 @@ class invite_class extends AWS_MODEL
 
 			$invite_users_list = $this->model('account')->get_user_info_by_uids($invite_users);
 			
-			AWS_APP::cache()->set('question_invite_users_' . $question_id, $invite_users_list, get_setting('cache_level_normal'));
+			AWS_APP::cache()->set('question_invite_users_' . $question_id, $invite_users_list, S::get('cache_level_normal'));
 		}
 		
 		return $invite_users_list;
@@ -133,7 +133,7 @@ class invite_class extends AWS_MODEL
 
 	public function delete_expired_invites()
 	{
-		$days = intval(get_setting('expiration_invites'));
+		$days = S::get_int('expiration_invites');
 		if (!$days)
 		{
 			return;

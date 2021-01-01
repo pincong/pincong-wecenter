@@ -235,9 +235,9 @@ class account_class extends AWS_MODEL
 	 */
 	public function welcome_message($uid, $user_name)
 	{
-		if (get_setting('welcome_message_pm'))
+		if (S::get('welcome_message_pm'))
 		{
-			$this->model('message')->send_message($uid, $uid, str_replace(array('{username}', '{time}', '{sitename}'), array($user_name, date('Y-m-d H:i:s', time()), get_setting('site_name')), get_setting('welcome_message_pm')));
+			$this->model('message')->send_message($uid, $uid, str_replace(array('{username}', '{time}', '{sitename}'), array($user_name, date('Y-m-d H:i:s', time()), S::get('site_name')), S::get('welcome_message_pm')));
 		}
 	}
 

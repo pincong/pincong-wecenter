@@ -2,9 +2,9 @@
 
 <div class="aw-register-box">
 	<div class="mod-head">
-		<a href="<?php echo base_url(); ?>/"><img src="<?php echo get_setting('login_logo_url'); ?>" alt=""></a>
+		<a href="<?php echo base_url(); ?>/"><img src="<?php echo S::get('login_logo_url'); ?>" alt=""></a>
 		<h1><?php _e('注册'); ?></h1>
-		<p><?php echo get_setting('register_notice'); ?></p>
+		<p><?php echo S::get('register_notice'); ?></p>
 	</div>
 	<div class="mod-body">
 		<form id="login_form" onsubmit="return false" method="post" style="display:none">
@@ -19,12 +19,12 @@
 
 				<li class="last">
 					<label><input type="checkbox" name="agree"> <?php _e('我同意'); ?></label>
-					<?php if (get_setting('user_agreement_link')) { ?>
-						<a href="<?php echo get_setting('user_agreement_link'); ?>" <?php if (!is_javascript(get_setting('user_agreement_link'))) { ?>target="_blank"<?php } ?> class="aw-agreement-btn">
-							<?php echo get_setting('user_agreement_name'); ?>
+					<?php if (S::get('user_agreement_link')) { ?>
+						<a href="<?php echo S::get('user_agreement_link'); ?>" <?php if (!is_javascript(S::get('user_agreement_link'))) { ?>target="_blank"<?php } ?> class="aw-agreement-btn">
+							<?php echo S::get('user_agreement_name'); ?>
 						</a>
 					<?php } else { ?>
-						<?php echo get_setting('user_agreement_name'); ?>
+						<?php echo S::get('user_agreement_name'); ?>
 					<?php } ?>
 					<a href="<?php echo url_rewrite(); ?>/login/" class="pull-right"><?php _e('已有账号?'); ?></a>
 				</li>

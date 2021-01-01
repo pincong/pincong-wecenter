@@ -43,7 +43,7 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		TPL::assign('search_engine_list', get_key_value_pairs('search_engine_list'));
+		TPL::assign('search_engine_list', S::get_key_value_pairs('search_engine_list'));
 
 		TPL::output('search/square');
 

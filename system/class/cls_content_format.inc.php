@@ -38,7 +38,7 @@ class CF
 		static $text;
 		if (!isset($text))
 		{
-			$text = get_setting('kb_replaced_tips');
+			$text = S::get('kb_replaced_tips');
 			if ($text)
 			{
 				$text = '<p class="aw-small-text">' . $text . '</p>';
@@ -212,7 +212,7 @@ class CF
 		static $max_replies;
 		if (!isset($max_replies))
 		{
-			$max_replies = get_setting('kb_replies_per_post');
+			$max_replies = S::get('kb_replies_per_post');
 		}
 		if (!$max_replies)
 		{

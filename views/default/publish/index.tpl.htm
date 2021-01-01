@@ -16,7 +16,7 @@
 					<form action="<?php echo url_rewrite(); ?>/<?php if ($this->thread_info['id']) { ?>modify/ajax/modify_question/<?php } else { ?>publish/ajax/publish_question/<?php } ?>" method="post" id="question_form" onsubmit="return false;">
 						<input type="hidden" name="question_id" id="question_id" value="<?php echo $this->thread_info['id']; ?>" />
 						<input type="hidden" name="ask_user_id" value="<?php echo intval($_POST['ask_user_id']); ?>" />
-						<?php if (!$this->thread_info['id'] AND get_setting('category_enable') != 'N') { ?>
+						<?php if (!$this->thread_info['id'] AND S::get('category_enable') != 'N') { ?>
 						<select name="category_id" class="collapse" id="category_id">
 							<option value="0">- <?php _e('请选择分类'); ?> -</option>
 							<?php TPL::include('block/category_options.tpl.htm'); ?>
@@ -29,7 +29,7 @@
 								<?php } ?>
 								<h3><?php _e('问题标题'); ?>:</h3>
 								<!-- 问题标题 -->
-								<div class="aw-publish-title<?php if (get_setting('category_enable') == 'N') { ?> active<?php } ?>">
+								<div class="aw-publish-title<?php if (S::get('category_enable') == 'N') { ?> active<?php } ?>">
 									<div>
 										<input type="text" placeholder="<?php _e('问题标题'); ?>..." name="title" id="question_contents" value="<?php echo FORMAT::text($this->thread_info['title']); ?>" class="form-control" />
 										<div class="aw-publish-suggest-question collapse">
@@ -38,7 +38,7 @@
 											</ul>
 										</div>
 									</div>
-									<?php if (!$this->thread_info['id'] AND get_setting('category_enable') != 'N') { ?>
+									<?php if (!$this->thread_info['id'] AND S::get('category_enable') != 'N') { ?>
 									<div class="dropdown">
 										<div class="dropdown-toggle" data-toggle="dropdown">
 											<span id="aw-topic-tags-select" class="aw-hide-txt"><?php _e('选择分类'); ?></span>
@@ -57,7 +57,7 @@
 										</div>
 									</div>
 									<div class="mod-body">
-										<?php if (get_setting('image_upload_link')) { ?><a class="pull-right" href="<?php echo get_setting('image_upload_link'); ?>" <?php if (!is_javascript(get_setting('image_upload_link'))) { ?>rel="nofollow noreferrer noopener" target="_blank"<?php } ?>><?php _e('上传图片'); ?></a><?php } ?>
+										<?php if (S::get('image_upload_link')) { ?><a class="pull-right" href="<?php echo S::get('image_upload_link'); ?>" <?php if (!is_javascript(S::get('image_upload_link'))) { ?>rel="nofollow noreferrer noopener" target="_blank"<?php } ?>><?php _e('上传图片'); ?></a><?php } ?>
 									</div>
 								</div>
 								<?php if (!$this->thread_info['id']) { ?>
@@ -105,7 +105,7 @@
 
 							</div>
 							<div class="mod-footer clearfix">
-								<a href="<?php echo url_rewrite(); ?>/currency/rule/" target="_blank">[<?php _e(get_setting('currency_rule_name')); ?>]</a>
+								<a href="<?php echo url_rewrite(); ?>/currency/rule/" target="_blank">[<?php _e(S::get('currency_rule_name')); ?>]</a>
 								<span class="aw-anonymity">
 									<?php if ($this->thread_info['id']) { ?>
 									<label><input type="checkbox" class="pull-left" value="1" name="do_delete" />

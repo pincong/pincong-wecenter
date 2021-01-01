@@ -382,7 +382,7 @@ class topic_class extends AWS_MODEL
 			{
 				foreach (AWS_APP::config()->get('image')->topic_thumbnail as $key => $val)
 				{
-					@unlink(get_setting('upload_dir') . '/topic/' . $this->get_image_path($topic_id, $key));
+					@unlink(S::get('upload_dir') . '/topic/' . $this->get_image_path($topic_id, $key));
 				}
 			}
 
@@ -806,15 +806,15 @@ class topic_class extends AWS_MODEL
 			return false;
 		}
 
-		$local_upload_dir = get_setting('upload_dir');
+		$local_upload_dir = S::get('upload_dir');
 		$save_dir = $local_upload_dir . '/topic/' . $this->get_image_dir($id);
 		$filename = $this->get_image_filename($id, 'real');
 
 		AWS_APP::upload()->initialize(array(
-			'allowed_types' => get_setting('allowed_upload_types'),
+			'allowed_types' => S::get('allowed_upload_types'),
 			'upload_path' => $save_dir,
 			'is_image' => TRUE,
-			'max_size' => get_setting('upload_size_limit'),
+			'max_size' => S::get('upload_size_limit'),
 			'file_name' => $filename,
 			'encrypt_name' => FALSE
 		))->do_upload($field);
@@ -828,7 +828,7 @@ class topic_class extends AWS_MODEL
 					return false;
 
 				case 'upload_invalid_filesize':
-					$error = AWS_APP::lang()->_t('文件尺寸过大, 最大允许尺寸为 %s KB', get_setting('upload_size_limit'));
+					$error = AWS_APP::lang()->_t('文件尺寸过大, 最大允许尺寸为 %s KB', S::get('upload_size_limit'));
 					return false;
 
 				default:

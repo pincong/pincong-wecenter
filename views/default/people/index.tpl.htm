@@ -63,10 +63,10 @@
 
 						<div class="mod-body clearfix">
 							<div>
-								<span><i class="icon icon-prestige"></i> <?php _e(get_setting('reputation_name')); ?> : <b><?php echo UF::reputation($this->user); ?></b></span>
+								<span><i class="icon icon-prestige"></i> <?php _e(S::get('reputation_name')); ?> : <b><?php echo UF::reputation($this->user); ?></b></span>
 								<span><i class="icon icon-agree"></i> <?php _e('赞同'); ?> : <b><?php echo $this->user['agree_count']; ?></b></span>
 								<?php if ($this->user_info['permission']['is_moderator'] OR $this->user['uid'] == $this->user_id) { ?>
-								<span><i class="icon"></i> <?php _e(get_setting('currency_name')); ?> : <b><?php echo $this->user['currency']; ?></b> <?php _e(get_setting('currency_unit')); ?></span>
+								<span><i class="icon"></i> <?php _e(S::get('currency_name')); ?> : <b><?php echo $this->user['currency']; ?></b> <?php _e(S::get('currency_unit')); ?></span>
 								<?php } ?>
 							</div>
 						</div>
@@ -84,7 +84,7 @@
 								<li><a href="#sent_votes" id="page_sent_votes" data-toggle="tab"><?php _e('送出的赞'); ?></a></li>
 								<li><a href="#focus" id="page_focus" data-toggle="tab"><?php _e('关注'); ?></a></li>
 								<?php if ($this->user_id == $this->user['uid']) { ?>
-								<li><a href="#currency" id="page_currency" data-toggle="tab"><?php _e('%s', get_setting('currency_name')); ?></a></li>
+								<li><a href="#currency" id="page_currency" data-toggle="tab"><?php _e('%s', S::get('currency_name')); ?></a></li>
 								<?php } ?>
 							</ul>
 						</div>
@@ -384,7 +384,7 @@
 							<div class="tab-pane" id="currency">
 								<div class="aw-mod">
 									<div class="mod-head">
-										<h3><i class="icon icon-point"></i> <?php _e('我的%s', get_setting('currency_name')); ?></h3>
+										<h3><i class="icon icon-point"></i> <?php _e('我的%s', S::get('currency_name')); ?></h3>
 									</div>
 									<div class="mod-body">
 										<table class="table table-hover aw-table">

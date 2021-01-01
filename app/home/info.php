@@ -40,7 +40,7 @@ class info extends AWS_CONTROLLER
 
 	public function activities_action()
 	{
-		$per_page = intval(get_setting('index_per_page'));
+		$per_page = intval(S::get('index_per_page'));
 
 		TPL::assign('list', $this->model('activity')->list_activities($this->user_id, $_GET['page'], $per_page));
 
@@ -50,7 +50,7 @@ class info extends AWS_CONTROLLER
 	// 邀请我回答的问题
 	public function invites_action()
 	{
-		$per_page = intval(get_setting('contents_per_page'));
+		$per_page = intval(S::get('contents_per_page'));
 		// 注意: $limit分页的第一页是从0开始
 		$limit = intval($_GET['page']) * $per_page .', '. $per_page;
 
@@ -85,7 +85,7 @@ class info extends AWS_CONTROLLER
 	// 我关注的主题
 	public function following_posts_action()
 	{
-		$per_page = intval(get_setting('contents_per_page'));
+		$per_page = intval(S::get('contents_per_page'));
 
 		$list = $this->model('postfollow')->get_following_posts($this->user_id, $_GET['type'], $_GET['page'], $per_page);
 

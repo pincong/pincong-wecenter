@@ -29,21 +29,21 @@ class module_class extends AWS_MODEL
 
 		if (! $recommend_topics = $this->recommend_topics($uid, 20))
 		{
-			return array_slice($recommend_users, 0, get_setting('recommend_users_number'));
+			return array_slice($recommend_users, 0, S::get('recommend_users_number'));
 		}
 
 		if ($recommend_topics)
 		{
 			shuffle($recommend_topics);
 
-			$recommend_topics = array_slice($recommend_topics, 0, intval(get_setting('recommend_users_number') / 2));
+			$recommend_topics = array_slice($recommend_topics, 0, S::get_int('recommend_users_number') / 2);
 		}
 
 		if ($recommend_users)
 		{
 			shuffle($recommend_users);
 
-			$recommend_users = array_slice($recommend_users, 0, (get_setting('recommend_users_number') - count($recommend_topics)));
+			$recommend_users = array_slice($recommend_users, 0, (S::get('recommend_users_number') - count($recommend_topics)));
 		}
 
 		if (! is_array($recommend_users))
@@ -56,7 +56,7 @@ class module_class extends AWS_MODEL
 
 	public function sidebar_hot_topics($category_id = 0)
 	{
-		$num = intval(get_setting('recommend_users_number'));
+		$num = S::get_int('recommend_users_number');
 		if ($num)
 		{
 			return $this->model('topic')->get_hot_topics($category_id, $num, 'week');

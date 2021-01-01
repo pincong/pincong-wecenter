@@ -34,7 +34,7 @@ class main extends AWS_CONTROLLER
 
 		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_new_question'))
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name')), '/currency/rule/');
+			H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', S::get('currency_name')), '/currency/rule/');
 		}
 
 		if (!$this->model('ratelimit')->check_thread($this->user_id, $this->user_info['permission']['thread_limit_per_day']))
@@ -48,7 +48,7 @@ class main extends AWS_CONTROLLER
 			'category_id' => intval($_GET['category_id'])
 		);
 
-		if (get_setting('category_enable') != 'N')
+		if (S::get('category_enable') != 'N')
 		{
 			TPL::assign('category_current_id', $thread_info['category_id']);
 			TPL::assign('category_list', $this->model('category')->get_category_list_by_user_permission($this->user_info['permission']));
@@ -56,7 +56,7 @@ class main extends AWS_CONTROLLER
 
 		TPL::import_js('js/app/publish.js');
 
-		if (get_setting('advanced_editor_enable') == 'Y')
+		if (S::get('advanced_editor_enable') == 'Y')
 		{
 			import_editor_static_files();
 		}
@@ -77,7 +77,7 @@ class main extends AWS_CONTROLLER
 
 		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_new_article'))
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name')), '/currency/rule/');
+			H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', S::get('currency_name')), '/currency/rule/');
 		}
 
 		if (!$this->model('ratelimit')->check_thread($this->user_id, $this->user_info['permission']['thread_limit_per_day']))
@@ -91,7 +91,7 @@ class main extends AWS_CONTROLLER
 			'category_id' => intval($_GET['category_id'])
 		);
 
-		if (get_setting('category_enable') != 'N')
+		if (S::get('category_enable') != 'N')
 		{
 			TPL::assign('category_current_id', $thread_info['category_id']);
 			TPL::assign('category_list', $this->model('category')->get_category_list_by_user_permission($this->user_info['permission']));
@@ -99,7 +99,7 @@ class main extends AWS_CONTROLLER
 
 		TPL::import_js('js/app/publish.js');
 
-		if (get_setting('advanced_editor_enable') == 'Y')
+		if (S::get('advanced_editor_enable') == 'Y')
 		{
 			import_editor_static_files();
 		}
@@ -120,7 +120,7 @@ class main extends AWS_CONTROLLER
 
 		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_new_video'))
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name')), '/currency/rule/');
+			H::redirect_msg(AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', S::get('currency_name')), '/currency/rule/');
 		}
 
 		if (!$this->model('ratelimit')->check_thread($this->user_id, $this->user_info['permission']['thread_limit_per_day']))
@@ -134,7 +134,7 @@ class main extends AWS_CONTROLLER
 			'category_id' => intval($_GET['category_id'])
 		);
 
-		if (get_setting('category_enable') != 'N')
+		if (S::get('category_enable') != 'N')
 		{
 			TPL::assign('category_current_id', $thread_info['category_id']);
 			TPL::assign('category_list', $this->model('category')->get_category_list_by_user_permission($this->user_info['permission']));

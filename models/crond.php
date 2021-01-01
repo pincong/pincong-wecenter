@@ -124,7 +124,7 @@ class crond_class extends AWS_MODEL
     // 每日时执行
     public function day()
     {
-        if (!get_setting('db_engine') OR get_setting('db_engine') == 'MyISAM')
+        if (!S::get('db_engine') OR S::get('db_engine') == 'MyISAM')
         {
             $this->query('OPTIMIZE TABLE `' . get_table('search_cache') . '`');
         }

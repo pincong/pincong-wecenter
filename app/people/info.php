@@ -60,7 +60,7 @@ class info extends AWS_CONTROLLER
 			$_GET['page'] = 0; // 因为followers_action page从0开始
 		}
 
-		$this->per_page = intval(get_setting('contents_per_page'));
+		$this->per_page = intval(S::get('contents_per_page'));
 	}
 
 	public function question_discussions_action()
