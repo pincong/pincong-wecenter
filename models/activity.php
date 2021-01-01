@@ -314,7 +314,7 @@ class activity_class extends AWS_MODEL
 			return array();
 		}
 
-		$where = ['uid', 'in', $following_uids];
+		$where = ['uid', 'in', $following_uids, 'i'];
 
 		$list = $this->query_activities($where, $page, $per_page);
 		if (count($list) > 0)
@@ -342,7 +342,7 @@ class activity_class extends AWS_MODEL
 		}
 		else
 		{
-			$where[] = ['category_id', 'in', $this->model('posts')->get_default_category_ids()];
+			$where[] = ['category_id', 'in', $this->model('posts')->get_default_category_ids(), 'i'];
 		}
 
 		$list = $this->query_activities($where, $page, $per_page);

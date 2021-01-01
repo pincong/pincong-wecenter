@@ -79,13 +79,13 @@ class menu_class extends AWS_MODEL
 	{
 		AWS_APP::cache()->cleanGroup('nav_menu');
 
-		return $this->update('nav_menu', $data, 'id = ' . intval($nav_menu_id));
+		return $this->update('nav_menu', $data, ['id', 'eq', $nav_menu_id, 'i']);
 	}
 
 	public function remove_nav_menu($nav_menu_id)
 	{
 		AWS_APP::cache()->cleanGroup('nav_menu');
 
-		return $this->delete('nav_menu', 'id = ' . intval($nav_menu_id));
+		return $this->delete('nav_menu', ['id', 'eq', $nav_menu_id, 'i']);
 	}
 }

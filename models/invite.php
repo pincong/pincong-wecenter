@@ -52,7 +52,7 @@ class invite_class extends AWS_MODEL
 	 */
 	public function cancel_question_invite($question_id, $sender_uid, $recipients_uid)
 	{
-		return $this->delete('question_invite', 'question_id = ' . intval($question_id) . ' AND sender_uid = ' . intval($sender_uid) . ' AND recipients_uid = ' . intval($recipients_uid));
+		return $this->delete('question_invite', [['question_id', 'eq', $question_id, 'i'], ['sender_uid', 'eq', $sender_uid, 'i'], ['recipients_uid', 'eq', $recipients_uid, 'i']]);
 	}
 
 	/**
@@ -62,7 +62,7 @@ class invite_class extends AWS_MODEL
 	 */
 	public function delete_question_invite($question_invite_id, $recipients_uid)
 	{
-		return $this->delete('question_invite', 'question_invite_id = ' . intval($question_invite_id) . ' AND recipients_uid = ' . intval($recipients_uid));
+		return $this->delete('question_invite', [['question_invite_id', 'eq', $question_invite_id, 'i'], ['recipients_uid', 'eq', $recipients_uid, 'i']]);
 	}
 
 	/**
@@ -72,7 +72,7 @@ class invite_class extends AWS_MODEL
 	 */
 	public function answer_question_invite($question_id, $recipients_uid)
 	{
-		$this->delete('question_invite', 'question_id = ' . intval($question_id) . ' AND recipients_uid = ' . intval($recipients_uid));
+		$this->delete('question_invite', [['question_id', 'eq', $question_id, 'i'], ['recipients_uid', 'eq', $recipients_uid, 'i']]);
 
 		$this->model('account')->update_question_invite_count($recipients_uid);
 	}
@@ -81,11 +81,11 @@ class invite_class extends AWS_MODEL
 	{
 		if (!$sender_uid)
 		{
-			return $this->fetch_one('question_invite', 'question_invite_id', 'question_id = ' . intval($question_id) . ' AND recipients_uid = ' . intval($recipients_uid));
+			return $this->fetch_one('question_invite', 'question_invite_id', [['question_id', 'eq', $question_id, 'i'], ['recipients_uid', 'eq', $recipients_uid, 'i']]);
 		}
 		else
 		{
-			return $this->fetch_one('question_invite',  'question_invite_id', 'question_id = ' . intval($question_id) . ' AND sender_uid = ' . intval($sender_uid) . ' AND recipients_uid = ' . intval($recipients_uid));
+			return $this->fetch_one('question_invite', 'question_invite_id', [['question_id', 'eq', $question_id, 'i'], ['sender_uid', 'eq', $sender_uid, 'i'], ['recipients_uid', 'eq', $recipients_uid, 'i']]);
 		}
 	}
 
@@ -96,7 +96,7 @@ class invite_class extends AWS_MODEL
 			return $invite_users_list;
 		}
 		
-		if ($invites = $this->fetch_all('question_invite', 'question_id = ' . intval($question_id), 'question_invite_id DESC', $limit))
+		if ($invites = $this->fetch_all('question_invite', ['question_id', 'eq', $question_id, 'i'], 'question_invite_id DESC', $limit))
 		{
 			foreach ($invites as $key => $val)
 			{
@@ -113,7 +113,7 @@ class invite_class extends AWS_MODEL
 
 	public function get_invite_question_list($uid, $limit = 10)
 	{
-		if ($list = $this->fetch_all('question_invite', 'recipients_uid = ' . intval($uid), 'question_invite_id DESC', $limit))
+		if ($list = $this->fetch_all('question_invite', ['recipients_uid', 'eq', $uid, 'i'], 'question_invite_id DESC', $limit))
 		{
 			foreach ($list as $key => $val)
 			{
@@ -144,7 +144,7 @@ class invite_class extends AWS_MODEL
 		{
 			$time_before = 0;
 		}
-		$this->delete('question_invite', 'add_time < ' . $time_before);
+		$this->delete('question_invite', ['add_time', 'lt', $time_before]);
 	}
 
 }

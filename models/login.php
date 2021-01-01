@@ -24,7 +24,7 @@ class login_class extends AWS_MODEL
 	{
 		$attempts_interval = S::get_int('limit_global_login_attempts_interval') * 60;
 		$time_after = real_time() - $attempts_interval;
-		$where = 'type = "login" AND time >= ' . $time_after;
+		$where = [['type', 'eq', 'login'], ['time', 'gte', $time_after]];
 		return $this->count('failed_login', $where);
 	}
 
@@ -85,7 +85,7 @@ class login_class extends AWS_MODEL
 			$attempts_interval = S::get_int('limit_login_attempts_interval') * 60;
 			$time_after = real_time() - $attempts_interval;
 
-			$where = 'uid =' . $uid . ' AND type = "login" AND time >= ' . $time_after;
+			$where = [['uid', 'eq', $uid], ['type', 'eq', 'login'], ['time', 'gte', $time_after]];
 			$failed_login_count = $this->count('failed_login', $where);
 			if ($failed_login_count >= $max_attempts)
 			{
@@ -144,7 +144,7 @@ class login_class extends AWS_MODEL
 		{
 			$time_before = 0;
 		}
-		$this->delete('failed_login', 'time < ' . $time_before);
+		$this->delete('failed_login', ['time', 'lt', $time_before]);
 	}
 
 }

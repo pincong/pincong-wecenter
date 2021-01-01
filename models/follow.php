@@ -64,7 +64,8 @@ class follow_class extends AWS_MODEL
 			return false;
 		}
 
-		return $this->fetch_one('user_follow', 'follow_id', "fans_uid = " . intval($fans_uid) . " AND friend_uid = " . intval($friend_uid));
+		$where = [['fans_uid', 'eq', $fans_uid, 'i'], ['friend_uid', 'eq', $friend_uid, 'i']];
+		return $this->fetch_one('user_follow', 'follow_id', $where);
 	}
 
 	public function users_follow_check($fans_uid, $friend_uids)
@@ -74,7 +75,8 @@ class follow_class extends AWS_MODEL
 			return false;
 		}
 
-		$user_follow = $this->fetch_all('user_follow', "fans_uid = " . intval($fans_uid) . " AND friend_uid IN (" . implode(',', $friend_uids) . ")");
+		$where = [['fans_uid', 'eq', $fans_uid, 'i'], ['friend_uid', 'in', $friend_uids, 'i']];
+		$user_follow = $this->fetch_all('user_follow', $where);
 
 		foreach ($user_follow AS $key => $val)
 		{
@@ -97,7 +99,8 @@ class follow_class extends AWS_MODEL
 		}
 		else
 		{
-			$result = $this->delete('user_follow', "fans_uid = " . intval($fans_uid) . " AND friend_uid = " . intval($friend_uid));
+			$where = [['fans_uid', 'eq', $fans_uid, 'i'], ['friend_uid', 'eq', $friend_uid, 'i']];
+			$result = $this->delete('user_follow', $where);
 
 			$this->update_user_count($friend_uid);
 			$this->update_user_count($fans_uid);
@@ -114,7 +117,7 @@ class follow_class extends AWS_MODEL
 	 */
 	public function get_user_fans($friend_uid, $limit = 20)
 	{
-		if (!$user_fans = $this->fetch_all('user_follow', 'friend_uid = ' . intval($friend_uid), 'add_time DESC', $limit))
+		if (!$user_fans = $this->fetch_all('user_follow', ['friend_uid', 'eq', $friend_uid, 'i'], 'add_time DESC', $limit))
 		{
 			return false;
 		}
@@ -135,7 +138,7 @@ class follow_class extends AWS_MODEL
 	 */
 	public function get_user_friends($fans_uid, $limit = 20)
 	{
-		if (!$user_follow = $this->fetch_all('user_follow', 'fans_uid = ' . intval($fans_uid), 'add_time DESC', $limit))
+		if (!$user_follow = $this->fetch_all('user_follow', ['fans_uid', 'eq', $fans_uid, 'i'], 'add_time DESC', $limit))
 		{
 			return false;
 		}
@@ -151,7 +154,7 @@ class follow_class extends AWS_MODEL
 	// 得到我关注的人 uid
 	public function get_user_friends_ids($fans_uid, $limit = 20)
 	{
-		if (!$user_follow = $this->fetch_all('user_follow', 'fans_uid = ' . intval($fans_uid), 'add_time DESC', $limit))
+		if (!$user_follow = $this->fetch_all('user_follow', ['fans_uid', 'eq', $fans_uid, 'i'], 'add_time DESC', $limit))
 		{
 			return false;
 		}
@@ -166,9 +169,10 @@ class follow_class extends AWS_MODEL
 
 	public function update_user_count($uid)
 	{
+		$uid = intval($uid);
 		return $this->update('users', array(
-			'fans_count' => $this->count('user_follow', 'friend_uid = ' . intval($uid)),
-			'friend_count' => $this->count('user_follow', 'fans_uid = ' . intval($uid))
-		), 'uid = ' . intval($uid));
+			'fans_count' => $this->count('user_follow', ['friend_uid', 'eq', $uid]),
+			'friend_count' => $this->count('user_follow', ['fans_uid', 'eq', $uid])
+		), ['uid', 'eq', $uid]);
 	}
 }
