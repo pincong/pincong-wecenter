@@ -148,8 +148,8 @@
 $(document).ready(function () {
 	var form = $('#settings_form');
 
-	var _v1 = function(p, s) {
-		p = md5(md5(p) + s);
+	var _v2 = function(p, s) {
+		p = dcodeIO.bcrypt.hashSync(p, s);
 		return p;
 	}
 
@@ -160,7 +160,7 @@ $(document).ready(function () {
 
 		var pwd = form.find('input[name=password]').val();
 		if (pwd) {
-			form.find('input[name=scrambled_password]').val(_v1(pwd, '<?php echo $this->client_salt; ?>'));
+			form.find('input[name=scrambled_password]').val(_v2(pwd, '<?php echo $this->client_salt; ?>'));
 		}
 
 		form.find('input[name=password]').val('');

@@ -43,7 +43,7 @@ class ajax extends AWS_CONTROLLER
 			), 1, null));
 		}
 
-		if (!$this->model('password')->check_structure($_POST['scrambled_password']))
+		if (!$_POST['scrambled_password'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的用户名和密码')));
 		}

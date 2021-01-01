@@ -60,8 +60,8 @@ var G_BASE_URL = "<?php echo url_rewrite(); ?>";
 $(document).ready(function () {
 	var form = $('#login_form');
 
-	var _v1 = function(p, s) {
-		p = md5(md5(p) + s);
+	var _v2 = function(p, s) {
+		p = dcodeIO.bcrypt.hashSync(p, s);
 		return p;
 	}
 
@@ -70,7 +70,7 @@ $(document).ready(function () {
 
 		var new_form = $('<form>', {action: '<?php echo url_rewrite(); ?>/admin/ajax/login_process/', method: 'post'});
 		var pwd = form.find('input[name=password]').val();
-		new_form.append($('<input>', {name: 'scrambled_password', value: _v1(pwd, '<?php echo $this->user_info['salt']; ?>')}));
+		new_form.append($('<input>', {name: 'scrambled_password', value: _v2(pwd, '<?php echo $this->user_info['salt']; ?>')}));
 
 		AWS.ajax_post(new_form, AWS.ajax_processer, 'error_message');
 

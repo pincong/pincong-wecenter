@@ -44,9 +44,13 @@
 $(document).ready(function () {
 	var form = $('#login_form');
 
-	var _v1 = function(p, s) {
-		p = md5(md5(p) + s);
+	var _v2 = function(p, s) {
+		p = dcodeIO.bcrypt.hashSync(p, s);
 		return p;
+	}
+
+	var _append = function(f, n, v) {
+		f.append($('<input>', {name: n, value: v}));
 	}
 
 	var _alert = function(s) {
@@ -75,12 +79,15 @@ $(document).ready(function () {
 		}
 
 		var new_form = $('<form>', {action: '<?php echo url_rewrite(); ?>/register/ajax/process/', method: 'post'});
-		new_form.append($('<input>', {name: 'username', value: usr}));
-		new_form.append($('<input>', {name: 'scrambled_password', value: _v1(pwd, '<?php echo $this->client_salt; ?>')}));
-		new_form.append($('<input>', {name: 'client_salt', value: '<?php echo $this->client_salt; ?>'}));
-		<?php if ($this->captcha_required) { ?>
-		new_form.append($('<input>', {name: 'captcha', value: form.find('input[name=captcha]').val()}));
-		<?php } ?>
+		_append(new_form, 'username', usr);
+
+		var scrambled_pwd = _v2(pwd, '<?php echo $this->client_salt; ?>');
+		_append(new_form, 'scrambled_password', scrambled_pwd);
+		_append(new_form, 'client_salt', '<?php echo $this->client_salt; ?>');
+
+<?php if ($this->captcha_required) { ?>
+		_append(new_form, 'captcha', form.find('input[name=captcha]').val());
+<?php } ?>
 
 		AWS.submit_form(new_form, form.find('input[type=submit]'), form.find('.error_message'), function(err) {
 			$('#captcha').click();

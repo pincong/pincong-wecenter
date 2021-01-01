@@ -42,18 +42,37 @@ class password_class extends AWS_MODEL
 
 	public function generate_client_salt()
 	{
-		$length = 8;
-		for ($i = 0; $i < $length; $i++)
-		{
-			$str .= chr(rand(97, 122));
-		}
-
-		return $str;
+		$rounds = 10;
+		if ($rounds < 4)
+			$rounds = 4;
+		else if ($rounds > 31)
+			$rounds = 31;
+		$salt = '$2y$';
+		if ($rounds < 10)
+			$salt .= '0';
+		$salt .= strval($rounds);
+		$salt .= '$';
+		$bytes = openssl_random_pseudo_bytes(16);
+		$salt .= strtr(
+			rtrim(base64_encode($bytes), '='),
+			'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
+			'./ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+		);
+		return $salt;
 	}
 
 	public function check_structure($scrambled_password, $client_salt = false)
 	{
-		if (!$scrambled_password)
+		if (!$scrambled_password OR strlen($scrambled_password) != 60)
+		{
+			return false;
+		}
+		$rounds = intval(substr($scrambled_password, 4, 2));
+		if ($rounds < 4 OR $rounds > 31)
+		{
+			return false;
+		}
+		if (!preg_match('/^(\$2[aby]\$[0-3][0-9]\$)([\.\/A-Za-z0-9]+)$/', $scrambled_password))
 		{
 			return false;
 		}
@@ -61,14 +80,18 @@ class password_class extends AWS_MODEL
 		{
 			return true;
 		}
-		if (!$client_salt)
+		if (!$client_salt OR strlen($client_salt) != 29)
+		{
+			return false;
+		}
+		if (strpos($scrambled_password, $client_salt) !== 0)
 		{
 			return false;
 		}
 		return true;
 	}
 
-	public function change_password($uid, $scrambled_password, $new_scrambled_password, $new_client_salt = null)
+	public function change_password($uid, $scrambled_password, $new_scrambled_password, $new_client_salt)
 	{
 		if (!$user_info = $this->fetch_row('users', 'uid = ' . intval($uid)))
 		{
@@ -83,18 +106,13 @@ class password_class extends AWS_MODEL
 		return $this->update_password($uid, $new_scrambled_password, $new_client_salt);
 	}
 
-	public function update_password($uid, $new_scrambled_password, $new_client_salt = null)
+	public function update_password($uid, $new_scrambled_password, $new_client_salt)
 	{
-		$data = array(
-			'password' => $this->hash($new_scrambled_password)
-		);
-
-		if (!is_null($new_client_salt))
-		{
-			$data['salt'] = $new_client_salt;
-		}
-
-		$this->update('users', $data, 'uid = ' . intval($uid));
+		$this->update('users', array(
+			'password' => $this->hash($new_scrambled_password),
+			'salt' => $new_client_salt,
+			'password_version' => 2
+		), 'uid = ' . intval($uid));
 
 		return true;
 	}

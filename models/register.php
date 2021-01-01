@@ -79,9 +79,10 @@ class register_class extends AWS_MODEL
 			'user_name' => htmlspecialchars($username),
 			'password' => $this->model('password')->hash($scrambled_password),
 			'salt' => $client_salt,
-			'sex' => 0,
+			'password_version' => 2,
 			'group_id' => 0,
-			'avatar_file' => null, // 无头像
+			'sex' => 0,
+			'avatar_file' => null,
 			'reg_time' => fake_time()
 		));
 

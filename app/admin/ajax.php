@@ -697,9 +697,9 @@ class ajax extends AWS_ADMIN_CONTROLLER
 		}
 
 		if ($_POST['confirm_change_password'] AND
-			$this->model('password')->check_structure($_POST['scrambled_password']))
+			$this->model('password')->check_structure($_POST['scrambled_password'], $_POST['client_salt']))
 		{
-			$this->model('password')->update_password($user_info['uid'], $_POST['scrambled_password']);
+			$this->model('password')->update_password($user_info['uid'], $_POST['scrambled_password'], $_POST['client_salt']);
 		}
 
 		if ($_POST['username'] AND $_POST['username'] != $user_info['user_name'])

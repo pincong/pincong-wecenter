@@ -73,9 +73,11 @@ class main extends AWS_CONTROLLER
 
 		TPL::import_css('css/register.css');
 
-		if (1)
+		TPL::import_js('js/bcrypt.js');
+		if ($user_info['password_version'] < 2)
 		{
 			TPL::import_js('js/md5.js');
+			TPL::assign('client_salt', $this->model('password')->generate_client_salt());
 		}
 
 		TPL::assign('captcha_required', $captcha_required);

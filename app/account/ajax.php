@@ -29,8 +29,8 @@ class ajax extends AWS_CONTROLLER
 
 	public function change_password_action()
 	{
-		if (!$this->model('password')->check_structure($_POST['scrambled_password']) OR
-			!$this->model('password')->check_structure($_POST['new_scrambled_password'], $_POST['client_salt'])
+		if (!$_POST['scrambled_password'] OR
+			!$this->model('password')->check_structure($_POST['new_scrambled_password'], $_POST['client_salt']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的密码')));
 		}
