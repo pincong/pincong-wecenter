@@ -232,7 +232,7 @@ class vote_class extends AWS_MODEL
 		{
 			return;
 		}
-		array_walk($push_types, 'trim');
+		$push_types = array_map('trim', $push_types);
 		if (!in_array($type, $push_types))
 		{
 			return;
@@ -252,7 +252,7 @@ class vote_class extends AWS_MODEL
 			$push_categories = explode(',', $push_categories);
 			if (is_array($push_categories) AND count($push_categories) > 0)
 			{
-				array_walk($push_categories, 'intval');
+				$push_categories = array_map('intval', $push_categories);
 				if (!in_array($category_id, $push_categories))
 				{
 					return;
