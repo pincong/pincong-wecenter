@@ -20,7 +20,7 @@
 			<?php _e('%s 个回复', $val['answer_count']); ?>
 		</p>
 		<h4>
-			<a href="question/<?php echo $val['id']; ?>"><?php echo $val['title']; ?></a>
+			<a href="question/<?php echo $val['id']; ?>"><?php echo FORMAT::text($val['title']); ?></a>
 		</h4>
 	</div>
 </div>
@@ -69,7 +69,7 @@
 			<?php _e('%s 个评论', $val['comments']); ?>
 		</p>
 		<h4>
-			<a href="article/<?php echo $val['id']; ?>"><?php echo $val['title']; ?></a>
+			<a href="article/<?php echo $val['id']; ?>"><?php echo FORMAT::text($val['title']); ?></a>
 		</h4>
 	</div>
 </div>
@@ -118,7 +118,7 @@
 			<?php _e('%s 个评论', $val['comment_count']); ?>
 		</p>
 		<h4>
-			<a href="video/<?php echo $val['id']; ?>"><?php echo $val['title']; ?></a>
+			<a href="video/<?php echo $val['id']; ?>"><?php echo FORMAT::text($val['title']); ?></a>
 		</h4>
 	</div>
 </div>

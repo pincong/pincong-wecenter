@@ -26,13 +26,13 @@
 						<li data-sort="<?php echo $val['id']; ?>" data-cursor="pointer">
 							<div class="mod-set-head">
 								<span class="pull-right"><a href="javascript:;" onclick="AWS.confirm('<?php _e('确认删除?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/admin/ajax/remove_nav_menu/', 'id=<?php echo $val['id']; ?>');}); return false;"><?php _e('删除'); ?></a></span>
-								<h4><?php echo $val['title']; ?> (<?php if ($val['type'] == 'category') { ?><?php _e('分类'); ?><?php } else { ?><?php _e('自定义链接'); ?><?php } ?>)</h4>
+								<h4><?php echo FORMAT::text($val['title']); ?> (<?php if ($val['type'] == 'category') { ?><?php _e('分类'); ?><?php } else { ?><?php _e('自定义链接'); ?><?php } ?>)</h4>
 							</div>
 							<div class="mod-set-body clearfix">
 								<div class="aw-nav-menu-tag clearfix">
 									<label class="pull-left">
 										<?php _e('导航标签'); ?><br />
-										<input class="form-control" type="text" name="nav_menu[<?php echo $val['id']; ?>][title]" value="<?php echo $val['title']; ?>" />
+										<input class="form-control" type="text" name="nav_menu[<?php echo $val['id']; ?>][title]" value="<?php echo FORMAT::text($val['title']); ?>" />
 									</label>
 									<div class="pull-left aw-nav-menu-img">
 										<a id="aw-nav-menu-img-upload-<?php echo $val['id']; ?>"><img src="<?php if ($val['icon']) { ?><?php echo get_setting('upload_url');?>/nav_menu/<?php echo $val['icon']; ?><?php } else { ?><?php echo G_STATIC_URL; ?>/common/default_class_imgs.png<?php } ?>" alt="" id="aw-nav-menu-img-<?php echo $val['id']; ?>" /></a>

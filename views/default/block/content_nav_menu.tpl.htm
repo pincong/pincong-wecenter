@@ -11,11 +11,11 @@
 
 			<?php if ($val['type'] == 'category') { ?>
 			<li class="<?php if ($_GET['category'] == $val['type_id']) { ?>active<?php } ?>">
-				<a href="<?php echo $val['link']; ?>"><?php echo $val['title']; ?></a>
+				<a href="<?php echo $val['link']; ?>"><?php echo FORMAT::text($val['title']); ?></a>
 			</li>
 			<?php } else if ($val['type'] == 'custom') { ?>
 			<li class="">
-				<a href="<?php echo $val['link']; ?>"<?php if (!is_inside_url($val['link'])) { ?> rel="nofollow noreferrer noopener" target="_blank"<?php } ?>><?php echo $val['title']; ?></a>
+				<a href="<?php echo $val['link']; ?>"<?php if (!is_inside_url($val['link'])) { ?> rel="nofollow noreferrer noopener" target="_blank"<?php } ?>><?php echo FORMAT::text($val['title']); ?></a>
 			</li>
 			<?php } ?>
 
