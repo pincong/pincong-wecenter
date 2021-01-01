@@ -112,18 +112,12 @@ class H
 
 			if (substr($word, 0, 1) == '{' AND substr($word, -1, 1) == '}')
 			{
-				$regex_array[] = substr($word, 1, -1);
-				$replacement_array[] = $replacement;
+				$content = preg_replace(substr($word, 1, -1), $replacement, $content);
 			}
 			else
 			{
 				$content = str_ireplace($word, $replacement, $content);
 			}
-		}
-
-		if (isset($regex_array))
-		{
-			$content = preg_replace($regex_array, $replacement_array, $content);
 		}
 	}
 
