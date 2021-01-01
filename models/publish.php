@@ -140,9 +140,9 @@ class publish_class extends AWS_MODEL
 			$this->model('invite')->add_invite($item_id, $data['uid'], $data['ask_user_id']);
 		}
 
-		if ($data['auto_focus'])
+		if ($data['follow'])
 		{
-			$this->model('focus')->add_focus_question($item_id, $data['uid']);
+			$this->model('postfollow')->follow('question', $item_id, $data['uid']);
 		}
 
 		// 记录用户动态
@@ -175,6 +175,11 @@ class publish_class extends AWS_MODEL
 		$this->model('search_fulltext')->push_index('article', $data['title'], $item_id);
 
 		$this->save_topics('article', $data['uid'], $item_id, $data['topics'], $data['permission_create_topic']);
+
+		if ($data['follow'])
+		{
+			$this->model('postfollow')->follow('article', $item_id, $data['uid']);
+		}
 
 		// 记录用户动态
 		$this->model('activity')->push('article', $item_id, $data['uid']);
@@ -210,6 +215,11 @@ class publish_class extends AWS_MODEL
 		//$this->model('search_fulltext')->push_index('video', $data['title'], $item_id);
 
 		$this->save_topics('video', $data['uid'], $item_id, $data['topics'], $data['permission_create_topic']);
+
+		if ($data['follow'])
+		{
+			$this->model('postfollow')->follow('video', $item_id, $data['uid']);
+		}
 
 		// 记录用户动态
 		$this->model('activity')->push('video', $item_id, $data['uid']);
@@ -281,16 +291,13 @@ class publish_class extends AWS_MODEL
 			}
 		}
 
-		if ($data['auto_focus'])
-		{
-			if (!$this->model('focus')->has_focus_question($data['parent_id'], $data['uid']))
-			{
-				$this->model('focus')->add_focus_question($data['parent_id'], $data['uid']);
-			}
-		}
-
 		// 删除邀请
 		$this->model('invite')->answer_question_invite($data['parent_id'], $data['uid']);
+
+		if ($data['follow'])
+		{
+			$this->model('postfollow')->follow('question', $data['parent_id'], $data['uid']);
+		}
 
 		// 记录用户动态
 		$this->model('activity')->push('answer', $item_id, $data['uid']);
@@ -368,6 +375,11 @@ class publish_class extends AWS_MODEL
 			}
 		}
 
+		if ($data['follow'])
+		{
+			$this->model('postfollow')->follow('article', $data['parent_id'], $data['uid']);
+		}
+
 		// 记录用户动态
 		$this->model('activity')->push('article_comment', $item_id, $data['uid']);
 
@@ -441,6 +453,11 @@ class publish_class extends AWS_MODEL
 						'video', $parent_info['id'], 'video_comment', $item_id);
 				}
 			}
+		}
+
+		if ($data['follow'])
+		{
+			$this->model('postfollow')->follow('video', $data['parent_id'], $data['uid']);
 		}
 
 		// 记录用户动态

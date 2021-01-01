@@ -309,8 +309,8 @@ class ajax extends AWS_CONTROLLER
 			'uid' => $publish_uid,
 			'topics' => $_POST['topics'],
 			'permission_create_topic' => $this->user_info['permission']['create_topic'],
+			'follow' => !$_POST['anonymous'],
 			'ask_user_id' => $_POST['ask_user_id'],
-			'auto_focus' => !$_POST['anonymous'],
 		), $this->user_id, $_POST['later']);
 
 		if ($_POST['later'])
@@ -366,6 +366,7 @@ class ajax extends AWS_CONTROLLER
 			'uid' => $publish_uid,
 			'topics' => $_POST['topics'],
 			'permission_create_topic' => $this->user_info['permission']['create_topic'],
+			'follow' => !$_POST['anonymous'],
 		), $this->user_id, $_POST['later']);
 
 		if ($_POST['later'])
@@ -433,6 +434,7 @@ class ajax extends AWS_CONTROLLER
 			'uid' => $publish_uid,
 			'topics' => $_POST['topics'],
 			'permission_create_topic' => $this->user_info['permission']['create_topic'],
+			'follow' => !$_POST['anonymous'],
 			'source_type' => $metadata['source_type'],
 			'source' => $metadata['source'],
 			'duration' => 0,
@@ -527,12 +529,10 @@ class ajax extends AWS_CONTROLLER
 		if ($_POST['anonymous'])
 		{
 			$publish_uid = $this->get_anonymous_uid('answer');
-			$auto_focus = false;
 		}
 		else
 		{
 			$publish_uid = $this->user_id;
-			$auto_focus = $_POST['auto_focus'];
 		}
 
 		// !注: 来路检测后面不能再放报错提示
@@ -548,7 +548,7 @@ class ajax extends AWS_CONTROLLER
 			'parent_id' => $question_info['id'],
 			'message' => $_POST['message'],
 			'uid' => $publish_uid,
-			'auto_focus' => $auto_focus,
+			'follow' => ($_POST['follow'] AND !$_POST['anonymous']),
 			'permission_affect_currency' => $this->user_info['permission']['affect_currency'],
 		), $this->user_id, $_POST['later'], $pay);
 
@@ -637,6 +637,7 @@ class ajax extends AWS_CONTROLLER
 			'parent_id' => $article_info['id'],
 			'message' => $_POST['message'],
 			'uid' => $publish_uid,
+			'follow' => ($_POST['follow'] AND !$_POST['anonymous']),
 			'at_uid' => $_POST['at_uid'],
 			'permission_affect_currency' => $this->user_info['permission']['affect_currency'],
 		), $this->user_id, $_POST['later'], $pay);
@@ -726,6 +727,7 @@ class ajax extends AWS_CONTROLLER
 			'parent_id' => $video_info['id'],
 			'message' => $_POST['message'],
 			'uid' => $publish_uid,
+			'follow' => ($_POST['follow'] AND !$_POST['anonymous']),
 			'at_uid' => $_POST['at_uid'],
 			'permission_affect_currency' => $this->user_info['permission']['affect_currency'],
 		), $this->user_id, $_POST['later'], $pay);

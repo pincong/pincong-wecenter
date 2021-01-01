@@ -138,10 +138,6 @@
 								</div>
 								<!-- end 下拉菜单 -->
 
-								<?php if ($this->user_id) { ?>
-								<a href="javascript:;" onclick="AWS.User.follow($(this), 'question', <?php echo $this->question_info['id']; ?>);" class="follow btn btn-normal btn-success pull-right <?php if ($this->question_focus) { ?> active<?php } ?>"><span><?php if ($this->question_focus) { ?><?php _e('取消关注'); ?><?php } else { ?><?php _e('关注'); ?><?php } ?></span> <em>|</em> <b><?php echo $this->question_info['focus_count']?></b></a>
-								<?php } ?>
-
 								<?php if ($this->user_info['permission']['follow_thread']) { ?>
 								<?php if ($this->following) { ?>
 									<a class="follow btn btn-normal btn-success pull-right active" href="javascript:;" onclick="(function(selector){AWS.ajax_request(G_BASE_URL + '/content/ajax/unfollow/', 'item_type=question&item_id=<?php echo $this->question_info['id']; ?>', function(){selector.removeClass('active');selector.addClass('disabled');selector.text('<?php _e('已取消'); ?>')});})($(this))"><?php _e('取消关注'); ?></a>
@@ -314,9 +310,9 @@
 									<input type="checkbox" value="1" name="anonymous" /> <?php _e(get_setting('anonymous_option_name')); ?>
 								</label>
 								<?php } ?>
-								<?php if (!$this->question_focus) { ?>
+								<?php if (!$this->following) { ?>
 								<label class="pull-right">
-									<input type="checkbox" value="1" name="auto_focus" /> <?php _e('关注问题'); ?>
+									<input type="checkbox" value="1" name="follow" /> <?php _e('关注主题'); ?>
 								</label>
 								<?php } ?>
 								<label class="pull-right">
@@ -426,20 +422,19 @@
 					<!-- end 相关问题 -->
 					<?php } ?>
 
-					<!-- 问题状态 -->
+					<!-- 状态 -->
 					<div class="aw-mod">
 						<div class="mod-head">
-							<h3><?php _e('问题状态'); ?></h3>
+							<h3><?php _e('状态'); ?></h3>
 						</div>
 						<div class="mod-body">
 							<ul>
 								<li><?php _e('最新活动'); ?>: <span class="aw-text-color-blue"><?php echo date_friendly($this->question_info['update_time']); ?></span></li>
 								<li><?php _e('浏览'); ?>: <span class="aw-text-color-blue"><?php echo $this->question_info['view_count']; ?></span></li>
-								<li><?php _e('关注'); ?>: <span class="aw-text-color-blue"><?php echo $this->question_info['focus_count']; ?></span> <?php _e('人'); ?></li>
 							</ul>
 						</div>
 					</div>
-					<!-- end 问题状态 -->
+					<!-- end 状态 -->
 				</div>
 				<!-- end 侧边栏 -->
 			</div>

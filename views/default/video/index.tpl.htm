@@ -236,6 +236,11 @@
 									<input type="checkbox" value="1" name="anonymous" /> <?php _e(get_setting('anonymous_option_name')); ?>
 								</label>
 								<?php } ?>
+								<?php if (!$this->following) { ?>
+								<label class="pull-right">
+									<input type="checkbox" value="1" name="follow" /> <?php _e('关注主题'); ?>
+								</label>
+								<?php } ?>
 								<label class="pull-right">
 									<a href="<?php echo url_rewrite(); ?>/currency/rule/" target="_blank"><?php _e(get_setting('currency_rule_name')); ?></a>
 								</label>
@@ -385,6 +390,20 @@
 					</div>
 					<!-- end 相关问题 -->
 					<?php } ?>
+
+					<!-- 状态 -->
+					<div class="aw-mod">
+						<div class="mod-head">
+							<h3><?php _e('状态'); ?></h3>
+						</div>
+						<div class="mod-body">
+							<ul>
+								<li><?php _e('最新活动'); ?>: <span class="aw-text-color-blue"><?php echo date_friendly($this->video_info['update_time']); ?></span></li>
+								<li><?php _e('浏览'); ?>: <span class="aw-text-color-blue"><?php echo $this->video_info['view_count']; ?></span></li>
+							</ul>
+						</div>
+					</div>
+					<!-- end 状态 -->
 				</div>
 				<!-- end 侧边栏 -->
 			</div>

@@ -36,7 +36,7 @@
 
 <script type="text/javascript">
 $(document).ready(function () {
-	AWS.load_list_view(G_BASE_URL + '/home/info/following_posts/<?php if ($_GET['type']) { ?>type-<?php echo htmlspecialchars($_GET['type']); ?><?php } ?>', $('#bp_more'), $('#main_contents'));
+	AWS.load_list_view(G_BASE_URL + '/home/info/following_posts/<?php if ($_GET['type']) { ?>type-<?php echo htmlspecialchars($_GET['type']); ?><?php } ?>', $('#bp_more'), $('#main_contents'), 1);
 });
 </script>
 
