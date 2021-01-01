@@ -60,55 +60,6 @@ class login_class extends AWS_MODEL
 	 * 用户名或密码错误返回 false
 	 * 超过尝试次数返回 null
 	 *
-	 * @param string
-	 * @param string
-	 * @return mixed
-	 */
-	public function check_login_deprecated($user_name, $password)
-	{
-		if (!$user_name OR !$password)
-		{
-			return false;
-		}
-
-		$user_info = $this->model('account')->get_user_info_by_username($user_name);
-
-		if (!$user_info)
-		{
-			return false;
-		}
-
-		$uid = intval($user_info['uid']);
-
-		if ($max_attempts = intval(get_setting('limit_login_attempts')))
-		{
-			$attempts_interval = intval(get_setting('limit_login_attempts_interval')) * 60;
-			$time_after = real_time() - $attempts_interval;
-
-			$where = 'uid =' . $uid . ' AND type = "login" AND time >= ' . $time_after;
-			$failed_login_count = $this->count('failed_login', $where);
-			if ($failed_login_count >= $max_attempts)
-			{
-				return null;
-			}
-		}
-
-		$password = compile_password($password, $user_info['salt']);
-		if (!$this->model('password')->compare($password, $user_info['password']))
-		{
-			$this->log_failed_login($uid);
-			// TODO: 给用户发送警告
-			return false;
-		}
-
-		return $user_info;
-	}
-
-	/**
-	 * 用户登录验证
-	 * 用户名或密码错误返回 false
-	 * 超过尝试次数返回 null
-	 *
 	 * @param int
 	 * @param string
 	 * @return mixed

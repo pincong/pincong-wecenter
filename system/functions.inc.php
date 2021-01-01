@@ -247,20 +247,6 @@ function random_string($length = 8)
 }
 
 /**
- * 根据 salt 混淆密码
- *
- * @param  string
- * @param  string
- * @return string
- */
-function compile_password($password, $salt)
-{
-	$password = md5(md5($password) . $salt);
-
-	return $password;
-}
-
-/**
  * 获取数组中随机一条数据
  *
  * @param  array

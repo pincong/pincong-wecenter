@@ -153,8 +153,6 @@ class user extends AWS_ADMIN_CONTROLLER
             H::redirect_msg(AWS_APP::lang()->_t('用户不存在'), '/admin/user/list/');
         }
 
-        $user['recovery_code'] = $this->model('account')->calc_user_recovery_code($user['uid']);
-
 		TPL::assign('member_group', $this->model('usergroup')->get_user_group_by_id(
 			$this->model('usergroup')->get_group_id_by_reputation($user['reputation'])
 		));
@@ -176,7 +174,7 @@ class user extends AWS_ADMIN_CONTROLLER
 
         TPL::assign('system_group', $this->model('usergroup')->get_normal_group_list());
 
-		TPL::assign('client_salt', $this->model('password')->generate_salt_deprecated());
+		TPL::assign('client_salt', $this->model('password')->generate_client_salt());
 
 		TPL::import_js('js/md5.js');
 

@@ -27,36 +27,6 @@ class ajax extends AWS_CONTROLLER
 		HTTP::no_cache_header();
 	}
 
-	public function modify_password_action()
-	{
-		if (!$_POST['old_password'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入当前密码')));
-		}
-
-		if ($_POST['password'] != $_POST['re_password'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入相同的确认密码')));
-		}
-
-		if (strlen($_POST['password']) < 6)
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('密码长度不符合规则')));
-		}
-
-		if ($this->model('password')->update_user_password($_POST['password'], $this->user_id, $_POST['old_password'], $this->user_info['salt']))
-		{
-			$this->model('login')->logout();
-			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => url_rewrite('/login/password_updated/')
-			), 1, null));
-		}
-		else
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入正确的当前密码')));
-		}
-	}
-
 	public function change_password_action()
 	{
 		if (!$this->model('password')->check_structure($_POST['scrambled_password']) OR

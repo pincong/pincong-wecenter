@@ -233,77 +233,6 @@ class account_class extends AWS_MODEL
 	}
 
 	/**
-	 * 插入用户数据
-	 *
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @param int
-	 * @param string
-	 * @return int
-	 */
-	public function insert_user_deprecated($user_name, $password)
-	{
-		if (!$user_name OR !$password)
-		{
-			return false;
-		}
-
-		if ($this->username_exists($user_name))
-		{
-			return false;
-		}
-
-		$salt = $this->model('password')->generate_salt_deprecated();
-		$password = compile_password($password, $salt);
-
-		if ($uid = $this->insert('users', array(
-			'user_name' => htmlspecialchars($user_name),
-			'password' => $this->model('password')->hash($password),
-			'salt' => $salt,
-			'sex' => 0,
-			'group_id' => 0,
-			'avatar_file' => null, // 无头像
-			'reg_time' => fake_time()
-		)))
-		{
-			$this->update_notification_setting_fields(get_setting('new_user_notification_setting'), $uid);
-
-			//$this->model('search_fulltext')->push_index('user', $user_name, $uid);
-		}
-
-		return $uid;
-	}
-
-	/**
-	 * 注册用户
-	 *
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @return int
-	 */
-	public function user_register_deprecated($user_name, $password = null)
-	{
-		if ($uid = $this->insert_user_deprecated($user_name, $password))
-		{
-			if ($def_focus_uids_str = get_setting('def_focus_uids'))
-			{
-				$def_focus_uids = explode(',', $def_focus_uids_str);
-
-				foreach ($def_focus_uids as $key => $val)
-				{
-					$this->model('follow')->user_follow_add($uid, $val);
-				}
-			}
-
-			$this->model('currency')->process($uid, 'REGISTER', get_setting('currency_system_config_register'), '初始资本');
-		}
-
-		return $uid;
-	}
-
-	/**
 	 * 发送欢迎信息
 	 *
 	 * @param int
@@ -602,24 +531,6 @@ class account_class extends AWS_MODEL
 		return $this->update('users', array(
 			'recent_topics' => serialize($new_recent_topics)
 		), 'uid = ' . intval($uid));
-	}
-
-	public function calc_user_recovery_code($uid)
-	{
-		if (! $user_info = $this->fetch_row('users', 'uid = ' . intval($uid)))
-		{
-			return false;
-		}
-		return md5($user_info['user_name'] . $user_info['uid'] . md5($user_info['password'] . $user_info['salt']) . G_COOKIE_HASH_KEY);
-	}
-
-	public function verify_user_recovery_code($uid, $recovery_code)
-	{
-		if (!$code = $this->calc_user_recovery_code($uid))
-		{
-			return false;
-		}
-		return ($code == $recovery_code);
 	}
 
 }

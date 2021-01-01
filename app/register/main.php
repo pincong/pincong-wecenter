@@ -81,7 +81,7 @@ class main extends AWS_CONTROLLER
 		TPL::import_js('js/md5.js');
 
 		TPL::assign('captcha_required', $captcha_required);
-		TPL::assign('client_salt', $this->model('password')->generate_salt_deprecated());
+		TPL::assign('client_salt', $this->model('password')->generate_client_salt());
 
 		TPL::output("account/register_next");
 	}

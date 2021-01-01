@@ -50,11 +50,4 @@ class main extends AWS_CONTROLLER
 		TPL::output('profile/security');
 	}
 
-	public function security1_action()
-	{
-		$this->crumb(AWS_APP::lang()->_t('安全设置'));
-
-		TPL::output('profile/security1');
-	}
-
 }

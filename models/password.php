@@ -40,61 +40,7 @@ class password_class extends AWS_MODEL
 		return password_hash($string, PASSWORD_BCRYPT);
 	}
 
-	/**
-	 * 更改用户密码
-	 *
-	 * @param  string
-	 * @param  string
-	 * @param  int
-	 * @param  string
-	 */
-	public function update_user_password($password, $uid, $oldpassword, $salt)
-	{
-		if (!$salt OR !$uid)
-		{
-			return false;
-		}
-
-		if (! $user_info = $this->fetch_row('users', 'uid = ' . intval($uid)))
-		{
-			return false;
-		}
-
-		$oldpassword = compile_password($oldpassword, $salt);
-
-		if (!$this->compare($oldpassword, $user_info['password']))
-		{
-			return false;
-		}
-
-		return $this->update_user_password_ingore_oldpassword($password, $uid);
-	}
-
-	/**
-	 * 更改用户不用旧密码密码
-	 *
-	 * @param  string
-	 * @param  int
-	 * @param  string
-	 */
-	public function update_user_password_ingore_oldpassword($password, $uid)
-	{
-		if (!$password OR !$uid)
-		{
-			return false;
-		}
-
-		$salt = $this->generate_salt_deprecated();
-
-		$this->update('users', array(
-			'password' => $this->hash(compile_password($password, $salt)),
-			'salt' => $salt
-		), 'uid = ' . intval($uid));
-
-		return true;
-	}
-
-	public function generate_salt_deprecated()
+	public function generate_client_salt()
 	{
 		$length = 8;
 		for ($i = 0; $i < $length; $i++)
