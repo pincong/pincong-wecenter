@@ -73,7 +73,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('本站目前关闭注册')));
 		}
-		else if (get_setting('register_type') == 'invite' AND !$_POST['icode'])
+		else if (get_setting('register_type') == 'invite')
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('本站只能通过邀请注册')));
 		}
