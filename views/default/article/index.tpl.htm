@@ -120,6 +120,14 @@
 									</div>
 								</div>
 								<!-- end 下拉菜单 -->
+
+								<?php if ($this->user_info['permission']['follow_thread']) { ?>
+								<?php if ($this->following) { ?>
+									<a class="follow btn btn-normal btn-success pull-right active" href="javascript:;" onclick="(function(selector){AWS.ajax_request(G_BASE_URL + '/content/ajax/unfollow/', 'item_type=article&item_id=<?php echo $this->article_info['id']; ?>', function(){selector.removeClass('active');selector.addClass('disabled');selector.text('<?php _e('已取消'); ?>')});})($(this))"><?php _e('取消关注'); ?></a>
+								<?php } else { ?>
+									<a class="follow btn btn-normal btn-success pull-right" href="javascript:;" onclick="(function(selector){AWS.ajax_request(G_BASE_URL + '/content/ajax/follow/', 'item_type=article&item_id=<?php echo $this->article_info['id']; ?>', function(){selector.addClass('disabled');selector.text('<?php _e('已关注'); ?>')});})($(this))"><?php _e('关注'); ?></a>
+								<?php } ?>
+								<?php } ?>
 							</div>
 
 						</div>

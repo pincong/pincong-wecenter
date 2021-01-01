@@ -142,6 +142,13 @@
 								<a href="javascript:;" onclick="AWS.User.follow($(this), 'question', <?php echo $this->question_info['id']; ?>);" class="follow btn btn-normal btn-success pull-right <?php if ($this->question_focus) { ?> active<?php } ?>"><span><?php if ($this->question_focus) { ?><?php _e('取消关注'); ?><?php } else { ?><?php _e('关注'); ?><?php } ?></span> <em>|</em> <b><?php echo $this->question_info['focus_count']?></b></a>
 								<?php } ?>
 
+								<?php if ($this->user_info['permission']['follow_thread']) { ?>
+								<?php if ($this->following) { ?>
+									<a class="follow btn btn-normal btn-success pull-right active" href="javascript:;" onclick="(function(selector){AWS.ajax_request(G_BASE_URL + '/content/ajax/unfollow/', 'item_type=question&item_id=<?php echo $this->question_info['id']; ?>', function(){selector.removeClass('active');selector.addClass('disabled');selector.text('<?php _e('已取消'); ?>')});})($(this))"><?php _e('取消关注'); ?></a>
+								<?php } else { ?>
+									<a class="follow btn btn-normal btn-success pull-right" href="javascript:;" onclick="(function(selector){AWS.ajax_request(G_BASE_URL + '/content/ajax/follow/', 'item_type=question&item_id=<?php echo $this->question_info['id']; ?>', function(){selector.addClass('disabled');selector.text('<?php _e('已关注'); ?>')});})($(this))"><?php _e('关注'); ?></a>
+								<?php } ?>
+								<?php } ?>
 							</div>
 
 						</div>

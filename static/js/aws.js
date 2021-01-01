@@ -68,57 +68,6 @@ var AWS =
 		}
 	},
 
-	// ajax post
-	ajax_rsm: function(url, params, callback)
-	{
-		AWS.loading('show');
-
-		if (typeof params == 'object')
-		{
-			params['_post_type'] = 'ajax';
-		}
-		else
-		{
-			params += '&_post_type=ajax';
-		}
-
-		$.post(url, params, function (result)
-		{
-			AWS.loading('hide');
-			_callback(result);
-		}, 'json').error(function (error)
-		{
-			AWS.loading('hide');
-			_error(error);
-		});
-
-		function _callback (result)
-		{
-			if (!result)
-			{
-				alert(_t('未知错误'));
-				callback && callback('error');
-				return;
-			}
-
-			if (result.err)
-			{
-				AWS.alert(result.err);
-				callback && callback('error');
-				return;
-			}
-
-			callback && callback(null, result.rsm);
-		}
-
-		function _error (error)
-		{
-			alert(_t('接口错误') + ' ' + error.responseText);
-			callback && callback('error');
-			return;
-		}
-	},
-
 	ajax_request: function(url, params, no_reload)
 	{
 		AWS.loading('show');
@@ -171,7 +120,14 @@ var AWS =
 			}
 			else if (result.errno == 1)
 			{
-				no_reload || window.location.reload();
+				if (!no_reload)
+				{
+					window.location.reload();
+				}
+				else if (typeof no_reload === 'function')
+				{
+					no_reload();
+				}
 			}
 		}
 
@@ -228,7 +184,6 @@ var AWS =
 				if (!result)
 				{
 					alert(_t('未知错误'));
-					callback && callback('error');
 					return;
 				}
 				if (result.errno == 1) // success
@@ -287,7 +242,6 @@ var AWS =
 			},
 			error: function (error)
 			{
-				console.log(error);
 				AWS.loading('hide');
 				if (btn_el)
 				{
@@ -305,7 +259,6 @@ var AWS =
 				{
 					alert(_t('内部服务器错误'));
 				}
-				callback && callback('error');
 			}
 		});
 	},
@@ -1295,11 +1248,10 @@ AWS.User =
 	add_favorite: function(item_type, item_id)
 	{
 		AWS.confirm(_t('确认收藏?'), function() {
-			AWS.ajax_rsm(G_BASE_URL + '/favorite/ajax/add_favorite/', {
+			AWS.ajax_request(G_BASE_URL + '/favorite/ajax/add_favorite/', {
 				'item_id' : item_id,
 				'item_type' : item_type
-			}, function(err) {
-				if (err) return;
+			}, function() {
 				AWS.alert(_t('已收藏的内容可以在「动态 - 我的收藏」里找到'));
 			});
 		});

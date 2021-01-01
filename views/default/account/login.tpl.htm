@@ -32,7 +32,7 @@
 					<a href="<?php echo url_rewrite(); ?>/account/find_password/" class="pull-right">忘记密码</a>
 				</li>
 				<li class="clearfix">
-					<button class="btn btn-large btn-blue btn-block" onclick="AWS.submit_form($('#login_form'), $(this), $('.error_message'), function(err){if(!err)window.location.reload();$('#captcha').click()}); return false;"><?php _e('登录'); ?></button>
+					<button class="btn btn-large btn-blue btn-block" onclick="AWS.submit_form($('#login_form'), $(this), $('.error_message'), function(err){if(!err){window.location.reload();}else{$('#captcha').click()}}); return false;"><?php _e('登录'); ?></button>
 				</li>
 			</ul>
 		</form>
