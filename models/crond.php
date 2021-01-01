@@ -105,7 +105,7 @@ class crond_class extends AWS_MODEL
     // 每半小时执行
     public function half_hour()
     {
-        $this->model('search_fulltext')->clean_cache();
+
     }
 
     // 每小时执行
@@ -124,10 +124,7 @@ class crond_class extends AWS_MODEL
     // 每日时执行
     public function day()
     {
-        if (!S::get('db_engine') OR S::get('db_engine') == 'MyISAM')
-        {
-            $this->execute('OPTIMIZE TABLE `' . $this->get_table('search_cache') . '`');
-        }
+
     }
 
     // 每周执行

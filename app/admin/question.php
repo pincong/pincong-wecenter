@@ -52,7 +52,7 @@ class question extends AWS_ADMIN_CONTROLLER
 
 		if ($_GET['keyword'])
 		{
-			$where[] = "(MATCH(title_fulltext) AGAINST('" . $this->model('question')->escape($this->model('search_fulltext')->encode_search_code($this->model('system')->analysis_keyword($_GET['keyword']))) . "' IN BOOLEAN MODE))";
+			$where[] = "(`title` LIKE '%" . $this->model('question')->escape($_GET['keyword']) . "%')";
 		}
 
 		if ($_GET['category_id'])

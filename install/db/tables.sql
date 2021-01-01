@@ -23,7 +23,6 @@ CREATE TABLE IF NOT EXISTS `aws_question` (
   `redirect_id` int(11) DEFAULT '0',
   `title` varchar(240) DEFAULT NULL,
   `message` text,
-  `title_fulltext` text,
   `answer_count` int(11) DEFAULT '0',
   `comment_count` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -37,7 +36,6 @@ CREATE TABLE IF NOT EXISTS `aws_question` (
   KEY `lock` (`lock`),
   KEY `recommend` (`recommend`),
   KEY `sort` (`sort`),
-  FULLTEXT KEY `title_fulltext` (`title_fulltext`),
   KEY `answer_count` (`answer_count`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='问题列表';
 
@@ -125,7 +123,6 @@ CREATE TABLE IF NOT EXISTS `aws_article` (
   `redirect_id` int(11) DEFAULT '0',
   `title` varchar(240) DEFAULT NULL,
   `message` text,
-  `title_fulltext` text,
   `comments` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
@@ -138,7 +135,6 @@ CREATE TABLE IF NOT EXISTS `aws_article` (
   KEY `lock` (`lock`),
   KEY `recommend` (`recommend`),
   KEY `sort` (`sort`),
-  FULLTEXT KEY `title_fulltext` (`title_fulltext`),
   KEY `comments` (`comments`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
@@ -184,7 +180,6 @@ CREATE TABLE IF NOT EXISTS `aws_video` (
   `redirect_id` int(11) DEFAULT '0',
   `title` varchar(240) DEFAULT NULL,
   `message` text,
-  `title_fulltext` text,
   `comment_count` int(11) DEFAULT '0',
   `source_type` varchar(32) DEFAULT NULL,
   `source` text,
@@ -199,7 +194,6 @@ CREATE TABLE IF NOT EXISTS `aws_video` (
   KEY `lock` (`lock`),
   KEY `recommend` (`recommend`),
   KEY `sort` (`sort`),
-  FULLTEXT KEY `title_fulltext` (`title_fulltext`),
   KEY `comment_count` (`comment_count`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 

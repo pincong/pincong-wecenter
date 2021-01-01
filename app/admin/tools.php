@@ -52,8 +52,6 @@ class tools extends AWS_ADMIN_CONTROLLER
         {
             foreach ($questions_list as $key => $val)
             {
-                $this->model('search_fulltext')->push_index('question', $val['title'], $val['id']);
-
                 $this->model('posts')->set_posts_index($val['id'], 'question', $val);
             }
 
@@ -71,8 +69,6 @@ class tools extends AWS_ADMIN_CONTROLLER
         {
             foreach ($article_list as $key => $val)
             {
-                $this->model('search_fulltext')->push_index('article', $val['title'], $val['id']);
-
                 $this->model('posts')->set_posts_index($val['id'], 'article', $val);
             }
 

@@ -191,8 +191,6 @@ class publish_class extends AWS_MODEL
 
 		$this->model('posts')->set_posts_index($item_id, 'question');
 
-		$this->model('search_fulltext')->push_index('question', $data['title'], $item_id);
-
 		$this->save_topics('question', $data['uid'], $item_id, $data['topics'], $data['permission_create_topic']);
 
 		if ($data['ask_user_id'])
@@ -234,8 +232,6 @@ class publish_class extends AWS_MODEL
 
 		$this->model('posts')->set_posts_index($item_id, 'article');
 
-		$this->model('search_fulltext')->push_index('article', $data['title'], $item_id);
-
 		$this->save_topics('article', $data['uid'], $item_id, $data['topics'], $data['permission_create_topic']);
 
 		if ($data['follow'])
@@ -273,9 +269,6 @@ class publish_class extends AWS_MODEL
 		}
 
 		$this->model('posts')->set_posts_index($item_id, 'video');
-
-		// 搜索相关 暂不实现
-		//$this->model('search_fulltext')->push_index('video', $data['title'], $item_id);
 
 		$this->save_topics('video', $data['uid'], $item_id, $data['topics'], $data['permission_create_topic']);
 

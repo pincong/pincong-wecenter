@@ -75,8 +75,6 @@ class video_class extends AWS_MODEL
 			return false;
 		}
 
-		//$this->model('search_fulltext')->push_index('video', $title, $item_info['id']);
-
 		$this->update('video', array(
 			'title' => htmlspecialchars($title),
 			'message' => htmlspecialchars($message)
@@ -98,7 +96,6 @@ class video_class extends AWS_MODEL
 		$data = array(
 			'title' => null,
 			'message' => null,
-			'title_fulltext' => null,
 			'source_type' => null,
 			'source' => null,
 		);

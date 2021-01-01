@@ -75,8 +75,6 @@ class article_class extends AWS_MODEL
 			return false;
 		}
 
-		$this->model('search_fulltext')->push_index('article', $title, $item_info['id']);
-
 		$this->update('article', array(
 			'title' => htmlspecialchars($title),
 			'message' => htmlspecialchars($message)
@@ -97,7 +95,6 @@ class article_class extends AWS_MODEL
 		$data = array(
 			'title' => null,
 			'message' => null,
-			'title_fulltext' => null,
 		);
 
 		$trash_category_id = S::get_int('trash_category_id');

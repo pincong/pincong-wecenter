@@ -266,8 +266,6 @@ class account_class extends AWS_MODEL
 			'user_update_time' => fake_time()
 		), ['uid', 'eq', $uid, 'i']);
 
-		//return $this->model('search_fulltext')->push_index('user', $user_name, $uid);
-
 		return true;
 	}
 

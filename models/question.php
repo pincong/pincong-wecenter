@@ -137,8 +137,6 @@ class question_class extends AWS_MODEL
 			return false;
 		}
 
-		$this->model('search_fulltext')->push_index('question', $title, $item_info['id']);
-
 		$this->update('question', array(
 			'title' => htmlspecialchars($title),
 			'message' => htmlspecialchars($message)
@@ -160,7 +158,6 @@ class question_class extends AWS_MODEL
 		$data = array(
 			'title' => null,
 			'message' => null,
-			'title_fulltext' => null,
 		);
 
 		$trash_category_id = S::get_int('trash_category_id');
@@ -383,71 +380,6 @@ class question_class extends AWS_MODEL
 		}
 
 		return $result;
-	}
-
-
-	public function get_related_question_list($question_id, $title, $limit = 10)
-	{
-		$cache_key = 'question_related_list_' . md5($title) . '_' . $limit;
-
-		if ($question_related_list = AWS_APP::cache()->get($cache_key))
-		{
-			return $question_related_list;
-		}
-
-		if ($question_keywords = $this->model('system')->analysis_keyword($title))
-		{
-			if (sizeof($question_keywords) <= 1)
-			{
-				return false;
-			}
-
-			if ($question_list = $this->query_all($this->model('search_fulltext')->bulid_query('question', 'title', $question_keywords) . ' LIMIT ' . 2000))
-			{
-				$question_list = aasort($question_list, 'score', 'DESC');
-				$question_list = aasort($question_list, 'agree_count', 'DESC');
-
-				$question_list = array_slice($question_list, 0, ($limit + 1));
-
-				foreach ($question_list as $key => $val)
-				{
-					if ($val['id'] == $question_id)
-					{
-						unset($question_list[$key]);
-					}
-					else
-					{
-						if (! isset($question_related[$val['id']]))
-						{
-							$question_related[$val['id']] = $val['title'];
-
-							$question_info[$val['id']] = $val;
-						}
-					}
-				}
-			}
-		}
-
-		if ($question_related)
-		{
-			foreach ($question_related as $key => $title)
-			{
-				$question_related_list[] = array(
-					'id' => $key,
-					'title' => $title,
-					'answer_count' => $question_info[$key]['answer_count']
-				);
-			}
-		}
-
-		if (sizeof($question_related) > $limit)
-		{
-			array_pop($question_related);
-		}
-
-		AWS_APP::cache()->set($cache_key, $question_related_list, S::get('cache_level_low'));
-
-		return $question_related_list;
 	}
 
 }
