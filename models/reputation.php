@@ -20,6 +20,41 @@ if (!defined('IN_ANWSION'))
 
 class reputation_class extends AWS_MODEL
 {
+	private function should_user_be_flagged($recipient_user, $content_reputation, $agree_value)
+	{
+		if (!$recipient_user OR !!$recipient_user['forbidden'])
+		{
+			return null;
+		}
+
+		if ($agree_value > 0)
+		{
+			$reputation = $recipient_user['permission']['flagging_reputation_gt'];
+			$group_id = $recipient_user['permission']['flagging_reputation_gt_group_id'];
+			if (is_numeric($reputation) AND is_numeric($group_id))
+			{
+				if ($content_reputation > $reputation)
+				{
+					return $this->model('usergroup')->get_group_id_by_value_flagged($group_id);
+				}
+			}
+		}
+		else
+		{
+			$reputation = $recipient_user['permission']['flagging_reputation_lt'];
+			$group_id = $recipient_user['permission']['flagging_reputation_lt_group_id'];
+			if (is_numeric($reputation) AND is_numeric($group_id))
+			{
+				if ($content_reputation < $reputation)
+				{
+					return $this->model('usergroup')->get_group_id_by_value_flagged($group_id);
+				}
+			}
+		}
+
+		return null;
+	}
+
 	private function check_reputation_type($item_type)
 	{
 		$reputation_types = S::get('reputation_types');
@@ -41,7 +76,7 @@ class reputation_class extends AWS_MODEL
 	}
 
 	// 更新被赞用户赞数和声望
-	private function update_user_agree_count_and_reputation($item_type, $recipient_user, $agree_value, $reputation_value)
+	private function update_recipient_user_info($item_type, $recipient_user, $agree_value, $reputation_value, $flag_group_id = null)
 	{
 		// 用户已注销
 		if (!$recipient_user)
@@ -67,6 +102,10 @@ class reputation_class extends AWS_MODEL
 		}
 
 		$set = '`agree_count` = `agree_count` + ' . ($agree_value) . ', `reputation` = `reputation` + ' . ($reputation_value);
+		if (!is_null($flag_group_id))
+		{
+			$set .= ', `flagged` = ' . $flag_group_id;
+		}
 
 		$this->update('users', $set, ['uid', 'eq', $recipient_user['uid'], 'i']);
 	}
@@ -175,8 +214,10 @@ class reputation_class extends AWS_MODEL
 	}
 
 
-	private function update_agree_count_and_reputation($item_type, $item_id, $vote_user, $recipient_user, $agree_value, $user_reputation_value, $content_reputation_value)
+	private function update_item_and_user_info($item_type, $item_id, $vote_user, $recipient_user, $agree_value, $user_reputation_value, $content_reputation_value)
 	{
+		$flag_group_id = null;
+
 		if ($user_reputation_value OR $content_reputation_value)
 		{
 			// 已缓存过
@@ -215,12 +256,15 @@ class reputation_class extends AWS_MODEL
 				{
 					$this->model('activity')->push_item_with_high_reputation($item_type, $item_id, $content_reputation_now, $item_info['uid']);
 				}
+
+				$flag_group_id = $this->should_user_be_flagged($recipient_user, $content_reputation_now, $agree_value);
+
 				$this->update_index_reputation($item_type, $item_id, $item_info, $content_reputation_value);
 			}
 		}
 
 		$this->update_item_agree_count_and_reputation($item_type, $item_id, $agree_value, $content_reputation_value);
-		$this->update_user_agree_count_and_reputation($item_type, $recipient_user, $agree_value, $user_reputation_value);
+		$this->update_recipient_user_info($item_type, $recipient_user, $agree_value, $user_reputation_value, $flag_group_id);
 	}
 
 
@@ -284,7 +328,7 @@ class reputation_class extends AWS_MODEL
 			$this->get_initial_reputation($vote_user, $recipient_user, $agree_value, $user_reputation_value, $content_reputation_value);
 		}
 
-		$this->update_agree_count_and_reputation($item_type, $item_id, $vote_user, $recipient_user, $agree_value, $user_reputation_value, $content_reputation_value);
+		$this->update_item_and_user_info($item_type, $item_id, $vote_user, $recipient_user, $agree_value, $user_reputation_value, $content_reputation_value);
 	}
 
 }
