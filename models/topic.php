@@ -34,7 +34,7 @@ class topic_class extends AWS_MODEL
 			return false;
 		}
 
-		if (!$focus_topics = $this->fetch_all('topic_focus', 'uid = ' . intval($uid)))
+		if (!$focus_topics = $this->fetch_all('topic_focus', ['uid', 'eq', $uid, 'i']))
 		{
 			return false;
 		}
@@ -44,7 +44,7 @@ class topic_class extends AWS_MODEL
 			$topic_ids[] = $val['topic_id'];
 		}
 
-		$topic_list = $this->fetch_all('topic', 'topic_id IN(' . implode(',', $topic_ids) . ')', 'discuss_count DESC', $limit);
+		$topic_list = $this->fetch_all('topic', ['topic_id', 'in', $topic_ids, 'i'], 'discuss_count DESC', $limit);
 
 		return $topic_list;
 	}
@@ -56,7 +56,7 @@ class topic_class extends AWS_MODEL
 			return false;
 		}
 
-		if (!$topic_focus = $this->fetch_all('topic_focus', "uid = " . intval($uid)))
+		if (!$topic_focus = $this->fetch_all('topic_focus', ['uid', 'eq', $uid, 'i']))
 		{
 			return false;
 		}
@@ -79,15 +79,16 @@ class topic_class extends AWS_MODEL
 	public function get_topic_by_id($topic_id)
 	{
 		static $topics;
+		$topic_id = intval($topic_id);
 
-		if (! $topic_id)
+		if (!$topic_id)
 		{
 			return false;
 		}
 
-		if (! $topics[$topic_id])
+		if (!$topics[$topic_id])
 		{
-			$topics[$topic_id] = $this->fetch_row('topic', 'topic_id = ' . intval($topic_id));
+			$topics[$topic_id] = $this->fetch_row('topic', ['topic_id', 'eq', $topic_id, 'i']);
 		}
 
 		return $topics[$topic_id];
@@ -95,16 +96,16 @@ class topic_class extends AWS_MODEL
 
 	public function get_merged_topic_ids($topic_id)
 	{
-		return $this->fetch_all('topic_merge', 'target_id = ' . intval($topic_id));
+		return $this->fetch_all('topic_merge', ['target_id', 'eq', $topic_id, 'i']);
 	}
 
 	public function merge_topic($source_id, $target_id, $uid)
 	{
-		if ($this->count('topic', 'topic_id = ' . intval($source_id) . ' AND merged_id = 0'))
+		if ($this->count('topic', [['topic_id', 'eq', $source_id, 'i'], ['merged_id', 'eq', 0]]))
 		{
 			$this->update('topic', array(
 				'merged_id' => intval($target_id)
-			), 'topic_id = ' . intval($source_id));
+			), ['topic_id', 'eq', $source_id, 'i']);
 
 			return $this->insert('topic_merge', array(
 				'source_id' => intval($source_id),
@@ -121,9 +122,9 @@ class topic_class extends AWS_MODEL
 	{
 		$this->update('topic', array(
 			'merged_id' => 0
-		), 'topic_id = ' . intval($source_id));
+		), ['topic_id', 'eq', $source_id, 'i']);
 
-		return $this->delete('topic_merge', 'source_id = ' . intval($source_id) . ' AND target_id = ' . intval($target_id));
+		return $this->delete('topic_merge', [['source_id', 'eq', $source_id, 'i'], ['target_id', 'eq', $target_id, 'i']]);
 	}
 
 	public function get_topics_by_ids($topic_ids)
@@ -133,9 +134,9 @@ class topic_class extends AWS_MODEL
 			return false;
 		}
 
-		array_walk_recursive($topic_ids, 'intval_string');
+		//array_walk_recursive($topic_ids, 'intval_string');
 
-		$topics = $this->fetch_all('topic', 'topic_id IN(' . implode(',', $topic_ids) . ')');
+		$topics = $this->fetch_all('topic', ['topic_id', 'in', $topic_ids, 'i']);
 
 		foreach ($topics AS $key => $val)
 		{
@@ -147,7 +148,7 @@ class topic_class extends AWS_MODEL
 
 	public function get_topic_by_title($topic_title)
 	{
-		if ($topic_id = $this->fetch_one('topic', 'topic_id', "topic_title = '" . $this->quote(htmlspecialchars($topic_title)) . "'"))
+		if ($topic_id = $this->fetch_one('topic', 'topic_id', ['topic_title', 'eq', htmlspecialchars($topic_title), 's']))
 		{
 			return $this->get_topic_by_id($topic_id);
 		}
@@ -155,7 +156,7 @@ class topic_class extends AWS_MODEL
 
 	public function get_topic_id_by_title($topic_title)
 	{
-		return $this->fetch_one('topic', 'topic_id', "topic_title = '" . $this->quote(htmlspecialchars($topic_title)) . "'");
+		return $this->fetch_one('topic', 'topic_id', ['topic_title', 'eq', htmlspecialchars($topic_title), 's']);
 	}
 
 	public function save_topic($topic_title, $uid = null, $auto_create = true, $topic_description = null)
@@ -193,7 +194,7 @@ class topic_class extends AWS_MODEL
 			return false;
 		}
 
-		return $this->delete('topic_relation', 'topic_id = ' . intval($topic_id) . ' AND item_id = ' . intval($item_id) . " AND `type` = '" . $this->quote($type) . "'");
+		return $this->delete('topic_relation', [['topic_id', 'eq', $topic_id, 'i'], ['item_id', 'eq', $item_id, 'i'], ['type', 'eq', $type, 's']]);
 	}
 
 	public function update_topic($uid, $topic_id, $topic_title = null, $topic_description = null, $topic_pic = null)
@@ -224,7 +225,7 @@ class topic_class extends AWS_MODEL
 
 		if ($data)
 		{
-			$this->update('topic', $data, 'topic_id = ' . intval($topic_id));
+			$this->update('topic', $data, ['topic_id', 'eq', $topic_id, 'i']);
 		}
 
 		return TRUE;
@@ -252,11 +253,11 @@ class topic_class extends AWS_MODEL
 			);
 		}
 
-		array_walk_recursive($topic_ids, 'intval_string');
+		//array_walk_recursive($topic_ids, 'intval_string');
 
 		return $this->update('topic', array(
 			'topic_lock' => $topic_lock
-		), 'topic_id IN (' . implode(',', $topic_ids) . ')');
+		), ['topic_id', 'in', $topic_ids, 'i']);
 
 	}
 
@@ -269,6 +270,8 @@ class topic_class extends AWS_MODEL
 
 	public function add_focus_topic($uid, $topic_id)
 	{
+		$where = ['topic_id', 'eq', $topic_id, 'i'];
+
 		if (! $this->has_focus_topic($uid, $topic_id))
 		{
 			if ($this->insert('topic_focus', array(
@@ -277,7 +280,7 @@ class topic_class extends AWS_MODEL
 				"add_time" => fake_time()
 			)))
 			{
-				$this->query('UPDATE ' . $this->get_table('topic') . " SET focus_count = focus_count + 1 WHERE topic_id = " . intval($topic_id));
+				$this->query('UPDATE ' . $this->get_table('topic') . " SET focus_count = focus_count + 1 WHERE " . $this->where($where));
 			}
 
 			$result = 'add';
@@ -287,14 +290,14 @@ class topic_class extends AWS_MODEL
 		{
 			if ($this->delete_focus_topic($topic_id, $uid))
 			{
-				$this->query('UPDATE ' . $this->get_table('topic') . " SET focus_count = focus_count - 1 WHERE topic_id = " . intval($topic_id));
+				$this->query('UPDATE ' . $this->get_table('topic') . " SET focus_count = focus_count - 1 WHERE " . $this->where($where));
 			}
 
 			$result = 'remove';
 		}
 
 		// 更新个人计数
-		$focus_count = $this->count('topic_focus', 'uid = ' . intval($uid));
+		$focus_count = $this->count('topic_focus', ['uid', 'eq', $uid, 'i']);
 
 		$this->model('account')->update_user_fields(array(
 			'topic_focus_count' => $focus_count
@@ -305,12 +308,12 @@ class topic_class extends AWS_MODEL
 
 	public function delete_focus_topic($topic_id, $uid)
 	{
-		return $this->delete('topic_focus', 'uid = ' . intval($uid) . ' AND topic_id = ' . intval($topic_id));
+		return $this->delete('topic_focus', [['uid', 'eq', $uid, 'i'], ['topic_id', 'eq', $topic_id, 'i']]);
 	}
 
 	public function has_focus_topic($uid, $topic_id)
 	{
-		return $this->fetch_one('topic_focus', 'focus_id', "uid = " . intval($uid) . " AND topic_id = " . intval($topic_id));
+		return $this->fetch_one('topic_focus', 'focus_id', [['uid', 'eq', $uid, 'i'], ['topic_id', 'eq', $topic_id, 'i']]);
 	}
 
 	public function has_focus_topics($uid, $topic_ids)
@@ -320,9 +323,14 @@ class topic_class extends AWS_MODEL
 			return false;
 		}
 
-		array_walk_recursive($topic_ids, 'intval_string');
+		//array_walk_recursive($topic_ids, 'intval_string');
 
-		if ($focus = $this->query_all('SELECT focus_id, topic_id FROM ' . $this->get_table('topic_focus') . " WHERE uid = " . intval($uid) . " AND topic_id IN(" . implode(',', $topic_ids) . ")"))
+		$where = [
+			['uid', 'eq', $uid, 'i'],
+			['topic_id', 'in', $topic_ids, 'i']
+		];
+
+		if ($focus = $this->query_all('SELECT focus_id, topic_id FROM ' . $this->get_table('topic_focus') . " WHERE " . $this->where($where)))
 		{
 			foreach ($focus as $key => $val)
 			{
@@ -341,11 +349,11 @@ class topic_class extends AWS_MODEL
 		}
 
 		$this->update('topic', array(
-			'discuss_count' => $this->count('topic_relation', 'topic_id = ' . intval($topic_id)),
-			'discuss_count_last_week' => $this->count('topic_relation', 'add_time > ' . (time() - 604800) . ' AND topic_id = ' . intval($topic_id)),
-			'discuss_count_last_month' => $this->count('topic_relation', 'add_time > ' . (time() - 2592000) . ' AND topic_id = ' . intval($topic_id)),
-			'discuss_count_update' => intval($this->fetch_one('topic_relation', 'add_time', 'topic_id = ' . intval($topic_id), 'add_time DESC'))
-		), 'topic_id = ' . intval($topic_id));
+			'discuss_count' => $this->count('topic_relation', ['topic_id', 'eq', $topic_id, 'i']),
+			'discuss_count_last_week' => $this->count('topic_relation', [['add_time', 'gt', time() - 604800], ['topic_id', 'eq', $topic_id, 'i']]),
+			'discuss_count_last_month' => $this->count('topic_relation', [['add_time', 'gt', time() - 2592000], ['topic_id', 'eq', $topic_id, 'i']]),
+			'discuss_count_update' => intval($this->fetch_one('topic_relation', 'add_time', ['topic_id', 'eq', $topic_id, 'i'], 'add_time DESC'))
+		), ['topic_id', 'eq', $topic_id, 'i']);
 	}
 
 	/**
@@ -369,7 +377,7 @@ class topic_class extends AWS_MODEL
 			$topic_ids[] = $topic_id;
 		}
 
-		array_walk_recursive($topic_ids, 'intval_string');
+		//array_walk_recursive($topic_ids, 'intval_string');
 
 		foreach($topic_ids as $topic_id)
 		{
@@ -386,10 +394,10 @@ class topic_class extends AWS_MODEL
 				}
 			}
 
-			$this->delete('topic_focus', 'topic_id = ' . intval($topic_id));
-			$this->delete('topic_relation', 'topic_id = ' . intval($topic_id));
-			$this->delete('related_topic', 'topic_id = ' . intval($topic_id) . ' OR related_id = ' . intval($topic_id));
-			$this->delete('topic', 'topic_id = ' . intval($topic_id));
+			$this->delete('topic_focus', ['topic_id', 'eq', $topic_id, 'i']);
+			$this->delete('topic_relation', ['topic_id', 'eq', $topic_id, 'i']);
+			$this->delete('related_topic', [['topic_id', 'eq', $topic_id, 'i'], 'or', ['related_id', 'eq', $topic_id, 'i']]);
+			$this->delete('topic', ['topic_id', 'eq', $topic_id, 'i']);
 		}
 
 		return true;
@@ -399,7 +407,9 @@ class topic_class extends AWS_MODEL
 	{
 		$user_list = array();
 
-		$uids = $this->query_all("SELECT DISTINCT uid FROM " . $this->get_table('topic_focus') . " WHERE topic_id = " . intval($topic_id), $limit);
+		$where =['topic_id', 'eq', $topic_id, 'i'];
+
+		$uids = $this->query_all("SELECT DISTINCT uid FROM " . $this->get_table('topic_focus') . " WHERE " . $this->where($where), $limit);
 
 		if ($uids)
 		{
@@ -437,16 +447,16 @@ class topic_class extends AWS_MODEL
 			return false;
 		}
 
-		array_walk_recursive($topic_ids, 'intval_string');
+		//array_walk_recursive($topic_ids, 'intval_string');
 
-		$where[] = 'topic_id IN(' . implode(',', $topic_ids) . ')';
+		$where[] = ['topic_id', 'in', $topic_ids, 'i'];
 
 		if ($type)
 		{
-			$where[] = "`type` = '" . $this->quote($type) . "'";
+			$where[] = ['type', 'eq', $type, 's'];
 		}
 
-		if ($result = $this->query_all("SELECT item_id FROM " . $this->get_table('topic_relation') . " WHERE " . implode(' AND ', $where), $limit))
+		if ($result = $this->query_all("SELECT item_id FROM " . $this->get_table('topic_relation') . " WHERE " . $this->where($where), $limit))
 		{
 			foreach ($result AS $key => $val)
 			{
@@ -464,8 +474,6 @@ class topic_class extends AWS_MODEL
 	 */
 	public function get_hot_topics($category_id = 0, $limit = 5, $section = null)
 	{
-		$where = array();
-
 		if ($category_id)
 		{
 			if ($questions = $this->query_all("SELECT id FROM " . get_table('question') . " WHERE category_id =" . intval($category_id) . ' ORDER BY add_time DESC LIMIT 200'))
@@ -481,7 +489,7 @@ class topic_class extends AWS_MODEL
 				return false;
 			}
 
-			if (!$topic_relation = $this->fetch_all('topic_relation', 'item_id IN(' . implode(',', $question_ids) . ") AND `type` = 'question'"))
+			if (!$topic_relation = $this->fetch_all('topic_relation', [['item_id', 'in', $question_ids, 'i'], ['type', 'eq', 'question']]))
 			{
 				return false;
 			}
@@ -491,25 +499,25 @@ class topic_class extends AWS_MODEL
 				$topic_ids[] = $val['topic_id'];
 			}
 
-			$where[] = 'topic_id IN(' . implode(',', $topic_ids) . ')';
+			$where[] = ['topic_id', 'in', $topic_ids, 'i'];
 		}
 
 		switch ($section)
 		{
 			default:
-				return $this->fetch_all('topic', implode(' AND ', $where), 'discuss_count DESC', $limit);
+				return $this->fetch_all('topic', $where, 'discuss_count DESC', $limit);
 			break;
 
 			case 'week':
-				$where[] = 'discuss_count_update > ' . (time() - 604801);
+				$where[] = ['discuss_count_update', 'gt', time() - 604801];
 
-				return $this->fetch_all('topic', implode(' AND ', $where), 'discuss_count_last_week DESC', $limit);
+				return $this->fetch_all('topic', $where, 'discuss_count_last_week DESC', $limit);
 			break;
 
 			case 'month':
-				$where[] = 'discuss_count_update > ' . (time() - 2592001);
+				$where[] = ['discuss_count_update', 'gt', time() - 2592001];
 
-				return $this->fetch_all('topic', implode(' AND ', $where), 'discuss_count_last_month DESC', $limit);
+				return $this->fetch_all('topic', $where, 'discuss_count_last_month DESC', $limit);
 			break;
 		}
 	}
@@ -518,7 +526,7 @@ class topic_class extends AWS_MODEL
 	{
 		$this->pre_save_auto_related_topics($topic_id);
 
-		if (! $related_topic = $this->fetch_row('related_topic', 'topic_id = ' . intval($topic_id) . ' AND related_id = ' . intval($related_id)))
+		if (! $related_topic = $this->fetch_row('related_topic', [['topic_id', 'eq', $topic_id, 'i'], ['related_id', 'eq', $related_id, 'i']]))
 		{
 			return $this->insert('related_topic', array(
 				'topic_id' => intval($topic_id),
@@ -533,7 +541,7 @@ class topic_class extends AWS_MODEL
 	{
 		$this->pre_save_auto_related_topics($topic_id);
 
-		return $this->delete('related_topic', 'topic_id = ' . intval($topic_id) . ' AND related_id = ' . intval($related_id));
+		return $this->delete('related_topic', [['topic_id', 'eq', $topic_id, 'i'], ['related_id', 'eq', $related_id, 'i']]);
 	}
 
 	public function pre_save_auto_related_topics($topic_id)
@@ -553,13 +561,13 @@ class topic_class extends AWS_MODEL
 
 			$this->update('topic', array(
 				'user_related' => 1
-			), 'topic_id = ' . intval($topic_id));
+			), ['topic_id', 'eq', $topic_id, 'i']);
 		}
 	}
 
 	public function get_related_topics($topic_id)
 	{
-		if ($related_topic = $this->fetch_all('related_topic', 'topic_id = ' . intval($topic_id)))
+		if ($related_topic = $this->fetch_all('related_topic', ['topic_id', 'eq', $topic_id, 'i']))
 		{
 			foreach ($related_topic as $key => $val)
 			{
@@ -652,15 +660,15 @@ class topic_class extends AWS_MODEL
 
 	public function check_topic_relation($topic_id, $item_id, $type)
 	{
-		$where[] = 'topic_id = ' . intval($topic_id);
-		$where[] = "`type` = '" . $this->quote($type) . "'";
+		$where[] = ['topic_id', 'eq', $topic_id, 'i'];
+		$where[] = ['type', 'eq', $type, 's'];
 
 		if ($item_id)
 		{
-			$where[] = 'item_id = ' . intval($item_id);
+			$where[] = ['item_id', 'eq', $item_id, 'i'];
 		}
 
-		return $this->fetch_one('topic_relation', 'id', implode(' AND ', $where));
+		return $this->fetch_one('topic_relation', 'id', $where);
 	}
 
 	public function get_topics_by_item_id($item_id, $type)
@@ -679,9 +687,9 @@ class topic_class extends AWS_MODEL
 			return false;
 		}
 
-		array_walk_recursive($item_ids, 'intval_string');
+		//array_walk_recursive($item_ids, 'intval_string');
 
-		if (!$item_topics = $this->fetch_all('topic_relation', "item_id IN(" . implode(',', $item_ids) . ") AND `type` = '" . $this->quote($type) . "'"))
+		if (!$item_topics = $this->fetch_all('topic_relation', [['item_id', 'in', $item_ids, 'i'], ['type', 'eq', $type, 's']]))
 		{
 			foreach ($item_ids AS $item_id)
 			{
