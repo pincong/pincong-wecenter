@@ -469,8 +469,7 @@ class content_class extends AWS_MODEL
 
 		if ($update)
 		{
-			$sql = "UPDATE " . $this->get_table($item_type) . " SET view_count = view_count + " . ($count) . " WHERE id = " . ($item_id);
-			$this->execute($sql);
+			$this->update($item_type, '`view_count` = `view_count` + ' . $count, ['id', 'eq', $item_id]);
 			$count = 0;
 		}
 

@@ -126,7 +126,7 @@ class crond_class extends AWS_MODEL
     {
         if (!S::get('db_engine') OR S::get('db_engine') == 'MyISAM')
         {
-            $this->execute('OPTIMIZE TABLE `' . get_table('search_cache') . '`');
+            $this->execute('OPTIMIZE TABLE `' . $this->get_table('search_cache') . '`');
         }
     }
 

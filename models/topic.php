@@ -281,7 +281,7 @@ class topic_class extends AWS_MODEL
 				"add_time" => fake_time()
 			)))
 			{
-				$this->execute('UPDATE ' . $this->get_table('topic') . " SET focus_count = focus_count + 1 WHERE " . $this->where($where));
+				$this->update('topic', '`focus_count` = `focus_count` + 1', $where);
 			}
 
 			$result = 'add';
@@ -291,7 +291,7 @@ class topic_class extends AWS_MODEL
 		{
 			if ($this->delete_focus_topic($topic_id, $uid))
 			{
-				$this->execute('UPDATE ' . $this->get_table('topic') . " SET focus_count = focus_count - 1 WHERE " . $this->where($where));
+				$this->update('topic', '`focus_count` = `focus_count` - 1', $where);
 			}
 
 			$result = 'remove';

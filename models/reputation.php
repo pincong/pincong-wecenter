@@ -88,21 +88,23 @@ class reputation_class extends AWS_MODEL
 			}
 		}
 
-		$set = 'agree_count = agree_count + ' . ($agree_value) . ', reputation = reputation + ' . ($reputation_value);
+		$set = '`agree_count` = `agree_count` + ' . ($agree_value) . ', `reputation` = `reputation` + ' . ($reputation_value);
 		if ($auto_ban)
 		{
-			$set .= ', forbidden = -1';
+			$set .= ', `forbidden` = -1';
 		}
 
-		$sql = 'UPDATE ' . $this->get_table('users') . ' SET ' . $set . ' WHERE uid = ' . ($recipient_user['uid']);
-		$this->execute($sql);
+		$this->update('users', $set, ['uid', 'eq', $recipient_user['uid'], 'i']);
 	}
 
 	// 更新被赞post赞数和声望(热度)
 	private function update_item_agree_count_and_reputation(&$item_type, $item_id, $agree_value, $reputation_value)
 	{
-		$sql = 'UPDATE ' . $this->get_table($item_type) . ' SET agree_count = agree_count + ' . ($agree_value) . ', reputation = reputation + ' . ($reputation_value) . ' WHERE id = ' . ($item_id);
-		$this->execute($sql);
+		$this->update(
+			$item_type,
+			'`agree_count` = `agree_count` + ' . $agree_value . ', `reputation` = `reputation` + ' . $reputation_value,
+			['id', 'eq', $item_id]
+		);
 	}
 
 	// 更新posts_index表声望(用于热门排序)
@@ -129,9 +131,7 @@ class reputation_class extends AWS_MODEL
 				return;
 		}
 
-		$where = "post_id = " . $parent_id . " AND post_type = '" . $parent_type . "'";
-		$sql = 'UPDATE ' . $this->get_table('posts_index') . ' SET reputation = reputation + ' . $reputation_value . ' WHERE ' . $where;
-		$this->execute($sql);
+		$this->update('posts_index', '`reputation` = `reputation` + ' . $reputation_value, [['post_id', 'eq', $parent_id], ['post_type', 'eq', $parent_type]]);
 	}
 
 

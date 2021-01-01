@@ -56,7 +56,7 @@ class currency_class extends AWS_MODEL
 			));
 		}
 
-		$this->execute('UPDATE ' . $this->get_table('users') . ' SET currency = currency + ' . $currency . ' WHERE uid = ' . intval($uid));
+		$this->update('users', '`currency` = `currency` + ' . $currency, ['uid', 'eq', $uid, 'i']);
 
 		return $log_id;
 	}
