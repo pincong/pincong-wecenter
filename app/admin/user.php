@@ -46,6 +46,11 @@ class user extends AWS_ADMIN_CONTROLLER
             $where[] = 'forbidden <> 0';
         }
 
+        if ($_GET['type'] == 'flagged')
+        {
+            $where[] = 'flagged <> 0';
+        }
+
         if ($_GET['user_name'])
         {
             $where[] = "user_name LIKE '%" . $this->model('people')->quote($_GET['user_name']) . "%'";

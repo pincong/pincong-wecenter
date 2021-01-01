@@ -849,6 +849,13 @@ class ajax extends AWS_ADMIN_CONTROLLER
         H::ajax_json_output(AWS_APP::RSM(null, 1, null));
     }
 
+    public function flag_user_action()
+    {
+        $this->model('user')->flag_user_by_uid($_POST['uid'], $_POST['status']);
+
+        H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+    }
+
     public function currency_process_action()
     {
         if (!$_POST['uid'])
