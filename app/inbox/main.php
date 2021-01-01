@@ -28,8 +28,6 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		$this->model('account')->update_inbox_unread($this->user_id);
-
 		if ($inbox_dialog = $this->model('message')->get_inbox_message(H::GET('page'), S::get_int('contents_per_page'), $this->user_id))
 		{
 			$inbox_total_rows = $this->model('message')->total_rows();

@@ -431,13 +431,6 @@ class account_class extends AWS_MODEL
 		), ['uid', 'eq', $uid, 'i']);
 	}
 
-	public function update_inbox_unread($uid)
-	{
-		return $this->update('users', array(
-			'inbox_unread' => ($this->sum('inbox_dialog', 'sender_unread', ['sender_uid', 'eq', $uid, 'i']) + $this->sum('inbox_dialog', 'recipient_unread', ['recipient_uid', 'eq', $uid, 'i']))
-		), ['uid', 'eq', $uid, 'i']);
-	}
-
 	public function get_user_list($where, $order_by, $page, $per_page)
 	{
 		$result = $this->fetch_page('users', $where, $order_by, $page, $per_page);

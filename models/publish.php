@@ -20,6 +20,34 @@ if (!defined('IN_ANWSION'))
 
 class publish_class extends AWS_MODEL
 {
+	private $key;
+	public function get_key()
+	{
+		if (!$this->key)
+		{
+			$this->key = AWS_APP::crypt()->new_key(G_SECUKEY);
+		}
+		return $this->key;
+	}
+
+	public function encrypt($message)
+	{
+		if (!$message)
+		{
+			return '';
+		}
+		return AWS_APP::crypt()->encode($message, $this->get_key());
+	}
+
+	public function decrypt($message)
+	{
+		if (!$message)
+		{
+			return '';
+		}
+		return AWS_APP::crypt()->decode($message, $this->get_key());
+	}
+
 	// 延迟显示的时间戳
 	private function calc_later_time($minutes)
 	{
@@ -81,8 +109,8 @@ class publish_class extends AWS_MODEL
 
 	private function publish_scheduled_item($val)
 	{
-		// 暂时用 model('message')->decrypt
-		$data = unserialize_array($this->model('message')->decrypt($val['data']));
+		// decrypt
+		$data = unserialize_array($this->decrypt($val['data']));
 		if (!$data['uid'])
 		{
 			return;
@@ -164,8 +192,8 @@ class publish_class extends AWS_MODEL
 			'time' => $time,
 			'uid' => $data['uid'],
 			'parent_id' => intval($data['parent_id']),
-			// 暂时用 model('message')->encrypt
-			'data' => $this->model('message')->encrypt(serialize($data))
+			// encrypt
+			'data' => $this->encrypt(serialize($data))
 		));
 	}
 

@@ -110,13 +110,19 @@ class message_class extends AWS_MODEL
 
 		$this->update_dialog_count($inbox_dialog_id, $sender_uid);
 
-		$this->model('account')->update_inbox_unread($recipient_uid);
-		//$this->model('account')->update_inbox_unread($sender_uid);
+		$this->update_inbox_unread($recipient_uid);
 
 		return $message_id;
 	}
 
-	public function set_message_read($dialog_id, $uid, $receipt = true)
+	public function update_inbox_unread($uid)
+	{
+		return $this->update('users', array(
+			'inbox_unread' => ($this->sum('inbox_dialog', 'sender_unread', ['sender_uid', 'eq', $uid, 'i']) + $this->sum('inbox_dialog', 'recipient_unread', ['recipient_uid', 'eq', $uid, 'i']))
+		), ['uid', 'eq', $uid, 'i']);
+	}
+
+	public function set_message_read($dialog_id, $uid)
 	{
 		if (! $inbox_dialog = $this->get_dialog_by_id($dialog_id))
 		{
@@ -131,12 +137,9 @@ class message_class extends AWS_MODEL
 				'sender_unread' => 0
 			), [['sender_uid', 'eq', $uid, 'i'], ['id', 'eq', $dialog_id, 'i']]);
 
-			if ($receipt)
-			{
-				$this->update('inbox', array(
-					'receipt' => $now
-				), [['receipt', 'eq', 0], ['uid', 'eq', $inbox_dialog['recipient_uid'], 'i'], ['dialog_id', 'eq', $dialog_id, 'i']]);
-			}
+			$this->update('inbox', array(
+				'receipt' => $now
+			), [['receipt', 'eq', 0], ['uid', 'eq', $inbox_dialog['recipient_uid'], 'i'], ['dialog_id', 'eq', $dialog_id, 'i']]);
 
 		}
 
@@ -146,15 +149,13 @@ class message_class extends AWS_MODEL
 				'recipient_unread' => 0
 			), [['recipient_uid', 'eq', $uid, 'i'], ['id', 'eq', $dialog_id, 'i']]);
 
-			if ($receipt)
-			{
-				$this->update('inbox', array(
-					'receipt' => $now
-				), [['receipt', 'eq', 0], ['uid', 'eq', $inbox_dialog['sender_uid'], 'i'], ['dialog_id', 'eq', $dialog_id, 'i']]);
-			}
+			$this->update('inbox', array(
+				'receipt' => $now
+			), [['receipt', 'eq', 0], ['uid', 'eq', $inbox_dialog['sender_uid'], 'i'], ['dialog_id', 'eq', $dialog_id, 'i']]);
+
 		}
 
-		$this->model('account')->update_inbox_unread($uid);
+		$this->update_inbox_unread($uid);
 
 		return true;
 	}
@@ -235,7 +236,10 @@ class message_class extends AWS_MODEL
 			), [['uid', 'in', [$inbox_dialog['sender_uid'], $inbox_dialog['recipient_uid']], 'i'], ['dialog_id', 'eq', $dialog_id, 'i']]);
 		}
 
-		$this->model('account')->update_inbox_unread($uid);
+		$this->update_inbox_unread($uid);
+
+		$this->delete('inbox', [['sender_remove', 'eq', 1], ['recipient_remove', 'eq', 1]]);
+		$this->delete('inbox_dialog', [['sender_count', 'eq', 0], ['recipient_count', 'eq', 0]]);
 
 		return true;
 	}
@@ -260,7 +264,7 @@ class message_class extends AWS_MODEL
 		{
 			$dialog_message = $this->fetch_row('inbox', ['dialog_id', 'eq', $dialog_id, 'i'], 'id DESC');
 
-			$last_message[$dialog_id] = truncate_text($this->decrypt($dialog_message['message']), 60);
+			$last_message[$dialog_id] = $this->decrypt($dialog_message['message']);
 		}
 
 		return $last_message;
@@ -273,12 +277,6 @@ class message_class extends AWS_MODEL
 			'or',
 			[['recipient_uid', 'eq', $sender_uid, 'i'], ['sender_uid', 'eq', $recipient_uid, 'i']],
 		]);
-	}
-
-	public function removed_message_clean()
-	{
-		$this->delete('inbox', [['sender_remove', 'eq', 1], ['recipient_remove', 'eq', 1]]);
-		$this->delete('inbox_dialog', [['sender_count', 'eq', 0], ['recipient_count', 'eq', 0]]);
 	}
 
 	public function delete_expired_messages()
