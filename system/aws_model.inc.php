@@ -191,9 +191,14 @@ class AWS_MODEL
 	 * @param	string
 	 * @return	int
 	 */
-	public function update($table, $data, $where = '')
+	public function update($table, $data, $where)
 	{
 		$this->master();
+
+		if (is_array($where))
+		{
+			$where = $this->where($where);
+		}
 
 		if (!$where)
 		{
@@ -238,9 +243,14 @@ class AWS_MODEL
 	 * @param	string
 	 * @return	int
 	 */
-	public function delete($table, $where = '')
+	public function delete($table, $where)
 	{
 		$this->master();
+
+		if (is_array($where))
+		{
+			$where = $this->where($where);
+		}
 
 		if (!$where)
 		{
@@ -299,6 +309,11 @@ class AWS_MODEL
 		$select = $this->select();
 
 		$select->from($this->get_table($table), '*');
+
+		if (is_array($where))
+		{
+			$where = $this->where($where);
+		}
 
 		if ($where)
 		{
@@ -506,6 +521,11 @@ class AWS_MODEL
 		$select->from($this->get_table($table), '*');
 		//$select->from($this->get_table($table), array(new Zend_Db_Expr('SQL_CALC_FOUND_ROWS *')));
 
+		if (is_array($where))
+		{
+			$where = $this->where($where);
+		}
+
 		if ($where)
 		{
 			$select->where($where);
@@ -581,6 +601,11 @@ class AWS_MODEL
 
 		$select->from($this->get_table($table), '*');
 
+		if (is_array($where))
+		{
+			$where = $this->where($where);
+		}
+
 		if ($where)
 		{
 			$select->where($where);
@@ -646,6 +671,11 @@ class AWS_MODEL
 
 		$select->from($this->get_table($table), $column);
 
+		if (is_array($where))
+		{
+			$where = $this->where($where);
+		}
+
 		if ($where)
 		{
 			$select->where($where);
@@ -701,12 +731,17 @@ class AWS_MODEL
 	 * @param	string
 	 * @return	int
 	 */
-	public function count($table, $where = '')
+	public function count($table, $where = null)
 	{
 		$this->slave();
 
 		$select = $this->select();
 		$select->from($this->get_table($table), 'COUNT(*) AS n');
+
+		if (is_array($where))
+		{
+			$where = $this->where($where);
+		}
 
 		if ($where)
 		{
@@ -744,12 +779,17 @@ class AWS_MODEL
 	 * @param	string
 	 * @return	int
 	 */
-	public function sum($table, $column, $where = '')
+	public function sum($table, $column, $where = null)
 	{
 		$this->slave();
 
 		$select = $this->select();
 		$select->from($this->get_table($table), 'SUM(' . $column . ') AS n');
+
+		if (is_array($where))
+		{
+			$where = $this->where($where);
+		}
 
 		if ($where)
 		{
@@ -795,6 +835,16 @@ class AWS_MODEL
 		}
 
 		return $_quote;
+	}
+
+	public function where($array)
+	{
+		$where = load_class('Services_WhereBuilder')->build($array);
+		if ($where === false)
+		{
+			throw new Zend_Exception('Error while building WHERE clause.');
+		}
+		return $where;
 	}
 
 }
