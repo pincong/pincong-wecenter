@@ -770,3 +770,70 @@ CREATE TABLE `aws_admin_log` (
 ) DEFAULT CHARSET=utf8mb4;
 
 --
+
+
+--
+CREATE TABLE `aws_pm_conversation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `last_message_id` int(11) DEFAULT '0',
+  `member_count` int(11) DEFAULT '0',
+  `uid_1` int(11) DEFAULT '0',
+  `uid_2` int(11) DEFAULT '0',
+  `uid_3` int(11) DEFAULT '0',
+  `uid_4` int(11) DEFAULT '0',
+  `uid_5` int(11) DEFAULT '0',
+  `unread_1` int(11) DEFAULT '0',
+  `unread_2` int(11) DEFAULT '0',
+  `unread_3` int(11) DEFAULT '0',
+  `unread_4` int(11) DEFAULT '0',
+  `unread_5` int(11) DEFAULT '0',
+  `add_time` int(11) DEFAULT '0',
+  `update_time` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `last_message_id` (`last_message_id`),
+  KEY `member_count` (`member_count`),
+  KEY `uid_1` (`uid_1`),
+  KEY `uid_2` (`uid_2`),
+  KEY `uid_3` (`uid_3`),
+  KEY `uid_4` (`uid_4`),
+  KEY `uid_5` (`uid_5`),
+  KEY `unread_1` (`unread_1`),
+  KEY `unread_2` (`unread_2`),
+  KEY `unread_3` (`unread_3`),
+  KEY `unread_4` (`unread_4`),
+  KEY `unread_5` (`unread_5`),
+  KEY `add_time` (`add_time`),
+  KEY `update_time` (`update_time`)
+) DEFAULT CHARSET=utf8mb4;
+
+--
+
+
+--
+CREATE TABLE `aws_pm_message` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `conversation_id` int(11) DEFAULT '0',
+  `sender_uid` int(11) DEFAULT '0',
+  `message_1` text,
+  `message_2` text,
+  `message_3` text,
+  `message_4` text,
+  `message_5` text,
+  `receipt_1` int(11) DEFAULT '0',
+  `receipt_2` int(11) DEFAULT '0',
+  `receipt_3` int(11) DEFAULT '0',
+  `receipt_4` int(11) DEFAULT '0',
+  `receipt_5` int(11) DEFAULT '0',
+  `add_time` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `conversation_id` (`conversation_id`),
+  KEY `sender_uid` (`sender_uid`),
+  KEY `receipt_1` (`receipt_1`),
+  KEY `receipt_2` (`receipt_2`),
+  KEY `receipt_3` (`receipt_3`),
+  KEY `receipt_4` (`receipt_4`),
+  KEY `receipt_5` (`receipt_5`),
+  KEY `add_time` (`add_time`)
+) DEFAULT CHARSET=utf8mb4;
+
+--

@@ -1,0 +1,105 @@
+<?php TPL::include('global/header.tpl.htm'); ?>
+
+<div class="aw-container-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="col-sm-12 col-md-9 aw-main-content">
+					<div class="aw-mod aw-inbox">
+						<div class="mod-head common-head">
+							<h2>
+								<a href="javascript:;" onclick="" class="pull-right btn btn-mini btn-success"><?php _e('新私信'); ?></a>
+								<span class="pull-right aw-setting-inbox hidden-xs"><a class="aw-small-text" href="<?php echo url_rewrite(); ?>/profile/privacy/#!inbox"><i class="icon icon-setting"></i> <?php _e('私信设置'); ?></a></span>
+								<?php _e('私信'); ?>
+							</h2>
+						</div>
+						<div class="mod-body aw-feed-list">
+						<?php if ($this->list) { ?>
+							<?php foreach($this->list as $key => $val) { ?>
+							<div class="aw-item <?php if ($val['unread']) { ?>active<?php } ?>">
+								<div style="position:relative;padding-left:50px;">
+									<div style="position:absolute;left:0;top:5px;width:50px;height:50px;line-height:0;overflow:hidden;"><!--
+									<?php $valid_member_count = count($val['users']); ?>
+									<?php foreach($val['users'] as $user) { ?>
+										<?php if ($valid_member_count > 1 AND $user['uid'] == $this->user_id) continue; ?>
+										--><a href="<?php echo UF::url($user); ?>"><img style="<?php if ($val['member_count'] <= 2) { ?>width:40px;height:40px;<?php } else { ?>width:20px;height:20px;<?php } ?>border-radius:4px;" src="<?php echo UF::avatar($user, 'mid'); ?>" alt="" /></a><!--
+									<?php } ?>
+									--></div>
+
+									<a class="aw-small-text" href="<?php echo url_rewrite(); ?>/pm/read/<?php echo $val['id']; ?>">
+									<?php foreach($val['users'] as $user) { ?>
+										<?php if ($user['uid'] == $this->user_id) continue; ?>
+										<?php echo UF::name($user); ?>
+									<?php } ?>
+									</a>
+
+									<p class="content">
+									<?php if ($val['last_message']) { ?>
+										<a class="pm_message" data-message="<?php echo safe_text($val['last_message']['message']); ?>" href="<?php echo url_rewrite(); ?>/pm/read/<?php echo $val['id']; ?>"></a>
+									<?php } ?>
+									</p>
+
+									<p class="aw-small-text">
+										<span class="pull-right">
+										<?php if ($val['unread']) { ?>
+											<a href="<?php echo url_rewrite(); ?>/pm/read/<?php echo $val['id']; ?>"><?php _e('有 %s 条新私信', $val['unread']); ?></a>
+											&nbsp;
+											<a class="aw-small-text" href="<?php echo url_rewrite(); ?>/pm/read/<?php echo $val['id']; ?>"><?php _e('查看'); ?></a>
+										<?php } else { ?>
+											<a class="aw-small-text" href="javascript:;" onclick=""><?php _e('删除'); ?></a>
+										<?php } ?>
+										</span>
+										<a class="aw-small-text" href="<?php echo url_rewrite(); ?>/pm/read/<?php echo $val['id']; ?>"><?php echo date_friendly($val['update_time']); ?></a>
+									</p>
+								</div>
+							</div>
+							<?php } ?>
+						<?php } ?>
+						</div>
+						<div class="mod-footer">
+							<?php TPL::include('global/pagination.tpl.htm'); ?>
+						</div>
+					</div>
+				</div>
+				<!-- 侧边栏 -->
+				<div class="col-sm-12 col-md-3 aw-side-bar">
+					<?php TPL::include('block/sidebar_menu.tpl.htm'); ?>
+				</div>
+				<!-- end 侧边栏 -->
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+	(function(){
+		var private_key = localStorage.getItem('<?php echo G_COOKIE_PREFIX; ?>_private_key');
+		if (!private_key) {
+			AWS.alert(_t('请尝试重新登录以解密私钥'));
+			return;
+		}
+		PasswordUtil.read_private_key(private_key).then(function(value) {
+			private_key = value;
+			$('.pm_message').each(function() {
+				var el = $(this);
+				var msg = el.data('message');
+				if (!msg) return;
+				PasswordUtil.decrypt(msg, private_key).then(function(value) {
+					el.text(value);
+				}).catch(function(error) {
+					el.html('<i>' + _t('无法解密这一条私信') + '</i>');
+					console.log(error);
+					return;
+				});
+			});
+		}).catch(function(error) {
+			AWS.alert(_t('无法读取私钥, 请尝试重新登录'));
+			console.log(error);
+			return;
+		});
+	})();
+});
+</script>
+
+<?php TPL::include('global/footer.tpl.htm'); ?>

@@ -1,0 +1,186 @@
+<?php TPL::include('global/header.tpl.htm'); ?>
+
+<div class="aw-container-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="col-sm-12 col-md-9 aw-main-content">
+					<div class="aw-mod aw-inbox-read">
+						<div class="mod-head common-head">
+							<h2>
+								<a href="<?php echo url_rewrite(); ?>/pm/" class="pull-right"><?php _e('返回私信列表'); ?> »</a>
+								<span><?php _e('私信会话'); ?>: </span>
+								<span>
+								<?php foreach($this->conversation['users'] as $user) { ?>
+									<?php if ($user['uid'] == $this->user_id) continue; ?>
+									<?php echo UF::name($user); ?>
+								<?php } ?>
+								</span>
+							</h2>
+						</div>
+						<div class="mod-body">
+							<!-- 私信内容输入框　-->
+							<form id="pm_form" onsubmit="return false" method="post" style="display:none">
+								<a href="<?php echo UF::url($this->user_info); ?>" class="aw-user-img aw-border-radius-5"><img src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" alt="" /></a>
+								<textarea rows="3" class="form-control autosize" placeholder="<?php _e('想要对ta说点什么'); ?>?" type="text" name="message" /></textarea>
+								<p>
+									<button type="submit" class="btn btn-mini btn-success"><?php _e('发送'); ?></button>
+								</p>
+							</form>
+							<!-- end 私信内容输入框 -->
+						</div>
+						<div class="mod-footer">
+							<!-- 私信内容列表 -->
+							<ul>
+							<?php if ($this->list) { ?>
+								<?php foreach($this->list as $key => $val) { ?>
+								<?php $user = $this->conversation['users'][$val['sender_uid']]; ?>
+								<li class="<?php if ($val['sender_uid'] != $this->user_id) { ?>active<?php } ?>">
+									<a href="<?php echo UF::url($user); ?>" class="aw-user-img aw-border-radius-5">
+										<img src="<?php echo UF::avatar($user, 'mid'); ?>" alt="" />
+									</a>
+									<div class="aw-item">
+										<p>
+											<a href="javascript:;"><?php echo UF::name($user); ?></a>:
+											<span style="white-space:pre-wrap;" class="pm_message" data-message="<?php echo safe_text($val['message']); ?>"></span>
+										</p>
+										<div class="aw-small-text">
+											<span class="pull-right">
+												<?php if ($val['sender_uid'] != $this->user_id) { ?>
+												<a href="javascript:;" onclick="$.scrollTo($('#pm_form').offset()['top'] - 20, 600, {queue:true});$('#pm_form').find('textarea').focus();"><?php _e('回复'); ?></a>
+												<?php } else { ?>
+												<a href="javascript:;" onclick=""><?php _e('删除'); ?></a>
+												<?php } ?>
+											</span>
+											<?php echo date_friendly($val['add_time']); ?>
+										</div>
+										<?php foreach($val['receipts'] as $receipt_uid => $receipt_time) { ?>
+										<?php if ($receipt_uid == $val['sender_uid']) continue; ?>
+										<div class="aw-small-text"><?php _e('%s0 已读于 %s1', [UF::name($this->conversation['users'][$receipt_uid]), date_friendly($receipt_time)]); ?></div>
+										<?php } ?>
+										<i class="i-speech-bubble-triangle"></i>
+									</div>
+								</li>
+								<?php } ?>
+							<?php } ?>
+							</ul>
+							<!-- end 私信内容列表 -->
+						</div>
+						<div>
+							<?php TPL::include('global/pagination.tpl.htm'); ?>
+						</div>
+					</div>
+				</div>
+				<!-- 侧边栏 -->
+				<div class="col-sm-12 col-md-3 aw-side-bar">
+					<?php TPL::include('block/sidebar_menu.tpl.htm'); ?>
+				</div>
+				<!-- end 侧边栏 -->
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+	var form = $('#pm_form').show();
+	var btn = form.find('button[type=submit]');
+
+	var public_keys = {
+<?php foreach($this->conversation['users'] as $user) { ?>
+		'<?php echo intval($user['uid']); ?>': '<?php echo addslashes($user['public_key']); ?>',
+<?php } ?>
+	};
+
+	function encrypt(msg) {
+		var result = {};
+		var promises = [];
+		for (var uid in public_keys) {
+			promises.push(PasswordUtil.encrypt(msg, public_keys[uid]));
+		}
+		return Promise.all(promises).then(function(values) {
+			var i = 0;
+			for (var uid in public_keys) {
+				result[uid] = values[i];
+				i++;
+			}
+			return new Promise(function(resolve) {
+				resolve(result);
+			});
+		});
+	}
+
+	form.submit(function(e) {
+		e.preventDefault();
+
+		if (Object.keys(public_keys).length < 2) {
+			AWS.alert(_t('当前会话已结束'));
+			return false;
+		}
+
+		var msg = form.find('textarea[name=message]').val().trim();
+
+		if (!msg) {
+			AWS.alert(_t('请输入私信内容'));
+			return false;
+		}
+
+<?php if ($this->conversation['id']) { ?>
+		var url = '<?php echo url_rewrite(); ?>/pm/ajax/send/';
+		var params = {
+			conversation_id: <?php echo intval($this->conversation['id']); ?>,
+		};
+<?php } else { ?>
+		var url = '<?php echo url_rewrite(); ?>/pm/ajax/new/';
+		var params = {};
+<?php } ?>
+
+		btn.addClass('disabled');
+
+		encrypt(msg).then(function(result) {
+			for (var uid in result) {
+				params['messages[' + uid + ']'] = result[uid];
+			}
+			AWS.ajax_request(url, params, null, function(err) {
+				AWS.alert(err);
+				btn.removeClass('disabled');
+			});
+		}).catch(function(error) {
+			AWS.alert(_t('端对端加密出错'));
+			btn.removeClass('disabled');
+			console.log(error);
+		});
+
+		return false;
+	});
+
+	(function(){
+		var private_key = localStorage.getItem('<?php echo G_COOKIE_PREFIX; ?>_private_key');
+		if (!private_key) {
+			AWS.alert(_t('请尝试重新登录以解密私钥'));
+			return;
+		}
+		PasswordUtil.read_private_key(private_key).then(function(value) {
+			private_key = value;
+			$('.pm_message').each(function() {
+				var el = $(this);
+				var msg = el.data('message');
+				if (!msg) return;
+				PasswordUtil.decrypt(msg, private_key).then(function(value) {
+					el.text(value);
+				}).catch(function(error) {
+					el.html('<i>' + _t('无法解密这一条私信') + '</i>');
+					console.log(error);
+					return;
+				});
+			});
+		}).catch(function(error) {
+			AWS.alert(_t('无法读取私钥, 请尝试重新登录'));
+			console.log(error);
+			return;
+		});
+	})();
+});
+</script>
+
+<?php TPL::include('global/footer.tpl.htm'); ?>

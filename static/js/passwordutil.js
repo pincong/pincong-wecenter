@@ -79,7 +79,7 @@
 		});
 	}
 
-	function encrypt(text, public_key) {
+	function do_encrypt(text, public_key) {
 		openpgp.config.show_version = false;
 		openpgp.config.show_comment = false;
 		return openpgp.encrypt({
@@ -94,7 +94,7 @@
 		});
 	}
 
-	function decrypt(text, private_key) {
+	function do_decrypt(text, private_key) {
 		text = '-----BEGIN PGP MESSAGE-----\r\n\r\n' + text + '\r\n-----END PGP MESSAGE-----';
 		return openpgp.message.readArmored(text).then(function(value) {
 			return openpgp.decrypt({
@@ -110,14 +110,29 @@
 		});
 	}
 
-	function utf8_to_Uint8Array(str) {
-		return openpgp.util.str_to_Uint8Array(unescape(encodeURIComponent(str)));
+	function encrypt(text, public_key) {
+		if (typeof public_key === 'string') {
+			return read_public_key(public_key).then(function(value) {
+				return do_encrypt(text, value);
+			});
+		}
+		return do_encrypt(text, public_key);
 	}
 
+	function decrypt(text, private_key) {
+		if (typeof private_key === 'string') {
+			return read_private_key(private_key).then(function(value) {
+				return do_decrypt(text, value);
+			});
+		}
+		return do_decrypt(text, private_key);
+	}
+
+
 	function password_hash_v1(str, salt) {
-		return openpgp.crypto.hash.md5(utf8_to_Uint8Array(str)).then(function(value) {
+		return openpgp.crypto.hash.md5(openpgp.util.encode_utf8(str)).then(function(value) {
 			str = openpgp.util.Uint8Array_to_hex(value) + salt;
-			return openpgp.crypto.hash.md5(utf8_to_Uint8Array(str));
+			return openpgp.crypto.hash.md5(openpgp.util.encode_utf8(str));
 		}).then(function(value) {
 			return new Promise(function(resolve) {
 				resolve(openpgp.util.Uint8Array_to_hex(value));
@@ -130,9 +145,9 @@
 	}
 
 	function password_hash_v3(str, salt) {
-		return openpgp.crypto.hash.sha512(utf8_to_Uint8Array(str)).then(function(value) {
+		return openpgp.crypto.hash.sha512(openpgp.util.encode_utf8(str)).then(function(value) {
 			str = openpgp.util.Uint8Array_to_str(value);
-			return openpgp.crypto.hash.md5(utf8_to_Uint8Array(salt));
+			return openpgp.crypto.hash.md5(openpgp.util.encode_utf8(salt));
 		}).then(function(value) {
 			salt = '$2y$11$' + dcodeIO.bcrypt.encodeBase64(value, value.length);
 			return dcodeIO.bcrypt.hash(str, salt);
@@ -165,11 +180,19 @@
 
 	function hash(algo, str) {
 		var fn = openpgp.crypto.hash[algo];
-		return fn(utf8_to_Uint8Array(str)).then(function(value) {
+		return fn(openpgp.util.encode_utf8(str)).then(function(value) {
 			return new Promise(function(resolve) {
 				resolve(openpgp.util.Uint8Array_to_hex(value));
 			});
 		});
+	}
+
+	function base64_encode(str) {
+		return openpgp.util.Uint8Array_to_b64(openpgp.util.encode_utf8(str));
+	}
+
+	function base64_decode(str) {
+		return openpgp.util.decode_utf8(openpgp.util.b64_to_Uint8Array(str));
 	}
 
 	scope.PasswordUtil = {
@@ -183,6 +206,8 @@
 		password_hash: password_hash,
 		random_string: random_string,
 		hash: hash,
+		base64_encode: base64_encode,
+		base64_decode: base64_decode,
 	};
 
 })(this);
