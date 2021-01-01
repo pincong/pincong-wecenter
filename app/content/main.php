@@ -44,7 +44,7 @@ class main extends AWS_CONTROLLER
 
 	public function list_logs_action()
 	{
-		$log_list = $this->model('content')->list_logs($_GET['thread_type'], $_GET['thread_id'], $_GET['item_type'], $_GET['item_id'], $_GET['uid'], $_GET['page'], S::get('contents_per_page'));
+		$log_list = $this->model('content')->list_logs($_GET['thread_type'], $_GET['thread_id'], $_GET['item_type'], $_GET['item_id'], $_GET['uid'], $_GET['page'], S::get_int('contents_per_page'));
 
 		TPL::assign('list', $log_list);
 

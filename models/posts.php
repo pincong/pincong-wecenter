@@ -397,7 +397,7 @@ class posts_class extends AWS_MODEL
 			$where[] = [['post_id', 'in', $val, 'i'], ['post_type', 'eq', $key]];
 		}
 
-		$result = $this->fetch_all('posts_index', $where, 'update_time DESC', $per_page);
+		$result = $this->fetch_all('posts_index', $where, 'update_time DESC');
 
 		return $this->process_explore_list_data($result);
 	}

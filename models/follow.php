@@ -115,9 +115,9 @@ class follow_class extends AWS_MODEL
 	 * @param  $friend_uid
 	 * @param  $limit
 	 */
-	public function get_user_fans($friend_uid, $limit = 20)
+	public function get_user_fans($friend_uid, $page, $per_page)
 	{
-		if (!$user_fans = $this->fetch_all('user_follow', ['friend_uid', 'eq', $friend_uid, 'i'], 'add_time DESC', $limit))
+		if (!$user_fans = $this->fetch_page('user_follow', ['friend_uid', 'eq', $friend_uid, 'i'], 'add_time DESC', $page, $per_page))
 		{
 			return false;
 		}
@@ -136,9 +136,9 @@ class follow_class extends AWS_MODEL
 	 * @param  $friend_uid
 	 * @param  $limit
 	 */
-	public function get_user_friends($fans_uid, $limit = 20)
+	public function get_user_friends($fans_uid, $page, $per_page)
 	{
-		if (!$user_follow = $this->fetch_all('user_follow', ['fans_uid', 'eq', $fans_uid, 'i'], 'add_time DESC', $limit))
+		if (!$user_follow = $this->fetch_page('user_follow', ['fans_uid', 'eq', $fans_uid, 'i'], 'add_time DESC', $page, $per_page))
 		{
 			return false;
 		}

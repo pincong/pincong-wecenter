@@ -447,9 +447,9 @@ class account_class extends AWS_MODEL
 		), ['uid', 'eq', $uid, 'i']);
 	}
 
-	public function get_user_list($where = null, $limit = 10, $orderby = 'uid DESC')
+	public function get_user_list($where = null, $order_by, $page, $per_page)
 	{
-		$result = $this->fetch_all('users', $where, $orderby, $limit);
+		$result = $this->fetch_page('users', $where, $order_by, $page, $per_page);
 
 		if ($result)
 		{

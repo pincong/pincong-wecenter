@@ -73,7 +73,7 @@ class topic extends AWS_ADMIN_CONTROLLER
 			$where[] = 'add_time <= ' . strtotime('+1 day', strtotime(base64_decode($_GET['end_date'])));
 		}
 
-		$topic_list = $this->model('topic')->get_topic_list(implode(' AND ', $where), 'topic_id DESC', $this->per_page, $_GET['page']);
+		$topic_list = $this->model('topic')->get_topic_list(implode(' AND ', $where), 'topic_id DESC', $_GET['page'], $this->per_page);
 
 		$total_rows = $this->model('topic')->total_rows();
 

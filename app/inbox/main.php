@@ -30,7 +30,7 @@ class main extends AWS_CONTROLLER
 	{
 		$this->model('account')->update_inbox_unread($this->user_id);
 
-		if ($inbox_dialog = $this->model('message')->get_inbox_message($_GET['page'], S::get('contents_per_page'), $this->user_id))
+		if ($inbox_dialog = $this->model('message')->get_inbox_message($_GET['page'], S::get_int('contents_per_page'), $this->user_id))
 		{
 			$inbox_total_rows = $this->model('message')->total_rows();
 
@@ -95,7 +95,7 @@ class main extends AWS_CONTROLLER
 		TPL::assign('pagination', AWS_APP::pagination()->create(array(
 			'base_url' => url_rewrite('/inbox/'),
 			'total_rows' => $inbox_total_rows,
-			'per_page' => S::get('contents_per_page')
+			'per_page' => S::get_int('contents_per_page')
 		)));
 
 		TPL::output('inbox/index');

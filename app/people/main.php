@@ -102,12 +102,12 @@ class main extends AWS_CONTROLLER
 
 		$where = implode(' AND ', $where);
 
-		$users_list = $this->model('account')->get_user_list($where, calc_page_limit($_GET['page'], S::get('contents_per_page')), $order);
+		$users_list = $this->model('account')->get_user_list($where, $order, $_GET['page'], S::get_int('contents_per_page'));
 
 		TPL::assign('pagination', AWS_APP::pagination()->create(array(
 			'base_url' => url_rewrite('/people/') . implode('__', $url_param),
-			'total_rows' => $this->model('account')->get_user_count($where),
-			'per_page' => S::get('contents_per_page')
+			'total_rows' => $this->model('account')->total_rows(),
+			'per_page' => S::get_int('contents_per_page')
 		)));
 
 		if ($users_list)
@@ -179,8 +179,8 @@ class main extends AWS_CONTROLLER
 
 		TPL::import_css('css/user.css');
 
-		TPL::assign('fans_list', $this->model('follow')->get_user_fans($user['uid'], 5));
-		TPL::assign('friends_list', $this->model('follow')->get_user_friends($user['uid'], 5));
+		TPL::assign('fans_list', $this->model('follow')->get_user_fans($user['uid'], 1, 5));
+		TPL::assign('friends_list', $this->model('follow')->get_user_friends($user['uid'], 1, 5));
 
 		TPL::output('people/index');
 	}

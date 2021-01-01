@@ -111,9 +111,9 @@ class invite_class extends AWS_MODEL
 		return $invite_users_list;
 	}
 
-	public function get_invite_question_list($uid, $limit = 10)
+	public function get_invite_question_list($uid, $page, $per_page)
 	{
-		if ($list = $this->fetch_all('question_invite', ['recipients_uid', 'eq', $uid, 'i'], 'question_invite_id DESC', $limit))
+		if ($list = $this->fetch_page('question_invite', ['recipients_uid', 'eq', $uid, 'i'], 'question_invite_id DESC', $page, $per_page))
 		{
 			foreach ($list as $key => $val)
 			{

@@ -53,7 +53,7 @@ class main extends AWS_CONTROLLER
 
 	public function list_action()
 	{
-		$per_page = intval(S::get('index_per_page'));
+		$per_page = S::get_int('index_per_page');
 
 		TPL::assign('list', $this->model('activity')->list_hot_activities($_GET['category'], $_GET['page'], $per_page));
 

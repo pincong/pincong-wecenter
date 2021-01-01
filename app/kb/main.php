@@ -43,7 +43,7 @@ class main extends AWS_CONTROLLER
 
 		$this->crumb(AWS_APP::lang()->_t('知识库'));
 
-		$per_page = S::get('contents_per_page');
+		$per_page = S::get_int('contents_per_page');
 
 		$item_list = $this->model('kb')->list($_GET['page'], $per_page);
 		$count = $this->model('kb')->total_rows();

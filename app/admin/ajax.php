@@ -807,7 +807,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 	{
 		$topic_statistic = array();
 
-		if ($topic_list = $this->model('topic')->get_hot_topics(null, $_GET['limit'], $_GET['tag']))
+		if ($topic_list = $this->model('topic')->get_hot_topics(null, intval_minmax($_GET['limit'], 1, 50), $_GET['tag']))
 		{
 			foreach ($topic_list AS $key => $val)
 			{

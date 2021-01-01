@@ -387,6 +387,22 @@ function rand_minmax($min, $max, $default = 0, $undefined = 0)
 	return rand($min, $max);
 }
 
+function intval_minmax($val, $min, $max)
+{
+	$val = intval($val);
+	$min = intval($min);
+	$max = intval($max);
+	if ($val < $min)
+	{
+		return $min;
+	}
+	else if ($val > $max)
+	{
+		return $max;
+	}
+	return $val;
+}
+
 
 function unserialize_array(&$string)
 {

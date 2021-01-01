@@ -497,8 +497,8 @@ $(document).ready(function () {
 	$('#page_focus').click(function() {
 		if (page_focus_inited) return;
 		page_focus_inited = true;
-		AWS.load_list_view(G_BASE_URL + '/people/info/followers/type-following__uid-<?php echo $this->user['uid']; ?>', $('#bp_user_follows_more'), $('#contents_user_follows'));
-		AWS.load_list_view(G_BASE_URL + '/people/info/followers/type-followers__uid-<?php echo $this->user['uid']; ?>', $('#bp_user_fans_more'), $('#contents_user_fans'));
+		AWS.load_list_view(G_BASE_URL + '/people/info/followers/type-following__uid-<?php echo $this->user['uid']; ?>', $('#bp_user_follows_more'), $('#contents_user_follows'), 1);
+		AWS.load_list_view(G_BASE_URL + '/people/info/followers/type-followers__uid-<?php echo $this->user['uid']; ?>', $('#bp_user_fans_more'), $('#contents_user_fans'), 1);
 	});
 
 	<?php if ($this->user_id == $this->user['uid']) { ?>
@@ -506,7 +506,7 @@ $(document).ready(function () {
 	$('#page_currency').click(function() {
 		if (page_currency_inited) return;
 		page_currency_inited = true;
-		AWS.load_list_view(G_BASE_URL + '/currency/list_logs/', $('#bp_user_currency'), $('#contents_user_currency'));
+		AWS.load_list_view(G_BASE_URL + '/currency/list_logs/', $('#bp_user_currency'), $('#contents_user_currency'), 1);
 	});
 	<?php } ?>
 

@@ -36,12 +36,12 @@ class main extends AWS_CONTROLLER
 
 	private function index_square()
 	{
-		$per_page = 20;
+		$per_page = S::get_int('contents_per_page');
 
 		switch ($_GET['channel'])
 		{
 			case 'focus':
-				if ($topics_list = $this->model('topic')->get_focus_topic_list($this->user_id, calc_page_limit($_GET['page'], $per_page)))
+				if ($topics_list = $this->model('topic')->get_focus_topic_list($this->user_id, $_GET['page'], $per_page))
 				{
 					$topics_list_total_rows = $this->user_info['topic_focus_count'];
 				}
@@ -76,7 +76,7 @@ class main extends AWS_CONTROLLER
 
 				if (!$topics_list = AWS_APP::cache()->get($cache_key))
 				{
-					if ($topics_list = $this->model('topic')->get_topic_list(null, $order, $per_page, $_GET['page']))
+					if ($topics_list = $this->model('topic')->get_topic_list(null, $order, $_GET['page'], $per_page))
 					{
 						$topics_list_total_rows = $this->model('topic')->total_rows();
 
@@ -94,7 +94,7 @@ class main extends AWS_CONTROLLER
 			break;
 		}
 
-		TPL::assign('new_topics', $this->model('topic')->get_topic_list(null, 'topic_id DESC', 10));
+		TPL::assign('new_topics', $this->model('topic')->get_topic_list(null, 'topic_id DESC', 1, 10));
 
 		TPL::assign('pagination', AWS_APP::pagination()->create(array(
 			'base_url' => url_rewrite('/topic/') . implode('__', $url_param),
@@ -192,7 +192,7 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		if ($posts_list = $this->model('posts')->get_posts_list_by_topic_ids(null, $topic_ids, 1, S::get('contents_per_page')))
+		if ($posts_list = $this->model('posts')->get_posts_list_by_topic_ids(null, $topic_ids, 1, S::get_int('contents_per_page')))
 		{
 			foreach ($posts_list AS $key => $val)
 			{

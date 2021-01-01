@@ -20,21 +20,22 @@ if (!defined('IN_ANWSION'))
 
 class topic_class extends AWS_MODEL
 {
-	public function get_topic_list($where = null, $order = 'topic_id DESC', $limit = 10, $page = null)
+	public function get_topic_list($where = null, $order, $page, $per_page)
 	{
-		$topic_list = $this->fetch_page('topic', $where, $order, $page, $limit);
+		$topic_list = $this->fetch_page('topic', $where, $order, $page, $per_page);
 
 		return $topic_list;
 	}
 
-	public function get_focus_topic_list($uid, $limit = 20)
+	public function get_focus_topic_list($uid, $page, $per_page)
 	{
 		if (!$uid)
 		{
 			return false;
 		}
 
-		if (!$focus_topics = $this->fetch_all('topic_focus', ['uid', 'eq', $uid, 'i']))
+		// TODO: fetch column
+		if (!$focus_topics = $this->fetch_page('topic_focus', ['uid', 'eq', $uid, 'i'], 'add_time DESC', $page, $per_page))
 		{
 			return false;
 		}
@@ -44,7 +45,7 @@ class topic_class extends AWS_MODEL
 			$topic_ids[] = $val['topic_id'];
 		}
 
-		$topic_list = $this->fetch_all('topic', ['topic_id', 'in', $topic_ids, 'i'], 'discuss_count DESC', $limit);
+		$topic_list = $this->fetch_all('topic', ['topic_id', 'in', $topic_ids, 'i'], 'discuss_count DESC');
 
 		return $topic_list;
 	}

@@ -63,7 +63,7 @@ class search_class extends AWS_MODEL
 			$q = implode('', $q);
 		}
 
-		$result = $this->fetch_all('topic', "topic_title LIKE '" . $this->escape($q) . "%'", null, calc_page_limit($page, $limit));
+		$result = $this->fetch_page('topic', "topic_title LIKE '" . $this->escape($q) . "%'", null, $page, $limit);
 
 		return $result;
 	}

@@ -56,7 +56,7 @@ class main extends AWS_CONTROLLER
 			HTTP::error_404();
 		}
 
-		$replies_per_page = intval(S::get('replies_per_page'));
+		$replies_per_page = S::get_int('replies_per_page');
 		if (!$replies_per_page)
 		{
 			$replies_per_page = 100;

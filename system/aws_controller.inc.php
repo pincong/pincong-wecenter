@@ -194,7 +194,7 @@ class AWS_ADMIN_CONTROLLER extends AWS_CONTROLLER
 			return false;
 		}
 
-		$this->per_page = S::get('contents_per_page');
+		$this->per_page = S::get_int('contents_per_page');
 
 		TPL::import_clean();
 

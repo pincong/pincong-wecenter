@@ -60,7 +60,7 @@ class info extends AWS_CONTROLLER
 			$_GET['page'] = 0; // 因为followers_action page从0开始
 		}
 
-		$this->per_page = intval(S::get('contents_per_page'));
+		$this->per_page = S::get_int('contents_per_page');
 	}
 
 	public function question_discussions_action()
@@ -138,11 +138,11 @@ class info extends AWS_CONTROLLER
 		switch ($_GET['type'])
 		{
 			case 'following':
-				$users_list = $this->model('follow')->get_user_friends($_GET['uid'], (($_GET['page']) * $this->per_page) . ", {$this->per_page}");
+				$users_list = $this->model('follow')->get_user_friends($_GET['uid'], $_GET['page'], $this->per_page);
 			break;
 
 			case 'followers':
-				$users_list = $this->model('follow')->get_user_fans($_GET['uid'], (($_GET['page']) * $this->per_page) . ", {$this->per_page}");
+				$users_list = $this->model('follow')->get_user_fans($_GET['uid'], $_GET['page'], $this->per_page);
 			break;
 		}
 

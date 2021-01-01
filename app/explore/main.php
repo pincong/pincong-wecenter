@@ -102,11 +102,11 @@ class main extends AWS_CONTROLLER
 
 		if ($sort_type == 'hot')
 		{
-			$posts_list = $this->model('posts')->get_hot_posts($type, $category_info['id'], $day, $_GET['page'], S::get('contents_per_page'));
+			$posts_list = $this->model('posts')->get_hot_posts($type, $category_info['id'], $day, $_GET['page'], S::get_int('contents_per_page'));
 		}
 		else
 		{
-			$posts_list = $this->model('posts')->get_posts_list($type, $_GET['page'], S::get('contents_per_page'), null, $category_info['id'], $answer_count, $recommend);
+			$posts_list = $this->model('posts')->get_posts_list($type, $_GET['page'], S::get_int('contents_per_page'), null, $category_info['id'], $answer_count, $recommend);
 		}
 
 		if ($posts_list)
@@ -165,7 +165,7 @@ class main extends AWS_CONTROLLER
 		TPL::assign('pagination', AWS_APP::pagination()->create(array(
 			'base_url' => url_rewrite('/') . $base_url,
 			'total_rows' => $this->model('posts')->get_posts_list_total(),
-			'per_page' => S::get('contents_per_page')
+			'per_page' => S::get_int('contents_per_page')
 		)));
 
 		TPL::assign('posts_list', $posts_list);
