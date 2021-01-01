@@ -30,21 +30,21 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		$this->crumb(AWS_APP::lang()->_t('动态'), '/home/');
+		$this->crumb(AWS_APP::lang()->_t('动态'));
 
 		TPL::output('home/index');
 	}
 
 	public function invite_action()
 	{
-		$this->crumb(AWS_APP::lang()->_t('邀请我回复的问题'), '/home/invite/');
+		$this->crumb(AWS_APP::lang()->_t('邀请我回复的问题'));
 
 		TPL::output('home/invite');
 	}
 
 	public function question_action()
 	{
-		$this->crumb(AWS_APP::lang()->_t('我关注的问题'), '/home/question/');
+		$this->crumb(AWS_APP::lang()->_t('我关注的问题'));
 
 		TPL::output('home/question');
 	}

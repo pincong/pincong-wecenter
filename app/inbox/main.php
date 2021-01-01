@@ -22,7 +22,7 @@ class main extends AWS_CONTROLLER
 {
 	public function setup()
 	{
-		$this->crumb(AWS_APP::lang()->_t('私信'), '/inbox/');
+		$this->crumb(AWS_APP::lang()->_t('私信'));
 	}
 
 
@@ -157,7 +157,7 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		$this->crumb(AWS_APP::lang()->_t('私信对话') . ': ' . $recipient_user['user_name'], '/inbox/read/' . intval($_GET['id']));
+		$this->crumb(AWS_APP::lang()->_t('私信对话') . ': ' . $recipient_user['user_name']);
 
 		// TODO: 把所有的 dialog 改为 dialogue
 		TPL::assign('dialog_id', $dialog['id']);

@@ -30,7 +30,7 @@ class find_password extends AWS_CONTROLLER
 
 	public function setup()
 	{
-		$this->crumb(AWS_APP::lang()->_t('找回密码'), '/account/find_password/');
+		$this->crumb(AWS_APP::lang()->_t('找回密码'));
 
 		TPL::import_css('css/register.css');
 	}

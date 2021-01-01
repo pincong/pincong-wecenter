@@ -27,7 +27,7 @@ class topic extends AWS_ADMIN_CONTROLLER
 
 	public function list_action()
 	{
-		$this->crumb(AWS_APP::lang()->_t('话题管理'), 'admin/topic/list/');
+		$this->crumb(AWS_APP::lang()->_t('话题管理'));
 
 		if ($_POST)
 		{
@@ -126,7 +126,7 @@ class topic extends AWS_ADMIN_CONTROLLER
 	{
 		if ($_GET['topic_id'])
 		{
-			$this->crumb(AWS_APP::lang()->_t('话题编辑'), 'admin/topic/edit/');
+			$this->crumb(AWS_APP::lang()->_t('话题编辑'));
 
 			$topic_info = $this->model('topic')->get_topic_by_id($_GET['topic_id']);
 
@@ -139,7 +139,7 @@ class topic extends AWS_ADMIN_CONTROLLER
 		}
 		else
 		{
-			$this->crumb(AWS_APP::lang()->_t('新建话题'), 'admin/topic/edit/');
+			$this->crumb(AWS_APP::lang()->_t('新建话题'));
 		}
 
 		TPL::output('admin/topic/edit');

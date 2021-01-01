@@ -174,7 +174,7 @@ class main extends AWS_CONTROLLER
 		}
 
 		$page_title = CF::page_title($question_info['user_info'], 'question_' . $question_info['question_id'], $question_info['question_content']);
-		$this->crumb($page_title, '/question/' . $question_info['question_id']);
+		$this->crumb($page_title);
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
 			'base_url' => get_js_url('/question/id-' . $question_info['question_id'] . '__sort_key-' . $_GET['sort_key'] . '__sort-' . $_GET['sort']),

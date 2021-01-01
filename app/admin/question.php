@@ -123,7 +123,7 @@ class question extends AWS_ADMIN_CONTROLLER
 			'per_page' => $this->per_page
 		))->create_links());
 
-		$this->crumb(AWS_APP::lang()->_t('问题管理'), 'admin/question/question_list/');
+		$this->crumb(AWS_APP::lang()->_t('问题管理'));
 
 		TPL::assign('question_count', $total_rows);
 		TPL::assign('category_list', $this->model('category')->get_category_list());

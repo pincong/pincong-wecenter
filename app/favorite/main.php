@@ -22,7 +22,7 @@ class main extends AWS_CONTROLLER
 {
 	public function setup()
 	{
-		$this->crumb(AWS_APP::lang()->_t('我的收藏'), '/favorite/');
+		$this->crumb(AWS_APP::lang()->_t('我的收藏'));
 	}
 
 	public function index_action()

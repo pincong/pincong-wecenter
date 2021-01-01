@@ -107,7 +107,7 @@ class user extends AWS_ADMIN_CONTROLLER
             'per_page' => $this->per_page
         ))->create_links());
 
-        $this->crumb(AWS_APP::lang()->_t('会员列表'), "admin/user/list/");
+        $this->crumb(AWS_APP::lang()->_t('会员列表'));
 
         TPL::assign('member_group', $this->model('account')->get_user_group_list(1));
         TPL::assign('system_group', $this->model('account')->get_user_group_list(0));
@@ -120,7 +120,7 @@ class user extends AWS_ADMIN_CONTROLLER
 
     public function group_list_action()
     {
-        $this->crumb(AWS_APP::lang()->_t('用户组管理'), "admin/user/group_list/");
+        $this->crumb(AWS_APP::lang()->_t('用户组管理'));
 
         if (!$this->user_info['permission']['is_administrator'])
         {
@@ -136,7 +136,7 @@ class user extends AWS_ADMIN_CONTROLLER
 
     public function group_edit_action()
     {
-        $this->crumb(AWS_APP::lang()->_t('修改用户组'), "admin/user/group_list/");
+        $this->crumb(AWS_APP::lang()->_t('修改用户组'));
 
         if (!$this->user_info['permission']['is_administrator'])
         {
@@ -156,7 +156,7 @@ class user extends AWS_ADMIN_CONTROLLER
 
     public function edit_action()
     {
-        $this->crumb(AWS_APP::lang()->_t('编辑用户资料'), 'admin/user/edit/');
+        $this->crumb(AWS_APP::lang()->_t('编辑用户资料'));
 
         if (!$user = $this->model('account')->get_user_info_by_uid($_GET['uid']))
         {
@@ -183,7 +183,7 @@ class user extends AWS_ADMIN_CONTROLLER
 
     public function user_add_action()
     {
-        $this->crumb(AWS_APP::lang()->_t('添加用户'), "admin/user/list/user_add/");
+        $this->crumb(AWS_APP::lang()->_t('添加用户'));
 
         TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(402));
 
@@ -218,7 +218,7 @@ class user extends AWS_ADMIN_CONTROLLER
         TPL::assign('user', $this->model('account')->get_user_info_by_uid($_GET['uid']));
         TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(402));
 
-        $this->crumb(AWS_APP::lang()->_t('代币日志'), '/admin/user/currency_log/uid-' . $_GET['uid']);
+        $this->crumb(AWS_APP::lang()->_t('代币日志'));
 
         TPL::output('admin/user/currency_log');
     }

@@ -37,7 +37,7 @@ class main extends AWS_CONTROLLER
 	{
 		HTTP::no_cache_header();
 
-		$this->crumb(AWS_APP::lang()->_t('搜索'), '/search/');
+		$this->crumb(AWS_APP::lang()->_t('搜索'));
 	}
 
 	public function index_action()
@@ -58,7 +58,7 @@ class main extends AWS_CONTROLLER
 
 		$keyword = htmlspecialchars(base64_decode($_GET['q']));
 
-		$this->crumb($keyword, '/search/q-' . urlencode($keyword));
+		$this->crumb($keyword);
 
 		if (!$keyword)
 		{

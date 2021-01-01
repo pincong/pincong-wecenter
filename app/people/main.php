@@ -74,7 +74,7 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('user_follow_check', $this->model('follow')->user_follow_check($this->user_id, $user['uid']));
 
-		$this->crumb(AWS_APP::lang()->_t('%s 的个人主页', $user['user_name']), 'people/' . $user['url_token']);
+		$this->crumb(AWS_APP::lang()->_t('%s 的个人主页', $user['user_name']));
 
 		TPL::import_css('css/user.css');
 
@@ -92,7 +92,7 @@ class main extends AWS_CONTROLLER
 			$_GET['page'] = 1;
 		}
 
-		$this->crumb(AWS_APP::lang()->_t('用户列表'), '/people/');
+		$this->crumb(AWS_APP::lang()->_t('用户列表'));
 
 		$base_url = '';
 

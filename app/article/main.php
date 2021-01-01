@@ -81,7 +81,7 @@ class main extends AWS_CONTROLLER
 		}
 
 		$page_title = CF::page_title($article_info['user_info'], 'article_' . $article_info['id'], $article_info['title']);
-		$this->crumb($page_title, '/article/' . $article_info['id']);
+		$this->crumb($page_title);
 
 		if ($item_id)
 		{

@@ -83,7 +83,7 @@ class main extends AWS_CONTROLLER
 		}
 		else
 		{
-			$this->crumb($topic_info['topic_title'], '/topic/' . $topic_info['url_token']);
+			$this->crumb($topic_info['topic_title']);
 		}
 
 		if ($this->user_id)
@@ -211,7 +211,7 @@ class main extends AWS_CONTROLLER
 			'per_page' => $per_page
 		))->create_links());
 
-		$this->crumb(AWS_APP::lang()->_t('话题广场'), '/topic/');
+		$this->crumb(AWS_APP::lang()->_t('话题广场'));
 
 		TPL::output('topic/square');
 	}
@@ -235,8 +235,8 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		$this->crumb(AWS_APP::lang()->_t('话题编辑'), '/topic/edit/' . $topic_info['topic_id']);
-		$this->crumb($topic_info['topic_title'], '/topic/' . $topic_info['topic_id']);
+		$this->crumb(AWS_APP::lang()->_t('话题编辑'));
+		$this->crumb($topic_info['topic_title']);
 
 		TPL::assign('topic_info', $topic_info);
 		TPL::assign('related_topics', $this->model('topic')->related_topics($_GET['id']));
@@ -251,8 +251,8 @@ class main extends AWS_CONTROLLER
 			H::redirect_msg(AWS_APP::lang()->_t('话题不存在'), '/');
 		}
 
-		$this->crumb(AWS_APP::lang()->_t('话题管理'), '/topic/manage/' . $topic_info['topic_id']);
-		$this->crumb($topic_info['topic_title'], '/topic/' . $topic_info['topic_id']);
+		$this->crumb(AWS_APP::lang()->_t('话题管理'));
+		$this->crumb($topic_info['topic_title']);
 
 		if (!($this->user_info['permission']['manage_topic']))
 		{

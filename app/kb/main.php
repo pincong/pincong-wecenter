@@ -56,7 +56,7 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('item_info', $item_info);
 
-		$this->crumb($item_info['title'], '/kb/' . $item_info['id']);
+		$this->crumb($item_info['title']);
 
 		TPL::output('kb/index');
 	}
@@ -68,7 +68,7 @@ class main extends AWS_CONTROLLER
 			H::redirect_msg(AWS_APP::lang()->_t('你的声望还不够'));
 		}
 
-		$this->crumb(AWS_APP::lang()->_t('知识库'), '/kb/');
+		$this->crumb(AWS_APP::lang()->_t('知识库'));
 
 		$per_page = get_setting('contents_per_page');
 

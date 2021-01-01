@@ -77,7 +77,7 @@ class main extends AWS_CONTROLLER
 			HTTP::redirect('/');
 		}
 
-		$this->crumb(AWS_APP::lang()->_t('登录'), '/account/login/');
+		$this->crumb(AWS_APP::lang()->_t('登录'));
 
 		TPL::import_css('css/register.css');
 
@@ -119,7 +119,7 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		$this->crumb(AWS_APP::lang()->_t('注册'), '/account/register/');
+		$this->crumb(AWS_APP::lang()->_t('注册'));
 
 		TPL::import_css('css/register.css');
 

@@ -131,7 +131,7 @@ class AWS_CONTROLLER
 		));
 
 		// 产生面包屑导航数据
-		$this->crumb(get_setting('site_name'), base_url());
+		$this->crumb(get_setting('site_name'));
 
 		if (get_setting('site_close') == 'Y' AND $this->user_info['group_id'] != 1 AND !in_array($_GET['app'], array('admin', 'account', 'upgrade')))
 		{
@@ -195,44 +195,14 @@ class AWS_CONTROLLER
 	 *
 	 * @access	public
 	 * @param	string
-	 * @param	string
 	 */
-	public function crumb($name, $url = null)
+	public function crumb($name)
 	{
-		if (is_array($name))
+		$this->crumbs[] = htmlspecialchars_decode($name);
+
+		foreach ($this->crumbs as $key => $crumb)
 		{
-			foreach ($name as $key => $value)
-			{
-				$this->crumb($key, $value);
-			}
-
-			return $this;
-		}
-
-		$name = htmlspecialchars_decode($name);
-
-		$crumb_template = $this->crumb;
-
-		if (strlen($url) > 1 and substr($url, 0, 1) == '/')
-		{
-			$url = base_url() . substr($url, 1);
-		}
-
-		$this->crumb[] = array(
-			'name' => $name,
-			'url' => $url
-		);
-
-		$crumb_template['last'] = array(
-			'name' => $name,
-			'url' => $url
-		);
-
-		TPL::assign('crumb', $crumb_template);
-
-		foreach ($this->crumb as $key => $crumb)
-		{
-			$title = $crumb['name'] . ' - ' . $title;
+			$title = $crumb . ' - ' . $title;
 		}
 
 		TPL::assign('page_title', htmlspecialchars(rtrim($title, ' - ')));

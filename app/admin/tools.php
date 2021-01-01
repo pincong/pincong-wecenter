@@ -32,7 +32,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 
     public function index_action()
     {
-        $this->crumb(AWS_APP::lang()->_t('系统维护'), 'admin/tools/');
+        $this->crumb(AWS_APP::lang()->_t('系统维护'));
 
         TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(501));
 

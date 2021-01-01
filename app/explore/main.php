@@ -36,7 +36,7 @@ class main extends AWS_CONTROLLER
 	{
 		if ($this->user_id)
 		{
-			$this->crumb(AWS_APP::lang()->_t('发现'), '/explore');
+			$this->crumb(AWS_APP::lang()->_t('发现'));
 		}
 
 		if ($_GET['category'])
@@ -48,7 +48,7 @@ class main extends AWS_CONTROLLER
 		{
 			TPL::assign('category_info', $category_info);
 
-			$this->crumb($category_info['title'], '/category-' . $category_info['id']);
+			$this->crumb($category_info['title']);
 
 			$meta_description = $category_info['title'];
 
