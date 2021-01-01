@@ -50,7 +50,7 @@ class menu_class extends AWS_MODEL
 
 			if ($app)
 			{
-				$url_prefix = $app . '/';
+				$url_prefix = url_rewrite('/') . $app . '/';
 			}
 
 			foreach ($nav_menu_data as $key => $val)
