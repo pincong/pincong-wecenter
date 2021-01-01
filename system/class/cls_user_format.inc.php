@@ -48,7 +48,7 @@ class UF
 		//}
 	}
 
-	public static function signature(&$user_info, $show_forbidden = true)
+	public static function signature(&$user_info, $show_forbidden = false)
 	{
 		if (!$user_info OR (!$show_forbidden AND ($user_info['forbidden'] OR $user_info['flagged'] > 0)))
 		{

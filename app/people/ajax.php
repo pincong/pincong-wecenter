@@ -66,7 +66,7 @@ class ajax extends AWS_CONTROLLER
 			'uid' => $user_info['uid'],
 			'user_name' => $user_info['user_name'],
 			'avatar_file' => UF::avatar($user_info, 'mid'),
-			'signature' => $user_info['signature'],
+			'signature' => UF::signature($user_info),
 			'focus' => ($user_follow_check ? true : false),
 			'is_me' => (($this->user_id == $user_info['uid']) ? true : false),
 			'url' => get_js_url('/people/' . $user_info['url_token']),
