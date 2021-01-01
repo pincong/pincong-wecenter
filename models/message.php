@@ -175,11 +175,11 @@ class message_class extends AWS_MODEL
 
 		if ($inbox_dialog['sender_uid'] == $uid)
 		{
-			$this->query("UPDATE " . get_table('inbox_dialog') . " SET recipient_unread = recipient_unread + 1 WHERE id = " . intval($dialog_id));
+			$this->execute("UPDATE " . get_table('inbox_dialog') . " SET recipient_unread = recipient_unread + 1 WHERE id = " . intval($dialog_id));
 		}
 		else
 		{
-			$this->query("UPDATE " . get_table('inbox_dialog') . " SET sender_unread = sender_unread + 1 WHERE id = " . intval($dialog_id));
+			$this->execute("UPDATE " . get_table('inbox_dialog') . " SET sender_unread = sender_unread + 1 WHERE id = " . intval($dialog_id));
 		}
 	}
 

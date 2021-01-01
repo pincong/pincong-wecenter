@@ -387,9 +387,9 @@ class AWS_MODEL
 	 * @param	string
 	 * @return	boolean
 	 */
-	public function query($sql)
+	public function execute($sql)
 	{
-		$this->slave();
+		$this->master();
 
 		if (!$sql)
 		{

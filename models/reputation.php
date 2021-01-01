@@ -95,14 +95,14 @@ class reputation_class extends AWS_MODEL
 		}
 
 		$sql = 'UPDATE ' . $this->get_table('users') . ' SET ' . $set . ' WHERE uid = ' . ($recipient_user['uid']);
-		$this->query($sql);
+		$this->execute($sql);
 	}
 
 	// 更新被赞post赞数和声望(热度)
 	private function update_item_agree_count_and_reputation(&$item_type, $item_id, $agree_value, $reputation_value)
 	{
 		$sql = 'UPDATE ' . $this->get_table($item_type) . ' SET agree_count = agree_count + ' . ($agree_value) . ', reputation = reputation + ' . ($reputation_value) . ' WHERE id = ' . ($item_id);
-		$this->query($sql);
+		$this->execute($sql);
 	}
 
 	// 更新posts_index表声望(用于热门排序)
@@ -131,7 +131,7 @@ class reputation_class extends AWS_MODEL
 
 		$where = "post_id = " . $parent_id . " AND post_type = '" . $parent_type . "'";
 		$sql = 'UPDATE ' . $this->get_table('posts_index') . ' SET reputation = reputation + ' . $reputation_value . ' WHERE ' . $where;
-		$this->query($sql);
+		$this->execute($sql);
 	}
 
 
