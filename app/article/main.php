@@ -83,13 +83,15 @@ class main extends AWS_CONTROLLER
 		$page_title = CF::page_title($article_info['user_info'], 'article_' . $article_info['id'], $article_info['title']);
 		$this->crumb($page_title);
 
+		$order_by = "fold ASC, id ASC";
+
 		if ($item_id)
 		{
 			$comments[] = $reply;
 		}
 		else
 		{
-			$comments = $this->model('article')->get_comments($article_info['id'], $_GET['page'], $replies_per_page);
+			$comments = $this->model('article')->get_comments($article_info['id'], $_GET['page'], $replies_per_page, $order_by);
 		}
 
 		if ($comments AND $this->user_id)

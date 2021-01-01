@@ -40,11 +40,6 @@ class answer_class extends AWS_MODEL
 		if ($answer = $this->fetch_row('answer', 'id = ' . intval($answer_id)))
 		{
 			$answer['user_info'] = $this->model('account')->get_user_info_by_uid($answer['uid']);
-
-			if (-$answer['agree_count'] >= get_setting('downvote_fold'))
-			{
-				$answer['fold'] = -2;
-			}
 		}
 
 		return $answer;
@@ -83,14 +78,8 @@ class answer_class extends AWS_MODEL
 	{
 		if ($answer_list = $this->fetch_page('answer', 'question_id = ' . intval($question_id), $order, $page, $per_page))
 		{
-			$downvote_fold = get_setting('downvote_fold');
 			foreach($answer_list as $key => $val)
 			{
-				if (-$val['agree_count'] >= $downvote_fold)
-				{
-					$answer_list[$key]['fold'] = -2;
-				}
-
 				$uids[] = $val['uid'];
 			}
 		}

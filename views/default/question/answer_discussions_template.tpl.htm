@@ -2,7 +2,6 @@
 <ul>
 	<?php foreach ($this->comments AS $key => $val) { ?>
 	<?php if (CF::skip($val['user_info'])) continue; ?>
-	<?php if ($val['user_info']['forbidden'] AND !$this->user_info['permission']['is_administrator']) $val['fold'] = 1; ?>
 	<li>
 		<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>" data-id="<?php echo $val['uid']; ?>"><img src="<?php echo UF::avatar($val['user_info'], 'min', $this->user_info['permission']['is_administrator']); ?>" alt="" /></a>
 

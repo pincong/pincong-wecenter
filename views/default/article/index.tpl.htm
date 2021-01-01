@@ -152,8 +152,6 @@
 						<div class="mod-body aw-feed-list aw-replies">
 							<?php TPL::include('article/replies.tpl.htm'); ?>
 						</div>
-						<div class="mod-body aw-feed-list aw-replies-fold">
-						</div>
 
 						<?php if ($_GET['item_id']) { ?>
 						<div class="mod-footer">
@@ -376,13 +374,6 @@ function reply_callback_2(err) {
 }
 
 $(document).ready(function () {
-	var folded_replies = $('.aw-replies-fold');
-	$.each($('.aw-replies .aw-item'), function (i, e) {
-		if ($(this).data('fold')) {
-			folded_replies.append($(e));
-		}
-	});
-
 	AWS.at_user_lists('#wmd-input');
 
 	AWS.init_later_time_helper($('#later_time_input'), $('#later_time_label'));

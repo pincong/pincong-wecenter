@@ -76,13 +76,11 @@ class main extends AWS_CONTROLLER
 
 		if ($_GET['sort_key'] == 'add_time')
 		{
-			//$answer_order_by = "add_time " . $sort;
-			$answer_order_by = "id " . $sort;
+			$order_by = "fold ASC, id " . $sort;
 		}
 		else
 		{
-			//$answer_order_by = "agree_count " . $sort . ", add_time ASC";
-			$answer_order_by = "reputation " . $sort . ", agree_count " . $sort . ", id ASC";
+			$order_by = "fold ASC, reputation " . $sort . ", agree_count " . $sort . ", id ASC";
 		}
 
 		if ($item_id)
@@ -91,7 +89,7 @@ class main extends AWS_CONTROLLER
 		}
 		else
 		{
-			$answer_list = $this->model('answer')->get_answers($question_info['id'], $_GET['page'], $replies_per_page, $answer_order_by);
+			$answer_list = $this->model('answer')->get_answers($question_info['id'], $_GET['page'], $replies_per_page, $order_by);
 		}
 
 		if (! is_array($answer_list))

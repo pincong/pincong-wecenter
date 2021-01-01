@@ -205,11 +205,6 @@ class article_class extends AWS_MODEL
 
 			$comment['user_info'] = $comment_user_infos[$comment['uid']];
 			$comment['at_user_info'] = $comment_user_infos[$comment['at_uid']];
-
-			if (-$comment['agree_count'] >= get_setting('downvote_fold'))
-			{
-				$comment['fold'] = -2;
-			}
 		}
 
 		return $comment;
@@ -240,14 +235,8 @@ class article_class extends AWS_MODEL
 	{
 		if ($comments = $this->fetch_page('article_comment', 'article_id = ' . intval($article_id), $order, $page, $per_page))
 		{
-			$downvote_fold = get_setting('downvote_fold');
 			foreach ($comments AS $key => $val)
 			{
-				if (-$val['agree_count'] >= $downvote_fold)
-				{
-					$comments[$key]['fold'] = -2;
-				}
-
 				$comment_uids[$val['uid']] = $val['uid'];
 
 				if ($val['at_uid'])

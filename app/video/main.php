@@ -90,6 +90,8 @@ class main extends AWS_CONTROLLER
 		$page_title = CF::page_title($video_info['user_info'], 'video_' . $video_info['id'], $video_info['title']);
 		$this->crumb($page_title);
 
+		$order_by = "fold ASC, id ASC";
+
 		if ($item_id)
 		{
 			// 显示单个评论
@@ -97,7 +99,7 @@ class main extends AWS_CONTROLLER
 		}
 		else
 		{
-			$comments = $this->model('video')->get_comments($video_info['id'], $_GET['page'], $replies_per_page);
+			$comments = $this->model('video')->get_comments($video_info['id'], $_GET['page'], $replies_per_page, $order_by);
 		}
 
 		if ($comments AND $this->user_id)
