@@ -128,6 +128,11 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能讨论已删除的问题')));
 		}
 
+		if (!$this->model('category')->check_user_permission($question_info['category_id'], $this->user_info['permission']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你的声望还不能在这个分类发言')));
+		}
+
 		if ($_POST['anonymous'])
 		{
 			$publish_uid = $this->get_anonymous_uid('answer_discussion');
@@ -217,6 +222,11 @@ class ajax extends AWS_CONTROLLER
 		if (!$question_info['title'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能讨论已删除的问题')));
+		}
+
+		if (!$this->model('category')->check_user_permission($question_info['category_id'], $this->user_info['permission']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你的声望还不能在这个分类发言')));
 		}
 
 		if (!$this->model('ratelimit')->check_question_discussion($this->user_id, $this->user_info['permission']['discussion_limit_per_day']))
