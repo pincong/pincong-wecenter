@@ -103,19 +103,13 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		$base_url = '';
-
 		$order = 'reputation DESC, uid ASC';
 
 		$group_id = intval($_GET['group_id']);
 		if ($group_id > 0 AND $all_groups[$group_id]['type'] == 2)
 		{
 			$where[] = 'group_id = ' . $group_id;
-			if ($base_url)
-			{
-				$base_url .= '__';
-			}
-			$base_url .= 'group_id-' . $group_id;
+			$url_param[] = 'group_id-' . $group_id;
 		}
 
 		$is_forbidden = intval($_GET['forbidden']);
@@ -127,21 +121,13 @@ class main extends AWS_CONTROLLER
 			if ($is_forbidden)
 			{
 				$where[] = 'forbidden <> 0';
-				if ($base_url)
-				{
-					$base_url .= '__';
-				}
-				$base_url .= 'forbidden-1';
+				$url_param[] = 'forbidden-1';
 			}
 
 			if ($is_flagged)
 			{
 				$where[] = 'flagged <> 0';
-				if ($base_url)
-				{
-					$base_url .= '__';
-				}
-				$base_url .= 'flagged-1';
+				$url_param[] = 'flagged-1';
 			}
 		}
 		else
@@ -150,12 +136,18 @@ class main extends AWS_CONTROLLER
 			$where[] = 'flagged = 0';
 		}
 
+		if ($_GET['sort_key'] == 'uid')
+		{
+			$order = 'uid ASC';
+			$url_param[] = 'sort_key-uid';
+		}
+
 		$where = implode(' AND ', $where);
 
 		$users_list = $this->model('account')->get_user_list($where, calc_page_limit($_GET['page'], get_setting('contents_per_page')), $order);
 
 		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-			'base_url' => get_js_url('/people/' . $base_url),
+			'base_url' => get_js_url('/people/') . implode('__', $url_param),
 			'total_rows' => $this->model('account')->get_user_count($where),
 			'per_page' => get_setting('contents_per_page')
 		))->create_links());
