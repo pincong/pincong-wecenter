@@ -44,7 +44,7 @@ class edit extends AWS_CONTROLLER
 		TPL::assign('user', $user);
 
 		$banning_reason_list = S::get_key_value_pairs('banning_reason_list', null, true);
-		if (count($banning_reason_list > 0))
+		if (count($banning_reason_list) > 0)
 		{
 			TPL::assign('banning_reason_list', $banning_reason_list);
 		}
@@ -68,7 +68,7 @@ class edit extends AWS_CONTROLLER
 		TPL::assign('user', $user);
 
 		$banning_reason_list = S::get_key_value_pairs('banning_reason_list', null, true);
-		if (count($banning_reason_list > 0))
+		if (count($banning_reason_list) > 0)
 		{
 			TPL::assign('banning_reason_list', $banning_reason_list);
 		}

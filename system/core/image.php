@@ -12,17 +12,17 @@
 +---------------------------------------------------------------------------
 */
 
-define(IMAGE_CORE_OP_TO_FILE, 1);              // Output to file
-define(IMAGE_CORE_OP_OUTPUT, 2);               // Output to browser
+define('IMAGE_CORE_OP_TO_FILE', 1);              // Output to file
+define('IMAGE_CORE_OP_OUTPUT', 2);               // Output to browser
 
-define(IMAGE_CORE_SC_NOT_KEEP_SCALE, 4);       // Free scale
-define(IMAGE_CORE_SC_BEST_RESIZE_WIDTH, 8);    // Scale to width
-define(IMAGE_CORE_SC_BEST_RESIZE_HEIGHT, 16);  // Scale to height
+define('IMAGE_CORE_SC_NOT_KEEP_SCALE', 4);       // Free scale
+define('IMAGE_CORE_SC_BEST_RESIZE_WIDTH', 8);    // Scale to width
+define('IMAGE_CORE_SC_BEST_RESIZE_HEIGHT', 16);  // Scale to height
 
-define(IMAGE_CORE_CM_DEFAULT, 0);               // Clipping method: default
-define(IMAGE_CORE_CM_LEFT_OR_TOP, 1);           // Clipping method: left or top
-define(IMAGE_CORE_CM_MIDDLE, 2);                // Clipping method: middle
-define(IMAGE_CORE_CM_RIGHT_OR_BOTTOM, 3);       // Clipping method: right or bottom
+define('IMAGE_CORE_CM_DEFAULT', 0);               // Clipping method: default
+define('IMAGE_CORE_CM_LEFT_OR_TOP', 1);           // Clipping method: left or top
+define('IMAGE_CORE_CM_MIDDLE', 2);                // Clipping method: middle
+define('IMAGE_CORE_CM_RIGHT_OR_BOTTOM', 3);       // Clipping method: right or bottom
 
 class core_image
 {
