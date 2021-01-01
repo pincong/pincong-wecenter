@@ -42,11 +42,6 @@ class ajax extends AWS_CONTROLLER
 			{
 				switch ($val['type'])
 				{
-					case 'questions':
-						$search_result[$key]['focus'] = $this->model('focus')->has_focus_question($val['search_id'], $this->user_id);
-
-						break;
-
 					case 'topics':
 						$search_result[$key]['focus'] = $this->model('topic')->has_focus_topic($this->user_id, $val['search_id']);
 

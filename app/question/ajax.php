@@ -380,30 +380,6 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
-	public function focus_action()
-	{
-		if (!$_POST['question_id'])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
-		}
-
-		if (!check_user_operation_interval('focus', $this->user_id, $this->user_info['permission']['interval_post']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
-
-		if (! $this->model('content')->get_thread_info_by_id('question', $_POST['question_id']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
-		}
-
-		set_user_operation_last_time('focus', $this->user_id);
-
-		H::ajax_json_output(AWS_APP::RSM(array(
-			'type' => $this->model('focus')->add_focus_question($_POST['question_id'], $this->user_id)
-		), 1, null));
-	}
-
 
 	// 只清空不删除
 	public function remove_comment_action()

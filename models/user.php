@@ -210,7 +210,7 @@ class user_class extends AWS_MODEL
 		$uid = intval($uid);
 
 		$this->delete('favorite', 'uid = ' . ($uid));
-		$this->delete('question_focus', 'uid = ' . ($uid));
+		$this->delete('post_follow', 'uid = ' . ($uid));
 		$this->delete('topic_focus', 'uid = ' . ($uid));
 
 		$this->delete('question_invite', 'sender_uid = ' . ($uid) . ' OR recipients_uid = ' . ($uid));

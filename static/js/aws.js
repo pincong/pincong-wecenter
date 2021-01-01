@@ -983,15 +983,6 @@ AWS.User =
 
 		switch (type)
 		{
-			case 'question':
-				var url = '/question/ajax/focus/';
-
-				var data = {
-					'question_id': data_id
-				};
-
-				break;
-
 			case 'topic':
 				var url = '/topic/ajax/focus_topic/';
 

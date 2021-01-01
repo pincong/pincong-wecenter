@@ -186,7 +186,6 @@ class search_class extends AWS_MODEL
 			$detail = array(
 				'answer_count' => $result_info['answer_count'],	// 回复数
 				'comment_count' => $result_info['comment_count'],
-				'focus_count' => $result_info['focus_count'],
 				'agree_count' => $result_info['agree_count']
 			);
 		}

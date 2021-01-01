@@ -184,8 +184,6 @@ class main extends AWS_CONTROLLER
 			TPL::assign('redirected_from', $this->model('content')->get_post_by_id('question', $_GET['rf']));
 		}
 
-		TPL::assign('question_focus', $this->model('focus')->has_focus_question($question_info['id'], $this->user_id));
-
 		$question_topics = $this->model('topic')->get_topics_by_item_id($question_info['id'], 'question');
 
 		if (sizeof($question_topics) == 0 AND $this->user_id)

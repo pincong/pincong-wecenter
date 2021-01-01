@@ -279,7 +279,7 @@ class publish_class extends AWS_MODEL
 			}
 		}
 
-		if ($focus_users = $this->model('focus')->get_focus_uid_by_question_id($data['parent_id']))
+		if ($focus_users = $this->model('postfollow')->get_followers('question', $data['parent_id']))
 		{
 			foreach ($focus_users as $focus_user)
 			{
