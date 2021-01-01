@@ -47,21 +47,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 	public function save_settings_action()
 	{
-		if ($_POST['upload_dir'])
-		{
-			$_POST['upload_dir'] = rtrim(trim($_POST['upload_dir']), '\/');
-		}
-
-		if ($_POST['upload_url'])
-		{
-			$_POST['upload_url'] = rtrim(trim($_POST['upload_url']), '\/');
-		}
-
-		if ($_POST['img_url'])
-		{
-			$_POST['img_url'] = rtrim(trim($_POST['img_url']), '\/');
-		}
-
 		if ($_POST['_set_notification_settings'])
 		{
 			if ($notify_actions = $this->model('notification')->notify_action_details)
