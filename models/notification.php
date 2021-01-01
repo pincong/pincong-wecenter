@@ -40,7 +40,7 @@ class notification_class extends AWS_MODEL
 		return true;
 	}
 
-	public function send($sender_uid, $recipient_uid, $action, $item_type, $item_id, $child_type = null, $child_id = 0)
+	public function send($sender_uid, $recipient_uid, $action, $item_type, $item_id)
 	{
 		if (intval($recipient_uid) <= 0)
 		{
@@ -59,8 +59,6 @@ class notification_class extends AWS_MODEL
 			'action' => $action,
 			'item_type' => $item_type,
 			'item_id' => intval($item_id),
-			'child_type' => $child_type,
-			'child_id' => intval($child_id),
 			'add_time' => $add_time,
 			'read_flag' => 0
 		)))
@@ -91,11 +89,145 @@ class notification_class extends AWS_MODEL
 	/**
 	 * 获得通知列表
 	 * 
-	 * @param $read_status 0 - 未读, 1 - 已读, other - 所有
+	 * @param $read_flag 0 - 未读, 1 - 已读, null - 所有
 	 */
-	public function list_notifications($recipient_uid, $read_status, $page, $per_page)
+	public function list_notifications($recipient_uid, $read_flag, $page, $per_page)
 	{
+		if (!$recipient_uid)
+		{
+			return false;
+		}
 
+		$where[] = 'recipient_uid = ' . intval($recipient_uid);
+
+		if (isset($read_flag))
+		{
+			$where[] = 'read_flag = ' . intval($read_flag);
+		}
+
+		$list = $this->fetch_page('notification', implode(' AND ', $where), 'notification_id DESC', $page, $per_page);
+		if (!$list)
+		{
+			return false;
+		}
+
+		return $list;
+	}
+
+	private function process_notifications(&$list)
+	{
+		foreach ($list as $key => $val)
+		{
+			$user_ids[] = $val['sender_uid'];
+			switch ($val['item_type'])
+			{
+				case 'user':
+					$user_ids[] = $val['item_id'];
+					break;
+
+				case 'answer':
+					$answer_ids[] = $val['item_id'];
+					break;
+
+				case 'article_comment':
+					$article_comment_ids[] = $val['item_id'];
+					break;
+
+				case 'video_comment':
+					$video_comment_ids[] = $val['item_id'];
+					break;
+
+				case 'question':
+					$question_ids[] = $val['item_id'];
+					break;
+
+				case 'article':
+					$article_ids[] = $val['item_id'];
+					break;
+
+				case 'video':
+					$video_ids[] = $val['item_id'];
+					break;
+			}
+		}
+
+		if ($answer_ids)
+		{
+			$answers = $this->model('content')->get_posts_by_ids('answer', $answer_ids);
+			foreach ($answers AS $key => $val)
+			{
+				$question_ids[] = $val['question_id'];
+			}
+		}
+		if ($question_ids)
+		{
+			$questions = $this->model('content')->get_posts_by_ids('question', $question_ids);
+		}
+
+		if ($article_comment_ids)
+		{
+			$article_comments = $this->model('content')->get_posts_by_ids('article_comment', $article_comment_ids);
+			foreach ($article_comments AS $key => $val)
+			{
+				$article_ids[] = $val['article_id'];
+			}
+		}
+		if ($article_ids)
+		{
+			$articles = $this->model('content')->get_posts_by_ids('article', $article_ids);
+		}
+
+		if ($video_comment_ids)
+		{
+			$video_comments = $this->model('content')->get_posts_by_ids('video_comment', $video_comment_ids);
+			foreach ($video_comments AS $key => $val)
+			{
+				$video_ids[] = $val['video_id'];
+			}
+		}
+		if ($video_ids)
+		{
+			$videos = $this->model('content')->get_posts_by_ids('video', $video_ids);
+		}
+
+		if ($user_ids)
+		{
+			$users = $this->model('account')->get_user_info_by_uids($user_ids);
+		}
+
+		foreach ($list as $key => $val)
+		{
+			switch ($val['item_type'])
+			{
+				case 'user':
+					$list[$key]['item_info']; = $users[$val['item_id']];
+					break;
+
+				case 'answer':
+					$list[$key]['item_info']; = $answers[$val['item_id']];
+					break;
+
+				case 'article_comment':
+					$list[$key]['item_info']; = $article_comments[$val['item_id']];
+					break;
+
+				case 'video_comment':
+					$list[$key]['item_info']; = $video_comments[$val['item_id']];
+					break;
+
+				case 'question':
+					$list[$key]['item_info']; = $questions[$val['item_id']];
+					break;
+
+				case 'article':
+					$list[$key]['item_info']; = $articles[$val['item_id']];
+					break;
+
+				case 'video':
+					$list[$key]['item_info']; = $videos[$val['item_id']];
+					break;
+			}
+		}
 	}
 
 	public function delete_expired_data()
