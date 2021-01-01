@@ -72,6 +72,44 @@ function set_user_operation_last_time($op_name, $uid)
 	AWS_APP::cache()->set($key, time(), 86400);
 }
 
+function check_http_referer()
+{
+	if (get_setting('check_http_referer') != 'Y')
+	{
+		return true;
+	}
+	static $website_domains;
+	if (!isset($website_domains))
+	{
+		$website_domains = get_setting_array('website_domains', "\n");
+	}
+	if (!$website_domains)
+	{
+		return true;
+	}
+	$empty = true;
+	foreach($website_domains AS $host)
+	{
+		if (!$host)
+		{
+			continue;
+		}
+		$empty = false;
+		if (stripos($_SERVER['HTTP_REFERER'], 'https://' . $host . '/') === 0)
+		{
+			return true;
+		}
+		if (!isset($_SERVER['REQUEST_SCHEME']) OR $_SERVER['REQUEST_SCHEME'] != 'https')
+		{
+			if (stripos($_SERVER['HTTP_REFERER'], 'http://' . $host . '/') === 0)
+			{
+				return true;
+			}
+		}
+	}
+	return $empty;
+}
+
 function can_edit_post($post_uid, &$user_info)
 {
 	if (!$user_info OR !$user_info['uid'])

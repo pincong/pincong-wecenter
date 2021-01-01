@@ -32,10 +32,7 @@ class ajax extends AWS_CONTROLLER
 	public function setup()
 	{
 		HTTP::no_cache_header();
-	}
 
-	public function process_action()
-	{
 		if ($this->user_id)
 		{
 			H::ajax_json_output(AWS_APP::RSM(array(
@@ -43,6 +40,14 @@ class ajax extends AWS_CONTROLLER
 			), 1, null));
 		}
 
+		if (!check_http_referer())
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('错误的请求')));
+		}
+	}
+
+	public function process_action()
+	{
 		if (get_setting('register_type') == 'close')
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('本站目前关闭注册')));

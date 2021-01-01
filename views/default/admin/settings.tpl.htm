@@ -435,7 +435,28 @@
 										<input type="radio" name="url_rewrite_enable" value="N"<?php if ($this->setting['url_rewrite_enable'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
 									</label>
 
-									<span class="help-block"><?php _e('Rewrite 开启方法请见 ReadMe 说明文件'); ?></span>
+									<span class="help-block"><?php _e('Rewrite 设置错误将会导致无法登录'); ?></span>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('注册/登录时检查 HTTP referer'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" name="check_http_referer" value="Y"<?php if ($this->setting['check_http_referer'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" name="check_http_referer" value="N"<?php if ($this->setting['check_http_referer'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+									</label>
+
+									<span class="help-block"><?php _e('网站域名设置错误将会导致无法登录'); ?></span>
 								</div>
 							</div>
 						</div>

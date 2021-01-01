@@ -35,6 +35,11 @@ class main extends AWS_CONTROLLER
 			HTTP::redirect('/');
 		}
 
+		if (!check_http_referer())
+		{
+			H::redirect_msg(AWS_APP::lang()->_t('错误的请求'), '/');
+		}
+
 		if (get_setting('register_type') == 'close')
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('本站目前关闭注册'), '/');
