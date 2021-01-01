@@ -93,6 +93,10 @@ class core_token
 		{
 			return false;
 		}
+		if ($body['expire'] != $token['expire'] OR $body['time'] != $token['time'])
+		{
+			return false;
+		}
 		$exipre = intval($body['expire']);
 		if ($time >= $exipre)
 		{

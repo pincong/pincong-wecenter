@@ -1,0 +1,25 @@
+<?php TPL::include('global/header_meta.tpl.htm'); ?>
+
+<div class="aw-register-box">
+	<div class="mod-head">
+		<a href="<?php echo base_url(); ?>/"><img src="<?php echo get_setting('login_logo_url'); ?>" alt=""></a>
+		<div style="min-height:100px;margin-top:30px">
+			<img src="<?php echo UF::avatar($this->user_info, 'max'); ?>" alt="">
+		</div>
+	</div>
+	<div class="mod-body">
+		<form id="login_form" method="post" action="<?php echo url_rewrite(); ?>/account/logout/">
+			<ul>
+				<li class="alert alert-danger">
+					<em><?php _e('您即将退出'); ?></em>
+				</li>
+				<li class="clearfix">
+					<button type="submit" class="btn btn-large btn-blue btn-block"><?php _e('确定'); ?></button>
+					<a href="<?php echo url_rewrite(); ?>/" class="btn btn-large btn-gray btn-block"><?php _e('取消'); ?></a>
+				</li>
+			</ul>
+		</form>
+	</div>
+</div>
+
+<?php TPL::include('global/footer.tpl.htm'); ?>

@@ -31,11 +31,18 @@ class main extends AWS_CONTROLLER
 
 	public function logout_action()
 	{
-		$this->model('login')->logout();
-
-		$return_url = '/';
-
-		HTTP::redirect($return_url);
+		if ($_SERVER['REQUEST_METHOD'] != 'POST')
+		{
+			$this->crumb(AWS_APP::lang()->_t('退出'));
+			TPL::import_css('css/register.css');
+			TPL::output("account/logout");
+		}
+		else
+		{
+			$this->model('login')->logout();
+			$return_url = '/';
+			HTTP::redirect($return_url);
+		}
 	}
 
 	public function change_password_action()
