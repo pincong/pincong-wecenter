@@ -3,7 +3,9 @@
 <div class="aw-register-box">
 	<div class="mod-head">
 		<a href="<?php echo base_url(); ?>/"><img src="<?php echo get_setting('login_logo_url'); ?>" alt=""></a>
-		<img src="<?php echo UF::avatar($this->user, 'max'); ?>" alt="" style="min-height:100px">
+		<div style="min-height:100px;margin-top:30px">
+			<img src="<?php echo UF::avatar($this->user, 'max'); ?>" alt="">
+		</div>
 	</div>
 	<div class="mod-body">
 		<form id="login_form" onsubmit="return false" method="post">

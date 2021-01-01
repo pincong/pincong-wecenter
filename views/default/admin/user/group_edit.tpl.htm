@@ -57,7 +57,25 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许编辑任何帖文'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许编辑自己的贴文'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="edit_own_post"<?php if ($this->group_pms['edit_own_post']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="edit_own_post"<?php if (!$this->group_pms['edit_own_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许编辑所有人的贴文'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
@@ -75,7 +93,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许编辑特定帖文'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许编辑特定贴文'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">

@@ -564,6 +564,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 		$permission_array = array(
 			'is_administrator',
 			'is_moderator',
+			'edit_own_post',
 			'edit_any_post',
 			'edit_specific_post',
 			'forbid_user',
