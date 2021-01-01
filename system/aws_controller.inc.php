@@ -133,13 +133,6 @@ class AWS_CONTROLLER
 		// 产生面包屑导航数据
 		$this->crumb(get_setting('site_name'));
 
-		if (get_setting('site_close') == 'Y' AND $this->user_info['group_id'] != 1 AND !in_array($_GET['app'], array('admin', 'account', 'upgrade')))
-		{
-			$this->model('account')->logout();
-
-			H::redirect_msg(get_setting('close_notice'), '/account/login/');
-		}
-
 		// 执行控制器 Setup 动作
 		if ($process_setup)
 		{

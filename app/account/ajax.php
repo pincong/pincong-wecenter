@@ -226,11 +226,6 @@ class ajax extends AWS_CONTROLLER
 				), 1, null));
 			}
 
-			if (get_setting('site_close') == 'Y' AND $user_info['group_id'] != 1)
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, get_setting('close_notice')));
-			}
-
 			// 记住我
 			if ($_POST['net_auto_login'])
 			{
@@ -244,7 +239,9 @@ class ajax extends AWS_CONTROLLER
 
 			if ($_POST['return_url'])
 			{
-				$url = get_js_url($_POST['return_url']);
+				//$url = get_js_url($_POST['return_url']);
+				// TODO: 检查 $_POST['return_url']
+				$url = get_js_url('/');
 			}
 			else
 			{
