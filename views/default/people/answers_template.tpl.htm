@@ -9,12 +9,14 @@
 		</div>
 		<div class="mod-body">
 			<span class="aw-border-radius-5 count pull-left"><i class="icon icon-agree"></i> <?php echo $val['agree_count']; ?></span>
-			<p class="aw-small-text">
+			<p>
+			<a class="aw-small-text" href="question/item_id-<?php echo $val['answer_id']; ?>">
 			<?php if (!$val['answer_content']) { ?>
 				<s class="aw-deleted"><?php _e('已删除'); ?></s>
 			<?php } else { ?>
 				<?php echo cjk_substr($val['answer_content'], 0, 200, 'UTF-8', '...'); ?>
 			<?php } ?>
+			</a>
 			</p>
 			<p class="aw-small-text"><?php echo date_friendly($val['add_time']); ?></p>
 		</div>
