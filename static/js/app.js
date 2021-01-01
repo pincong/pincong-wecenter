@@ -188,10 +188,6 @@ $(document).ready(function ()
         $(this).tooltip('show');
     });
 
-
-    //编辑器@人
-    AWS.at_user_lists('#wmd-input, .aw-article-replay-box #comment_editor', 5);
-
     //ie浏览器下input,textarea兼容
     if (document.all)
     {
