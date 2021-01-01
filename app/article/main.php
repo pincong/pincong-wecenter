@@ -83,7 +83,16 @@ class main extends AWS_CONTROLLER
 		$page_title = CF::page_title($article_info['user_info'], 'article_' . $article_info['id'], $article_info['title']);
 		$this->crumb($page_title);
 
-		$order_by = "fold ASC, id ASC";
+		if ($_GET['fold'])
+		{
+			$order_by = "fold ASC, ";
+		}
+		else
+		{
+			$order_by = "";
+		}
+
+		$order_by .= "id ASC";
 
 		if ($item_id)
 		{

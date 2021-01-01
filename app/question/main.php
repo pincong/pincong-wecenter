@@ -74,13 +74,22 @@ class main extends AWS_CONTROLLER
 
 		$this->model('content')->update_view_count('question', $question_info['id'], session_id());
 
-		if ($_GET['sort_key'] == 'add_time')
+		if ($_GET['fold'])
 		{
-			$order_by = "fold ASC, id " . $sort;
+			$order_by = "fold ASC, ";
 		}
 		else
 		{
-			$order_by = "fold ASC, reputation " . $sort . ", agree_count " . $sort . ", id ASC";
+			$order_by = "";
+		}
+
+		if ($_GET['sort_key'] == 'add_time')
+		{
+			$order_by .= "id " . $sort;
+		}
+		else
+		{
+			$order_by .= "reputation " . $sort . ", agree_count " . $sort . ", id ASC";
 		}
 
 		if ($item_id)

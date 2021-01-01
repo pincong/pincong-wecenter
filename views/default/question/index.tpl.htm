@@ -224,9 +224,13 @@
 								<h2><?php _e('%s 个回复', $this->answer_count); ?></h2>
 							</ul>
 						</div>
+
 						<div class="mod-body aw-feed-list aw-replies">
 							<?php TPL::include('question/replies.tpl.htm'); ?>
 						</div>
+						<div class="mod-body aw-feed-list aw-replies-fold">
+						</div>
+
 						<div class="mod-footer">
 							<?php if ($_GET['item_id']) { ?>
 								<a href="question/<?php echo $this->question_info['id']; ?>" class="aw-load-more-content">
@@ -413,6 +417,15 @@ function reply_callback(err) {
 }
 
 $(document).ready(function () {
+<?php if (!$_GET['fold']) { ?>
+	var folded_replies = $('.aw-replies-fold');
+	$.each($('.aw-replies .aw-item'), function (i, e) {
+		if ($(this).data('fold')) {
+			folded_replies.append($(e));
+		}
+	});
+<?php } ?>
+
 	// 问题页添加讨论
 	AWS.Init.init_comment_box('.aw-add-comment');
 

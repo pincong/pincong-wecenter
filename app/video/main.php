@@ -90,7 +90,16 @@ class main extends AWS_CONTROLLER
 		$page_title = CF::page_title($video_info['user_info'], 'video_' . $video_info['id'], $video_info['title']);
 		$this->crumb($page_title);
 
-		$order_by = "fold ASC, id ASC";
+		if ($_GET['fold'])
+		{
+			$order_by = "fold ASC, ";
+		}
+		else
+		{
+			$order_by = "";
+		}
+
+		$order_by .= "id ASC";
 
 		if ($item_id)
 		{
