@@ -23,7 +23,7 @@ class user_class extends AWS_MODEL
 	{
 		$question_id = intval($question_id);
 		$this->update('question', array(
-			'comment_count' => $this->count('question_comment', ['question_id', 'eq', $question_id])
+			'comment_count' => $this->count('question_comment', ['parent_id', 'eq', $question_id])
 		), ['id', 'eq', $question_id]);
 	}
 
@@ -73,7 +73,7 @@ class user_class extends AWS_MODEL
 
 		foreach ($discussions AS $key => $val)
 		{
-			$question_ids[$val['question_id']] = $val['question_id'];
+			$question_ids[$val['parent_id']] = $val['parent_id'];
 		}
 
 		if ($question_ids)

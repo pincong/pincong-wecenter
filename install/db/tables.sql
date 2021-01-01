@@ -62,7 +62,7 @@ CREATE TABLE `aws_question_reply` (
 --
 CREATE TABLE `aws_question_comment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `question_id` int(11) DEFAULT '0',
+  `parent_id` int(11) DEFAULT '0',
   `uid` int(11) DEFAULT '0',
   `message` text,
   `add_time` int(11) DEFAULT '0',
@@ -71,7 +71,7 @@ CREATE TABLE `aws_question_comment` (
   `reputation` float DEFAULT '0',
   `fold` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `question_id` (`question_id`),
+  KEY `parent_id` (`parent_id`),
   KEY `add_time` (`add_time`),
   KEY `agree_count` (`agree_count`),
   KEY `reputation` (`reputation`)

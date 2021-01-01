@@ -545,7 +545,7 @@ class publish_class extends AWS_MODEL
 		$now = fake_time();
 
 		$item_id = $this->insert('question_comment', array(
-			'question_id' => $data['parent_id'],
+			'parent_id' => $data['parent_id'],
 			'message' => htmlspecialchars($data['message']),
 			'add_time' => $now,
 			'uid' => $data['uid'],
@@ -556,7 +556,7 @@ class publish_class extends AWS_MODEL
 			return false;
 		}
 
-		$discussion_count = $this->count('question_comment', ['question_id', 'eq', $data['parent_id'], 'i']);
+		$discussion_count = $this->count('question_comment', ['parent_id', 'eq', $data['parent_id'], 'i']);
 
 		// 被合并的主题已锁, 不可讨论, 无需 $thread_info['redirect_id']
 

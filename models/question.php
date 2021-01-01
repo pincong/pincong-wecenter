@@ -31,7 +31,7 @@ class question_class extends AWS_MODEL
 		$list = $this->fetch_page('question_comment', ['uid', 'eq', $uid, 'i'], 'id DESC', $page, $per_page);
 		foreach ($list AS $key => $val)
 		{
-			$parent_ids[] = $val['question_id'];
+			$parent_ids[] = $val['parent_id'];
 		}
 
 		if ($parent_ids)
@@ -39,7 +39,7 @@ class question_class extends AWS_MODEL
 			$parents = $this->model('content')->get_posts_by_ids('question', $parent_ids);
 			foreach ($list AS $key => $val)
 			{
-				$list[$key]['question_info'] = $parents[$val['question_id']];
+				$list[$key]['question_info'] = $parents[$val['parent_id']];
 			}
 		}
 
@@ -216,7 +216,7 @@ class question_class extends AWS_MODEL
 			'message' => null
 		), ['id', 'eq', $comment['id'], 'i']);
 
-		$this->model('content')->log('question', $comment['question_id'], 'question_comment', $comment['id'], '删除', $log_uid);
+		$this->model('content')->log('question', $comment['parent_id'], 'question_comment', $comment['id'], '删除', $log_uid);
 
 		return true;
 	}
@@ -299,7 +299,7 @@ class question_class extends AWS_MODEL
 	// 同时获取用户信息
 	public function get_question_discussions($thread_ids, $page, $per_page, $order = 'id ASC')
 	{
-		$where = ['question_id', 'in', $thread_ids, 'i'];
+		$where = ['parent_id', 'in', $thread_ids, 'i'];
 
 		if ($list = $this->fetch_page('question_comment', $where, $order, $page, $per_page))
 		{
