@@ -165,7 +165,7 @@ class ajax extends AWS_CONTROLLER
 		$uid = intval($_POST['uid']);
 		$this->get_user_info($uid, $user_info);
 
-		if ($status > 0 AND !$this->user_info['permission']['forbid_user'])
+		if ($status > 0 AND $this->user_info['group_id'] != 1 AND $this->user_info['group_id'] != 2)
 		{
 			$reputation_formal_user = get_setting('reputation_formal_user');
 			if (is_numeric($reputation_formal_user) AND $user_info['reputation'] >= $reputation_formal_user)
