@@ -100,9 +100,6 @@ class crond_class extends AWS_MODEL
     public function ten_minutes()
     {
 		$this->model('message')->removed_message_clean();
-
-		// TODO: code review
-		// $this->model('admin')->notifications_crond();
     }
 
     // 每半小时执行
@@ -119,7 +116,7 @@ class crond_class extends AWS_MODEL
         $this->model('currency')->delete_expired_logs();
         $this->model('content')->delete_expired_logs();
         $this->model('activity')->delete_expired_data();
-        $this->model('notify')->delete_expired_data();
+        $this->model('notification')->delete_expired_data();
 		$this->model('vote')->delete_expired_votes();
         $this->model('login')->delete_expired_data();
         $this->model('invite')->delete_expired_invites();
@@ -142,6 +139,6 @@ class crond_class extends AWS_MODEL
     // 每周执行
     public function week()
     {
-        $this->model('notify')->clean_mark_read_notifications(2592000);
+
     }
 }

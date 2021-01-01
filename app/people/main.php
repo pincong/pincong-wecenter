@@ -37,11 +37,6 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		if (isset($_GET['notification_id']))
-		{
-			$this->model('notify')->read_notification($_GET['notification_id'], $this->user_id);
-		}
-
 		if (is_digits($_GET['id']))
 		{
 			if (!$user = $this->model('account')->get_user_info_by_uid($_GET['id']))

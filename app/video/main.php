@@ -35,13 +35,10 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		/*
-		// 通知设为已读 暂不实现
-		if ($_GET['notification_id'])
+		if ($this->user_id AND $_GET['notification_id'])
 		{
-			$this->model('notify')->read_notification($_GET['notification_id'], $this->user_id);
+			$this->model('notification')->mark_as_read($_GET['notification_id'], $this->user_id);
 		}
-		*/
 
 		$item_id = intval($_GET['item_id']);
 		if ($item_id)

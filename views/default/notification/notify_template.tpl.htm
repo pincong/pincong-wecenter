@@ -1,26 +1,54 @@
 <?php if ($this->list) { ?>
-	<?php $unread_num = count($this->list); $this->list = array_slice($this->list, 0, 5); ?>
-	<?php foreach($this->list AS $key => $val) { ?>
-	<li class="notification">
-		<p>
-			<span class="message"><?php echo $val['message']; ?></span>
-		</p>
-		<p class="more">
-			<span class="aw-small-text"><?php echo date_friendly($val['add_time']); ?></span>
-			<?php if ($val['extend_message']) { ?>
-			 • 
-			<a class="aw-small-text" onclick="$('#extend_message_<?php echo $val['notification_id']; ?>').fadeIn();$(this).hide();">展开</a>
+<?php foreach($this->list AS $key => $val) { ?>
+<li class="notification">
+	<p>
+	<span class="message">
+		<a href="<?php echo UF::url($val['user_info']); ?>" data-id="<?php echo $val['user_info']['uid']; ?>"><?php echo UF::name($val['user_info']); ?></a>
+		<span><?php
+			switch ($val['action'])
+			{
+				case 'FOLLOW_USER':
+				{
+					_e('关注了你');
+					break;
+				}
+				case 'INVITE_USER':
+				{
+					_e('邀请你参与');
+					break;
+				}
+				case 'MENTION_USER':
+				{
+					_e('提到了你');
+					break;
+				}
+				case 'REPLY_USER':
+				{
+					_e('回复了你');
+					break;
+				}
+				case 'REPLY_THREAD':
+				{
+					_e('回复了主题');
+					break;
+				}
+			}
+		?></span>
+		<?php if ($val['thread_info']) { ?>
+			<?php if ($val['item_id']) { ?>
+			<a href="<?php echo $val['thread_type']; ?>/item_id-<?php echo $val['item_id']; ?>__notification_id-<?php echo $val['id']; ?>">
+			<?php } else { ?>
+			<a href="<?php echo $val['thread_type']; ?>/id-<?php echo $val['thread_info']['id']; ?>__notification_id-<?php echo $val['id']; ?>">
 			<?php } ?>
-
-			<a class="pull-right read aw-small-text" onclick="AWS.Message.read_notification($(this).parents('.notification'), <?php echo $val['notification_id']; ?>, false)">
-				标为已读
+				<?php if (!$val['thread_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['thread_info']['title']; ?><?php } ?>
 			</a>
-		</p>
-		<div class="collapse" id="extend_message_<?php echo $val['notification_id']; ?>">
-			<small><?php if ($val['extend_message']) { ?>
-			<p><?php echo implode('</p><p>', $val['extend_message']); ?></p>
-			<?php } ?></small>
-		</div>
-	</li>
-	<?php } ?>
+		<?php } ?>
+	</span>
+	</p>
+	<p class="more">
+		<span class="aw-small-text"><?php echo date_friendly($val['add_time']); ?></span>
+		<a class="pull-right read aw-small-text" onclick="AWS.Message.read_notification($(this).parents('.notification'), <?php echo $val['id']; ?>, false)"><?php _e('标为已读'); ?></a>
+	</p>
+</li>
+<?php } ?>
 <?php } ?>

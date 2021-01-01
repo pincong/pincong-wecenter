@@ -129,7 +129,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function privacy_setting_action()
 	{
-		if ($notify_actions = $this->model('notify')->notify_action_details)
+		if ($notify_actions = $this->model('notification')->notify_action_details)
 		{
 			$notification_setting = array();
 

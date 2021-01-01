@@ -44,7 +44,7 @@ class setting extends AWS_CONTROLLER
 		$this->crumb(AWS_APP::lang()->_t('隐私/提醒'));
 
 		TPL::assign('notification_settings', $this->model('account')->get_notification_setting_by_uid($this->user_id));
-		TPL::assign('notify_actions', $this->model('notify')->notify_action_details);
+		TPL::assign('notify_actions', $this->model('notification')->notify_action_details);
 
 		TPL::output('account/setting/privacy');
 	}

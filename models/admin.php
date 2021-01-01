@@ -61,17 +61,12 @@ class admin_class extends AWS_MODEL
         }
     }
 
-    public function notifications_crond()
-    {
-        // TODO
-    }
-
     public function get_notifications_texts()
     {
 /*
         $notifications_texts[] = array(
-            'url' => 'admin/user/register_approval_list/',
-            'text' => AWS_APP::lang()->_t('有 %s 个新用户待审核', $notifications['register_approval'])
+            'url' => 'url',
+            'text' => AWS_APP::lang()->_t('text')
         );
 
         return $notifications_texts;

@@ -92,7 +92,7 @@ class main extends AWS_ADMIN_CONTROLLER
 
             case 'register':
                 TPL::assign('notification_settings', get_setting('new_user_notification_setting'));
-                TPL::assign('notify_actions', $this->model('notify')->notify_action_details);
+                TPL::assign('notify_actions', $this->model('notification')->notify_action_details);
             break;
         }
 

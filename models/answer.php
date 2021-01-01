@@ -99,30 +99,23 @@ class answer_class extends AWS_MODEL
 			'add_time' => fake_time()
 		));
 
-		if ($answer_info['uid'] != $uid)
-		{
-			$this->model('notify')->send($uid, $answer_info['uid'], notify_class::TYPE_ANSWER_COMMENT, notify_class::CATEGORY_QUESTION, $answer_info['question_id'], array(
-				'from_uid' => $uid,
-				'question_id' => $answer_info['question_id'],
-				'item_id' => $answer_info['id'],
-				'comment_id' => $comment_id
-			));
+		$notification_sent = $this->model('notification')->send(
+			$uid,
+			$answer_info['uid'],
+			'REPLY_USER',
+			'question', $question_info['id'], 'answer', $answer_info['id']);
 
-		}
-
-		if ($at_users = $this->model('mention')->parse_at_user($message, false, true))
+		if ($mentioned_uids = $this->model('mention')->parse_at_user($message, false, true))
 		{
-			foreach ($at_users as $user_id)
+			foreach ($mentioned_uids as $user_id)
 			{
-				if ($user_id != $uid)
+				if (!$notification_sent OR ($user_id != $answer_info['uid']))
 				{
-					$this->model('notify')->send($uid, $user_id, notify_class::TYPE_ANSWER_COMMENT_AT_ME, notify_class::CATEGORY_QUESTION, $answer_info['question_id'], array(
-						'from_uid' => $uid,
-						'question_id' => $answer_info['question_id'],
-						'item_id' => $answer_info['id'],
-						'comment_id' => $comment_id
-					));
-
+					$this->model('notification')->send(
+						$uid,
+						$user_id,
+						'MENTION_USER',
+						'question', $question_info['id'], 'answer', $answer_info['id']);
 				}
 			}
 		}

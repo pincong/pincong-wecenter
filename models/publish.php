@@ -138,11 +138,6 @@ class publish_class extends AWS_MODEL
 		if ($data['ask_user_id'])
 		{
 			$this->model('invite')->add_invite($item_id, $data['uid'], $data['ask_user_id']);
-
-			$this->model('notify')->send($data['uid'], $data['ask_user_id'], notify_class::TYPE_INVITE_QUESTION, notify_class::CATEGORY_QUESTION, $item_id, array(
-				'from_uid' => $data['uid'],
-				'question_id' => $item_id
-			));
 		}
 
 		if ($data['auto_focus'])
@@ -253,18 +248,27 @@ class publish_class extends AWS_MODEL
 		$this->model('posts')->set_posts_index($data['parent_id'], 'question');
 
 
-		if ($at_users = $this->model('mention')->parse_at_user($data['message'], false, true))
+		if ($mentioned_uids = $this->model('mention')->parse_at_user($data['message'], false, true))
 		{
-			foreach ($at_users as $user_id)
+			foreach ($mentioned_uids as $user_id)
 			{
-				if ($user_id != $data['uid'])
-				{
-					$this->model('notify')->send($data['uid'], $user_id, notify_class::TYPE_ANSWER_AT_ME, notify_class::CATEGORY_QUESTION, $data['parent_id'], array(
-						'from_uid' => $data['uid'],
-						'question_id' => $data['parent_id'],
-						'item_id' => $item_id
-					));
-				}
+				$this->model('notification')->send(
+					$data['uid'],
+					$user_id,
+					'MENTION_USER',
+					'question', $parent_info['id'], 'answer', $item_id);
+			}
+		}
+
+		if ($focus_users = $this->model('focus')->get_focus_uid_by_question_id($data['parent_id']))
+		{
+			foreach ($focus_users as $focus_user)
+			{
+				$this->model('notification')->send(
+					$data['uid'],
+					$focus_user['uid'],
+					'REPLY_THREAD',
+					'question', $parent_info['id'], 'answer', $item_id);
 			}
 		}
 
@@ -273,21 +277,6 @@ class publish_class extends AWS_MODEL
 			if (!$this->model('focus')->has_focus_question($data['parent_id'], $data['uid']))
 			{
 				$this->model('focus')->add_focus_question($data['parent_id'], $data['uid']);
-			}
-		}
-
-		if ($focus_uids = $this->model('focus')->get_focus_uid_by_question_id($data['parent_id']))
-		{
-			foreach ($focus_uids as $focus_user)
-			{
-				if ($focus_user['uid'] != $data['uid'])
-				{
-					$this->model('notify')->send($data['uid'], $focus_user['uid'], notify_class::TYPE_NEW_ANSWER, notify_class::CATEGORY_QUESTION, $data['parent_id'], array(
-						'question_id' => $data['parent_id'],
-						'from_uid' => $data['uid'],
-						'item_id' => $item_id
-					));
-				}
 			}
 		}
 
@@ -336,38 +325,34 @@ class publish_class extends AWS_MODEL
 
 		$this->model('posts')->set_posts_index($data['parent_id'], 'article');
 
+		$notification_sent = $this->model('notification')->send(
+			$data['uid'],
+			$parent_info['uid'],
+			'REPLY_THREAD',
+			'article', $parent_info['id'], 'article_comment', $item_id);
 
-		if ($data['at_uid'] AND $data['at_uid'] != $data['uid'])
+		if (!$notification_sent OR ($data['at_uid'] AND $data['at_uid'] != $parent_info['uid']))
 		{
-			$this->model('notify')->send($data['uid'], $data['at_uid'], notify_class::TYPE_ARTICLE_COMMENT_AT_ME, notify_class::CATEGORY_ARTICLE, $data['parent_id'], array(
-				'from_uid' => $data['uid'],
-				'article_id' => $data['parent_id'],
-				'item_id' => $item_id
-			));
+			$notification_sent = $this->model('notification')->send(
+				$data['uid'],
+				$data['at_uid'],
+				'REPLY_USER',
+				'article', $parent_info['id'], 'article_comment', $item_id);
 		}
 
-		if ($at_users = $this->model('mention')->parse_at_user($data['message'], false, true))
+		if ($mentioned_uids = $this->model('mention')->parse_at_user($data['message'], false, true))
 		{
-			foreach ($at_users as $user_id)
+			foreach ($mentioned_uids as $user_id)
 			{
-				if ($user_id != $data['uid'])
+				if (!$notification_sent OR ($user_id != $data['at_uid'] AND $user_id != $parent_info['uid']))
 				{
-					$this->model('notify')->send($data['uid'], $user_id, notify_class::TYPE_ARTICLE_COMMENT_AT_ME, notify_class::CATEGORY_ARTICLE, $data['parent_id'], array(
-						'from_uid' => $data['uid'],
-						'article_id' => $data['parent_id'],
-						'item_id' => $item_id
-					));
+					$this->model('notification')->send(
+						$data['uid'],
+						$user_id,
+						'MENTION_USER',
+						'article', $parent_info['id'], 'article_comment', $item_id);
 				}
 			}
-		}
-
-		if ($parent_info['uid'] != $data['uid'])
-		{
-			$this->model('notify')->send($data['uid'], $parent_info['uid'], notify_class::TYPE_ARTICLE_NEW_COMMENT, notify_class::CATEGORY_ARTICLE, $data['parent_id'], array(
-				'from_uid' => $data['uid'],
-				'article_id' => $data['parent_id'],
-				'item_id' => $item_id
-			));
 		}
 
 		// 记录用户动态
@@ -412,46 +397,33 @@ class publish_class extends AWS_MODEL
 		$this->model('posts')->set_posts_index($data['parent_id'], 'video');
 
 
-		if ($data['at_uid'] AND $data['at_uid'] != $data['uid'])
+		$notification_sent = $this->model('notification')->send(
+			$data['uid'],
+			$parent_info['uid'],
+			'REPLY_THREAD',
+			'video', $parent_info['id'], 'video_comment', $item_id);
+
+		if (!$notification_sent OR ($data['at_uid'] AND $data['at_uid'] != $parent_info['uid']))
 		{
-			/*
-			// 通知 暂不实现
-			$this->model('notify')->send($data['uid'], $data['at_uid'], notify_class::TYPE_VIDEO_COMMENT_AT_ME, notify_class::CATEGORY_VIDEO, $data['parent_id'], array(
-				'from_uid' => $data['uid'],
-				'video_id' => $data['parent_id'],
-				'item_id' => $item_id
-			));
-			*/
+			$notification_sent = $this->model('notification')->send(
+				$data['uid'],
+				$data['at_uid'],
+				'REPLY_USER',
+				'video', $parent_info['id'], 'video_comment', $item_id);
 		}
 
-		if ($at_users = $this->model('mention')->parse_at_user($data['message'], false, true))
+		if ($mentioned_uids = $this->model('mention')->parse_at_user($data['message'], false, true))
 		{
-			foreach ($at_users as $user_id)
+			foreach ($mentioned_uids as $user_id)
 			{
-				if ($user_id != $data['uid'])
+				if (!$notification_sent OR ($user_id != $data['at_uid'] AND $user_id != $parent_info['uid']))
 				{
-					/*
-					// 通知 暂不实现
-					$this->model('notify')->send($data['uid'], $user_id, notify_class::TYPE_VIDEO_COMMENT_AT_ME, notify_class::CATEGORY_VIDEO, $data['parent_id'], array(
-						'from_uid' => $data['uid'],
-						'video_id' => $data['parent_id'],
-						'item_id' => $item_id
-					));
-					*/
+					$this->model('notification')->send(
+						$data['uid'],
+						$user_id, 'MENTION_USER',
+						'video', $parent_info['id'], 'video_comment', $item_id);
 				}
 			}
-		}
-
-		if ($parent_info['uid'] != $data['uid'])
-		{
-			/*
-			// 通知 暂不实现
-			$this->model('notify')->send($data['uid'], $parent_info['uid'], notify_class::TYPE_VIDEO_NEW_COMMENT, notify_class::CATEGORY_VIDEO, $data['parent_id'], array(
-				'from_uid' => $data['uid'],
-				'video_id' => $data['parent_id'],
-				'item_id' => $item_id
-			));
-			*/
 		}
 
 		// 记录用户动态

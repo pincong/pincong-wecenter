@@ -20,6 +20,36 @@ if (!defined('IN_ANWSION'))
 
 class notification_class extends AWS_MODEL
 {
+	public $notify_action_details = array();
+
+	public function setup()
+	{
+		$this->notify_action_details['FOLLOW_USER'] = array(
+			'user_setting' => 1,
+			'desc' => AWS_APP::lang()->_t('有人关注我')
+		);
+
+		$this->notify_action_details['INVITE_USER'] = array(
+			'user_setting' => 1,
+			'desc' => AWS_APP::lang()->_t('有人邀请我')
+		);
+
+		$this->notify_action_details['INVITE_USER'] = array(
+			'user_setting' => 1,
+			'desc' => AWS_APP::lang()->_t('有人提到我')
+		);
+
+		$this->notify_action_details['REPLY_THREAD'] = array(
+			'user_setting' => 1,
+			'desc' => AWS_APP::lang()->_t('有人回复主题')
+		);
+
+		$this->notify_action_details['REPLY_USER'] = array(
+			'user_setting' => 1,
+			'desc' => AWS_APP::lang()->_t('有人回复我')
+		);
+
+	}
 
 	private function check_notification_setting($recipient_uid, $action)
 	{
@@ -40,23 +70,27 @@ class notification_class extends AWS_MODEL
 		return true;
 	}
 
-	public function send($sender_uid, $recipient_uid, $action, $item_type, $item_id)
+	public function send($sender_uid, $recipient_uid, $action, $thread_type = null, $thread_id = 0, $item_type = null, $item_id = 0)
 	{
-		if (intval($recipient_uid) <= 0)
+		$sender_uid = intval($sender_uid);
+		$recipient_uid = intval($recipient_uid);
+		if ($recipient_uid <= 0 OR $sender_uid == $recipient_uid)
 		{
-			return;
+			return false;
 		}
 
-		if (!$this->check_notification_setting($recipient_uid, $action))
+		/*if (!$this->check_notification_setting($recipient_uid, $action))
 		{
-			return;
-		}
+			return false;
+		}*/
 
 		$add_time = fake_time();
 		if ($notification_id = $this->insert('notification', array(
-			'sender_uid' => intval($sender_uid),
-			'recipient_uid' => intval($recipient_uid),
+			'sender_uid' => ($sender_uid),
+			'recipient_uid' => ($recipient_uid),
 			'action' => $action,
+			'thread_type' => $thread_type,
+			'thread_id' => intval($thread_id),
 			'item_type' => $item_type,
 			'item_id' => intval($item_id),
 			'add_time' => $add_time,
@@ -72,7 +106,7 @@ class notification_class extends AWS_MODEL
 	{
 		$this->update('notification', array(
 			'read_flag' => 1
-		), 'notification_id = ' . intval($notification_id) . ' AND recipient_uid = ' . intval($uid));
+		), 'read_flag <> 1 AND id = ' . intval($notification_id) . ' AND recipient_uid = ' . intval($uid));
 
 		$this->model('account')->update_notification_unread($uid);
 	}
@@ -81,7 +115,7 @@ class notification_class extends AWS_MODEL
 	{
 		$this->update('notification', array(
 			'read_flag' => 1
-		), 'recipient_uid = ' . intval($uid));
+		), 'read_flag <> 1 AND recipient_uid = ' . intval($uid));
 
 		$this->model('account')->update_notification_unread($uid);
 	}
@@ -105,11 +139,13 @@ class notification_class extends AWS_MODEL
 			$where[] = 'read_flag = ' . intval($read_flag);
 		}
 
-		$list = $this->fetch_page('notification', implode(' AND ', $where), 'notification_id DESC', $page, $per_page);
+		$list = $this->fetch_page('notification', implode(' AND ', $where), 'id DESC', $page, $per_page);
 		if (!$list)
 		{
 			return false;
 		}
+
+		$this->process_notifications($list);
 
 		return $list;
 	}
@@ -119,71 +155,29 @@ class notification_class extends AWS_MODEL
 		foreach ($list as $key => $val)
 		{
 			$user_ids[] = $val['sender_uid'];
-			switch ($val['item_type'])
+			switch ($val['thread_type'])
 			{
-				case 'user':
-					$user_ids[] = $val['item_id'];
-					break;
-
-				case 'answer':
-					$answer_ids[] = $val['item_id'];
-					break;
-
-				case 'article_comment':
-					$article_comment_ids[] = $val['item_id'];
-					break;
-
-				case 'video_comment':
-					$video_comment_ids[] = $val['item_id'];
-					break;
-
 				case 'question':
-					$question_ids[] = $val['item_id'];
+					$question_ids[] = $val['thread_id'];
 					break;
 
 				case 'article':
-					$article_ids[] = $val['item_id'];
+					$article_ids[] = $val['thread_id'];
 					break;
 
 				case 'video':
-					$video_ids[] = $val['item_id'];
+					$video_ids[] = $val['thread_id'];
 					break;
 			}
 		}
 
-		if ($answer_ids)
-		{
-			$answers = $this->model('content')->get_posts_by_ids('answer', $answer_ids);
-			foreach ($answers AS $key => $val)
-			{
-				$question_ids[] = $val['question_id'];
-			}
-		}
 		if ($question_ids)
 		{
 			$questions = $this->model('content')->get_posts_by_ids('question', $question_ids);
 		}
-
-		if ($article_comment_ids)
-		{
-			$article_comments = $this->model('content')->get_posts_by_ids('article_comment', $article_comment_ids);
-			foreach ($article_comments AS $key => $val)
-			{
-				$article_ids[] = $val['article_id'];
-			}
-		}
 		if ($article_ids)
 		{
 			$articles = $this->model('content')->get_posts_by_ids('article', $article_ids);
-		}
-
-		if ($video_comment_ids)
-		{
-			$video_comments = $this->model('content')->get_posts_by_ids('video_comment', $video_comment_ids);
-			foreach ($video_comments AS $key => $val)
-			{
-				$video_ids[] = $val['video_id'];
-			}
 		}
 		if ($video_ids)
 		{
@@ -197,37 +191,24 @@ class notification_class extends AWS_MODEL
 
 		foreach ($list as $key => $val)
 		{
-			switch ($val['item_type'])
+			$list[$key]['user_info'] = $users[$val['sender_uid']];
+
+			switch ($val['thread_type'])
 			{
-				case 'user':
-					$list[$key]['item_info']; = $users[$val['item_id']];
-					break;
-
-				case 'answer':
-					$list[$key]['item_info']; = $answers[$val['item_id']];
-					break;
-
-				case 'article_comment':
-					$list[$key]['item_info']; = $article_comments[$val['item_id']];
-					break;
-
-				case 'video_comment':
-					$list[$key]['item_info']; = $video_comments[$val['item_id']];
-					break;
-
 				case 'question':
-					$list[$key]['item_info']; = $questions[$val['item_id']];
+					$list[$key]['thread_info'] = $questions[$val['thread_id']];
 					break;
 
 				case 'article':
-					$list[$key]['item_info']; = $articles[$val['item_id']];
+					$list[$key]['thread_info'] = $articles[$val['thread_id']];
 					break;
 
 				case 'video':
-					$list[$key]['item_info']; = $videos[$val['item_id']];
+					$list[$key]['thread_info'] = $videos[$val['thread_id']];
 					break;
 			}
 		}
+
 	}
 
 	public function delete_expired_data()

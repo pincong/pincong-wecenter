@@ -21,30 +21,27 @@ if (!defined('IN_ANWSION'))
 class invite_class extends AWS_MODEL
 {
 
-	public function add_invite($question_id, $sender_uid, $recipients_uid = 0)
+	public function add_invite($question_id, $sender_uid, $recipient_uid)
 	{
-		if (!$question_id OR !$sender_uid)
+		$sender_uid = intval($sender_uid);
+		$recipient_uid = intval($recipient_uid);
+		if ($recipient_uid <= 0 OR $sender_uid == $recipient_uid)
 		{
 			return false;
 		}
 
-		if (!$recipients_uid)
-		{
-			return false;
-		}
-
-		$data = array(
+		$this->insert('question_invite', array(
 			'question_id' => intval($question_id),
-			'sender_uid' => intval($sender_uid),
+			'sender_uid' => ($sender_uid),
+			'recipients_uid' => ($recipient_uid),
 			'add_time' => fake_time(),
-		);
+		));
 
-		if ($recipients_uid)
-		{
-			$data['recipients_uid'] = intval($recipients_uid);
-		}
-
-		return $this->insert('question_invite', $data);
+		$this->model('notification')->send(
+			($sender_uid),
+			($recipient_uid),
+			'INVITE_USER',
+			'question', $question_id);
 	}
 
 	/**

@@ -29,14 +29,14 @@
 					<li><a href="home/"<?php if ($_GET['app'] == 'home') { ?> class="active"<?php } ?>><i class="icon icon-home"></i> <?php _e('动态'); ?></a></li>
 
 					<li>
-						<a href="notifications/" class="<?php if ($_GET['app'] == 'notifications') { ?>active<?php } ?>"><i class="icon icon-bell"></i> <?php _e('通知'); ?></a>
+						<a href="notification/" class="<?php if ($_GET['app'] == 'notification') { ?>active<?php } ?>"><i class="icon icon-bell"></i> <?php _e('通知'); ?></a>
 						<span class="badge badge-important" style="display:none" id="notifications_unread"><?php echo $this->user_info['notification_unread']; ?></span>
 						<div class="aw-dropdown pull-right hidden-xs">
 							<div class="mod-body">
 								<ul id="header_notification_list"></ul>
 							</div>
 							<div class="mod-footer">
-								<a href="notifications/"><?php _e('查看全部'); ?></a>
+								<a href="notification/"><?php _e('查看全部'); ?></a>
 							</div>
 						</div>
 					</li>

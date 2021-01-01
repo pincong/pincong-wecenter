@@ -302,11 +302,6 @@ class ajax extends AWS_CONTROLLER
 
 		$this->model('account')->update_question_invite_count($invite_user_info['uid']);
 
-		$notification_id = $this->model('notify')->send($this->user_id, $invite_user_info['uid'], notify_class::TYPE_INVITE_QUESTION, notify_class::CATEGORY_QUESTION, intval($_POST['question_id']), array(
-			'from_uid' => $this->user_id,
-			'question_id' => intval($_POST['question_id'])
-		));
-
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 

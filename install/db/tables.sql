@@ -230,38 +230,22 @@ CREATE TABLE IF NOT EXISTS `aws_nav_menu` (
 
 --
 CREATE TABLE IF NOT EXISTS `aws_notification` (
-  `notification_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `sender_uid` int(11) DEFAULT NULL COMMENT '发送者ID',
   `recipient_uid` int(11) DEFAULT '0' COMMENT '接收者ID',
   `action` varchar(64) DEFAULT NULL,
+  `thread_type` varchar(32) DEFAULT NULL,
+  `thread_id` int(11) DEFAULT '0',
   `item_type` varchar(32) DEFAULT NULL,
   `item_id` int(11) DEFAULT '0',
-  `action_type` int(4) DEFAULT NULL COMMENT '删除',
-  `model_type` smallint(11) DEFAULT '0' COMMENT '删除',
-  `source_id` varchar(16) DEFAULT '0' COMMENT '删除',
   `read_flag` tinyint(1) DEFAULT '0' COMMENT '阅读状态',
   `add_time` int(10) DEFAULT '0' COMMENT '添加时间',
-  PRIMARY KEY (`notification_id`),
-  KEY `recipient_read_flag` (`recipient_uid`,`read_flag`),
+  PRIMARY KEY (`id`),
   KEY `sender_uid` (`sender_uid`),
-  KEY `model_type` (`model_type`),
-  KEY `source_id` (`source_id`),
-  KEY `action_type` (`action_type`),
+  KEY `recipient_uid` (`recipient_uid`),
   KEY `read_flag` (`read_flag`),
   KEY `add_time` (`add_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='系统通知';
-
---
-
-
---
-CREATE TABLE IF NOT EXISTS `aws_notification_data` (
-  `notification_id` int(11) NOT NULL,
-  `data` text,
-  `add_time` int(10) DEFAULT '0',
-  PRIMARY KEY (`notification_id`),
-  KEY `add_time` (`add_time`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='系统通知数据表';
 
 --
 

@@ -1754,7 +1754,7 @@ AWS.Message =
 		{
 			selector.remove();
 
-			var url = G_BASE_URL + '/notifications/ajax/read_notification/notification_id-' + notification_id;
+			var url = G_BASE_URL + '/notification/ajax/mark_as_read/notification_id-' + notification_id;
 		}
 		else
 		{
@@ -1763,7 +1763,7 @@ AWS.Message =
 				$("#index_notification").fadeOut();
 			}
 
-			var url = G_BASE_URL + '/notifications/ajax/read_notification/';
+			var url = G_BASE_URL + '/notification/ajax/mark_all_as_read/';
 		}
 
 		$.get(url, function (result)
@@ -1787,7 +1787,7 @@ AWS.Message =
 
 			$('#index_notification ul#notification_list').html('<p align="center" style="padding: 15px 0"><img src="' + G_STATIC_URL + '/common/loading_b.gif"/></p>');
 
-			$.get(G_BASE_URL + '/notifications/ajax/list/flag-0__page-0', function (result)
+			$.get(G_BASE_URL + '/notification/list/flag-0', function (result)
 			{
 				$('#index_notification ul#notification_list').html(result);
 
@@ -1797,7 +1797,7 @@ AWS.Message =
 
 		if ($("#header_notification_list").length)
 		{
-			$.get(G_BASE_URL + '/notifications/ajax/list/flag-0__limit-5__template-header_list', function (result)
+			$.get(G_BASE_URL + '/notification/notify/', function (result)
 			{
 				if (result.length)
 				{

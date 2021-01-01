@@ -71,7 +71,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
         if ($_POST['_set_notification_settings'])
         {
-            if ($notify_actions = $this->model('notify')->notify_action_details)
+            if ($notify_actions = $this->model('notification')->notify_action_details)
             {
                 $notification_setting = array();
 
