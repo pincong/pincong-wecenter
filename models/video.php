@@ -82,7 +82,7 @@ class video_class extends AWS_MODEL
 			'message' => htmlspecialchars($message)
 		), 'id = ' . intval($id));
 
-		$this->model('content')->log('video', $id, '编辑影片', $uid);
+		$this->model('content')->log('video', $id, '编辑', $uid);
 
 		return true;
 	}
@@ -114,10 +114,7 @@ class video_class extends AWS_MODEL
 
 		$this->update('video', $data, 'id = ' . intval($id));
 
-		if ($uid)
-		{
-			$this->model('content')->log('video', $id, '删除影片', $uid);
-		}
+		$this->model('content')->log('video', $id, '删除', $uid, 'category', $item_info['category_id']);
 
 		return true;
 	}
@@ -134,7 +131,7 @@ class video_class extends AWS_MODEL
 			'message' => htmlspecialchars($message)
 		), 'id = ' . intval($comment_id));
 
-		$this->model('content')->log('video', $comment_info['video_id'], '编辑影片评论', $uid, 'video_comment', $comment_id);
+		$this->model('content')->log('video', $comment_info['video_id'], '编辑', $uid, 'video_comment', $comment_id);
 
 		return true;
 	}
@@ -150,7 +147,7 @@ class video_class extends AWS_MODEL
 			'message' => null
 		), 'id = ' . intval($comment_id));
 
-		$this->model('content')->log('video', $comment_info['video_id'], '删除影片评论', $uid, 'video_comment', $comment_id);
+		$this->model('content')->log('video', $comment_info['video_id'], '删除', $uid, 'video_comment', $comment_id);
 
 		return true;
 	}

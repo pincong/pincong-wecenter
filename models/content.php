@@ -181,11 +181,15 @@ class content_class extends AWS_MODEL
 	 */
 	public function log($item_type, $item_id, $note, $uid = 0, $child_type = null, $child_id = 0)
 	{
+		if (!$uid = intval($uid))
+		{
+			return;
+		}
 		$this->insert('content_log', array(
 			'item_type' => $item_type,
 			'item_id' => intval($item_id),
 			'note' => $note,
-			'uid' => intval($uid),
+			'uid' => ($uid),
 			'child_type' => $child_type,
 			'child_id' => intval($child_id),
 			'time' => fake_time()
@@ -308,8 +312,7 @@ class content_class extends AWS_MODEL
 		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
 		$this->update('posts_index', array('uid' => ($new_uid)), $where);
 
-		// 暂时不记录日志
-		//$this->model('content')->log($item_type, $item_id, '变更作者', $uid, 'uid', $old_uid);
+		$this->model('content')->log($item_type, $item_id, '变更作者', $uid, 'user', $old_uid);
 
 		return true;
 	}
@@ -477,7 +480,7 @@ class content_class extends AWS_MODEL
 
 		$this->update($item_type, array('fold' => 1), $where);
 
-		$this->model('content')->log($parent_type, $parent_id, '折叠回应', $uid, $item_type, $item_id);
+		$this->model('content')->log($parent_type, $parent_id, '折叠', $uid, $item_type, $item_id);
 	}
 
 	public function unfold_reply($item_type, $item_id, $parent_type, $parent_id, $uid)
@@ -491,7 +494,7 @@ class content_class extends AWS_MODEL
 
 		$this->update($item_type, array('fold' => 0), $where);
 
-		$this->model('content')->log($parent_type, $parent_id, '取消折叠回应', $uid, $item_type, $item_id);
+		$this->model('content')->log($parent_type, $parent_id, '取消折叠', $uid, $item_type, $item_id);
 	}
 
 

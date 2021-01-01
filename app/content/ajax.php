@@ -45,7 +45,7 @@ class ajax extends AWS_CONTROLLER
 
 		set_user_operation_last_time('manage', $this->user_id);
 
-		$this->model('content')->change_uid($_POST['item_type'], $_POST['item_id'], $_POST['uid'], $item_info['uid'], $this->user_id);
+		$this->model('content')->change_uid($_POST['item_type'], $_POST['item_id'], $_POST['uid'], $item_info['uid'], null);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}

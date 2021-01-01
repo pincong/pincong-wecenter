@@ -82,7 +82,7 @@ class question_class extends AWS_MODEL
 			'message' => htmlspecialchars($message)
 		), 'id = ' . intval($id));
 
-		$this->model('content')->log('question', $id, '编辑问题', $uid);
+		$this->model('content')->log('question', $id, '编辑', $uid);
 
 		return true;
 	}
@@ -111,10 +111,7 @@ class question_class extends AWS_MODEL
 
 		$this->update('question', $data, 'id = ' . intval($id));
 
-		if ($uid)
-		{
-			$this->model('content')->log('question', $id, '删除问题', $uid);
-		}
+		$this->model('content')->log('question', $id, '删除', $uid, 'category', $item_info['category_id']);
 
 		return true;
 	}
@@ -131,7 +128,7 @@ class question_class extends AWS_MODEL
 			'message' => htmlspecialchars($message)
 		), 'id = ' . intval($answer_id));
 
-		$this->model('content')->log('question', $answer_info['question_id'], '编辑回复', $uid, 'answer', $answer_id);
+		$this->model('content')->log('question', $answer_info['question_id'], '编辑', $uid, 'answer', $answer_id);
 
 		return true;
 	}
@@ -148,7 +145,7 @@ class question_class extends AWS_MODEL
 			'message' => null
 		), 'id = ' . intval($answer_id));
 
-		$this->model('content')->log('question', $answer_info['question_id'], '删除回复', $uid, 'answer', $answer_id);
+		$this->model('content')->log('question', $answer_info['question_id'], '删除', $uid, 'answer', $answer_id);
 
 		return true;
 	}
@@ -653,7 +650,7 @@ class question_class extends AWS_MODEL
 			'message' => null
 		), "id = " . $comment['id']);
 
-		$this->model('content')->log('question', $comment['question_id'], '删除问题讨论', $uid, 'question_discussion', $comment['id']);
+		$this->model('content')->log('question', $comment['question_id'], '删除', $uid, 'question_discussion', $comment['id']);
 
 		return true;
 	}
@@ -666,7 +663,7 @@ class question_class extends AWS_MODEL
 
 		if ($answer = $this->fetch_row('answer', 'id = ' . intval($comment['answer_id'])))
 		{
-			$this->model('content')->log('question', $answer['question_id'], '删除回答讨论', $uid, 'answer_discussion', $comment['id']);
+			$this->model('content')->log('question', $answer['question_id'], '删除', $uid, 'answer_discussion', $comment['id']);
 		}
 
 		return true;
