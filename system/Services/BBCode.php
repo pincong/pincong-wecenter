@@ -148,6 +148,7 @@ class Services_BBCode
 		}
 
 		return '<u>' . $matches[1] . '</u>';
+	}
 
 	private function _ul_callback($matches)
 	{
@@ -169,7 +170,6 @@ class Services_BBCode
 
 		$matches[1] = preg_replace_callback("/\[li\](.*?)\[\/li\]/is", array(&$this, '_list_element_callback'), $matches[1]);
 		return "<ol>" . preg_replace("/[\n\r?]/", "", $matches[1]) . "</ol>";
-	}
 	}
 
 	private function _list_callback($matches)
@@ -200,7 +200,6 @@ class Services_BBCode
 		}
 
 		$matches[2] = preg_replace_callback("/\[\*\](.*?)\[\/\*\]/is", array(&$this, '_list_element_callback'), $matches[2]);
-
 		return '<' . $list_type . '>' . preg_replace("/[\n\r?]/", "", $matches[2]) . '</' . $list_type . '>';
 	}
 
