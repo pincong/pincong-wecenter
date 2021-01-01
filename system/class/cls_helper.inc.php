@@ -50,7 +50,10 @@ class H
 	public static function redirect_msg($message, $url = NULL, $interval = 5)
 	{
 		TPL::assign('message', $message);
-		TPL::assign('url_bit', HTTP::parse_redirect_url($url));
+		if ($url)
+		{
+			TPL::assign('url_bit', HTTP::parse_redirect_url($url));
+		}
 		TPL::assign('interval', $interval);
 
 		echo TPL::render('global/show_message');

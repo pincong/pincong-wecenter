@@ -111,8 +111,8 @@ class TPL
 
 			if (get_setting('url_rewrite_enable') != 'Y' OR $template_dirs[0] == 'admin')
 			{
-				//$output = preg_replace('/(href|action)=([\"|\'])(?!http)(?!mailto)(?!file)(?!ftp)(?!javascript)(?![\/|\#])(?!\.\/)([^\"\']+)([\"|\'])/is', '\1=\2' . base_url() . '/' . G_INDEX_SCRIPT . '\3\4', $output);
-				$output = preg_replace('/<([^>]*?)(href|action)=([\"|\'])(?!http)(?!mailto)(?!file)(?!ftp)(?!javascript)(?![\/|\#])(?!\.\/)([^\"\']+)([\"|\'])([^>]*?)>/is', '<\1\2=\3' . base_url() . '/' . G_INDEX_SCRIPT . '\4\5\6>', $output);
+				//$output = preg_replace('/(href|action)=([\"|\'])(?!http)(?!mailto)(?!file)(?!ftp)(?!javascript)(?![\/|\#])(?!\.\/)([^\"\']+)([\"|\'])/is', '\1=\2' . base_url() . '/?/'  . '\3\4', $output);
+				$output = preg_replace('/<([^>]*?)(href|action)=([\"|\'])(?!http)(?!mailto)(?!file)(?!ftp)(?!javascript)(?![\/|\#])(?!\.\/)([^\"\']+)([\"|\'])([^>]*?)>/is', '<\1\2=\3' . base_url() . '/?/' . '\4\5\6>', $output);
 			}
 
 			if (get_setting('url_rewrite_enable') == 'Y' AND $template_dirs[0] != 'admin')
@@ -164,12 +164,12 @@ class TPL
 		{
 			foreach ($path AS $key => $val)
 			{
-				if (substr($val, 0, 4) == 'css/' AND !strstr($val, '/admin/'))
+				if (substr($val, 0, 4) == 'css/')
 				{
 					$val = str_replace('css/', 'css/default/', $val);
 				}
 
-				if (substr($val, 0, 4) != 'http')
+				if (!is_website($val) AND !is_uri_path($val))
 				{
 					$val = G_STATIC_URL . '/' . $val;
 				}
@@ -179,12 +179,12 @@ class TPL
 		}
 		else
 		{
-			if (substr($path, 0, 4) == 'css/' AND !strstr($path, '/admin/'))
+			if (substr($path, 0, 4) == 'css/')
 			{
 				$path = str_replace('css/', 'css/default/', $path);
 			}
 
-			if (substr($path, 0, 4) != 'http')
+			if (!is_website($path) AND !is_uri_path($path))
 			{
 				$path = G_STATIC_URL . '/' . $path;
 			}
@@ -199,7 +199,7 @@ class TPL
 		{
 			foreach ($path AS $key => $val)
 			{
-				if (substr($val, 0, 4) != 'http')
+				if (!is_website($val) AND !is_uri_path($val))
 				{
 					$val = G_STATIC_URL . '/' . $val;
 				}
@@ -209,7 +209,7 @@ class TPL
 		}
 		else
 		{
-			if (substr($path, 0, 4) != 'http')
+			if (!is_website($path) AND !is_uri_path($path))
 			{
 				$path = G_STATIC_URL . '/' . $path;
 			}

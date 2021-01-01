@@ -5,7 +5,7 @@
 		<div class="container">
 			<!-- logo -->
 			<div class="aw-logo hidden-xs">
-				<a href="<?php echo base_url(); ?>" style="background:url('<?php echo get_setting('logo_url'); ?>') no-repeat;"></a>
+				<a href="<?php echo url_rewrite('/'); ?>" style="background:url('<?php echo get_setting('logo_url'); ?>') no-repeat;"></a>
 			</div>
 			<!-- end logo -->
 			<!-- 导航 -->
@@ -19,7 +19,7 @@
 				</div>
 				<nav role="navigation" class="collapse navbar-collapse bs-navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li><a href="<?php echo base_url(); ?>" class="<?php if (!$_GET['app'] OR $_GET['app'] == 'explore') { ?>active<?php } ?>"><i class="icon icon-list"></i> <?php _e('发现'); ?></a></li>
+					<li><a href="<?php echo url_rewrite('/'); ?>" class="<?php if (!$_GET['app'] OR $_GET['app'] == 'explore') { ?>active<?php } ?>"><i class="icon icon-list"></i> <?php _e('发现'); ?></a></li>
 
 					<?php if (is_numeric(get_setting('push_reputation'))) { ?>
 					<li><a href="hot/"<?php if ($_GET['app'] == 'hot') { ?> class="active"<?php } ?>><i class="icon icon-reader"></i> <?php _e('精选'); ?></a></li>

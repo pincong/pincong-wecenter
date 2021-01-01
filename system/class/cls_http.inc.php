@@ -98,15 +98,14 @@ class HTTP
 
 	public static function parse_redirect_url($url)
 	{
-		if (substr($url, 0, 1) == '?')
+		if (!$url)
 		{
-			$url = base_url() . $url;
+			$url = '/';
 		}
-		else if (substr($url, 0, 1) == '/')
+		if (!is_website($url))
 		{
-			$url = get_js_url($url);
+			return get_js_url($url);
 		}
-
 		return $url;
 	}
 

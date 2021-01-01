@@ -38,19 +38,7 @@ class core_uri
 
 	public function __construct()
 	{
-		if (!defined('G_INDEX_SCRIPT'))
-		{
-			return false;
-		}
-
-		if (G_INDEX_SCRIPT == '')
-		{
-			$this->index_script = '?/';
-		}
-		else
-		{
-			$this->index_script = G_INDEX_SCRIPT;
-		}
+		$this->index_script = '?/';
 
 		if ($_SERVER['REQUEST_URI'])
 		{
@@ -103,11 +91,6 @@ class core_uri
 
 	public function set_rewrite()
 	{
-		if (!defined('G_INDEX_SCRIPT'))
-		{
-			return false;
-		}
-		
 		if (!$this->request_main OR $this->index_script == $this->request_main)
 		{
 			$this->controller = 'main';

@@ -105,7 +105,12 @@ function import_editor_static_files()
  */
 function base_url()
 {
-	return rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+	static $base_url;
+	if (!isset($base_url))
+	{
+		$base_url = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+	}
+	return $base_url;
 }
 
 function date_friendly($timestamp)
@@ -366,15 +371,28 @@ function content_contains($varname, $content, $any_position = false, $case_sensi
  * @param  string
  * @return string
  */
-function get_js_url($url)
+function get_js_url($path = null)
 {
-	if (substr($url, 0, 1) == '/')
+	static $base_url;
+	if (!isset($base_url))
 	{
-		$url = substr($url, 1);
-		$url = base_url() . '/' . ((get_setting('url_rewrite_enable') != 'Y') ? G_INDEX_SCRIPT : '') . $url;
+		$base_url = base_url();
+		if (get_setting('url_rewrite_enable') != 'Y')
+		{
+			$base_url = $base_url . '/?';
+		}
 	}
 
-	return $url;
+	if (!$path)
+	{
+		return $base_url;
+	}
+	return $base_url . $path;
+}
+
+function url_rewrite($url = null)
+{
+	return get_js_url($url);
 }
 
 /**
