@@ -1179,18 +1179,6 @@ AWS.User =
 		selector.parents('.aw-comment-box li').fadeOut();
 	},
 
-	why_fold: function(reason)
-	{
-		if (reason == -1)
-			reason = _t('用户被封禁');
-		else if (reason == -2)
-			reason = _t('收到太多反对');
-		else
-			reason = _t('管理员折叠');
-
-		AWS.alert(reason);
-	},
-
 	edit_verified_title: function(uid, text)
 	{
 		AWS.textBox(_t('头衔'), text, function(text)

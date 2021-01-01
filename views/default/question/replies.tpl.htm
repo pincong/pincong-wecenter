@@ -29,7 +29,7 @@
 									<!-- 回答 -->
 									<?php if ($val['fold']) { ?>
 										<div class="aw-load-more-content">
-											<span class="aw-small-text aw-alert-box aw-small-text" href="javascript:;" tabindex="-1" onclick="AWS.User.why_fold();"><?php _e('为什么被折叠?'); ?></span>
+											<a class="aw-small-text aw-alert-box aw-small-text" tabindex="-1" href="content/log/item_type-answer__item_id-<?php echo $val['id']; ?>" rel="nofollow" target="_blank"><?php _e('为什么被折叠?'); ?></a>
 											<a href="javascript:;" class="aw-load-more-content" onclick="$(this).parent().parent().children('.markitup-box').toggle();"><?php _e('内容被折叠'); ?></a>
 										</div>
 										<div class="markitup-box collapse">
