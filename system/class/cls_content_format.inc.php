@@ -179,7 +179,7 @@ class CF
 
 		if ($kb = self::get_kb($user_info, 'reply_' . $item_info['id']))
 		{
-			$text = $kb['title'] . "\r\n" . $kb['message'];
+			$text = $kb['title'] . "\r\n\r\n" . $kb['message'];
 			return self::kb_tips() . FORMAT::bbcode($text);
 		}
 
@@ -197,7 +197,7 @@ class CF
 
 		if ($kb = self::get_kb($user_info, 'reply_' . $item_info['id']))
 		{
-			$text = $kb['title'] . "\r\n" . $kb['message'];
+			$text = $kb['title'] . "\r\n\r\n" . $kb['message'];
 			return self::kb_tips() . FORMAT::bbcode($text);
 		}
 

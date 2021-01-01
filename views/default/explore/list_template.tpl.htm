@@ -1,6 +1,6 @@
 <?php if ($this->posts_list) { ?>
 <?php foreach($this->posts_list as $key => $val) { ?>
-<div class="aw-item" data-timestamp="<?php echo $val['add_time']; ?>" data-recommended="<?php echo $val['recommend']; ?>" data-pinned="<?php echo $val['sort']; ?>" data-hot="<?php echo $val['hot']; ?>" <?php if ($this->user_info['permission']['is_moderator']) { ?>data-item-reputation="<?php echo $val['reputation']; ?>" data-children-reputation="<?php echo $val['children_reputation']; ?>"<?php } ?>>
+<div class="aw-item" data-replies="<?php echo $val['reply_count']; ?>" data-views="<?php echo $val['view_count']; ?>" data-timestamp="<?php echo $val['add_time']; ?>" data-recommended="<?php echo $val['recommend']; ?>" data-pinned="<?php echo $val['sort']; ?>" data-hot="<?php echo $val['hot']; ?>" <?php if ($this->user_info['permission']['is_moderator']) { ?>data-item-reputation="<?php echo $val['reputation']; ?>" data-children-reputation="<?php echo $val['children_reputation']; ?>"<?php } ?>>
 	<a class="aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>" data-reputation="<?php echo UF::reputation($val['user_info']); ?>" href="<?php echo UF::url($val['user_info']); ?>" rel="nofollow"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /><?php if ($val['user_info']['verified']) { ?><em class="aw-verified"><?php echo $val['user_info']['verified']; ?></em><?php } ?></a>
 	<div class="aw-question-content">
 		<h4>
@@ -16,49 +16,56 @@
 			<a class="aw-user-name" data-id="<?php echo $answer_user['uid']; ?>" href="<?php echo UF::url($answer_user); ?>" rel="nofollow"><img src="<?php echo UF::avatar($answer_user, 'mid'); ?>" alt="" /></a>
 			<?php } ?>
 		</div>
-		<?php } else if ($val['post_type'] == 'question') { ?>
-		<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['id']; ?>#!answer_form" class="pull-right aw-small-text hidden-xs"><?php echo _t('回复'); ?></a>
 		<?php } ?>
 		<!-- end 贡献 -->
 
 		<p>
 			<?php if ($_GET['category'] != $val['category_id'] AND $val['category_info']['title']) { ?>
-				<a class="aw-question-tags" href="<?php echo url_rewrite(); ?>/explore/category-<?php echo $val['category_info']['id']; ?>"><?php echo FORMAT::text($val['category_info']['title']); ?></a> •
+			<a class="aw-question-tags" href="<?php echo url_rewrite(); ?>/explore/category-<?php echo $val['category_info']['id']; ?>"><?php echo FORMAT::text($val['category_info']['title']); ?></a>
+			•
 			<?php } ?>
 
-		<?php if ($val['post_type'] == 'question') { ?>
-			<?php if ($val['last_user_info'] AND !$val['last_user_info']['forbidden']) { ?>
-				<a href="<?php echo UF::url($val['last_user_info']); ?>" class="aw-user-name" data-id="<?php echo $val['last_user_info']['uid']; ?>" data-reputation="<?php echo UF::reputation($val['last_user_info']); ?>"><?php echo UF::name($val['last_user_info']); ?></a>
-				<?php if ($val['last_user_info']['flagged']) { ?><sup><?php echo UF::flagged($val['last_user_info']); ?></sup><?php } ?>
-				<span class="aw-small-text"><?php echo _t('回复了问题'); ?> • <?php echo _t('%s 个回复', $val['answer_count']); ?> • <?php echo _t('%s 次浏览', $val['view_count']); ?> • <?php echo date_friendly($val['update_time']); ?></span>
-			<?php } else { ?>
+			<span class="aw-small-text aw-nowrap">
+				<?php switch ($val['post_type']) {
+				case 'question':
+					$reply_count = $val['answer_count'];
+					echo _t('问题');
+					break;
+				case 'article':
+					$reply_count = $val['comments'];
+					echo _t('文章');
+					break;
+				case 'video':
+					$reply_count = $val['comment_count'];
+					echo _t('影片');
+					break;
+				} ?>
+			</span>
+
+			<span class="aw-small-text aw-nowrap">
+				•
 				<a href="<?php echo UF::url($val['user_info']); ?>" class="aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>" data-reputation="<?php echo UF::reputation($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
 				<?php if ($val['user_info']['flagged']) { ?><sup><?php echo UF::flagged($val['user_info']); ?></sup><?php } ?>
-				<span class="aw-small-text"><?php echo _t('发起了问题'); ?> • <?php echo _t('%s 个回复', $val['answer_count']); ?> • <?php echo _t('%s 次浏览', $val['view_count']); ?> • <?php echo date_friendly($val['add_time']); ?></span>
+				<?php echo date_friendly($val['add_time']); ?>
+			</span>
+
+			<?php if ($val['last_user_info'] AND !$val['last_user_info']['forbidden']) { ?>
+			<span class="aw-small-text aw-nowrap">
+				•
+				<a href="<?php echo UF::url($val['last_user_info']); ?>" class="aw-user-name" data-id="<?php echo $val['last_user_info']['uid']; ?>" data-reputation="<?php echo UF::reputation($val['last_user_info']); ?>"><?php echo UF::name($val['last_user_info']); ?></a>
+				<?php if ($val['last_user_info']['flagged']) { ?><sup><?php echo UF::flagged($val['last_user_info']); ?></sup><?php } ?>
+				<?php echo date_friendly($val['update_time']); ?>
+			</span>
 			<?php } ?>
 
-		<?php } elseif ($val['post_type'] == 'article') { ?>
-			<?php if ($val['last_user_info'] AND !$val['last_user_info']['forbidden']) { ?>
-				<a href="<?php echo UF::url($val['last_user_info']); ?>" class="aw-user-name" data-id="<?php echo $val['last_user_info']['uid']; ?>" data-reputation="<?php echo UF::reputation($val['last_user_info']); ?>"><?php echo UF::name($val['last_user_info']); ?></a>
-				<?php if ($val['last_user_info']['flagged']) { ?><sup><?php echo UF::flagged($val['last_user_info']); ?></sup><?php } ?>
-				<span class="aw-small-text"><?php echo _t('评论了文章'); ?> • <?php echo _t('%s 个评论', $val['comments']); ?> • <?php echo _t('%s 次浏览', $val['view_count']); ?> • <?php echo date_friendly($val['update_time']); ?></span>
-			<?php } else { ?>
-				<a href="<?php echo UF::url($val['user_info']); ?>" class="aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>" data-reputation="<?php echo UF::reputation($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
-				<?php if ($val['user_info']['flagged']) { ?><sup><?php echo UF::flagged($val['user_info']); ?></sup><?php } ?>
-				<span class="aw-small-text"><?php echo _t('发表了文章'); ?> • <?php echo _t('%s 个评论', $val['comments']); ?> • <?php echo _t('%s 次浏览', $val['view_count']); ?> • <?php echo date_friendly($val['add_time']); ?></span>
-			<?php } ?>
-
-		<?php } elseif ($val['post_type'] == 'video') { ?>
-			<?php if ($val['last_user_info'] AND !$val['last_user_info']['forbidden']) { ?>
-				<a href="<?php echo UF::url($val['last_user_info']); ?>" class="aw-user-name" data-id="<?php echo $val['last_user_info']['uid']; ?>" data-reputation="<?php echo UF::reputation($val['last_user_info']); ?>"><?php echo UF::name($val['last_user_info']); ?></a>
-				<?php if ($val['last_user_info']['flagged']) { ?><sup><?php echo UF::flagged($val['last_user_info']); ?></sup><?php } ?>
-				<span class="aw-small-text"><?php echo _t('评论了影片'); ?> • <?php echo _t('%s 个评论', $val['comment_count']); ?> • <?php echo _t('%s 次浏览', $val['view_count']); ?> • <?php echo date_friendly($val['update_time']); ?></span>
-			<?php } else { ?>
-				<a href="<?php echo UF::url($val['user_info']); ?>" class="aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>" data-reputation="<?php echo UF::reputation($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
-				<?php if ($val['user_info']['flagged']) { ?><sup><?php echo UF::flagged($val['user_info']); ?></sup><?php } ?>
-				<span class="aw-small-text"><?php echo _t('发布了影片'); ?> • <?php echo _t('%s 个评论', $val['comment_count']); ?> • <?php echo _t('%s 次浏览', $val['view_count']); ?> • <?php echo date_friendly($val['add_time']); ?></span>
-			<?php } ?>
-		<?php } ?>
+			<span class="aw-small-text aw-nowrap">
+				<?php if ($val['reply_count']) { ?>
+				•
+				<?php echo _t('%s 个回复', $val['reply_count']); ?>
+				<?php } ?>
+				•
+				<?php echo _t('%s 次浏览', $val['view_count']); ?>
+			</span>
 		</p>
 
 	</div>
