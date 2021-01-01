@@ -66,13 +66,16 @@ class ajax extends AWS_CONTROLLER
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写理由')));
 			}
-			$log_detail = trim($reason . ' ' . $detail);
 		}
 		else
 		{
-			// 取消封禁/标记不记录理由和详情
-			$log_detail = '';
+			// 取消时是没有选项列表的
+			if (!$reason AND !$detail)
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写理由')));
+			}
 		}
+		$log_detail = trim($reason . ' ' . $detail);
 	}
 
 	public function forbid_user_action()
