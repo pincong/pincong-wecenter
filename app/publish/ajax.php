@@ -437,7 +437,6 @@ class ajax extends AWS_CONTROLLER
 			'follow' => !$_POST['anonymous'],
 			'source_type' => $metadata['source_type'],
 			'source' => $metadata['source'],
-			'duration' => 0,
 		), $this->user_id, $_POST['later']);
 
 		if ($_POST['later'])

@@ -101,7 +101,6 @@ class video_class extends AWS_MODEL
 			'title_fulltext' => null,
 			'source_type' => null,
 			'source' => null,
-			'duration' => 0,
 		);
 
 		$trash_category_id = intval(get_setting('trash_category_id'));
@@ -154,12 +153,11 @@ class video_class extends AWS_MODEL
 	}
 
 
-	public function update_video_source($id, $source_type, $source, $duration)
+	public function update_video_source($id, $source_type, $source)
 	{
 		$this->update('video', array(
 			'source_type' => $source_type,
 			'source' => $source,
-			'duration' => $duration,
 		), 'id = ' . intval($id));
 
 		return true;

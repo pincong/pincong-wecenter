@@ -309,8 +309,7 @@ class ajax extends AWS_CONTROLLER
 				$this->model('video')->update_video_source(
 					$video_info['id'],
 					$metadata['source_type'],
-					$metadata['source'],
-					0
+					$metadata['source']
 				);
 			}
 

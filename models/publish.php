@@ -239,7 +239,6 @@ class publish_class extends AWS_MODEL
 			'view_count' => $view_count,
 			'source_type' => $data['source_type'],
 			'source' => $data['source'],
-			'duration' => $data['duration'],
 		));
 
 		if (!$item_id)
