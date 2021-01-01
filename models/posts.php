@@ -319,13 +319,6 @@ class posts_class extends AWS_MODEL
 			return false;
 		}
 
-		if (count($topic_ids) > 50)
-		{
-			$topic_ids = array_slice($topic_ids, 0, 50);
-		}
-
-		//array_walk_recursive($topic_ids, 'intval_string');
-
 		$topic_relation_where[] = ['topic_id', 'in', $topic_ids, 'i'];
 
 		if ($post_type AND $this->model('content')->check_thread_type($post_type))
@@ -333,13 +326,14 @@ class posts_class extends AWS_MODEL
 			$topic_relation_where[] = ['type', 'eq', $post_type];
 		}
 
-		$topic_relations = $this->fetch_distinct_rows('topic_relation', ['type', 'item_id'], $topic_relation_where, 'id DESC', $page, $per_page);
+		$topic_relations = $this->fetch_page('topic_relation', $topic_relation_where, 'id DESC', $page, $per_page);
 		if ($topic_relations)
 		{
 			foreach ($topic_relations AS $key => $val)
 			{
 				$info[$val['type']][$val['item_id']] = $val['item_id'];
 			}
+			$this->posts_list_total = $this->total_rows();
 		}
 
 		if (!$info)

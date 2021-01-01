@@ -125,6 +125,17 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
+		$url_param[] = 'topic_id-' . $topic_info['topic_id'];
+		$type = $_GET['type'];
+		if ($type AND $this->model('content')->check_thread_type($type))
+		{
+			$url_param[] = 'type-' . $type;
+		}
+		else
+		{
+			$type = null;
+		}
+
 		$this->crumb($topic_info['topic_title']);
 
 		if ($this->user_id)
@@ -161,7 +172,7 @@ class main extends AWS_CONTROLLER
 		$topic_ids = $this->model('topic')->get_merged_topic_ids_by_id($topic_info['topic_id']);
 		$topic_ids[] = $topic_info['topic_id'];
 
-		if ($posts_list = $this->model('posts')->get_posts_list_by_topic_ids(null, $topic_ids, 1, S::get_int('contents_per_page')))
+		if ($posts_list = $this->model('posts')->get_posts_list_by_topic_ids($type, $topic_ids, $_GET['page'], S::get_int('contents_per_page')))
 		{
 			foreach ($posts_list AS $key => $val)
 			{
@@ -175,7 +186,11 @@ class main extends AWS_CONTROLLER
 		TPL::assign('posts_list', $posts_list);
 		TPL::assign('all_list_bit', TPL::render('explore/list_template'));
 
-		TPL::assign('topic_ids', implode(',', $topic_ids));
+		TPL::assign('pagination', AWS_APP::pagination()->create(array(
+			'base_url' => url_rewrite('/topic/') . implode('__', $url_param),
+			'total_rows' => $this->model('posts')->get_posts_list_total(),
+			'per_page' => S::get_int('contents_per_page')
+		)));
 
 		TPL::assign('redirect_message', $redirect_message);
 

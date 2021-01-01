@@ -38,9 +38,7 @@
 							</div>
 						</div>
 						<div class="mod-footer">
-							<a class="aw-load-more-content" id="c_all_more" auto-load="false">
-								<span><?php _e('更多'); ?>...</span>
-							</a>
+							<?php TPL::include('global/pagination.tpl.htm'); ?>
 						</div>
 					</div>
 				</div>
@@ -103,11 +101,5 @@
 		</div>
 	</div>
 </div>
-
-<script type="text/javascript">
-$(document).ready(function () {
-	AWS.load_list_view(G_BASE_URL + '/explore/ajax/list/topic_id-<?php echo $this->topic_ids; ?>', $('#c_all_more'), $('#c_all_list'), 2);
-});
-</script>
 
 <?php TPL::include('global/footer.tpl.htm'); ?>
