@@ -43,9 +43,9 @@ class ajax extends AWS_CONTROLLER
 			), 1, null));
 		}
 
-		if (!$_POST['password'])
+		if (!$_POST['scrambled_password'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的帐号或密码')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的用户名或密码')));
 		}
 
 		// 检查验证码
@@ -63,7 +63,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 
-		$user_info = $this->model('login')->verify($_POST['uid'], $_POST['password']);
+		$user_info = $this->model('login')->verify($_POST['uid'], $_POST['scrambled_password']);
 
 		if (is_null($user_info))
 		{
@@ -71,7 +71,7 @@ class ajax extends AWS_CONTROLLER
 		}
 		elseif (!$user_info)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的帐号或密码')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的用户名或密码')));
 		}
 
 
@@ -91,7 +91,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		$this->model('login')->cookie_logout();
-		$this->model('login')->cookie_login($user_info['uid'], $_POST['password'], $expire);
+		$this->model('login')->cookie_login($user_info['uid'], $_POST['scrambled_password'], $expire);
 
 		$url = url_rewrite('/');
 

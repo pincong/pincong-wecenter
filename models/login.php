@@ -113,9 +113,9 @@ class login_class extends AWS_MODEL
 	 * @param string
 	 * @return mixed
 	 */
-	public function verify($uid, $password)
+	public function verify($uid, $scrambled_password)
 	{
-		if (!$uid OR !$password)
+		if (!$uid OR !$scrambled_password)
 		{
 			return false;
 		}
@@ -142,7 +142,7 @@ class login_class extends AWS_MODEL
 			}
 		}
 
-		if (!$this->model('password')->compare($password, $user_info['password']))
+		if (!$this->model('password')->compare($scrambled_password, $user_info['password']))
 		{
 			$this->log_failed_login($uid);
 			// TODO: 给用户发送警告
@@ -152,7 +152,7 @@ class login_class extends AWS_MODEL
 		return $user_info;
 	}
 
-	public function cookie_login($uid, $password, $expire = null)
+	public function cookie_login($uid, $scrambled_password, $expire = null)
 	{
 		if (!$uid)
 		{
@@ -166,7 +166,7 @@ class login_class extends AWS_MODEL
 
 		$value = AWS_APP::crypt()->encode(json_encode(array(
 			'uid' => $uid,
-			'password' => $password
+			'password' => $scrambled_password
 		)));
 
 		HTTP::set_cookie('_user_login', $value, $expire);

@@ -38,12 +38,12 @@ var G_BASE_URL = "<?php echo url_rewrite(); ?>";
 			<div class="alert alert-danger collapse error_message"></div>
 			<div class="form-group">
 				<label><?php _e('用户名'); ?></label>
-				<input type="text" class="form-control" name="username" value="<?php echo UF::name($this->user_info); ?>" readonly />
+				<input type="text" class="form-control" name="username" autocomplete="username" value="<?php echo UF::name($this->user_info); ?>" readonly />
 				<i class="icon icon-user"></i>
 			</div>
 			<div class="form-group">
 				<label><?php _e('密码'); ?></label>
-				<input type="password" class="form-control" name="password" placeholder="<?php _e('密码'); ?>" autofocus />
+				<input type="password" class="form-control" name="password" autocomplete="current-password" placeholder="<?php _e('密码'); ?>" autofocus />
 				<i class="icon icon-lock"></i>
 			</div>
 
@@ -58,19 +58,19 @@ var G_BASE_URL = "<?php echo url_rewrite(); ?>";
 
 <script type="text/javascript">
 $(document).ready(function () {
+	var form = $('#login_form');
+
 	var _v1 = function(p, s) {
 		p = md5(md5(p) + s);
 		return p;
 	}
-
-	var form = $('#login_form');
 
 	form.submit(function(e) {
 		e.preventDefault();
 
 		var new_form = $('<form>', {action: '<?php echo url_rewrite(); ?>/admin/ajax/login_process/', method: 'post'});
 		var pwd = form.find('input[name=password]').val();
-		new_form.append($('<input>', {name: 'password', value: _v1(pwd, '<?php echo $this->user_info['salt']; ?>')}));
+		new_form.append($('<input>', {name: 'scrambled_password', value: _v1(pwd, '<?php echo $this->user_info['salt']; ?>')}));
 
 		AWS.ajax_post(new_form, AWS.ajax_processer, 'error_message');
 

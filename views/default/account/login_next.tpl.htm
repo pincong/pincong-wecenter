@@ -15,10 +15,10 @@
 					<img src="<?php echo UF::avatar($this->user, 'max'); ?>" alt="">
 				</li>
 				<li>
-					<input type="text" class="form-control" value="<?php echo $this->user['user_name']; ?>" name="username" readonly style="cursor:default">
+					<input type="text" class="form-control" name="username" autocomplete="username" value="<?php echo $this->user['user_name']; ?>" readonly style="cursor:default">
 				</li>
 				<li>
-					<input type="password" class="form-control" name="password" placeholder="<?php _e('密码'); ?>" autofocus>
+					<input type="password" class="form-control" name="password" autocomplete="current-password" placeholder="<?php _e('密码'); ?>" autofocus>
 				</li>
 				<?php if ($this->captcha_required) { ?>
 				<li class="aw-register-verify">
@@ -41,12 +41,12 @@
 
 <script type="text/javascript">
 $(document).ready(function () {
+	var form = $('#login_form');
+
 	var _v1 = function(p, s) {
 		p = md5(md5(p) + s);
 		return p;
 	}
-
-	var form = $('#login_form');
 
 	form.submit(function(e) {
 		e.preventDefault();
@@ -54,7 +54,7 @@ $(document).ready(function () {
 		var new_form = $('<form>', {action: '<?php echo url_rewrite(); ?>/login/ajax/process/', method: 'post'});
 		new_form.append($('<input>', {name: 'uid', value: '<?php echo $this->user['uid']; ?>'}));
 		var pwd = form.find('input[name=password]').val();
-		new_form.append($('<input>', {name: 'password', value: _v1(pwd, '<?php echo $this->user['salt']; ?>')}));
+		new_form.append($('<input>', {name: 'scrambled_password', value: _v1(pwd, '<?php echo $this->user['salt']; ?>')}));
 		new_form.append($('<input>', {name: 'remember_me', value: form.find('input[name=remember_me]').is(':checked') ? 1 : 0}));
 		<?php if ($this->captcha_required) { ?>
 		new_form.append($('<input>', {name: 'captcha', value: form.find('input[name=captcha]').val()}));
@@ -62,10 +62,8 @@ $(document).ready(function () {
 		new_form.append($('<input>', {name: 'captcha_enabled', value: '0'}));
 		<?php } ?>
 
-		AWS.submit_form(new_form, form.find('input[type=submit]'), form.find('.error_message'), function(err) {
-			if (err) {
-				$('#captcha').click();
-			}
+		AWS.submit_form(new_form, form.find('input[type=submit]'), form.find('.error_message'), function() {
+			$('#captcha').click();
 		});
 
 		return false;

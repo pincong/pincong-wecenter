@@ -19,6 +19,76 @@ if (!defined('IN_ANWSION'))
 
 class register_class extends AWS_MODEL
 {
+
+	public function is_captcha_required()
+	{
+		if (get_setting('register_seccode') == 'Y')
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	public function register($username, $scrambled_password, $client_salt)
+	{
+		if ($uid = $this->insert_user($username, $scrambled_password, $client_salt))
+		{
+			$this->model('account')->update_notification_setting_fields(get_setting('new_user_notification_setting'), $uid);
+			//$this->model('search_fulltext')->push_index('user', $username, $uid);
+
+			if ($def_focus_uids_str = get_setting('def_focus_uids'))
+			{
+				$def_focus_uids = explode(',', $def_focus_uids_str);
+
+				foreach ($def_focus_uids as $key => $val)
+				{
+					$this->model('follow')->user_follow_add($uid, $val);
+				}
+			}
+
+			$this->model('currency')->process($uid, 'REGISTER', get_setting('currency_system_config_register'), '初始资本');
+		}
+
+		return $uid;
+	}
+
+	/**
+	 * 插入用户数据
+	 *
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param int
+	 * @param string
+	 * @return int
+	 */
+	public function insert_user($username, $scrambled_password, $client_salt)
+	{
+		if (!$username OR !$scrambled_password)
+		{
+			return false;
+		}
+
+		if ($this->model('account')->username_exists($username))
+		{
+			return false;
+		}
+
+		$uid = $this->insert('users', array(
+			'user_name' => htmlspecialchars($username),
+			'password' => $this->model('password')->hash($scrambled_password),
+			'salt' => $client_salt,
+			'sex' => 0,
+			'group_id' => 0,
+			'avatar_file' => null, // 无头像
+			'reg_time' => fake_time()
+		));
+
+		return $uid;
+	}
+
+
     public function check_username_char($user_name)
     {
         if (is_digits($user_name))

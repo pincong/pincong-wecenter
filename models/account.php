@@ -242,7 +242,7 @@ class account_class extends AWS_MODEL
 	 * @param string
 	 * @return int
 	 */
-	public function insert_user($user_name, $password)
+	public function insert_user_deprecated($user_name, $password)
 	{
 		if (!$user_name OR !$password)
 		{
@@ -283,9 +283,9 @@ class account_class extends AWS_MODEL
 	 * @param string
 	 * @return int
 	 */
-	public function user_register($user_name, $password = null)
+	public function user_register_deprecated($user_name, $password = null)
 	{
-		if ($uid = $this->insert_user($user_name, $password))
+		if ($uid = $this->insert_user_deprecated($user_name, $password))
 		{
 			if ($def_focus_uids_str = get_setting('def_focus_uids'))
 			{

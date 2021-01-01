@@ -29,15 +29,15 @@ class main extends AWS_CONTROLLER
 	public function setup()
 	{
 		HTTP::no_cache_header();
-	}
 
-	public function index_action()
-	{
 		if ($this->user_id)
 		{
 			HTTP::redirect('/');
 		}
+	}
 
+	public function index_action()
+	{
 		$this->crumb(AWS_APP::lang()->_t('登录'));
 
 		TPL::import_css('css/register.css');
@@ -49,11 +49,6 @@ class main extends AWS_CONTROLLER
 
 	public function next_action()
 	{
-		if ($this->user_id)
-		{
-			HTTP::redirect('/');
-		}
-
 		$captcha_required = $this->model('login')->is_captcha_required();
 
 		// 检查验证码

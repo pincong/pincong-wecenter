@@ -9,10 +9,10 @@
 		<form id="login_form" onsubmit="return false" method="post">
 			<ul>
 				<li>
-					<input type="text" class="form-control" name="username" placeholder="<?php _e('用户名'); ?>" oninput="$(this).closest('form').find('input[name=password]').val('');" autofocus>
+					<input type="text" class="form-control" name="username" autocomplete="username" placeholder="<?php _e('用户名'); ?>" oninput="$(this).closest('form').find('input[name=password]').val('');" autofocus>
 				</li>
 				<li style="display:none">
-					<input type="password" class="form-control" name="password">
+					<input type="password" class="form-control" name="password" autocomplete="current-password">
 				</li>
 				<?php if ($this->captcha_required) { ?>
 				<li class="aw-register-verify">
