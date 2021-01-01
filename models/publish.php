@@ -225,7 +225,7 @@ class publish_class extends AWS_MODEL
 
 	private function real_publish_answer(&$data)
 	{
-		if (!$parent_info = $this->model('question')->get_question_info_by_id($data['parent_id']))
+		if (!$parent_info = $this->model('content')->get_thread_info_by_id('question', $data['parent_id']))
 		{
 			return false;
 		}
@@ -307,7 +307,7 @@ class publish_class extends AWS_MODEL
 
 	private function real_publish_article_comment(&$data)
 	{
-		if (!$parent_info = $this->model('article')->get_article_info_by_id($data['parent_id']))
+		if (!$parent_info = $this->model('content')->get_thread_info_by_id('article', $data['parent_id']))
 		{
 			return false;
 		}
@@ -383,7 +383,7 @@ class publish_class extends AWS_MODEL
 
 	private function real_publish_video_comment(&$data)
 	{
-		if (!$parent_info = $this->model('video')->get_video_info_by_id($data['parent_id']))
+		if (!$parent_info = $this->model('content')->get_thread_info_by_id('video', $data['parent_id']))
 		{
 			return false;
 		}

@@ -48,7 +48,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有删除问题的权限')));
 		}
 
-		if ($question_info = $this->model('question')->get_question_info_by_id($_POST['question_id']))
+		if ($question_info = $this->model('content')->get_thread_info_by_id('question', $_POST['question_id']))
 		{
 			$this->model('question')->clear_question($question_info['question_id']);
 		}
@@ -103,12 +103,12 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日评论回复已经达到上限')));
 		}
 
-		$answer_info = $this->model('answer')->get_answer_by_id($_GET['answer_id']);
+		$answer_info = $this->model('content')->get_reply_info_by_id('answer', $_GET['answer_id']);
 		if (!$answer_info)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('回复不存在')));
 		}
-		$question_info = $this->model('question')->get_question_info_by_id($answer_info['question_id']);
+		$question_info = $this->model('content')->get_thread_info_by_id('question', $answer_info['question_id']);
 		if (!$question_info)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('问题不存在')));
@@ -185,7 +185,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日评论问题已经达到上限')));
 		}
 
-		$question_info = $this->model('question')->get_question_info_by_id($_GET['question_id']);
+		$question_info = $this->model('content')->get_thread_info_by_id('question', $_GET['question_id']);
 		if (!$question_info)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('问题不存在')));
@@ -225,7 +225,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
 		}
 
-		if (!$question_info = $this->model('question')->get_question_info_by_id($_POST['question_id']))
+		if (!$question_info = $this->model('content')->get_thread_info_by_id('question', $_POST['question_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在或已被删除')));
 		}
@@ -269,9 +269,9 @@ class ajax extends AWS_CONTROLLER
 			$comments[$key]['user_info'] = $user_infos[$val['uid']];
 		}
 
-		$answer_info = $this->model('answer')->get_answer_by_id($_GET['answer_id']);
+		$answer_info = $this->model('content')->get_reply_info_by_id('answer', $_GET['answer_id']);
 
-		TPL::assign('question', $this->model('question')->get_question_info_by_id($answer_info['question_id']));
+		TPL::assign('question', $this->model('content')->get_thread_info_by_id('question', $answer_info['question_id']));
 		TPL::assign('answer_info', $answer_info);
 		TPL::assign('comments', $comments);
 
@@ -290,7 +290,7 @@ class ajax extends AWS_CONTROLLER
 			$comments[$key]['user_info'] = $user_infos[$val['uid']];
 		}
 
-		TPL::assign('question', $this->model('question')->get_question_info_by_id($_GET['question_id']));
+		TPL::assign('question', $this->model('content')->get_thread_info_by_id('question', $_GET['question_id']));
 
 		TPL::assign('comments', $comments);
 
@@ -329,7 +329,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 
-		if (! $this->model('question')->get_question_info_by_id($_POST['question_id']))
+		if (! $this->model('content')->get_thread_info_by_id('question', $_POST['question_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
 		}

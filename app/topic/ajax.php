@@ -379,7 +379,7 @@ class ajax extends AWS_CONTROLLER
 		switch ($_POST['type'])
 		{
 			case 'question':
-				if (!$question_info = $this->model('question')->get_question_info_by_id($_POST['item_id']))
+				if (!$question_info = $this->model('content')->get_thread_info_by_id('question', $_POST['item_id']))
 				{
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定项目不存在')));
 				}
@@ -391,7 +391,7 @@ class ajax extends AWS_CONTROLLER
 			break;
 
 			case 'article':
-				if (!$article_info = $this->model('article')->get_article_info_by_id($_POST['item_id']))
+				if (!$article_info = $this->model('content')->get_thread_info_by_id('article', $_POST['item_id']))
 				{
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定项目不存在')));
 				}
@@ -403,7 +403,7 @@ class ajax extends AWS_CONTROLLER
 			break;
 
 			case 'video':
-				if (!$video_info = $this->model('video')->get_video_info_by_id($_POST['item_id']))
+				if (!$video_info = $this->model('content')->get_thread_info_by_id('video', $_POST['item_id']))
 				{
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定项目不存在')));
 				}
@@ -441,7 +441,7 @@ class ajax extends AWS_CONTROLLER
 		switch ($_POST['type'])
 		{
 			case 'question':
-				if (!$question_info = $this->model('question')->get_question_info_by_id($_POST['item_id']))
+				if (!$question_info = $this->model('content')->get_thread_info_by_id('question', $_POST['item_id']))
 				{
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定项目不存在')));
 				}
@@ -453,7 +453,7 @@ class ajax extends AWS_CONTROLLER
 			break;
 
 			case 'article':
-				if (!$article_info = $this->model('article')->get_article_info_by_id($_POST['item_id']))
+				if (!$article_info = $this->model('content')->get_thread_info_by_id('article', $_POST['item_id']))
 				{
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定项目不存在')));
 				}
@@ -465,7 +465,7 @@ class ajax extends AWS_CONTROLLER
 			break;
 
 			case 'video':
-				if (!$video_info = $this->model('video')->get_video_info_by_id($_POST['item_id']))
+				if (!$video_info = $this->model('content')->get_thread_info_by_id('video', $_POST['item_id']))
 				{
 					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定项目不存在')));
 				}

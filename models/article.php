@@ -70,7 +70,7 @@ class article_class extends AWS_MODEL
 
 	public function modify_article($id, $uid, $title, $message)
 	{
-		if (!$item_info = $this->model('article')->get_article_info_by_id($id))
+		if (!$item_info = $this->model('content')->get_thread_info_by_id('article', $id))
 		{
 			return false;
 		}
@@ -89,7 +89,7 @@ class article_class extends AWS_MODEL
 
 	public function clear_article($id, $uid = null)
 	{
-		if (!$item_info = $this->model('article')->get_article_info_by_id($id))
+		if (!$item_info = $this->model('content')->get_thread_info_by_id('article', $id))
 		{
 			return false;
 		}
@@ -120,7 +120,7 @@ class article_class extends AWS_MODEL
 
 	public function modify_article_comment($comment_id, $uid, $message)
 	{
-		if (!$comment_info = $this->model('article')->get_comment_by_id($comment_id))
+		if (!$comment_info = $this->model('content')->get_reply_info_by_id('article_comment', $comment_id))
 		{
 			return false;
 		}
@@ -136,7 +136,7 @@ class article_class extends AWS_MODEL
 
 	public function clear_article_comment($comment_id, $uid)
 	{
-		if (!$comment_info = $this->model('article')->get_comment_by_id($comment_id))
+		if (!$comment_info = $this->model('content')->get_reply_info_by_id('article_comment', $comment_id))
 		{
 			return false;
 		}
@@ -165,24 +165,15 @@ class article_class extends AWS_MODEL
 		), 'id = ' . ($article_id));
 	}
 
+	// 同时获取用户信息
 	public function get_article_info_by_id($article_id)
 	{
-		if (!is_digits($article_id))
+		if ($article = $this->fetch_row('article', 'id = ' . intval($article_id)))
 		{
-			return false;
+			$article['user_info'] = $this->model('account')->get_user_info_by_uid($article['uid']);
 		}
 
-		static $articles;
-
-		if (!$articles[$article_id])
-		{
-			if ($article = $this->fetch_row('article', 'id = ' . $article_id))
-			{
-				$articles[$article_id] = $article;
-			}
-		}
-
-		return $articles[$article_id];
+		return $article;
 	}
 
 	public function get_article_info_by_ids($article_ids)
@@ -205,6 +196,7 @@ class article_class extends AWS_MODEL
 		return $result;
 	}
 
+	// 同时获取用户信息
 	public function get_comment_by_id($comment_id)
 	{
 		if ($comment = $this->fetch_row('article_comment', 'id = ' . intval($comment_id)))
@@ -286,7 +278,7 @@ class article_class extends AWS_MODEL
 	/*
 	public function remove_article($article_id)
 	{
-		if (!$article_info = $this->get_article_info_by_id($article_id))
+		if (!$article_info = $this->model('content')->get_thread_info_by_id('article', $article_id))
 		{
 			return false;
 		}

@@ -64,8 +64,6 @@ class main extends AWS_CONTROLLER
 			$replies_per_page = 100;
 		}
 
-		$video_info['user_info'] = $this->model('account')->get_user_info_by_uid($video_info['uid']);
-
 		$video_info['thumb_url'] = Services_VideoParser::get_thumb_url($video_info['source_type'], $video_info['source'], 'l');
 
 		$video_info['iframe_url'] = Services_VideoParser::get_iframe_url($video_info['source_type'], $video_info['source']);

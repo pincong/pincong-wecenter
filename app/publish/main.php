@@ -30,7 +30,7 @@ class main extends AWS_CONTROLLER
 		$id = intval($_GET['id']);
 		if ($id)
 		{
-			if (!$question_info = $this->model('question')->get_question_info_by_id($id))
+			if (!$question_info = $this->model('content')->get_thread_info_by_id('question', $id))
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('指定问题不存在'));
 			}
@@ -103,7 +103,7 @@ class main extends AWS_CONTROLLER
 		$id = intval($_GET['id']);
 		if ($id)
 		{
-			if (!$article_info = $this->model('article')->get_article_info_by_id($id))
+			if (!$article_info = $this->model('content')->get_thread_info_by_id('article', $id))
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('指定文章不存在'));
 			}
@@ -176,7 +176,7 @@ class main extends AWS_CONTROLLER
 		$id = intval($_GET['id']);
 		if ($id)
 		{
-			if (!$video_info = $this->model('video')->get_video_info_by_id($id))
+			if (!$video_info = $this->model('content')->get_thread_info_by_id('video', $id))
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('指定影片不存在'));
 			}

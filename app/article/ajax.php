@@ -33,7 +33,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有删除文章的权限')));
 		}
 
-		if ($article_info = $this->model('article')->get_article_info_by_id($_POST['article_id']))
+		if ($article_info = $this->model('content')->get_thread_info_by_id('article', $_POST['article_id']))
 		{
 			$this->model('article')->clear_article($article_info['id']);
 		}

@@ -72,8 +72,6 @@ class main extends AWS_CONTROLLER
 			$sort = 'ASC';
 		}
 
-		$question_info['user_info'] = $this->model('account')->get_user_info_by_uid($question_info['uid']);
-
 		$this->model('content')->update_view_count('question', $question_info['question_id'], session_id());
 
 		if ($_GET['sort_key'] == 'add_time')
@@ -107,7 +105,6 @@ class main extends AWS_CONTROLLER
 		foreach ($answer_list as $answer)
 		{
 			$answer_ids[] = $answer['answer_id'];
-			$answer_uids[] = $answer['uid'];
 		}
 
 		if ($this->user_id)

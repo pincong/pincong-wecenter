@@ -34,6 +34,7 @@ class answer_class extends AWS_MODEL
 	}
 
 
+	// 同时获取用户信息
 	public function get_answer_by_id($answer_id)
 	{
 		if ($answer = $this->fetch_row('answer', 'answer_id = ' . intval($answer_id)))
@@ -147,7 +148,7 @@ class answer_class extends AWS_MODEL
 
 	public function remove_answer_by_id($answer_id)
 	{
-		if ($answer_info = $this->model('answer')->get_answer_by_id($answer_id))
+		if ($answer_info = $this->model('content')->get_reply_info_by_id('answer', $answer_id))
 		{
 			$this->delete('answer_discussion', 'answer_id = ' . intval($answer_id));	// 删除评论
 
@@ -169,12 +170,12 @@ class answer_class extends AWS_MODEL
 
 	public function insert_answer_discussion($answer_id, $uid, $message)
 	{
-		if (!$answer_info = $this->model('answer')->get_answer_by_id($answer_id))
+		if (!$answer_info = $this->model('content')->get_reply_info_by_id('answer', $answer_id))
 		{
 			return false;
 		}
 
-		if (!$question_info = $this->model('question')->get_question_info_by_id($answer_info['question_id']))
+		if (!$question_info = $this->model('content')->get_thread_info_by_id('question', $answer_info['question_id']))
 		{
 			return false;
 		}

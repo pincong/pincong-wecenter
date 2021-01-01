@@ -464,7 +464,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 
-		if (!$question_info = $this->model('question')->get_question_info_by_id($_POST['question_id']))
+		if (!$question_info = $this->model('content')->get_thread_info_by_id('question', $_POST['question_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
 		}
@@ -526,7 +526,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 
-		if (!$article_info = $this->model('article')->get_article_info_by_id($_POST['article_id']))
+		if (!$article_info = $this->model('content')->get_thread_info_by_id('article', $_POST['article_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文章不存在')));
 		}
@@ -587,7 +587,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 
-		if (!$video_info = $this->model('video')->get_video_info_by_id($_POST['video_id']))
+		if (!$video_info = $this->model('content')->get_thread_info_by_id('video', $_POST['video_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('影片不存在')));
 		}
@@ -687,7 +687,7 @@ class ajax extends AWS_CONTROLLER
 
 		$this->validate_reply('publish', 'question');
 
-		if (!$question_info = $this->model('question')->get_question_info_by_id($_POST['question_id']))
+		if (!$question_info = $this->model('content')->get_thread_info_by_id('question', $_POST['question_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
 		}
@@ -764,7 +764,6 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		$answer_info = $this->model('answer')->get_answer_by_id($answer_id);
-		$answer_info['user_info'] = $this->model('account')->get_user_info_by_uid($publish_uid);
 		$answer_info['answer_content'] = $this->model('mention')->parse_at_user($answer_info['answer_content']);
 		TPL::assign('answer_info', $answer_info);
 		H::ajax_json_output(AWS_APP::RSM(array(
@@ -792,7 +791,7 @@ class ajax extends AWS_CONTROLLER
 
 		$this->validate_reply('publish', 'article');
 
-		if (!$article_info = $this->model('article')->get_article_info_by_id($_POST['article_id']))
+		if (!$article_info = $this->model('content')->get_thread_info_by_id('article', $_POST['article_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定文章不存在')));
 		}
@@ -874,7 +873,7 @@ class ajax extends AWS_CONTROLLER
 
 		$this->validate_reply('publish', 'video');
 
-		if (!$video_info = $this->model('video')->get_video_info_by_id($_POST['video_id']))
+		if (!$video_info = $this->model('content')->get_thread_info_by_id('video', $_POST['video_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定影片不存在')));
 		}
@@ -944,7 +943,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 
-		if (!$answer_info = $this->model('answer')->get_answer_by_id($_GET['id']))
+		if (!$answer_info = $this->model('content')->get_reply_info_by_id('answer', $_GET['id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('内容不存在')));
 		}
@@ -954,7 +953,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
-		if (!$question_info = $this->model('question')->get_question_info_by_id($answer_info['question_id']))
+		if (!$question_info = $this->model('content')->get_thread_info_by_id('question', $answer_info['question_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('问题不存在')));
 		}
@@ -1001,7 +1000,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 
-		if (!$comment_info = $this->model('article')->get_comment_by_id($_GET['id']))
+		if (!$comment_info = $this->model('content')->get_reply_info_by_id('article_comment', $_GET['id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('内容不存在')));
 		}
@@ -1011,7 +1010,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
-		if (!$article_info = $this->model('article')->get_article_info_by_id($comment_info['article_id']))
+		if (!$article_info = $this->model('content')->get_thread_info_by_id('article', $comment_info['article_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('文章不存在')));
 		}
@@ -1054,7 +1053,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
 
-		if (!$comment_info = $this->model('video')->get_comment_by_id($_GET['id']))
+		if (!$comment_info = $this->model('content')->get_reply_info_by_id('video_comment', $_GET['id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('内容不存在')));
 		}
@@ -1064,7 +1063,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
-		if (!$video_info = $this->model('video')->get_video_info_by_id($comment_info['video_id']))
+		if (!$video_info = $this->model('content')->get_thread_info_by_id('video', $comment_info['video_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('影片不存在')));
 		}

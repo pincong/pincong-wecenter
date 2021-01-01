@@ -35,7 +35,7 @@ class edit extends AWS_CONTROLLER
 		{
 			HTTP::error_403();
 		}
-		if (!$answer_info = $this->model('answer')->get_answer_by_id($id))
+		if (!$answer_info = $this->model('content')->get_reply_info_by_id('answer', $id))
 		{
 			HTTP::error_403();
 		}
@@ -55,7 +55,7 @@ class edit extends AWS_CONTROLLER
 		{
 			HTTP::error_403();
 		}
-		if (!$comment_info = $this->model('article')->get_comment_by_id($id))
+		if (!$comment_info = $this->model('content')->get_reply_info_by_id('article_comment', $id))
 		{
 			HTTP::error_403();
 		}
@@ -75,7 +75,7 @@ class edit extends AWS_CONTROLLER
 		{
 			HTTP::error_403();
 		}
-		if (!$comment_info = $this->model('video')->get_comment_by_id($id))
+		if (!$comment_info = $this->model('content')->get_reply_info_by_id('video_comment', $id))
 		{
 			HTTP::error_403();
 		}

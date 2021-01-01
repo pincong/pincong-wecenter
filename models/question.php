@@ -70,7 +70,7 @@ class question_class extends AWS_MODEL
 
 	public function modify_question($id, $uid, $title, $message)
 	{
-		if (!$item_info = $this->model('question')->get_question_info_by_id($id))
+		if (!$item_info = $this->model('content')->get_thread_info_by_id('question', $id))
 		{
 			return false;
 		}
@@ -90,7 +90,7 @@ class question_class extends AWS_MODEL
 
 	public function clear_question($id, $uid = null)
 	{
-		if (!$item_info = $this->model('question')->get_question_info_by_id($id))
+		if (!$item_info = $this->model('content')->get_thread_info_by_id('question', $id))
 		{
 			return false;
 		}
@@ -122,7 +122,7 @@ class question_class extends AWS_MODEL
 
 	public function modify_answer($answer_id, $uid, $message)
 	{
-		if (!$answer_info = $this->model('answer')->get_answer_by_id($answer_id))
+		if (!$answer_info = $this->model('content')->get_reply_info_by_id('answer', $answer_id))
 		{
 			return false;
 		}
@@ -139,7 +139,7 @@ class question_class extends AWS_MODEL
 
 	public function clear_answer($answer_id, $uid)
 	{
-		if (!$answer_info = $this->model('answer')->get_answer_by_id($answer_id))
+		if (!$answer_info = $this->model('content')->get_reply_info_by_id('answer', $answer_id))
 		{
 			return false;
 		}
@@ -187,26 +187,15 @@ class question_class extends AWS_MODEL
 		return $this->query_all('SELECT uid FROM ' . $this->get_table('question_focus') . ' WHERE question_id = ' . intval($question_id));
 	}
 
+	// 同时获取用户信息
 	public function get_question_info_by_id($question_id)
 	{
-		if (! $question_id)
-		{
-			return false;
-		}
-
-		static $questions;
-
-		if ($questions[$question_id])
-		{
-			return $questions[$question_id];
-		}
-
 		if ($question = $this->fetch_row('question', 'question_id = ' . intval($question_id)))
 		{
-			$questions[$question_id] = $question;
+			$question['user_info'] = $this->model('account')->get_user_info_by_uid($question['uid']);
 		}
 
-		return $questions[$question_id];
+		return $question;
 	}
 
 	public function get_question_info_by_ids($question_ids)
@@ -233,7 +222,7 @@ class question_class extends AWS_MODEL
 	/*
 	public function remove_question($question_id)
 	{
-		if (!$question_info = $this->get_question_info_by_id($question_id))
+		if (!$question_info = $this->model('content')->get_thread_info_by_id('question', $question_id))
 		{
 			return false;
 		}
@@ -595,7 +584,7 @@ class question_class extends AWS_MODEL
 
 	public function insert_question_discussion($question_id, $uid, $message)
 	{
-		if (!$question_info = $this->model('question')->get_question_info_by_id($question_id))
+		if (!$question_info = $this->model('content')->get_thread_info_by_id('question', $question_id))
 		{
 			return false;
 		}
@@ -806,7 +795,7 @@ class question_class extends AWS_MODEL
 
 		if (!$uid)
 		{
-			if (!$question_info = $this->get_question_info_by_id($question_id))
+			if (!$question_info = $this->model('content')->get_thread_info_by_id('question', $question_id))
 			{
 				return false;
 			}

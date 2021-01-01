@@ -61,8 +61,6 @@ class main extends AWS_CONTROLLER
 			$replies_per_page = 100;
 		}
 
-		$article_info['user_info'] = $this->model('account')->get_user_info_by_uid($article_info['uid']);
-
 		if ($this->user_id)
 		{
 			$article_info['vote_value'] = $this->model('vote')->get_user_vote_value_by_id('article', $article_info['id'], $this->user_id);

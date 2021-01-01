@@ -70,7 +70,7 @@ class video_class extends AWS_MODEL
 
 	public function modify_video($id, $uid, $title, $message)
 	{
-		if (!$item_info = $this->model('video')->get_video_info_by_id($id))
+		if (!$item_info = $this->model('content')->get_thread_info_by_id('video', $id))
 		{
 			return false;
 		}
@@ -90,7 +90,7 @@ class video_class extends AWS_MODEL
 
 	public function clear_video($id, $uid = null)
 	{
-		if (!$item_info = $this->model('video')->get_video_info_by_id($id))
+		if (!$item_info = $this->model('content')->get_thread_info_by_id('video', $id))
 		{
 			return false;
 		}
@@ -125,7 +125,7 @@ class video_class extends AWS_MODEL
 
 	public function modify_video_comment($comment_id, $uid, $message)
 	{
-		if (!$comment_info = $this->model('video')->get_comment_by_id($comment_id))
+		if (!$comment_info = $this->model('content')->get_reply_info_by_id('video_comment', $comment_id))
 		{
 			return false;
 		}
@@ -141,7 +141,7 @@ class video_class extends AWS_MODEL
 
 	public function clear_video_comment($comment_id, $uid)
 	{
-		if (!$comment_info = $this->model('video')->get_comment_by_id($comment_id))
+		if (!$comment_info = $this->model('content')->get_reply_info_by_id('video_comment', $comment_id))
 		{
 			return false;
 		}
@@ -181,25 +181,15 @@ class video_class extends AWS_MODEL
 		), 'id = ' . ($video_id));
 	}
 
-
+	// 同时获取用户信息
 	public function get_video_info_by_id($video_id)
 	{
-		if (!is_digits($video_id))
+		if ($video = $this->fetch_row('video', 'id = ' . intval($video_id)))
 		{
-			return false;
+			$video['user_info'] = $this->model('account')->get_user_info_by_uid($video['uid']);
 		}
 
-		static $videos;
-
-		if (!$videos[$video_id])
-		{
-			if ($video = $this->fetch_row('video', 'id = ' . $video_id))
-			{
-				$videos[$video_id] = $video;
-			}
-		}
-
-		return $videos[$video_id];
+		return $video;
 	}
 
 	public function get_video_info_by_ids($video_ids)
@@ -222,6 +212,7 @@ class video_class extends AWS_MODEL
 		return $result;
 	}
 
+	// 同时获取用户信息
 	public function get_comment_by_id($comment_id)
 	{
 		if ($comment = $this->fetch_row('video_comment', 'id = ' . intval($comment_id)))
@@ -303,7 +294,7 @@ class video_class extends AWS_MODEL
 	/*
 	public function remove_video($video_id)
 	{
-		if (!$video_info = $this->get_video_info_by_id($video_id))
+		if (!$video_info = $this->model('content')->get_thread_info_by_id('video', $video_id))
 		{
 			return false;
 		}
