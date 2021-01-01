@@ -218,7 +218,7 @@
 </div>
 <!-- end 文章 -->
 
-<?php } else if ($val['item_type'] == 'article_comment') { ?>
+<?php } else if ($val['item_type'] == 'article_reply') { ?>
 <?php if ($val['fold']) continue; ?>
 <?php if (!$val['message']) continue; ?>
 
@@ -250,7 +250,7 @@
 			<!-- end 投票栏 -->
 
 			<div class="more-operate">
-				<a href="<?php echo url_rewrite(); ?>/vote/log/item_type-article_comment__item_id-<?php echo $val['id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
+				<a href="<?php echo url_rewrite(); ?>/vote/log/item_type-article_reply__item_id-<?php echo $val['id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
 			</div>
 
 		</div>

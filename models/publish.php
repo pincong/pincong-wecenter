@@ -134,7 +134,7 @@ class publish_class extends AWS_MODEL
 				$this->real_publish_answer($data);
 				break;
 
-			case 'article_comment':
+			case 'article_reply':
 				$this->real_publish_article_comment($data);
 				break;
 
@@ -416,7 +416,7 @@ class publish_class extends AWS_MODEL
 
 		$now = fake_time();
 
-		$item_id = $this->insert('article_comment', array(
+		$item_id = $this->insert('article_reply', array(
 			'uid' => $data['uid'],
 			'article_id' => $data['parent_id'],
 			'message' => htmlspecialchars($data['message']),
@@ -431,7 +431,7 @@ class publish_class extends AWS_MODEL
 
 		// TODO: comments 字段改为 comment_count
 		$this->update('article', array(
-			'comments' => $this->count('article_comment', ['article_id', 'eq', $data['parent_id'], 'i']),
+			'comments' => $this->count('article_reply', ['article_id', 'eq', $data['parent_id'], 'i']),
 			'update_time' => $now,
 			'last_uid' => $data['uid']
 		), ['id', 'eq', $data['parent_id'], 'i']);
@@ -440,14 +440,14 @@ class publish_class extends AWS_MODEL
 
 		if (!$data['permission_inactive_user'])
 		{
-			$this->mention_users('article', $parent_info['id'], 'article_comment', $item_id, $data['uid'], $data['message']);
+			$this->mention_users('article', $parent_info['id'], 'article_reply', $item_id, $data['uid'], $data['message']);
 			if ($data['at_uid'])
 			{
-				$this->notify_user('article', $parent_info['id'], 'article_comment', $item_id, $data['uid'], $data['at_uid']);
+				$this->notify_user('article', $parent_info['id'], 'article_reply', $item_id, $data['uid'], $data['at_uid']);
 			}
 			else
 			{
-				$this->notify_flowers('article', $parent_info['id'], 'article_comment', $item_id, $data['uid']);
+				$this->notify_flowers('article', $parent_info['id'], 'article_reply', $item_id, $data['uid']);
 			}
 		}
 
@@ -457,7 +457,7 @@ class publish_class extends AWS_MODEL
 		}
 
 		// 记录用户动态
-		$this->model('activity')->push('article_comment', $item_id, $data['uid']);
+		$this->model('activity')->push('article_reply', $item_id, $data['uid']);
 
 		$this->model('account')->update_user_fields(array(
 			'user_update_time' => $now
@@ -724,7 +724,7 @@ class publish_class extends AWS_MODEL
 	{
 		if ($later)
 		{
-			$this->schedule('article_comment', $this->calc_later_time($later), $data);
+			$this->schedule('article_reply', $this->calc_later_time($later), $data);
 		}
 		else
 		{

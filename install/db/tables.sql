@@ -137,7 +137,7 @@ CREATE TABLE `aws_article` (
 
 
 --
-CREATE TABLE `aws_article_comment` (
+CREATE TABLE `aws_article_reply` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT '0',
   `article_id` int(11) DEFAULT '0',

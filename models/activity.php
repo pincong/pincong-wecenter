@@ -153,7 +153,7 @@ class activity_class extends AWS_MODEL
 			{
 				$article_ids[] = $val['item_id'];
 			}
-			elseif ($val['item_type'] == 'article_comment')
+			elseif ($val['item_type'] == 'article_reply')
 			{
 				$article_comment_ids[] = $val['item_id'];
 			}
@@ -196,7 +196,7 @@ class activity_class extends AWS_MODEL
 		// 获取文章和评论
 		if ($article_comment_ids)
 		{
-			$article_comments = $this->model('content')->get_posts_by_ids('article_comment', $article_comment_ids);
+			$article_comments = $this->model('content')->get_posts_by_ids('article_reply', $article_comment_ids);
 			foreach ($article_comments AS $key => $val)
 			{
 				$uids[$val['uid']] = $val['uid'];
@@ -266,10 +266,10 @@ class activity_class extends AWS_MODEL
 				$item = $articles[$val['item_id']];
 				$item['item_type'] = 'article';
 			}
-			elseif ($val['item_type'] == 'article_comment')
+			elseif ($val['item_type'] == 'article_reply')
 			{
 				$item = $article_comments[$val['item_id']];
-				$item['item_type'] = 'article_comment';
+				$item['item_type'] = 'article_reply';
 			}
 			elseif ($val['item_type'] == 'video')
 			{

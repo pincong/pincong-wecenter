@@ -33,7 +33,7 @@
 	<div class="mod-body">
 	<?php if ($val['fold']) { ?>
 		<div class="aw-load-more-content">
-			<a class="aw-small-text aw-alert-box aw-small-text" tabindex="-1" href="<?php echo url_rewrite(); ?>/content/log/item_type-article_comment__item_id-<?php echo $val['id']; ?>" rel="nofollow" target="_blank"><?php echo _t('为什么被折叠?'); ?></a>
+			<a class="aw-small-text aw-alert-box aw-small-text" tabindex="-1" href="<?php echo url_rewrite(); ?>/content/log/item_type-article_reply__item_id-<?php echo $val['id']; ?>" rel="nofollow" target="_blank"><?php echo _t('为什么被折叠?'); ?></a>
 			<a href="javascript:;" class="aw-load-more-content" onclick="$(this).parent().parent().children('.markitup-box').toggle();"><?php echo _t('内容被折叠'); ?></a>
 		</div>
 		<div class="markitup-box collapse">
@@ -51,11 +51,11 @@
 
 			<span class="operate aw-vote-ui">
 			<?php if ($this->user_id AND $this->user_id != $val['uid']) { ?>
-				<a href="javascript:;" class="agree<?php if ($val['vote_value'] > 0) { ?> active<?php } ?>" onclick="AWS.User.toggle_vote(this, 'article_comment', 'agree', <?php echo $val['id']; ?>)">
+				<a href="javascript:;" class="agree<?php if ($val['vote_value'] > 0) { ?> active<?php } ?>" onclick="AWS.User.toggle_vote(this, 'article_reply', 'agree', <?php echo $val['id']; ?>)">
 					<i class="icon icon-agree"></i> <b class="count"><?php echo $val['agree_count']; ?></b>
 				</a>
 				<?php if ($this->user_info['permission']['vote_disagree']) { ?>
-				<a href="javascript:;" class="disagree<?php if ($val['vote_value'] < 0) { ?> active<?php } ?>" onclick="AWS.User.toggle_vote(this, 'article_comment', 'disagree', <?php echo $val['id']; ?>)">
+				<a href="javascript:;" class="disagree<?php if ($val['vote_value'] < 0) { ?> active<?php } ?>" onclick="AWS.User.toggle_vote(this, 'article_reply', 'disagree', <?php echo $val['id']; ?>)">
 					<i class="icon icon-disagree"></i>
 				</a>
 				<?php } ?>
@@ -68,7 +68,7 @@
 
 			&nbsp;&nbsp;
 
-			<a href="<?php echo url_rewrite(); ?>/vote/log/item_type-article_comment__item_id-<?php echo $val['id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
+			<a href="<?php echo url_rewrite(); ?>/vote/log/item_type-article_reply__item_id-<?php echo $val['id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
 
 			&nbsp;&nbsp;
 
@@ -83,9 +83,9 @@
 
 				<?php if (($this->user_info['permission']['fold_post'] AND $this->user_id != $this->article_info['uid']) OR ($this->user_info['permission']['fold_post_own_thread'] AND $this->user_id == $this->article_info['uid'])) { ?>
 					<?php if ($val['fold'] == 0) { ?>
-					<a class="aw-small-text" href="javascript:;" onclick="AWS.confirm('<?php echo _t('确认折叠?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/content/ajax/fold_reply/', 'item_type=article_comment&item_id=<?php echo $val['id']; ?>');});"><i class="icon icon-fold"></i> <?php echo _t('折叠'); ?></a>
+					<a class="aw-small-text" href="javascript:;" onclick="AWS.confirm('<?php echo _t('确认折叠?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/content/ajax/fold_reply/', 'item_type=article_reply&item_id=<?php echo $val['id']; ?>');});"><i class="icon icon-fold"></i> <?php echo _t('折叠'); ?></a>
 					<?php } elseif ($val['fold'] == 1) { ?>
-					<a class="aw-small-text" href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unfold_reply/', 'item_type=article_comment&item_id=<?php echo $val['id']; ?>');"><i class="icon icon-fold"></i> <?php echo _t('取消折叠'); ?></a>
+					<a class="aw-small-text" href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unfold_reply/', 'item_type=article_reply&item_id=<?php echo $val['id']; ?>');"><i class="icon icon-fold"></i> <?php echo _t('取消折叠'); ?></a>
 					<?php } ?>
 				<?php } ?>
 

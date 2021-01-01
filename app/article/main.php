@@ -146,7 +146,7 @@ class main extends AWS_CONTROLLER
 				$comment_ids[] = $comment['id'];
 			}
 
-			$comment_vote_values = $this->model('vote')->get_user_vote_values_by_ids('article_comment', $comment_ids, $this->user_id);
+			$comment_vote_values = $this->model('vote')->get_user_vote_values_by_ids('article_reply', $comment_ids, $this->user_id);
 
 			foreach ($comments AS $key => $val)
 			{

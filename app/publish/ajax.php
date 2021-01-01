@@ -76,7 +76,7 @@ class ajax extends AWS_CONTROLLER
 				break;
 			case 'article':
 				$thread_id = H::POST('article_id');
-				$reply_type = 'article_comment';
+				$reply_type = 'article_reply';
 				break;
 			case 'video':
 				$thread_id = H::POST('video_id');

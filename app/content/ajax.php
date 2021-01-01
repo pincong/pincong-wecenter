@@ -308,7 +308,7 @@ class ajax extends AWS_CONTROLLER
 					$parent_type = 'question';
 					$parent_id = $item_info['question_id'];
 					break;
-				case 'article_comment':
+				case 'article_reply':
 					$parent_type = 'article';
 					$parent_id = $item_info['article_id'];
 					break;
@@ -358,7 +358,7 @@ class ajax extends AWS_CONTROLLER
 					$parent_type = 'question';
 					$parent_id = $item_info['question_id'];
 					break;
-				case 'article_comment':
+				case 'article_reply':
 					$parent_type = 'article';
 					$parent_id = $item_info['article_id'];
 					break;

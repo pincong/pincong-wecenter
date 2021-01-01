@@ -79,7 +79,7 @@ class vote_class extends AWS_MODEL
 				$note_item_agreed = '文章被赞同';
 				break;
 
-			case 'article_comment':
+			case 'article_reply':
 				$note_agree = '赞同文章评论';
 				$note_item_agreed = '文章评论被赞同';
 				break;
@@ -121,7 +121,7 @@ class vote_class extends AWS_MODEL
 				$note_item_disagreed = '文章被反对';
 				break;
 
-			case 'article_comment':
+			case 'article_reply':
 				$note_disagree = '反对文章评论';
 				$note_item_disagreed = '文章评论被反对';
 				break;

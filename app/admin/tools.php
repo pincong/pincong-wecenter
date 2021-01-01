@@ -188,7 +188,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 
 
 			case 'article':
-				$next_table = 'article_comment';
+				$next_table = 'article_reply';
 
 				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', H::GET('page'), H::GET('per_page')))
 				{
@@ -209,7 +209,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 			break;
 
 
-			case 'article_comment':
+			case 'article_reply':
 				$next_table = 'video';
 
 				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', H::GET('page'), H::GET('per_page')))

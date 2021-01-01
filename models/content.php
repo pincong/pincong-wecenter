@@ -50,7 +50,7 @@ class content_class extends AWS_MODEL
 		switch ($type)
 		{
 			case 'answer':
-			case 'article_comment':
+			case 'article_reply':
 			case 'video_reply':
 				return true;
 		}
@@ -64,7 +64,7 @@ class content_class extends AWS_MODEL
 			case 'question':
 			case 'answer':
 			case 'article':
-			case 'article_comment':
+			case 'article_reply':
 			case 'video':
 			case 'video_reply':
 				return true;
@@ -81,7 +81,7 @@ class content_class extends AWS_MODEL
 			case 'question_comment':
 			case 'question_discussion':
 			case 'article':
-			case 'article_comment':
+			case 'article_reply':
 			case 'video':
 			case 'video_reply':
 				return true;
@@ -193,7 +193,7 @@ class content_class extends AWS_MODEL
 				}
 				return false;
 
-			case 'article_comment':
+			case 'article_reply':
 				$thread_info = $this->get_thread_info_by_id('article', $item_info['article_id']);
 				if ($thread_info)
 				{
@@ -298,7 +298,7 @@ class content_class extends AWS_MODEL
 				break;
 
 			case 'article':
-				$reply_type = 'article_comment';
+				$reply_type = 'article_reply';
 				$where = [['article_id', 'eq', $thread_id], ['uid', 'eq', $uid]];
 				break;
 

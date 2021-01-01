@@ -48,7 +48,7 @@ class user_class extends AWS_MODEL
 		$article_id = intval($article_id);
 		// TODO: rename comments to comment_count
 		$this->update('article', array(
-			'comments' => $this->count('article_comment', ['article_id', 'eq', $article_id])
+			'comments' => $this->count('article_reply', ['article_id', 'eq', $article_id])
 		), ['id', 'eq', $article_id]);
 	}
 
@@ -141,13 +141,13 @@ class user_class extends AWS_MODEL
 
 	public function delete_article_comments($uid)
 	{
-		$article_comments = $this->fetch_all('article_comment', ['uid', 'eq', $uid, 'i']);
+		$article_comments = $this->fetch_all('article_reply', ['uid', 'eq', $uid, 'i']);
 		if (!$article_comments)
 		{
 			return;
 		}
 
-		$this->delete('article_comment', ['uid', 'eq', $uid, 'i']);
+		$this->delete('article_reply', ['uid', 'eq', $uid, 'i']);
 
 		foreach ($article_comments AS $key => $val)
 		{
@@ -164,7 +164,7 @@ class user_class extends AWS_MODEL
 			$this->update('article', array('last_uid' => '-1'), ['last_uid', 'eq', $uid, 'i']);
 		}
 
-		$this->update('article_comment', array('at_uid' => '-1'), ['at_uid', 'eq', $uid, 'i']);
+		$this->update('article_reply', array('at_uid' => '-1'), ['at_uid', 'eq', $uid, 'i']);
 	}
 
 
