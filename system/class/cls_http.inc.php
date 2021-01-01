@@ -37,9 +37,9 @@ class HTTP
 	 */
 	public static function get_cookie($name)
 	{
-		if (isset($_COOKIE[G_COOKIE_PREFIX . $name]))
+		if (isset($_COOKIE[G_COOKIE_PREFIX . '_' . $name]))
 		{
-			return $_COOKIE[G_COOKIE_PREFIX . $name];
+			return $_COOKIE[G_COOKIE_PREFIX . '_' . $name];
 		}
 
 		return false;
@@ -58,12 +58,12 @@ class HTTP
 	 */
 	public static function set_cookie($name, $value = '', $expire = null, $path = '/', $domain = null, $secure = false, $httponly = true)
 	{
-		if (! $domain and G_COOKIE_DOMAIN)
+		if (!$domain AND G_COOKIE_DOMAIN)
 		{
 			$domain = G_COOKIE_DOMAIN;
 		}
 
-		return setcookie(G_COOKIE_PREFIX . $name, $value, $expire, $path, $domain, $secure, $httponly);
+		return setcookie(G_COOKIE_PREFIX . '_' . $name, $value, $expire, $path, $domain, $secure, $httponly);
 	}
 
 	public static function error_403()

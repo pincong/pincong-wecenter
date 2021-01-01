@@ -33,6 +33,10 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		AWS_APP::captcha()->generate();
+		$word = AWS_APP::captcha()->generateWord();
+		$token = AWS_APP::captcha()->generateToken($word, 600);
+		HTTP::set_cookie('captcha', $token);
+		echo AWS_APP::captcha()->generateImage($word);
+		die;
 	}
 }

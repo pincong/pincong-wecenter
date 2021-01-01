@@ -15,9 +15,12 @@
 class core_captcha
 {
 	private $captcha;
+	private $secret;
 
 	public function __construct()
 	{
+		$this->secret = AWS_APP::token()->new_secret('captcha_passphrase_' . G_COOKIE_HASH_KEY);
+
 		$fontsize = rand_minmax(get_setting('captcha_fontsize_min'), get_setting('captcha_fontsize_max'), rand(20, 22));
 		$wordlen = rand_minmax(get_setting('captcha_wordlen_min'), get_setting('captcha_wordlen_max'), 4);
 
@@ -54,31 +57,34 @@ class core_captcha
 		return $base_dir . $font_id . '.ttf';
 	}
 
-	public function generate()
+	public function generateWord()
 	{
-		$word = $this->captcha->generateWord();
-		AWS_APP::session()->captcha = $word;
-
-		HTTP::no_cache_header();
-
-		echo $this->captcha->generateImage($word);
-
-		die;
+		return $this->captcha->generateWord();
 	}
 
-	public function is_valid($code, $flush = true)
+	public function generateToken($word, $expire)
 	{
-		$result = false;
-		if (!empty($code) AND strtolower(AWS_APP::session()->captcha) == strtolower($code))
-		{
-			$result = true;
-		}
-
-		if ($flush)
-		{
-			unset(AWS_APP::session()->captcha);
-		}
-
-		return $result;
+		return AWS_APP::token()->create($word, $expire, $this->secret);
 	}
+
+	public function generateImage($word)
+	{
+		return $this->captcha->generateImage($word);
+	}
+
+	public function is_valid($word, $token)
+	{
+		if (!!$word AND !!$token)
+		{
+			if (AWS_APP::token()->verify($word_result, $token, $this->secret))
+			{
+				if (strtolower($word) == strtolower($word_result))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 }

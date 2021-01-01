@@ -58,7 +58,7 @@ class main extends AWS_CONTROLLER
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('请填写验证码'), '/login/');
 			}
-			if (!AWS_APP::captcha()->is_valid($_POST['captcha']))
+			if (!AWS_APP::captcha()->is_valid($_POST['captcha'], HTTP::get_cookie('captcha')))
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('请填写正确的验证码'), '/login/');
 			}

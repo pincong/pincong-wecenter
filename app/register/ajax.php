@@ -61,7 +61,7 @@ class ajax extends AWS_CONTROLLER
 		// 检查验证码
 		if ($this->model('register')->is_captcha_required())
 		{
-			if (!AWS_APP::captcha()->is_valid($_POST['captcha']))
+			if (!AWS_APP::captcha()->is_valid($_POST['captcha'], HTTP::get_cookie('captcha')))
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请填写正确的验证码')));
 			}

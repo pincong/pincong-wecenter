@@ -120,14 +120,14 @@ class login_class extends AWS_MODEL
 			'password' => $scrambled_password
 		)));
 
-		HTTP::set_cookie('_user_login', $value, $expire);
+		HTTP::set_cookie('user_login', $value, $expire);
 
 		return true;
 	}
 
 	public function cookie_logout()
 	{
-		HTTP::set_cookie('_user_login', '', time() - 3600);
+		HTTP::set_cookie('user_login', '', time() - 3600);
 	}
 
 	public function logout()

@@ -15,10 +15,10 @@
 define('G_DEBUG', FALSE);
 
 // 定义 Cookies 作用域
-define('G_COOKIE_DOMAIN','');
+define('G_COOKIE_DOMAIN', '');
 
 // 定义 Cookies 前缀
-define('G_COOKIE_PREFIX','aws_');		// 建议修改此处
+define('G_COOKIE_PREFIX', 'aws');		// 建议修改此处
 
 // 定义应用加密 KEY
 define('G_SECUKEY','ABCDEFGHIJKLMNOP');				// 请修改此处
