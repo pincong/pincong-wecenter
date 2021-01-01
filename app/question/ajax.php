@@ -126,6 +126,18 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('不能讨论已删除的问题')));
 		}
 
+		$days = intval($this->user_info['permission']['unallowed_necropost_days']);
+		if ($days > 0)
+		{
+			$seconds = $days * 24 * 3600;
+			$time_before = real_time() - $seconds;
+
+			if (intval($question_info['update_time']) < $time_before)
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, -1, _t('你的声望还不够, 不能回应已失去时效性的主题')));
+			}
+		}
+
 		if (!$this->model('category')->check_user_permission_reply($question_info['category_id'], $this->user_info))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('你的声望还不够, 不能在这个分类发言')));
@@ -210,6 +222,18 @@ class ajax extends AWS_CONTROLLER
 		if (!$question_info['title'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('不能讨论已删除的问题')));
+		}
+
+		$days = intval($this->user_info['permission']['unallowed_necropost_days']);
+		if ($days > 0)
+		{
+			$seconds = $days * 24 * 3600;
+			$time_before = real_time() - $seconds;
+
+			if (intval($question_info['update_time']) < $time_before)
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, -1, _t('你的声望还不够, 不能回应已失去时效性的主题')));
+			}
 		}
 
 		if (!$this->model('category')->check_user_permission_reply($question_info['category_id'], $this->user_info))

@@ -516,21 +516,17 @@ class publish_class extends AWS_MODEL
 
 		$discussion_count = $this->count('question_discussion', ['question_id', 'eq', $data['parent_id'], 'i']);
 
+		// 被合并的主题已锁, 不可讨论, 无需 $thread_info['redirect_id']
+
+		$this->update('question', array(
+			'comment_count' => $discussion_count,
+			'update_time' => $now,
+			'last_uid' => $data['uid'],
+		), ['id', 'eq', $thread_info['id'], 'i']);
+
 		if (S::get('discussion_bring_top') == 'Y')
 		{
-			$this->update('question', array(
-				'comment_count' => $discussion_count,
-				'update_time' => $now,
-				'last_uid' => $data['uid'],
-			), ['id', 'eq', $thread_info['id'], 'i']);
-
 			$this->model('posts')->bring_to_top($thread_info['id'], 'question');
-		}
-		else
-		{
-			$this->update('question', array(
-				'comment_count' => $discussion_count,
-			), ['id', 'eq', $data['parent_id'], 'i']);
 		}
 
 		if (!$this->mention_users('question', $thread_info['id'], null, 0, $data['uid'], $data['message']))
@@ -571,15 +567,16 @@ class publish_class extends AWS_MODEL
 
 		$discussion_count = $this->count('answer_discussion', ['answer_id', 'eq', $data['parent_id'], 'i']);
 
+		// 被合并的主题已锁, 但楼中楼仍可讨论
+		$thread_id = ($thread_info['redirect_id'] ? $thread_info['redirect_id'] : $thread_info['id']);
+
+		$this->update('question', array(
+			'update_time' => $now,
+			'last_uid' => $data['uid'],
+		), ['id', 'eq', $thread_id, 'i']);
+
 		if (S::get('discussion_bring_top') == 'Y')
 		{
-			$thread_id = ($thread_info['redirect_id'] ? $thread_info['redirect_id'] : $thread_info['id']);
-
-			$this->update('question', array(
-				'update_time' => $now,
-				'last_uid' => $data['uid'],
-			), ['id', 'eq', $thread_id, 'i']);
-
 			$this->model('posts')->bring_to_top($thread_id, 'question');
 		}
 

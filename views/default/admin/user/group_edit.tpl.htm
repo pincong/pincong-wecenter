@@ -554,6 +554,19 @@
 				<tr>
 					<td>
 						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('禁止回应多少天无人回应的主题'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input type="text" name="unallowed_necropost_days" class="form-control" value="<?php echo $this->group_pms['unallowed_necropost_days']; ?>" />
+
+								<span class="help-block"><?php echo _t('天数, 留空则不启用'); ?></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php echo _t('禁止发布的类型'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input type="text" name="unallowed_post_types" class="form-control" value="<?php echo $this->group_pms['unallowed_post_types']; ?>" />

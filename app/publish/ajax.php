@@ -126,6 +126,18 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('已经删除的主题不能回复')));
 		}
 
+		$days = intval($this->user_info['permission']['unallowed_necropost_days']);
+		if ($days > 0)
+		{
+			$seconds = $days * 24 * 3600;
+			$time_before = real_time() - $seconds;
+
+			if (intval($thread_info['update_time']) < $time_before)
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, -1, _t('你的声望还不够, 不能回应已失去时效性的主题')));
+			}
+		}
+
 		if (!$this->model('category')->check_user_permission_reply($thread_info['category_id'], $this->user_info))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('你的声望还不够, 不能在这个分类发言')));

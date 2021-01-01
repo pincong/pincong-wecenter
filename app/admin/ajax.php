@@ -534,6 +534,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			'flagged_ids',
 			'specific_post_uids',
 			'anonymous_uid',
+			'unallowed_necropost_days',
 			'unallowed_post_types',
 			'restricted_categories',
 			'restricted_categories_reply',
