@@ -584,6 +584,23 @@ CREATE TABLE `aws_user_follow` (
 
 
 --
+CREATE TABLE `aws_user_relation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) DEFAULT '0',
+  `target_uid` int(11) DEFAULT '0',
+  `value` tinyint(1) DEFAULT '0' COMMENT '小于0-屏蔽 大于0-好友',
+  `time` int(11) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `target_uid` (`target_uid`),
+  KEY `value` (`value`),
+  KEY `time` (`time`)
+) DEFAULT CHARSET=utf8mb4;
+
+--
+
+
+--
 CREATE TABLE `aws_scheduled_posts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(32) DEFAULT NULL,

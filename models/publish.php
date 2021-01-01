@@ -83,7 +83,7 @@ class publish_class extends AWS_MODEL
 		return 0;
 	}
 
-	private function notify_flowers($thread_type, $thread_id, $reply_type, $reply_id, $sender_uid)
+	private function notify_followers($thread_type, $thread_id, $reply_type, $reply_id, $sender_uid)
 	{
 		if ($follower_uids = $this->model('postfollow')->get_follower_uids($thread_type, $thread_id))
 		{
@@ -376,7 +376,7 @@ class publish_class extends AWS_MODEL
 		if (!$data['permission_inactive_user'])
 		{
 			$this->mention_users('question', $parent_info['id'], 'question_reply', $item_id, $data['uid'], $data['message']);
-			$this->notify_flowers('question', $parent_info['id'], 'question_reply', $item_id, $data['uid']);
+			$this->notify_followers('question', $parent_info['id'], 'question_reply', $item_id, $data['uid']);
 		}
 
 		if ($data['follow'])
@@ -446,7 +446,7 @@ class publish_class extends AWS_MODEL
 			}
 			else
 			{
-				$this->notify_flowers('article', $parent_info['id'], 'article_reply', $item_id, $data['uid']);
+				$this->notify_followers('article', $parent_info['id'], 'article_reply', $item_id, $data['uid']);
 			}
 		}
 
@@ -513,7 +513,7 @@ class publish_class extends AWS_MODEL
 			}
 			else
 			{
-				$this->notify_flowers('video', $parent_info['id'], 'video_reply', $item_id, $data['uid']);
+				$this->notify_followers('video', $parent_info['id'], 'video_reply', $item_id, $data['uid']);
 			}
 		}
 

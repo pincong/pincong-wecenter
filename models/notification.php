@@ -64,6 +64,11 @@ class notification_class extends AWS_MODEL
 			return false;
 		}
 
+		if ($this->model('block')->has_user_been_blocked($sender_uid, $recipient_uid))
+		{
+			return false;
+		}
+
 		$add_time = fake_time();
 		if ($notification_id = $this->insert('notification', array(
 			'sender_uid' => ($sender_uid),
@@ -80,6 +85,11 @@ class notification_class extends AWS_MODEL
 			$this->model('account')->update_notification_unread($recipient_uid);
 			return $notification_id;
 		}
+	}
+
+	public function multi_send($sender_uid, $recipient_uids, $action, $thread_type = null, $thread_id = 0, $item_type = null, $item_id = 0)
+	{
+		// TODO
 	}
 
 	public function mark_as_read($notification_id, $uid)
