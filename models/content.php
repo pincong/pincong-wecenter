@@ -79,7 +79,7 @@ class content_class extends AWS_MODEL
 			case 'question':
 			case 'answer':
 			case 'question_comment':
-			case 'answer_discussion':
+			case 'question_discussion':
 			case 'article':
 			case 'article_comment':
 			case 'video':

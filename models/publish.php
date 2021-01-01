@@ -146,7 +146,7 @@ class publish_class extends AWS_MODEL
 				$this->real_publish_question_discussion($data);
 				break;
 
-			case 'answer_discussion':
+			case 'question_discussion':
 				$this->real_publish_answer_discussion($data);
 				break;
 		}
@@ -602,7 +602,7 @@ class publish_class extends AWS_MODEL
 
 		$now = fake_time();
 
-		$item_id = $this->insert('answer_discussion', array(
+		$item_id = $this->insert('question_discussion', array(
 			'answer_id' => $data['parent_id'],
 			'message' => htmlspecialchars($data['message']),
 			'add_time' => $now,
@@ -614,7 +614,7 @@ class publish_class extends AWS_MODEL
 			return false;
 		}
 
-		$discussion_count = $this->count('answer_discussion', ['answer_id', 'eq', $data['parent_id'], 'i']);
+		$discussion_count = $this->count('question_discussion', ['answer_id', 'eq', $data['parent_id'], 'i']);
 
 		// 被合并的主题已锁, 但楼中楼仍可讨论
 		$thread_id = ($thread_info['redirect_id'] ? $thread_info['redirect_id'] : $thread_info['id']);
@@ -778,7 +778,7 @@ class publish_class extends AWS_MODEL
 	{
 		if ($later)
 		{
-			$this->schedule('answer_discussion', $this->calc_later_time($later), $data);
+			$this->schedule('question_discussion', $this->calc_later_time($later), $data);
 		}
 		else
 		{

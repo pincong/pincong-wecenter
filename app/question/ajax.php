@@ -111,7 +111,7 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		if (!$this->model('publish')->check_user_permission('answer_discussion', $this->user_info) AND $org_question_uid != $this->user_id AND $question_info['uid'] != $this->user_id AND $answer_info['uid'] != $this->user_id)
+		if (!$this->model('publish')->check_user_permission('question_discussion', $this->user_info) AND $org_question_uid != $this->user_id AND $question_info['uid'] != $this->user_id AND $answer_info['uid'] != $this->user_id)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不够')));
 		}
@@ -145,7 +145,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (H::POST_I('anonymous'))
 		{
-			$publish_uid = $this->get_anonymous_uid('answer_discussion');
+			$publish_uid = $this->get_anonymous_uid('question_discussion');
 		}
 		else
 		{

@@ -59,7 +59,7 @@ class question_class extends AWS_MODEL
 			return $list;
 		}
 
-		$list = $this->fetch_page('answer_discussion', ['uid', 'eq', $uid, 'i'], 'id DESC', $page, $per_page);
+		$list = $this->fetch_page('question_discussion', ['uid', 'eq', $uid, 'i'], 'id DESC', $page, $per_page);
 		foreach ($list AS $key => $val)
 		{
 			$parent_ids[] = $val['answer_id'];
@@ -223,13 +223,13 @@ class question_class extends AWS_MODEL
 
 	public function clear_answer_discussion($comment, $log_uid)
 	{
-		$this->update('answer_discussion', array(
+		$this->update('question_discussion', array(
 			'message' => null
 		), ['id', 'eq', $comment['id'], 'i']);
 
 		if ($answer = $this->fetch_row('answer', ['id', 'eq', $comment['answer_id'], 'i']))
 		{
-			$this->model('content')->log('question', $answer['question_id'], 'answer_discussion', $comment['id'], '删除', $log_uid);
+			$this->model('content')->log('question', $answer['question_id'], 'question_discussion', $comment['id'], '删除', $log_uid);
 		}
 
 		return true;
@@ -326,7 +326,7 @@ class question_class extends AWS_MODEL
 	// 同时获取用户信息
 	public function get_answer_discussion_by_id($id)
 	{
-		if ($item = $this->fetch_row('answer_discussion', ['id', 'eq', $id, 'i']))
+		if ($item = $this->fetch_row('question_discussion', ['id', 'eq', $id, 'i']))
 		{
 			$item['user_info'] = $this->model('account')->get_user_info_by_uid($item['uid']);
 		}
@@ -338,7 +338,7 @@ class question_class extends AWS_MODEL
 	{
 		$where = ['answer_id', 'eq', $parent_id, 'i'];
 
-		if ($list = $this->fetch_page('answer_discussion', $where, $order, $page, $per_page))
+		if ($list = $this->fetch_page('question_discussion', $where, $order, $page, $per_page))
 		{
 			foreach($list as $key => $val)
 			{
