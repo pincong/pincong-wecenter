@@ -94,7 +94,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		// 检查验证码
-		if (get_setting('register_seccode') == 'Y' AND !AWS_APP::captcha()->is_validate($_POST['seccode_verify']))
+		if (get_setting('register_seccode') == 'Y' AND !AWS_APP::captcha()->is_valid($_POST['seccode_verify']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请填写正确的验证码')));
 		}

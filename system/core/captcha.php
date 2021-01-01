@@ -66,10 +66,10 @@ class core_captcha
 		die;
 	}
 
-	public function is_validate($validate_code, $flush = true)
+	public function is_valid($code, $flush = true)
 	{
 		$result = false;
-		if (!empty($validate_code) AND strtolower(AWS_APP::session()->captcha) == strtolower($validate_code))
+		if (!empty($code) AND strtolower(AWS_APP::session()->captcha) == strtolower($code))
 		{
 			$result = true;
 		}

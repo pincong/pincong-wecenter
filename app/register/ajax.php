@@ -43,6 +43,15 @@ class ajax extends AWS_CONTROLLER
 			), 1, null));
 		}
 
+		if (get_setting('register_type') == 'close')
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('本站目前关闭注册')));
+		}
+		else if (get_setting('register_type') == 'invite')
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('本站只能通过邀请注册')));
+		}
+
 		if (!$_POST['username'] OR !$_POST['scrambled_password'] OR !$_POST['client_salt'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的用户名或密码')));
@@ -51,7 +60,7 @@ class ajax extends AWS_CONTROLLER
 		// 检查验证码
 		if ($this->model('register')->is_captcha_required())
 		{
-			if (!AWS_APP::captcha()->is_validate($_POST['captcha']))
+			if (!AWS_APP::captcha()->is_valid($_POST['captcha']))
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请填写正确的验证码')));
 			}
