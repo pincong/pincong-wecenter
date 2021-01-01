@@ -80,7 +80,6 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('fans_list', $this->model('follow')->get_user_fans($user['uid'], 5));
 		TPL::assign('friends_list', $this->model('follow')->get_user_friends($user['uid'], 5));
-		TPL::assign('focus_topics', $this->model('topic')->get_focus_topic_list($user['uid'], 10));
 
 		TPL::output('people/index');
 	}

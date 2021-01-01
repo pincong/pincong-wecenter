@@ -171,25 +171,6 @@
 
 								<div class="aw-mod people-following">
 									<div class="mod-body">
-										<?php _e('关注 %s 话题', '<em class="aw-text-color-blue">' . $this->user['topic_focus_count'] . '</em>'); ?>
-										<?php if ($this->focus_topics) { ?>
-										<div class="aw-topic-bar">
-											<div class="tag-bar clearfix">
-												<?php foreach ($this->focus_topics AS $key => $val) { ?>
-													<span class="topic-tag">
-														<a href="topic/<?php echo $val['url_token']; ?>" class="text" data-id="<?php echo $val['topic_id']; ?>"><?php echo $val['topic_title']; ?></a>
-													</span>
-												<?php } ?>
-											</div>
-										</div>
-										<?php } ?>
-									</div>
-								</div>
-
-								<hr style="margin:0 20px; border-color: #e2e2e2;">
-
-								<div class="aw-mod people-following">
-									<div class="mod-body">
 										<span class="aw-text-color-666">
 											<?php _e('主页访问量'); ?> : <?php _e('%s 次访问', $this->user['views_count']); ?>
 										</span>
