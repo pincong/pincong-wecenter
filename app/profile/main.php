@@ -12,13 +12,12 @@
 +---------------------------------------------------------------------------
 */
 
-
 if (!defined('IN_ANWSION'))
 {
 	die;
 }
 
-class setting extends AWS_CONTROLLER
+class main extends AWS_CONTROLLER
 {
 	public function setup()
 	{
@@ -29,14 +28,9 @@ class setting extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		HTTP::redirect('/account/setting/profile/');
-	}
-
-	public function profile_action()
-	{
 		$this->crumb(AWS_APP::lang()->_t('基本资料'));
 
-		TPL::output('account/setting/profile');
+		TPL::output('profile/index');
 	}
 
 	public function privacy_action()
@@ -46,21 +40,14 @@ class setting extends AWS_CONTROLLER
 		TPL::assign('notification_settings', $this->model('account')->get_notification_setting_by_uid($this->user_id));
 		TPL::assign('notify_actions', $this->model('notification')->notify_action_details);
 
-		TPL::output('account/setting/privacy');
-	}
-
-	public function currency_action()
-	{
-		$this->crumb(AWS_APP::lang()->_t('我的%s', get_setting('currency_name')));
-
-		TPL::output('account/setting/currency');
+		TPL::output('profile/privacy');
 	}
 
 	public function security_action()
 	{
 		$this->crumb(AWS_APP::lang()->_t('安全设置'));
 
-		TPL::output('account/setting/security');
+		TPL::output('profile/security');
 	}
 
 }

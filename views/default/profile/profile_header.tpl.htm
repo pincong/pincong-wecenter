@@ -1,0 +1,16 @@
+<div class="aw-container-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="aw-content-wrap clearfix">
+				<div class="aw-user-setting">
+					<div class="tabbable">
+						<ul class="nav nav-tabs aw-nav-tabs active">
+							<li<?php if ($_GET['act'] == 'security') { ?> class="active"<?php } ?>><a href="<?php echo url_rewrite(); ?>/profile/security/"><?php _e('安全设置'); ?></a></li>
+							<li<?php if ($_GET['act'] == 'privacy') { ?> class="active"<?php } ?>><a href="<?php echo url_rewrite(); ?>/profile/privacy/"><?php _e('隐私/提醒'); ?></a></li>
+							<li<?php if ($_GET['act'] == 'index') { ?> class="active"<?php } ?>><a href="<?php echo url_rewrite(); ?>/profile/"><?php _e('基本资料'); ?></a></li>
+
+							<h2><i class="icon icon-setting"></i> <?php _e('用户设置'); ?></h2>
+						</ul>
+					</div>
+
+					<div class="tab-content clearfix">

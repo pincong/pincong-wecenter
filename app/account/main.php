@@ -19,13 +19,6 @@ if (!defined('IN_ANWSION'))
 
 class main extends AWS_CONTROLLER
 {
-	public function get_access_rule()
-	{
-		$rule_action['rule_type'] = 'black';
-
-		return $rule_action;
-	}
-
 	public function setup()
 	{
 		HTTP::no_cache_header();
@@ -33,7 +26,7 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		HTTP::redirect('/account/setting/');
+		HTTP::redirect('/profile/');
 	}
 
 	public function logout_action($return_url = '/')
@@ -54,11 +47,6 @@ class main extends AWS_CONTROLLER
 
 	public function password_updated_action()
 	{
-		if ($this->user_id)
-		{
-			HTTP::redirect('/');
-		}
-
 		$url = '/login/';
 
 		H::redirect_msg(AWS_APP::lang()->_t('密码修改成功, 请使用新密码登录'), $url);
