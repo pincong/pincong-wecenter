@@ -121,14 +121,14 @@ class info extends AWS_CONTROLLER
 	{
 		TPL::assign('list', $this->model('vote')->get_sent_votes_by_uid($_GET['uid'], $_GET['page'], $this->per_page));
 
-		TPL::output('people/sent_votes_template');
+		TPL::output('people/user_votes_template');
 	}
 
 	public function received_votes_action()
 	{
 		TPL::assign('list', $this->model('vote')->get_received_votes_by_uid($_GET['uid'], $_GET['page'], $this->per_page));
 
-		TPL::output('people/received_votes_template');
+		TPL::output('people/user_votes_template');
 	}
 
 	public function followers_action()
