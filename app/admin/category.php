@@ -24,11 +24,6 @@ class category extends AWS_ADMIN_CONTROLLER
     {
         $this->crumb(AWS_APP::lang()->_t('分类管理'));
 
-        if (!$this->user_info['permission']['is_administrator'])
-        {
-            H::redirect_msg(AWS_APP::lang()->_t('你没有访问权限, 请重新登录'), '/');
-        }
-
         TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(302));
     }
 

@@ -251,6 +251,18 @@ class AWS_ADMIN_CONTROLLER extends AWS_CONTROLLER
 			'admin/css/common.css'
 		));
 
+		if (!$this->user_info['permission']['is_administrator'])
+		{
+			if ($_POST['_post_type'] == 'ajax')
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有访问权限, 请重新登录')));
+			}
+			else
+			{
+				HTTP::redirect('/');
+			}
+		}
+
 		if (in_array($_GET['act'], array(
 			'login',
 			'login_process',
@@ -261,24 +273,10 @@ class AWS_ADMIN_CONTROLLER extends AWS_CONTROLLER
 
 		$admin_info = json_decode(AWS_APP::crypt()->decode(AWS_APP::session()->admin_login), true);
 
-		if ($admin_info['uid'])
+		if (!$admin_info OR $admin_info['uid'] != $this->user_id)
 		{
-			if ($admin_info['uid'] != $this->user_id OR !$this->user_info['permission']['is_administrator'])
-			{
-				unset(AWS_APP::session()->admin_login);
+			unset(AWS_APP::session()->admin_login);
 
-				if ($_POST['_post_type'] == 'ajax')
-				{
-					H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('会话超时, 请重新登录')));
-				}
-				else
-				{
-					H::redirect_msg(AWS_APP::lang()->_t('会话超时, 请重新登录'), '/admin/login/url-' . base64_current_path());
-				}
-			}
-		}
-		else
-		{
 			if ($_POST['_post_type'] == 'ajax')
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('会话超时, 请重新登录')));

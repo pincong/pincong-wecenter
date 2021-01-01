@@ -25,11 +25,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
     public function setup()
     {
         HTTP::no_cache_header();
-
-        if (!$this->user_info['permission']['is_administrator'])
-        {
-            H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有访问权限, 请重新登录')));
-        }
     }
 
     public function login_process_action()
