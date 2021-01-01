@@ -41,7 +41,7 @@ function remove_discussion(div, type) {
 	var el = div.find('.markitup-box');
 	if (el.html().indexOf('<s class="aw-deleted">') !== -1) return;
 	$.get(G_BASE_URL + '/question/ajax/remove_comment/type-' + type + '__comment_id-' + div.data('item-id'));
-	el.html('<s class="aw-deleted">' + _t('已删除') + '</s>');
+	el.html("<s class=\"aw-deleted\"><?php _e('已删除'); ?></s>");
 }
 
 function toggle_disscusion(btn) {

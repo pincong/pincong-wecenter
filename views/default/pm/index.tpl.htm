@@ -143,17 +143,17 @@ $(document).ready(function () {
 	function decrypt_key(cb) {
 		var public_key = '<?php echo $this->user_info['public_key']; ?>';
 		if (!public_key) {
-			AWS.alert(_t('缺少公钥和私钥, 请重新登录以生成新的公钥和私钥'));
+			AWS.alert("<?php _e('缺少公钥和私钥, 请重新登录以生成新的公钥和私钥'); ?>");
 			return;
 		}
-		AWS.passwordPrompt(_t('请输入登录密码以解密私钥'), function(pwd) {
+		AWS.passwordPrompt("<?php _e('请输入登录密码以解密私钥'); ?>", function(pwd) {
 			PasswordUtil.password_hash(pwd, public_key).then(function(value) {
 				return PasswordUtil.decrypt_private_key('<?php echo $this->user_info['private_key']; ?>', value);
 			}).then(function(value) {
 				cb(value);
 			}).catch(function(error) {
 				console.log(error);
-				AWS.confirm(_t('无法解密私钥, 要再试一次吗？'), function() {
+				AWS.confirm("<?php _e('无法解密私钥, 要再试一次吗？'); ?>", function() {
 					decrypt_key(cb);
 				});
 			});
@@ -192,12 +192,12 @@ $(document).ready(function () {
 					el.text(truncate(value));
 				}).catch(function(error) {
 					console.log(error);
-					el.html('<i>' + _t('无法解密这一条私信') + '</i>');
+					el.html("<i><?php _e('无法解密这一条私信'); ?></i>");
 				});
 			});
 		}).catch(function(error) {
 			console.log(error);
-			AWS.alert(_t('无法读取私钥, 请刷新页面重试'));
+			AWS.alert("<?php _e('无法读取私钥, 请刷新页面重试'); ?>");
 		});
 	}
 

@@ -81,7 +81,7 @@ $(document).ready(function () {
 		var password_version = (<?php echo intval($this->user['password_version']); ?> || 1);
 
 		form.find('.error_message').hide();
-		form.find('.alert-info').show().find('em').text(_t('请稍候...'));
+		form.find('.alert-info').show().find('em').text("<?php _e('请稍候...'); ?>");
 		btn.addClass('disabled');
 
 <?php if ($this->user['password_version'] < 3) { ?>
@@ -115,7 +115,7 @@ $(document).ready(function () {
 					$('.aw-register-verify img').click();
 				});
 			}).catch(function(error) {
-				_alert(_t('无法生成密钥'));
+				_alert("<?php _e('无法生成密钥'); ?>");
 				btn.removeClass('disabled');
 				console.log(error);
 			});
@@ -140,7 +140,7 @@ $(document).ready(function () {
 						_redirect(rsm.next);
 					}).catch(function(error) {
 						console.log(error);
-						alert(_t('无法解密密钥'));
+						alert("<?php _e('无法解密密钥'); ?>");
 						_redirect(rsm.next);
 					});
 				}, function(err) {
@@ -149,7 +149,7 @@ $(document).ready(function () {
 					$('.aw-register-verify img').click();
 				});
 			}).catch(function(error) {
-				_alert(_t('无法 hash 密码'));
+				_alert("<?php _e('无法 hash 密码'); ?>");
 				btn.removeClass('disabled');
 				console.log(error);
 			});

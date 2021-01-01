@@ -278,7 +278,7 @@ $(document).ready(function () {
 				AWS.ajax_post(form);
 			}).catch(function(error) {
 				console.log(error);
-				alert(_t('发生错误'));
+				alert("<?php _e('发生错误'); ?>");
 			});
 		} else {
 			AWS.ajax_post(form);

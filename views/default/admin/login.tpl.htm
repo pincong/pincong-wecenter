@@ -74,7 +74,7 @@ $(document).ready(function () {
 			AWS.ajax_post(new_form, AWS.ajax_processer, 'error_message');
 		}).catch(function(error) {
 			console.log(error);
-			alert(_t('发生错误'));
+			alert("<?php _e('发生错误'); ?>");
 		});
 
 		return false;
