@@ -65,55 +65,40 @@ class vote_class extends AWS_MODEL
 		switch ($type)
 		{
 			case 'question':
-				$type_agree = 'AGREE_QUESTION';
-				$type_item_agreed = 'QUESTION_AGREED';
-				$note_agree = '赞同问题 #' . $item_id;
-				$note_item_agreed = '问题被赞同 #' . $item_id;
+				$note_agree = '赞同问题';
+				$note_item_agreed = '问题被赞同';
 				break;
 
 			case 'answer':
-				$type_agree = 'AGREE_ANSWER';
-				$type_item_agreed = 'ANSWER_AGREED';
-				$note_agree = '赞同回答 #' . $item_id;
-				$note_item_agreed = '回答被赞同 #' . $item_id;
+				$note_agree = '赞同回答';
+				$note_item_agreed = '回答被赞同';
 				break;
 
 			case 'article':
-				$type_agree = 'AGREE_ARTICLE';
-				$type_item_agreed = 'ARTICLE_AGREED';
-				$note_agree = '赞同文章 #' . $item_id;
-				$note_item_agreed = '文章被赞同 #' . $item_id;
+				$note_agree = '赞同文章';
+				$note_item_agreed = '文章被赞同';
 				break;
 
 			case 'article_comment':
-				$type_agree = 'AGREE_ARTICLE_COMMENT';
-				$type_item_agreed = 'ARTICLE_COMMENT_AGREED';
-				$note_agree = '赞同文章评论 #' . $item_id;
-				$note_item_agreed = '文章评论被赞同 #' . $item_id;
+				$note_agree = '赞同文章评论';
+				$note_item_agreed = '文章评论被赞同';
 				break;
 
 			case 'video':
-				$type_agree = 'AGREE_VIDEO';
-				$type_item_agreed = 'VIDEO_AGREED';
-				$note_agree = '赞同影片 #' . $item_id;
-				$note_item_agreed = '影片被赞同 #' . $item_id;
+				$note_agree = '赞同影片';
+				$note_item_agreed = '影片被赞同';
 				break;
 
 			case 'video_comment':
-				$type_agree = 'AGREE_VIDEO_COMMENT';
-				$type_item_agreed = 'VIDEO_COMMENT_AGREED';
-				$note_agree = '赞同影片评论 #' . $item_id;
-				$note_item_agreed = '影片评论被赞同 #' . $item_id;
+				$note_agree = '赞同影片评论';
+				$note_item_agreed = '影片评论被赞同';
 				break;
 		}
 
-		if (!$this->model('currency')->fetch_log($uid, $type_agree, $item_id))
+		$this->model('currency')->process($uid, 'AGREE', get_setting('currency_system_config_agree'), $note_agree, $item_id, $type);
+		if ($permission['affect_currency'])
 		{
-			$this->model('currency')->process($uid, $type_agree, get_setting('currency_system_config_agree'), $note_agree, $item_id, $type);
-			if ($permission['affect_currency'])
-			{
-				$this->model('currency')->process($item_uid, $type_item_agreed, get_setting('currency_system_config_agreed'), $note_item_agreed, $item_id, $type);
-			}
+			$this->model('currency')->process($item_uid, 'AGREED', get_setting('currency_system_config_agreed'), $note_item_agreed, $item_id, $type);
 		}
 	}
 
@@ -122,55 +107,40 @@ class vote_class extends AWS_MODEL
 		switch ($type)
 		{
 			case 'question':
-				$type_disagree = 'DISAGREE_QUESTION';
-				$type_item_disagreed = 'QUESTION_DISAGREED';
-				$note_disagree = '反对问题 #' . $item_id;
-				$note_item_disagreed = '问题被反对 #' . $item_id;
+				$note_disagree = '反对问题';
+				$note_item_disagreed = '问题被反对';
 				break;
 
 			case 'answer':
-				$type_disagree = 'DISAGREE_ANSWER';
-				$type_item_disagreed = 'ANSWER_DISAGREED';
-				$note_disagree = '反对回答 #' . $item_id;
-				$note_item_disagreed = '回答被反对 #' . $item_id;
+				$note_disagree = '反对回答';
+				$note_item_disagreed = '回答被反对';
 				break;
 
 			case 'article':
-				$type_disagree = 'DISAGREE_ARTICLE';
-				$type_item_disagreed = 'ARTICLE_DISAGREED';
-				$note_disagree = '反对文章 #' . $item_id;
-				$note_item_disagreed = '文章被反对 #' . $item_id;
+				$note_disagree = '反对文章';
+				$note_item_disagreed = '文章被反对';
 				break;
 
 			case 'article_comment':
-				$type_disagree = 'DISAGREE_ARTICLE_COMMENT';
-				$type_item_disagreed = 'ARTICLE_COMMENT_DISAGREED';
-				$note_disagree = '反对文章评论 #' . $item_id;
-				$note_item_disagreed = '文章评论被反对 #' . $item_id;
+				$note_disagree = '反对文章评论';
+				$note_item_disagreed = '文章评论被反对';
 				break;
 
 			case 'video':
-				$type_disagree = 'DISAGREE_VIDEO';
-				$type_item_disagreed = 'VIDEO_DISAGREED';
-				$note_disagree = '反对影片 #' . $item_id;
-				$note_item_disagreed = '影片被反对 #' . $item_id;
+				$note_disagree = '反对影片';
+				$note_item_disagreed = '影片被反对';
 				break;
 
 			case 'video_comment':
-				$type_disagree = 'DISAGREE_VIDEO_COMMENT';
-				$type_item_disagreed = 'VIDEO_COMMENT_DISAGREED';
-				$note_disagree = '反对影片评论 #' . $item_id;
-				$note_item_disagreed = '影片评论被反对 #' . $item_id;
+				$note_disagree = '反对影片评论';
+				$note_item_disagreed = '影片评论被反对';
 				break;
 		}
 
-		if (!$this->model('currency')->fetch_log($uid, $type_disagree, $item_id))
+		$this->model('currency')->process($uid, 'DISAGREE', get_setting('currency_system_config_disagree'), $note_disagree, $item_id, $type);
+		if ($permission['affect_currency'])
 		{
-			$this->model('currency')->process($uid, $type_disagree, get_setting('currency_system_config_disagree'), $note_disagree, $item_id, $type);
-			if ($permission['affect_currency'])
-			{
-				$this->model('currency')->process($item_uid, $type_item_disagreed, get_setting('currency_system_config_disagreed'), $note_item_disagreed, $item_id, $type);
-			}
+			$this->model('currency')->process($item_uid, 'DISAGREED', get_setting('currency_system_config_disagreed'), $note_item_disagreed, $item_id, $type);
 		}
 	}
 

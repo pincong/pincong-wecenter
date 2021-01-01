@@ -61,16 +61,6 @@ class currency_class extends AWS_MODEL
 		return $log_id;
 	}
 
-	public function fetch_log($uid, $action, $item_id = null)
-	{
-        $where = 'uid = ' . intval($uid) . ' AND action = \'' . $this->quote($action) . '\'';
-        if ($item_id !== null)
-        {
-            $where .= ' AND item_id = ' . intval($item_id);
-        }
-		return $this->fetch_row('currency_log', $where);
-	}
-
 	public function parse_log_items($parse_items)
 	{
 		if (!is_array($parse_items))
