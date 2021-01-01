@@ -1,22 +1,12 @@
 <?php if ($this->posts_list) { ?>
 <?php foreach($this->posts_list as $key => $val) { ?>
-<div class="aw-item" data-timestamp="<?php echo $val['add_time']; ?>" data-topic-id="<?php foreach ($val['topics'] AS $k => $v) { ?><?php echo $v['topic_id']; ?>,<?php } ?>">
+<div class="aw-item" data-timestamp="<?php echo $val['add_time']; ?>" data-recommended="<?php echo $val['recommend']; ?>" data-pinned="<?php echo $val['sort']; ?>" data-hot="<?php echo $val['hot']; ?>">
 	<a class="aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>" data-reputation="<?php echo intval($val['user_info']['reputation']); ?>" href="<?php echo UF::url($val['user_info']); ?>" rel="nofollow"><img src="<?php echo UF::avatar($val['user_info'], 'mid', $this->user_info['permission']['is_moderator']); ?>" alt="" /><?php if ($val['user_info']['verified']) { ?><em class="aw-verified"><?php echo $val['user_info']['verified']; ?></em><?php } ?></a>
 	<div class="aw-question-content">
 		<h4>
-			<?php if ($val['post_type'] == 'question') { ?>
-			<a href="question/<?php echo $val['id']; ?>">
-				<?php echo CF::title($val['user_info'], 'question_' . $val['id'], $val['title']); ?>
+			<a href="<?php echo $val['post_type']; ?>/<?php echo $val['id']; ?>">
+				<?php echo CF::title($val['user_info'], $val['post_type'] . '_' . $val['id'], $val['title']); ?>
 			</a>
-			<?php } elseif ($val['post_type'] == 'article') { ?>
-			<a href="article/<?php echo $val['id']; ?>">
-				<?php echo CF::title($val['user_info'], 'article_' . $val['id'], $val['title']); ?>
-			</a>
-			<?php } elseif ($val['post_type'] == 'video') { ?>
-			<a href="video/<?php echo $val['id']; ?>">
-				<?php echo CF::title($val['user_info'], 'video_' . $val['id'], $val['title']); ?>
-			</a>
-			<?php } ?>
 		</h4>
 		<!-- 贡献 -->
 		<?php if (is_array($val['answer_users'])) { ?>

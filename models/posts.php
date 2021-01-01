@@ -243,6 +243,8 @@ class posts_class extends AWS_MODEL
 
 		$users_info = $this->model('account')->get_user_info_by_uids($data_list_uids);
 
+		$push_reputation = get_setting('push_reputation');
+
 		foreach ($posts_index as $key => $data)
 		{
 			switch ($data['post_type'])
@@ -264,6 +266,8 @@ class posts_class extends AWS_MODEL
 			$explore_list_data[$key]['user_info'] = $users_info[$data['uid']];
 
 			$explore_list_data[$key]['post_type'] = $data['post_type'];
+
+			$explore_list_data[$key]['hot'] = intval(is_numeric($push_reputation) AND $data['reputation'] >= $push_reputation);
 
 			if (get_setting('category_enable') != 'N')
 			{
