@@ -344,13 +344,11 @@ var AWS =
 	},
 
 	// 警告弹窗
-	alert: function (text)
-	{
+	alert: function(text) {
 		$('.alert-box').remove();
 		$('.modal-backdrop').remove();
 
-		$('#aw-ajax-box').append(Hogan.compile(AW_TEMPLATE.alertBox).render(
-		{
+		$('#aw-ajax-box').append(Hogan.compile(AW_TEMPLATE.alertBox).render({
 			message: text
 		}));
 
@@ -358,21 +356,17 @@ var AWS =
 	},
 
 	// 确认弹窗
-	confirm: function (text, callback)
-	{
+	confirm: function(text, callback) {
 		$('.alert-box').remove();
 		$('.modal-backdrop').remove();
 
-		$('#aw-ajax-box').append(Hogan.compile(AW_TEMPLATE.confirmBox).render(
-		{
+		$('#aw-ajax-box').append(Hogan.compile(AW_TEMPLATE.confirmBox).render({
 			message: text
 		}));
 
-		$('.aw-confirm-box .yes').click(function()
-		{
+		$('.aw-confirm-box .yes').click(function() {
 			$(".alert-box").modal('hide');
-			if (callback)
-			{
+			if (callback) {
 				callback();
 			}
 			return false;
@@ -382,22 +376,49 @@ var AWS =
 	},
 
 	// 单行输入框弹窗
-	prompt: function (title, message, callback)
-	{
+	prompt: function(title, message, callback) {
 		$('.alert-box').remove();
 		$('.modal-backdrop').remove();
 
-		$('#aw-ajax-box').append(Hogan.compile(AW_TEMPLATE.promptBox).render(
-		{
+		if (!callback && typeof message === 'function') {
+			callback = message;
+			message = '';
+		}
+
+		$('#aw-ajax-box').append(Hogan.compile(AW_TEMPLATE.promptBox).render({
 			title: title,
 			message: message
 		}));
 
-		$('.aw-prompt-box .yes').click(function()
-		{
+		$('.aw-prompt-box .yes').click(function() {
 			$(".alert-box").modal('hide');
-			if (callback)
-			{
+			if (callback) {
+				callback($('.aw-prompt-box input').val());
+			}
+			return false;
+		});
+
+		$(".alert-box").modal('show');
+	},
+
+	// 单行输入框弹窗
+	passwordPrompt: function(title, message, callback) {
+		$('.alert-box').remove();
+		$('.modal-backdrop').remove();
+
+		if (!callback && typeof message === 'function') {
+			callback = message;
+			message = '';
+		}
+
+		$('#aw-ajax-box').append(Hogan.compile(AW_TEMPLATE.passwordPromptBox).render({
+			title: title,
+			message: message
+		}));
+
+		$('.aw-prompt-box .yes').click(function() {
+			$(".alert-box").modal('hide');
+			if (callback) {
 				callback($('.aw-prompt-box input').val());
 			}
 			return false;
@@ -407,22 +428,23 @@ var AWS =
 	},
 
 	// 多行输入框弹窗
-	textBox: function (title, message, callback)
-	{
+	textBox: function(title, message, callback) {
 		$('.alert-box').remove();
 		$('.modal-backdrop').remove();
 
-		$('#aw-ajax-box').append(Hogan.compile(AW_TEMPLATE.textBox).render(
-		{
+		if (!callback && typeof message === 'function') {
+			callback = message;
+			message = '';
+		}
+
+		$('#aw-ajax-box').append(Hogan.compile(AW_TEMPLATE.textBox).render({
 			title: title,
 			message: message
 		}));
 
-		$('.aw-text-box .yes').click(function()
-		{
+		$('.aw-text-box .yes').click(function() {
 			$(".alert-box").modal('hide');
-			if (callback)
-			{
+			if (callback) {
 				callback($('.aw-text-box textarea').val());
 			}
 			return false;
@@ -431,16 +453,14 @@ var AWS =
 		$(".alert-box").modal('show');
 	},
 
-	popup: function (url, callback)
-	{
+	popup: function(url, callback) {
 		$.get(url, function (template) {
 			$('.alert-box').remove();
 			$('.modal-backdrop').remove();
 
 			$('#aw-ajax-box').html(template).show();
 
-			if (callback)
-			{
+			if (callback) {
 				callback();
 			}
 

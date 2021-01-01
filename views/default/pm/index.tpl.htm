@@ -35,7 +35,9 @@
 
 									<p class="content">
 									<?php if ($val['last_message']) { ?>
-										<a class="pm_message" data-message="<?php echo safe_text($val['last_message']['message']); ?>" href="<?php echo url_rewrite(); ?>/pm/read/<?php echo $val['id']; ?>"></a>
+										<a class="pm_message" data-message="<?php echo safe_text($val['last_message']['message']); ?>" href="<?php echo url_rewrite(); ?>/pm/read/<?php echo $val['id']; ?>"><i><?php _e('待解密'); ?></i></a>
+									<?php } else if ($val['unread']) {?>
+										<s><?php _e('已刪除'); ?></s>
 									<?php } ?>
 									</p>
 
@@ -73,32 +75,69 @@
 
 <script type="text/javascript">
 $(document).ready(function () {
-	(function(){
-		var private_key = localStorage.getItem('<?php echo G_COOKIE_PREFIX; ?>_private_key');
-		if (!private_key) {
-			AWS.alert(_t('请尝试重新登录以解密私钥'));
+	function truncate(s) {
+		var n = 60;
+		if (s.length <= n) return s;
+		return s.substr(0, n) + '...';
+	}
+
+	function decrypt_key(cb) {
+		var public_key = '<?php echo $this->user_info['public_key']; ?>';
+		if (!public_key) {
+			AWS.alert(_t('缺少公钥和私钥, 请重新登录以生成新的公钥和私钥'));
 			return;
 		}
-		PasswordUtil.read_private_key(private_key).then(function(value) {
-			private_key = value;
-			$('.pm_message').each(function() {
-				var el = $(this);
-				var msg = el.data('message');
-				if (!msg) return;
-				PasswordUtil.decrypt(msg, private_key).then(function(value) {
-					el.text(value);
-				}).catch(function(error) {
-					el.html('<i>' + _t('无法解密这一条私信') + '</i>');
-					console.log(error);
-					return;
+		AWS.passwordPrompt(_t('请输入登录密码以解密私钥'), function(pwd) {
+			PasswordUtil.password_hash(pwd, public_key).then(function(value) {
+				return PasswordUtil.decrypt_private_key('<?php echo $this->user_info['private_key']; ?>', value);
+			}).then(function(value) {
+				cb(value);
+			}).catch(function(error) {
+				console.log(error);
+				AWS.confirm(_t('无法解密私钥, 要再试一次吗？'), function() {
+					decrypt_key(cb);
 				});
 			});
-		}).catch(function(error) {
-			AWS.alert(_t('无法读取私钥, 请尝试重新登录'));
-			console.log(error);
-			return;
 		});
-	})();
+	}
+
+	function read_key() {
+		var k = '<?php echo G_COOKIE_PREFIX; ?>_private_key';
+		return new Promise(function(resolve) {
+			var private_key = localStorage.getItem(k);
+			if (!private_key) {
+				decrypt_key(function(private_key) {
+					localStorage.setItem(k, private_key);
+					resolve(private_key);
+				});
+			} else {
+				resolve(private_key);
+			}
+		}).then(function(value) {
+			return PasswordUtil.read_private_key(value);
+		}).catch(function(error) {
+			localStorage.removeItem(k);
+			throw error;
+		});
+	}
+
+	read_key().then(function(private_key) {
+		$('.pm_message').each(function() {
+			var el = $(this);
+			var msg = el.data('message');
+			if (!msg) return;
+			PasswordUtil.decrypt(msg, private_key).then(function(value) {
+				el.text(truncate(value));
+			}).catch(function(error) {
+				console.log(error);
+				el.html('<i>' + _t('无法解密这一条私信') + '</i>');
+			});
+		});
+	}).catch(function(error) {
+		console.log(error);
+		AWS.alert(_t('无法读取私钥, 请刷新页面重试'));
+	});
+
 });
 </script>
 

@@ -144,6 +144,25 @@ var AW_TEMPLATE = {
 				'</div>'+
 			'</div>',
 
+	'passwordPromptBox' :
+			'<div class="modal fade alert-box aw-share-box aw-prompt-box">'+
+				'<div class="modal-dialog">'+
+					'<div class="modal-content">'+
+						'<div class="modal-header">'+
+							'<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>'+
+							'<h3 class="modal-title" id="myModalLabel">{{title}}</h3>'+
+						'</div>'+
+							'<div class="modal-body">'+
+								'<input class="form-control" type="password" value="{{message}}" />'+
+							'</div>'+
+							'<div class="modal-footer">'+
+								'<a class="btn btn-large btn-gray" data-dismiss="modal" aria-hidden="true">' + _t('取消') + '</a>'+
+								'<a class="btn btn-large btn-success yes">' + _t('确定') + '</a>'+
+							'</div>'+
+					'</div>'+
+				'</div>'+
+			'</div>',
+
 	'textBox' :
 			'<div class="modal fade alert-box aw-share-box aw-text-box">'+
 				'<div class="modal-dialog">'+

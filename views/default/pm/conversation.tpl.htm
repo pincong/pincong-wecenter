@@ -20,7 +20,7 @@
 						</div>
 						<div class="mod-body">
 							<!-- 私信内容输入框　-->
-							<form id="pm_form" onsubmit="return false" method="post" style="display:none">
+							<form id="pm_form" onsubmit="return false" method="post" style="visibility:hidden;">
 								<a href="<?php echo UF::url($this->user_info); ?>" class="aw-user-img aw-border-radius-5"><img src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" alt="" /></a>
 								<textarea rows="3" class="form-control autosize" placeholder="<?php _e('想要对ta说点什么'); ?>?" type="text" name="message" /></textarea>
 								<p>
@@ -42,7 +42,7 @@
 									<div class="aw-item">
 										<p>
 											<a href="javascript:;"><?php echo UF::name($user); ?></a>:
-											<span style="white-space:pre-wrap;" class="pm_message" data-message="<?php echo safe_text($val['message']); ?>"></span>
+											<span style="white-space:pre-wrap;" class="pm_message" data-message="<?php echo safe_text($val['message']); ?>"><i><?php _e('待解密'); ?></i></span>
 										</p>
 										<div class="aw-small-text">
 											<span class="pull-right">
@@ -83,7 +83,7 @@
 
 <script type="text/javascript">
 $(document).ready(function () {
-	var form = $('#pm_form').show();
+	var form = $('#pm_form').css('visibility', 'visible');
 	var btn = form.find('button[type=submit]');
 
 	var public_keys = {
@@ -154,32 +154,62 @@ $(document).ready(function () {
 		return false;
 	});
 
-	(function(){
-		var private_key = localStorage.getItem('<?php echo G_COOKIE_PREFIX; ?>_private_key');
-		if (!private_key) {
-			AWS.alert(_t('请尝试重新登录以解密私钥'));
+	function decrypt_key(cb) {
+		var public_key = '<?php echo $this->user_info['public_key']; ?>';
+		if (!public_key) {
+			AWS.alert(_t('缺少公钥和私钥, 请重新登录以生成新的公钥和私钥'));
 			return;
 		}
-		PasswordUtil.read_private_key(private_key).then(function(value) {
-			private_key = value;
-			$('.pm_message').each(function() {
-				var el = $(this);
-				var msg = el.data('message');
-				if (!msg) return;
-				PasswordUtil.decrypt(msg, private_key).then(function(value) {
-					el.text(value);
-				}).catch(function(error) {
-					el.html('<i>' + _t('无法解密这一条私信') + '</i>');
-					console.log(error);
-					return;
+		AWS.passwordPrompt(_t('请输入登录密码以解密私钥'), function(pwd) {
+			PasswordUtil.password_hash(pwd, public_key).then(function(value) {
+				return PasswordUtil.decrypt_private_key('<?php echo $this->user_info['private_key']; ?>', value);
+			}).then(function(value) {
+				cb(value);
+			}).catch(function(error) {
+				console.log(error);
+				AWS.confirm(_t('无法解密私钥, 要再试一次吗？'), function() {
+					decrypt_key(cb);
 				});
 			});
-		}).catch(function(error) {
-			AWS.alert(_t('无法读取私钥, 请尝试重新登录'));
-			console.log(error);
-			return;
 		});
-	})();
+	}
+
+	function read_key() {
+		var k = '<?php echo G_COOKIE_PREFIX; ?>_private_key';
+		return new Promise(function(resolve) {
+			var private_key = localStorage.getItem(k);
+			if (!private_key) {
+				decrypt_key(function(private_key) {
+					localStorage.setItem(k, private_key);
+					resolve(private_key);
+				});
+			} else {
+				resolve(private_key);
+			}
+		}).then(function(value) {
+			return PasswordUtil.read_private_key(value);
+		}).catch(function(error) {
+			localStorage.removeItem(k);
+			throw error;
+		});
+	}
+
+	read_key().then(function(private_key) {
+		$('.pm_message').each(function() {
+			var el = $(this);
+			var msg = el.data('message');
+			if (!msg) return;
+			PasswordUtil.decrypt(msg, private_key).then(function(value) {
+				el.text(value);
+			}).catch(function(error) {
+				console.log(error);
+				el.html('<i>' + _t('无法解密这一条私信') + '</i>');
+			});
+		});
+	}).catch(function(error) {
+		console.log(error);
+		AWS.alert(_t('无法读取私钥, 请刷新页面重试'));
+	});
 });
 </script>
 
