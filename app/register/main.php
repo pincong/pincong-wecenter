@@ -34,11 +34,6 @@ class main extends AWS_CONTROLLER
 		{
 			HTTP::redirect('/');
 		}
-
-		if (!check_http_referer())
-		{
-			H::redirect_msg(AWS_APP::lang()->_t('错误的请求'), '/');
-		}
 	}
 
 	public function index_action()
@@ -47,9 +42,14 @@ class main extends AWS_CONTROLLER
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('本站目前关闭注册'), '/');
 		}
-		else if (get_setting('register_type') == 'invite')
+		else if (get_setting('register_type') == 'custom')
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('本站只接受邀请注册'), '/');
+			$register_url = get_setting('register_url');
+			if (!$register_url)
+			{
+				$register_url = '/';
+			}
+			HTTP::redirect($register_url);
 		}
 
 		$this->crumb(AWS_APP::lang()->_t('注册'));
@@ -64,6 +64,11 @@ class main extends AWS_CONTROLLER
 
 	public function next_action()
 	{
+		if (!check_http_referer())
+		{
+			H::redirect_msg(AWS_APP::lang()->_t('错误的请求'), '/');
+		}
+
 		if (!$_POST['agree'])
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('你必需同意 %s 才能继续', get_setting('user_agreement_name')), '/register/');

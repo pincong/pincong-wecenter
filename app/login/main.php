@@ -34,11 +34,6 @@ class main extends AWS_CONTROLLER
 		{
 			HTTP::redirect('/');
 		}
-
-		if (!check_http_referer())
-		{
-			H::redirect_msg(AWS_APP::lang()->_t('错误的请求'), '/');
-		}
 	}
 
 	public function index_action()
@@ -55,6 +50,11 @@ class main extends AWS_CONTROLLER
 
 	public function next_action()
 	{
+		if (!check_http_referer())
+		{
+			H::redirect_msg(AWS_APP::lang()->_t('错误的请求'), '/');
+		}
+
 		if (!AWS_APP::form()->check_csrf_token($_POST['token'], 'login_index'))
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('页面停留时间过长, 请刷新页面重试'), '/login/');

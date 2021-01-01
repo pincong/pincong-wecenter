@@ -47,11 +47,6 @@ class main extends AWS_CONTROLLER
 
 	public function change_password_action()
 	{
-		if (!check_http_referer())
-		{
-			H::redirect_msg(AWS_APP::lang()->_t('错误的请求'), '/');
-		}
-
 		$this->crumb(AWS_APP::lang()->_t('修改密码'));
 
 		TPL::import_css('css/register.css');
