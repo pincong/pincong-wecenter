@@ -131,7 +131,7 @@ class user_class extends AWS_MODEL
 		{
 			foreach ($question_ids AS $key => $val)
 			{
-				$this->model('question')->update_answer_count($key);
+				$this->update_answer_count($key);
 			}
 
 			$this->update('question', array('last_uid' => '-1'), 'last_uid = ' . intval($uid));
