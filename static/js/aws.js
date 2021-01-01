@@ -750,7 +750,7 @@ var AWS =
 								'url' : result.url,
 								'focus': focus,
 								'focusTxt': focusTxt,
-								'ask_name': "'" + result.user_name + "'",
+								'pm_disabled': result.pm_disabled,
 								'fansCount': result.fans_count
 							}));
 
@@ -1518,19 +1518,25 @@ AWS.User =
 		});
 	},
 
-	compose_message: function(recipient)
+	compose_message: function(recipient, disabled)
 	{
 		AWS.popup(G_BASE_URL + '/inbox/edit/compose/', function() {
 			if (recipient) {
 				recipient = AWS.htmlspecialchars(recipient);
 				$('#personal_message_recipient').val(recipient);
 			}
-			AWS.Dropdown.bind_dropdown_list($('#personal_message_recipient'), 'inbox');
-			//私信用户下拉点击事件
-			$(document).on('click','.aw-inbox .aw-dropdown-list li a',function() {
-				$('#personal_message_form input.form-control').val($(this).text());
-				$(this).parents('.aw-dropdown').hide();
-			});
+			if (disabled) {
+				$('#personal_message_recipient').attr('readonly', true);
+				$('#personal_message_content').attr('readonly', true);
+				$('#personal_message_submit').addClass('disabled');
+			} else {
+				AWS.Dropdown.bind_dropdown_list($('#personal_message_recipient'), 'inbox');
+				//私信用户下拉点击事件
+				$(document).on('click','.aw-inbox .aw-dropdown-list li a',function() {
+					$('#personal_message_form input.form-control').val($(this).text());
+					$(this).parents('.aw-dropdown').hide();
+				});
+			}
 		});
 	},
 }

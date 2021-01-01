@@ -29,7 +29,7 @@ var AW_TEMPLATE = {
 					'</div>'+
 					'<div class="mod-footer clearfix">'+
 						'<span>'+
-							'<a class="aw-small-text" onclick="AWS.User.compose_message(\'{{user_name}}\');"><i class="icon icon-inbox"></i> ' + _t('私信') + '</a>&nbsp;&nbsp;&nbsp;&nbsp;<a  class="aw-small-text" onclick="AWS.User.ask_user({{uid}}, {{ask_name}});"><i class="icon icon-at"></i> ' + _t('问Ta') + '</a>'+
+							'<a class="aw-small-text" onclick="AWS.User.compose_message(\'{{user_name}}\', {{pm_disabled}});"><i class="icon icon-inbox"></i> ' + _t('私信') + '</a>&nbsp;&nbsp;&nbsp;&nbsp;<a  class="aw-small-text" onclick="AWS.User.ask_user({{uid}}, \'{{user_name}}\');"><i class="icon icon-at"></i> ' + _t('问Ta') + '</a>'+
 						'</span>'+
 						'<a class="btn btn-normal btn-success follow {{focus}} pull-right" onclick="AWS.User.follow($(this), \'user\', {{uid}});"><span>{{focusTxt}}</span> <em>|</em> <b>{{fansCount}}</b></a>'+
 					'</div>'+

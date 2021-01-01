@@ -48,6 +48,23 @@ class message_class extends AWS_MODEL
 		return AWS_APP::crypt()->decode($message, $this->get_key());
 	}
 
+	public function test_permission(&$this_user, &$recipient_user)
+	{
+		if ($this_user['permission']['send_pm'])
+		{
+			return true;
+		}
+
+		$recipient_user_group = $this->model('account')->get_user_group_by_user_info($recipient_user);
+		// 例外情况 如果对方拥有['receive_pm']权限
+		if ($recipient_user_group['permission']['receive_pm'])
+		{
+			return true;
+		}
+
+		return false;
+	}
+
 	public function send_message($sender_uid, $recipient_uid, $message)
 	{
 		if (!$sender_uid OR !$recipient_uid OR !$message)

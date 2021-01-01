@@ -7,24 +7,20 @@
 			</div>
 			<div class="modal-body">
 				<form action="inbox/ajax/send/" method="post" id="personal_message_form" onsubmit="return false">
-				<?php if (!$this->user_info['permission']['send_pm']) { ?>
-					<div class="alert alert-danger error_message"> <i class="icon icon-delete"></i> <em><?php _e('你的声望还不能发送私信'); ?></em></div>
-				<?php } else { ?>
 					<div class="alert alert-danger collapse error_message"> <i class="icon icon-delete"></i> <em></em></div>
 					<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
-				<?php } ?>
-					<input id="personal_message_recipient" <?php if (!$this->user_info['permission']['send_pm']) { ?>readonly<?php } ?> class="form-control"type="text" placeholder="<?php _e('搜索用户'); ?>" name="recipient" value="" />
+					<input id="personal_message_recipient" class="form-control" type="text" placeholder="<?php _e('搜索用户'); ?>" name="recipient" value="" />
 					<div class="aw-dropdown">
 						<p class="title"><?php _e('没有找到相关结果'); ?></p>
 						<ul class="aw-dropdown-list">
 						</ul>
 					</div>
-					<textarea <?php if (!$this->user_info['permission']['send_pm']) { ?>readonly<?php } ?> class="form-control" name="message" rows="3" placeholder="<?php _e('私信内容...'); ?>"></textarea>
+					<textarea id="personal_message_content" class="form-control" name="message" rows="3" placeholder="<?php _e('私信内容...'); ?>"></textarea>
 				</form>
 			</div>
 			<div class="modal-footer">
 				<a data-dismiss="modal" aria-hidden="true" class="aw-small-text"><?php _e('取消'); ?></a>
-				<button class="btn btn-large btn-success <?php if (!$this->user_info['permission']['send_pm']) { ?>disabled<?php } ?>" onclick="AWS.submit_form($('#personal_message_form'), $(this), $('.error_message'));"><?php _e('发送'); ?></button>
+				<button id="personal_message_submit" class="btn btn-large btn-success" onclick="AWS.submit_form($('#personal_message_form'), $(this), $('.error_message'));"><?php _e('发送'); ?></button>
 			</div>
 		</div>
 	</div>
