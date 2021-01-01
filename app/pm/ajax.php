@@ -31,12 +31,12 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!is_array($messages))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('内容错误')));
+			H::ajax_error((_t('内容错误')));
 		}
 		$count = count($messages);
 		if ($count < 2 OR $count > 5)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('内容错误')));
+			H::ajax_error((_t('内容错误')));
 		}
 
 		$length_limit = S::get_int('pm_length_limit');
@@ -47,12 +47,12 @@ class ajax extends AWS_CONTROLLER
 			$uid = intval($uid);
 			if (!$uid OR !$message OR !is_string($message))
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('内容错误')));
+				H::ajax_error((_t('内容错误')));
 				break;
 			}
 			if (!$this->model('password')->check_base64_string($message, $length_limit))
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('内容最多 %s 字节', $length_limit)));
+				H::ajax_error((_t('内容最多 %s 字节', $length_limit)));
 				break;
 			}
 			$uids[] = $uid;
@@ -60,12 +60,12 @@ class ajax extends AWS_CONTROLLER
 
 		if (!in_array(intval($this->user_id), $uids))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('内容错误')));
+			H::ajax_error((_t('内容错误')));
 		}
 
 		if (count(array_unique($uids)) != $count)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('内容错误')));
+			H::ajax_error((_t('内容错误')));
 		}
 		return $uids;
 	}
@@ -85,13 +85,13 @@ class ajax extends AWS_CONTROLLER
 			$users = $this->model('account')->get_user_info_by_uids($uids);
 			if (!is_array($users) OR count($users) != count($uids))
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('接收私信的用户不存在')));
+				H::ajax_error((_t('接收私信的用户不存在')));
 			}
 			foreach ($users as $user)
 			{
 				if (!$this->model('pm')->test_permissions($this->user_info, $user, $error))
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', $error));
+					H::ajax_error($error);
 					break;
 				}
 			}
@@ -99,13 +99,11 @@ class ajax extends AWS_CONTROLLER
 			$conversation_id = $this->model('pm')->new_conversation($this->user_id, $messages);
 			if (!$conversation_id)
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('无法创建会话')));
+				H::ajax_error((_t('无法创建会话')));
 			}
 		}
 
-		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => url_rewrite('/pm/read/' . $conversation_id)
-		), 1, null));
+		H::ajax_location(url_rewrite('/pm/read/' . $conversation_id));
 	}
 
 	public function send_action()
@@ -116,19 +114,17 @@ class ajax extends AWS_CONTROLLER
 		$conversation_id = H::POST_I('conversation_id');
 		if (!$conversation = $this->model('pm')->get_conversation($conversation_id, $this->user_id, true))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('会话不存在')));
+			H::ajax_error((_t('会话不存在')));
 		}
 
 		if (count($conversation['uids']) < 2)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('会话已经结束')));
+			H::ajax_error((_t('会话已经结束')));
 		}
 
 		$this->model('pm')->send_message($conversation_id, $this->user_id, $messages);
 
-		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => url_rewrite('/pm/read/' . $conversation_id)
-		), 1, null));
+		H::ajax_location(url_rewrite('/pm/read/' . $conversation_id));
 	}
 
 	public function delete_action()
@@ -139,7 +135,7 @@ class ajax extends AWS_CONTROLLER
 			$this->model('pm')->delete_message($message_id, $this->user_id);
 		}
 
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+		H::ajax_success();
 	}
 
 	public function exit_action()
@@ -150,14 +146,14 @@ class ajax extends AWS_CONTROLLER
 			$this->model('pm')->exit_conversation($conversation_id, $this->user_id);
 		}
 
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+		H::ajax_success();
 	}
 
 	public function notify_action()
 	{
 		if (!$this->user_info['permission']['is_moderator'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('你没有权限进行此操作')));
+			H::ajax_error((_t('你没有权限进行此操作')));
 		}
 
 		$message = H::POST('message');
@@ -165,29 +161,29 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$uid OR !$message OR !is_string($message))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('内容错误')));
+			H::ajax_error((_t('内容错误')));
 		}
 
 		$length_limit = S::get_int('pm_length_limit');
 		if (!$this->model('password')->check_base64_string($message, $length_limit))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('内容最多 %s 字节', $length_limit)));
+			H::ajax_error((_t('内容最多 %s 字节', $length_limit)));
 		}
 
 		if (!$this->model('account')->get_user_info_by_uid($uid))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('接收私信的用户不存在')));
+			H::ajax_error((_t('接收私信的用户不存在')));
 		}
 
 		$conversation_id = $this->model('pm')->notify($uid, $message);
 		if (!$conversation_id)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('无法创建会话')));
+			H::ajax_error((_t('无法创建会话')));
 		}
 
-		H::ajax_json_output(AWS_APP::RSM(array(
+		H::ajax_response(array(
 			'conversation' => $conversation_id
-		), 1, null));
+		));
 	}
 
 }

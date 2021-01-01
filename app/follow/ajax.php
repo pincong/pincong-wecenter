@@ -44,7 +44,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			if (!$this->user_info['permission']['follow_people'])
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不够, 不能关注其他人')));
+				H::ajax_error((_t('你的声望还不够, 不能关注其他人')));
 			}
 
 			$action = 'add';
@@ -56,8 +56,8 @@ class ajax extends AWS_CONTROLLER
 
 		}
 
-		H::ajax_json_output(AWS_APP::RSM(array(
+		H::ajax_response(array(
 			'type' => $action
-		), 1, null));
+		));
 	}
 }

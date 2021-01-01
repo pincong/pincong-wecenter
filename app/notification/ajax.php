@@ -30,13 +30,13 @@ class ajax extends AWS_CONTROLLER
 	{
 		$this->model('notification')->mark_as_read(H::GET('notification_id'), $this->user_id);
 
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+		H::ajax_success();
 	}
 
 	public function mark_all_as_read_action()
 	{
 		$this->model('notification')->mark_all_as_read($this->user_id);
 
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+		H::ajax_success();
 	}
 }

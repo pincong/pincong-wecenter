@@ -193,7 +193,7 @@ class AWS_ADMIN_CONTROLLER extends AWS_CONTROLLER
 		{
 			if ($_POST['_post_type'] == 'ajax')
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, _t('你没有访问权限, 请重新登录')));
+				H::ajax_error((_t('你没有访问权限, 请重新登录')));
 			}
 			else
 			{
@@ -213,7 +213,7 @@ class AWS_ADMIN_CONTROLLER extends AWS_CONTROLLER
 		{
 			if ($_POST['_post_type'] == 'ajax')
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, _t('会话超时, 请重新登录')));
+				H::ajax_error((_t('会话超时, 请重新登录')));
 			}
 			else
 			{

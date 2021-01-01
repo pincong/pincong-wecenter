@@ -28,7 +28,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!check_http_referer())
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('错误的请求')));
+			H::ajax_error((_t('错误的请求')));
 		}
 	}
 
@@ -42,7 +42,7 @@ class ajax extends AWS_CONTROLLER
 			!$this->model('password')->check_base64_string($new_client_salt, 60) OR
 			!$this->model('password')->check_structure($new_scrambled_password))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('请输入正确的密码')));
+			H::ajax_error((_t('请输入正确的密码')));
 		}
 
 		$new_public_key = H::POST('new_public_key');
@@ -51,12 +51,12 @@ class ajax extends AWS_CONTROLLER
 		if (!$this->model('password')->check_base64_string($new_public_key, 1000) OR
 			!$this->model('password')->check_base64_string($new_private_key, 1000))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('密钥无效')));
+			H::ajax_error((_t('密钥无效')));
 		}
 
 		if (!AWS_APP::form()->check_csrf_token(H::POST('token'), 'account_change_password', false))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('页面停留时间过长, 请刷新页面重试')));
+			H::ajax_error((_t('页面停留时间过长, 请刷新页面重试')));
 		}
 
 		if ($this->model('password')->change_password($this->user_id, $scrambled_password, $new_scrambled_password, $new_client_salt, $new_public_key, $new_private_key))
@@ -72,13 +72,13 @@ class ajax extends AWS_CONTROLLER
 			$this->model('login')->cookie_logout();
 			$this->model('login')->cookie_login($this->user_id, $new_scrambled_password, $expire);
 
-			H::ajax_json_output(AWS_APP::RSM(array(
+			H::ajax_response(array(
 				'next' => url_rewrite('/account/password_updated/')
-			), 1, null));
+			));
 		}
 		else
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('请输入正确的密码')));
+			H::ajax_error((_t('请输入正确的密码')));
 		}
 	}
 

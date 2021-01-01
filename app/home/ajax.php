@@ -29,10 +29,10 @@ class ajax extends AWS_CONTROLLER
 
 	public function notifications_action()
 	{
-		H::ajax_json_output(AWS_APP::RSM(array(
+		H::ajax_response(array(
 			'inbox_num' => $this->user_info['inbox_unread'],
 			'notifications_num' => $this->user_info['notification_unread']
-		), '1', null));
+		));
 	}
 
 }

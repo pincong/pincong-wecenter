@@ -36,9 +36,7 @@ class user extends AWS_ADMIN_CONTROLLER
                 $param[] = $key . '-' . $val;
             }
 
-            H::ajax_json_output(AWS_APP::RSM(array(
-                'url' => url_rewrite('/admin/user/list/' . implode('__', $param))
-            ), 1, null));
+            H::ajax_location(url_rewrite('/admin/user/list/' . implode('__', $param)));
         }
 
         $where = array();

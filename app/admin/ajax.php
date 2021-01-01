@@ -35,13 +35,11 @@ class ajax extends AWS_ADMIN_CONTROLLER
 		{
 			$this->model('admin')->admin_login();
 
-			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => url_rewrite('/admin/')
-			), 1, null));
+			H::ajax_location(url_rewrite('/admin/'));
 		}
 		else
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('帐号或密码错误')));
+			H::ajax_error((_t('帐号或密码错误')));
 		}
 	}
 
@@ -67,14 +65,14 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 		$this->model('setting')->set_vars($_POST);
 
-		H::ajax_json_output(AWS_APP::RSM(null, -1, _t('保存设置成功')));
+		H::ajax_error((_t('保存设置成功')));
 	}
 
 	public function article_manage_action()
 	{
 		if (!H::POST('article_ids'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('请选择文章进行操作')));
+			H::ajax_error((_t('请选择文章进行操作')));
 		}
 
 		switch (H::POST('action'))
@@ -85,7 +83,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 					$this->model('article')->clear_article($article_id, null);
 				}
 
-				H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+				H::ajax_success();
 			break;
 		}
 	}
@@ -100,14 +98,14 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			}
 		}
 
-		H::ajax_json_output(AWS_APP::RSM(null, -1, _t('分类排序已自动保存')));
+		H::ajax_error((_t('分类排序已自动保存')));
 	}
 
 	public function save_category_action()
 	{
 		if (!$title = H::POST_S('title'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('请输入分类名称')));
+			H::ajax_error((_t('请输入分类名称')));
 		}
 
 		if (H::POST('category_id'))
@@ -119,9 +117,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			$this->model('category')->add_category($title, H::POST('group_id'), H::POST_S('description'), H::POST('skip'));
 		}
 
-		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => url_rewrite('/admin/category/list/')
-		), 1, null));
+		H::ajax_location(url_rewrite('/admin/category/list/'));
 	}
 
 	public function remove_category_action()
@@ -129,41 +125,41 @@ class ajax extends AWS_ADMIN_CONTROLLER
 		$category_id = H::POST_I('category_id');
 		if ($category_id == 1)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('默认分类不可删除')));
+			H::ajax_error((_t('默认分类不可删除')));
 		}
 
 		if ($this->model('category')->contents_exists($category_id))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('分类下存在内容, 请先批量移动问题到其它分类, 再删除当前分类')));
+			H::ajax_error((_t('分类下存在内容, 请先批量移动问题到其它分类, 再删除当前分类')));
 		}
 
 		$this->model('category')->delete_category($category_id);
 
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+		H::ajax_success();
 	}
 
 	public function move_category_contents_action()
 	{
 		if (!H::POST('from_id') OR !H::POST('target_id'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('请先选择指定分类和目标分类')));
+			H::ajax_error((_t('请先选择指定分类和目标分类')));
 		}
 
 		if (H::POST('target_id') == H::POST('from_id'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('指定分类不能与目标分类相同')));
+			H::ajax_error((_t('指定分类不能与目标分类相同')));
 		}
 
 		$this->model('category')->move_contents(H::POST('from_id'), H::POST('target_id'));
 
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+		H::ajax_success();
 	}
 
 	public function save_feature_action()
 	{
 		if (!$title = H::POST_S('title'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('标题不能为空')));
+			H::ajax_error((_t('标题不能为空')));
 		}
 
 		if (H::GET('feature_id'))
@@ -186,16 +182,14 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 		$this->model('feature')->update_feature($feature_id, $update_data);
 
-		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => url_rewrite('/admin/feature/list/')
-		), 1, null));
+		H::ajax_location(url_rewrite('/admin/feature/list/'));
 	}
 
 	public function remove_feature_action()
 	{
 		$this->model('feature')->delete_feature(H::POST('feature_id'));
 
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+		H::ajax_success();
 	}
 
 	public function save_feature_status_action()
@@ -208,7 +202,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			}
 		}
 
-		H::ajax_json_output(AWS_APP::RSM(null, -1, _t('规则状态已自动保存')));
+		H::ajax_error((_t('规则状态已自动保存')));
 	}
 
 	public function save_nav_menu_action()
@@ -234,7 +228,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			}
 		}
 
-		H::ajax_json_output(AWS_APP::RSM(null, -1, _t('导航菜单保存成功')));
+		H::ajax_error((_t('导航菜单保存成功')));
 	}
 
 	public function add_nav_menu_action()
@@ -257,24 +251,24 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 		if (!$title)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('请输入导航标题')));
+			H::ajax_error((_t('请输入导航标题')));
 		}
 
 		$this->model('menu')->add_nav_menu($title, $description, H::POST('type'), $type_id, $link);
 
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+		H::ajax_success();
 	}
 
 	public function remove_nav_menu_action()
 	{
 		$this->model('menu')->remove_nav_menu(H::POST('id'));
 
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+		H::ajax_success();
 	}
 
 	public function nav_menu_upload_action()
 	{
-		H::ajax_json_output(AWS_APP::RSM(null, -1, _t('上传失败')));
+		H::ajax_error((_t('上传失败')));
 
 		// TODO: 以后再说
 	}
@@ -284,7 +278,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 	{
 		if (!H::POST('question_ids'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('请选择问题进行操作')));
+			H::ajax_error((_t('请选择问题进行操作')));
 		}
 
 		switch (H::POST('action'))
@@ -295,7 +289,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 					$this->model('question')->clear_question($question_id, null);
 				}
 
-				H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+				H::ajax_success();
 			break;
 		}
 	}
@@ -304,7 +298,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 	{
 		$this->model('topic')->lock_topic_by_ids(H::POST('topic_id'), H::POST('status'));
 
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+		H::ajax_success();
 	}
 
 	public function save_topic_action()
@@ -314,12 +308,12 @@ class ajax extends AWS_ADMIN_CONTROLLER
 		{
 			if (!$topic_info = $this->model('topic')->get_topic_by_id(H::POST('topic_id')))
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, _t('话题不存在')));
+				H::ajax_error((_t('话题不存在')));
 			}
 
 			if ($topic_info['topic_title'] != htmlspecialchars($topic_title) AND $this->model('topic')->get_topic_by_title($topic_title))
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, _t('同名话题已经存在')));
+				H::ajax_error((_t('同名话题已经存在')));
 			}
 
 			$this->model('topic')->update_topic($this->user_id, $topic_info['topic_id'], $topic_title, H::POST_S('topic_description'));
@@ -332,22 +326,20 @@ class ajax extends AWS_ADMIN_CONTROLLER
 		{
 			if ($this->model('topic')->get_topic_by_title($topic_title))
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, _t('同名话题已经存在')));
+				H::ajax_error((_t('同名话题已经存在')));
 			}
 
 			$topic_id = $this->model('topic')->save_topic($topic_title, $this->user_id, true, H::POST_S('topic_description'));
 		}
 
-		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => url_rewrite('/admin/topic/list/')
-		), 1, null));
+		H::ajax_location(url_rewrite('/admin/topic/list/'));
 	}
 
 	public function topic_manage_action()
 	{
 		if (!H::POST('topic_ids'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('请选择话题进行操作')));
+			H::ajax_error((_t('请选择话题进行操作')));
 		}
 
 		switch(H::POST('action'))
@@ -363,7 +355,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 				break;
 		}
 
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+		H::ajax_success();
 	}
 
 	public function save_user_group_action()
@@ -374,7 +366,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			{
 				if (!$val['group_name'])
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, -1, _t('请输入用户组名称')));
+					H::ajax_error((_t('请输入用户组名称')));
 				}
 
 				$this->model('usergroup')->update_user_group_data($key, $val);
@@ -409,7 +401,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 		AWS_APP::cache()->cleanGroup('users_group');
 
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+		H::ajax_success();
 	}
 
 	public function save_custom_user_group_action()
@@ -420,7 +412,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			{
 				if (!$val['group_name'])
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, -1, _t('请输入用户组名称')));
+					H::ajax_error((_t('请输入用户组名称')));
 				}
 
 				$this->model('usergroup')->update_user_group_data($key, $val);
@@ -453,7 +445,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 		AWS_APP::cache()->cleanGroup('users_group');
 
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+		H::ajax_success();
 	}
 
 	public function save_internal_user_group_action()
@@ -464,7 +456,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			{
 				if (!$val['group_name'])
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, -1, _t('请输入用户组名称')));
+					H::ajax_error((_t('请输入用户组名称')));
 				}
 
 				$this->model('usergroup')->update_user_group_data($key, $val);
@@ -497,7 +489,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 		AWS_APP::cache()->cleanGroup('users_group');
 
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+		H::ajax_success();
 	}
 
 
@@ -597,27 +589,27 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 		AWS_APP::cache()->cleanGroup('users_group');
 
-		H::ajax_json_output(AWS_APP::RSM(null, 1, _t('用户组权限已更新')));
+		H::ajax_error((_t('用户组权限保存成功')));
 	}
 
 	public function save_user_action()
 	{
 		if (!$user_info = $this->model('account')->get_user_info_by_uid(H::POST('uid')))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('用户不存在')));
+			H::ajax_error((_t('用户不存在')));
 		}
 
 		$username = H::POST_S('username');
 		if ($username != $user_info['user_name'] AND $this->model('account')->get_user_info_by_username($username))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('用户名已存在')));
+			H::ajax_error((_t('用户名已存在')));
 		}
 
 		if ($_FILES['user_avatar']['name'])
 		{
 			if (!$this->model('avatar')->upload_avatar('user_avatar', $user_info['uid'], $error))
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, $error));
+				H::ajax_error($error);
 			}
 		}
 
@@ -662,7 +654,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			if (!$this->model('password')->check_base64_string($new_client_salt, 60) OR
 				!$this->model('password')->check_structure($new_scrambled_password))
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, _t('请输入正确的密码')));
+				H::ajax_error((_t('请输入正确的密码')));
 			}
 
 			$new_public_key = H::POST('new_public_key');
@@ -671,7 +663,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			if (!$this->model('password')->check_base64_string($new_public_key, 1000) OR
 				!$this->model('password')->check_base64_string($new_private_key, 1000))
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, _t('密钥无效')));
+				H::ajax_error((_t('密钥无效')));
 			}
 
 			$this->model('password')->update_password($user_info['uid'], $new_scrambled_password, $new_client_salt, $new_public_key, $new_private_key);
@@ -682,7 +674,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			$this->model('account')->update_user_name($username, $user_info['uid']);
 		}
 
-		H::ajax_json_output(AWS_APP::RSM(null, -1, _t('用户资料更新成功')));
+		H::ajax_error((_t('用户资料更新成功')));
 	}
 
 	public function create_user_action()
@@ -694,7 +686,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			!$this->model('password')->check_base64_string(H::POST('client_salt'), 60) OR
 			!$this->model('password')->check_structure(H::POST('scrambled_password')))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('请输入正确的用户名和密码')));
+			H::ajax_error((_t('请输入正确的用户名和密码')));
 		}
 
 		$public_key = H::POST('public_key');
@@ -703,19 +695,19 @@ class ajax extends AWS_ADMIN_CONTROLLER
 		if (!$this->model('password')->check_base64_string($public_key, 1000) OR
 			!$this->model('password')->check_base64_string($private_key, 1000))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('密钥无效')));
+			H::ajax_error((_t('密钥无效')));
 		}
 
 		if ($this->model('account')->username_exists($username))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('用户名已经存在')));
+			H::ajax_error((_t('用户名已经存在')));
 		}
 
 		$uid = $this->model('register')->register($username, H::POST('scrambled_password'), H::POST('client_salt'), $public_key, $private_key);
 
 		if (!$uid)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('注册失败')));
+			H::ajax_error((_t('注册失败')));
 		}
 
 		if ($group_id)
@@ -725,32 +717,28 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			), ['uid', 'eq', $uid, 'i']);
 		}
 
-		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => url_rewrite('/admin/user/list/')
-		), 1, null));
+		H::ajax_location(url_rewrite('/admin/user/list/'));
 	}
 
 	public function currency_process_action()
 	{
 		if (!H::POST('uid'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('请选择用户进行操作')));
+			H::ajax_error((_t('请选择用户进行操作')));
 		}
 
 		$note = H::POST_S('note');
 
 		$this->model('currency')->process(H::POST('uid'), 'AWARD', H::POST('currency'), htmlspecialchars($note));
 
-		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => url_rewrite('/admin/user/currency_log/uid-' . H::POST('uid'))
-		), 1, null));
+		H::ajax_location(url_rewrite('/admin/user/currency_log/uid-' . H::POST('uid')));
 	}
 
 	public function remove_user_action()
 	{
 		if (!H::POST('uid'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('错误的请求')));
+			H::ajax_error((_t('错误的请求')));
 		}
 
 		@set_time_limit(0);
@@ -759,16 +747,14 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 		if (!$user_info)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('所选用户不存在')));
+			H::ajax_error((_t('所选用户不存在')));
 		}
 		else
 		{
 			$this->model('user')->delete_user_by_uid(H::POST('uid'), H::POST('remove_user_data'));
 		}
 
-		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => url_rewrite('/admin/user/list/')
-		), 1, null));
+		H::ajax_location(url_rewrite('/admin/user/list/'));
 	}
 
 	public function remove_users_action()
@@ -776,7 +762,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 		$uids = H::POST('uids');
 		if (!is_array($uids) OR !$uids)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('请选择要删除的用户')));
+			H::ajax_error((_t('请选择要删除的用户')));
 		}
 
 		if (!$remove_user_data = H::POST('remove_user_data'))
@@ -800,7 +786,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			}
 		}
 
-		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+		H::ajax_success();
 	}
 
 	public function topic_statistic_action()

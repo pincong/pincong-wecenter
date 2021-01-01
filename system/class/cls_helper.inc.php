@@ -67,10 +67,11 @@ class H
 	{
 		H::ajax_json_output(array(
 			'err' => $err,
+			'errno' => -1,
 		));
 	}
 
-	public static function ajax_success($data)
+	public static function ajax_success()
 	{
 		H::ajax_json_output(array(
 			'errno' => 1,
@@ -142,7 +143,7 @@ class H
 	{
 		if ($_POST['_post_type'] == 'ajax')
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, 'HTTP/1.1 403 Forbidden'));
+			H::ajax_error('HTTP/1.1 403 Forbidden');
 		}
 		else
 		{
@@ -157,7 +158,7 @@ class H
 	{
 		if ($_POST['_post_type'] == 'ajax')
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, 'HTTP/1.1 404 Not Found'));
+			H::ajax_error('HTTP/1.1 404 Not Found');
 		}
 		else
 		{
