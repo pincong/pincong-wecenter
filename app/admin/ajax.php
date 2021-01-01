@@ -726,7 +726,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 		{
 			$this->model('account')->update('users', array(
 				'group_id' => $_POST['group_id'],
-			), 'uid = ' . $uid);
+			), ['uid', 'eq', $uid, 'i']);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(

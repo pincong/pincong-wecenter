@@ -52,30 +52,30 @@ class topic extends AWS_ADMIN_CONTROLLER
 
 		if ($_GET['keyword'])
 		{
-			$where[] = "topic_title LIKE '" . $this->model('topic')->escape($_GET['keyword']) . "%'";
+			$where[] = ['topic_title', 'like', '%' . $_GET['keyword'] . '%', 's'];
 		}
 
 		if ($_GET['discuss_count_min'] OR $_GET['discuss_count_min'] == '0')
 		{
-			$where[] = 'discuss_count >= ' . intval($_GET['discuss_count_min']);
+			$where[] = ['discuss_count', 'gte', $_GET['discuss_count_min'], 'i'];
 		}
 
 		if ($_GET['discuss_count_max'] OR $_GET['discuss_count_max'] == '0')
 		{
-			$where[] = 'discuss_count <= ' . intval($_GET['discuss_count_max']);
+			$where[] = ['discuss_count', 'lte', $_GET['discuss_count_max'], 'i'];
 		}
 
 		if (base64_decode($_GET['start_date']))
 		{
-			$where[] = 'add_time >= ' . strtotime(base64_decode($_GET['start_date']));
+			$where[] = ['add_time', 'gte', strtotime(base64_decode($_GET['start_date']))];
 		}
 
 		if (base64_decode($_GET['end_date']))
 		{
-			$where[] = 'add_time <= ' . strtotime('+1 day', strtotime(base64_decode($_GET['end_date'])));
+			$where[] = ['add_time', 'lte', strtotime('+1 day', strtotime(base64_decode($_GET['end_date'])))];
 		}
 
-		$topic_list = $this->model('topic')->get_topic_list(implode(' AND ', $where), 'topic_id DESC', $_GET['page'], $this->per_page);
+		$topic_list = $this->model('topic')->get_topic_list($where, 'topic_id DESC', $_GET['page'], $this->per_page);
 
 		$total_rows = $this->model('topic')->total_rows();
 

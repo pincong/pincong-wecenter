@@ -45,46 +45,46 @@ class user extends AWS_ADMIN_CONTROLLER
 
         if ($_GET['type'] == 'forbidden')
         {
-            $where[] = 'forbidden <> 0';
+            $where[] = ['forbidden', 'notEq', 0];
         }
 
         if ($_GET['type'] == 'flagged')
         {
-            $where[] = 'flagged <> 0';
+            $where[] = ['flagged', 'notEq', 0];
         }
 
         if ($_GET['user_name'])
         {
-            $where[] = "user_name LIKE '%" . $this->model('account')->escape($_GET['user_name']) . "%'";
+            $where[] = ['user_name', 'like', '%' . $_GET['user_name'] . '%', 's'];
         }
 
         if ($_GET['group_id'])
         {
-            $where[] = 'group_id = ' . intval($_GET['group_id']);
+            $where[] = ['group_id', 'eq', $_GET['group_id'], 'i'];
         }
 
         if ($_GET['currency_min'])
         {
-            $where[] = 'currency >= ' . intval($_GET['currency_min']);
+            $where[] = ['currency', 'gte', $_GET['currency_min'], 'i'];
         }
 
         if ($_GET['currency_max'])
         {
-            $where[] = 'currency <= ' . intval($_GET['currency_max']);
+            $where[] = ['currency', 'lte', $_GET['currency_max'], 'i'];
         }
 
         if ($_GET['reputation_min'])
         {
-            $where[] = 'reputation >= ' . intval($_GET['reputation_min']);
+            $where[] = ['reputation', 'gte', $_GET['reputation_min'], 'i'];
         }
 
         if ($_GET['reputation_max'])
         {
-            $where[] = 'reputation <= ' . intval($_GET['reputation_max']);
+            $where[] = ['reputation', 'lte', $_GET['reputation_max'], 'i'];
         }
 
 
-        $user_list = $this->model('account')->fetch_page('users', implode(' AND ', $where), 'uid DESC', $_GET['page'], $this->per_page);
+        $user_list = $this->model('account')->fetch_page('users', $where, 'uid DESC', $_GET['page'], $this->per_page);
         foreach($user_list as $key => $val)
         {
             $user_list[$key]['reputation_group_id'] = $this->model('usergroup')->get_group_id_by_reputation($val['reputation']);
@@ -195,7 +195,7 @@ class user extends AWS_ADMIN_CONTROLLER
 
     public function currency_log_action()
     {
-        if ($log = $this->model('currency')->fetch_page('currency_log', 'uid = ' . intval($_GET['uid']), 'id DESC', $_GET['page'], 50))
+        if ($log = $this->model('currency')->fetch_page('currency_log', ['uid', 'eq', $_GET['uid'], 'i'], 'id DESC', $_GET['page'], 50))
         {
             TPL::assign('pagination', AWS_APP::pagination()->create(array(
                 'base_url' => url_rewrite('/admin/user/currency_log/uid-' . intval($_GET['uid'])),

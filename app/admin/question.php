@@ -54,42 +54,42 @@ class question extends AWS_ADMIN_CONTROLLER
 
 		if ($_GET['keyword'])
 		{
-			$where[] = "(`title` LIKE '%" . $this->model('question')->escape($_GET['keyword']) . "%')";
+			$where[] = ['title', 'like', '%' . $_GET['keyword'] . '%', 's'];
 		}
 
 		if ($_GET['category_id'])
 		{
-			$where[] = 'category_id = ' . intval($category_id);
+			$where[] = ['category_id', 'eq', $category_id, 'i'];
 		}
 
 		if (base64_decode($_GET['start_date']))
 		{
-			$where[] = 'add_time >= ' . strtotime(base64_decode($_GET['start_date']));
+			$where[] = ['add_time', 'gte', strtotime(base64_decode($_GET['start_date']))];
 		}
 
 		if (base64_decode($_GET['end_date']))
 		{
-			$where[] = 'add_time <= ' . strtotime('+1 day', strtotime(base64_decode($_GET['end_date'])));
+			$where[] = ['add_time', 'lte', strtotime('+1 day', strtotime(base64_decode($_GET['end_date'])))];
 		}
 
 		if ($_GET['user_name'])
 		{
 			$user_info = $this->model('account')->get_user_info_by_username($_GET['user_name']);
 
-			$where[] = 'uid = ' . intval($user_info['uid']);
+			$where[] = ['uid', 'eq', $user_info['uid'], 'i'];
 		}
 
 		if ($_GET['answer_count_min'])
 		{
-			$where[] = 'answer_count >= ' . intval($_GET['answer_count_min']);
+			$where[] = ['answer_count', 'gte', $_GET['answer_count_min'], 'i'];
 		}
 
 		if ($_GET['answer_count_max'])
 		{
-			$where[] = 'answer_count <= ' . intval($_GET['answer_count_max']);
+			$where[] = ['answer_count', 'lte', $_GET['answer_count_max'], 'i'];
 		}
 
-		if ($question_list = $this->model('question')->fetch_page('question', implode(' AND ', $where), 'id DESC', $_GET['page'], $this->per_page))
+		if ($question_list = $this->model('question')->fetch_page('question', $where, 'id DESC', $_GET['page'], $this->per_page))
 		{
 			$total_rows = $this->model('question')->total_rows();
 

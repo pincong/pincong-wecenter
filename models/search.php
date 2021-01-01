@@ -20,88 +20,32 @@ if (!defined('IN_ANWSION'))
 
 class search_class extends AWS_MODEL
 {
-	public function get_mixed_result($types, $q, $page, $limit = 20)
+	public function search($q, $search_type, $page = 1, $limit = 20)
 	{
-		$types = explode(',', $types);
-
-		if (in_array('users', $types))
+		$q = trim($q);
+		if (!$q)
 		{
-			$result = array_merge((array)$result, (array)$this->search_users($q, $page, $limit));
+			return false;
 		}
 
-		if (in_array('topics', $types))
+		if ($search_type == 'users')
 		{
-			$result = array_merge((array)$result, (array)$this->search_topics($q, $page, $limit));
+			$result_list = $this->fetch_all('users', [['forbidden', 'eq', 0], ['user_name', 'like', $q . '%', 's']], 'uid ASC', $page, $limit);
 		}
-
-		return $result;
-	}
-
-	public function search_users($q, $page, $limit = 20)
-	{
-		if (is_array($q) AND sizeof($q) > 1)
+		else if ($search_type == 'topics')
 		{
-			$where[] = "user_name = '" . $this->escape(implode(' ', $q)) . "' OR user_name = '" . $this->escape(implode('', $q)) . "'";
+			$result_list = $this->fetch_all('topic', ['topic_title', 'like', $q . '%', 's'], 'topic_id ASC', $page, $limit);
 		}
 		else
 		{
-			if (is_array($q))
-			{
-				$q = implode('', $q);
-			}
-
-			$where[] = "user_name LIKE '" . $this->escape($q) . "%'";
-		}
-
-		return $this->query_all('SELECT uid, user_name FROM ' . $this->get_table('users') . ' WHERE ' . implode(' OR ', $where) . ' LIMIT ' . calc_page_limit($page, $limit));
-	}
-
-	public function search_topics($q, $page, $limit = 20)
-	{
-		if (is_array($q))
-		{
-			$q = implode('', $q);
-		}
-
-		$result = $this->fetch_page('topic', "topic_title LIKE '" . $this->escape($q) . "%'", null, $page, $limit);
-
-		return $result;
-	}
-
-	public function search($q, $search_type, $page = 1, $limit = 20)
-	{
-		if (!$q)
-		{
 			return false;
 		}
-
-		$q = (array)explode(' ', str_replace('  ', ' ', trim($q)));
-
-		foreach ($q AS $key => $val)
-		{
-			if (strlen($val) == 1)
-			{
-				unset($q[$key]);
-			}
-		}
-
-		if (!$q)
-		{
-			return false;
-		}
-
-		if (!$search_type)
-		{
-			$search_type = 'users,topics';
-		}
-
-		$result_list = $this->get_mixed_result($search_type, $q, $page, $limit);
 
 		if ($result_list)
 		{
 			foreach ($result_list as $result_info)
 			{
-				$result = $this->prase_result_info($result_info);
+				$result = $this->prase_result_info($search_type, $result_info);
 
 				if (is_array($result))
 				{
@@ -113,37 +57,28 @@ class search_class extends AWS_MODEL
 		return $data;
 	}
 
-	public function prase_result_info($result_info)
+
+	private function prase_result_info($result_type, $result_info)
 	{
-		if (isset($result_info['user_name']))
+		if ($result_type == 'users')
 		{
-			$result_type = 'users';
-
 			$search_id = $result_info['uid'];
-
-			$user_info = $this->model('account')->get_user_info_by_uid($result_info['uid']);
-
-			$name = $user_info['user_name'];
-
-			$url = url_rewrite('/people/' . $user_info['url_token']);
+			$name = $result_info['user_name'];
+			$url = url_rewrite('/people/' . urlencode($name));
 
 			$detail = array(
-				'avatar_file' => UF::avatar($user_info, 'mid'),	// 头像
-				'signature' => $user_info['signature'],	// 签名
-				'reputation' =>  intval($user_info['reputation']),	// 声望
-				'agree_count' =>  $user_info['agree_count'],	// 赞同
-				'fans_count' =>  $user_info['fans_count'],	// 关注数
+				'avatar_file' => UF::avatar($result_info, 'mid'),	// 头像
+				'signature' => $result_info['signature'],	// 签名
+				'reputation' =>  intval($result_info['reputation']),	// 声望
+				'agree_count' =>  $result_info['agree_count'],	// 赞同
+				'fans_count' =>  $result_info['fans_count'],	// 关注数
 			);
 		}
-		else if ($result_info['topic_id'])
+		else if ($result_type == 'topics')
 		{
-			$result_type = 'topics';
-
 			$search_id = $result_info['topic_id'];
-
-			$url = url_rewrite('/topic/' . urlencode($result_info['topic_title']));
-
 			$name = $result_info['topic_title'];
+			$url = url_rewrite('/topic/' . urlencode($name));
 
 			$detail = array(
 				'topic_pic'=> get_topic_pic_url($result_info, 'mid'),
@@ -166,4 +101,5 @@ class search_class extends AWS_MODEL
 			);
 		}
 	}
+
 }
