@@ -56,7 +56,7 @@ class question_class extends AWS_MODEL
 			$parents = $this->get_question_info_by_ids($parent_ids);
 			foreach ($list AS $key => $val)
 			{
-				$list[$key]['question_info'] = $parents[$val['id']];
+				$list[$key]['question_info'] = $parents[$val['question_id']];
 			}
 		}
 
