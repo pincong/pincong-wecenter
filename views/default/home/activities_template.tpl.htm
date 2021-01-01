@@ -46,7 +46,7 @@
 	<div class="mod-body clearfix">
 		<div class="markitup-box">
 			<a class="aw-small-text" href="<?php echo url_rewrite(); ?>/question/item_id-<?php echo $val['id']; ?>">
-				<?php echo FORMAT::text(cjk_substr($val['message'], 0, 200, 'UTF-8', '...')); ?>
+				<?php echo safe_text(truncate_text($val['message'], 200)); ?>
 			</a>
 		</div>
 	</div>
@@ -95,7 +95,7 @@
 	<div class="mod-body clearfix">
 		<div class="markitup-box">
 			<a class="aw-small-text" href="<?php echo url_rewrite(); ?>/article/item_id-<?php echo $val['id']; ?>">
-				<?php echo FORMAT::text(cjk_substr(strip_ubb($val['message']), 0, 200, 'UTF-8', '...')); ?>
+				<?php echo safe_text(truncate_text($val['message'], 200)); ?>
 			</a>
 		</div>
 	</div>
@@ -144,7 +144,7 @@
 	<div class="mod-body clearfix">
 		<div class="markitup-box">
 			<a class="aw-small-text" href="<?php echo url_rewrite(); ?>/video/item_id-<?php echo $val['id']; ?>">
-				<?php echo FORMAT::text(cjk_substr(strip_ubb($val['message']), 0, 200, 'UTF-8', '...')); ?>
+				<?php echo safe_text(truncate_text($val['message'], 200)); ?>
 			</a>
 		</div>
 	</div>

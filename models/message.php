@@ -255,7 +255,7 @@ class message_class extends AWS_MODEL
 		{
 			$dialog_message = $this->fetch_row('inbox', 'dialog_id = ' . intval($dialog_id), 'id DESC');
 
-			$last_message[$dialog_id] = cjk_substr($this->decrypt($dialog_message['message']), 0, 60, 'UTF-8', '...');
+			$last_message[$dialog_id] = truncate_text($this->decrypt($dialog_message['message']), 60);
 		}
 
 		return $last_message;

@@ -14,7 +14,7 @@
 			<?php if (!$val['message']) { ?>
 				<s class="aw-deleted"><?php _e('已删除'); ?></s>
 			<?php } else { ?>
-				<?php echo cjk_substr($val['message'], 0, 200, 'UTF-8', '...'); ?>
+				<?php echo safe_text(truncate_text($val['message'], 200)); ?>
 			<?php } ?>
 			</a>
 			</p>

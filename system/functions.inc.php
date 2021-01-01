@@ -82,28 +82,22 @@ function cjk_strlen($string, $charset = 'UTF-8')
 /**
  * 双字节语言版 substr
  *
- * 使用方法同 substr(), $dot 参数为截断后带上的字符串, 一般场景下使用省略号
+ * 使用方法同 substr()
  *
  * @param  string
  * @param  int
  * @param  int
  * @param  string
- * @param  string
  * @return string
  */
-function cjk_substr($string, $start, $length, $charset = 'UTF-8', $dot = '')
+function cjk_substr($string, $start, $length, $charset = 'UTF-8')
 {
-	if (cjk_strlen($string, $charset) <= $length)
-	{
-		return $string;
-	}
-
 	if (function_exists('iconv_substr'))
 	{
-		return iconv_substr($string, $start, $length, $charset) . $dot;
+		return iconv_substr($string, $start, $length, $charset);
 	}
 
-	return mb_substr($string, $start, $length, $charset) . $dot;
+	return mb_substr($string, $start, $length, $charset);
 }
 
 /**
@@ -269,22 +263,6 @@ function compile_password($password, $salt)
 function bcrypt_password_hash($password)
 {
 	return password_hash($password, PASSWORD_BCRYPT);
-}
-
-
-/**
- * 删除 UBB 标识码
- *
- * @param  string
- * @return string
- */
-function strip_ubb($str)
-{
-	$str = preg_replace('/\[[^\]]+\](http[s]?:\/\/[^\[]*)\[\/[^\]]+\]/', ' $1 ', $str);
-
-	$pattern = '/\[[^\]]+\]([^\[]*)\[\/[^\]]+\]/';
-	$replacement = ' $1 ';
-	return preg_replace($pattern, $replacement, preg_replace($pattern, $replacement, $str));
 }
 
 /**
@@ -494,6 +472,16 @@ function &unnest_bbcode($text) {
 		array('&#91;', '&#93;'),
 		$text
 	);
+}
+
+
+function &truncate_text($string, $length, $ellipsis = '...')
+{
+	if (cjk_strlen($string) <= $length)
+	{
+		return $string;
+	}
+	return cjk_substr($string, 0, $length) . $ellipsis;
 }
 
 

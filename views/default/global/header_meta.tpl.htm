@@ -6,8 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="renderer" content="webkit" />
 <title><?php echo $this->page_title; ?></title>
-<meta name="keywords" content="<?php echo $this->_meta_keywords; ?>" />
-<meta name="description" content="<?php echo $this->_meta_description; ?>" />
+<meta name="keywords" content="<?php echo FORMAT::text($this->_meta_keywords, false); ?>" />
+<meta name="description" content="<?php echo FORMAT::text($this->_meta_description, false); ?>" />
 <base href="<?php echo url_rewrite('/'); ?>" /><!--[if IE]></base><![endif]-->
 <link href="<?php echo base_url(); ?>/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 

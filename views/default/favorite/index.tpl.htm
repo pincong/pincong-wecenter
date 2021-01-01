@@ -30,13 +30,7 @@
 										</h4>
 										<div class="content">
 											<div id="detail_<?php echo $val['item_id']; ?>">
-												<?php echo cjk_substr(strip_ubb($val['item']['message']), 0, 130, 'UTF-8', '...'); ?>
-												<?php if (cjk_strlen($val['item']['message']) > 130) { ?>
-												<a href="javascript:;" class="showMore" onclick="AWS.content_switcher($('#detail_<?php echo $val['item_id']; ?>'), $('#detail_more_<?php echo $val['item_id']; ?>'));"><?php _e('显示全部'); ?> »</a>
-												<?php } ?>
-											</div>
-											<div id="detail_more_<?php echo $val['item_id']; ?>" class="collapse">
-												<?php echo FORMAT::text(strip_ubb($val['item']['message'])); ?>
+												<?php echo safe_text(truncate_text($val['item']['message'], 200)); ?>
 											</div>
 										</div>
 										<!-- end 回答 -->

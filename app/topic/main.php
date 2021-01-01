@@ -78,7 +78,7 @@ class main extends AWS_CONTROLLER
 
 		if ($topic_info['topic_description'])
 		{
-			TPL::set_meta('description', $topic_info['topic_title'] . ' - ' . cjk_substr(str_replace("\r\n", ' ', strip_tags($topic_info['topic_description'])), 0, 128, 'UTF-8', '...'));
+			TPL::set_meta('description', $topic_info['topic_title'] . ' - ' . truncate_text(str_replace("\r\n", ' ', $topic_info['topic_description']), 128));
 		}
 
 		TPL::assign('topic_info', $topic_info);
@@ -98,7 +98,7 @@ class main extends AWS_CONTROLLER
 		}
 
 		TPL::set_meta('keywords', implode(',', $page_keywords));
-		TPL::set_meta('description', cjk_substr(str_replace("\r\n", ' ', strip_tags($topic_info['topic_description'])), 0, 128, 'UTF-8', '...'));
+		TPL::set_meta('description', truncate_text(str_replace("\r\n", ' ', $topic_info['topic_description']), 128));
 
 		TPL::assign('related_topics', $related_topics);
 

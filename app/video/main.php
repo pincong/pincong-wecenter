@@ -184,7 +184,7 @@ class main extends AWS_CONTROLLER
 
 		TPL::set_meta('keywords', implode(',', $this->model('system')->analysis_keyword($video_info['title'])));
 
-		TPL::set_meta('description', $video_info['title'] . ' - ' . cjk_substr(str_replace("\r\n", ' ', strip_tags($video_info['message'])), 0, 128, 'UTF-8', '...'));
+		TPL::set_meta('description', $video_info['title'] . ' - ' . truncate_text(str_replace("\r\n", ' ', $video_info['message']), 128));
 
 		if (get_setting('advanced_editor_enable') == 'Y')
 		{

@@ -166,7 +166,7 @@ class currency_class extends AWS_MODEL
 					if ($answers[$item['item_id']])
 					{
 						$result[$log_id] = array(
-							'title' => cjk_substr($answers[$item['item_id']]['message'], 0, 24, 'UTF-8', '...'),
+							'title' => truncate_text($answers[$item['item_id']]['message'], 24),
 							'url' => url_rewrite('/question/' . $answers[$item['item_id']]['question_id'])
 						);
 					}
@@ -176,7 +176,7 @@ class currency_class extends AWS_MODEL
 					if ($article_comments[$item['item_id']])
 					{
 						$result[$log_id] = array(
-							'title' => cjk_substr($article_comments[$item['item_id']]['message'], 0, 24, 'UTF-8', '...'),
+							'title' => truncate_text($article_comments[$item['item_id']]['message'], 24),
 							'url' => url_rewrite('/article/' . $article_comments[$item['item_id']]['article_id'])
 						);
 					}
@@ -186,7 +186,7 @@ class currency_class extends AWS_MODEL
 					if ($video_comments[$item['item_id']])
 					{
 						$result[$log_id] = array(
-							'title' => cjk_substr($video_comments[$item['item_id']]['message'], 0, 24, 'UTF-8', '...'),
+							'title' => truncate_text($video_comments[$item['item_id']]['message'], 24),
 							'url' => url_rewrite('/v/' . $video_comments[$item['item_id']]['video_id'])
 						);
 					}

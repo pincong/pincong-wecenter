@@ -221,7 +221,7 @@ class main extends AWS_CONTROLLER
 
 		TPL::set_meta('keywords', implode(',', $this->model('system')->analysis_keyword($question_info['title'])));
 
-		TPL::set_meta('description', $question_info['title'] . ' - ' . cjk_substr(str_replace("\r\n", ' ', strip_tags($question_info['message'])), 0, 128, 'UTF-8', '...'));
+		TPL::set_meta('description', $question_info['title'] . ' - ' . truncate_text(str_replace("\r\n", ' ', $question_info['message']), 128));
 
 		if (get_setting('advanced_editor_enable') == 'Y')
 		{
