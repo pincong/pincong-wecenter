@@ -93,7 +93,7 @@ class activity_class extends AWS_MODEL
 			{
 				foreach ($answers AS $key => $val)
 				{
-					$answers[$key]['question_info'] = $questions[$val['question_id']];
+					$answers[$key]['thread_info'] = $questions[$val['question_id']];
 				}
 			}
 		}
@@ -119,7 +119,7 @@ class activity_class extends AWS_MODEL
 			{
 				foreach ($article_comments AS $key => $val)
 				{
-					$article_comments[$key]['article_info'] = $articles[$val['article_id']];
+					$article_comments[$key]['thread_info'] = $articles[$val['article_id']];
 				}
 			}
 		}
@@ -145,7 +145,7 @@ class activity_class extends AWS_MODEL
 			{
 				foreach ($video_comments AS $key => $val)
 				{
-					$video_comments[$key]['video_info'] = $videos[$val['video_id']];
+					$video_comments[$key]['thread_info'] = $videos[$val['video_id']];
 				}
 			}
 		}
@@ -191,6 +191,10 @@ class activity_class extends AWS_MODEL
 				continue;
 			}
 			$item['user_info'] = $users[$item['uid']];
+			if ($item['thread_info'])
+			{
+				$item['thread_info']['user_info'] = $users[$item['thread_info']['uid']];
+			}
 			$item['item_category_id'] = $val['category_id'];
 			$item['item_thread_id'] = $val['thread_id'];
 			$items[] = $item;

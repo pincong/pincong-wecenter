@@ -5,6 +5,7 @@
 <?php if ($val['user_info']['flagged'] > 1) continue; ?>
 
 <?php if ($val['item_type'] == 'question') { ?>
+<?php if (!$val['title']) continue; ?>
 
 <!-- 问题 -->
 <div class="aw-item">
@@ -19,13 +20,14 @@
 			<?php _e('%s 个回复', $val['answer_count']); ?>
 		</p>
 		<h4>
-			<a href="question/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['title']; ?><?php } ?></a>
+			<a href="question/<?php echo $val['id']; ?>"><?php echo $val['title']; ?></a>
 		</h4>
 	</div>
 </div>
 <!-- end 问题 -->
 
 <?php } else if ($val['item_type'] == 'answer') { ?>
+<?php if (!$val['message']) continue; ?>
 
 <!-- 回答 -->
 <div class="aw-item">
@@ -38,24 +40,21 @@
 			<?php echo date_friendly($val['add_time']); ?>
 		</p>
 		<h4>
-			<a href="question/<?php echo $val['question_info']['id']; ?>"><?php if (!$val['question_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['question_info']['title']; ?><?php } ?></a>
+			<a href="question/<?php echo $val['thread_info']['id']; ?>"><?php if (!$val['thread_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['thread_info']['title']; ?><?php } ?></a>
 		</h4>
 	</div>
 	<div class="mod-body clearfix">
-		<div id="detail_<?php echo $val['id']; ?>" class="markitup-box">
-			<?php echo nl2br(cjk_substr(strip_ubb($val['message']), 0, 130, 'UTF-8', '...')); ?>
-		<?php if (cjk_strlen($val['message']) > 130) { ?>
-		<a href="javascript:;" class="showMore" onclick="AWS.content_switcher($('#detail_<?php echo $val['id']; ?>'), $('#detail_more_<?php echo $val['id']; ?>'));"><?php _e('显示全部'); ?> »</a>
-		<?php } ?>
-		</div>
-		<div id="detail_more_<?php echo $val['id']; ?>" class="collapse markitup-box">
-			<?php echo nl2br(strip_ubb($val['message'])); ?>
+		<div class="markitup-box">
+			<a class="aw-small-text" href="question/item_id-<?php echo $val['id']; ?>">
+				<?php echo nl2br(cjk_substr($val['message'], 0, 200, 'UTF-8', '...')); ?>
+			</a>
 		</div>
 	</div>
 </div>
 <!-- end 回答 -->
 
 <?php } else if ($val['item_type'] == 'article') { ?>
+<?php if (!$val['title']) continue; ?>
 
 <!-- 文章 -->
 <div class="aw-item">
@@ -70,13 +69,14 @@
 			<?php _e('%s 个评论', $val['comments']); ?>
 		</p>
 		<h4>
-			<a href="article/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['title']; ?><?php } ?></a>
+			<a href="article/<?php echo $val['id']; ?>"><?php echo $val['title']; ?></a>
 		</h4>
 	</div>
 </div>
 <!-- end 文章 -->
 
 <?php } else if ($val['item_type'] == 'article_comment') { ?>
+<?php if (!$val['message']) continue; ?>
 
 <!-- 文章评论 -->
 <div class="aw-item">
@@ -89,24 +89,21 @@
 			<?php echo date_friendly($val['add_time']); ?>
 		</p>
 		<h4>
-			<a href="article/<?php echo $val['article_info']['id']; ?>"><?php if (!$val['article_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['article_info']['title']; ?><?php } ?></a>
+			<a href="article/<?php echo $val['thread_info']['id']; ?>"><?php if (!$val['thread_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['thread_info']['title']; ?><?php } ?></a>
 		</h4>
 	</div>
 	<div class="mod-body clearfix">
-		<div id="detail_<?php echo $val['id']; ?>" class="markitup-box">
-			<?php echo nl2br(cjk_substr(strip_ubb($val['message']), 0, 130, 'UTF-8', '...')); ?>
-		<?php if (cjk_strlen($val['message']) > 130) { ?>
-		<a href="javascript:;" class="showMore" onclick="AWS.content_switcher($('#detail_<?php echo $val['id']; ?>'), $('#detail_more_<?php echo $val['id']; ?>'));"><?php _e('显示全部'); ?> »</a>
-		<?php } ?>
-		</div>
-		<div id="detail_more_<?php echo $val['id']; ?>" class="collapse markitup-box">
-			<?php echo nl2br(strip_ubb($val['message'])); ?>
+		<div class="markitup-box">
+			<a class="aw-small-text" href="question/item_id-<?php echo $val['id']; ?>">
+				<?php echo nl2br(cjk_substr(strip_ubb($val['message']), 0, 200, 'UTF-8', '...')); ?>
+			</a>
 		</div>
 	</div>
 </div>
 <!-- end 文章评论 -->
 
 <?php } else if ($val['item_type'] == 'video') { ?>
+<?php if (!$val['title']) continue; ?>
 
 <!-- 影片 -->
 <div class="aw-item">
@@ -121,13 +118,14 @@
 			<?php _e('%s 个评论', $val['comment_count']); ?>
 		</p>
 		<h4>
-			<a href="video/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['title']; ?><?php } ?></a>
+			<a href="video/<?php echo $val['id']; ?>"><?php echo $val['title']; ?></a>
 		</h4>
 	</div>
 </div>
 <!-- end 影片 -->
 
 <?php } else if ($val['item_type'] == 'video_comment') { ?>
+<?php if (!$val['message']) continue; ?>
 
 <!-- 影片评论 -->
 <div class="aw-item">
@@ -140,18 +138,14 @@
 			<?php echo date_friendly($val['add_time']); ?>
 		</p>
 		<h4>
-			<a href="video/<?php echo $val['video_info']['id']; ?>"><?php if (!$val['video_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['video_info']['title']; ?><?php } ?></a>
+			<a href="video/<?php echo $val['thread_info']['id']; ?>"><?php if (!$val['thread_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['thread_info']['title']; ?><?php } ?></a>
 		</h4>
 	</div>
 	<div class="mod-body clearfix">
-		<div id="detail_<?php echo $val['id']; ?>" class="markitup-box">
-			<?php echo nl2br(cjk_substr(strip_ubb($val['message']), 0, 130, 'UTF-8', '...')); ?>
-		<?php if (cjk_strlen($val['message']) > 130) { ?>
-		<a href="javascript:;" class="showMore" onclick="AWS.content_switcher($('#detail_<?php echo $val['id']; ?>'), $('#detail_more_<?php echo $val['id']; ?>'));"><?php _e('显示全部'); ?> »</a>
-		<?php } ?>
-		</div>
-		<div id="detail_more_<?php echo $val['id']; ?>" class="collapse markitup-box">
-			<?php echo nl2br(strip_ubb($val['message'])); ?>
+		<div class="markitup-box">
+			<a class="aw-small-text" href="question/item_id-<?php echo $val['id']; ?>">
+				<?php echo nl2br(cjk_substr(strip_ubb($val['message']), 0, 200, 'UTF-8', '...')); ?>
+			</a>
 		</div>
 	</div>
 </div>

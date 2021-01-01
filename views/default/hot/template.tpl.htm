@@ -70,7 +70,7 @@
 			<?php _e('回复了问题'); ?>
 		</p>
 		<h2 style="font-size:16px;">
-			<a href="question/<?php echo $val['question_info']['id']; ?>"><?php echo $val['question_info']['title']; ?></a>
+			<a href="question/<?php echo $val['thread_info']['id']; ?>"><?php echo CF::title($val['thread_info']['user_info'], 'question_' . $val['thread_info']['id'], $val['thread_info']['title']); ?></a>
 		</h2>
 	</div>
 	<div class="mod-body clearfix">
@@ -178,7 +178,7 @@
 			<?php _e('评论了文章'); ?>
 		</p>
 		<h2 style="font-size:16px;">
-			<a href="article/<?php echo $val['article_info']['id']; ?>"><?php echo $val['article_info']['title']; ?></a>
+			<a href="article/<?php echo $val['thread_info']['id']; ?>"><?php echo CF::title($val['thread_info']['user_info'], 'article_' . $val['thread_info']['id'], $val['thread_info']['title']); ?></a>
 		</h2>
 	</div>
 	<div class="mod-body clearfix">
@@ -270,7 +270,7 @@
 			<?php _e('评论了影片'); ?>
 		</p>
 		<h2 style="font-size:16px;">
-			<a href="video/<?php echo $val['video_info']['id']; ?>"><?php echo $val['video_info']['title']; ?></a>
+			<a href="video/<?php echo $val['thread_info']['id']; ?>"><?php echo CF::title($val['thread_info']['user_info'], 'video_' . $val['thread_info']['id'], $val['thread_info']['title']); ?></a>
 		</h2>
 	</div>
 	<div class="mod-body clearfix">
