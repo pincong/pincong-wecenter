@@ -467,3 +467,49 @@ function friendly_error_type($type)
 	}
 	return strval($type);
 }
+
+function content_replace(&$content, $replacing_list)
+{
+	if (!$content OR !$replacing_list)
+	{
+		return;
+	}
+
+	foreach($replacing_list AS $word => $replacement)
+	{
+		if (!isset($replacement))
+		{
+			$replacement = '';
+		}
+
+		if (substr($word, 0, 1) == '{' AND substr($word, -1, 1) == '}')
+		{
+			$content = preg_replace(substr($word, 1, -1), $replacement, $content);
+		}
+		else
+		{
+			$content = str_ireplace($word, $replacement, $content);
+		}
+	}
+}
+
+
+
+// 命中返回 true, 未命中返回 false
+function content_url_whitelist_check($content_url)
+{
+	return S::content_contains('content_url_whitelist', $content_url);
+}
+
+// 命中返回 true, 未命中返回 false
+function hyperlink_blacklist_check($hyperlink)
+{
+	return S::content_contains('hyperlink_blacklist', $hyperlink);
+}
+
+// 命中返回 true, 未命中返回 false
+function hyperlink_whitelist_check($hyperlink)
+{
+	return S::content_contains('hyperlink_whitelist', $hyperlink);
+}
+

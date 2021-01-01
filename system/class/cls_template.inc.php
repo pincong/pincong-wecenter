@@ -110,12 +110,12 @@ class TPL
 				if (S::get('html_content_replace') == 'Y')
 				{
 					$replacing_list = S::get_key_value_pairs('html_replacing_list', '<>', true);
-					H::content_replace($output, $replacing_list);
+					content_replace($output, $replacing_list);
 				}
 				if (S::get('sensitive_words_replace') == 'Y')
 				{
 					$replacing_list = S::get_key_value_pairs('sensitive_words', '<>', true);
-					H::content_replace($output, $replacing_list);
+					content_replace($output, $replacing_list);
 				}
 			}
 		}

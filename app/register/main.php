@@ -84,7 +84,7 @@ class main extends AWS_CONTROLLER
 		// 检查验证码
 		if ($captcha_required)
 		{
-			if (!AWS_APP::captcha()->is_valid($_POST['captcha'], HTTP::get_cookie('captcha')))
+			if (!AWS_APP::captcha()->is_valid($_POST['captcha'], H::get_cookie('captcha')))
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('请填写正确的验证码'), '/register/');
 			}

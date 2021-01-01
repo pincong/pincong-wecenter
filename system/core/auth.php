@@ -73,7 +73,7 @@ class core_auth
 	public function authenticate(&$user_info)
 	{
 		// 首先尝试 token 认证
-		if ($token = HTTP::get_cookie('user_token'))
+		if ($token = H::get_cookie('user_token'))
 		{
 			if ($this->_get_payload_from_token($payload, $token))
 			{
@@ -88,7 +88,7 @@ class core_auth
 			$this->wipe_token();
 		}
 		// 尝试 cookie 认证
-		if ($cookie = HTTP::get_cookie('user_login'))
+		if ($cookie = H::get_cookie('user_login'))
 		{
 			if ($this->_get_payload_from_cookie($payload, $cookie))
 			{
@@ -115,7 +115,7 @@ class core_auth
 
 	public function is_admin()
 	{
-		if ($token = HTTP::get_cookie('user_token'))
+		if ($token = H::get_cookie('user_token'))
 		{
 			if ($this->_get_payload_from_token($payload, $token))
 			{
@@ -130,7 +130,7 @@ class core_auth
 
 	public function admin_authorize()
 	{
-		if ($token = HTTP::get_cookie('user_token'))
+		if ($token = H::get_cookie('user_token'))
 		{
 			if ($this->_get_payload_from_token($payload, $token))
 			{
@@ -146,12 +146,12 @@ class core_auth
 
 	public function wipe_cookie()
 	{
-		HTTP::set_cookie('user_login', '', time() - 3600);
+		H::set_cookie('user_login', '', time() - 3600);
 	}
 
 	public function wipe_token()
 	{
-		HTTP::set_cookie('user_token', '', time() - 3600);
+		H::set_cookie('user_token', '', time() - 3600);
 	}
 
 	public function send_cookie($uid, $scrambled_password, $expire = null)
@@ -160,7 +160,7 @@ class core_auth
 		{
 			$expire = time() + $expire;
 		}
-		HTTP::set_cookie('user_login', AWS_APP::crypt()->encode(json_encode(array(
+		H::set_cookie('user_login', AWS_APP::crypt()->encode(json_encode(array(
 			'uid' => $uid,
 			'password' => $scrambled_password
 		))), $expire);
@@ -168,7 +168,7 @@ class core_auth
 
 	public function send_token($token)
 	{
-		HTTP::set_cookie('user_token', $token);
+		H::set_cookie('user_token', $token);
 	}
 
 }

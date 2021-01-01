@@ -14,24 +14,40 @@
 
 class H
 {
-	public static function get_file_ext($file_name, $merge_type = true)
+	/**
+	 * 获取 COOKIE
+	 *
+	 * @param $name
+	 */
+	public static function get_cookie($name)
 	{
-		$file_ext = end(explode('.', $file_name));
-
-		if ($merge_type)
+		if (isset($_COOKIE[G_COOKIE_PREFIX . '_' . $name]))
 		{
-			if ($file_ext == 'jpeg' or $file_ext == 'jpe')
-			{
-				$file_ext = 'jpg';
-			}
-
-			if ($file_ext == 'htm')
-			{
-				$file_ext = 'html';
-			}
+			return $_COOKIE[G_COOKIE_PREFIX . '_' . $name];
 		}
 
-		return $file_ext;
+		return false;
+	}
+
+	/**
+	 * 设置 COOKIE
+	 *
+	 * @param $name
+	 * @param $value
+	 * @param $expire
+	 * @param $path
+	 * @param $domain
+	 * @param $secure
+	 * @param $httponly
+	 */
+	public static function set_cookie($name, $value = '', $expire = null, $path = '/', $domain = null, $secure = false, $httponly = true)
+	{
+		if (!$domain AND G_COOKIE_DOMAIN)
+		{
+			$domain = G_COOKIE_DOMAIN;
+		}
+
+		return setcookie(G_COOKIE_PREFIX . '_' . $name, $value, $expire, $path, $domain, $secure, $httponly);
 	}
 
 	/**
@@ -47,88 +63,77 @@ class H
 		exit;
 	}
 
-	public static function redirect_msg($message, $url = NULL, $interval = 5)
+	public static function redirect_msg($message, $url = null, $interval = 5)
 	{
 		TPL::assign('message', $message);
-		if ($url)
+		if ($url AND !is_website($url))
 		{
-			TPL::assign('url_bit', HTTP::parse_redirect_url($url));
+			$url = url_rewrite($url);
 		}
+		TPL::assign('url_bit', $url);
 		TPL::assign('interval', $interval);
 
 		echo TPL::render('global/show_message');
 		exit;
 	}
 
-	/** 生成 Options **/
-	public static function display_options($param, $default = '_DEFAULT_', $default_key = 'key')
+	public static function redirect($url)
 	{
-		if (is_array($param))
+		if (!$url)
 		{
-			$keyindex = 0;
-
-			foreach ($param as $key => $value)
-			{
-				if ($default_key == 'value')
-				{
-					$output .= '<option value="' . $key . '"' . (($value == $default) ? '  selected' : '') . '>' . $value . '</option>';
-				}
-				else
-				{
-					$output .= '<option value="' . $key . '"' . (($key == $default) ? '  selected' : '') . '>' . $value . '</option>';
-				}
-			}
-
+			$url = '/';
+		}
+		if (!is_website($url))
+		{
+			$url = url_rewrite($url);
 		}
 
-		return $output;
+		header('Location: ' . $url);
+		exit;
 	}
 
-
-
-	public static function content_replace(&$content, $replacing_list)
+	/**
+	 * NO CACHE 文件头
+	 *
+	 * @param $type
+	 * @param $charset
+	 */
+	public static function no_cache_header($type = 'text/html', $charset = 'utf-8')
 	{
-		if (!$content OR !$replacing_list)
+		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+		header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+		header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
+		header('Pragma: no-cache');
+		header('Content-Type: ' . $type . '; charset=' . $charset . '');
+	}
+
+	public static function error_403()
+	{
+		if ($_POST['_post_type'] == 'ajax')
 		{
-			return;
+			H::ajax_json_output(AWS_APP::RSM(null, -1, 'HTTP/1.1 403 Forbidden'));
 		}
-
-		foreach($replacing_list AS $word => $replacement)
+		else
 		{
-			if (!isset($replacement))
-			{
-				$replacement = '';
-			}
+			header('HTTP/1.1 403 Forbidden');
 
-			if (substr($word, 0, 1) == '{' AND substr($word, -1, 1) == '}')
-			{
-				$content = preg_replace(substr($word, 1, -1), $replacement, $content);
-			}
-			else
-			{
-				$content = str_ireplace($word, $replacement, $content);
-			}
+			echo TPL::render('global/error_403');
+			exit;
 		}
 	}
 
-
-
-	// 命中返回 true, 未命中返回 false
-	public static function content_url_whitelist_check($content_url)
+	public static function error_404()
 	{
-		return S::content_contains('content_url_whitelist', $content_url);
-	}
+		if ($_POST['_post_type'] == 'ajax')
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, 'HTTP/1.1 404 Not Found'));
+		}
+		else
+		{
+			header('HTTP/1.1 404 Not Found');
 
-	// 命中返回 true, 未命中返回 false
-	public static function hyperlink_blacklist_check($hyperlink)
-	{
-		return S::content_contains('hyperlink_blacklist', $hyperlink);
+			echo TPL::render('global/error_404');
+			exit;
+		}
 	}
-
-	// 命中返回 true, 未命中返回 false
-	public static function hyperlink_whitelist_check($hyperlink)
-	{
-		return S::content_contains('hyperlink_whitelist', $hyperlink);
-	}
-
 }

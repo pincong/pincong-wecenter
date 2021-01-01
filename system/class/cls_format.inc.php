@@ -30,7 +30,7 @@ class FORMAT
 		{
 			return $url;
 		}
-		if (!H::content_url_whitelist_check($orig_url))
+		if (!content_url_whitelist_check($orig_url))
 		{
 			return self::parse_link($orig_url);
 		}
@@ -48,7 +48,7 @@ class FORMAT
 		{
 			return $url;
 		}
-		if (!H::content_url_whitelist_check($orig_url))
+		if (!content_url_whitelist_check($orig_url))
 		{
 			return self::parse_link($orig_url);
 		}
@@ -75,7 +75,7 @@ class FORMAT
 			return $title;
 		}
 
-		if (H::hyperlink_whitelist_check($orig_url))
+		if (hyperlink_whitelist_check($orig_url))
 		{
 			if (is_inside_url($orig_url))
 			{
@@ -84,7 +84,7 @@ class FORMAT
 			return '<a href="' . $url . '" title="' . $url . '" rel="nofollow noreferrer noopener" target="_blank">' . $title . '</a>';
 		}
 
-		if (H::hyperlink_blacklist_check($orig_url))
+		if (hyperlink_blacklist_check($orig_url))
 		{
 			return $title;
 		}
@@ -130,7 +130,7 @@ class FORMAT
 		// 由于::text()被频繁调用, list设置太复杂会影响性能
 		if ($replace)
 		{
-			H::content_replace($text, $replacing_list);
+			content_replace($text, $replacing_list);
 		}
 
 		return $text;

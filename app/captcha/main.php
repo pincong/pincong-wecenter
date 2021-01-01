@@ -35,7 +35,7 @@ class main extends AWS_CONTROLLER
 	{
 		$word = AWS_APP::captcha()->generateWord();
 		$token = AWS_APP::captcha()->generateToken($word, 600);
-		HTTP::set_cookie('captcha', $token);
+		H::set_cookie('captcha', $token);
 		echo AWS_APP::captcha()->generateImage($word);
 		die;
 	}

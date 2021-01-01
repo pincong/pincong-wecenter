@@ -35,7 +35,7 @@ class main extends AWS_CONTROLLER
 			die;
 		}
 		$url = safe_base64_decode($_GET['id']);
-		if (!$url OR !H::content_url_whitelist_check($url))
+		if (!$url OR !content_url_whitelist_check($url))
 		{
 			die;
 		}
