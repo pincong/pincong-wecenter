@@ -69,27 +69,6 @@ var AW_TEMPLATE = {
 			'</div>'+
 		'</div>',
 
-	'commentBox' :
-			'<div class="aw-comment-box" id="{{comment_form_id}}">'+
-				'<div class="aw-comment-list"><p align="center" class="aw-padding10"><i class="aw-loading"></i></p></div>'+
-				'<form action="{{comment_form_action}}" method="post" onsubmit="return false">'+
-					'<div class="aw-comment-box-main">'+
-						'<textarea class="aw-comment-txt form-control" rows="2" name="message" placeholder="' + _t('讨论一下') + '..."></textarea>'+
-						'<div class="aw-comment-box-btn">'+
-							'<span class="pull-right">'+
-								'<!--<label><input type="checkbox" name="anonymous" value="1"> ' + _t('匿名') + '</label>-->' +
-								'<a href="javascript:;" class="btn btn-mini btn-success" onclick="AWS.User.save_comment($(this));">' + _t('讨论') + '</a>'+
-							'</span>'+
-						'</div>'+
-					'</div>'+
-				'</form>'+
-			'</div>',
-
-	'commentBoxClose' :
-			'<div class="aw-comment-box" id="{{comment_form_id}}">'+
-				'<div class="aw-comment-list"><p align="center" class="aw-padding10"><i class="aw-loading"></i></p></div>'+
-			'</div>',
-
 	'dropdownList' :
 		'<div aria-labelledby="dropdownMenu" role="menu" class="aw-dropdown">'+
 			'<ul class="aw-dropdown-list">'+

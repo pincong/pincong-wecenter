@@ -294,11 +294,18 @@ var AWS =
 	},
 
 	// 加载更多
-	load_list_view: function(url, selector, container, start_page, callback)
+	load_list_view: function(url, selector, container, start_page, total_pages, callback)
 	{
-		if (!selector.attr('id'))
+		if (typeof start_page == 'function')
 		{
-			return false;
+			callback = start_page;
+			start_page = null;
+			total_pages = null;
+		}
+		else if (typeof total_pages == 'function')
+		{
+			callback = total_pages;
+			total_pages = null;
 		}
 
 		if (!start_page)
@@ -353,7 +360,7 @@ var AWS =
 					$(_this).find('span').html(_t('没有更多了'));
 				}
 
-				if (callback != null)
+				if (callback)
 				{
 					callback();
 				}
@@ -367,25 +374,6 @@ var AWS =
 		{
 			selector.click();
 		}
-	},
-
-	// 重新加载讨论列表
-	reload_comments_list: function(item_id, element_id, type_name)
-	{
-		$('#aw-comment-box-' + type_name + '-' + element_id + ' .aw-comment-list').html('<p align="center" class="aw-padding10"><i class="aw-loading"></i></p>');
-
-		if (type_name == 'question')
-		{
-			var ajax_url = G_BASE_URL + '/question/ajax/get_question_discussions/question_id-' + item_id;
-		}
-		else if (type_name == 'answer')
-		{
-			ajax_url = G_BASE_URL + '/question/ajax/get_answer_discussions/answer_id-' + item_id;
-		}
-		$.get(ajax_url, function (data)
-		{
-			$('#aw-comment-box-' + type_name + '-' + element_id + ' .aw-comment-list').html(data);
-		});
 	},
 
 	// 提交表单并跳转
@@ -1106,17 +1094,6 @@ AWS.User =
 		});
 	},
 
-	// 提交讨论
-	save_comment: function(selector)
-	{
-		AWS.submit(selector.parents('form'), selector, function(err, rsm)
-		{
-			if (err) return;
-			AWS.reload_comments_list(rsm.item_id, rsm.item_id, rsm.type_name);
-			$('#aw-comment-box-' + rsm.type_name + '-' + rsm.item_id + ' form textarea').css('height', '34px');
-		});
-	},
-
 	// 删除讨论
 	remove_comment: function(selector, type, comment_id)
 	{
@@ -1773,103 +1750,6 @@ AWS.Message =
 
 AWS.Init =
 {
-	// 初始化问题讨论框
-	init_comment_box: function(selector)
-	{
-		$(document).on('click', selector, function ()
-		{
-			//$(this).parents('.aw-question-detail').find('.aw-invite-box').hide();
-
-			if (!$(this).attr('data-type') || !$(this).attr('data-id'))
-			{
-				return true;
-			}
-
-			var comment_box_id = '#aw-comment-box-' + $(this).attr('data-type') + '-' + 　$(this).attr('data-id');
-
-			if ($(comment_box_id).length)
-			{
-				if ($(comment_box_id).css('display') == 'none')
-				{
-					$(this).addClass('active');
-
-					$(comment_box_id).fadeIn();
-				}
-				else
-				{
-					$(this).removeClass('active');
-					$(comment_box_id).fadeOut();
-				}
-			}
-			else
-			{
-				// 动态插入commentBox
-				switch ($(this).attr('data-type'))
-				{
-					case 'question':
-						var comment_form_action = G_BASE_URL + '/question/ajax/save_question_discussion/question_id-' + $(this).attr('data-id');
-						var comment_data_url = G_BASE_URL + '/question/ajax/get_question_discussions/question_id-' + $(this).attr('data-id');
-						break;
-
-					case 'answer':
-						var comment_form_action = G_BASE_URL + '/question/ajax/save_answer_discussion/answer_id-' + $(this).attr('data-id');
-						var comment_data_url = G_BASE_URL + '/question/ajax/get_answer_discussions/answer_id-' + $(this).attr('data-id');
-						break;
-				}
-
-				if (G_USER_ID)
-				{
-					$(this).parents('.aw-item').find('.mod-footer').append(Hogan.compile(AW_TEMPLATE.commentBox).render(
-					{
-						'comment_form_id': comment_box_id.replace('#', ''),
-						'comment_form_action': comment_form_action
-					}));
-/*
-					$(comment_box_id).find('.aw-comment-txt').bind(
-					{
-						focus: function ()
-						{
-							$(comment_box_id).find('.aw-comment-box-btn').show();
-						},
-
-						blur: function ()
-						{
-							if ($(this).val() == '')
-							{
-								$(comment_box_id).find('.aw-comment-box-btn').hide();
-							}
-						}
-					});
-*/
-				}
-				else
-				{
-					$(this).parents('.aw-item').find('.mod-footer').append(Hogan.compile(AW_TEMPLATE.commentBoxClose).render(
-					{
-						'comment_form_id': comment_box_id.replace('#', ''),
-						'comment_form_action': comment_form_action
-					}));
-				}
-
-				// 判断是否有讨论数据
-				$.get(comment_data_url, function (result)
-				{
-					if ($.trim(result) == '')
-					{
-						result = '<div align="center" class="aw-padding10">' + _t('暂无讨论') + '</div>';
-					}
-
-					$(comment_box_id).find('.aw-comment-list').html(result);
-				});
-
-				// textarae自动增高
-				$(comment_box_id).find('.aw-comment-txt').autosize();
-
-				$(this).addClass('active');
-			}
-		});
-	},
-
 	// 初始化话题编辑box
 	init_topic_edit_box: function(selector) //selector -> .aw-edit-topic
 	{
