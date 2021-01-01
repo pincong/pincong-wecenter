@@ -151,16 +151,6 @@ class topic_class extends AWS_MODEL
 		return $topic_id;
 	}
 
-	public function remove_topic_relation($uid, $topic_id, $item_id, $type)
-	{
-		if (!$topic_info = $this->get_topic_by_id($topic_id))
-		{
-			return false;
-		}
-
-		return $this->delete('topic_relation', [['topic_id', 'eq', $topic_id, 'i'], ['item_id', 'eq', $item_id, 'i'], ['type', 'eq', $type, 's']]);
-	}
-
 	public function update_topic($uid, $topic_id, $topic_title = null, $topic_description = null, $topic_pic = null)
 	{
 		if (!$topic_info = $this->get_topic_by_id($topic_id))
@@ -432,55 +422,70 @@ class topic_class extends AWS_MODEL
 		}
 	}
 
-
-	public function save_topic_relation($uid, $topic_id, $item_id, $type)
+	public function get_topic_ids_by_item_id($item_id, $type)
 	{
-		if (!$topic_id OR !$item_id OR !$type)
+		return $this->fetch_column('topic_relation', 'topic_id', [['item_id', 'eq', $item_id, 'i'], ['type', 'eq', $type, 's']]);
+	}
+
+
+	public function has_thread_topic($item_type, $item_id, $topic_id)
+	{
+		$where = [
+			['type', 'eq', $item_type, 's'],
+			['item_id', 'eq', $item_id, 'i'],
+			['topic_id', 'eq', $topic_id, 'i'],
+		];
+
+		return !!$this->fetch_one('topic_relation', 'id', $where);
+	}
+
+	public function add_thread_topic($item_type, $item_id, $topic_id, $log_uid)
+	{
+		if (!$this->model('content')->check_thread_type($item_type))
 		{
 			return false;
 		}
 
-		if (!$topic_info = $this->get_topic_by_id($topic_id))
+		if ($this->has_thread_topic($item_type, $item_id, $topic_id))
 		{
-			return false;
+			return;
 		}
-
-		if ($flag = $this->check_topic_relation($topic_id, $item_id, $type))
-		{
-			return $flag;
-		}
-
-		$this->model('account')->save_recent_topics($uid, $topic_info['topic_title']);
 
 		$insert_id = $this->insert('topic_relation', array(
-			'topic_id' => intval($topic_id),
+			'type' => $item_type,
 			'item_id' => intval($item_id),
+			'topic_id' => intval($topic_id),
 			'add_time' => fake_time(),
-			'uid' => intval($uid),
-			'type' => $type
 		));
 
 		$this->model('topic')->update_discuss_count($topic_id);
 
+		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '添加话题', $log_uid, 'topic', $topic_id);
+
+		//$this->model('account')->save_recent_topics($log_uid, $topic_info['topic_title']);
+
 		return $insert_id;
 	}
 
-	public function check_topic_relation($topic_id, $item_id, $type)
+	public function remove_thread_topic($item_type, $item_id, $topic_id, $log_uid)
 	{
-		$where[] = ['topic_id', 'eq', $topic_id, 'i'];
-		$where[] = ['type', 'eq', $type, 's'];
-
-		if ($item_id)
+		if (!$this->model('content')->check_thread_type($item_type))
 		{
-			$where[] = ['item_id', 'eq', $item_id, 'i'];
+			return false;
 		}
 
-		return $this->fetch_one('topic_relation', 'id', $where);
-	}
+		if (!$this->has_thread_topic($item_type, $item_id, $topic_id))
+		{
+			return;
+		}
 
-	public function get_topic_ids_by_item_id($item_id, $type)
-	{
-		return $this->fetch_column('topic_relation', 'topic_id', [['item_id', 'eq', $item_id, 'i'], ['type', 'eq', $type, 's']]);
+		$this->delete('topic_relation', [
+			['type', 'eq', $item_type, 's'],
+			['item_id', 'eq', $item_id, 'i'],
+			['topic_id', 'eq', $topic_id, 'i'],
+		]);
+
+		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '移除话题', $log_uid, 'topic', $topic_id);
 	}
 
 

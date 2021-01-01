@@ -483,11 +483,9 @@ CREATE TABLE `aws_topic_relation` (
   `topic_id` int(11) DEFAULT '0',
   `item_id` int(11) DEFAULT '0',
   `add_time` int(11) DEFAULT '0',
-  `uid` int(11) DEFAULT '0',
   `type` varchar(16) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `topic_id` (`topic_id`),
-  KEY `uid` (`uid`),
   KEY `type` (`type`),
   KEY `item_id` (`item_id`)
 ) DEFAULT CHARSET=utf8mb4;

@@ -291,9 +291,19 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定的项目不存在')));
 		}
 
+		if (!check_user_operation_interval('edit_topic', $this->user_id, $this->user_info['permission']['interval_modify']))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+		}
+
 		if (!$thread_info = $this->model('content')->get_thread_info_by_id(H::POST('type'), H::POST('item_id')))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定的项目不存在')));
+		}
+
+		if ($thread_info['lock'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定的主题不能编辑话题')));
 		}
 
 		if (!$this->user_info['permission']['edit_question_topic'] AND $this->user_id != $thread_info['uid'])
@@ -301,7 +311,19 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
-		$this->model('topic')->remove_topic_relation($this->user_id, H::POST('topic_id'), H::POST('item_id'), H::POST('type'));
+		if (!$topic_info = $this->model('topic')->get_topic_by_id(H::POST('topic_id')))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('指定的项目不存在')));
+		}
+
+		$this->model('topic')->remove_thread_topic(
+			H::POST('type'),
+			H::POST('item_id'),
+			H::POST('topic_id'),
+			(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
+		);
+
+		set_user_operation_last_time('edit_topic', $this->user_id);
 
 		H::ajax_json_output(AWS_APP::RSM(null, -1, null));
 	}
@@ -340,7 +362,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($thread_info['lock'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定内容不能添加话题')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('锁定的主题不能编辑话题')));
 		}
 
 		$topics_limit_max = S::get_int('topics_limit_max');
@@ -362,7 +384,12 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题已锁定或没有创建话题权限, 不能添加话题')));
 		}
 
-		$this->model('topic')->save_topic_relation($this->user_id, $topic_id, H::POST('item_id'), H::POST('type'));
+		$this->model('topic')->add_thread_topic(
+			H::POST('type'),
+			H::POST('item_id'),
+			$topic_id,
+			(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
+		);
 
 		set_user_operation_last_time('edit_topic', $this->user_id);
 

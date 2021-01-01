@@ -54,14 +54,14 @@ class publish_class extends AWS_MODEL
 		return real_time() + $minutes * 60 + rand(-30, 30);
 	}
 
-	private function save_topics($type, $uid, $item_id, $topics)
+	private function save_topics($thread_type, $thread_id, $topics, $uid)
 	{
 		if (is_array($topics))
 		{
 			foreach ($topics AS $topic_title)
 			{
 				$topic_id = $this->model('topic')->save_topic($topic_title, $uid, true);
-				$this->model('topic')->save_topic_relation($uid, $topic_id, $item_id, $type);
+				$this->model('topic')->add_thread_topic($thread_type, $thread_id, $topic_id, null);
 			}
 		}
 	}
@@ -219,7 +219,7 @@ class publish_class extends AWS_MODEL
 
 		$this->model('posts')->set_posts_index($item_id, 'question');
 
-		$this->save_topics('question', $data['uid'], $item_id, $data['topics']);
+		$this->save_topics('question', $item_id, $data['topics'], $data['uid']);
 
 		if ($data['ask_user_id'])
 		{
@@ -260,7 +260,7 @@ class publish_class extends AWS_MODEL
 
 		$this->model('posts')->set_posts_index($item_id, 'article');
 
-		$this->save_topics('article', $data['uid'], $item_id, $data['topics']);
+		$this->save_topics('article', $item_id, $data['topics'], $data['uid']);
 
 		if ($data['follow'])
 		{
@@ -298,7 +298,7 @@ class publish_class extends AWS_MODEL
 
 		$this->model('posts')->set_posts_index($item_id, 'video');
 
-		$this->save_topics('video', $data['uid'], $item_id, $data['topics']);
+		$this->save_topics('video', $item_id, $data['topics'], $data['uid']);
 
 		if ($data['follow'])
 		{
