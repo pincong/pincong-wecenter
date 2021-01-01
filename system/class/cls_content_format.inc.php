@@ -177,6 +177,11 @@ class CF
 	{
 		$user_info = $item_info['user_info'] ?? null;
 
+		if ($user_info AND $user_info['forbidden'] == 2)
+		{
+			return self::txt_hidden();
+		}
+
 		if ($kb = self::get_kb($user_info, 'reply_' . $item_info['id']))
 		{
 			$text = $kb['title'] . "\r\n\r\n" . $kb['message'];
@@ -195,6 +200,11 @@ class CF
 	{
 		$user_info = $item_info['user_info'] ?? null;
 
+		if ($user_info AND $user_info['forbidden'] == 2)
+		{
+			return self::txt_hidden();
+		}
+
 		if ($kb = self::get_kb($user_info, 'reply_' . $item_info['id']))
 		{
 			$text = $kb['title'] . "\r\n\r\n" . $kb['message'];
@@ -208,19 +218,14 @@ class CF
 		return FORMAT::hyperlink($item_info['message'], true);
 	}
 
-	public static function skip($user_info, $limited = true)
+	public static function skip($user_info)
 	{
-		if ($user_info['forbidden'] == 2)
-		{
-			return true;
-		}
-
-		if ($user_info['forbidden'] != 3 OR !$limited)
+		if ($user_info['forbidden'] != 3)
 		{
 			return false;
 		}
 
-		// 每帖之复读次数超过限制则跳过(隐藏)
+		// 每帖之复读次数超过限制则跳过
 		static $max_replies;
 		if (!isset($max_replies))
 		{
