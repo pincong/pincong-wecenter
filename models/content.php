@@ -364,6 +364,42 @@ class content_class extends AWS_MODEL
 		return true;
 	}
 
+	public function redirect($item_type, $item_id, $redirect_id, $log_uid)
+	{
+		if (!$this->check_thread_type($item_type))
+		{
+			return false;
+		}
+
+		$where = 'id = ' . intval($item_id);
+		$this->update($item_type, array(
+			'redirect_id' => intval($redirect_id),
+			'lock' => 1
+		), $where);
+
+		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '合并', $log_uid, $item_type, $redirect_id);
+
+		return true;
+	}
+
+	public function unredirect($item_type, $item_id, $redirect_id, $log_uid)
+	{
+		if (!$this->check_thread_type($item_type))
+		{
+			return false;
+		}
+
+		$where = 'id = ' . intval($item_id);
+		$this->update($item_type, array(
+			'redirect_id' => 0,
+			'lock' => 0
+		), $where);
+
+		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '取消合并', $log_uid, $item_type, $redirect_id);
+
+		return true;
+	}
+
 	public function change_category($item_type, $item_id, $category_id, $old_category_id, $log_uid)
 	{
 		if (!$this->check_thread_type($item_type))
