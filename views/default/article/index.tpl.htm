@@ -6,7 +6,7 @@
 		<div class="row">
 			<div class="col-sm-12 aw-global-tips">
 				<div class="alert alert-warning fade in">
-					<a href="article/<?php echo $this->redirected_from['id']; ?>"><?php echo FORMAT::text($this->redirected_from['title'], false); ?></a> <?php _e('已与本文章合并')?>
+					<a href="article/<?php echo $this->redirected_from['id']; ?>"><?php echo FORMAT::text($this->redirected_from['title'], false); ?></a> <?php _e('已与本文章合并'); ?>
 				</div>
 			</div>
 		</div>
@@ -17,7 +17,7 @@
 		<div class="row">
 			<div class="col-sm-12 aw-global-tips">
 				<div class="alert alert-danger fade in">
-					<?php _e('本文章已被合并到')?>: <a href="article/id-<?php echo $this->redirect_info['id']; ?>__rf-<?php echo $this->article_info['id']; ?>"><?php echo FORMAT::text($this->redirect_info['title'], false); ?></a>
+					<?php _e('本文章已被合并到'); ?>: <a href="article/id-<?php echo $this->redirect_info['id']; ?>__rf-<?php echo $this->article_info['id']; ?>"><?php echo FORMAT::text($this->redirect_info['title'], false); ?></a>
 				</div>
 			</div>
 		</div>
@@ -38,12 +38,12 @@
 							<?php } ?>
 						<?php } else if (!$this->user_id) { ?>
 							<span class="topic-tag">
-								<a href="login/"><span class="icon-inverse"><i class="icon icon-edit"></i> <?php _e('添加话题')?></span></a>
+								<a href="login/"><span class="icon-inverse"><i class="icon icon-edit"></i> <?php _e('添加话题'); ?></span></a>
 							</span>
 						<?php } ?>
 
 						<?php if ($this->user_id AND ($this->user_info['permission']['edit_topic'] OR $this->user_id == $this->article_info['uid'])) { ?>
-							<span class="icon-inverse aw-edit-topic"><i class="icon icon-edit"></i> <?php if (sizeof($this->article_topics) == 0) { ?><?php _e('添加话题')?><?php } ?></span>
+							<span class="icon-inverse aw-edit-topic"><i class="icon icon-edit"></i> <?php if (sizeof($this->article_topics) == 0) { ?><?php _e('添加话题'); ?><?php } ?></span>
 						<?php } ?>
 
 							<div class="operate clearfix">

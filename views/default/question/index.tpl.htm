@@ -6,7 +6,7 @@
 		<div class="row">
 			<div class="col-sm-12 aw-global-tips">
 				<div class="alert alert-warning fade in">
-					<a href="question/<?php echo $this->redirected_from['id']; ?>"><?php echo FORMAT::text($this->redirected_from['title'], false); ?></a> <?php _e('已与本问题合并')?>
+					<a href="question/<?php echo $this->redirected_from['id']; ?>"><?php echo FORMAT::text($this->redirected_from['title'], false); ?></a> <?php _e('已与本问题合并'); ?>
 				</div>
 			</div>
 		</div>
@@ -17,7 +17,7 @@
 		<div class="row">
 			<div class="col-sm-12 aw-global-tips">
 				<div class="alert alert-danger fade in">
-					<?php _e('本问题已被合并到')?>: <a href="question/id-<?php echo $this->redirect_info['id']; ?>__rf-<?php echo $this->question_info['id']; ?>"><?php echo FORMAT::text($this->redirect_info['title'], false); ?></a>
+					<?php _e('本问题已被合并到'); ?>: <a href="question/id-<?php echo $this->redirect_info['id']; ?>__rf-<?php echo $this->question_info['id']; ?>"><?php echo FORMAT::text($this->redirect_info['title'], false); ?></a>
 				</div>
 			</div>
 		</div>
@@ -40,7 +40,7 @@
 							<?php } ?>
 						<?php } else if (!$this->user_id) { ?>
 							<span class="topic-tag">
-								<a href="login/"><span class="icon-inverse"><i class="icon icon-edit"></i> <?php _e('添加话题')?></span></a>
+								<a href="login/"><span class="icon-inverse"><i class="icon icon-edit"></i> <?php _e('添加话题'); ?></span></a>
 							</span>
 						<?php } else { ?>
 							<!-- 话题推荐bar -->
@@ -175,7 +175,7 @@
 
 								<a href="vote/log/item_type-question__item_id-<?php echo $this->question_info['id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
 
-								<a data-id="<?php echo $this->question_info['id']; ?>" data-type="question" class="aw-add-comment aw-small-text <?php if ($this->discussion_count > 0) {?>active<?php }?>" data-comment-count="<?php echo $this->discussion_count; ?>"><i class="icon icon-comment"></i> <?php if ($this->discussion_count) { ?><?php _e('%s 条讨论', $this->discussion_count); ?><?php } else { ?><?php _e('添加讨论'); ?><?php } ?></a>
+								<a data-id="<?php echo $this->question_info['id']; ?>" data-type="question" class="aw-add-comment aw-small-text <?php if ($this->discussion_count > 0) { ?>active<?php } ?>" data-comment-count="<?php echo $this->discussion_count; ?>"><i class="icon icon-comment"></i> <?php if ($this->discussion_count) { ?><?php _e('%s 条讨论', $this->discussion_count); ?><?php } else { ?><?php _e('添加讨论'); ?><?php } ?></a>
 
 								<?php if ($this->user_id) { ?>
 								<a class="aw-small-text aw-invite-reply"><i class="icon icon-invite"></i> <?php _e('邀请'); ?> <?php if (sizeof($this->invite_users) > 0){ ?><em class="badge badge-info"><?php echo count($this->invite_users); ?></em><?php } ?></a>

@@ -55,7 +55,7 @@
 				<?php if ($this->user_id) { ?>
 					<a href="<?php echo UF::url($this->user_info); ?>" class="aw-user-nav-dropdown">
 						<img alt="" src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" />
-						<?php if ($this->user_info['inbox_unread'] != 0) {?>
+						<?php if ($this->user_info['inbox_unread'] != 0) { ?>
 							<span class="badge badge-important"><?php echo $this->user_info['inbox_unread']?></span>
 						<?php } ?>
 					</a>
@@ -100,18 +100,12 @@
 			<div class="dropdown aw-publish-btn">
 				<a href="javascript:;" class="btn-primary dropdown-toggle" data-toggle="dropdown"><i class="icon icon-ask"></i> <?php _e('发起'); ?></a>
 				<ul class="dropdown-menu">
-					<?php if ($this->user_info['permission']['publish_question']) { ?>
 					<li><a href="publish/<?php echo $publish_url_params; ?>"><?php _e('问题'); ?></a></li>
-					<?php } ?>
-					<?php if ($this->user_info['permission']['publish_article']) { ?>
 					<li><a href="publish/article/<?php echo $publish_url_params; ?>"><?php _e('文章'); ?></a></li>
-					<?php } ?>
-					<?php if ($this->user_info['permission']['publish_video']) { ?>
 					<li><a href="publish/video/<?php echo $publish_url_params; ?>"><?php _e('影片'); ?></a></li>
-					<?php } ?>
 				</ul>
 			</div>
-			<?php }?>
+			<?php } ?>
 
 			<!-- end 发起 -->
 		</div>

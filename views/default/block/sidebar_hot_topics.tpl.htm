@@ -5,7 +5,7 @@
 	</div>
 	<div class="mod-body">
 		<?php if (is_array($this->sidebar_hot_topics)) { ?>
-		<?php foreach($this->sidebar_hot_topics AS $key => $val) {?>
+		<?php foreach($this->sidebar_hot_topics AS $key => $val) { ?>
 			<dl>
 				<dt class="pull-left aw-border-radius-5">
 					<a href="topic/<?php echo FORMAT::text($val['topic_title'], false); ?>"><img alt="" src="<?php echo get_topic_pic_url($val, 'mid'); ?>" /></a>
