@@ -82,7 +82,7 @@ class article_class extends AWS_MODEL
 			'message' => htmlspecialchars($message)
 		), 'id = ' . intval($id));
 
-		$this->model('content')->log('article', $id, '编辑', $uid);
+		$this->model('content')->log('article', $id, 'article', $id, '编辑', $uid);
 
 		return true;
 	}
@@ -110,7 +110,7 @@ class article_class extends AWS_MODEL
 
 		$this->update('article', $data, 'id = ' . intval($id));
 
-		$this->model('content')->log('article', $id, '删除', $uid, 'category', $item_info['category_id']);
+		$this->model('content')->log('article', $id, 'article', $id, '删除', $uid, 'category', $item_info['category_id']);
 
 		return true;
 	}
@@ -126,7 +126,7 @@ class article_class extends AWS_MODEL
 			'message' => htmlspecialchars($message)
 		), 'id = ' . intval($comment_id));
 
-		$this->model('content')->log('article', $comment_info['article_id'], '编辑', $uid, 'article_comment', $comment_id);
+		$this->model('content')->log('article', $comment_info['article_id'], 'article_comment', $comment_id, '编辑', $uid);
 
 		return true;
 	}
@@ -142,7 +142,7 @@ class article_class extends AWS_MODEL
 			'message' => null
 		), 'id = ' . intval($comment_id));
 
-		$this->model('content')->log('article', $comment_info['article_id'], '删除', $uid, 'article_comment', $comment_id);
+		$this->model('content')->log('article', $comment_info['article_id'], 'article_comment', $comment_id, '删除', $uid);
 
 		return true;
 	}

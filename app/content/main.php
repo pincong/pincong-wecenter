@@ -37,11 +37,6 @@ class main extends AWS_CONTROLLER
 
 	public function log_action()
 	{
-		if (!$item_info = $this->model('content')->get_thread_info_by_id($_GET['item_type'], $_GET['item_id']))
-		{
-			HTTP::error_404();
-		}
-
 		$this->crumb(AWS_APP::lang()->_t('修改记录'));
 
 		TPL::output('content/log');
@@ -49,12 +44,7 @@ class main extends AWS_CONTROLLER
 
 	public function list_logs_action()
 	{
-		if (!$item_info = $this->model('content')->get_thread_info_by_id($_GET['item_type'], $_GET['item_id']))
-		{
-			HTTP::error_404();
-		}
-
-		$log_list = $this->model('content')->list_logs($_GET['item_type'], $_GET['item_id'], $_GET['page'], get_setting('contents_per_page'));
+		$log_list = $this->model('content')->list_logs($_GET['thread_type'], $_GET['thread_id'], $_GET['item_type'], $_GET['item_id'], $_GET['uid'], $_GET['page'], get_setting('contents_per_page'));
 
 		TPL::assign('list', $log_list);
 

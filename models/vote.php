@@ -308,7 +308,7 @@ class vote_class extends AWS_MODEL
 		}
 		else
 		{
-			$item_info = $this->model('content')->get_item_info_by_id($type, $item_id);
+			$item_info = $this->model('content')->get_thread_or_reply_info_by_id($type, $item_id);
 			$reputation = floatval($this->get_bonus_reputation($type, $item_id, $factor, $item_info));
 		}
 
@@ -336,7 +336,7 @@ class vote_class extends AWS_MODEL
 		}
 		else
 		{
-			$item_info = $this->model('content')->get_item_info_by_id($type, $item_id);
+			$item_info = $this->model('content')->get_thread_or_reply_info_by_id($type, $item_id);
 			$reputation = floatval($this->get_bonus_reputation($type, $item_id, $factor, $item_info));
 		}
 
@@ -432,7 +432,7 @@ class vote_class extends AWS_MODEL
 	 */
 	public function agree($type, $item_id, $uid, $item_uid, $factor, $affect_currency)
 	{
-		if (!$this->model('content')->check_item_type($type))
+		if (!$this->model('content')->check_thread_or_reply_type($type))
 		{
 			return false;
 		}
@@ -502,7 +502,7 @@ class vote_class extends AWS_MODEL
 	 */
 	public function disagree($type, $item_id, $uid, $item_uid, $factor, $affect_currency)
 	{
-		if (!$this->model('content')->check_item_type($type))
+		if (!$this->model('content')->check_thread_or_reply_type($type))
 		{
 			return false;
 		}
@@ -622,7 +622,7 @@ class vote_class extends AWS_MODEL
 
 	public function get_user_vote_value_by_id($type, $item_id, $uid)
 	{
-		if (!$this->model('content')->check_item_type($type))
+		if (!$this->model('content')->check_thread_or_reply_type($type))
 		{
 			return false;
 		}
@@ -636,7 +636,7 @@ class vote_class extends AWS_MODEL
 
 	public function get_user_vote_values_by_ids($type, $item_ids, $uid)
 	{
-		if (!$this->model('content')->check_item_type($type))
+		if (!$this->model('content')->check_thread_or_reply_type($type))
 		{
 			return false;
 		}
@@ -697,7 +697,7 @@ class vote_class extends AWS_MODEL
 	 */
 	public function list_logs($type, $item_id, $page, $per_page)
 	{
-		if (!$this->model('content')->check_item_type($type))
+		if (!$this->model('content')->check_thread_or_reply_type($type))
 		{
 			return false;
 		}

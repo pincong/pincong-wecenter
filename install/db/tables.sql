@@ -629,6 +629,8 @@ CREATE TABLE IF NOT EXISTS `aws_scheduled_posts` (
 CREATE TABLE IF NOT EXISTS `aws_content_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT '0',
+  `thread_type` varchar(32) DEFAULT NULL,
+  `thread_id` int(11) DEFAULT '0',
   `item_type` varchar(32) DEFAULT NULL,
   `item_id` int(11) DEFAULT '0',
   `child_type` varchar(32) DEFAULT NULL,
@@ -637,10 +639,12 @@ CREATE TABLE IF NOT EXISTS `aws_content_log` (
   `time` int(10) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
-  KEY `item_id` (`item_id`),
-  KEY `child_id` (`child_id`),
+  KEY `thread_type` (`thread_type`),
+  KEY `thread_id` (`thread_id`),
   KEY `item_type` (`item_type`),
+  KEY `item_id` (`item_id`),
   KEY `child_type` (`child_type`),
+  KEY `child_id` (`child_id`),
   KEY `time` (`time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 

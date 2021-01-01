@@ -82,7 +82,7 @@ class question_class extends AWS_MODEL
 			'message' => htmlspecialchars($message)
 		), 'id = ' . intval($id));
 
-		$this->model('content')->log('question', $id, '编辑', $uid);
+		$this->model('content')->log('question', $id, 'question', $id, '编辑', $uid);
 
 		return true;
 	}
@@ -111,7 +111,7 @@ class question_class extends AWS_MODEL
 
 		$this->update('question', $data, 'id = ' . intval($id));
 
-		$this->model('content')->log('question', $id, '删除', $uid, 'category', $item_info['category_id']);
+		$this->model('content')->log('question', $id, 'question', $id, '删除', $uid, 'category', $item_info['category_id']);
 
 		return true;
 	}
@@ -128,7 +128,7 @@ class question_class extends AWS_MODEL
 			'message' => htmlspecialchars($message)
 		), 'id = ' . intval($answer_id));
 
-		$this->model('content')->log('question', $answer_info['question_id'], '编辑', $uid, 'answer', $answer_id);
+		$this->model('content')->log('question', $answer_info['question_id'], 'answer', $answer_id, '编辑', $uid);
 
 		return true;
 	}
@@ -145,7 +145,7 @@ class question_class extends AWS_MODEL
 			'message' => null
 		), 'id = ' . intval($answer_id));
 
-		$this->model('content')->log('question', $answer_info['question_id'], '删除', $uid, 'answer', $answer_id);
+		$this->model('content')->log('question', $answer_info['question_id'], 'answer', $answer_id, '删除', $uid);
 
 		return true;
 	}
@@ -650,7 +650,7 @@ class question_class extends AWS_MODEL
 			'message' => null
 		), "id = " . $comment['id']);
 
-		$this->model('content')->log('question', $comment['question_id'], '删除', $uid, 'question_discussion', $comment['id']);
+		$this->model('content')->log('question', $comment['question_id'], 'question_discussion', $comment['id'], '删除', $uid);
 
 		return true;
 	}
@@ -663,7 +663,7 @@ class question_class extends AWS_MODEL
 
 		if ($answer = $this->fetch_row('answer', 'id = ' . intval($comment['answer_id'])))
 		{
-			$this->model('content')->log('question', $answer['question_id'], '删除', $uid, 'answer_discussion', $comment['id']);
+			$this->model('content')->log('question', $answer['question_id'], 'answer_discussion', $comment['id'], '删除', $uid);
 		}
 
 		return true;

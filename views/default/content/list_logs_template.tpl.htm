@@ -3,6 +3,7 @@
 <li>
 	<p>
 		<?php echo nl2br($val['note']); ?>
+		<?php echo $val['item_type']; ?> #<?php echo $val['item_id']; ?>
 		<?php if ($val['child_id']) { ?>
 			<?php echo $val['child_type']; ?> #<?php echo $val['child_id']; ?>
 		<?php } ?>

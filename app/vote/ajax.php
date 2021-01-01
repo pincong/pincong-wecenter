@@ -48,7 +48,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日赞同/反对已经达到上限')));
 		}
 
-		$item_info = $this->model('content')->get_item_info_by_id($_POST['type'], $_POST['item_id']);
+		$item_info = $this->model('content')->get_thread_or_reply_info_by_id($_POST['type'], $_POST['item_id']);
 		if (!$item_info)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
@@ -95,7 +95,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日赞同/反对已经达到上限')));
 		}
 
-		$item_info = $this->model('content')->get_item_info_by_id($_POST['type'], $_POST['item_id']);
+		$item_info = $this->model('content')->get_thread_or_reply_info_by_id($_POST['type'], $_POST['item_id']);
 		if (!$item_info)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));

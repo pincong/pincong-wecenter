@@ -8,7 +8,7 @@
 
 					<div class="aw-mod aw-question-edit">
 						<div class="mod-head common-head">
-							<h2><span class="pull-right"><a class="aw-small-text" href="<?php echo htmlspecialchars($_GET['item_type']); ?>/<?php echo intval($_GET['item_id']); ?>"><?php _e('返回'); ?> »</a></span><?php _e('修改记录'); ?></h2>
+							<h2><?php _e('修改记录'); ?></h2>
 						</div>
 						<div class="mod-body">
 							<ul id="c_log_list"></ul>
@@ -30,7 +30,7 @@
 
 <script type="text/javascript">
 $(document).ready(function () {
-	AWS.load_list_view(G_BASE_URL + '/content/list_logs/item_type-<?php echo htmlspecialchars($_GET['item_type']); ?>__item_id-<?php echo intval($_GET['item_id']); ?>', $('#bp_log_more'), $('#c_log_list'), 1);
+	AWS.load_list_view(G_BASE_URL + '/content/list_logs/thread_type-<?php echo htmlspecialchars($_GET['thread_type']); ?>__thread_id-<?php echo intval($_GET['thread_id']); ?>__item_type-<?php echo htmlspecialchars($_GET['item_type']); ?>__item_id-<?php echo intval($_GET['item_id']); ?>__uid-<?php echo intval($_GET['uid']); ?>', $('#bp_log_more'), $('#c_log_list'), 1);
 });
 </script>
 
