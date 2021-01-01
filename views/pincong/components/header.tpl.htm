@@ -1,5 +1,5 @@
 <?php
-	$current_theme = AWS_APP::theme()->current_theme();
+	$current_theme = AWS_APP::theme()->get_current_theme();
 	if ($current_theme['navbar'] == 'light') {
 		$navbar_theme_classes = 'shadow-sm navbar-light bg-light';
 		$navbar_primary_button_classes = 'btn-outline-primary';
@@ -28,8 +28,8 @@
 ?>
 <header class="navbar navbar-expand <?php echo $navbar_theme_classes; ?>">
 	<div class="container-fluid flex-column flex-sm-row justify-content-start">
-		<a class="navbar-brand text-center overflow-hidden text-sm-left mr-0 mr-sm-2" style="" href="<?php echo base_url(); ?>/">
-			<img style="max-width:100%;" src="<?php echo S::get('logo_url'); ?>" alt="">
+		<a class="navbar-brand text-center overflow-hidden text-sm-left mr-0 mr-sm-2" style="<?php echo $logo_style; ?>" href="<?php echo base_url(); ?>/">
+			<img style="max-width:100%;" src="<?php echo $logo_url; ?>" alt="">
 		</a>
 		<ul class="navbar-nav flex-wrap justify-content-center justify-content-sm-start mr-auto">
 			<li class="nav-item">

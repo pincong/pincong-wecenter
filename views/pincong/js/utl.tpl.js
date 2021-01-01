@@ -37,6 +37,7 @@ function change_navbar(color) {
 	if (!el.length) return;
 	var primary_btn = el.find('.cls_primary_button');
 	var secondary_btn = el.find('.cls_secondary_button');
+	var logo_img = el.find('.navbar-brand img');
 	el.removeClass('shadow shadow-sm navbar-light navbar-dark bg-light bg-dark bg-primary');
 	primary_btn.removeClass('btn-primary btn-outline-primary btn-secondary btn-success');
 	secondary_btn.removeClass('btn-primary btn-outline-primary btn-secondary btn-success');
@@ -44,16 +45,19 @@ function change_navbar(color) {
 		el.addClass('shadow-sm navbar-light bg-light');
 		primary_btn.addClass('btn-outline-primary');
 		secondary_btn.addClass('btn-primary');
+		logo_img.attr('src', "<?php echo S::get('logo_dark'); ?>");
 	}
 	else if (color == 'dark') {
 		el.addClass('shadow navbar-dark bg-dark');
 		primary_btn.addClass('btn-primary');
 		secondary_btn.addClass('btn-success');
+		logo_img.attr('src', "<?php echo S::get('logo_light'); ?>");
 	}
 	else {
 		el.addClass('shadow navbar-dark bg-primary');
 		primary_btn.addClass('btn-secondary');
 		secondary_btn.addClass('btn-success');
+		logo_img.attr('src', "<?php echo S::get('logo_light'); ?>");
 	}
 }
 

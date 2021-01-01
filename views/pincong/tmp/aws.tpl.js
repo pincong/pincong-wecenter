@@ -25,7 +25,7 @@ TPL['loading'] =
 	'</div>';
 
 TPL['toast'] =
-	'<div class="toast" style="position:fixed;left:50%;top:10%;transform:translate(-50%,-50%);z-index:2020;" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">' +
+	'<div class="toast overflow-hidden" style="position:fixed;left:50%;top:10%;transform:translate(-50%,-50%);z-index:2020;" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">' +
 		'<div class="toast-body d-flex text-light">' +
 			'<span class="mr-auto" param="text"></span>' +
 			'<button class="close mt-n1 ml-2" data-dismiss="toast" aria-label="Close">' +

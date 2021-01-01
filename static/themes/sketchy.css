@@ -2322,12 +2322,7 @@ a.badge-dark:focus, a.badge-dark.focus {
 }
 
 .close {
-  color: #fff;
   text-shadow: none;
-}
-
-.close:hover {
-  color: #fff;
 }
 
 button.close {
@@ -3045,17 +3040,13 @@ select.form-control {
   border-radius: 255px 25px 225px 25px/25px 225px 25px 255px;
 }
 
-.alert-dismissible .close {
-  color: transparent;
-}
-
 .alert-dismissible.alert-success {
   border-color: #28a745;
 }
 
 .alert-dismissible.alert-success,
 .alert-dismissible.alert-success .alert-link,
-.alert-dismissible.alert-success .close::before {
+.alert-dismissible.alert-success .close {
   color: #28a745;
 }
 
@@ -3065,7 +3056,7 @@ select.form-control {
 
 .alert-dismissible.alert-info,
 .alert-dismissible.alert-info .alert-link,
-.alert-dismissible.alert-info .close::before {
+.alert-dismissible.alert-info .close {
   color: #17a2b8;
 }
 
@@ -3075,7 +3066,7 @@ select.form-control {
 
 .alert-dismissible.alert-warning,
 .alert-dismissible.alert-warning .alert-link,
-.alert-dismissible.alert-warning .close::before {
+.alert-dismissible.alert-warning .close {
   color: #ffc107;
 }
 
@@ -3085,7 +3076,7 @@ select.form-control {
 
 .alert-dismissible.alert-danger,
 .alert-dismissible.alert-danger .alert-link,
-.alert-dismissible.alert-danger .close::before {
+.alert-dismissible.alert-danger .close {
   color: #dc3545;
 }
 
@@ -3145,10 +3136,10 @@ pre {
   border-radius: 15px 5px 5px 25px/5px 25px 25px 5px;
 }
 
-.close::before,
-.close:hover::before,
-.close:focus::before,
-.close:active::before {
+.close,
+.close:hover,
+.close:focus,
+.close:active {
   color: #333;
 }
 

@@ -14,7 +14,8 @@
 
 class core_theme
 {
-	private $themes = [];
+	private $themes;
+	private $current_theme;
 
 	public function __construct()
 	{
@@ -38,9 +39,30 @@ class core_theme
 		return $this->themes;
 	}
 
-	public function current_theme()
+	public function get_current_theme()
 	{
-		$id = H::get_cookie('theme', 'default');
+		if (!isset($this->current_theme))
+		{
+			$id = H::get_cookie('theme');
+			if (!$id)
+			{
+				$this->current_theme = $this->get_default_theme();
+			}
+			else
+			{
+				$this->current_theme = $this->themes[$id] ?? $this->get_default_theme();
+			}
+		}
+		return $this->current_theme;
+	}
+
+	private function get_default_theme()
+	{
+		$id = S::get('default_theme');
+		if (!$id)
+		{
+			$id = 'default';
+		}
 		return $this->themes[$id] ?? ($this->themes['default'] ?? []);
 	}
 }
