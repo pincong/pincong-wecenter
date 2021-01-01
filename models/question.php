@@ -384,19 +384,13 @@ class question_class extends AWS_MODEL
 			return false;
 		}
 
-		if (!$topic_ids_query = $this->query_all("SELECT DISTINCT topic_id FROM " . $this->get_table('topic_relation') . " WHERE item_id IN(" . implode(',', $question_ids) . ") AND `type` = 'question'"))
+		$topic_ids = $this->fetch_distinct('topic_relation', 'topic_id', [['item_id', 'in', $question_ids, 'i'], ['type', 'eq', 'question']]);
+		if (!$topic_ids)
 		{
 			return false;
 		}
 
-		foreach ($topic_ids_query AS $key => $val)
-		{
-			$topic_ids[] = $val['topic_id'];
-		}
-
-		$topic_list = $this->query_all("SELECT * FROM " . $this->get_table('topic') . " WHERE topic_id IN(" . implode(',', $topic_ids) . ") ORDER BY discuss_count DESC" . ' LIMIT ' . $limit);
-
-		return $topic_list;
+		return $this->fetch_all('topic', ['topic_id', 'in', $topic_ids, 'i'], 'discuss_count DESC', $limit);
 	}
 
 
@@ -483,33 +477,20 @@ class question_class extends AWS_MODEL
 	}
 
 
-	public function get_answer_users_by_question_id($question_id, $limit = 5, $uid = null)
+	public function get_answer_users_by_question_id($question_id, $limit, $question_uid)
 	{
-		if ($result = AWS_APP::cache()->get('answer_users_by_question_id_' . md5($question_id . $limit . $uid)))
+		$cache_key = 'answer_users_by_question_id_' . md5($question_id . $limit . $question_uid);
+		if ($result = AWS_APP::cache()->get($cache_key))
 		{
 			return $result;
 		}
 
-		if (!$uid)
+		$answer_uids = $this->fetch_distinct('answer', 'uid', [['question_id', 'eq', $question_id, 'i'], ['uid', 'notEq', $question_uid, 'i']], 'agree_count DESC', $limit);
+		if ($answer_uids)
 		{
-			if (!$question_info = $this->model('content')->get_thread_info_by_id('question', $question_id))
-			{
-				return false;
-			}
-
-			$uid = $question_info['uid'];
-		}
-
-		if ($answer_users = $this->query_all("SELECT DISTINCT uid FROM " . get_table('answer') . " WHERE question_id = " . intval($question_id) . " AND uid <> " . intval($uid) . " ORDER BY agree_count DESC LIMIT " . intval($limit)))
-		{
-			foreach ($answer_users AS $key => $val)
-			{
-				$answer_uids[] = $val['uid'];
-			}
-
 			$result = $this->model('account')->get_user_info_by_uids($answer_uids);
 
-			AWS_APP::cache()->set('answer_users_by_question_id_' . md5($question_id . $limit . $uid), $result, S::get('cache_level_normal'));
+			AWS_APP::cache()->set($cache_key, $result, S::get('cache_level_normal'));
 		}
 
 		return $result;

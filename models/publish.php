@@ -65,13 +65,13 @@ class publish_class extends AWS_MODEL
 			return;
 		}
 
-		if ($followers = $this->model('postfollow')->get_followers($thread_type, $thread_id))
+		if ($follower_uids = $this->model('postfollow')->get_follower_uids($thread_type, $thread_id))
 		{
-			foreach ($followers as $follower)
+			foreach ($follower_uids as $uid)
 			{
 				$this->model('notification')->send(
 					$sender_uid,
-					$follower['uid'],
+					$uid,
 					'REPLY_THREAD',
 					$thread_type, $thread_id, $reply_type, $reply_id);
 			}

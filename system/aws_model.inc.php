@@ -282,6 +282,101 @@ class AWS_MODEL
 		return $result;
 	}
 
+
+	public function fetch_column($table, $column, $where = null, $order_by = null, $page = null, $per_page = null)
+	{
+		$pdo = AWS_APP::db()->slave();
+
+		$sql = 'SELECT `' . $column . '` FROM `' . $this->get_table($table) . '`';
+
+		if (is_array($where))
+		{
+			$where = $this->where($where);
+		}
+		if ($where)
+		{
+			$sql .= ' WHERE ' . $where;
+		}
+
+		if ($order_by)
+		{
+			$sql .= ' ORDER BY ' . $order_by;
+		}
+		$limit = $this->limit_page($page, $per_page);
+		if (isset($limit))
+		{
+			$sql .= ' LIMIT ' . $limit;
+		}
+
+		if ($this->_debug)
+		{
+			$start_time = microtime(TRUE);
+		}
+
+		try {
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute();
+			$result = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+		} catch (Exception $e) {
+			$this->_db_error($sql, $e);
+		}
+
+		if ($this->_debug)
+		{
+			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
+		}
+
+		return $result;
+	}
+
+
+	public function fetch_distinct($table, $column, $where = null, $order_by = null, $page = null, $per_page = null)
+	{
+		$pdo = AWS_APP::db()->slave();
+
+		$sql = 'SELECT DISTINCT `' . $column . '` FROM `' . $this->get_table($table) . '`';
+
+		if (is_array($where))
+		{
+			$where = $this->where($where);
+		}
+		if ($where)
+		{
+			$sql .= ' WHERE ' . $where;
+		}
+
+		if ($order_by)
+		{
+			$sql .= ' ORDER BY ' . $order_by;
+		}
+		$limit = $this->limit_page($page, $per_page);
+		if (isset($limit))
+		{
+			$sql .= ' LIMIT ' . $limit;
+		}
+
+		if ($this->_debug)
+		{
+			$start_time = microtime(TRUE);
+		}
+
+		try {
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute();
+			$result = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+		} catch (Exception $e) {
+			$this->_db_error($sql, $e);
+		}
+
+		if ($this->_debug)
+		{
+			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
+		}
+
+		return $result;
+	}
+
+
 	public function fetch_row($table, $where = null, $order_by = null)
 	{
 		$pdo = AWS_APP::db()->slave();

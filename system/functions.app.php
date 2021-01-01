@@ -302,17 +302,6 @@ function show_error($exception_message, $error_message = '')
 }
 
 /**
- * 获取带表前缀的数据库表名
- *
- * @param  string
- * @return string
- */
-function get_table($name)
-{
-	return AWS_APP::config()->get('database')->prefix . $name;
-}
-
-/**
  * 获取全局配置项
  *
  * 如果指定 varname 则返回指定的配置项, 如果不指定 varname 则返回全部配置项

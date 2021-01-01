@@ -257,29 +257,7 @@ function array_random($arr)
 	return $arr[rand(0, count($arr) - 1)];
 }
 
-/**
- * 获得二维数据中第二维指定键对应的值，并组成新数组 (不支持二维数组)
- *
- * @param  array
- * @param  string
- * @return array
- */
-function fetch_array_value($array, $key)
-{
-	if (!$array || ! is_array($array))
-	{
-		return array();
-	}
 
-	$data = array();
-
-	foreach ($array as $_key => $val)
-	{
-		$data[] = $val[$key];
-	}
-
-	return $data;
-}
 
 /**
  * 强制转换字符串为整型, 对数字或数字字符串无效

@@ -20,7 +20,7 @@ if (!defined('IN_ANWSION'))
 
 class topic_class extends AWS_MODEL
 {
-	public function get_topic_list($where = null, $order, $page, $per_page)
+	public function get_topic_list($where, $order, $page, $per_page)
 	{
 		$topic_list = $this->fetch_page('topic', $where, $order, $page, $per_page);
 
@@ -48,26 +48,6 @@ class topic_class extends AWS_MODEL
 		$topic_list = $this->fetch_all('topic', ['topic_id', 'in', $topic_ids, 'i'], 'discuss_count DESC');
 
 		return $topic_list;
-	}
-
-	public function get_focus_topic_ids_by_uid($uid)
-	{
-		if (!$uid)
-		{
-			return false;
-		}
-
-		if (!$topic_focus = $this->fetch_all('topic_focus', ['uid', 'eq', $uid, 'i']))
-		{
-			return false;
-		}
-
-		foreach ($topic_focus as $key => $val)
-		{
-			$topic_ids[$val['topic_id']] = $val['topic_id'];
-		}
-
-		return $topic_ids;
 	}
 
 	/**
@@ -331,7 +311,7 @@ class topic_class extends AWS_MODEL
 			['topic_id', 'in', $topic_ids, 'i']
 		];
 
-		if ($focus = $this->query_all('SELECT focus_id, topic_id FROM ' . $this->get_table('topic_focus') . " WHERE " . $this->where($where)))
+		if ($focus = $this->fetch_all('topic_focus', $where))
 		{
 			foreach ($focus as $key => $val)
 			{
@@ -404,36 +384,6 @@ class topic_class extends AWS_MODEL
 		return true;
 	}
 
-	public function get_focus_users_by_topic($topic_id, $limit = 10)
-	{
-		$user_list = array();
-
-		$where =['topic_id', 'eq', $topic_id, 'i'];
-
-		$uids = $this->query_all("SELECT DISTINCT uid FROM " . $this->get_table('topic_focus') . " WHERE " . $this->where($where) . ' LIMIT ' . intval($limit));
-
-		if ($uids)
-		{
-			$user_list_query = $this->model('account')->get_user_info_by_uids(fetch_array_value($uids, 'uid'));
-
-			if ($user_list_query)
-			{
-				foreach ($user_list_query AS $user_info)
-				{
-					$user_list[$user_info['uid']]['uid'] = $user_info['uid'];
-
-					$user_list[$user_info['uid']]['user_name'] = $user_info['user_name'];
-
-					$user_list[$user_info['uid']]['avatar_file'] = UF::avatar($user_info, 'mid');
-
-					$user_list[$user_info['uid']]['url'] = url_rewrite('/people/' . $user_info['url_token']);
-				}
-			}
-		}
-
-		return $user_list;
-	}
-
 	public function get_item_ids_by_topics_id($topic_id, $type = null, $limit = 50)
 	{
 		return $this->get_item_ids_by_topics_ids(array(
@@ -457,13 +407,7 @@ class topic_class extends AWS_MODEL
 			$where[] = ['type', 'eq', $type, 's'];
 		}
 
-		if ($result = $this->query_all("SELECT item_id FROM " . $this->get_table('topic_relation') . " WHERE " . $this->where($where) . ' LIMIT ' . intval($limit)))
-		{
-			foreach ($result AS $key => $val)
-			{
-				$item_ids[] = $val['item_id'];
-			}
-		}
+		$item_ids = $this->fetch_column('topic_relation', 'item_id', $where, null, $limit);
 
 		return $item_ids;
 	}
@@ -477,13 +421,7 @@ class topic_class extends AWS_MODEL
 	{
 		if ($category_id)
 		{
-			if ($questions = $this->query_all("SELECT id FROM " . get_table('question') . " WHERE category_id =" . intval($category_id) . ' ORDER BY add_time DESC LIMIT 200'))
-			{
-				foreach ($questions AS $key => $val)
-				{
-					$question_ids[] = $val['id'];
-				}
-			}
+			$question_ids = $this->fetch_column('question', 'id', ['category_id', 'eq', $category_id, 'i'], 'add_time DESC', 200);
 
 			if (!$question_ids)
 			{

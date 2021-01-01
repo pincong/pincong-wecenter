@@ -20,15 +20,14 @@ if (!defined('IN_ANWSION'))
 
 class postfollow_class extends AWS_MODEL
 {
-	public function get_followers($post_type, $post_id)
+	public function get_follower_uids($post_type, $post_id)
 	{
 		if (!$this->model('content')->check_thread_type($post_type))
 		{
 			return false;
 		}
-		$where = "post_id = " . intval($post_id) . " AND post_type = '" . $post_type . "'";
-
-		return $this->query_all('SELECT uid FROM ' . $this->get_table('post_follow') . ' WHERE ' . $where) ;
+		$where = [['post_id', 'eq', $post_id, 'i'], ['post_type', 'eq', $post_type]];
+		return $this->fetch_column('post_follow', 'uid', $where, 'add_time DESC', 200);
 	}
 
 	public function get_following_posts($uid, $post_type, $page, $per_page)
