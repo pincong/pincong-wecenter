@@ -131,9 +131,21 @@ $config[] = array(
 		),
 
 		array(
+			'id' => 'content_custom_head_top',
+			'title' => _t('自定义 head 顶端'),
+			'url' => '/admin/content/custom_head_top/'
+		),
+
+		array(
 			'id' => 'content_custom_head',
-			'title' => _t('自定义 head'),
+			'title' => _t('自定义 head 中间'),
 			'url' => '/admin/content/custom_head/'
+		),
+
+		array(
+			'id' => 'content_custom_head_bottom',
+			'title' => _t('自定义 head 底端'),
+			'url' => '/admin/content/custom_head_bottom/'
 		),
 
 		array(

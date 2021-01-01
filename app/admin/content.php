@@ -32,10 +32,34 @@ class content extends AWS_ADMIN_CONTROLLER
 		TPL::output('admin/custom_content');
 	}
 
+	public function custom_head_top_action()
+	{
+		$setting_key = 'custom_head_top';
+		$setting_title = _t('自定义 head 顶端');
+		$this->crumb($setting_title);
+		TPL::assign('setting_key', $setting_key);
+		TPL::assign('setting_title', $setting_title);
+		TPL::assign('menu_list', $this->model('admin')->fetch_menu_list('content_' . $setting_key));
+		TPL::assign('settings', S::get_all());
+		TPL::output('admin/custom_content');
+	}
+
 	public function custom_head_action()
 	{
 		$setting_key = 'custom_head';
-		$setting_title = _t('自定义 head');
+		$setting_title = _t('自定义 head 中间');
+		$this->crumb($setting_title);
+		TPL::assign('setting_key', $setting_key);
+		TPL::assign('setting_title', $setting_title);
+		TPL::assign('menu_list', $this->model('admin')->fetch_menu_list('content_' . $setting_key));
+		TPL::assign('settings', S::get_all());
+		TPL::output('admin/custom_content');
+	}
+
+	public function custom_head_bottom_action()
+	{
+		$setting_key = 'custom_head_bottom';
+		$setting_title = _t('自定义 head 底端');
 		$this->crumb($setting_title);
 		TPL::assign('setting_key', $setting_key);
 		TPL::assign('setting_title', $setting_title);
