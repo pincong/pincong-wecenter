@@ -63,8 +63,6 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('thread_info', $thread_info);
 
-		TPL::assign('recent_topics', unserialize_array($this->user_info['recent_topics']));
-
 		TPL::output('publish/index');
 	}
 
@@ -104,8 +102,6 @@ class main extends AWS_CONTROLLER
 			import_editor_static_files();
 		}
 
-		TPL::assign('recent_topics', unserialize_array($this->user_info['recent_topics']));
-
 		TPL::assign('thread_info', $thread_info);
 
 		TPL::output('publish/article');
@@ -141,8 +137,6 @@ class main extends AWS_CONTROLLER
 		}
 
 		TPL::import_js('js/app/publish.js');
-
-		TPL::assign('recent_topics', unserialize_array($this->user_info['recent_topics']));
 
 		TPL::assign('thread_info', $thread_info);
 

@@ -458,11 +458,11 @@ class topic_class extends AWS_MODEL
 			'add_time' => fake_time(),
 		));
 
-		$this->model('topic')->update_discuss_count($topic_id);
-
-		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '添加话题', $log_uid, 'topic', $topic_id);
-
-		//$this->model('account')->save_recent_topics($log_uid, $topic_info['topic_title']);
+		if ($insert_id)
+		{
+			$this->model('topic')->update_discuss_count($topic_id);
+			$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '添加话题', $log_uid, 'topic', $topic_id);
+		}
 
 		return $insert_id;
 	}

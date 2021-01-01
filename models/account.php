@@ -500,36 +500,4 @@ class account_class extends AWS_MODEL
 		), $uid);
 	}
 
-	public function save_recent_topics($uid, $topic_title)
-	{
-		if (!$user_info = $this->get_user_info_by_uid($uid))
-		{
-			return false;
-		}
-
-		$recent_topics = unserialize_array($user_info['recent_topics']);
-
-		$new_recent_topics[0] = $topic_title;
-
-		if ($recent_topics)
-		{
-			foreach ($recent_topics AS $key => $val)
-			{
-				if ($val != $topic_title)
-				{
-					$new_recent_topics[] = $val;
-				}
-			}
-		}
-
-		if (count($new_recent_topics) > 10)
-		{
-			$new_recent_topics = array_slice($new_recent_topics, 0, 10);
-		}
-
-		return $this->update('users', array(
-			'recent_topics' => serialize($new_recent_topics)
-		), ['uid', 'eq', $uid, 'i']);
-	}
-
 }
