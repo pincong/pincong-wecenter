@@ -115,14 +115,14 @@ class usergroup_class extends AWS_MODEL
 
 		$this->update('users', array(
 			'group_id' => 0,
-		), 'group_id = ' . ($group_id));
+		), ['group_id', 'eq', $group_id]);
 
 		if ($group_id <= 1)
 		{
 			return;
 		}
 
-		$this->delete('users_group', 'group_id = ' . ($group_id));
+		$this->delete('users_group', ['group_id', 'eq', $group_id]);
 	}
 
 	public function update_user_group_data($group_id, $data)
@@ -140,7 +140,7 @@ class usergroup_class extends AWS_MODEL
 			$data['content_reputation_factor'] = null;
 		}
 
-		return $this->update('users_group', $data, 'group_id = ' . intval($group_id));
+		return $this->update('users_group', $data, ['group_id', 'eq', $group_id, 'i']);
 	}
 
 	public function get_all_groups()
@@ -335,7 +335,7 @@ class usergroup_class extends AWS_MODEL
 	// 无缓存版
 	public function get_normal_group_list()
 	{
-		if ($users_groups = $this->fetch_all('users_group', 'type = 0 OR type = 2', 'type ASC, group_id ASC'))
+		if ($users_groups = $this->fetch_all('users_group', [['type', 'eq', 0], 'or', ['type', 'eq', 2]], 'type ASC, group_id ASC'))
 		{
 			foreach ($users_groups as $key => $val)
 			{
@@ -348,7 +348,7 @@ class usergroup_class extends AWS_MODEL
 	// 无缓存版
 	public function get_reputation_group_list()
 	{
-		if ($users_groups = $this->fetch_all('users_group', 'type = 1', 'reputation_lower ASC'))
+		if ($users_groups = $this->fetch_all('users_group', ['type', 'eq', 1], 'reputation_lower ASC'))
 		{
 			foreach ($users_groups as $key => $val)
 			{
@@ -361,7 +361,7 @@ class usergroup_class extends AWS_MODEL
 	// 无缓存版
 	public function get_system_group_list()
 	{
-		if ($users_groups = $this->fetch_all('users_group', 'type = 0', 'group_id ASC'))
+		if ($users_groups = $this->fetch_all('users_group', ['type', 'eq', 0], 'group_id ASC'))
 		{
 			foreach ($users_groups as $key => $val)
 			{
@@ -374,7 +374,7 @@ class usergroup_class extends AWS_MODEL
 	// 无缓存版
 	public function get_custom_group_list()
 	{
-		if ($users_groups = $this->fetch_all('users_group', 'type = 2', 'group_id ASC'))
+		if ($users_groups = $this->fetch_all('users_group', ['type', 'eq', 2], 'group_id ASC'))
 		{
 			foreach ($users_groups as $key => $val)
 			{

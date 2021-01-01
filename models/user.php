@@ -23,24 +23,24 @@ class user_class extends AWS_MODEL
 	{
 		$question_id = intval($question_id);
 		$this->update('question', array(
-			'comment_count' => $this->count('question_discussion', 'question_id = ' . ($question_id))
-		), 'id = ' . ($question_id));
+			'comment_count' => $this->count('question_discussion', ['question_id', 'eq', $question_id])
+		), ['id', 'eq', $question_id]);
 	}
 
 	private function update_answer_discussion_count($answer_id)
 	{
 		$answer_id = intval($answer_id);
 		$this->update('answer', array(
-			'comment_count' => $this->count('answer_discussion', "answer_id = " . ($answer_id))
-		), "id = " . ($answer_id));
+			'comment_count' => $this->count('answer_discussion', ['answer_id', 'eq', $answer_id])
+		), ['id', 'eq', $answer_id]);
 	}
 
 	private function update_answer_count($question_id)
 	{
 		$question_id = intval($question_id);
 		$this->update('question', array(
-			'answer_count' => $this->count('answer', 'question_id = ' . ($question_id))
-		), 'id = ' . ($question_id));
+			'answer_count' => $this->count('answer', ['question_id', 'eq', $question_id])
+		), ['id', 'eq', $question_id]);
 	}
 
 	private function update_article_comment_count($article_id)
@@ -48,28 +48,28 @@ class user_class extends AWS_MODEL
 		$article_id = intval($article_id);
 		// TODO: rename comments to comment_count
 		$this->update('article', array(
-			'comments' => $this->count('article_comment', 'article_id = ' . ($article_id))
-		), 'id = ' . ($article_id));
+			'comments' => $this->count('article_comment', ['article_id', 'eq', $article_id])
+		), ['id', 'eq', $article_id]);
 	}
 
 	private function update_video_comment_count($video_id)
 	{
 		$video_id = intval($video_id);
 		$this->update('video', array(
-			'comment_count' => $this->count('video_comment', 'video_id = ' . ($video_id))
-		), 'id = ' . ($video_id));
+			'comment_count' => $this->count('video_comment', ['video_id', 'eq', $video_id])
+		), ['id', 'eq', $video_id]);
 	}
 
 
 	public function delete_question_discussions($uid)
 	{
-		$discussions = $this->fetch_all('question_discussion', 'uid = ' . intval($uid));
+		$discussions = $this->fetch_all('question_discussion', ['uid', 'eq', $uid, 'i']);
 		if (!$discussions)
 		{
 			return;
 		}
 
-		$this->delete('question_discussion', 'uid = ' . intval($uid));
+		$this->delete('question_discussion', ['uid', 'eq', $uid, 'i']);
 
 		foreach ($discussions AS $key => $val)
 		{
@@ -87,13 +87,13 @@ class user_class extends AWS_MODEL
 
 	public function delete_answer_discussions($uid)
 	{
-		$discussions = $this->fetch_all('answer_discussion', 'uid = ' . intval($uid));
+		$discussions = $this->fetch_all('answer_discussion', ['uid', 'eq', $uid, 'i']);
 		if (!$discussions)
 		{
 			return;
 		}
 
-		$this->delete('answer_discussion', 'uid = ' . intval($uid));
+		$this->delete('answer_discussion', ['uid', 'eq', $uid, 'i']);
 
 		foreach ($discussions AS $key => $val)
 		{
@@ -112,19 +112,19 @@ class user_class extends AWS_MODEL
 
 	public function delete_answers($uid)
 	{
-		$answers = $this->fetch_all('answer', 'uid = ' . intval($uid));
+		$answers = $this->fetch_all('answer', ['uid', 'eq', $uid, 'i']);
 		if (!$answers)
 		{
 			return;
 		}
 
-		$this->delete('answer', 'uid = ' . intval($uid));
+		$this->delete('answer', ['uid', 'eq', $uid, 'i']);
 
 		foreach ($answers AS $key => $val)
 		{
 			$question_ids[$val['question_id']] = $val['question_id'];
 
-			$this->delete('answer_discussion', 'answer_id = ' . $val['id']);
+			$this->delete('answer_discussion', ['answer_id', 'eq', $val['id'], 'i']);
 		}
 
 		if ($question_ids)
@@ -134,20 +134,20 @@ class user_class extends AWS_MODEL
 				$this->update_answer_count($key);
 			}
 
-			$this->update('question', array('last_uid' => '-1'), 'last_uid = ' . intval($uid));
+			$this->update('question', array('last_uid' => '-1'), ['last_uid', 'eq', $uid, 'i']);
 		}
 	}
 
 
 	public function delete_article_comments($uid)
 	{
-		$article_comments = $this->fetch_all('article_comment', 'uid = ' . intval($uid));
+		$article_comments = $this->fetch_all('article_comment', ['uid', 'eq', $uid, 'i']);
 		if (!$article_comments)
 		{
 			return;
 		}
 
-		$this->delete('article_comment', 'uid = ' . intval($uid));
+		$this->delete('article_comment', ['uid', 'eq', $uid, 'i']);
 
 		foreach ($article_comments AS $key => $val)
 		{
@@ -161,22 +161,22 @@ class user_class extends AWS_MODEL
 				$this->update_article_comment_count($key);
 			}
 
-			$this->update('article', array('last_uid' => '-1'), 'last_uid = ' . intval($uid));
+			$this->update('article', array('last_uid' => '-1'), ['last_uid', 'eq', $uid, 'i']);
 		}
 
-		$this->update('article_comment', array('at_uid' => '-1'), 'at_uid = ' . intval($uid));
+		$this->update('article_comment', array('at_uid' => '-1'), ['at_uid', 'eq', $uid, 'i']);
 	}
 
 
 	public function delete_video_comments($uid)
 	{
-		$video_comments = $this->fetch_all('video_comment', 'uid = ' . intval($uid));
+		$video_comments = $this->fetch_all('video_comment', ['uid', 'eq', $uid, 'i']);
 		if (!$video_comments)
 		{
 			return;
 		}
 
-		$this->delete('video_comment', 'uid = ' . intval($uid));
+		$this->delete('video_comment', ['uid', 'eq', $uid, 'i']);
 
 		foreach ($video_comments AS $key => $val)
 		{
@@ -190,10 +190,10 @@ class user_class extends AWS_MODEL
 				$this->update_video_comment_count($key);
 			}
 
-			$this->update('video', array('last_uid' => '-1'), 'last_uid = ' . intval($uid));
+			$this->update('video', array('last_uid' => '-1'), ['last_uid', 'eq', $uid, 'i']);
 		}
 
-		$this->update('video_comment', array('at_uid' => '-1'), 'at_uid = ' . intval($uid));
+		$this->update('video_comment', array('at_uid' => '-1'), ['at_uid', 'eq', $uid, 'i']);
 	}
 
 
@@ -202,7 +202,7 @@ class user_class extends AWS_MODEL
 		// TODO: 需要彻底删除?
 		$this->update('question', array(
 			'uid' => '-1'
-		), 'uid = ' . intval($uid));
+		), ['uid', 'eq', $uid, 'i']);
 	}
 
 
@@ -211,7 +211,7 @@ class user_class extends AWS_MODEL
 		// TODO: 需要彻底删除?
 		$this->update('article', array(
 			'uid' => '-1'
-		), 'uid = ' . intval($uid));
+		), ['uid', 'eq', $uid, 'i']);
 	}
 
 
@@ -220,7 +220,7 @@ class user_class extends AWS_MODEL
 		// TODO: 需要彻底删除?
 		$this->update('video', array(
 			'uid' => '-1'
-		), 'uid = ' . intval($uid));
+		), ['uid', 'eq', $uid, 'i']);
 	}
 
 
@@ -229,18 +229,18 @@ class user_class extends AWS_MODEL
 		// TODO: 需要彻底删除?
 		$this->update('posts_index', array(
 			'uid' => '-1'
-		), 'uid = ' . intval($uid));
+		), ['uid', 'eq', $uid, 'i']);
 	}
 
 
 	public function delete_private_messages($uid)
 	{
-		if ($dialogues = $this->fetch_all('inbox_dialog', 'recipient_uid = ' . intval($uid) . ' OR sender_uid = ' . intval($uid)))
+		if ($dialogues = $this->fetch_all('inbox_dialog', [['recipient_uid', 'eq', $uid, 'i'], 'or', ['sender_uid', 'eq', $uid, 'i']]))
 		{
 			foreach ($dialogues AS $key => $val)
 			{
-				$this->delete('inbox', 'dialog_id = ' . $val['id']);
-				$this->delete('inbox_dialog', 'id = ' . $val['id']);
+				$this->delete('inbox', ['dialog_id', 'eq', $val['id'], 'i']);
+				$this->delete('inbox_dialog', ['id', 'eq', $val['id'], 'i']);
 			}
 		}
 	}
@@ -251,17 +251,17 @@ class user_class extends AWS_MODEL
 	{
 		$uid = intval($uid);
 
-		$this->delete('favorite', 'uid = ' . ($uid));
-		$this->delete('post_follow', 'uid = ' . ($uid));
-		$this->delete('topic_focus', 'uid = ' . ($uid));
+		$this->delete('favorite', ['uid', 'eq', $uid]);
+		$this->delete('post_follow', ['uid', 'eq', $uid]);
+		$this->delete('topic_focus', ['uid', 'eq', $uid]);
 
-		$this->delete('question_invite', 'sender_uid = ' . ($uid) . ' OR recipients_uid = ' . ($uid));
-		$this->delete('user_follow', 'fans_uid = ' . ($uid) . ' OR friend_uid = ' . ($uid));
+		$this->delete('question_invite', [['sender_uid', 'eq', $uid], 'or', ['recipients_uid', 'eq', $uid]]);
+		$this->delete('user_follow', [['fans_uid', 'eq', $uid], 'or', ['friend_uid', 'eq', $uid]]);
 
-		$this->update('topic_merge', array('uid' => '-1'), 'uid = ' . ($uid));
-		$this->update('topic_relation', array('uid' => '-1'), 'uid = ' . ($uid));
+		$this->update('topic_merge', array('uid' => '-1'), ['uid', 'eq', $uid]);
+		$this->update('topic_relation', array('uid' => '-1'), ['uid', 'eq', $uid]);
 
-		$this->delete('notification', 'sender_uid = ' . ($uid) . ' OR recipient_uid = ' . ($uid));
+		$this->delete('notification', [['sender_uid', 'eq', $uid], 'or', ['recipient_uid', 'eq', $uid]]);
 
 		$this->delete_private_messages($uid);
 
@@ -289,7 +289,7 @@ class user_class extends AWS_MODEL
 
 		$uid = intval($uid);
 
-		$this->delete('users', 'uid = ' . ($uid));
+		$this->delete('users', ['uid', 'eq', $uid]);
 	}
 
 
@@ -406,18 +406,17 @@ class user_class extends AWS_MODEL
 			return false;
 		}
 
-		$where = array();
 		if ($type)
 		{
-			$where[] = "`type` = '" . ($type) . "'";
+			$where[] = ['type', 'eq', $type];
 		}
 		if (intval($uid))
 		{
-			$where[] = "uid = " . intval($uid);
+			$where[] = ['uid', 'eq', $uid, 'i'];
 		}
 		if (intval($admin_uid))
 		{
-			$where[] = "admin_uid = " . intval($admin_uid);
+			$where[] = ['admin_uid', 'eq', $admin_uid, 'i'];
 		}
 
 		if ($status != '')
@@ -425,12 +424,12 @@ class user_class extends AWS_MODEL
 			$status = explode(',', $status);
 			if (is_array($status))
 			{
-				array_walk_recursive($status, 'intval_string');
-				$where[] = '`status` IN(' . implode(',', $status) . ')';
+				//array_walk_recursive($status, 'intval_string');
+				$where[] = ['status', 'in', $status, 'i'];
 			}
 		}
 
-		$log_list = $this->fetch_page('admin_log', implode(' AND ', $where), 'id DESC', $page, $per_page);
+		$log_list = $this->fetch_page('admin_log', $where, 'id DESC', $page, $per_page);
 		if (!$log_list)
 		{
 			return false;

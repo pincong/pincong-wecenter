@@ -30,14 +30,18 @@ class ratelimit_class extends AWS_MODEL
 		$uid = intval($uid);
 		$time_after = real_time() - 24 * 3600;
 
-		$where = "add_time > " . $time_after . " AND uid =" . $uid;
+		$where = [['add_time', 'gt', $time_after], ['uid', 'eq', $uid]];
 		$count = $this->count('posts_index', $where);
 		if ($count >= $limit)
 		{
 			return false;
 		}
 
-		$where = "(type = 'question' OR type = 'article' OR type = 'video') AND time > " . $time_after . " AND uid =" . $uid;
+		$where = [
+			[['type', 'eq', 'question'], 'or', ['type', 'eq', 'article'], 'or', ['type', 'eq', 'video']],
+			['time', 'gt', $time_after],
+			['uid', 'eq', $uid]
+		];
 		$count += $this->count('scheduled_posts', $where);
 		if ($count >= $limit)
 		{
@@ -59,14 +63,14 @@ class ratelimit_class extends AWS_MODEL
 		$uid = intval($uid);
 		$time_after = real_time() - 24 * 3600;
 
-		$where = "add_time > " . $time_after . " AND uid =" . $uid;
+		$where = [['add_time', 'gt', $time_after], ['uid', 'eq', $uid]];
 		$count = $this->count('question', $where);
 		if ($count >= $limit)
 		{
 			return false;
 		}
 
-		$where = "type = 'question' AND time > " . $time_after . " AND uid =" . $uid;
+		$where = [['type', 'eq', 'question'], ['time', 'gt', $time_after], ['uid', 'eq', $uid]];
 		$count += $this->count('scheduled_posts', $where);
 		if ($count >= $limit)
 		{
@@ -87,14 +91,14 @@ class ratelimit_class extends AWS_MODEL
 		$uid = intval($uid);
 		$time_after = real_time() - 24 * 3600;
 
-		$where = "add_time > " . $time_after . " AND uid =" . $uid;
+		$where = [['add_time', 'gt', $time_after], ['uid', 'eq', $uid]];
 		$count = $this->count('article', $where);
 		if ($count >= $limit)
 		{
 			return false;
 		}
 
-		$where = "type = 'article' AND time > " . $time_after . " AND uid =" . $uid;
+		$where = [['type', 'eq', 'article'], ['time', 'gt', $time_after], ['uid', 'eq', $uid]];
 		$count += $this->count('scheduled_posts', $where);
 		if ($count >= $limit)
 		{
@@ -115,14 +119,14 @@ class ratelimit_class extends AWS_MODEL
 		$uid = intval($uid);
 		$time_after = real_time() - 24 * 3600;
 
-		$where = "add_time > " . $time_after . " AND uid =" . $uid;
+		$where = [['add_time', 'gt', $time_after], ['uid', 'eq', $uid]];
 		$count = $this->count('video', $where);
 		if ($count >= $limit)
 		{
 			return false;
 		}
 
-		$where = "type = 'video' AND time > " . $time_after . " AND uid =" . $uid;
+		$where = [['type', 'eq', 'video'], ['time', 'gt', $time_after], ['uid', 'eq', $uid]];
 		$count += $this->count('scheduled_posts', $where);
 		if ($count >= $limit)
 		{
@@ -144,14 +148,14 @@ class ratelimit_class extends AWS_MODEL
 		$uid = intval($uid);
 		$time_after = real_time() - 24 * 3600;
 
-		$where = "add_time > " . $time_after . " AND uid =" . $uid;
+		$where = [['add_time', 'gt', $time_after], ['uid', 'eq', $uid]];
 		$count = $this->count('answer', $where);
 		if ($count >= $limit)
 		{
 			return false;
 		}
 
-		$where = "type = 'answer' AND time > " . $time_after . " AND uid =" . $uid;
+		$where = [['type', 'eq', 'answer'], ['time', 'gt', $time_after], ['uid', 'eq', $uid]];
 		$count += $this->count('scheduled_posts', $where);
 		if ($count >= $limit)
 		{
@@ -172,14 +176,14 @@ class ratelimit_class extends AWS_MODEL
 		$uid = intval($uid);
 		$time_after = real_time() - 24 * 3600;
 
-		$where = "add_time > " . $time_after . " AND uid =" . $uid;
+		$where = [['add_time', 'gt', $time_after], ['uid', 'eq', $uid]];
 		$count = $this->count('article_comment', $where);
 		if ($count >= $limit)
 		{
 			return false;
 		}
 
-		$where = "type = 'article_comment' AND time > " . $time_after . " AND uid =" . $uid;
+		$where = [['type', 'eq', 'article_comment'], ['time', 'gt', $time_after], ['uid', 'eq', $uid]];
 		$count += $this->count('scheduled_posts', $where);
 		if ($count >= $limit)
 		{
@@ -200,14 +204,14 @@ class ratelimit_class extends AWS_MODEL
 		$uid = intval($uid);
 		$time_after = real_time() - 24 * 3600;
 
-		$where = "add_time > " . $time_after . " AND uid =" . $uid;
+		$where = [['add_time', 'gt', $time_after], ['uid', 'eq', $uid]];
 		$count = $this->count('video_comment', $where);
 		if ($count >= $limit)
 		{
 			return false;
 		}
 
-		$where = "type = 'video_comment' AND time > " . $time_after . " AND uid =" . $uid;
+		$where = [['type', 'eq', 'video_comment'], ['time', 'gt', $time_after], ['uid', 'eq', $uid]];
 		$count += $this->count('scheduled_posts', $where);
 		if ($count >= $limit)
 		{
@@ -229,7 +233,7 @@ class ratelimit_class extends AWS_MODEL
 		$uid = intval($uid);
 		$time_after = real_time() - 24 * 3600;
 
-		$where = "add_time > " . $time_after . " AND uid =" . $uid;
+		$where = [['add_time', 'gt', $time_after], ['uid', 'eq', $uid]];
 		$count = $this->count('question_discussion', $where);
 		if ($count >= $limit)
 		{
@@ -250,7 +254,7 @@ class ratelimit_class extends AWS_MODEL
 		$uid = intval($uid);
 		$time_after = real_time() - 24 * 3600;
 
-		$where = "add_time > " . $time_after . " AND uid =" . $uid;
+		$where = [['add_time', 'gt', $time_after], ['uid', 'eq', $uid]];
 		$count = $this->count('answer_discussion', $where);
 		if ($count >= $limit)
 		{
