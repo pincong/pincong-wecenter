@@ -468,13 +468,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
             $topic_id = $this->model('topic')->save_topic($_POST['topic_title'], $this->user_id, true, $_POST['topic_description']);
         }
 
-        $this->model('topic')->set_is_parent($topic_id, $_POST['is_parent']);
-
-        if ($_POST['is_parent'] == 0)
-        {
-            $this->model('topic')->set_parent_id($topic_id, $_POST['parent_id']);
-        }
-
         H::ajax_json_output(AWS_APP::RSM(array(
             'url' => get_js_url('/admin/topic/list/')
         ), 1, null));
@@ -496,24 +489,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
             case 'lock' :
                 $this->model('topic')->lock_topic_by_ids($_POST['topic_ids'], 1);
-
-                break;
-
-            case 'set_parent_id':
-                $topic_list = $this->model('topic')->get_topics_by_ids($_POST['topic_ids']);
-
-                foreach ($topic_list AS $topic_info)
-                {
-                    if ($topic_info['is_parent'] == 0)
-                    {
-                        $to_update_topic_ids[] = $topic_info['topic_id'];
-                    }
-                }
-
-                if ($to_update_topic_ids)
-                {
-                    $this->model('topic')->set_parent_id($to_update_topic_ids, $_POST['parent_id']);
-                }
 
                 break;
         }

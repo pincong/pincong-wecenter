@@ -311,7 +311,7 @@ var AWS =
 
 			switch (type)
 			{
-				//后台根话题
+				//后台分类移动设置
 				case 'adminCategoryMove':
 					$('.aw-confirm-box .yes, .aw-category-move-box .yes').click(function()
 					{

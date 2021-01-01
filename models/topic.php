@@ -422,10 +422,6 @@ class topic_class extends AWS_MODEL
 			$this->delete('topic_relation', 'topic_id = ' . intval($topic_id));
 			$this->delete('related_topic', 'topic_id = ' . intval($topic_id) . ' OR related_id = ' . intval($topic_id));
 			$this->delete('topic', 'topic_id = ' . intval($topic_id));
-
-			$this->update('topic', array(
-				'parent_id' => 0
-			), 'parent_id = ' . intval($topic_id));
 		}
 
 		return true;
@@ -772,85 +768,6 @@ class topic_class extends AWS_MODEL
 		return $result;
 	}
 
-	public function set_is_parent($topic_id, $is_parent)
-	{
-		if (!$topic_id)
-		{
-			return false;
-		}
-
-		$to_update_topic['is_parent'] = intval($is_parent);
-
-		if ($to_update_topic['is_parent'] != 0)
-		{
-			$to_update_topic['parent_id'] = 0;
-		}
-
-		if (is_array($topic_id))
-		{
-			array_walk_recursive($topic_id, 'intval_string');
-
-			$where = 'topic_id IN (' . implode(',', $topic_id) . ')';
-		}
-		else
-		{
-			$where = 'topic_id = ' . intval($topic_id);
-		}
-
-		return $this->update('topic', $to_update_topic, $where);
-	}
-
-	public function set_parent_id($topic_id, $parent_id)
-	{
-		if (is_array($topic_id))
-		{
-			array_walk_recursive($topic_id, 'intval_string');
-
-			$where = 'topic_id IN (' . implode(',', $topic_id) . ')';
-		}
-		else
-		{
-			$where = 'topic_id = ' . intval($topic_id);
-		}
-
-		return $this->update('topic', array('parent_id' => intval($parent_id)), $where);
-	}
-
-	public function get_parent_topics()
-	{
-		$parent_topic_list_query = $this->fetch_all('topic', 'is_parent = 1', 'topic_title ASC');
-
-		if (!$parent_topic_list_query)
-		{
-			return false;
-		}
-
-		foreach ($parent_topic_list_query AS $parent_topic_info)
-		{
-			if (!$parent_topic_info['url_token'])
-			{
-				$parent_topic_info['url_token'] = urlencode($parent_topic_info['topic_title']);
-			}
-
-			$parent_topic_list[$parent_topic_info['topic_id']] = $parent_topic_info;
-		}
-
-		return $parent_topic_list;
-	}
-
-	public function get_child_topic_ids($topic_id)
-	{
-		if ($child_topics = $this->query_all("SELECT topic_id FROM " . get_table('topic') . " WHERE parent_id = " . intval($topic_id)))
-		{
-			foreach ($child_topics AS $key => $val)
-			{
-				$child_topic_ids[] = $val['topic_id'];
-			}
-		}
-
-		return $child_topic_ids;
-	}
-
 	public function get_related_topic_ids_by_id($topic_id)
 	{
 		if (!$topic_info = $this->model('topic')->get_topic_by_id($topic_id))
@@ -877,16 +794,6 @@ class topic_class extends AWS_MODEL
 			foreach ($related_topics AS $related_topic)
 			{
 				$related_topics_ids[$related_topic['topic_id']] = $related_topic['topic_id'];
-			}
-		}
-
-		$child_topic_ids = $this->model('topic')->get_child_topic_ids($topic_info['topic_id']);
-
-		if ($child_topic_ids)
-		{
-			foreach ($child_topic_ids AS $topic_id)
-			{
-				$related_topics_ids[$topic_id] = $topic_id;
 			}
 		}
 

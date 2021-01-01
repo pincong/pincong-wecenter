@@ -20,25 +20,6 @@
                     </ul>
                     <!-- end tab切换 -->
 
-                    <!-- 话题分类 -->
-                    <?php if ($this->parent_topics) { ?>
-                    <div class="aw-mod aw-topic-category">
-                        <div class="mod-body clearfix">
-                            <ul>
-                                <li>
-                                    <a <?php if (!$_GET['topic_id']) { ?>class="active"<?php } ?> href="topic/"><?php _e('全部话题'); ?></a>
-                                </li>
-                                <?php foreach ($this->parent_topics AS $key => $val) { ?>
-                                <li>
-                                    <a href="topic/channel-topic__topic_id-<?php echo $val['topic_id']; ?>"<?php if ($_GET['topic_id'] == $val['topic_id']) { ?> class="active"<?php } ?>><?php echo $val['topic_title']; ?></a>
-                                </li>
-                                <?php } ?>
-                            </ul>
-                        </div>
-                    </div>
-                    <?php } ?>
-                    <!-- end 话题分类 -->
-
                     <!-- 我关注的话题 -->
                     <div class="aw-mod aw-topic-list">
                         <div class="mod-body clearfix">

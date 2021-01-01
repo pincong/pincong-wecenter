@@ -99,8 +99,6 @@ class topic extends AWS_ADMIN_CONTROLLER
 			}
 		}
 
-		$parent_topic_list = $this->model('topic')->get_parent_topics();
-
 		$url_param = array();
 
 		foreach($_GET as $key => $val)
@@ -120,48 +118,8 @@ class topic extends AWS_ADMIN_CONTROLLER
 		TPL::assign('topics_count', $total_rows);
 		TPL::assign('list', $topic_list);
 		TPL::assign('users_info', $users_info);
-		TPL::assign('parent_topic_list', $parent_topic_list);
 
 		TPL::output('admin/topic/list');
-	}
-
-	public function parent_action()
-	{
-		$this->crumb(AWS_APP::lang()->_t('根话题'), 'admin/topic/parent/');
-
-		$topic_list = $this->model('topic')->get_topic_list('is_parent = 1', 'topic_id DESC', $this->per_page, $_GET['page']);
-
-		$total_rows = $this->model('topic')->found_rows();
-
-		if ($topic_list)
-		{
-			foreach ($topic_list AS $key => $topic_info)
-			{
-				$topic_list[$key]['last_edited_uid'] = NULL;
-
-				$topic_list[$key]['last_edited_time'] = NULL;
-
-				$last_edited_uids[] = $topic_list[$key]['last_edited_uid'];
-			}
-
-			$users_info_query = $this->model('account')->get_user_info_by_uids($last_edited_uids);
-
-			foreach ($users_info_query AS $user_info)
-			{
-				$users_info[$user_info['uid']] = $user_info;
-			}
-		}
-
-		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
-			'base_url' => get_js_url('/admin/topic/parent/'),
-			'total_rows' => $total_rows,
-			'per_page' => $this->per_page
-		))->create_links());
-
-		TPL::assign('list', $topic_list);
-		TPL::assign('users_info', $users_info);
-
-		TPL::output('admin/topic/parent');
 	}
 
 	public function edit_action()
@@ -183,8 +141,6 @@ class topic extends AWS_ADMIN_CONTROLLER
 		{
 			$this->crumb(AWS_APP::lang()->_t('新建话题'), 'admin/topic/edit/');
 		}
-
-		TPL::assign('parent_topics', $this->model('topic')->get_parent_topics());
 
 		TPL::output('admin/topic/edit');
 	}

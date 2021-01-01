@@ -447,8 +447,6 @@ CREATE TABLE IF NOT EXISTS `aws_topic` (
   `url_token` varchar(32) DEFAULT NULL,
   `merged_id` int(11) DEFAULT '0',
   `seo_title` varchar(240) DEFAULT NULL,
-  `parent_id` int(10) DEFAULT '0',
-  `is_parent` tinyint(1) DEFAULT '0',
   `discuss_count_last_week` int(10) DEFAULT '0',
   `discuss_count_last_month` int(10) DEFAULT '0',
   `discuss_count_update` int(10) DEFAULT '0',
@@ -461,8 +459,6 @@ CREATE TABLE IF NOT EXISTS `aws_topic` (
   KEY `user_related` (`user_related`),
   KEY `focus_count` (`focus_count`),
   KEY `topic_lock` (`topic_lock`),
-  KEY `parent_id` (`parent_id`),
-  KEY `is_parent` (`is_parent`),
   KEY `discuss_count_last_week` (`discuss_count_last_week`),
   KEY `discuss_count_last_month` (`discuss_count_last_month`),
   KEY `discuss_count_update` (`discuss_count_update`)

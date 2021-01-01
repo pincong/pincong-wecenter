@@ -115,14 +115,6 @@ class main extends AWS_CONTROLLER
 		TPL::set_meta('keywords', implode(',', $page_keywords));
 		TPL::set_meta('description', cjk_substr(str_replace("\r\n", ' ', strip_tags($topic_info['topic_description'])), 0, 128, 'UTF-8', '...'));
 
-		if ($child_topic_ids = $this->model('topic')->get_child_topic_ids($topic_info['topic_id']))
-		{
-			foreach ($child_topic_ids AS $key => $topic_id)
-			{
-				$related_topics_ids[$topic_id] = $topic_id;
-			}
-		}
-
 		TPL::assign('related_topics', $related_topics);
 
 		$topic_ids[] = $topic_info['topic_id'];
@@ -154,11 +146,6 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('redirect_message', $redirect_message);
 
-		if ($topic_info['parent_id'])
-		{
-			TPL::assign('parent_topic_info', $this->model('topic')->get_topic_by_id($topic_info['parent_id']));
-		}
-
 		TPL::output('topic/index');
 	}
 
@@ -175,8 +162,8 @@ class main extends AWS_CONTROLLER
 				TPL::assign('topics_list', $topics_list);
 			break;
 
-            default:
 			case 'hot':
+			default:
 				switch ($_GET['day'])
 				{
 					case 'month':
@@ -212,36 +199,7 @@ class main extends AWS_CONTROLLER
 
 				TPL::assign('topics_list', $topics_list);
 			break;
-
-			case 'topic':
-				if (!$topics_list = AWS_APP::cache()->get('square_parent_topics_topic_list_' . intval($_GET['topic_id']) . '_' . intval($_GET['page'])))
-				{
-					$topic_ids[] = intval($_GET['topic_id']);
-
-					if ($child_topic_ids = $this->model('topic')->get_child_topic_ids($_GET['topic_id']))
-					{
-						$topic_ids = array_merge($child_topic_ids, $topic_ids);
-					}
-
-					if ($topics_list = $this->model('topic')->get_topic_list('topic_id IN(' . implode(',', $topic_ids) . ') AND merged_id = 0', 'discuss_count DESC', 20, $_GET['page']))
-					{
-						$topics_list_total_rows = $this->model('topic')->found_rows();
-
-						AWS_APP::cache()->set('square_parent_topics_topic_list_' . intval($_GET['topic_id']) . '_total_rows', $topics_list_total_rows, get_setting('cache_level_low'));
-					}
-
-					AWS_APP::cache()->set('square_parent_topics_topic_list_' . intval($_GET['topic_id']) . '_' . intval($_GET['page']), $topics_list, get_setting('cache_level_low'));
-				}
-				else
-				{
-					$topics_list_total_rows = AWS_APP::cache()->get('square_parent_topics_topic_list_' . intval($_GET['topic_id']) . '_total_rows');
-				}
-
-				TPL::assign('topics_list', $topics_list);
-			break;
 		}
-
-		TPL::assign('parent_topics', $this->model('topic')->get_parent_topics());
 
 		TPL::assign('new_topics', $this->model('topic')->get_topic_list(null, 'topic_id DESC', 10));
 
@@ -312,11 +270,6 @@ class main extends AWS_CONTROLLER
 		TPL::assign('merged_topics_info', $merged_topics_info);
 
 		TPL::assign('topic_info', $topic_info);
-
-		if (!$topic_info['is_parent'])
-		{
-			TPL::assign('parent_topics', $this->model('topic')->get_parent_topics());
-		}
 
 		TPL::output('topic/manage');
 	}

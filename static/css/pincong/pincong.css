@@ -38,8 +38,6 @@ a:hover{text-decoration: none;color: #404451;}
 .aw-article-list .aw-item h2 a:hover, .aw-article-list .aw-item .aw-mod-footer span a:hover{color: #4d8bcd;}
 .aw-article-list .aw-item .mod-footer span a:hover{color: #555c6c;}
 .aw-article-vote a:hover, .aw-article-vote a.active{background-color: #404451;color: #fff;}
-.aw-topic-category ul li a:hover, .aw-topic-category ul li a.active{background-color: #697287;color: #fff;border-color: #697287;}
-.aw-mod.topic-nav ul li a:hover, .aw-mod.topic-nav ul li a.active{background: #2b77a8;color: #fff;}
 .aw-mod-search-result .aw-item .icon-bestbg{margin-right: 5px;font-size: 15px;color: #666c82;}
 .aw-first-login .mod-head ul{background: #697287;color: #fff;}
 .navbar-collapse {background: #404451;}

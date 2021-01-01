@@ -95,16 +95,6 @@
 
 					<?php TPL::include('topic/related_topics.tpl.htm'); ?>
 
-					<?php if ($this->parent_topic_info) { ?>
-					<div class="aw-mod">
-						<div class="mod-head">
-							<h3><?php _e('根话题'); ?></h3>
-						</div>
-
-						<a class="aw-topic-name" href="topic/<?php echo $this->parent_topic_info['url_token']; ?>" data-id="<?php echo $this->parent_topic_info['topic_id']; ?>"><span><?php echo $this->parent_topic_info['topic_title']; ?></span></a>
-					</div>
-					<?php } ?>
-
 					<!-- xx人关注该话题 -->
 					<div class="aw-mod topic-status">
 						<div class="mod-head">
