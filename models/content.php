@@ -645,7 +645,7 @@ class content_class extends AWS_MODEL
 		// 折叠的回复的通知标为已读
 		$this->update('notification', array(
 			'read_flag' => 1
-		), 'read_flag <> 1 AND item_type = ' . ($item_type) . ' AND item_id = ' . intval($item_id));
+		), 'read_flag <> 1 AND item_type = "' . ($item_type) . '" AND item_id = ' . intval($item_id));
 
 		$this->model('content')->log($parent_type, $parent_id, $item_type, $item_id, '折叠', $log_uid);
 	}
