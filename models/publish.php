@@ -147,12 +147,12 @@ class publish_class extends AWS_MODEL
 	public function publish_scheduled_posts()
 	{
 		$now = real_time();
-		if ($items = $this->query_all("SELECT * FROM " . $this->get_table('scheduled_posts') . " WHERE time < " . $now))
+		if ($items = $this->fetch_all('scheduled_posts', ['time', 'lt', $now]))
 		{
 			foreach ($items as $key => $val)
 			{
 				$this->publish_scheduled_item($val);
-				$this->delete('scheduled_posts', 'id = ' . ($val['id']));
+				$this->delete('scheduled_posts', ['id', 'eq', $val['id'], 'i']);
 			}
 		}
 	}
@@ -324,10 +324,10 @@ class publish_class extends AWS_MODEL
 		}
 
 		$this->update('question', array(
-			'answer_count' => $this->count('answer', 'question_id = ' . intval($data['parent_id'])),
+			'answer_count' => $this->count('answer', ['question_id', 'eq', $data['parent_id'], 'i']),
 			'update_time' => $now,
 			'last_uid' => $data['uid']
-		), 'id = ' . intval($data['parent_id']));
+		), ['id', 'eq', $data['parent_id'], 'i']);
 
 		$this->model('posts')->set_posts_index($data['parent_id'], 'question');
 
@@ -382,10 +382,10 @@ class publish_class extends AWS_MODEL
 
 		// TODO: comments 字段改为 comment_count
 		$this->update('article', array(
-			'comments' => $this->count('article_comment', 'article_id = ' . intval($data['parent_id'])),
+			'comments' => $this->count('article_comment', ['article_id', 'eq', $data['parent_id'], 'i']),
 			'update_time' => $now,
 			'last_uid' => $data['uid']
-		), 'id = ' . intval($data['parent_id']));
+		), ['id', 'eq', $data['parent_id'], 'i']);
 
 		$this->model('posts')->set_posts_index($data['parent_id'], 'article');
 
@@ -435,10 +435,10 @@ class publish_class extends AWS_MODEL
 		}
 
 		$this->update('video', array(
-			'comment_count' => $this->count('video_comment', 'video_id = ' . intval($data['parent_id'])),
+			'comment_count' => $this->count('video_comment', ['video_id', 'eq', $data['parent_id'], 'i']),
 			'update_time' => $now,
 			'last_uid' => $data['uid']
-		), 'id = ' . intval($data['parent_id']));
+		), ['id', 'eq', $data['parent_id'], 'i']);
 
 		$this->model('posts')->set_posts_index($data['parent_id'], 'video');
 
@@ -480,7 +480,7 @@ class publish_class extends AWS_MODEL
 			return false;
 		}
 
-		$discussion_count = $this->count('question_discussion', 'question_id = ' . intval($data['parent_id']));
+		$discussion_count = $this->count('question_discussion', ['question_id', 'eq', $data['parent_id'], 'i']);
 
 		if (S::get('discussion_bring_top') == 'Y')
 		{
@@ -488,7 +488,7 @@ class publish_class extends AWS_MODEL
 				'comment_count' => $discussion_count,
 				'update_time' => $now,
 				'last_uid' => $data['uid'],
-			), 'id = ' . intval($thread_info['id']));
+			), ['id', 'eq', $thread_info['id'], 'i']);
 
 			$this->model('posts')->bring_to_top($thread_info['id'], 'question');
 		}
@@ -496,7 +496,7 @@ class publish_class extends AWS_MODEL
 		{
 			$this->update('question', array(
 				'comment_count' => $discussion_count,
-			), 'id = ' . intval($data['parent_id']));
+			), ['id', 'eq', $data['parent_id'], 'i']);
 		}
 
 		$this->mention_users('question', $thread_info['id'], null, 0, $data['uid'], $data['at_uid'], $data['message']);
@@ -534,7 +534,7 @@ class publish_class extends AWS_MODEL
 			return false;
 		}
 
-		$discussion_count = $this->count('answer_discussion', 'answer_id = ' . intval($data['parent_id']));
+		$discussion_count = $this->count('answer_discussion', ['answer_id', 'eq', $data['parent_id'], 'i']);
 
 		if (S::get('discussion_bring_top') == 'Y')
 		{
@@ -543,14 +543,14 @@ class publish_class extends AWS_MODEL
 			$this->update('question', array(
 				'update_time' => $now,
 				'last_uid' => $data['uid'],
-			), 'id = ' . intval($thread_id));
+			), ['id', 'eq', $thread_id, 'i']);
 
 			$this->model('posts')->bring_to_top($thread_id, 'question');
 		}
 
 		$this->update('answer', array(
 			'comment_count' => $discussion_count,
-		), 'id = ' . intval($data['parent_id']));
+		), ['id', 'eq', $data['parent_id'], 'i']);
 
 
 		if ($data['at_uid'])

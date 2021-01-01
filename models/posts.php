@@ -43,15 +43,15 @@ class posts_class extends AWS_MODEL
 			switch ($post_type)
 			{
 				case 'question':
-					$result = $this->fetch_row('question', 'id = ' . intval($post_id));
+					$result = $this->fetch_row('question', ['id', 'eq', $post_id, 'i']);
 					break;
 
 				case 'article':
-					$result = $this->fetch_row('article', 'id = ' . intval($post_id));
+					$result = $this->fetch_row('article', ['id', 'eq', $post_id, 'i']);
 					break;
 
 				case 'video':
-					$result = $this->fetch_row('video', 'id = ' . intval($post_id));
+					$result = $this->fetch_row('video', ['id', 'eq', $post_id, 'i']);
 					break;
 			}
 
@@ -121,15 +121,15 @@ class posts_class extends AWS_MODEL
 			}
 		}
 
-		if ($posts_index = $this->fetch_all('posts_index', "post_id = " . intval($post_id) . " AND post_type = '" . $this->quote($post_type) . "'"))
+		if ($posts_index = $this->fetch_all('posts_index', [['post_id', 'eq', $post_id, 'i'], ['post_type', 'eq', $post_type]]))
 		{
 			$post_index = end($posts_index);
 
-			$this->update('posts_index', $data, 'id = ' . intval($post_index['id']));
+			$this->update('posts_index', $data, ['id', 'eq', $post_index['id'], 'i']);
 
 			if (sizeof($posts_index) > 1)
 			{
-				$this->delete('posts_index', "post_id = " . intval($post_id) . " AND post_type = '" . $this->quote($post_type) . "' AND id != " . intval($post_index['id']));
+				$this->delete('posts_index', [['post_id', 'eq', $post_id, 'i'], ['post_type', 'eq', $post_type], ['id', 'notEq', $post_index['id'], 'i']]);
 			}
 		}
 		else
@@ -147,7 +147,7 @@ class posts_class extends AWS_MODEL
 
 	public function remove_posts_index($post_id, $post_type)
 	{
-		return $this->delete('posts_index', "post_id = " . intval($post_id) . " AND post_type = '" . $this->quote($post_type) . "'");
+		return $this->delete('posts_index', [['post_id', 'eq', $post_id, 'i'], ['post_type', 'eq', $post_type]]);
 	}
 
 	// 得到在首页显示的分类
@@ -289,42 +289,40 @@ class posts_class extends AWS_MODEL
 			$order_key = 'sort DESC, update_time DESC';
 		}
 
-		$where = array();
-
 		if (isset($answer_count))
 		{
 			$answer_count = intval($answer_count);
 
 			if ($answer_count == 0)
 			{
-				$where[] = "answer_count = " . $answer_count;
+				$where[] = ['answer_count', 'eq', 0];
 			}
 			else if ($answer_count > 0)
 			{
-				$where[] = "answer_count >= " . $answer_count;
+				$where[] = ['answer_count', 'gte', $answer_count];
 			}
 		}
 
 		if ($recommend)
 		{
-			$where[] = 'recommend = 1';
+			$where[] = ['recommend', 'eq', 1];
 		}
 
 		if ($category_id)
 		{
-			$where[] = 'category_id=' . intval($category_id);
+			$where[] = ['category_id', 'eq', $category_id, 'i'];
 		}
 		else
 		{
-			$where[] = '`category_id` IN(' . implode(',', $this->get_default_category_ids()) . ')';
+			$where[] = ['category_id', 'in', $this->get_default_category_ids(), 'i'];
 		}
 
-		if ($post_type)
+		if ($post_type AND $this->model('content')->check_thread_type($post_type))
 		{
-			$where[] = "post_type = '" . $this->quote($post_type) . "'";
+			$where[] = ['post_type', 'eq', $post_type];
 		}
 
-		$posts_index = $this->fetch_page('posts_index', implode(' AND ', $where), $order_key, $page, $per_page);
+		$posts_index = $this->fetch_page('posts_index', $where, $order_key, $page, $per_page);
 
 		$this->posts_list_total = $this->total_rows();
 
@@ -336,21 +334,20 @@ class posts_class extends AWS_MODEL
 		if ($day)
 		{
 			$add_time = strtotime('-' . $day . ' Day');
+			$where[] = ['add_time', 'gt', $add_time, 'i'];
 		}
 
-		$where[] = 'add_time > ' . intval($add_time);
-
-		if ($post_type)
+		if ($post_type AND $this->model('content')->check_thread_type($post_type))
 		{
-			$where[] = "post_type = '" . $this->quote($post_type) . "'";
+			$where[] = ['post_type', 'eq', $post_type];
 		}
 
 		if ($category_id)
 		{
-			$where[] = 'category_id=' . intval($category_id);
+			$where[] = ['category_id', 'eq', $category_id, 'i'];
 		}
 
-		$posts_index = $this->fetch_page('posts_index', implode(' AND ', $where), 'reputation DESC', $page, $per_page);
+		$posts_index = $this->fetch_page('posts_index', $where, 'reputation DESC', $page, $per_page);
 
 		$this->posts_list_total = $this->total_rows();
 
@@ -369,16 +366,16 @@ class posts_class extends AWS_MODEL
 			$topic_ids = array_slice($topic_ids, 0, 50);
 		}
 
-		array_walk_recursive($topic_ids, 'intval_string');
+		//array_walk_recursive($topic_ids, 'intval_string');
 
-		$topic_relation_where[] = '`topic_id` IN(' . implode(',', $topic_ids) . ')';
+		$topic_relation_where[] = ['topic_id', 'in', $topic_ids, 'i'];
 
-		if ($post_type)
+		if ($post_type AND $this->model('content')->check_thread_type($post_type))
 		{
-			$topic_relation_where[] = "`type` = '" . $this->quote($post_type) . "'";
+			$topic_relation_where[] = ['type', 'eq', $post_type];
 		}
 
-		$topic_relation_query = $this->fetch_page('topic_relation', implode(' AND ', $topic_relation_where), 'id DESC', $page, $per_page);
+		$topic_relation_query = $this->fetch_page('topic_relation', $topic_relation_where, 'id DESC', $page, $per_page);
 		if ($topic_relation_query)
 		{
 			foreach ($topic_relation_query AS $key => $val)
@@ -396,11 +393,11 @@ class posts_class extends AWS_MODEL
 
 		foreach ($post_ids AS $key => $val)
 		{
-			$post_id_where[] = "(post_id IN (" . implode(',', $val) . ") AND post_type = '" . $this->quote($key) . "')";
+			$where[] = 'or';
+			$where[] = [['post_id', 'in', $val, 'i'], ['post_type', 'eq', $key]];
 		}
 
-		$where = implode(' OR ', $post_id_where);
-		$result = $this->query_all("SELECT * FROM " . get_table('posts_index') . " WHERE " . $where . " ORDER BY update_time DESC");
+		$result = $this->fetch_all('posts_index', $where, 'update_time DESC', $per_page);
 
 		return $this->process_explore_list_data($result);
 	}
@@ -431,7 +428,7 @@ class posts_class extends AWS_MODEL
 	{
 		$post_id = intval($post_id);
 
-		$where = "post_id = " . ($post_id) . " AND post_type = '" . $this->quote($post_type) . "'";
+		$where = [['post_id', 'eq', $post_id, 'i'], ['post_type', 'eq', $post_type]];
 
 		$this->update('posts_index', array(
 			'update_time' => $this->get_last_update_time() + 1
