@@ -15,19 +15,74 @@
 
 if (!defined('IN_ANWSION'))
 {
-    die;
+	die;
 }
 
 class ad extends AWS_ADMIN_CONTROLLER
 {
-    public function index_action()
-    {
-        $this->crumb(AWS_APP::lang()->_t('广告位'));
+	public function ad_space_a1_action()
+	{
+		$setting_key = 'ad_space_a1';
+		$setting_title = AWS_APP::lang()->_t('广告位 A1');
+		TPL::assign('setting_key', $setting_key);
+		TPL::assign('setting_title', $setting_title);
+		TPL::assign('menu_list', $this->model('admin')->fetch_menu_list($setting_key));
+		TPL::assign('settings', get_settings());
+		TPL::output('admin/custom_content');
+	}
 
-        TPL::assign('setting', get_settings());
+	public function ad_space_a2_action()
+	{
+		$setting_key = 'ad_space_a2';
+		$setting_title = AWS_APP::lang()->_t('广告位 A2');
+		TPL::assign('setting_key', $setting_key);
+		TPL::assign('setting_title', $setting_title);
+		TPL::assign('menu_list', $this->model('admin')->fetch_menu_list($setting_key));
+		TPL::assign('settings', get_settings());
+		TPL::output('admin/custom_content');
+	}
 
-        TPL::assign('menu_list', $this->model('admin')->fetch_menu_list('SETTINGS_AD'));
+	public function ad_space_a3_action()
+	{
+		$setting_key = 'ad_space_a3';
+		$setting_title = AWS_APP::lang()->_t('广告位 A3');
+		TPL::assign('setting_key', $setting_key);
+		TPL::assign('setting_title', $setting_title);
+		TPL::assign('menu_list', $this->model('admin')->fetch_menu_list($setting_key));
+		TPL::assign('settings', get_settings());
+		TPL::output('admin/custom_content');
+	}
 
-        TPL::output('admin/ad');
-    }
+	public function ad_space_b1_action()
+	{
+		$setting_key = 'ad_space_b1';
+		$setting_title = AWS_APP::lang()->_t('广告位 B1 (未使用)');
+		TPL::assign('setting_key', $setting_key);
+		TPL::assign('setting_title', $setting_title);
+		TPL::assign('menu_list', $this->model('admin')->fetch_menu_list($setting_key));
+		TPL::assign('settings', get_settings());
+		TPL::output('admin/custom_content');
+	}
+
+	public function ad_space_b2_action()
+	{
+		$setting_key = 'ad_space_b2';
+		$setting_title = AWS_APP::lang()->_t('广告位 B2 (未使用)');
+		TPL::assign('setting_key', $setting_key);
+		TPL::assign('setting_title', $setting_title);
+		TPL::assign('menu_list', $this->model('admin')->fetch_menu_list($setting_key));
+		TPL::assign('settings', get_settings());
+		TPL::output('admin/custom_content');
+	}
+
+	public function ad_space_b3_action()
+	{
+		$setting_key = 'ad_space_b3';
+		$setting_title = AWS_APP::lang()->_t('广告位 B3 (未使用)');
+		TPL::assign('setting_key', $setting_key);
+		TPL::assign('setting_title', $setting_title);
+		TPL::assign('menu_list', $this->model('admin')->fetch_menu_list($setting_key));
+		TPL::assign('settings', get_settings());
+		TPL::output('admin/custom_content');
+	}
 }
