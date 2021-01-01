@@ -46,7 +46,7 @@ class ajax extends AWS_CONTROLLER
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你设置了拒绝接收任何人的私信')));
 			}
 		}
-		else if ($inbox_recv != 3) // 3为任何人
+		else if ($inbox_recv == 3) // 3为任何人
 		{
 			return;
 		}
