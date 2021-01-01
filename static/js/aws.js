@@ -71,18 +71,19 @@ var AWS =
 	ajax_request: function(url, params, cb, error_cb) {
 		AWS.loading('show');
 
-		if (params) {
-			if (typeof params == 'object') {
-				params['_post_type'] = 'ajax';
-			}
-			else {
-				params += '&_post_type=ajax';
-			}
-			$.post(url, params, _success, 'json').error(_error);
-		}
-		else {
-			$.get(url, _success, 'json').error(_error);
-		}
+		params || (params = '');
+		if (typeof params == 'object') params['_post_type'] = 'ajax';
+		else params += '&_post_type=ajax';
+
+		$.ajax({
+			type: 'post',
+			url: url,
+			data: params,
+			dataType: 'json',
+			timeout: 60000,
+			success: _success,
+			error: _error,
+		});
 
 		function _show_error(text) {
 			if (error_cb) {
@@ -93,49 +94,38 @@ var AWS =
 			}
 		}
 
-		function _success(result) {
+		function _success(data, textStatus, jqXHR) {
 			AWS.loading('hide');
 
-			if (typeof result !== 'object' || result === null) {
-				result = {};
+			if (typeof data !== 'object' || data === null) {
+				data = {};
 			}
 
-			if (result.err) {
-				_show_error(result.err);
+			if (data.err) {
+				_show_error(data.err);
 				return;
 			}
 
-			if (result.url) {
-				window.location = result.url;
-				return;
-			}
-
-			if (result.rsm && result.rsm.url) {
-				window.location = result.rsm.url;
+			if (data.url) {
+				window.location = data.url;
 				return;
 			}
 
 			if (cb) {
-				(typeof cb === 'function') && cb(result.rsm);
+				(typeof cb === 'function') && cb(data.rsm);
 			}
 			else {
 				window.location.reload();
 			}
 		}
 
-		function _error(error) {
+		function _error(jqXHR, textStatus, errorThrown) {
 			AWS.loading('hide');
 
-			if (error.status == 0) {
-				_show_error(_t('网络连接异常'));
-			}
-			else {
-				console.log(error.responseText);
-				_show_error(_t('发生错误, 请刷新页面重试'));
-			}
+			console.log(jqXHR.responseText);
+			_show_error(_t('网络连接异常'));
 		}
 	},
-
 
 	submit_form: function(form_el, btn_el, err_el, cb, error_cb) {
 		// 若有编辑器的话就从编辑器更新内容再提交
@@ -147,21 +137,32 @@ var AWS =
 			});
 		}
 
-		AWS.loading('show');
 		if (btn_el) {
 			btn_el.addClass('disabled');
 		}
 
-		form_el.ajaxSubmit({
-			dataType: 'json',
-			data: {
-				_post_type: 'ajax'
-			},
-			success: _success,
-			error: _error
-		});
-
-		function _show_error(text) {
+		AWS.ajax_request(form_el.attr('action'), form_el.serialize(), function(rsm) {
+			if (btn_el) {
+				btn_el.removeClass('disabled');
+			}
+			if (cb) {
+				form_el.find('textarea').each(function() {
+					$(this).val('');
+					if (G_ADVANCED_EDITOR_ENABLE == 'Y') {
+						if (this._sceditor) {
+							this._sceditor.val('');
+						}
+					}
+				});
+				(typeof cb === 'function') && cb(rsm);
+			}
+			else {
+				window.location.reload();
+			}
+		}, function(text) {
+			if (btn_el) {
+				btn_el.removeClass('disabled');
+			}
 			if (err_el && err_el.length) {
 				if (err_el.find('em').length) {
 					err_el.find('em').html(text);
@@ -184,63 +185,7 @@ var AWS =
 					AWS.alert(text);
 				}
 			}
-		}
-
-		function _success(result) {
-			AWS.loading('hide');
-			if (btn_el) {
-				btn_el.removeClass('disabled');
-			}
-
-			if (typeof result !== 'object' || result === null) {
-				result = {};
-			}
-
-			if (result.err) {
-				_show_error(result.err);
-				return;
-			}
-
-			if (result.url) {
-				window.location = result.url;
-				return;
-			}
-
-			if (result.rsm && result.rsm.url) {
-				window.location = result.rsm.url;
-				return;
-			}
-
-			if (cb) {
-				form_el.find('textarea').each(function() {
-					$(this).val('');
-					if (G_ADVANCED_EDITOR_ENABLE == 'Y') {
-						if (this._sceditor) {
-							this._sceditor.val('');
-						}
-					}
-				});
-				(typeof cb === 'function') && cb(result.rsm);
-			}
-			else {
-				window.location.reload();
-			}
-		}
-
-		function _error(error) {
-			AWS.loading('hide');
-			if (btn_el) {
-				btn_el.removeClass('disabled');
-			}
-
-			if (error.status == 0) {
-				_show_error(_t('网络连接异常'));
-			}
-			else {
-				console.log(error.responseText);
-				_show_error(_t('发生错误, 请刷新页面重试'));
-			}
-		}
+		});
 	},
 
 	submit_append: function(form_el, btn_el, container_el, cb, error_cb) {

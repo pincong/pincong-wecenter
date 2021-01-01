@@ -72,26 +72,19 @@ var AWS =
 	{
 		AWS.loading('show');
 
-		if (params)
-		{
-			$.post(url, params + '&_post_type=ajax', function (result)
-			{
-				_callback(result);
-			}, 'json').error(function (error)
-			{
-				_error(error);
-			});
-		}
-		else
-		{
-			$.get(url, function (result)
-			{
-				_callback(result);
-			}, 'json').error(function (error)
-			{
-				_error(error);
-			});
-		}
+		params || (params = '');
+		if (typeof params == 'object') params['_post_type'] = 'ajax';
+		else params += '&_post_type=ajax';
+
+		$.ajax({
+			type: 'post',
+			url: url,
+			data: params,
+			dataType: 'json',
+			timeout: 60000,
+			success: _callback,
+			error: _error,
+		});
 
 		function _callback (result)
 		{
@@ -114,12 +107,6 @@ var AWS =
 				return;
 			}
 
-			if (result.rsm && result.rsm.url)
-			{
-				window.location = result.rsm.url;
-				return;
-			}
-
 			window.location.reload();
 		}
 
@@ -127,10 +114,7 @@ var AWS =
 		{
 			AWS.loading('hide');
 
-			if ($.trim(error.responseText) != '')
-			{
-				alert(_t('发生错误, 返回的信息:') + ' ' + error.responseText);
-			}
+			alert(_t('发生错误, 返回的信息:') + ' ' + error.responseText);
 		}
 
 		return false;
@@ -138,49 +122,31 @@ var AWS =
 
 	ajax_post: function(formEl, processer, type) // 表单对象，用 jQuery 获取，回调函数名
 	{
-		if (typeof (processer) != 'function')
-		{
-			var processer = AWS.ajax_processer;
+		if (typeof(processer) != 'function') processer = AWS.ajax_processer;
+		if (!type) type = 'default';
 
-			AWS.loading('show');
-		}
+		AWS.loading('show');
 
-		if (!type)
-		{
-			var type = 'default';
-		}
-
-		var custom_data = {
-			_post_type: 'ajax'
-		};
-
-		formEl.ajaxSubmit(
-		{
+		$.ajax({
+			type: 'post',
+			url: formEl.attr('action'),
+			data: formEl.serialize() + '&_post_type=ajax',
 			dataType: 'json',
-			data: custom_data,
-			success: function (result)
-			{
+			timeout: 60000,
+			success: function(result) {
+				AWS.loading('hide');
 				processer(type, result);
 			},
-			error: function (error)
-			{
-				if ($.trim(error.responseText) != '')
-				{
-					AWS.loading('hide');
-
-					alert(_t('发生错误, 返回的信息:') + ' ' + error.responseText);
-				}
-			}
+			error: function(error) {
+				AWS.loading('hide');
+				alert(_t('发生错误, 返回的信息:') + ' ' + error.responseText);
+			},
 		});
 	},
 
 	// ajax提交callback
 	ajax_processer: function (type, result)
 	{
-		if (type == 'default')
-		{
-			AWS.loading('hide');
-		}
 		if (result.err)
 		{
 			switch (type)
@@ -222,10 +188,6 @@ var AWS =
 			if (result.url)
 			{
 				window.location = result.url;
-			}
-			else if (result.rsm && result.rsm.url)
-			{
-				window.location = result.rsm.url;
 			}
 			else
 			{

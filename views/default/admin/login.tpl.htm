@@ -1,45 +1,4 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-<meta charset="utf-8" />
-<meta name="renderer" content="webkit" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="referrer" content="no-referrer" />
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="blank" />
-<meta name="format-detection" content="telephone=no" />
-<title><?php echo $this->page_title; ?></title>
-
-<link rel="stylesheet" href="<?php echo G_STATIC_URL; ?>/css/bootstrap.css" />
-<link rel="stylesheet" href="<?php echo G_STATIC_URL; ?>/css/icon.css" />
-<link rel="stylesheet" href="<?php echo G_STATIC_URL; ?>/admin/css/login.css?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>" />
-
-<?php if (is_array($this->_import_css_files)) { ?>
-<?php foreach ($this->_import_css_files AS $import_css) { ?>
-<link rel="stylesheet" href="<?php echo $import_css; ?>?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>" />
-<?php } ?>
-<?php } ?>
-
-<script type="text/javascript">
-var G_BASE_URL = "<?php echo url_rewrite(); ?>";
-</script>
-
-<script src="<?php echo G_STATIC_URL; ?>/js/jquery.2.js"></script>
-<script src="<?php echo G_STATIC_URL; ?>/js/bootstrap.js"></script>
-<script src="<?php echo G_STATIC_URL; ?>/js/jquery.form.js"></script>
-<script src="<?php echo G_STATIC_URL; ?>/js/hogan.js"></script>
-<script src="<?php echo G_STATIC_URL; ?>/admin/js/framework.js"></script>
-<script src="<?php echo G_STATIC_URL; ?>/admin/js/aws_admin.js?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>"></script>
-<script src="<?php echo G_STATIC_URL; ?>/admin/js/aws_admin_template.js?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>"></script>
-<script src="<?php echo G_STATIC_URL; ?>/admin/js/global.js?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>"></script>
-
-<?php if (is_array($this->_import_js_files)) { ?>
-<?php foreach ($this->_import_js_files AS $import_js) { ?>
-<script src="<?php echo $import_js; ?>?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>"></script>
-<?php } ?>
-<?php } ?>
-</head>
+<?php TPL::include('admin/global/header_meta.tpl.htm'); ?>
 
 <body>
 <div class="aw-login">
