@@ -69,6 +69,14 @@ class main extends AWS_CONTROLLER
 		}
 
 		TPL::assign('article_info', $article_info);
+		if ($article_info['redirect_id'])
+		{
+			TPL::assign('redirect_info', $this->model('content')->get_post_by_id('article', $article_info['redirect_id']));
+		}
+		if ($_GET['rf'])
+		{
+			TPL::assign('redirected_from', $this->model('content')->get_post_by_id('article', $_GET['rf']));
+		}
 
 		$article_topics = $this->model('topic')->get_topics_by_item_id($article_info['id'], 'article');
 

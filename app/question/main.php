@@ -181,6 +181,15 @@ class main extends AWS_CONTROLLER
 		}
 
 		TPL::assign('question_info', $question_info);
+		if ($question_info['redirect_id'])
+		{
+			TPL::assign('redirect_info', $this->model('content')->get_post_by_id('question', $question_info['redirect_id']));
+		}
+		if ($_GET['rf'])
+		{
+			TPL::assign('redirected_from', $this->model('content')->get_post_by_id('question', $_GET['rf']));
+		}
+
 		TPL::assign('question_focus', $this->model('question')->has_focus_question($question_info['id'], $this->user_id));
 
 		$question_topics = $this->model('topic')->get_topics_by_item_id($question_info['id'], 'question');

@@ -196,6 +196,20 @@ class content_class extends AWS_MODEL
 		return $this->fetch_all($type, 'redirect_id = ' . ($redirect_id));
 	}
 
+
+	// 不缓存版
+	public function get_post_by_id($type, $item_id)
+	{
+		$item_id = intval($item_id);
+		if (!$item_id OR !$this->check_thread_or_reply_type($type))
+		{
+			return false;
+		}
+
+		$where = 'id = ' . ($item_id);
+		return $this->fetch_row($type, $where);
+	}
+
 	/**
 	 * 记录日志
 	 * @param string $thread_type question|article|video

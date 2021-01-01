@@ -75,6 +75,14 @@ class main extends AWS_CONTROLLER
 		}
 
 		TPL::assign('video_info', $video_info);
+		if ($video_info['redirect_id'])
+		{
+			TPL::assign('redirect_info', $this->model('content')->get_post_by_id('video', $video_info['redirect_id']));
+		}
+		if ($_GET['rf'])
+		{
+			TPL::assign('redirected_from', $this->model('content')->get_post_by_id('video', $_GET['rf']));
+		}
 
 		$video_topics = $this->model('topic')->get_topics_by_item_id($video_info['id'], 'video');
 

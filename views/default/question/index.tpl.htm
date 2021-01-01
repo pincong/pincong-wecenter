@@ -1,6 +1,29 @@
 <?php TPL::include('global/header.tpl.htm'); ?>
 
 <div class="aw-container-wrap">
+	<?php if ($this->redirected_from) { ?>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12 aw-global-tips">
+				<div class="alert alert-warning fade in">
+					<a href="question/<?php echo $this->redirected_from['id']; ?>"><?php echo $this->redirected_from['title']; ?></a> <?php _e('已与本问题合并')?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php } ?>
+	<?php if ($this->redirect_info) { ?>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12 aw-global-tips">
+				<div class="alert alert-danger fade in">
+					<?php _e('本问题已被合并到')?>: <a href="question/id-<?php echo $this->redirect_info['id']; ?>__rf-<?php echo $this->question_info['id']; ?>"><?php echo $this->redirect_info['title']; ?></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php } ?>
+
 	<div class="container">
 		<div class="row">
 			<div class="aw-content-wrap clearfix">
@@ -62,12 +85,16 @@
 										<?php } ?>
 
 										<?php if ($this->user_info['permission']['redirect_post']) { ?>
-											<li>
-												<a href="javascript:;" onclick="AWS.prompt('<?php _e('请输入主题 ID'); ?>', '<?php echo $this->question_info['redirect_id']; ?>', function(text){AWS.ajax_request(G_BASE_URL + '/content/ajax/redirect/', 'redirect_id=' + encodeURIComponent(text) + '&item_type=question&item_id=<?php echo $this->question_info['id']; ?>');});"><?php _e('合并主题'); ?></a>
-											</li>
 											<?php if ($this->question_info['redirect_id']) { ?>
 											<li>
+												<a href="javascript:;" onclick="AWS.prompt('<?php _e('请输入主题 ID'); ?>', '<?php echo $this->question_info['redirect_id']; ?>', function(text){AWS.ajax_request(G_BASE_URL + '/content/ajax/redirect/', 'redirect_id=' + encodeURIComponent(text) + '&item_type=question&item_id=<?php echo $this->question_info['id']; ?>');});"><?php _e('更改合并主题'); ?></a>
+											</li>
+											<li>
 												<a href="javascript:;" onclick="AWS.ajax_request(G_BASE_URL + '/content/ajax/unredirect/', 'item_type=question&item_id=<?php echo $this->question_info['id']; ?>');"><?php _e('取消合并'); ?></a>
+											</li>
+											<?php } else { ?>
+											<li>
+												<a href="javascript:;" onclick="AWS.prompt('<?php _e('请输入主题 ID'); ?>', '', function(text){AWS.ajax_request(G_BASE_URL + '/content/ajax/redirect/', 'redirect_id=' + encodeURIComponent(text) + '&item_type=question&item_id=<?php echo $this->question_info['id']; ?>');});"><?php _e('合并主题'); ?></a>
 											</li>
 											<?php } ?>
 										<?php } ?>

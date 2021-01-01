@@ -85,6 +85,12 @@ class ajax extends AWS_CONTROLLER
 	{
 		$this->validate_thread('redirect_post', $_POST['item_type'], $_POST['item_id'], $item_info);
 
+		$redirect_id = intval($_POST['redirect_id']);
+		if ($redirect_id == $item_info['id'] OR $redirect_id == $item_info['redirect_id'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能合并到同一个主题')));
+		}
+
 		if (!$redirect_item_info = $this->model('content')->get_thread_info_by_id($_POST['item_type'], $_POST['redirect_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('合并内容不存在')));
