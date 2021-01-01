@@ -39,6 +39,7 @@ class AWS_APP
 	private static $user;
 	private static $crypt;
 	private static $token;
+	private static $auth;
 
 	public static $session_type = 'file';
 
@@ -488,7 +489,7 @@ class AWS_APP
 	}
 
 	/**
-	 * 加密处理类
+	 * token 处理类
 	 *
 	 * 调用 core/token.php
 	 *
@@ -503,6 +504,24 @@ class AWS_APP
 		}
 
 		return self::$token;
+	}
+
+	/**
+	 * auth 处理类
+	 *
+	 * 调用 core/auth.php
+	 *
+	 * @access	public
+	 * @return	object
+	 */
+	public static function auth()
+	{
+		if (!self::$auth)
+		{
+			self::$auth = load_class('core_auth');
+		}
+
+		return self::$auth;
 	}
 
 	/**

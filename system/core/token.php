@@ -57,12 +57,19 @@ class core_token
 		return AWS_APP::crypt()->new_key($passphrase);
 	}
 
-	public function verify(&$payload, $token, $secret, $one_time = true)
+	public function verify(&$payload, $token, $secret, $single_use = true, $start_time = 0)
 	{
 		$token = json_decode(safe_base64_decode($token), true);
-		if (!is_array($token) OR !$token['key'] OR !$token['body'] OR !$token['expire'])
+		if (!is_array($token) OR !$token['key'] OR !$token['body'] OR !$token['expire'] OR !$token['time'])
 		{
 			return false;
+		}
+		if ($start_time)
+		{
+			if (intval($token['time']) < $start_time)
+			{
+				return false;
+			}
 		}
 		$exipre = intval($token['expire']);
 		$time = time();
@@ -74,7 +81,7 @@ class core_token
 		{
 			return false;
 		}
-		if ($one_time)
+		if ($single_use)
 		{
 			if ($this->_get_cache($token['key']))
 			{
@@ -91,7 +98,7 @@ class core_token
 		{
 			return false;
 		}
-		if ($one_time)
+		if ($single_use)
 		{
 			$this->_set_cache($token['key'], $exipre - $time);
 		}
@@ -99,9 +106,9 @@ class core_token
 		return true;
 	}
 
-	public function check($token, $secret, $one_time = true)
+	public function check($token, $secret, $single_use = true, $start_time = 0)
 	{
-		return $this->verify($ignore, $token, $secret, $one_time);
+		return $this->verify($ignore, $token, $secret, $single_use, $start_time);
 	}
 
 	public function create($payload, $expire, $secret)
@@ -118,6 +125,7 @@ class core_token
 			'key' => md5($body),
 			'body' => $body,
 			'expire' => $exipre,
+			'time' => $time,
 		);
 		return safe_base64_encode(json_encode($token));
 	}
@@ -125,7 +133,7 @@ class core_token
 	public function forget($token)
 	{
 		$token = json_decode(safe_base64_decode($token), true);
-		if (!is_array($token) OR !$token['key'] OR !$token['body'] OR !$token['expire'])
+		if (!is_array($token) OR !$token['key'] OR !$token['body'] OR !$token['expire'] OR !$token['time'])
 		{
 			return;
 		}
