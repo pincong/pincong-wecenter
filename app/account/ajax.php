@@ -146,19 +146,6 @@ class ajax extends AWS_CONTROLLER
 		$this->model('account')->setcookie_logout();
 		$this->model('account')->setsession_logout();
 
-		if (HTTP::get_cookie('fromuid'))
-		{
-			$follow_users = $this->model('account')->get_user_info_by_uid(HTTP::get_cookie('fromuid'));
-		}
-
-		if ($follow_users['uid'])
-		{
-			$this->model('follow')->user_follow_add($uid, $follow_users['uid']);
-			$this->model('follow')->user_follow_add($follow_users['uid'], $uid);
-
-			// 邀请注册
-		}
-
 		$user_info = $this->model('account')->get_user_info_by_uid($uid);
 
 		$this->model('account')->setcookie_login($user_info['uid'], $user_info['user_name'], $_POST['password'], $user_info['salt']);

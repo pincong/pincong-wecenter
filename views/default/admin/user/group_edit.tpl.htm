@@ -11,16 +11,16 @@
 			</h3>
 		</div>
 		<div class="tab-content mod-content">
-			<?php if ($this->group['group_id'] == 4) { ?>
+			<?php if ($this->group['group_id'] == 0) { ?>
 				<div class="alert alert-danger"><?php _e('注意: 这个用户组的权限会被会员组覆盖, 除非用户的声望不在会员组范围内才会使用此用户组权限'); ?></div>
 			<?php } ?>
 
 			<table class="table table-striped">
-				<?php if ($this->group['group_id'] != 99) { ?>
+				<?php if ($this->group['group_id'] != -1) { ?>
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('系统管理员'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('系统管理员 (后台)'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">
@@ -38,7 +38,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('前台管理员'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('系统管理员 (前台)'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
 									<label type="button" class="btn mod-btn-color">

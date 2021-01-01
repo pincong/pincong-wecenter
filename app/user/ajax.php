@@ -102,7 +102,7 @@ class ajax extends AWS_CONTROLLER
 				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('该用户已经被封禁')));
 			}
 
-			$user_group = $this->model('account')->get_user_group_by_user_info($user_info);
+			$user_group = $this->model('usergroup')->get_user_group_by_user_info($user_info);
 			if ($user_group)
 			{
 				$banning_type = $user_group['permission']['banning_type'];
@@ -274,12 +274,12 @@ class ajax extends AWS_CONTROLLER
 		$input_group_id = intval($_POST['group_id']);
 		$group_id = null;
 
-		$user_group_list = $this->model('account')->get_user_group_list(0);
+		$user_group_list = $this->model('usergroup')->get_normal_group_list();
 		if (!$this->user_info['permission']['is_administrator'])
 		{
 			foreach ($user_group_list as $key => $val)
 			{
-				if ($val['custom'] != 1 AND $val['group_id'] != 4)
+				if ($val['type'] != 2 AND $val['group_id'] != 0)
 				{
 					unset($user_group_list[$key]);
 				}

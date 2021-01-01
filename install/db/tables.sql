@@ -565,16 +565,14 @@ CREATE TABLE IF NOT EXISTS `aws_users` (
 --
 CREATE TABLE IF NOT EXISTS `aws_users_group` (
   `group_id` int(11) NOT NULL AUTO_INCREMENT,
-  `type` tinyint(3) DEFAULT '0' COMMENT '0-系统组 1-会员组',
-  `custom` tinyint(1) DEFAULT '0' COMMENT '是否自定义',
+  `type` tinyint(3) DEFAULT '0' COMMENT '0-系统组 1-声望组 2-特殊组',
   `group_name` text,
   `reputation_lower` int(11) DEFAULT '0',
   `reputation_higer` int(11) DEFAULT '0',
   `reputation_factor` float DEFAULT '0' COMMENT '声望系数',
   `permission` text COMMENT '权限设置',
   PRIMARY KEY (`group_id`),
-  KEY `type` (`type`),
-  KEY `custom` (`custom`)
+  KEY `type` (`type`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='用户组';
 
 --

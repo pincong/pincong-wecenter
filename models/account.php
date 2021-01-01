@@ -272,7 +272,7 @@ class account_class extends AWS_MODEL
             'password' => bcrypt_password_hash(compile_password($password, $salt)),
             'salt' => $salt,
             'sex' => 0,
-            'group_id' => 4,
+            'group_id' => 0,
             'avatar_file' => null, // 无头像
             'reg_time' => fake_time()
         )))
@@ -657,138 +657,6 @@ class account_class extends AWS_MODEL
         return $this->count('users', $where);
     }
 
-
-
-    public function add_user_group($group_name, $group_type, $reputation_lower = 0, $reputation_higer = 0, $reputation_factor = 0)
-    {
-		if ($group_type == 'member')
-		{
-			$type = 1;
-			$custom = 0;
-		}
-		elseif ($group_type == 'custom')
-		{
-			$type = 0;
-			$custom = 1;
-		}
-		else
-		{
-			return false;
-		}
-        return $this->insert('users_group', array(
-            'type' => $type,
-            'custom' => $custom,
-            'group_name' => $group_name,
-            'reputation_lower' => $reputation_lower,
-            'reputation_higer' => $reputation_higer,
-            'reputation_factor' => $reputation_factor,
-        ));
-    }
-
-    public function delete_user_group_by_id($group_id)
-    {
-        $this->update('users', array(
-            'group_id' => 4,
-        ), 'group_id = ' . intval($group_id));
-
-        return $this->delete('users_group', 'group_id = ' . intval($group_id));
-    }
-
-    public function update_user_group_data($group_id, $data)
-    {
-        return $this->update('users_group', $data, 'group_id = ' . intval($group_id));
-    }
-
-    public function get_user_group_by_id($group_id)
-    {
-        if (!$group_id)
-        {
-            return false;
-        }
-
-        static $user_groups;
-
-        if (isset($user_groups[$group_id]))
-        {
-            return $user_groups[$group_id];
-        }
-
-        if (!$user_group = AWS_APP::cache()->get('user_group_' . intval($group_id)))
-        {
-            $user_group = $this->fetch_row('users_group', 'group_id = ' . intval($group_id));
-
-            if ($user_group['permission'])
-            {
-                $user_group['permission'] = unserialize($user_group['permission']);
-            }
-
-            AWS_APP::cache()->set('user_group_' . intval($group_id), $user_group, get_setting('cache_level_normal'), 'users_group');
-        }
-
-        $user_groups[$group_id] = $user_group;
-
-        return $user_group;
-    }
-
-	// $type 0:系统组|1:会员组(声望组)
-    public function get_user_group_list($type = 0, $custom = null)
-    {
-        $type = intval($type);
-
-        $where[] = 'type = ' . $type;
-
-        if (isset($custom))
-        {
-            $where[] = 'custom = ' . intval($custom);
-        }
-
-        if ($users_groups = $this->fetch_all('users_group', implode(' AND ', $where), 'reputation_lower ASC, group_id ASC'))
-        {
-            foreach ($users_groups as $key => $val)
-            {
-                $group[$val['group_id']] = $val;
-            }
-        }
-
-        return $group;
-    }
-
-	public function get_user_group($group_id, $reputation_group_id = 0)
-	{
-		if (!$reputation_group_id)
-		{
-			return $this->model('account')->get_user_group_by_id($group_id);
-		}
-
-		// 普通会员 声望组
-		if ($group_id == 4)
-		{
-			return $this->model('account')->get_user_group_by_id($reputation_group_id);
-		}
-
-		// 系统组
-		if ($group_id < 100)
-		{
-			return $this->model('account')->get_user_group_by_id($group_id);
-		}
-
-		// 特殊组
-		if ($user_group = $this->model('account')->get_user_group_by_id($group_id))
-		{
-			return $user_group;
-		}
-
-		// 特殊组不存在则按声望组处理
-		return $this->model('account')->get_user_group_by_id($reputation_group_id);
-	}
-
-	public function get_user_group_by_user_info(&$user_info)
-	{
-		return $this->model('account')->get_user_group(
-			$user_info['group_id'],
-			$this->model('reputation')->get_reputation_group_id_by_reputation($user_info['reputation'])
-		);
-	}
 
     public function set_default_timezone($timezone, $uid)
     {

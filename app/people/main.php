@@ -64,7 +64,7 @@ class main extends AWS_CONTROLLER
 			HTTP::redirect('/people/' . $user['url_token']);
 		}
 
-		$user['reputation_group_name'] = $this->model('reputation')->get_reputation_group_name_by_reputation($user['reputation']);
+		$user['reputation_group_name'] = $this->model('usergroup')->get_group_name_by_reputation($user['reputation']);
 
 		$user['data'] = unserialize_array($user['extra_data']);
 
@@ -94,12 +94,21 @@ class main extends AWS_CONTROLLER
 
 		$this->crumb(AWS_APP::lang()->_t('用户列表'));
 
+		$all_groups = $this->model('usergroup')->get_all_groups();
+		foreach ($all_groups as $key => $val)
+		{
+			if ($val['type'] == 2)
+			{
+				$custom_group[] = $val;
+			}
+		}
+
 		$base_url = '';
 
 		$order = 'reputation DESC, uid ASC';
 
 		$group_id = intval($_GET['group_id']);
-		if ($group_id > 99)
+		if ($group_id > 0 AND $all_groups[$group_id]['type'] == 2)
 		{
 			$where[] = 'group_id = ' . $group_id;
 			if ($base_url)
@@ -173,7 +182,7 @@ class main extends AWS_CONTROLLER
 			TPL::assign('users_list', array_values($users_list));
 		}
 
-		TPL::assign('custom_group', $this->model('account')->get_user_group_list(0, 1));
+		TPL::assign('custom_group', $custom_group);
 
 		TPL::output('people/square');
 	}

@@ -88,12 +88,12 @@ class edit extends AWS_CONTROLLER
 			HTTP::error_404();
 		}
 
-		$user_group_list = $this->model('account')->get_user_group_list(0);
+		$user_group_list = $this->model('usergroup')->get_normal_group_list();
 		if (!$this->user_info['permission']['is_administrator'])
 		{
 			foreach ($user_group_list as $key => $val)
 			{
-				if ($val['custom'] != 1 AND $val['group_id'] != 4)
+				if ($val['type'] != 2 AND $val['group_id'] != 0)
 				{
 					unset($user_group_list[$key]);
 				}

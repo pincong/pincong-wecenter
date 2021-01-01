@@ -37,7 +37,7 @@ class AWS_CONTROLLER
 
 		if ($this->user_info)
 		{
-			$user_group = $this->model('account')->get_user_group_by_user_info($this->user_info);
+			$user_group = $this->model('usergroup')->get_user_group_by_user_info($this->user_info);
 
 			$user_settings = unserialize_array($this->user_info['settings']);
 			$this->user_info['default_timezone'] = $user_settings['timezone'];
@@ -62,12 +62,7 @@ class AWS_CONTROLLER
 		}
 		else
 		{
-			$user_group = $this->model('account')->get_user_group_by_id(99);
-
-			if ($_GET['fromuid'])
-			{
-				HTTP::set_cookie('fromuid', $_GET['fromuid']);
-			}
+			$user_group = $this->model('usergroup')->get_user_group_by_id(-1);
 		}
 
 		$this->user_info['group_name'] = $user_group['group_name'];

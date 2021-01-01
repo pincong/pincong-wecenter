@@ -55,7 +55,7 @@ class message_class extends AWS_MODEL
 			return true;
 		}
 
-		$recipient_user_group = $this->model('account')->get_user_group_by_user_info($recipient_user);
+		$recipient_user_group = $this->model('usergroup')->get_user_group_by_user_info($recipient_user);
 		// 例外情况 如果对方拥有['receive_pm']权限
 		if ($recipient_user_group['permission']['receive_pm'])
 		{

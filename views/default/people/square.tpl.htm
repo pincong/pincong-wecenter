@@ -54,7 +54,7 @@
 						<div class="mod-body">
 							<ul>
 								<?php if ($this->custom_group) { ?>
-								<li><a <?php if (!$_GET['group_id'] AND !$_GET['forbidden']) { ?> class="active"<?php } ?> href="people/"><?php _e('全部'); ?></a></li>
+								<li><a <?php if (!$_GET['group_id']) { ?> class="active"<?php } ?> href="people/"><?php _e('全部'); ?></a></li>
 								<?php foreach ($this->custom_group AS $key => $val) { ?>
 								<li><a <?php if ($_GET['group_id'] == $val['group_id']) { ?> class="active"<?php } ?> href="people/group_id-<?php echo $val['group_id']; ?>"><?php echo $val['group_name']; ?></a></li>
 								<?php } ?>

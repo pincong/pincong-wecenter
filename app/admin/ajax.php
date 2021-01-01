@@ -452,7 +452,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
                     H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('声望系数必须为大于或等于 0')));
                 }*/
 
-                $this->model('account')->update_user_group_data($key, $val);
+                $this->model('usergroup')->update_user_group_data($key, $val);
             }
         }
 
@@ -462,7 +462,12 @@ class ajax extends AWS_ADMIN_CONTROLLER
             {
                 if (trim($group_new['group_name'][$key]))
                 {
-                    $this->model('account')->add_user_group($group_new['group_name'][$key], 'member', $group_new['reputation_lower'][$key], $group_new['reputation_higer'][$key], $group_new['reputation_factor'][$key]);
+					$this->model('usergroup')->add_reputation_group(
+						trim($group_new['group_name'][$key]),
+						$group_new['reputation_factor'][$key],
+						$group_new['reputation_lower'][$key],
+						$group_new['reputation_higer'][$key]
+					);
                 }
             }
         }
@@ -471,16 +476,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
         {
             foreach ($group_ids as $key => $id)
             {
-                $group_info = $this->model('account')->get_user_group_by_id($id);
-
-                if ($group_info['custom'] == 1 OR $group_info['type'] == 1)
-                {
-                    $this->model('account')->delete_user_group_by_id($id);
-                }
-                else
-                {
-                    H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('系统用户组不可删除')));
-                }
+                $this->model('usergroup')->delete_user_group_by_id($id);
             }
         }
 
@@ -500,7 +496,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
                     H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入用户组名称')));
                 }
 
-                $this->model('account')->update_user_group_data($key, $val);
+                $this->model('usergroup')->update_user_group_data($key, $val);
             }
         }
 
@@ -510,7 +506,10 @@ class ajax extends AWS_ADMIN_CONTROLLER
             {
                 if (trim($group_new['group_name'][$key]))
                 {
-                    $this->model('account')->add_user_group($group_new['group_name'][$key], 'custom', 0, 0, $group_new['reputation_factor'][$key]);
+					$this->model('usergroup')->add_custom_group(
+						trim($group_new['group_name'][$key]),
+						$group_new['reputation_factor'][$key]
+					);
                 }
             }
         }
@@ -519,31 +518,14 @@ class ajax extends AWS_ADMIN_CONTROLLER
         {
             foreach ($group_ids as $key => $id)
             {
-                $group_info = $this->model('account')->get_user_group_by_id($id);
-
-                if ($group_info['custom'] == 1)
-                {
-                    $this->model('account')->delete_user_group_by_id($id);
-                }
-                else
-                {
-                    H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('系统用户组不可删除')));
-                }
+                $this->model('usergroup')->delete_user_group_by_id($id);
             }
         }
 
         AWS_APP::cache()->cleanGroup('users_group');
 
-        if ($group_new OR $group_ids)
-        {
-            $rsm = array(
-                'url' => get_js_url('/admin/user/group_list/r-' . rand(1, 999) . '#custom')
-            );
-        }
-
-        H::ajax_json_output(AWS_APP::RSM($rsm, 1, null));
+        H::ajax_json_output(AWS_APP::RSM(null, 1, null));
     }
-
 
     public function save_internal_user_group_action()
     {
@@ -556,7 +538,29 @@ class ajax extends AWS_ADMIN_CONTROLLER
                     H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入用户组名称')));
                 }
 
-                $this->model('account')->update_user_group_data($key, $val);
+                $this->model('usergroup')->update_user_group_data($key, $val);
+            }
+        }
+
+        if ($group_new = $_POST['group_new'])
+        {
+            foreach ($group_new['group_name'] as $key => $val)
+            {
+                if (trim($group_new['group_name'][$key]))
+                {
+					$this->model('usergroup')->add_system_group(
+						trim($group_new['group_name'][$key]),
+						$group_new['reputation_factor'][$key]
+					);
+                }
+            }
+        }
+
+        if ($group_ids = $_POST['group_ids'])
+        {
+            foreach ($group_ids as $key => $id)
+            {
+                $this->model('usergroup')->delete_user_group_by_id($id);
             }
         }
 
@@ -633,7 +637,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
             }
         }
 
-        $this->model('account')->update_user_group_data($_POST['group_id'], array(
+        $this->model('usergroup')->update_user_group_data($_POST['group_id'], array(
             'permission' => serialize($group_setting)
         ));
 
@@ -735,7 +739,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
                 H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('注册失败')));
             }
 
-            if ($_POST['group_id'] != 4)
+            if ($_POST['group_id'] != 0)
             {
                 $this->model('account')->update('users', array(
                     'group_id' => $_POST['group_id'],
@@ -798,11 +802,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
         }
         else
         {
-            if ($user_info['group_id'] == 1)
-            {
-                H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不允许删除管理员用户组用户')));
-            }
-
             $this->model('user')->delete_user_by_uid($_POST['uid']);
         }
 
@@ -826,11 +825,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
             if ($user_info)
             {
-                if ($user_info['group_id'] == 1)
-                {
-                    continue;
-                }
-
                 $this->model('user')->delete_user_by_uid($uid);
             }
             else

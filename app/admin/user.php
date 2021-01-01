@@ -93,7 +93,7 @@ class user extends AWS_ADMIN_CONTROLLER
         $user_list = $this->model('people')->fetch_page('users', implode(' AND ', $where), 'uid DESC', $_GET['page'], $this->per_page);
         foreach($user_list as $key => $val)
         {
-            $user_list[$key]['reputation_group_id'] = $this->model('reputation')->get_reputation_group_id_by_reputation($val['reputation']);
+            $user_list[$key]['reputation_group_id'] = $this->model('usergroup')->get_group_id_by_reputation($val['reputation']);
             $user_list[$key]['url_token'] = urlencode($val['user_name']);
         }
 
@@ -117,8 +117,8 @@ class user extends AWS_ADMIN_CONTROLLER
 
         $this->crumb(AWS_APP::lang()->_t('会员列表'));
 
-        TPL::assign('member_group', $this->model('account')->get_user_group_list(1));
-        TPL::assign('system_group', $this->model('account')->get_user_group_list(0));
+        TPL::assign('member_group', $this->model('usergroup')->get_reputation_group_list());
+        TPL::assign('system_group', $this->model('usergroup')->get_normal_group_list());
         TPL::assign('total_rows', $total_rows);
         TPL::assign('list', $user_list);
         TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(402));
@@ -130,9 +130,9 @@ class user extends AWS_ADMIN_CONTROLLER
     {
         $this->crumb(AWS_APP::lang()->_t('用户组管理'));
 
-        TPL::assign('member_group', $this->model('account')->get_user_group_list(1));
-        TPL::assign('system_group', $this->model('account')->get_user_group_list(0, 0));
-        TPL::assign('custom_group', $this->model('account')->get_user_group_list(0, 1));
+        TPL::assign('member_group', $this->model('usergroup')->get_reputation_group_list());
+        TPL::assign('system_group', $this->model('usergroup')->get_system_group_list());
+        TPL::assign('custom_group', $this->model('usergroup')->get_custom_group_list());
         TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(403));
         TPL::output('admin/user/group_list');
     }
@@ -141,7 +141,7 @@ class user extends AWS_ADMIN_CONTROLLER
     {
         $this->crumb(AWS_APP::lang()->_t('修改用户组'));
 
-        if (! $group = $this->model('account')->get_user_group_by_id($_GET['group_id']))
+        if (! $group = $this->model('usergroup')->get_user_group_by_id($_GET['group_id']))
         {
             H::redirect_msg(AWS_APP::lang()->_t('用户组不存在'), '/admin/user/group_list/');
         }
@@ -163,11 +163,11 @@ class user extends AWS_ADMIN_CONTROLLER
 
         $user['recovery_code'] = $this->model('account')->calc_user_recovery_code($user['uid']);
 
-		TPL::assign('member_group', $this->model('account')->get_user_group_by_id(
-			$this->model('reputation')->get_reputation_group_id_by_reputation($user['reputation'])
+		TPL::assign('member_group', $this->model('usergroup')->get_user_group_by_id(
+			$this->model('usergroup')->get_group_id_by_reputation($user['reputation'])
 		));
 
-        TPL::assign('system_group', $this->model('account')->get_user_group_list(0));
+        TPL::assign('system_group', $this->model('usergroup')->get_normal_group_list());
         TPL::assign('user', $user);
         TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(402));
 
@@ -180,7 +180,7 @@ class user extends AWS_ADMIN_CONTROLLER
 
         TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(402));
 
-        TPL::assign('system_group', $this->model('account')->get_user_group_list(0));
+        TPL::assign('system_group', $this->model('usergroup')->get_normal_group_list());
 
         TPL::output('admin/user/add');
     }
