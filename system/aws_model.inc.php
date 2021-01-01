@@ -291,11 +291,11 @@ class AWS_MODEL
 	}
 
 
-	public function fetch_rows($table, $columns, $where = null, $order_by = null, $page = null, $per_page = null, $distinct = false)
+	public function fetch_rows($table, $columns, $where = null, $order_by = null, $page = null, $per_page = null)
 	{
 		$pdo = AWS_APP::db()->slave();
 
-		$sql = $distinct ? 'SELECT DISTINCT ' : 'SELECT ';
+		$sql = 'SELECT ';
 		if (is_array($columns))
 		{
 			$sql .= '`' . implode('`, `', $columns) . '`';
@@ -344,12 +344,11 @@ class AWS_MODEL
 	}
 
 
-	public function fetch_column($table, $column, $where = null, $order_by = null, $page = null, $per_page = null, $distinct = false)
+	public function fetch_column($table, $column, $where = null, $order_by = null, $page = null, $per_page = null)
 	{
 		$pdo = AWS_APP::db()->slave();
 
-		$sql = $distinct ? 'SELECT DISTINCT ' : 'SELECT ';
-		$sql .= '`' . $column . '` FROM `' . $this->get_table($table) . '`';
+		$sql = 'SELECT `' . $column . '` FROM `' . $this->get_table($table) . '`';
 
 		$where = $this->_build_where($where, $prepared_values);
 		if ($where)
@@ -386,18 +385,6 @@ class AWS_MODEL
 		}
 
 		return $result;
-	}
-
-
-	public function fetch_distinct($table, $column, $where = null, $order_by = null, $page = null, $per_page = null)
-	{
-		return $this->fetch_column($table, $column, $where, $order_by, $page, $per_page, true);
-	}
-
-
-	public function fetch_distinct_rows($table, $columns, $where = null, $order_by = null, $page = null, $per_page = null)
-	{
-		return $this->fetch_rows($table, $columns, $where, $order_by, $page, $per_page, true);
 	}
 
 

@@ -371,7 +371,7 @@ class question_class extends AWS_MODEL
 			return $result;
 		}
 
-		$answer_uids = $this->fetch_distinct('answer', 'uid', [['question_id', 'eq', $question_id, 'i'], ['uid', 'notEq', $question_uid, 'i']], 'agree_count DESC', $limit);
+		$answer_uids = $this->fetch_column('answer', 'uid', [['question_id', 'eq', $question_id, 'i'], ['uid', 'notEq', $question_uid, 'i']], 'agree_count DESC', $limit);
 		if ($answer_uids)
 		{
 			$result = $this->model('account')->get_user_info_by_uids($answer_uids);
