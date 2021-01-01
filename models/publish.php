@@ -126,7 +126,20 @@ class publish_class extends AWS_MODEL
 
 	public function check_user_permission($item_type, &$user_info)
 	{
-		// TODO
+		if (!is_array($user_info) OR !is_array($user_info['permission']))
+		{
+			return false;
+		}
+		$types = $user_info['permission']['unallowed_post_types'];
+		if (!$types)
+		{
+			return true;
+		}
+		$types = array_map('trim', explode(',', $types));
+		if (in_array($item_type, $types))
+		{
+			return false;
+		}
 		return true;
 	}
 
