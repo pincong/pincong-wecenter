@@ -323,6 +323,10 @@ class ajax extends AWS_CONTROLLER
 			{
 				$this->validate_permission('fold_post');
 			}
+			else
+			{
+				$this->validate_permission('fold_post_own_thread');
+			}
 
 			set_user_operation_last_time('manage', $this->user_id);
 
@@ -368,6 +372,10 @@ class ajax extends AWS_CONTROLLER
 			if (!$parent_info OR $parent_info['uid'] != $this->user_id)
 			{
 				$this->validate_permission('fold_post');
+			}
+			else
+			{
+				$this->validate_permission('fold_post_own_thread');
 			}
 
 			set_user_operation_last_time('manage', $this->user_id);
