@@ -16,14 +16,14 @@ class UF
 {
 	// 获取头像网址
 	// 举个例子：$uid=12345，那么头像网址很可能(根据您部署的上传文件夹而定)为 /uploads/000/01/23/45_avatar_min.jpg?random_string
-	public static function avatar(&$user_info, $size = 'min', $show_forbidden = true)
+	public static function avatar(&$user_info, $size = 'min', $show_forbidden = false)
 	{
 		$all_size = array('min', 'mid', 'max');
 		$size = in_array($size, $all_size) ? $size : $all_size[0];
 
 		$default = G_STATIC_URL . '/common/avatar-' . $size . '-img.png';
 
-		if (!$user_info OR is_null($user_info['avatar_file']) OR (!$show_forbidden AND $user_info['forbidden']))
+		if (!$user_info OR is_null($user_info['avatar_file']) OR (!$show_forbidden AND ($user_info['forbidden'] OR $user_info['flagged'] > 1)))
 		{
 			return $default;
 		}
@@ -50,7 +50,7 @@ class UF
 
 	public static function signature(&$user_info, $show_forbidden = false)
 	{
-		if (!$user_info OR (!$show_forbidden AND ($user_info['forbidden'] OR $user_info['flagged'] > 0)))
+		if (!$user_info OR (!$show_forbidden AND ($user_info['forbidden'] OR $user_info['flagged'] > 1)))
 		{
 			return '';
 		}
