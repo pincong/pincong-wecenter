@@ -10,6 +10,8 @@
 	</p>
 	<p class="aw-small-text">
 		<a href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
+		(<i class="icon icon-prestige"></i><?php echo intval($val['user_info']['reputation']); ?>
+		<i class="icon icon-agree"></i><?php echo $val['user_info']['agree_count']; ?>)
 		•
 		<?php echo date_friendly($val['time']); ?>
 	</p>
