@@ -35,7 +35,7 @@ class edit extends AWS_CONTROLLER
 		{
 			H::error_403();
 		}
-		if (!$reply_info = $this->model('content')->get_reply_info_by_id('question_reply', $id))
+		if (!$reply_info = $this->model('thread')->get_reply_info_by_id('question_reply', $id))
 		{
 			H::error_403();
 		}
@@ -59,7 +59,7 @@ class edit extends AWS_CONTROLLER
 		{
 			H::error_403();
 		}
-		if (!$reply_info = $this->model('content')->get_reply_info_by_id('article_reply', $id))
+		if (!$reply_info = $this->model('thread')->get_reply_info_by_id('article_reply', $id))
 		{
 			H::error_403();
 		}
@@ -83,7 +83,7 @@ class edit extends AWS_CONTROLLER
 		{
 			H::error_403();
 		}
-		if (!$reply_info = $this->model('content')->get_reply_info_by_id('video_reply', $id))
+		if (!$reply_info = $this->model('thread')->get_reply_info_by_id('video_reply', $id))
 		{
 			H::error_403();
 		}

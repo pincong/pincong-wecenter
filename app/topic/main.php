@@ -132,7 +132,7 @@ class main extends AWS_CONTROLLER
 
 		$url_param[] = 'topic_id-' . $topic_info['topic_id'];
 		$type = H::GET('type');
-		if ($type AND $this->model('content')->check_thread_type($type))
+		if ($type AND $this->model('thread')->check_thread_type($type))
 		{
 			$url_param[] = 'type-' . $type;
 		}

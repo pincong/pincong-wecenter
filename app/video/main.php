@@ -109,11 +109,11 @@ class main extends AWS_CONTROLLER
 		TPL::assign('video_info', $thread_info);
 		if ($thread_info['redirect_id'])
 		{
-			TPL::assign('redirect_info', $this->model('content')->get_post_by_id('video', $thread_info['redirect_id']));
+			TPL::assign('redirect_info', $this->model('thread')->get_post_by_id('video', $thread_info['redirect_id']));
 		}
 		if (H::GET('rf'))
 		{
-			TPL::assign('redirected_from', $this->model('content')->get_post_by_id('video', H::GET('rf')));
+			TPL::assign('redirected_from', $this->model('thread')->get_post_by_id('video', H::GET('rf')));
 		}
 
 		$page_title = CF::page_title($thread_info);
@@ -121,7 +121,7 @@ class main extends AWS_CONTROLLER
 
 		$reply_count = $thread_info['reply_count'];
 		// 判断是否已合并
-		if ($redirect_posts = $this->model('content')->get_redirect_posts('video', $thread_info['id']))
+		if ($redirect_posts = $this->model('thread')->get_redirect_posts('video', $thread_info['id']))
 		{
 			foreach ($redirect_posts AS $key => $val)
 			{
@@ -159,7 +159,7 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		$this->model('content')->update_view_count('video', $thread_info['id']);
+		$this->model('thread')->update_view_count('video', $thread_info['id']);
 
 		TPL::assign('comments', $comments);
 		TPL::assign('comment_count', $reply_count);

@@ -36,7 +36,7 @@ class question_class extends AWS_MODEL
 
 		if ($parent_ids)
 		{
-			$parents = $this->model('content')->get_posts_by_ids('question', $parent_ids);
+			$parents = $this->model('thread')->get_posts_by_ids('question', $parent_ids);
 			foreach ($list AS $key => $val)
 			{
 				$list[$key]['question_info'] = $parents[$val['parent_id']];
@@ -67,7 +67,7 @@ class question_class extends AWS_MODEL
 
 		if ($parent_ids)
 		{
-			$parents = $this->model('content')->get_posts_by_ids('question_reply', $parent_ids);
+			$parents = $this->model('thread')->get_posts_by_ids('question_reply', $parent_ids);
 			foreach ($list AS $key => $val)
 			{
 				$list[$key]['answer_info'] = $parents[$val['parent_id']];
@@ -115,7 +115,7 @@ class question_class extends AWS_MODEL
 
 		if ($parent_ids)
 		{
-			$parents = $this->model('content')->get_posts_by_ids('question', $parent_ids);
+			$parents = $this->model('thread')->get_posts_by_ids('question', $parent_ids);
 			foreach ($list AS $key => $val)
 			{
 				$list[$key]['question_info'] = $parents[$val['parent_id']];
@@ -132,7 +132,7 @@ class question_class extends AWS_MODEL
 
 	public function modify_question($id, $title, $message, $log_uid)
 	{
-		if (!$item_info = $this->model('content')->get_thread_info_by_id('question', $id))
+		if (!$item_info = $this->model('thread')->get_thread_info_by_id('question', $id))
 		{
 			return false;
 		}
@@ -150,7 +150,7 @@ class question_class extends AWS_MODEL
 
 	public function clear_question($id, $log_uid)
 	{
-		if (!$item_info = $this->model('content')->get_thread_info_by_id('question', $id))
+		if (!$item_info = $this->model('thread')->get_thread_info_by_id('question', $id))
 		{
 			return false;
 		}
@@ -178,7 +178,7 @@ class question_class extends AWS_MODEL
 
 	public function modify_answer($id, $message, $log_uid)
 	{
-		if (!$reply_info = $this->model('content')->get_reply_info_by_id('question_reply', $id))
+		if (!$reply_info = $this->model('thread')->get_reply_info_by_id('question_reply', $id))
 		{
 			return false;
 		}
@@ -195,7 +195,7 @@ class question_class extends AWS_MODEL
 
 	public function clear_answer($id, $log_uid)
 	{
-		if (!$reply_info = $this->model('content')->get_reply_info_by_id('question_reply', $id))
+		if (!$reply_info = $this->model('thread')->get_reply_info_by_id('question_reply', $id))
 		{
 			return false;
 		}

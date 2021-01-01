@@ -37,7 +37,7 @@ class main extends AWS_CONTROLLER
 
 	public function log_action()
 	{
-		if (!$item_info = $this->model('content')->get_thread_or_reply_info_by_id(H::GET('item_type'), H::GET('item_id')))
+		if (!$item_info = $this->model('thread')->get_thread_or_reply_info_by_id(H::GET('item_type'), H::GET('item_id')))
 		{
 			H::error_404();
 		}
@@ -49,7 +49,7 @@ class main extends AWS_CONTROLLER
 
 	public function list_logs_action()
 	{
-		if (!$item_info = $this->model('content')->get_thread_or_reply_info_by_id(H::GET('item_type'), H::GET('item_id')))
+		if (!$item_info = $this->model('thread')->get_thread_or_reply_info_by_id(H::GET('item_type'), H::GET('item_id')))
 		{
 			H::error_404();
 		}

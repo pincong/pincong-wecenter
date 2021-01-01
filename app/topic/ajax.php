@@ -273,7 +273,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_error((_t('操作过于频繁, 请稍后再试')));
 		}
 
-		if (!$thread_info = $this->model('content')->get_thread_info_by_id(H::POST('type'), H::POST('item_id')))
+		if (!$thread_info = $this->model('thread')->get_thread_info_by_id(H::POST('type'), H::POST('item_id')))
 		{
 			H::ajax_error((_t('指定的项目不存在')));
 		}
@@ -327,7 +327,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_error((_t('话题标题字数超出限制')));
 		}
 
-		if (!$thread_info = $this->model('content')->get_thread_info_by_id(H::POST('type'), H::POST('item_id')))
+		if (!$thread_info = $this->model('thread')->get_thread_info_by_id(H::POST('type'), H::POST('item_id')))
 		{
 			H::ajax_error((_t('指定的项目不存在')));
 		}

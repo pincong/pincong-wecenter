@@ -39,7 +39,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_error((_t('操作过于频繁, 请稍后再试')));
 		}
 
-		if (!$item_info = $this->model('content')->get_thread_or_reply_info_by_id(H::POST('item_type'), H::POST('item_id')))
+		if (!$item_info = $this->model('thread')->get_thread_or_reply_info_by_id(H::POST('item_type'), H::POST('item_id')))
 		{
 			H::ajax_error((_t('内容不存在')));
 		}

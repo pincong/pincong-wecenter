@@ -111,7 +111,7 @@ class ajax extends AWS_CONTROLLER
 				break;
 		}
 
-		if (!$thread_info = $this->model('content')->get_thread_info_by_id($thread_type, $thread_id))
+		if (!$thread_info = $this->model('thread')->get_thread_info_by_id($thread_type, $thread_id))
 		{
 			H::ajax_error((_t('主题不存在')));
 		}
@@ -144,7 +144,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		$pay = true;
-		$replied = $this->model('content')->has_user_relpied_to_thread($thread_type, $thread_info['id'], $this->user_id, true);
+		$replied = $this->model('thread')->has_user_relpied_to_thread($thread_type, $thread_info['id'], $this->user_id, true);
 		if ((S::get('reply_pay_only_once') == 'Y') AND $replied)
 		{
 			$pay = false;

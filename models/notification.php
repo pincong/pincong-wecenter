@@ -153,15 +153,15 @@ class notification_class extends AWS_MODEL
 
 		if ($question_ids)
 		{
-			$questions = $this->model('content')->get_posts_by_ids('question', $question_ids);
+			$questions = $this->model('thread')->get_posts_by_ids('question', $question_ids);
 		}
 		if ($article_ids)
 		{
-			$articles = $this->model('content')->get_posts_by_ids('article', $article_ids);
+			$articles = $this->model('thread')->get_posts_by_ids('article', $article_ids);
 		}
 		if ($video_ids)
 		{
-			$videos = $this->model('content')->get_posts_by_ids('video', $video_ids);
+			$videos = $this->model('thread')->get_posts_by_ids('video', $video_ids);
 		}
 
 		if ($user_ids)

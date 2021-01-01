@@ -337,7 +337,7 @@ class publish_class extends AWS_MODEL
 
 	private function real_publish_answer($data)
 	{
-		if (!$parent_info = $this->model('content')->get_thread_info_by_id('question', $data['parent_id']))
+		if (!$parent_info = $this->model('thread')->get_thread_info_by_id('question', $data['parent_id']))
 		{
 			return false;
 		}
@@ -345,7 +345,7 @@ class publish_class extends AWS_MODEL
 		// 给题主增加游戏币
 		if ($data['permission_affect_currency'] AND $data['uid'] != $parent_info['uid'])
 		{
-			if (!$this->model('content')->has_user_relpied_to_thread('question', $data['parent_id'], $data['uid']))
+			if (!$this->model('thread')->has_user_relpied_to_thread('question', $data['parent_id'], $data['uid']))
 			{
 				$this->model('currency')->process($parent_info['uid'], 'REPLIED', S::get('currency_system_config_question_replied'), '问题收到回应', $data['parent_id'], 'question');
 			}
@@ -400,7 +400,7 @@ class publish_class extends AWS_MODEL
 
 	private function real_publish_article_comment($data)
 	{
-		if (!$parent_info = $this->model('content')->get_thread_info_by_id('article', $data['parent_id']))
+		if (!$parent_info = $this->model('thread')->get_thread_info_by_id('article', $data['parent_id']))
 		{
 			return false;
 		}
@@ -408,7 +408,7 @@ class publish_class extends AWS_MODEL
 		// 给题主增加游戏币
 		if ($data['permission_affect_currency'] AND $data['uid'] != $parent_info['uid'])
 		{
-			if (!$this->model('content')->has_user_relpied_to_thread('article', $data['parent_id'], $data['uid']))
+			if (!$this->model('thread')->has_user_relpied_to_thread('article', $data['parent_id'], $data['uid']))
 			{
 				$this->model('currency')->process($parent_info['uid'], 'REPLIED', S::get('currency_system_config_article_replied'), '文章收到回应', $data['parent_id'], 'article');
 			}
@@ -467,7 +467,7 @@ class publish_class extends AWS_MODEL
 
 	private function real_publish_video_comment($data)
 	{
-		if (!$parent_info = $this->model('content')->get_thread_info_by_id('video', $data['parent_id']))
+		if (!$parent_info = $this->model('thread')->get_thread_info_by_id('video', $data['parent_id']))
 		{
 			return false;
 		}
@@ -475,7 +475,7 @@ class publish_class extends AWS_MODEL
 		// 给题主增加游戏币
 		if ($data['permission_affect_currency'] AND $data['uid'] != $parent_info['uid'])
 		{
-			if (!$this->model('content')->has_user_relpied_to_thread('video', $data['parent_id'], $data['uid']))
+			if (!$this->model('thread')->has_user_relpied_to_thread('video', $data['parent_id'], $data['uid']))
 			{
 				$this->model('currency')->process($parent_info['uid'], 'REPLIED', S::get('currency_system_config_video_replied'), '影片收到回应', $data['parent_id'], 'video');
 			}
@@ -536,7 +536,7 @@ class publish_class extends AWS_MODEL
 
 	private function real_publish_question_discussion($data)
 	{
-		if (!$thread_info = $this->model('content')->get_thread_info_by_id('question', $data['parent_id']))
+		if (!$thread_info = $this->model('thread')->get_thread_info_by_id('question', $data['parent_id']))
 		{
 			return false;
 		}
@@ -590,11 +590,11 @@ class publish_class extends AWS_MODEL
 
 	private function real_publish_answer_discussion($data)
 	{
-		if (!$reply_info = $this->model('content')->get_reply_info_by_id('question_reply', $data['parent_id']))
+		if (!$reply_info = $this->model('thread')->get_reply_info_by_id('question_reply', $data['parent_id']))
 		{
 			return false;
 		}
-		if (!$thread_info = $this->model('content')->get_thread_info_by_id('question', $reply_info['parent_id']))
+		if (!$thread_info = $this->model('thread')->get_thread_info_by_id('question', $reply_info['parent_id']))
 		{
 			return false;
 		}

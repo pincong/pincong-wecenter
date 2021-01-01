@@ -47,7 +47,7 @@ class ajax extends AWS_CONTROLLER
 		$this->validate_permission($permission_name);
 		$this->validate_interval($interval_name);
 
-		if (!$item_info_out = $this->model('content')->get_thread_info_by_id($item_type, $item_id))
+		if (!$item_info_out = $this->model('thread')->get_thread_info_by_id($item_type, $item_id))
 		{
 			H::ajax_error((_t('内容不存在')));
 		}
@@ -60,7 +60,7 @@ class ajax extends AWS_CONTROLLER
 		$this->validate_permission($permission_name);
 		$this->validate_interval($interval_name);
 
-		if (!$item_info_out = $this->model('content')->get_reply_info_by_id($item_type, $item_id))
+		if (!$item_info_out = $this->model('thread')->get_reply_info_by_id($item_type, $item_id))
 		{
 			H::ajax_error((_t('内容不存在')));
 		}
@@ -94,7 +94,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_error((_t('不能合并到同一个主题')));
 		}
 
-		if (!$redirect_item_info = $this->model('content')->get_thread_info_by_id(H::POST('item_type'), $redirect_id))
+		if (!$redirect_item_info = $this->model('thread')->get_thread_info_by_id(H::POST('item_type'), $redirect_id))
 		{
 			H::ajax_error((_t('合并内容不存在')));
 		}
@@ -295,7 +295,7 @@ class ajax extends AWS_CONTROLLER
 	public function fold_reply_action()
 	{
 		$this->validate_interval('manage');
-		if (!$item_info = $this->model('content')->get_reply_info_by_id(H::POST('item_type'), H::POST('item_id')))
+		if (!$item_info = $this->model('thread')->get_reply_info_by_id(H::POST('item_type'), H::POST('item_id')))
 		{
 			H::ajax_error((_t('内容不存在')));
 		}
@@ -317,7 +317,7 @@ class ajax extends AWS_CONTROLLER
 
 			$parent_id = $item_info['parent_id'];
 
-			$parent_info = $this->model('content')->get_thread_info_by_id($parent_type, $parent_id);
+			$parent_info = $this->model('thread')->get_thread_info_by_id($parent_type, $parent_id);
 			if (!$parent_info OR $parent_info['uid'] != $this->user_id)
 			{
 				$this->validate_permission('fold_post');
@@ -344,7 +344,7 @@ class ajax extends AWS_CONTROLLER
 	public function unfold_reply_action()
 	{
 		$this->validate_interval('manage');
-		if (!$item_info = $this->model('content')->get_reply_info_by_id(H::POST('item_type'), H::POST('item_id')))
+		if (!$item_info = $this->model('thread')->get_reply_info_by_id(H::POST('item_type'), H::POST('item_id')))
 		{
 			H::ajax_error((_t('内容不存在')));
 		}
@@ -366,7 +366,7 @@ class ajax extends AWS_CONTROLLER
 
 			$parent_id = $item_info['parent_id'];
 
-			$parent_info = $this->model('content')->get_thread_info_by_id($parent_type, $parent_id);
+			$parent_info = $this->model('thread')->get_thread_info_by_id($parent_type, $parent_id);
 			if (!$parent_info OR $parent_info['uid'] != $this->user_id)
 			{
 				$this->validate_permission('fold_post');
@@ -396,7 +396,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		$this->validate_interval('follow');
 
-		if (!$item_info = $this->model('content')->get_thread_info_by_id(H::POST('item_type'), H::POST('item_id')))
+		if (!$item_info = $this->model('thread')->get_thread_info_by_id(H::POST('item_type'), H::POST('item_id')))
 		{
 			H::ajax_error((_t('内容不存在')));
 		}
@@ -422,7 +422,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		$this->validate_interval('follow');
 
-		if (!$item_info = $this->model('content')->get_thread_info_by_id(H::POST('item_type'), H::POST('item_id')))
+		if (!$item_info = $this->model('thread')->get_thread_info_by_id(H::POST('item_type'), H::POST('item_id')))
 		{
 			H::ajax_error((_t('内容不存在')));
 		}

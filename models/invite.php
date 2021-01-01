@@ -125,7 +125,7 @@ class invite_class extends AWS_MODEL
 				$question_ids[] = $val['question_id'];
 			}
 
-			$question_infos = $this->model('content')->get_posts_by_ids('question', $question_ids);
+			$question_infos = $this->model('thread')->get_posts_by_ids('question', $question_ids);
 
 			foreach ($list as $key => $val)
 			{

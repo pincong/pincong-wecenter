@@ -53,7 +53,7 @@ class video_class extends AWS_MODEL
 
 		if ($parent_ids)
 		{
-			$parents = $this->model('content')->get_posts_by_ids('video', $parent_ids);
+			$parents = $this->model('thread')->get_posts_by_ids('video', $parent_ids);
 			foreach ($list AS $key => $val)
 			{
 				$list[$key]['video_info'] = $parents[$val['parent_id']];
@@ -70,7 +70,7 @@ class video_class extends AWS_MODEL
 
 	public function modify_video($id, $title, $message, $log_uid)
 	{
-		if (!$item_info = $this->model('content')->get_thread_info_by_id('video', $id))
+		if (!$item_info = $this->model('thread')->get_thread_info_by_id('video', $id))
 		{
 			return false;
 		}
@@ -88,7 +88,7 @@ class video_class extends AWS_MODEL
 
 	public function clear_video($id, $log_uid)
 	{
-		if (!$item_info = $this->model('content')->get_thread_info_by_id('video', $id))
+		if (!$item_info = $this->model('thread')->get_thread_info_by_id('video', $id))
 		{
 			return false;
 		}
@@ -118,7 +118,7 @@ class video_class extends AWS_MODEL
 
 	public function modify_video_comment($id, $message, $log_uid)
 	{
-		if (!$reply_info = $this->model('content')->get_reply_info_by_id('video_reply', $id))
+		if (!$reply_info = $this->model('thread')->get_reply_info_by_id('video_reply', $id))
 		{
 			return false;
 		}
@@ -134,7 +134,7 @@ class video_class extends AWS_MODEL
 
 	public function clear_video_comment($id, $log_uid)
 	{
-		if (!$reply_info = $this->model('content')->get_reply_info_by_id('video_reply', $id))
+		if (!$reply_info = $this->model('thread')->get_reply_info_by_id('video_reply', $id))
 		{
 			return false;
 		}

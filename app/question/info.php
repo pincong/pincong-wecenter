@@ -55,7 +55,7 @@ class info extends AWS_CONTROLLER
 	public function question_discussions_action()
 	{
 		// 判断是否已合并
-		if ($redirect_posts = $this->model('content')->get_redirect_posts('question', $this->parent_id))
+		if ($redirect_posts = $this->model('thread')->get_redirect_posts('question', $this->parent_id))
 		{
 			foreach ($redirect_posts AS $key => $val)
 			{

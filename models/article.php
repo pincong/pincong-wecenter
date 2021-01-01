@@ -53,7 +53,7 @@ class article_class extends AWS_MODEL
 
 		if ($parent_ids)
 		{
-			$parents = $this->model('content')->get_posts_by_ids('article', $parent_ids);
+			$parents = $this->model('thread')->get_posts_by_ids('article', $parent_ids);
 			foreach ($list AS $key => $val)
 			{
 				$list[$key]['article_info'] = $parents[$val['parent_id']];
@@ -70,7 +70,7 @@ class article_class extends AWS_MODEL
 
 	public function modify_article($id, $title, $message, $log_uid)
 	{
-		if (!$item_info = $this->model('content')->get_thread_info_by_id('article', $id))
+		if (!$item_info = $this->model('thread')->get_thread_info_by_id('article', $id))
 		{
 			return false;
 		}
@@ -87,7 +87,7 @@ class article_class extends AWS_MODEL
 
 	public function clear_article($id, $log_uid)
 	{
-		if (!$item_info = $this->model('content')->get_thread_info_by_id('article', $id))
+		if (!$item_info = $this->model('thread')->get_thread_info_by_id('article', $id))
 		{
 			return false;
 		}
@@ -114,7 +114,7 @@ class article_class extends AWS_MODEL
 
 	public function modify_article_comment($id, $message, $log_uid)
 	{
-		if (!$reply_info = $this->model('content')->get_reply_info_by_id('article_reply', $id))
+		if (!$reply_info = $this->model('thread')->get_reply_info_by_id('article_reply', $id))
 		{
 			return false;
 		}
@@ -130,7 +130,7 @@ class article_class extends AWS_MODEL
 
 	public function clear_article_comment($id, $log_uid)
 	{
-		if (!$reply_info = $this->model('content')->get_reply_info_by_id('article_reply', $id))
+		if (!$reply_info = $this->model('thread')->get_reply_info_by_id('article_reply', $id))
 		{
 			return false;
 		}

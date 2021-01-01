@@ -33,7 +33,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_error((_t('对不起, 你没有删除影片的权限')));
 		}
 
-		if ($video_info = $this->model('content')->get_thread_info_by_id('video', H::POST('video_id')))
+		if ($video_info = $this->model('thread')->get_thread_info_by_id('video', H::POST('video_id')))
 		{
 			$this->model('video')->clear_video($video_info['id'], null);
 		}

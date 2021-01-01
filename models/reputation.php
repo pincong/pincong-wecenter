@@ -218,7 +218,7 @@ class reputation_class extends AWS_MODEL
 		if ($user_reputation_value OR $content_reputation_value)
 		{
 			// 已缓存过
-			$item_info = $this->model('content')->get_thread_or_reply_info_by_id($item_type, $item_id);
+			$item_info = $this->model('thread')->get_thread_or_reply_info_by_id($item_type, $item_id);
 
 			if (!$vote_user['permission']['no_dynamic_reputation_factor'])
 			{

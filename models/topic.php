@@ -429,7 +429,7 @@ class topic_class extends AWS_MODEL
 
 	public function add_thread_topic($item_type, $item_id, $topic_id, $log_uid)
 	{
-		if (!$this->model('content')->check_thread_type($item_type))
+		if (!$this->model('thread')->check_thread_type($item_type))
 		{
 			return false;
 		}
@@ -457,7 +457,7 @@ class topic_class extends AWS_MODEL
 
 	public function remove_thread_topic($item_type, $item_id, $topic_id, $log_uid)
 	{
-		if (!$this->model('content')->check_thread_type($item_type))
+		if (!$this->model('thread')->check_thread_type($item_type))
 		{
 			return false;
 		}

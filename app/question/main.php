@@ -101,7 +101,7 @@ class main extends AWS_CONTROLLER
 		$reply_count = $thread_info['reply_count'];
 		$discussion_count = $thread_info['comment_count'];
 		// 判断是否已合并
-		if ($redirect_posts = $this->model('content')->get_redirect_posts('question', $thread_info['id']))
+		if ($redirect_posts = $this->model('thread')->get_redirect_posts('question', $thread_info['id']))
 		{
 			foreach ($redirect_posts AS $key => $val)
 			{
@@ -152,7 +152,7 @@ class main extends AWS_CONTROLLER
 
 		if (S::get('answer_unique') == 'Y')
 		{
-			TPL::assign('user_answered', $this->model('content')->has_user_relpied_to_thread('question', $thread_info['id'], $this->user_id));
+			TPL::assign('user_answered', $this->model('thread')->has_user_relpied_to_thread('question', $thread_info['id'], $this->user_id));
 		}
 
 		TPL::assign('answers', $answers);
@@ -172,14 +172,14 @@ class main extends AWS_CONTROLLER
 		TPL::assign('question_info', $thread_info);
 		if ($thread_info['redirect_id'])
 		{
-			TPL::assign('redirect_info', $this->model('content')->get_post_by_id('question', $thread_info['redirect_id']));
+			TPL::assign('redirect_info', $this->model('thread')->get_post_by_id('question', $thread_info['redirect_id']));
 		}
 		if (H::GET('rf'))
 		{
-			TPL::assign('redirected_from', $this->model('content')->get_post_by_id('question', H::GET('rf')));
+			TPL::assign('redirected_from', $this->model('thread')->get_post_by_id('question', H::GET('rf')));
 		}
 
-		$this->model('content')->update_view_count('question', $thread_info['id']);
+		$this->model('thread')->update_view_count('question', $thread_info['id']);
 
 		$page_title = CF::page_title($thread_info);
 		$this->crumb($page_title);
