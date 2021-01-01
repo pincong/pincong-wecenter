@@ -78,11 +78,11 @@
 									<div class="tag-bar clearfix">
 										<?php if ($_GET['topic_title']) { ?>
 										<span class="topic-tag">
-											<a class="text"><?php echo urldecode($_GET['topic_title']); ?></a>
+											<a class="text"><?php echo htmlspecialchars($_GET['topic_title']); ?></a>
 											<a class="close" onclick="$(this).parents('.topic-tag').remove();">
 												<i class="icon icon-delete"></i>
 											</a>
-											<input type="hidden" value="<?php echo urldecode($_GET['topic_title']); ?>" name="topics[]" />
+											<input type="hidden" value="<?php echo htmlspecialchars($_GET['topic_title']); ?>" name="topics[]" />
 										</span>
 										<?php } ?>
 
