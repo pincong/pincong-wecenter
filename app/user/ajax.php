@@ -41,7 +41,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('用户不存在')));
 		}
 
-		if (!$this->user_info['permission']['is_moderator'])
+		if (!$this->user_info['permission']['ignore_reputation'])
 		{
 			// 普通用户不能处理比自己声望高的用户
 			if (intval($this->user_info['reputation']) <= intval($user_info['reputation']))

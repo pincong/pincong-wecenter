@@ -574,6 +574,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			'edit_specific_post',
 			'forbid_user',
 			'flag_user',
+			'ignore_reputation',
 			'change_user_group',
 			'edit_user',
 			'edit_topic',
