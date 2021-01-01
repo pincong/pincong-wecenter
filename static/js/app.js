@@ -37,11 +37,6 @@ $(document).ready(function ()
         }
     }
 
-    /*用户头像提示box*/
-    AWS.show_card_box('.aw-user-name, .aw-user-img', 'user');
-
-    AWS.show_card_box('.topic-tag, .aw-topic-name, .aw-topic-img', 'topic');
-
     //话题添加 绑定事件
     AWS.Init.init_topic_edit_box('.aw-edit-topic');
 
@@ -63,19 +58,11 @@ $(document).ready(function ()
 
         switch (data_type)
         {
-            case 'question':
-                data_url = G_BASE_URL + '/topic/ajax/remove_topic_relation/';
-                break;
-
             case 'topic':
                 data_url = G_BASE_URL + '/topic/ajax/remove_related_topic/related_id-' + $(this).parents('.topic-tag').attr('data-id') + '__topic_id-' + data_id;
                 break;
 
-            case 'article':
-                data_url = G_BASE_URL + '/topic/ajax/remove_topic_relation/';
-                break;
-
-            case 'video':
+            default:
                 data_url = G_BASE_URL + '/topic/ajax/remove_topic_relation/';
                 break;
         }
@@ -105,68 +92,6 @@ $(document).ready(function ()
         $(this).parents('.topic-tag').remove();
 
         return false;
-    });
-
-    //小卡片mouseover
-    $(document).on('mouseover', '#aw-card-tips', function ()
-    {
-        clearTimeout(AWS.G.card_box_hide_timer);
-
-        $(this).show();
-    });
-
-    //小卡片mouseout
-    $(document).on('mouseout', '#aw-card-tips', function ()
-    {
-        $(this).hide();
-    });
-
-    //用户小卡片关注更新缓存
-    $(document).on('click', '.aw-card-tips-user .follow', function ()
-    {
-        var uid = $(this).parents('.aw-card-tips').find('.name').attr('data-id');
-
-        $.each(AWS.G.cashUserData, function (i, a)
-        {
-            if (a.match('data-id="' + uid + '"'))
-            {
-                if (AWS.G.cashUserData.length == 1)
-                {
-                    AWS.G.cashUserData = [];
-                }
-                else
-                {
-                    AWS.G.cashUserData[i] = '';
-                }
-            }
-        });
-    });
-
-    //话题小卡片关注更新缓存
-    $(document).on('click', '.aw-card-tips-topic .follow', function ()
-    {
-        var topic_id = $(this).parents('.aw-card-tips').find('.name').attr('data-id');
-
-        $.each(AWS.G.cashTopicData, function (i, a)
-        {
-            if (a.match('data-id="' + topic_id + '"'))
-            {
-                if (AWS.G.cashTopicData.length == 1)
-                {
-                    AWS.G.cashTopicData = [];
-                }
-                else
-                {
-                    AWS.G.cashTopicData[i] = '';
-                }
-            }
-        });
-    });
-
-    /*icon tooltips提示*/
-    $(document).on('mouseover', '.follow, .voter, .aw-icon-thank-tips, .invite-list-user', function ()
-    {
-        $(this).tooltip('show');
     });
 
     /*if ($('.aw-back-top').length)

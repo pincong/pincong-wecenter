@@ -7,56 +7,6 @@ var AW_TEMPLATE = {
 	'loadingMiniBox':
 		'<div id="aw-loading-mini-box"></div>',
 
-	'userCard':
-			'<div id="aw-card-tips" class="aw-card-tips aw-card-tips-user">'+
-				'<div class="aw-mod">'+
-					'<div class="mod-head">'+
-						'<a href="{{url}}" class="img">'+
-							'<img src="{{avatar_file}}" alt="" />'+
-						'</a>'+
-						'<p class="title clearfix">'+
-							'<a href="{{url}}" class="name" data-id="{{uid}}">{{user_name}}</a>'+
-							'&nbsp;'+
-							'<em class="{{verified_style}}">{{verified_title}}</em>'+
-						'</p>'+
-						'<p class="aw-user-center-follow-meta">'+
-							'<span><i class="icon icon-prestige"></i> : <em class="aw-text-color-green">{{reputation}}</em></span>'+
-							'<span><i class="icon icon-agree"></i> : <em class="aw-text-color-orange">{{agree_count}}</em></span>'+
-						'</p>'+
-					'</div>'+
-					'<div class="mod-body">'+
-						'<p>{{signature}}</p>'+
-					'</div>'+
-					'<div class="mod-footer clearfix">'+
-						'<span>'+
-							'<a class="aw-small-text" onclick="AWS.submit_redirect(G_BASE_URL + \'/pm/new/\', {\'usernames[]\': \'{{user_name}}\'});"><i class="icon icon-inbox"></i> ' + _t('私信') + '</a>&nbsp;&nbsp;&nbsp;&nbsp;<a  class="aw-small-text" onclick="AWS.User.ask_user({{uid}}, \'{{user_name}}\');"><i class="icon icon-at"></i> ' + _t('问Ta') + '</a>'+
-						'</span>'+
-						'<a class="btn btn-normal btn-success follow {{focus}} pull-right" onclick="AWS.User.follow($(this), \'user\', {{uid}});"><span>{{focusTxt}}</span> <em>|</em> <b>{{fansCount}}</b></a>'+
-					'</div>'+
-				'</div>'+
-			'</div>',
-
-	'topicCard' :
-			'<div id="aw-card-tips" class="aw-card-tips aw-card-tips-topic">'+
-				'<div class="aw-mod">'+
-					'<div class="mod-head">'+
-						'<a href="{{url}}" class="img">'+
-							'<img src="{{topic_pic}}" alt="" title=""/>'+
-						'</a>'+
-						'<p class="title">'+
-							'<a href="{{url}}" class="name" data-id="{{topic_id}}">{{topic_title}}</a>'+
-						'</p>'+
-						'<p class="desc">'+
-							'{{topic_description}}'+
-						'</p>'+
-					'</div>'+
-					'<div class="mod-footer">'+
-						'<span>'+ _t('讨论数') + ': {{discuss_count}}</span>'+
-						'<a class="btn btn-normal btn-success follow {{focus}} pull-right" onclick="AWS.User.follow($(this), \'topic\', {{topic_id}});"><span>{{focusTxt}}</span> <em>|</em> <b>{{focus_count}}</b></a>'+
-					'</div>'+
-				'</div>'+
-			'</div>',
-
 	'editTopicBox' :
 		'<div class="aw-edit-topic-box form-inline">'+
 			'<input type="text" class="form-control" id="aw_edit_topic_title" autocomplete="off"  placeholder="' + _t('创建或搜索添加新话题') + '...">'+
@@ -77,12 +27,6 @@ var AW_TEMPLATE = {
 			'{{/items}}'+
 			'</ul>'+
 		'</div>',
-
-	'searchDropdownListTopics' :
-		'<li class="topic clearfix"><span class="topic-tag" data-id="{{topic_id}}"><a href="{{url}}" class="text">{{name}}</a></span> <span class="pull-right aw-small-text">{{discuss_count}} ' + _t('个讨论') + '</span></li>',
-
-	'searchDropdownListUsers' :
-		'<li class="user clearfix"><a href="{{url}}"><img src="{{img}}" />{{name}}<span class="aw-hide-txt">{{intro}}</span></a></li>',
 
 	'inviteDropdownList' :
 		'<li class="user"><a data-url="{{url}}" data-id="{{uid}}" data-actions="{{action}}" data-value="{{name}}"><img class="img" src="{{img}}" />{{name}}</a></li>',

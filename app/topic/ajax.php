@@ -41,27 +41,6 @@ class ajax extends AWS_CONTROLLER
 		H::no_cache_header();
 	}
 
-	public function topic_info_action()
-	{
-		$topic_info = $this->model('topic')->get_topic_by_id(H::GET('topic_id'));
-
-		$topic_info['type'] = 'topic';
-
-		$topic_info['topic_description'] = truncate_text($topic_info['topic_description'], 80);
-
-		$topic_info['focus_count'] = $topic_info['focus_count'];
-
-		if ($this->user_id)
-		{
-			$topic_info['focus'] = $this->model('topic')->has_focus_topic($this->user_id, $topic_info['topic_id']);
-		}
-
-		$topic_info['topic_pic'] = get_topic_pic_url($topic_info, 'mid');
-		$topic_info['url'] = url_rewrite('/topic/' . safe_url_encode($topic_info['topic_title']));
-
-		H::ajax_json_output($topic_info);
-	}
-
 	public function edit_topic_action()
 	{
 		if (!check_user_operation_interval('edit_topic', $this->user_id, $this->user_info['permission']['interval_modify']))
