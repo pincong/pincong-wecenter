@@ -10,6 +10,7 @@ class Services_BBCode
 		{
 			return unnest_bbcode($matches[0]);
 		}
+
 		return "<pre>" . unnest_bbcode($matches[1]) . "</pre>";
 	}
 
@@ -19,6 +20,7 @@ class Services_BBCode
 		{
 			return unnest_bbcode($matches[0]);
 		}
+
 		return FORMAT::parse_link(unnest_bbcode($matches[1]));
 	}
 
@@ -28,6 +30,7 @@ class Services_BBCode
 		{
 			return unnest_bbcode($matches[0]);
 		}
+
 		return FORMAT::parse_link(unnest_bbcode($matches[1]), $matches[2], true);
 	}
 
@@ -37,6 +40,7 @@ class Services_BBCode
 		{
 			return unnest_bbcode($matches[0]);
 		}
+
 		return FORMAT::parse_image(unnest_bbcode($matches[1]));
 	}
 
@@ -46,6 +50,7 @@ class Services_BBCode
 		{
 			return unnest_bbcode($matches[0]);
 		}
+
 		return FORMAT::parse_image(unnest_bbcode($matches[2]));
 	}
 
@@ -55,6 +60,7 @@ class Services_BBCode
 		{
 			return unnest_bbcode($matches[0]);
 		}
+
 		return FORMAT::parse_video(unnest_bbcode($matches[1]));
 	}
 
@@ -65,6 +71,7 @@ class Services_BBCode
 		{
 			return unnest_bbcode($matches[0]);
 		}
+
 		return $matches[1];
 	}
 
@@ -74,6 +81,7 @@ class Services_BBCode
 		{
 			return unnest_bbcode($matches[0]);
 		}
+
 		return $matches[2];
 	}
 
@@ -88,7 +96,8 @@ class Services_BBCode
 		{
 			return unnest_bbcode($matches[0]);
 		}
-		return "<strong>$matches[1]</strong>";
+
+		return "<b>$matches[1]</b>";
 	}
 
 	private function _i_callback($matches)
@@ -97,7 +106,8 @@ class Services_BBCode
 		{
 			return unnest_bbcode($matches[0]);
 		}
-		return "<em>$matches[1]</em>";
+
+		return "<i>$matches[1]</i>";
 	}
 
 	private function _quote_callback($matches)
@@ -106,6 +116,7 @@ class Services_BBCode
 		{
 			return unnest_bbcode($matches[0]);
 		}
+
 		return "<blockquote>$matches[1]</blockquote>";
 	}
 
@@ -115,6 +126,7 @@ class Services_BBCode
 		{
 			return unnest_bbcode($matches[0]);
 		}
+
 		return "<center>$matches[1]</center>";
 	}
 
@@ -124,7 +136,8 @@ class Services_BBCode
 		{
 			return unnest_bbcode($matches[0]);
 		}
-		return "<del>$matches[1]</del>";
+
+		return "<s>$matches[1]</s>";
 	}
 
 	private function _u_callback($matches)
@@ -133,18 +146,8 @@ class Services_BBCode
 		{
 			return unnest_bbcode($matches[0]);
 		}
-		return '<span style="text-decoration:underline;">' . $matches[1] . '</span>';
-	}
 
-	private function _list_callback($matches)
-	{
-		if (!trim($matches[1]))
-		{
-			return unnest_bbcode($matches[0]);
-		}
-		$matches[1] = preg_replace_callback("/\[\*\](.*?)\[\/\*\]/is", array(&$this, '_list_element_callback'), $matches[1]);
-		return "<ul>" . preg_replace("/[\n\r?]/", "", $matches[1]) . "</ul>";
-	}
+		return '<u>' . $matches[1] . '</u>';
 
 	private function _ul_callback($matches)
 	{
@@ -152,6 +155,7 @@ class Services_BBCode
 		{
 			return unnest_bbcode($matches[0]);
 		}
+
 		$matches[1] = preg_replace_callback("/\[li\](.*?)\[\/li\]/is", array(&$this, '_list_element_callback'), $matches[1]);
 		return "<ul>" . preg_replace("/[\n\r?]/", "", $matches[1]) . "</ul>";
 	}
@@ -162,16 +166,24 @@ class Services_BBCode
 		{
 			return unnest_bbcode($matches[0]);
 		}
+
 		$matches[1] = preg_replace_callback("/\[li\](.*?)\[\/li\]/is", array(&$this, '_list_element_callback'), $matches[1]);
 		return "<ol>" . preg_replace("/[\n\r?]/", "", $matches[1]) . "</ol>";
 	}
-
-	private function _list_element_callback($matches)
-	{
-		return "<li>" . preg_replace("/[\n\r?]$/", "", $matches[1]) . "</li>";
 	}
 
-	private function _list_advance_callback($matches)
+	private function _list_callback($matches)
+	{
+		if (!trim($matches[1]))
+		{
+			return unnest_bbcode($matches[0]);
+		}
+
+		$matches[1] = preg_replace_callback("/\[\*\](.*?)\[\/\*\]/is", array(&$this, '_list_element_callback'), $matches[1]);
+		return "<ul>" . preg_replace("/[\n\r?]/", "", $matches[1]) . "</ul>";
+	}
+
+	private function _advanced_list_callback($matches)
 	{
 		if (!trim($matches[2]))
 		{
@@ -191,6 +203,12 @@ class Services_BBCode
 
 		return '<' . $list_type . '>' . preg_replace("/[\n\r?]/", "", $matches[2]) . '</' . $list_type . '>';
 	}
+
+	private function _list_element_callback($matches)
+	{
+		return "<li>" . preg_replace("/[\n\r?]$/", "", $matches[1]) . "</li>";
+	}
+
 
 	public function __construct()
 	{
@@ -260,7 +278,7 @@ class Services_BBCode
 		$this->bbcode_table["/\[list\](.*?)\[\/list\]/is"] = '_list_callback';
 
 		// Replace [list=1|a]...[/list] with <ul|ol><li>...</li></ul|ol>
-		$this->bbcode_table["/\[list=(1|a)\](.*?)\[\/list\]/is"] = '_list_advance_callback';
+		$this->bbcode_table["/\[list=(1|a)\](.*?)\[\/list\]/is"] = '_advanced_list_callback';
 
 		// Replace [ul]...[/ul] with <ul><li>...</li></ul>
 		$this->bbcode_table["/\[ul\](.*?)\[\/ul\]/is"] = '_ul_callback';
