@@ -13,16 +13,12 @@
 */
 
 define('IN_ANWSION', TRUE);
-define('ENVIRONMENT_PHP_VERSION', '5.2.2');
+define('ENVIRONMENT_PHP_VERSION', '7.0.0');
 //define('SYSTEM_LANG', 'en_US');
 
-if (substr(PHP_VERSION, -4) == 'hhvm')
+if (version_compare(PHP_VERSION, ENVIRONMENT_PHP_VERSION, '<'))
 {
-	die('Error: WeCenter not support HHVM currently');
-}
-else if (version_compare(PHP_VERSION, ENVIRONMENT_PHP_VERSION, '<'))
-{
-	die('Error: WeCenter require PHP version ' . ENVIRONMENT_PHP_VERSION . ' or newer');
+	die('Error: WinnieCenter requires PHP version ' . ENVIRONMENT_PHP_VERSION . ' or newer');
 }
 
 define('START_TIME', microtime(TRUE));
@@ -33,7 +29,7 @@ if (function_exists('memory_get_usage'))
 	define('MEMORY_USAGE_START', memory_get_usage());
 }
 
-if (! defined('AWS_PATH'))
+if (!defined('AWS_PATH'))
 {
 	define('AWS_PATH', dirname(__FILE__) . '/');
 }
@@ -42,37 +38,9 @@ define('ROOT_PATH', dirname(dirname(__FILE__)) . '/');
 
 @ini_set('display_errors', '0');
 
-{
-	if (version_compare(PHP_VERSION, '5.4', '>='))
-	{
-		error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_WARNING);
-	}
-	else
-	{
-		error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
-	}
+error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_WARNING);
 
-	define('TEMP_PATH', dirname(dirname(__FILE__)) . '/tmp/');
-}
-
-if (function_exists('get_magic_quotes_gpc'))
-{
-	if (@get_magic_quotes_gpc()) // GPC 进行反向处理
-	{
-		if (! function_exists('stripslashes_gpc'))
-		{
-			function stripslashes_gpc(&$value)
-			{
-				$value = stripslashes($value);
-			}
-		}
-
-		array_walk_recursive($_GET, 'stripslashes_gpc');
-		array_walk_recursive($_POST, 'stripslashes_gpc');
-		array_walk_recursive($_COOKIE, 'stripslashes_gpc');
-		array_walk_recursive($_REQUEST, 'stripslashes_gpc');
-	}
-}
+define('TEMP_PATH', dirname(dirname(__FILE__)) . '/tmp/');
 
 require_once(ROOT_PATH . 'version.php');
 require_once(AWS_PATH . 'functions.inc.php');

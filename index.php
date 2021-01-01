@@ -12,7 +12,7 @@
 +---------------------------------------------------------------------------
 */
 
-if (! file_exists(dirname(__FILE__) . '/system/config/database.php') AND ! file_exists(dirname(__FILE__) . '/system/config/install.lock.php') AND !defined('SAE_TMP_PATH'))
+if (!file_exists(dirname(__FILE__) . '/system/config/database.php') AND !file_exists(dirname(__FILE__) . '/system/config/install.lock.php'))
 {
 	header('Location: ./install/');
 	exit;
