@@ -312,7 +312,7 @@ CREATE TABLE IF NOT EXISTS `aws_question` (
   `agree_count` int(11) DEFAULT '0' COMMENT '回复赞同数总和',
   `reputation` float DEFAULT '0',
   `lock` tinyint(1) DEFAULT '0' COMMENT '是否锁定',
-  `question_content_fulltext` text,
+  `title_fulltext` text,
   `recommend` tinyint(1) DEFAULT '0',
   `sort` tinyint(2) DEFAULT '0',
   `last_uid` int(11) DEFAULT '0',
@@ -328,7 +328,7 @@ CREATE TABLE IF NOT EXISTS `aws_question` (
   KEY `lock` (`lock`),
   KEY `recommend` (`recommend`),
   KEY `sort` (`sort`),
-  FULLTEXT KEY `question_content_fulltext` (`question_content_fulltext`)
+  FULLTEXT KEY `title_fulltext` (`title_fulltext`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='问题列表';
 
 --

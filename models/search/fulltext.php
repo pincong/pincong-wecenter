@@ -109,11 +109,11 @@ class search_fulltext_class extends AWS_MODEL
 			$where = implode(' AND ', $where);
 		}
 
-		$search_hash = $this->get_search_hash('question', 'question_content', $q, $where);
+		$search_hash = $this->get_search_hash('question', 'title', $q, $where);
 
 		if (!$result = $this->fetch_cache($search_hash))
 		{
-			if ($result = $this->query_all($this->bulid_query('question', 'question_content', $q, $where), $this->max_results))
+			if ($result = $this->query_all($this->bulid_query('question', 'title', $q, $where), $this->max_results))
 			{
 				$result = aasort($result, 'score', 'DESC');
 			}
@@ -231,7 +231,7 @@ class search_fulltext_class extends AWS_MODEL
 		{
 			case 'question':
 				return $this->shutdown_update('question', array(
-					'question_content_fulltext' => $search_code
+					'title_fulltext' => $search_code
 				), 'id = ' . intval($item_id));
 			break;
 

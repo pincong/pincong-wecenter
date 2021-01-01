@@ -98,7 +98,7 @@ class question_class extends AWS_MODEL
 		$data = array(
 			'question_content' => null,
 			'question_detail' => null,
-			'question_content_fulltext' => null,
+			'title_fulltext' => null,
 		);
 
 		$trash_category_id = intval(get_setting('trash_category_id'));
@@ -420,7 +420,7 @@ class question_class extends AWS_MODEL
 				return false;
 			}
 
-			if ($question_list = $this->query_all($this->model('search_fulltext')->bulid_query('question', 'question_content', $question_keywords), 2000))
+			if ($question_list = $this->query_all($this->model('search_fulltext')->bulid_query('question', 'title', $question_keywords), 2000))
 			{
 				$question_list = aasort($question_list, 'score', 'DESC');
 				$question_list = aasort($question_list, 'agree_count', 'DESC');
