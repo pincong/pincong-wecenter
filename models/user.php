@@ -56,7 +56,7 @@ class user_class extends AWS_MODEL
 	{
 		$video_id = intval($video_id);
 		$this->update('video', array(
-			'comment_count' => $this->count('video_comment', ['video_id', 'eq', $video_id])
+			'comment_count' => $this->count('video_reply', ['video_id', 'eq', $video_id])
 		), ['id', 'eq', $video_id]);
 	}
 
@@ -170,13 +170,13 @@ class user_class extends AWS_MODEL
 
 	public function delete_video_comments($uid)
 	{
-		$video_comments = $this->fetch_all('video_comment', ['uid', 'eq', $uid, 'i']);
+		$video_comments = $this->fetch_all('video_reply', ['uid', 'eq', $uid, 'i']);
 		if (!$video_comments)
 		{
 			return;
 		}
 
-		$this->delete('video_comment', ['uid', 'eq', $uid, 'i']);
+		$this->delete('video_reply', ['uid', 'eq', $uid, 'i']);
 
 		foreach ($video_comments AS $key => $val)
 		{
@@ -193,7 +193,7 @@ class user_class extends AWS_MODEL
 			$this->update('video', array('last_uid' => '-1'), ['last_uid', 'eq', $uid, 'i']);
 		}
 
-		$this->update('video_comment', array('at_uid' => '-1'), ['at_uid', 'eq', $uid, 'i']);
+		$this->update('video_reply', array('at_uid' => '-1'), ['at_uid', 'eq', $uid, 'i']);
 	}
 
 

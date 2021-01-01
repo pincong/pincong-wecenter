@@ -92,7 +92,7 @@ class currency_class extends AWS_MODEL
 					$article_comment_ids[] = $item['item_id'];
 				break;
 
-				case 'video_comment':
+				case 'video_reply':
 					$video_comment_ids[] = $item['item_id'];
 				break;
 			}
@@ -125,7 +125,7 @@ class currency_class extends AWS_MODEL
 
 		if ($video_comment_ids)
 		{
-			$video_comments = $this->model('content')->get_posts_by_ids('video_comment', $video_comment_ids);
+			$video_comments = $this->model('content')->get_posts_by_ids('video_reply', $video_comment_ids);
 		}
 
 		foreach ($parse_items AS $log_id => $item)
@@ -182,7 +182,7 @@ class currency_class extends AWS_MODEL
 					}
 				break;
 
-				case 'video_comment':
+				case 'video_reply':
 					if ($video_comments[$item['item_id']])
 					{
 						$result[$log_id] = array(

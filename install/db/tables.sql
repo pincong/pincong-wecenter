@@ -196,7 +196,7 @@ CREATE TABLE `aws_video` (
 
 
 --
-CREATE TABLE `aws_video_comment` (
+CREATE TABLE `aws_video_reply` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT '0',
   `video_id` int(11) DEFAULT '0',

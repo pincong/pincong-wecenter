@@ -45,7 +45,7 @@ class video_class extends AWS_MODEL
 			return $list;
 		}
 
-		$list = $this->fetch_page('video_comment', ['uid', 'eq', $uid, 'i'], 'id DESC', $page, $per_page);
+		$list = $this->fetch_page('video_reply', ['uid', 'eq', $uid, 'i'], 'id DESC', $page, $per_page);
 		foreach ($list AS $key => $val)
 		{
 			$parent_ids[] = $val['video_id'];
@@ -118,33 +118,33 @@ class video_class extends AWS_MODEL
 
 	public function modify_video_comment($id, $message, $log_uid)
 	{
-		if (!$reply_info = $this->model('content')->get_reply_info_by_id('video_comment', $id))
+		if (!$reply_info = $this->model('content')->get_reply_info_by_id('video_reply', $id))
 		{
 			return false;
 		}
 
-		$this->update('video_comment', array(
+		$this->update('video_reply', array(
 			'message' => htmlspecialchars($message)
 		), ['id', 'eq', $id, 'i']);
 
-		$this->model('content')->log('video', $reply_info['video_id'], 'video_comment', $id, '编辑', $log_uid);
+		$this->model('content')->log('video', $reply_info['video_id'], 'video_reply', $id, '编辑', $log_uid);
 
 		return true;
 	}
 
 	public function clear_video_comment($id, $log_uid)
 	{
-		if (!$reply_info = $this->model('content')->get_reply_info_by_id('video_comment', $id))
+		if (!$reply_info = $this->model('content')->get_reply_info_by_id('video_reply', $id))
 		{
 			return false;
 		}
 
-		$this->update('video_comment', array(
+		$this->update('video_reply', array(
 			'message' => null,
 			'fold' => 1
 		), ['id', 'eq', $id, 'i']);
 
-		$this->model('content')->log('video', $reply_info['video_id'], 'video_comment', $id, '删除', $log_uid);
+		$this->model('content')->log('video', $reply_info['video_id'], 'video_reply', $id, '删除', $log_uid);
 
 		return true;
 	}
@@ -175,7 +175,7 @@ class video_class extends AWS_MODEL
 	// 同时获取用户信息
 	public function get_video_comment_by_id($id)
 	{
-		if ($item = $this->fetch_row('video_comment', ['id', 'eq', $id, 'i']))
+		if ($item = $this->fetch_row('video_reply', ['id', 'eq', $id, 'i']))
 		{
 			$user_infos = $this->model('account')->get_user_info_by_uids(array(
 				$item['uid'],
@@ -194,7 +194,7 @@ class video_class extends AWS_MODEL
 	{
 		$where = ['video_id', 'in', $thread_ids, 'i'];
 
-		if ($list = $this->fetch_page('video_comment', $where, $order, $page, $per_page))
+		if ($list = $this->fetch_page('video_reply', $where, $order, $page, $per_page))
 		{
 			foreach ($list AS $key => $val)
 			{

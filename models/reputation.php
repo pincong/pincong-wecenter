@@ -135,7 +135,7 @@ class reputation_class extends AWS_MODEL
 				$parent_type = 'article';
 				break;
 
-			case 'video_comment':
+			case 'video_reply':
 				$parent_id = $item_info['video_id'];
 				$parent_type = 'video';
 				break;

@@ -310,7 +310,7 @@
 </div>
 <!-- end 影片 -->
 
-<?php } else if ($val['item_type'] == 'video_comment') { ?>
+<?php } else if ($val['item_type'] == 'video_reply') { ?>
 <?php if ($val['fold']) continue; ?>
 <?php if (!$val['message']) continue; ?>
 
@@ -342,7 +342,7 @@
 			<!-- end 投票栏 -->
 
 			<div class="more-operate">
-				<a href="<?php echo url_rewrite(); ?>/vote/log/item_type-video_comment__item_id-<?php echo $val['id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
+				<a href="<?php echo url_rewrite(); ?>/vote/log/item_type-video_reply__item_id-<?php echo $val['id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
 			</div>
 
 		</div>

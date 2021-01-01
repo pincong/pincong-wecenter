@@ -84,7 +84,7 @@ class ajax extends AWS_CONTROLLER
 				$reply_type = 'article_comment';
 				break;
 			case 'video':
-				$reply_type = 'video_comment';
+				$reply_type = 'video_reply';
 				break;
 		}
 

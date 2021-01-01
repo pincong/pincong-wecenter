@@ -51,7 +51,7 @@ class content_class extends AWS_MODEL
 		{
 			case 'answer':
 			case 'article_comment':
-			case 'video_comment':
+			case 'video_reply':
 				return true;
 		}
 		return false;
@@ -66,7 +66,7 @@ class content_class extends AWS_MODEL
 			case 'article':
 			case 'article_comment':
 			case 'video':
-			case 'video_comment':
+			case 'video_reply':
 				return true;
 		}
 		return false;
@@ -83,7 +83,7 @@ class content_class extends AWS_MODEL
 			case 'article':
 			case 'article_comment':
 			case 'video':
-			case 'video_comment':
+			case 'video_reply':
 				return true;
 		}
 		return false;
@@ -203,7 +203,7 @@ class content_class extends AWS_MODEL
 				}
 				return false;
 
-			case 'video_comment':
+			case 'video_reply':
 				$thread_info = $this->get_thread_info_by_id('video', $item_info['video_id']);
 				if ($thread_info)
 				{
@@ -303,7 +303,7 @@ class content_class extends AWS_MODEL
 				break;
 
 			case 'video':
-				$reply_type = 'video_comment';
+				$reply_type = 'video_reply';
 				$where = [['video_id', 'eq', $thread_id], ['uid', 'eq', $uid]];
 				break;
 

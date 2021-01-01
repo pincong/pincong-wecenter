@@ -138,7 +138,7 @@ class publish_class extends AWS_MODEL
 				$this->real_publish_article_comment($data);
 				break;
 
-			case 'video_comment':
+			case 'video_reply':
 				$this->real_publish_video_comment($data);
 				break;
 
@@ -484,7 +484,7 @@ class publish_class extends AWS_MODEL
 
 		$now = fake_time();
 
-		$item_id = $this->insert('video_comment', array(
+		$item_id = $this->insert('video_reply', array(
 			'uid' => $data['uid'],
 			'video_id' => $data['parent_id'],
 			'message' => htmlspecialchars($data['message']),
@@ -498,7 +498,7 @@ class publish_class extends AWS_MODEL
 		}
 
 		$this->update('video', array(
-			'comment_count' => $this->count('video_comment', ['video_id', 'eq', $data['parent_id'], 'i']),
+			'comment_count' => $this->count('video_reply', ['video_id', 'eq', $data['parent_id'], 'i']),
 			'update_time' => $now,
 			'last_uid' => $data['uid']
 		), ['id', 'eq', $data['parent_id'], 'i']);
@@ -507,14 +507,14 @@ class publish_class extends AWS_MODEL
 
 		if (!$data['permission_inactive_user'])
 		{
-			$this->mention_users('video', $parent_info['id'], 'video_comment', $item_id, $data['uid'], $data['message']);
+			$this->mention_users('video', $parent_info['id'], 'video_reply', $item_id, $data['uid'], $data['message']);
 			if ($data['at_uid'])
 			{
-				$this->notify_user('video', $parent_info['id'], 'video_comment', $item_id, $data['uid'], $data['at_uid']);
+				$this->notify_user('video', $parent_info['id'], 'video_reply', $item_id, $data['uid'], $data['at_uid']);
 			}
 			else
 			{
-				$this->notify_flowers('video', $parent_info['id'], 'video_comment', $item_id, $data['uid']);
+				$this->notify_flowers('video', $parent_info['id'], 'video_reply', $item_id, $data['uid']);
 			}
 		}
 
@@ -524,7 +524,7 @@ class publish_class extends AWS_MODEL
 		}
 
 		// 记录用户动态
-		$this->model('activity')->push('video_comment', $item_id, $data['uid']);
+		$this->model('activity')->push('video_reply', $item_id, $data['uid']);
 
 		$this->model('account')->update_user_fields(array(
 			'user_update_time' => $now
@@ -743,7 +743,7 @@ class publish_class extends AWS_MODEL
 	{
 		if ($later)
 		{
-			$this->schedule('video_comment', $this->calc_later_time($later), $data);
+			$this->schedule('video_reply', $this->calc_later_time($later), $data);
 		}
 		else
 		{

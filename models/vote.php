@@ -89,7 +89,7 @@ class vote_class extends AWS_MODEL
 				$note_item_agreed = '影片被赞同';
 				break;
 
-			case 'video_comment':
+			case 'video_reply':
 				$note_agree = '赞同影片评论';
 				$note_item_agreed = '影片评论被赞同';
 				break;
@@ -131,7 +131,7 @@ class vote_class extends AWS_MODEL
 				$note_item_disagreed = '影片被反对';
 				break;
 
-			case 'video_comment':
+			case 'video_reply':
 				$note_disagree = '反对影片评论';
 				$note_item_disagreed = '影片评论被反对';
 				break;
