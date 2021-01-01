@@ -44,7 +44,7 @@
 											<?php echo date_friendly($val['add_time']); ?>
 											<?php if ($val['receipt']) { ?> (<?php _e('对方于 %s 已读', date_friendly($val['receipt'])); ?>)<?php } ?>
 										</p>
-										<i class="i-private-replay-triangle"></i>
+										<i class="i-private-reply-triangle"></i>
 									</div>
 								</li>
 								<?php } else { ?>
@@ -55,10 +55,10 @@
 									<div class="aw-item">
 										<p><a href="<?php echo UF::url($this->recipient_user); ?>"><?php echo UF::name($this->recipient_user); ?></a>: <?php echo nl2br($val['message']); ?></p>
 										<p class="aw-small-text">
-											<span class="pull-right aw-replay"><a href="javascript:;" onclick="$.scrollTo(($('#recipient_form').offset()['top']) - 20, 600, {queue:true});$('.message').focus();"><?php _e('回复'); ?></a></span>
+											<span class="pull-right aw-reply"><a href="javascript:;" onclick="$.scrollTo(($('#recipient_form').offset()['top']) - 20, 600, {queue:true});$('.message').focus();"><?php _e('回复'); ?></a></span>
 											<?php echo date_friendly($val['add_time']); ?>
 										</p>
-										<i class="i-private-replay-triangle"></i>
+										<i class="i-private-reply-triangle"></i>
 									</div>
 								</li>
 								<?php } ?>

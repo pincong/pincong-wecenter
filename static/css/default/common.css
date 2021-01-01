@@ -102,7 +102,7 @@ table td{vertical-align: middle !important;}
 .aw-mod .mod-head h4, .aw-mod .mod-head h4 a{font-size:14px;}
 
 .dropdown-menu li.first, .aw-comment-list li:first-child, .aw-li-border-bottom li:first-child{border-top:none;}
-.aw-dropdown-list li.user a img, .aw-question-tags, .aw-border-radius-5, .aw-border-radius-5 img, .aw-load-more-content, .aw-user-name img, .aw-topic-name img, .aw-topic-name span, .aw-topic-img img, .aw-login-register a img, .aw-login-register .aw-user-head img, .aw-dropdown, .category dl dt img, .category .span12 > ul > li, .aw-mod.side-nav ul li a, .aw-notopic-sort, .aw-comment-box, .aw-topic-detail-title .mod-body img, .aw-topic-search, .aw-mod-topic-edit-box .mod-head .img, .aw-inbox-read .mod-footer li .aw-item, .aw-inbox .mod-footer li .aw-user-img img, .aw-invite-list ul li img, .aw-mod-search-result .aw-item .aw-user-img img, .aw-mod-search-result .aw-item .aw-topic-img img, .aw-card-tips, .aw-card-tips .mod-head .img img, .aw-first-login .aw-complete-data .side-bar img, .aw-replay-box .mod-body, .aw-publish-box .aw-publish-title .dropdown .dropdown-toggle, .markitup-box code, .aw-publish-title.active input, #aw-loading, .aw-user-nav > a img{border-radius: 4px;}
+.aw-dropdown-list li.user a img, .aw-question-tags, .aw-border-radius-5, .aw-border-radius-5 img, .aw-load-more-content, .aw-user-name img, .aw-topic-name img, .aw-topic-name span, .aw-topic-img img, .aw-login-register a img, .aw-login-register .aw-user-head img, .aw-dropdown, .category dl dt img, .category .span12 > ul > li, .aw-mod.side-nav ul li a, .aw-notopic-sort, .aw-comment-box, .aw-topic-detail-title .mod-body img, .aw-topic-search, .aw-mod-topic-edit-box .mod-head .img, .aw-inbox-read .mod-footer li .aw-item, .aw-inbox .mod-footer li .aw-user-img img, .aw-invite-list ul li img, .aw-mod-search-result .aw-item .aw-user-img img, .aw-mod-search-result .aw-item .aw-topic-img img, .aw-card-tips, .aw-card-tips .mod-head .img img, .aw-first-login .aw-complete-data .side-bar img, .aw-reply-box .mod-body, .aw-publish-box .aw-publish-title .dropdown .dropdown-toggle, .markitup-box code, .aw-publish-title.active input, #aw-loading, .aw-user-nav > a img{border-radius: 4px;}
 .category dl{border-radius: 10px;}
 
 .aw-publish-title .dropdown .dropdown-toggle, .aw-publish-title .dropdown .dropdown-toggle a{border-radius: 0 5px 5px 0;}
@@ -212,7 +212,7 @@ a.aw-load-more-content{display: block;}
 .icon-inverse.follow.active:before{content: "\e636";color: #58b957;}
 .icon-down.active:before{content:"\e634";}
 .icon-add-alt{font-size: 18px;margin-right: 10px;}
-.i-private-replay-triangle{width: 8px;height: 10px;background: url('img/icon-angle-right.png') no-repeat;}
+.i-private-reply-triangle{width: 8px;height: 10px;background: url('img/icon-angle-right.png') no-repeat;}
 .aw-table th{background-color: #fafafa !important;border-bottom: none !important;}
 
 .aw-verified{white-space: nowrap;background-color: #a3d700;color: #fff;text-align: center;padding: 1px 2px; line-height: 12px;font-size: 12px;border-radius: 3px;}
@@ -396,7 +396,7 @@ a.aw-load-more-content{display: block;}
 .aw-mod.aw-topic-recommend-list .aw-common-list{max-height: 112px;overflow: hidden;}
 .aw-mod.aw-topic-recommend-list .mod-footer a{margin-top:10px;font-size: 12px;}
 /* 邀请回复 */
-.aw-mod.email-invite-replay .btn-success{margin-top:10px;}
+.aw-mod.email-invite-reply .btn-success{margin-top:10px;}
 /* 发起 */
 .aw-mod.publish-help .mod-body p, .aw-mod.topic-edit-help .mod-body p{padding:10px 0;color: #999;}
 /* 用户列表页按擅长话题搜索 */
@@ -427,20 +427,20 @@ a.aw-load-more-content{display: block;}
 .aw-question-detail .aw-edit-topic-box .aw-dropdown{width: 418px;}
 
 /* 回复编辑器 */
-.aw-replay-box{margin:20px 0 0;padding:0 20px;}
-.aw-replay-box form > .mod-head{position: relative;height:auto;overflow:hidden;min-height:32px;margin-bottom:10px;padding-left: 40px;line-height: 28px;}
-.aw-replay-box .mod-head > .aw-user-name{position: absolute;left: 0;top:0;}
-.aw-replay-box .mod-head > .aw-user-name img{width: 32px;height: 32px;}
-.aw-replay-box .mod-head p{height: auto;overflow: hidden;margin:3px 0 0;}
-.aw-replay-box .mod-head p label{margin-left: 10px;}
-.aw-replay-box .mod-head p input{margin-right: 5px;position: relative;top:-1px;top:1px\0;}
-.aw-replay-box .mod-body{position:relative;}
-.aw-article-replay-box{position:relative;margin:20px 20px 0 0;padding-left: 60px;}
-.aw-article-replay-box .mod-head{position:absolute;left:20px;}
-.aw-article-replay-box .mod-head img{width: 32px;height: 32px;}
-.aw-article-replay-box .mod-body{margin-bottom:10px;padding:0 !important;}
-.aw-article-replay-box .mod-footer{padding:0 !important;}
-.aw-article-replay-box .mod-footer input[type="text"]{width: 80px;}
+.aw-reply-box{margin:20px 0 0;padding:0 20px;}
+.aw-reply-box form > .mod-head{position: relative;height:auto;overflow:hidden;min-height:32px;margin-bottom:10px;padding-left: 40px;line-height: 28px;}
+.aw-reply-box .mod-head > .aw-user-name{position: absolute;left: 0;top:0;}
+.aw-reply-box .mod-head > .aw-user-name img{width: 32px;height: 32px;}
+.aw-reply-box .mod-head p{height: auto;overflow: hidden;margin:3px 0 0;}
+.aw-reply-box .mod-head p label{margin-left: 10px;}
+.aw-reply-box .mod-head p input{margin-right: 5px;position: relative;top:-1px;top:1px\0;}
+.aw-reply-box .mod-body{position:relative;}
+.aw-article-reply-box{position:relative;margin:20px 20px 0 0;padding-left: 60px;}
+.aw-article-reply-box .mod-head{position:absolute;left:20px;}
+.aw-article-reply-box .mod-head img{width: 32px;height: 32px;}
+.aw-article-reply-box .mod-body{margin-bottom:10px;padding:0 !important;}
+.aw-article-reply-box .mod-footer{padding:0 !important;}
+.aw-article-reply-box .mod-footer input[type="text"]{width: 80px;}
 
 /* 新编辑器 */
 .aw-editor-box .mod-head{border:1px solid #e6e6e6;border-radius: 4px;}
@@ -577,7 +577,7 @@ blockquote {margin: 0;padding: 0 10px;font-size: 15px;color: #777;border-left: 4
 .aw-article-content .aw-question-detail .mod-footer a img{width: 25px;height: 25px;margin-bottom:10px;border-radius: 15px;}
 .aw-article-content .aw-question-detail .mod-footer a.more-voters{display: inline-block;width: 25px;height: 25px;line-height:18px;border-radius: 15px;background-color: #f1f2f3;text-align: center;vertical-align: middle;color: #cdcecf;}
 .aw-article-content .aw-feed-list .mod-footer{margin:0;}
-.aw-article-content .aw-feed-list .aw-article-replay-box{margin:10px 0 0;padding:0;}
+.aw-article-content .aw-feed-list .aw-article-reply-box{margin:10px 0 0;padding:0;}
 
 /* 发起问题页面 */
 .aw-mod-publish{padding:0 20px 20px;}
@@ -670,12 +670,12 @@ blockquote {margin: 0;padding: 0 10px;font-size: 15px;color: #777;border-left: 4
 .aw-inbox-read .mod-footer li{position: relative;padding:15px 60px;}
 .aw-inbox-read .mod-footer li .aw-item{position:relative;padding:12px 15px;background: #fafafa;border:1px solid #e6e6e6;}
 .aw-inbox-read .mod-footer li .aw-item p:first-child{margin-bottom: 10px;}
-.aw-inbox-read .mod-footer li .i-private-replay-triangle{position: absolute;right: -8px;top: 10px;border-left:1px solid #fafafa;}
+.aw-inbox-read .mod-footer li .i-private-reply-triangle{position: absolute;right: -8px;top: 10px;border-left:1px solid #fafafa;}
 .aw-inbox-read .mod-footer li .aw-user-img{position:absolute;top:15px;right: 18px;}
 .aw-inbox-read .mod-footer li .aw-user-img img{width: 32px;height: 32px;}
 .aw-inbox-read .mod-footer li.active .aw-item{background: #f5fafe;border:1px solid #dcecf9;}
 .aw-inbox-read .mod-footer li.active .aw-user-img{left:18px;top:15px;}
-.aw-inbox-read .mod-footer li.active .i-private-replay-triangle{background: url('img/icon-angle-left.png') no-repeat;left:-8px;border-left:none;border-right: 1px solid #f5fafe;}
+.aw-inbox-read .mod-footer li.active .i-private-reply-triangle{background: url('img/icon-angle-left.png') no-repeat;left:-8px;border-left:none;border-right: 1px solid #f5fafe;}
 
 /* 通知 */
 .aw-notifications-list{padding:0 20px;}

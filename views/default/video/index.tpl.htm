@@ -210,7 +210,7 @@
 					<!-- end 影片评论 -->
 
 					<!-- 回应编辑器 -->
-					<div class="aw-mod aw-replay-box">
+					<div class="aw-mod aw-reply-box">
 						<a name="answer_form"></a>
 						<?php if ($this->video_info['lock']) { ?>
 						<p align="center"><?php _e('该影片目前已经被锁定, 无法添加新评论'); ?></p>
@@ -264,7 +264,7 @@
 
 				<div style="display:none">
 					<!-- 回复编辑器 -->
-					<div id="user_replay_box" class="aw-article-replay-box clearfix">
+					<div id="user_reply_box" class="aw-article-reply-box clearfix">
 						<?php if ($this->video_info['lock']) { ?>
 						<p align="center"><?php _e('该文章目前已经被锁定, 无法添加新评论'); ?></p>
 						<?php } else if (!$this->user_id) { ?>
@@ -273,7 +273,7 @@
 						<form action="publish/ajax/publish_video_comment/" onsubmit="return false;" method="post" id="answer_form_2">
 						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
 						<input type="hidden" name="video_id" value="<?php echo $this->video_info['id']; ?>" />
-						<input type="hidden" id="user_replay_box_at_uid" name="at_uid" value="" />
+						<input type="hidden" id="user_reply_box_at_uid" name="at_uid" value="" />
 						<div class="mod-body">
 							<textarea style="min-height:54px" rows="3" name="message" class="form-control autosize" placeholder="写下你的评论..."  /></textarea>
 						</div>
@@ -386,7 +386,7 @@
 
 <script type="text/javascript">
 function show_user_reply_box(reply_btn) {
-	var reply_box = reply_btn.parents('.aw-item').find('.aw-article-replay-box');
+	var reply_box = reply_btn.parents('.aw-item').find('.aw-article-reply-box');
 	if (reply_box.length) {
 		if (reply_box.css('display') == 'block') {
 			reply_box.fadeOut();
@@ -394,9 +394,9 @@ function show_user_reply_box(reply_btn) {
 			reply_box.fadeIn();
 		}
 	} else {
-		reply_box = $('#user_replay_box');
+		reply_box = $('#user_reply_box');
 		if (!reply_box.length) return;
-		var at_uid_input = $('#user_replay_box_at_uid');
+		var at_uid_input = $('#user_reply_box_at_uid');
 		if (at_uid_input.length) {
 			at_uid_input.val(reply_btn.attr('data-id'));
 		}
@@ -407,12 +407,12 @@ function show_user_reply_box(reply_btn) {
 
 function reply_callback(err) {
 	if (err) return;
-	$('.aw-mod.aw-replay-box textarea').css('height', '329px');
+	$('.aw-mod.aw-reply-box textarea').css('height', '329px');
 }
 
 function reply_callback_2(err) {
 	if (err) return;
-	$('#user_replay_box textarea').css('height', '34px');
+	$('#user_reply_box textarea').css('height', '34px');
 }
 
 $(document).ready(function () {

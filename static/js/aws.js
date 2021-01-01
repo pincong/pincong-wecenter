@@ -1127,7 +1127,7 @@ AWS.User =
 				}
 				selector.parents('.aw-invite-box').find('.invite-list').append(' <a class="aw-small-text invite-list-user" data-toggle="tooltip" data-placement="bottom" data-original-title="'+ selector.attr('data-value') +'"><img src='+ img +' /></a>');
 				selector.addClass('active').attr('onclick','AWS.User.disinvite_user($(this))').text('取消邀请');
-				selector.parents('.aw-question-detail').find('.aw-invite-replay .badge').text(parseInt(selector.parents('.aw-question-detail').find('.aw-invite-replay .badge').text()) + 1);
+				selector.parents('.aw-question-detail').find('.aw-invite-reply .badge').text(parseInt(selector.parents('.aw-question-detail').find('.aw-invite-reply .badge').text()) + 1);
 			}
 			else if (result.errno == -1)
 			{
@@ -1151,7 +1151,7 @@ AWS.User =
 					}
 				});
 				selector.removeClass('active').attr('onclick','AWS.User.invite_user($(this),$(this).parents(\'li\').find(\'img\').attr(\'src\'))').text('邀请');
-				selector.parents('.aw-question-detail').find('.aw-invite-replay .badge').text(parseInt(selector.parents('.aw-question-detail').find('.aw-invite-replay .badge').text()) - 1);
+				selector.parents('.aw-question-detail').find('.aw-invite-reply .badge').text(parseInt(selector.parents('.aw-question-detail').find('.aw-invite-reply .badge').text()) - 1);
 				if (selector.parents('.aw-invite-box').find('.invite-list').children().length == 0)
 				{
 					selector.parents('.aw-invite-box').find('.invite-list').hide();

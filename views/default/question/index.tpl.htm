@@ -178,7 +178,7 @@
 								<a data-id="<?php echo $this->question_info['id']; ?>" data-type="question" class="aw-add-comment aw-small-text <?php if ($this->discussion_count > 0) {?>active<?php }?>" data-comment-count="<?php echo $this->discussion_count; ?>"><i class="icon icon-comment"></i> <?php if ($this->discussion_count) { ?><?php _e('%s 条讨论', $this->discussion_count); ?><?php } else { ?><?php _e('添加讨论'); ?><?php } ?></a>
 
 								<?php if ($this->user_id) { ?>
-								<a class="aw-small-text aw-invite-replay"><i class="icon icon-invite"></i> <?php _e('邀请'); ?> <?php if (sizeof($this->invite_users) > 0){ ?><em class="badge badge-info"><?php echo count($this->invite_users); ?></em><?php } ?></a>
+								<a class="aw-small-text aw-invite-reply"><i class="icon icon-invite"></i> <?php _e('邀请'); ?> <?php if (sizeof($this->invite_users) > 0){ ?><em class="badge badge-info"><?php echo count($this->invite_users); ?></em><?php } ?></a>
 								<?php } ?>
 
 								<?php if ($this->question_info['uid'] == $this->user_id OR $this->user_info['permission']['edit_any_post'] OR $this->user_info['permission']['edit_specific_post']) { ?><a class="aw-small-text" href="publish/<?php echo $this->question_info['id']; ?>"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a><?php } ?>
@@ -285,7 +285,7 @@
 					<!-- end 问题回复 -->
 
 					<!-- 回应编辑器 -->
-					<div class="aw-mod aw-replay-box question">
+					<div class="aw-mod aw-reply-box question">
 						<a name="answer_form"></a>
 						<?php if ($this->question_info['lock']) { ?>
 						<p align="center"><?php _e('该问题目前已经被锁定, 无法添加新回复'); ?></p>
@@ -447,12 +447,12 @@ function reply_callback(err) {
 	if (err) return;
 <?php if (get_setting('answer_unique') == 'Y') { ?>
 	$('.question_answer_form').detach();
-	if ($('.aw-replay-box.question').length)
+	if ($('.aw-reply-box.question').length)
 	{
-		$('.aw-replay-box').append('<p align="center">一个问题只能回复一次</p>');
+		$('.aw-reply-box').append('<p align="center">一个问题只能回复一次</p>');
 	}
 <?php } ?>
-	$('.aw-mod.aw-replay-box textarea').css('height', '329px');
+	$('.aw-mod.aw-reply-box textarea').css('height', '329px');
 }
 
 $(document).ready(function () {
