@@ -4,9 +4,6 @@ var AW_TEMPLATE = {
 			'<div id="aw-loading-box"></div>'+
 		'</div>',
 
-	'loadingMiniBox':
-		'<div id="aw-loading-mini-box"></div>',
-
 	'editTopicBox' :
 		'<div class="aw-edit-topic-box form-inline">'+
 			'<input type="text" class="form-control" id="aw_edit_topic_title" autocomplete="off"  placeholder="' + _t('创建或搜索添加新话题') + '...">'+

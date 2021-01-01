@@ -27,7 +27,7 @@
 				</table>
 			</form>
 
-			<form action="<?php echo url_rewrite(); ?>/admin/ajax/save_user/" id="settings_form" enctype="multipart/form-data" method="post" onsubmit="return false">
+			<form action="<?php echo url_rewrite(); ?>/admin/ajax/save_user/" id="settings_form" method="post" onsubmit="return false">
 				<table class="table table-striped">
 					<input name="uid" type="hidden" value="<?php echo $this->user['uid']; ?>" />
 					<tr>
@@ -99,11 +99,6 @@
 									<p>
 										<img src="<?php echo UF::avatar($this->user, 'mid'); ?>" alt="" class="img-polaroid" />
 									</p>
-									<span class="mod-file">
-										<input type="button" class="btn btn-primary" value="点击更换头像">
-										<input type="file" name="user_avatar" exts="png|jpg|bmp|jpeg" class="mod-input-file">
-									</span><br>
-									<p class="filetext"></p>
 									<label><input name="delete_avatar" type="checkbox" value="1" /> <?php echo _t('删除头像'); ?></label>
 								</div>
 							</div>
