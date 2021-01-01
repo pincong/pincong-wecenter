@@ -42,11 +42,19 @@ class main extends AWS_CONTROLLER
 		TPL::output('home/invite');
 	}
 
+	// TODO: 删除
 	public function question_action()
 	{
 		$this->crumb(AWS_APP::lang()->_t('我关注的问题'));
 
 		TPL::output('home/question');
+	}
+
+	public function following_action()
+	{
+		$this->crumb(AWS_APP::lang()->_t('我关注的主题'));
+
+		TPL::output('home/following');
 	}
 
 	public function explore_action()

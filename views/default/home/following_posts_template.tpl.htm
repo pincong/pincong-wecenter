@@ -1,0 +1,19 @@
+<?php if ($this->list) { ?>
+<?php foreach ($this->list AS $key => $val) { ?>
+<!-- 问题 -->
+<div class="aw-item">
+	<div class="mod-head">
+		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
+		<p class="aw-small-text">
+			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>"><?php echo UF::name($val['user_info']); ?></a>
+			•
+			<?php echo date_friendly($val['add_time']); ?>
+		</p>
+		<h4>
+			<a href="<?php echo $val['post_type']; ?>/<?php echo $val['post_id']; ?>"><?php if (!$val['post_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['post_info']['title'], false); ?><?php } ?></a>
+		</h4>
+	</div>
+</div>
+<!-- end 问题 -->
+<?php } ?>
+<?php } ?>

@@ -340,6 +340,23 @@ CREATE TABLE IF NOT EXISTS `aws_question_discussion` (
 
 
 --
+CREATE TABLE IF NOT EXISTS `aws_question_invite` (
+  `question_invite_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
+  `question_id` int(11) DEFAULT '0' COMMENT '问题ID',
+  `sender_uid` int(11) DEFAULT '0',
+  `recipients_uid` int(11) DEFAULT '0',
+  `add_time` int(10) DEFAULT '0' COMMENT '添加时间',
+  PRIMARY KEY (`question_invite_id`),
+  KEY `question_id` (`question_id`),
+  KEY `sender_uid` (`sender_uid`),
+  KEY `recipients_uid` (`recipients_uid`),
+  KEY `add_time` (`add_time`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='邀请问答';
+
+--
+
+
+--
 CREATE TABLE IF NOT EXISTS `aws_question_focus` (
   `focus_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `question_id` int(11) DEFAULT '0' COMMENT '话题ID',
@@ -354,18 +371,18 @@ CREATE TABLE IF NOT EXISTS `aws_question_focus` (
 
 
 --
-CREATE TABLE IF NOT EXISTS `aws_question_invite` (
-  `question_invite_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
-  `question_id` int(11) DEFAULT '0' COMMENT '问题ID',
-  `sender_uid` int(11) DEFAULT '0',
-  `recipients_uid` int(11) DEFAULT '0',
-  `add_time` int(10) DEFAULT '0' COMMENT '添加时间',
-  PRIMARY KEY (`question_invite_id`),
-  KEY `question_id` (`question_id`),
-  KEY `sender_uid` (`sender_uid`),
-  KEY `recipients_uid` (`recipients_uid`),
+CREATE TABLE IF NOT EXISTS `aws_post_follow` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `post_type` varchar(16) DEFAULT NULL,
+  `post_id` int(11) DEFAULT '0',
+  `uid` int(11) DEFAULT '0',
+  `add_time` int(10) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `post_type` (`post_type`),
+  KEY `post_id` (`post_id`),
+  KEY `uid` (`uid`),
   KEY `add_time` (`add_time`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='邀请问答';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COMMENT='主题关注表';
 
 --
 
