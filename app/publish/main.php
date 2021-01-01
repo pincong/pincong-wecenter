@@ -44,11 +44,11 @@ class main extends AWS_CONTROLLER
 		{
 			H::redirect_msg(AWS_APP::lang()->_t('你的声望还不够'));
 		}
-		else if ($this->is_post() AND $_POST['question_detail'])
+		else if ($this->is_post() AND $_POST['message'])
 		{
 			$question_info = array(
 				'title' => htmlspecialchars($_POST['title']),
-				'question_detail' => htmlspecialchars($_POST['question_detail']),
+				'message' => htmlspecialchars($_POST['message']),
 				'category_id' => intval($_POST['category_id'])
 			);
 		}
@@ -56,7 +56,7 @@ class main extends AWS_CONTROLLER
 		{
 			$question_info = array(
 				'title' => htmlspecialchars($_POST['title']),
-				'question_detail' => ''
+				'message' => ''
 			);
 		}
 

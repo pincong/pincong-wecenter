@@ -79,7 +79,7 @@ class question_class extends AWS_MODEL
 
 		$this->update('question', array(
 			'title' => htmlspecialchars($title),
-			'question_detail' => htmlspecialchars($message)
+			'message' => htmlspecialchars($message)
 		), 'id = ' . intval($id));
 
 		$this->model('content')->log('question', $id, '编辑问题', $uid);
@@ -97,7 +97,7 @@ class question_class extends AWS_MODEL
 
 		$data = array(
 			'title' => null,
-			'question_detail' => null,
+			'message' => null,
 			'title_fulltext' => null,
 		);
 

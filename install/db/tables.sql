@@ -300,7 +300,7 @@ CREATE TABLE IF NOT EXISTS `aws_posts_index` (
 CREATE TABLE IF NOT EXISTS `aws_question` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(240) DEFAULT NULL COMMENT '问题标题',
-  `question_detail` text COMMENT '问题详细说明',
+  `message` text COMMENT '问题详细说明',
   `add_time` int(11) DEFAULT '0' COMMENT '添加时间',
   `update_time` int(11) DEFAULT '0',
   `uid` int(11) DEFAULT '0' COMMENT '发布用户UID',
