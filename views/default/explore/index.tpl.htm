@@ -39,9 +39,9 @@
 					<!-- 自定义tab切换 -->
 					<div class="aw-tabs">
 						<ul>
-							<li<?php if ($_GET['day'] == 30) { ?> class="active"<?php } ?>><a href="<?php echo url_rewrite(); ?>/sort_type-hot<?php if ($_GET['type']) { ?>__type-<?php echo htmlspecialchars($_GET['type']); ?><?php } ?><?php if ($this->category_info['id']) { ?>__category-<?php echo $this->category_info['id']; ?><?php } ?>__day-30" day="30"><?php _e('30天'); ?></a></li>
-							<li<?php if ($_GET['day'] == 7) { ?> class="active"<?php } ?>><a href="<?php echo url_rewrite(); ?>/sort_type-hot<?php if ($_GET['type']) { ?>__type-<?php echo htmlspecialchars($_GET['type']); ?><?php } ?><?php if ($this->category_info['id']) { ?>__category-<?php echo $this->category_info['id']; ?><?php } ?>__day-7" day="7"><?php _e('7天'); ?></a></li>
-							<li<?php if ($_GET['day'] == 1) { ?> class="active"<?php } ?>><a href="<?php echo url_rewrite(); ?>/sort_type-hot<?php if ($_GET['type']) { ?>__type-<?php echo htmlspecialchars($_GET['type']); ?><?php } ?><?php if ($this->category_info['id']) { ?>__category-<?php echo $this->category_info['id']; ?><?php } ?>__day-1" day="1"><?php _e('当天'); ?></a></li>
+							<li<?php if ($_GET['day'] == 30) { ?> class="active"<?php } ?>><a href="<?php echo url_rewrite(); ?>/sort_type-hot<?php if ($_GET['type']) { ?>__type-<?php echo htmlspecialchars($_GET['type']); ?><?php } ?><?php if ($this->category_info['id']) { ?>__category-<?php echo $this->category_info['id']; ?><?php } ?>__day-30"><?php _e('30天'); ?></a></li>
+							<li<?php if ($_GET['day'] == 7) { ?> class="active"<?php } ?>><a href="<?php echo url_rewrite(); ?>/sort_type-hot<?php if ($_GET['type']) { ?>__type-<?php echo htmlspecialchars($_GET['type']); ?><?php } ?><?php if ($this->category_info['id']) { ?>__category-<?php echo $this->category_info['id']; ?><?php } ?>__day-7"><?php _e('7天'); ?></a></li>
+							<li<?php if ($_GET['day'] == 1) { ?> class="active"<?php } ?>><a href="<?php echo url_rewrite(); ?>/sort_type-hot<?php if ($_GET['type']) { ?>__type-<?php echo htmlspecialchars($_GET['type']); ?><?php } ?><?php if ($this->category_info['id']) { ?>__category-<?php echo $this->category_info['id']; ?><?php } ?>__day-1"><?php _e('当天'); ?></a></li>
 						</ul>
 					</div>
 					<!-- end 自定义tab切换 -->
