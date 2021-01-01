@@ -42,7 +42,9 @@
 									<div class="aw-item">
 										<p>
 											<a href="javascript:;"><?php echo UF::name($user); ?></a>:
-											<?php if (isset($val['message'])) { ?>
+											<?php if (isset($val['plaintext'])) { ?>
+											<span style="white-space:pre-wrap;" class="pm_unencrypted_message" data-message="<?php echo safe_text($val['plaintext']); ?>"><i><?php _e('请稍候...'); ?></i></span>
+											<?php } else if (isset($val['message'])) { ?>
 											<span style="white-space:pre-wrap;" class="pm_message" data-message="<?php echo safe_text($val['message']); ?>"><i><?php _e('待解密'); ?></i></span>
 											<?php } else { ?>
 											<span><s><?php _e('已刪除'); ?></s></span>
@@ -219,6 +221,18 @@ $(document).ready(function () {
 		});
 	}
 
+	function decode_messages() {
+		var els = $('.pm_unencrypted_message');
+		if (!els.length) return;
+		els.each(function() {
+			var el = $(this);
+			var msg = el.data('message');
+			if (!msg) return;
+			el.text(PasswordUtil.base64_decode(msg));
+		});
+	}
+
+	decode_messages();
 	decrypt_messages();
 });
 </script>

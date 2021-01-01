@@ -299,49 +299,6 @@ CREATE TABLE `aws_feature` (
 
 
 --
-CREATE TABLE `aws_inbox` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uid` int(11) DEFAULT '0' COMMENT '发送者 ID',
-  `dialog_id` int(11) DEFAULT '0' COMMENT '对话id',
-  `message` text,
-  `add_time` int(11) DEFAULT '0',
-  `sender_remove` tinyint(1) DEFAULT '0',
-  `recipient_remove` tinyint(1) DEFAULT '0',
-  `receipt` int(11) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `dialog_id` (`dialog_id`),
-  KEY `uid` (`uid`),
-  KEY `add_time` (`add_time`),
-  KEY `sender_remove` (`sender_remove`),
-  KEY `recipient_remove` (`recipient_remove`),
-  KEY `sender_receipt` (`receipt`)
-) DEFAULT CHARSET=utf8mb4;
-
---
-
-
---
-CREATE TABLE `aws_inbox_dialog` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '对话ID',
-  `sender_uid` int(11) DEFAULT '0',
-  `sender_unread` int(11) DEFAULT '0',
-  `recipient_uid` int(11) DEFAULT '0',
-  `recipient_unread` int(11) DEFAULT '0',
-  `add_time` int(11) DEFAULT '0',
-  `update_time` int(11) DEFAULT '0',
-  `sender_count` int(11) DEFAULT NULL COMMENT '发送者显示对话条数',
-  `recipient_count` int(11) DEFAULT NULL COMMENT '接收者显示对话条数',
-  PRIMARY KEY (`id`),
-  KEY `recipient_uid` (`recipient_uid`),
-  KEY `sender_uid` (`sender_uid`),
-  KEY `update_time` (`update_time`),
-  KEY `add_time` (`add_time`)
-) DEFAULT CHARSET=utf8mb4;
-
---
-
-
---
 CREATE TABLE `aws_currency_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `uid` int(11) DEFAULT '0',
@@ -814,6 +771,7 @@ CREATE TABLE `aws_pm_message` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `conversation_id` int(11) DEFAULT '0',
   `sender_uid` int(11) DEFAULT '0',
+  `plaintext` text,
   `message_1` text,
   `message_2` text,
   `message_3` text,

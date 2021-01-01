@@ -153,4 +153,41 @@ class ajax extends AWS_CONTROLLER
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
 
+	public function notify_action()
+	{
+		if (!$this->user_info['permission']['is_moderator'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
+		}
+
+		$message = H::POST('message');
+		$uid = H::POST_I('uid');
+
+		if (!$uid OR !$message OR !is_string($message))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('内容错误')));
+		}
+
+		$length_limit = S::get_int('pm_length_limit');
+		if (!$this->model('password')->check_base64_string($message, $length_limit))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('内容最多 %s 字节', $length_limit)));
+		}
+
+		if (!$this->model('account')->get_user_info_by_uid($uid))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('接收私信的用户不存在')));
+		}
+
+		$conversation_id = $this->model('pm')->notify($uid, $message);
+		if (!$conversation_id)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('无法创建会话')));
+		}
+
+		H::ajax_json_output(AWS_APP::RSM(array(
+			'url' => url_rewrite('/pm/read/' . $conversation_id)
+		), 1, null));
+	}
+
 }

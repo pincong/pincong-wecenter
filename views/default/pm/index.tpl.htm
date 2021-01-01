@@ -34,7 +34,9 @@
 									</a>
 
 									<p class="content">
-									<?php if (isset($val['last_message']) AND isset($val['last_message']['message'])) { ?>
+									<?php if (isset($val['last_message']) AND isset($val['last_message']['plaintext'])) { ?>
+										<a class="pm_unencrypted_message" data-message="<?php echo safe_text($val['last_message']['plaintext']); ?>" href="<?php echo url_rewrite(); ?>/pm/read/<?php echo $val['id']; ?>"><i><?php _e('请稍候...'); ?></i></a>
+									<?php } else if (isset($val['last_message']) AND isset($val['last_message']['message'])) { ?>
 										<a class="pm_message" data-message="<?php echo safe_text($val['last_message']['message']); ?>" href="<?php echo url_rewrite(); ?>/pm/read/<?php echo $val['id']; ?>"><i><?php _e('待解密'); ?></i></a>
 									<?php } else { ?>
 										<a class="aw-small-text" href="<?php echo url_rewrite(); ?>/pm/read/<?php echo $val['id']; ?>"><s><?php _e('已刪除'); ?></s></a>
@@ -199,6 +201,18 @@ $(document).ready(function () {
 		});
 	}
 
+	function decode_messages() {
+		var els = $('.pm_unencrypted_message');
+		if (!els.length) return;
+		els.each(function() {
+			var el = $(this);
+			var msg = el.data('message');
+			if (!msg) return;
+			el.text(truncate(PasswordUtil.base64_decode(msg)));
+		});
+	}
+
+	decode_messages();
 	decrypt_messages();
 });
 </script>

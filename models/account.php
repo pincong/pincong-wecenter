@@ -255,7 +255,9 @@ class account_class extends AWS_MODEL
 	{
 		if (S::get('welcome_message_pm'))
 		{
-			$this->model('message')->send_message($uid, $uid, str_replace(array('{username}', '{time}', '{sitename}'), array($user_name, date('Y-m-d H:i:s', time()), S::get('site_name')), S::get('welcome_message_pm')));
+			$message = str_replace(array('{username}', '{time}', '{sitename}'), array($user_name, date('Y-m-d H:i:s', time()), S::get('site_name')), S::get('welcome_message_pm'));
+			$message = base64_encode($message);
+			$this->model('pm')->notify($uid, $message);
 		}
 	}
 

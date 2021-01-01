@@ -170,24 +170,22 @@ class pm_class extends AWS_MODEL
 
 	private function insert_message($conversation_id, $sender_uid, $uids, $messages, $ts)
 	{
-		$data = array(
+		$message_id = $this->insert('pm_message', array(
 			'conversation_id' => $conversation_id,
 			'sender_uid' => $sender_uid,
 			'add_time' => $ts,
+			'plaintext' => null,
 			'receipt_1' => $uids[0] == $sender_uid ? $ts : 0,
 			'receipt_2' => $uids[1] == $sender_uid ? $ts : 0,
 			'receipt_3' => $uids[2] == $sender_uid ? $ts : 0,
 			'receipt_4' => $uids[3] == $sender_uid ? $ts : 0,
 			'receipt_5' => $uids[4] == $sender_uid ? $ts : 0,
-		);
-
-		$data['message_1'] = $messages[$uids[0]] ?? null;
-		$data['message_2'] = $messages[$uids[1]] ?? null;
-		$data['message_3'] = $messages[$uids[2]] ?? null;
-		$data['message_4'] = $messages[$uids[3]] ?? null;
-		$data['message_5'] = $messages[$uids[4]] ?? null;
-
-		$message_id = $this->insert('pm_message', $data);
+			'message_1' => $messages[$uids[0]] ?? null,
+			'message_2' => $messages[$uids[1]] ?? null,
+			'message_3' => $messages[$uids[2]] ?? null,
+			'message_4' => $messages[$uids[3]] ?? null,
+			'message_5' => $messages[$uids[4]] ?? null,
+		));
 		if (!$message_id)
 		{
 			return false;
@@ -263,6 +261,72 @@ class pm_class extends AWS_MODEL
 		{
 			return false;
 		}
+		return $conversation_id;
+	}
+
+	public function notify($recipient_uid, $message)
+	{
+		$recipient_uid = intval($recipient_uid);
+		if ($recipient_uid <= 0)
+		{
+			return false;
+		}
+
+		$ts = fake_time();
+
+		if (!$conversation = $this->find_conversation_by_uids([$recipient_uid]))
+		{
+			$conversation_id = $this->insert('pm_conversation', array(
+				'last_message_id' => 0,
+				'add_time' => $ts,
+				'update_time' => $ts,
+				'member_count' => 1,
+				'uid_1' => $recipient_uid,
+				'uid_2' => 0,
+				'uid_3' => 0,
+				'uid_4' => 0,
+				'uid_5' => 0,
+			));
+		}
+		else
+		{
+			$conversation_id = $conversation['id'];
+		}
+
+		if (!$conversation_id)
+		{
+			return false;
+		}
+
+		$message_id = $this->insert('pm_message', array(
+			'conversation_id' => $conversation_id,
+			'sender_uid' => $recipient_uid,
+			'add_time' => $ts,
+			'plaintext' => $message,
+			'receipt_1' => 0,
+			'receipt_2' => 0,
+			'receipt_3' => 0,
+			'receipt_4' => 0,
+			'receipt_5' => 0,
+			'message_1' => null,
+			'message_2' => null,
+			'message_3' => null,
+			'message_4' => null,
+			'message_5' => null,
+		));
+		if (!$message_id)
+		{
+			return false;
+		}
+
+		$data = $this->count_conversation_unread_messages($conversation_id, [$recipient_uid, 0, 0, 0, 0]);
+		$data['last_message_id'] = $message_id;
+		$data['update_time'] = $ts;
+
+		$this->update('pm_conversation', $data, ['id', 'eq', $conversation_id]);
+
+		$this->update_inbox_unread($recipient_uid);
+
 		return $conversation_id;
 	}
 
@@ -349,7 +413,8 @@ class pm_class extends AWS_MODEL
 			return;
 		}
 
-		if ($uid_1 == $recipient_uid) $val['message'] = $val['message_1'];
+		if (!!$val['plaintext']) $val['message'] = null;
+		elseif ($uid_1 == $recipient_uid) $val['message'] = $val['message_1'];
 		elseif ($uid_2 == $recipient_uid) $val['message'] = $val['message_2'];
 		elseif ($uid_3 == $recipient_uid) $val['message'] = $val['message_3'];
 		elseif ($uid_4 == $recipient_uid) $val['message'] = $val['message_4'];
@@ -531,6 +596,7 @@ class pm_class extends AWS_MODEL
 		$uid = intval($uid);
 
 		$this->update('pm_message', array(
+			'plaintext' => null,
 			'message_1' => null,
 			'message_2' => null,
 			'message_3' => null,

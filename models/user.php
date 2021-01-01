@@ -235,12 +235,24 @@ class user_class extends AWS_MODEL
 
 	public function delete_private_messages($uid)
 	{
-		if ($dialogues = $this->fetch_all('inbox_dialog', [['recipient_uid', 'eq', $uid, 'i'], 'or', ['sender_uid', 'eq', $uid, 'i']]))
+		$uid = intval($uid);
+
+		if ($dialogues = $this->fetch_all('pm_conversation', [
+			['uid_1', 'eq', $uid],
+			'or',
+			['uid_2', 'eq', $uid],
+			'or',
+			['uid_3', 'eq', $uid],
+			'or',
+			['uid_4', 'eq', $uid],
+			'or',
+			['uid_5', 'eq', $uid],
+		]))
 		{
 			foreach ($dialogues AS $key => $val)
 			{
-				$this->delete('inbox', ['dialog_id', 'eq', $val['id'], 'i']);
-				$this->delete('inbox_dialog', ['id', 'eq', $val['id'], 'i']);
+				$this->delete('pm_message', ['conversation_id', 'eq', $val['id'], 'i']);
+				$this->delete('pm_conversation', ['id', 'eq', $val['id'], 'i']);
 			}
 		}
 	}
