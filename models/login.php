@@ -129,20 +129,4 @@ class login_class extends AWS_MODEL
 		AWS_APP::auth()->wipe_token();
 	}
 
-	public function delete_expired_data()
-	{
-		$days = S::get_int('expiration_failed_login_attempts');
-		if (!$days)
-		{
-			return;
-		}
-		$seconds = $days * 24 * 3600;
-		$time_before = real_time() - $seconds;
-		if ($time_before < 0)
-		{
-			$time_before = 0;
-		}
-		$this->delete('failed_login', ['time', 'lt', $time_before]);
-	}
-
 }

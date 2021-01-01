@@ -778,104 +778,6 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('删除过期登录失败记录'); ?>:</span>
-							<div class="col-sm-5 col-xs-8">
-								<input name="expiration_failed_login_attempts" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['expiration_failed_login_attempts']); ?>"/>
-
-								<div class="help-block"><?php _e('单位'); ?>: 天, <?php _e('填写 0 则不启用'); ?></div>
-							</div>
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('删除过期私信'); ?>:</span>
-							<div class="col-sm-5 col-xs-8">
-								<input name="expiration_private_messages" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['expiration_private_messages']); ?>"/>
-
-								<div class="help-block"><?php _e('单位'); ?>: 天, <?php _e('填写 0 则不启用'); ?></div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('删除过期通知'); ?>:</span>
-							<div class="col-sm-5 col-xs-8">
-								<input name="expiration_notifications" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['expiration_notifications']); ?>"/>
-
-								<div class="help-block"><?php _e('单位'); ?>: 天, <?php _e('填写 0 则不启用'); ?></div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('删除过期代币日志'); ?>:</span>
-							<div class="col-sm-5 col-xs-8">
-								<input name="expiration_currency_logs" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['expiration_currency_logs']); ?>"/>
-
-								<div class="help-block"><?php _e('单位'); ?>: 天, <?php _e('填写 0 则不启用'); ?></div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('删除过期编辑记录'); ?>:</span>
-							<div class="col-sm-5 col-xs-8">
-								<input name="expiration_content_logs" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['expiration_content_logs']); ?>"/>
-
-								<div class="help-block"><?php _e('单位'); ?>: 天, <?php _e('填写 0 则不启用'); ?></div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('删除过期用户动态'); ?>:</span>
-							<div class="col-sm-5 col-xs-8">
-								<input name="expiration_user_actions" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['expiration_user_actions']); ?>"/>
-
-								<div class="help-block"><?php _e('单位'); ?>: 天, <?php _e('填写 0 则不启用'); ?></div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('删除过期点赞记录'); ?>:</span>
-							<div class="col-sm-5 col-xs-8">
-								<input name="expiration_votes" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['expiration_votes']); ?>"/>
-
-								<div class="help-block"><?php _e('单位'); ?>: 天, <?php _e('填写 0 则不启用'); ?></div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('删除过期问答邀请'); ?>:</span>
-							<div class="col-sm-5 col-xs-8">
-								<input name="expiration_invites" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['expiration_invites']); ?>"/>
-
-								<div class="help-block"><?php _e('单位'); ?>: 天, <?php _e('填写 0 则不启用'); ?></div>
-							</div>
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td>
-						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('模糊时间'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
@@ -1920,7 +1822,7 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('私信字数限制'); ?>:</span>
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('私信字节数限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="pm_length_limit" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['pm_length_limit']); ?>"/>
 

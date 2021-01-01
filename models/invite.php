@@ -136,20 +136,4 @@ class invite_class extends AWS_MODEL
 		}
 	}
 
-	public function delete_expired_invites()
-	{
-		$days = S::get_int('expiration_invites');
-		if (!$days)
-		{
-			return;
-		}
-		$seconds = $days * 24 * 3600;
-		$time_before = real_time() - $seconds;
-		if ($time_before < 0)
-		{
-			$time_before = 0;
-		}
-		$this->delete('question_invite', ['add_time', 'lt', $time_before]);
-	}
-
 }

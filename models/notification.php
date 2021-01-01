@@ -185,22 +185,6 @@ class notification_class extends AWS_MODEL
 					break;
 			}
 		}
-
 	}
 
-	public function delete_expired_data()
-	{
-		$days = S::get_int('expiration_notifications');
-		if (!$days)
-		{
-			return;
-		}
-		$seconds = $days * 24 * 3600;
-		$time_before = real_time() - $seconds;
-		if ($time_before < 0)
-		{
-			$time_before = 0;
-		}
-		$this->delete('notification', ['add_time', 'lt', $time_before]);
-	}
 }

@@ -437,22 +437,6 @@ class content_class extends AWS_MODEL
 		return $log_list;
 	}
 
-	public function delete_expired_logs()
-	{
-		$days = S::get_int('expiration_content_logs');
-		if (!$days)
-		{
-			return;
-		}
-		$seconds = $days * 24 * 3600;
-		$time_before = real_time() - $seconds;
-		if ($time_before < 0)
-		{
-			$time_before = 0;
-		}
-		$this->delete('content_log', ['time', 'lt', $time_before]);
-	}
-
 	public function update_view_count($item_type, $item_id)
 	{
 		if (!$this->check_thread_type($item_type))

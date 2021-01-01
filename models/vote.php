@@ -379,21 +379,6 @@ class vote_class extends AWS_MODEL
 		return $vote_values;
 	}
 
-	public function delete_expired_votes()
-	{
-		$days = S::get_int('expiration_votes');
-		if (!$days)
-		{
-			return;
-		}
-		$seconds = $days * 24 * 3600;
-		$time_before = real_time() - $seconds;
-		if ($time_before < 0)
-		{
-			$time_before = 0;
-		}
-		$this->delete('vote', ['add_time', 'lt', $time_before]);
-	}
 
 	/**
 	 *

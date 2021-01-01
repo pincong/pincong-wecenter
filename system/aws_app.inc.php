@@ -201,6 +201,12 @@ class AWS_APP
 				return false;
 			}
 
+		// error was suppressed with the @-operator
+		if (0 === error_reporting())
+		{
+			return false;
+		}
+
 			if (!self::$debug_mode)
 			{
 				return;

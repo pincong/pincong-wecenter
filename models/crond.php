@@ -111,14 +111,7 @@ class crond_class extends AWS_MODEL
     // 每小时执行
     public function hour()
     {
-		$this->model('pm')->delete_expired_messages();
-        $this->model('currency')->delete_expired_logs();
-        $this->model('content')->delete_expired_logs();
-        $this->model('activity')->delete_expired_data();
-        $this->model('notification')->delete_expired_data();
-		$this->model('vote')->delete_expired_votes();
-        $this->model('login')->delete_expired_data();
-        $this->model('invite')->delete_expired_invites();
+
     }
 
     // 每日时执行

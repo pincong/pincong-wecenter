@@ -666,20 +666,4 @@ class pm_class extends AWS_MODEL
 		), ['uid', 'eq', $uid]);
 	}
 
-	public function delete_expired_messages()
-	{
-		$days = S::get_int('expiration_private_messages');
-		if (!$days)
-		{
-			return;
-		}
-		$seconds = $days * 24 * 3600;
-		$time_before = real_time() - $seconds;
-		if ($time_before < 0)
-		{
-			$time_before = 0;
-		}
-		$this->delete('pm_message', ['add_time', 'lt', $time_before]);
-	}
-
 }

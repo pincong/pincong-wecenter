@@ -606,7 +606,7 @@
 						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('发言间隔限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
-								<input type="text" name="interval_post" class="form-control" value="<?php echo intval($this->group_pms['interval_post']); ?>" />
+								<input type="text" name="interval_post" class="form-control" value="<?php echo $this->group_pms['interval_post']; ?>" />
 
 								<span class="help-block"><?php _e('灌水预防机制 (单位: 秒, 设置 0 则采用默认操作间隔限制)'); ?></span>
 							</div>
@@ -618,7 +618,7 @@
 						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('编辑间隔限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
-								<input type="text" name="interval_modify" class="form-control" value="<?php echo intval($this->group_pms['interval_modify']); ?>" />
+								<input type="text" name="interval_modify" class="form-control" value="<?php echo $this->group_pms['interval_modify']; ?>" />
 
 								<span class="help-block"><?php _e('(单位: 秒, 同上)'); ?></span>
 							</div>
@@ -630,7 +630,7 @@
 						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('点赞间隔限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
-								<input type="text" name="interval_vote" class="form-control" value="<?php echo intval($this->group_pms['interval_vote']); ?>" />
+								<input type="text" name="interval_vote" class="form-control" value="<?php echo $this->group_pms['interval_vote']; ?>" />
 
 								<span class="help-block"><?php _e('(单位: 秒, 同上)'); ?></span>
 							</div>
@@ -642,7 +642,7 @@
 						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('关注间隔限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
-								<input type="text" name="interval_follow" class="form-control" value="<?php echo intval($this->group_pms['interval_follow']); ?>" />
+								<input type="text" name="interval_follow" class="form-control" value="<?php echo $this->group_pms['interval_follow']; ?>" />
 
 								<span class="help-block"><?php _e('(单位: 秒, 同上)'); ?></span>
 							</div>
@@ -654,7 +654,7 @@
 						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('管理间隔限制'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
-								<input type="text" name="interval_manage" class="form-control" value="<?php echo intval($this->group_pms['interval_manage']); ?>" />
+								<input type="text" name="interval_manage" class="form-control" value="<?php echo $this->group_pms['interval_manage']; ?>" />
 
 								<span class="help-block"><?php _e('(单位: 秒, 同上)'); ?></span>
 							</div>
@@ -667,7 +667,7 @@
 						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('每日发帖上限'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
-								<input type="text" name="thread_limit_per_day" class="form-control" value="<?php echo intval($this->group_pms['thread_limit_per_day']); ?>" />
+								<input type="text" name="thread_limit_per_day" class="form-control" value="<?php echo $this->group_pms['thread_limit_per_day']; ?>" />
 
 								<span class="help-block"><?php _e('设置 0 为不限制'); ?></span>
 							</div>
@@ -679,7 +679,7 @@
 						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('每日回帖上限'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
-								<input type="text" name="reply_limit_per_day" class="form-control" value="<?php echo intval($this->group_pms['reply_limit_per_day']); ?>" />
+								<input type="text" name="reply_limit_per_day" class="form-control" value="<?php echo $this->group_pms['reply_limit_per_day']; ?>" />
 
 								<span class="help-block"><?php _e('设置 0 为不限制'); ?></span>
 							</div>
@@ -691,7 +691,7 @@
 						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('每日楼中楼讨论上限'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
-								<input type="text" name="discussion_limit_per_day" class="form-control" value="<?php echo intval($this->group_pms['discussion_limit_per_day']); ?>" />
+								<input type="text" name="discussion_limit_per_day" class="form-control" value="<?php echo $this->group_pms['discussion_limit_per_day']; ?>" />
 
 								<span class="help-block"><?php _e('设置 0 为不限制'); ?></span>
 							</div>
@@ -703,7 +703,7 @@
 						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('每日点赞上限'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
-								<input type="text" name="user_vote_limit_per_day" class="form-control" value="<?php echo intval($this->group_pms['user_vote_limit_per_day']); ?>" />
+								<input type="text" name="user_vote_limit_per_day" class="form-control" value="<?php echo $this->group_pms['user_vote_limit_per_day']; ?>" />
 
 								<span class="help-block"><?php _e('设置 0 为不限制'); ?></span>
 							</div>
@@ -716,7 +716,7 @@
 						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('内容声望低于多少则自动标记'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
-								<input type="text" name="flagging_reputation_lt" class="form-control" value="<?php echo intval($this->group_pms['flagging_reputation_lt']); ?>" />
+								<input type="text" name="flagging_reputation_lt" class="form-control" value="<?php echo $this->group_pms['flagging_reputation_lt']; ?>" />
 
 								<span class="help-block"><?php _e('留空为不启用, 在下方填写相应用户组 ID'); ?></span>
 							</div>
@@ -728,7 +728,7 @@
 						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('低内容声望自动标记为用户组 ID'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
-								<input type="text" name="flagging_reputation_lt_group_id" class="form-control" value="<?php echo intval($this->group_pms['flagging_reputation_lt_group_id']); ?>" />
+								<input type="text" name="flagging_reputation_lt_group_id" class="form-control" value="<?php echo $this->group_pms['flagging_reputation_lt_group_id']; ?>" />
 
 								<span class="help-block"><?php _e('留空为不启用, 设置 0 为取消标记'); ?></span>
 							</div>
@@ -741,7 +741,7 @@
 						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('内容声望高于多少则自动标记'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
-								<input type="text" name="flagging_reputation_gt" class="form-control" value="<?php echo intval($this->group_pms['flagging_reputation_gt']); ?>" />
+								<input type="text" name="flagging_reputation_gt" class="form-control" value="<?php echo $this->group_pms['flagging_reputation_gt']; ?>" />
 
 								<span class="help-block"><?php _e('留空为不启用, 在下方填写相应用户组 ID'); ?></span>
 							</div>
@@ -753,7 +753,7 @@
 						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('高内容声望自动标记为用户组 ID'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
-								<input type="text" name="flagging_reputation_gt_group_id" class="form-control" value="<?php echo intval($this->group_pms['flagging_reputation_gt_group_id']); ?>" />
+								<input type="text" name="flagging_reputation_gt_group_id" class="form-control" value="<?php echo $this->group_pms['flagging_reputation_gt_group_id']; ?>" />
 
 								<span class="help-block"><?php _e('留空为不启用, 设置 0 为取消标记'); ?></span>
 							</div>

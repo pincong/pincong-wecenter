@@ -215,20 +215,4 @@ class currency_class extends AWS_MODEL
         return true;
     }
 
-	public function delete_expired_logs()
-	{
-		$days = S::get_int('expiration_currency_logs');
-		if (!$days)
-		{
-			return;
-		}
-		$seconds = $days * 24 * 3600;
-		$time_before = real_time() - $seconds;
-		if ($time_before < 0)
-		{
-			$time_before = 0;
-		}
-		$this->delete('currency_log', ['time', 'lt', $time_before]);
-	}
-
 }
