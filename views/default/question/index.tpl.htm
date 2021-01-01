@@ -472,29 +472,20 @@ $(document).ready(function () {
 	// 初始化编辑器
 	AWS.create_editor(document.getElementById('wmd-input'), true);
 
-	<?php if ($_GET['comment_unfold'] == 'question') { ?>
-	// 展开问题讨论
-	if ($('.aw-question-detail').find('.aw-add-comment').data('comment-count') > 0)
-	{
-		$('.aw-question-detail').find('.aw-add-comment').click();
-	}
-	<?php } ?>
-
-	<?php if ($_GET['answer_ids']) { ?>
-	//回复高亮
-	var answer_ids = '<?php echo addslashes($_GET['answer_ids']); ?>'.split(',');
-	$.each(answer_ids, function (i, answer_id) {
-		if (answer_id && $('#answer_list_' + answer_id).attr('id'))
+<?php if ($_GET['notification_id']) { ?>
+	<?php if ($_GET['item_id']) { ?>
+		if ($('.aw-replies').find('.aw-add-comment').data('comment-count') > 0)
 		{
-			if ($('#answer_list_' + answer_id).find('.aw-add-comment').data('comment-count') > 0)
-			{
-				$('#answer_list_' + answer_id).find('.aw-add-comment').click();
-			}
-
-			AWS.hightlight($('#answer_list_' + answer_id), 'active');
+			$('.aw-replies').find('.aw-add-comment').click();
 		}
-	});
+	<?php } else { ?>
+		if ($('.aw-question-detail').find('.aw-add-comment').data('comment-count') > 0)
+		{
+			$('.aw-question-detail').find('.aw-add-comment').click();
+		}
 	<?php } ?>
+<?php } ?>
+
 });
 </script>
 
