@@ -571,7 +571,7 @@ class question_class extends AWS_MODEL
 
 			foreach ($list as $key => $val)
 			{
-				$list[$key]['question_info'] = $question_infos[$val['id']];
+				$list[$key]['question_info'] = $question_infos[$val['question_id']];
 			}
 
 			return $list;
