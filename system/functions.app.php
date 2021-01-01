@@ -296,14 +296,18 @@ function get_key_value_pairs($varname, $separator = ',', $allow_empty_separator 
 	foreach($rows as $row)
 	{
 		$row = trim($row);
-		if (!$row)
+		if (!$row AND $row !== '0')
 		{
 			continue;
 		}
 
-		if (!isset($separator) AND $allow_empty_separator)
+		if (!$separator AND $separator !== '0')
 		{
-			$result[$row] = null;
+			if ($allow_empty_separator)
+			{
+				$result[$row] = null;
+			}
+			continue;
 		}
 
 		$pos = strpos($row, $separator);
