@@ -3,17 +3,15 @@
 
 <div class="aw-mod">
 	<div class="mod-body">
-		<div class="aw-mod aw-user-setting-bind">
+		<div class="aw-mod">
 			<div class="mod-head">
-				<h3><?php _e('修改密码'); ?></h3>
+				<h3><?php _e('安全设置'); ?></h3>
 			</div>
-			<form class="form-horizontal" action="<?php echo url_rewrite(); ?>/account/change_password/" method="post">
-				<div class="mod-body">
-					<div class="form-group">
-						<button type="submit" class="btn btn-success"><?php _e('下一步'); ?></button>
-					</div>
+			<div class="mod-body">
+				<div class="form-group">
+					<a href="<?php echo url_rewrite(); ?>/account/change_password/" class="btn btn-mini btn-success"><?php _e('修改密码'); ?></a>
 				</div>
-			</form>
+			</div>
 		</div>
 	</div>
 	<div class="mod-footer clearfix">

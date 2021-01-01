@@ -3,16 +3,13 @@
 <div class="aw-register-box">
 	<div class="mod-head">
 		<a href="<?php echo base_url(); ?>/"><img src="<?php echo get_setting('login_logo_url'); ?>" alt=""></a>
-		<h1><?php _e('登录'); ?></h1>
+		<img src="<?php echo UF::avatar($this->user, 'max'); ?>" alt="" style="min-height:100px">
 	</div>
 	<div class="mod-body">
 		<form id="login_form" onsubmit="return false" method="post">
 			<ul>
 				<li class="alert alert-danger collapse error_message text-left">
 					<i class="icon icon-delete"></i> <em></em>
-				</li>
-				<li>
-					<img src="<?php echo UF::avatar($this->user, 'max'); ?>" alt="">
 				</li>
 				<li>
 					<input type="text" class="form-control" name="username" autocomplete="username" value="<?php echo $this->user['user_name']; ?>" readonly style="cursor:default">

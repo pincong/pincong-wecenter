@@ -13,7 +13,7 @@
 				<dl>
 					<dt><?php _e('用户名'); ?>:</dt>
 					<dd>
-						<input type="text" name="user_name" value="<?php echo UF::name($this->user_info); ?>" class="form-control" />
+						<input class="form-control" type="text" name="user_name" value="<?php echo UF::name($this->user_info); ?>" />
 						<p class="aw-small-text"><?php _e('修改用户名需要支付 %s0 %s1', array(-intval(get_setting('currency_system_config_change_username')), get_setting('currency_unit'))); ?></p>
 					</dd>
 				</dl>
@@ -35,14 +35,16 @@
 					</dd>
 				</dl>
 				<dl>
-					<dt><label><?php _e('介绍'); ?>:</label></dt>
-					<dd class="introduce"><input class="form-control" name="signature" maxlength="128" type="text" value="<?php echo FORMAT::text($this->user_info['signature']); ?>" /></dd>
+					<dt><?php _e('介绍'); ?>:</dt>
+					<dd>
+						<input class="form-control" name="signature" type="text" value="<?php echo FORMAT::text($this->user_info['signature']); ?>" />
+					</dd>
 				</dl>
 
 				<dl>
 					<dt><label><?php _e('时区'); ?>:</label></dt>
 					<dd>
-						<select class="time" name="default_timezone">
+						<select name="default_timezone">
 							<option value=''><?php _e('使用系统默认时区'); ?></option>
 							<option value='Etc/GMT+12'<?php if ($this->user_info['default_timezone'] == 'Etc/GMT+12') { ?> selected="selected"<?php } ?>><?php _e('(GMT - 12:00 小时) 安尼威托克岛，卡瓦加兰'); ?></option>
 							<option value='Etc/GMT+11'<?php if ($this->user_info['default_timezone'] == 'Etc/GMT+11') { ?> selected="selected"<?php } ?>><?php _e('(GMT - 11:00 小时) 中途岛，萨摩亚'); ?></option>
@@ -84,8 +86,10 @@
 						<dt class="pull-left"><img class="aw-border-radius-5" src="<?php echo UF::avatar($this->user_info, 'max'); ?>" alt="" id="avatar_src" /></dt>
 						<dd class="pull-left">
 							<h5><?php _e('头像设置'); ?></h5>
-							<p><?php _e('支持 jpg、gif、png 等格式的图片'); ?></p>
-							<a class="btn btn-mini btn-success" id="avatar_uploader" href="javascript:;"><?php _e('上传头像'); ?></a> <span id="avatar_uploading_status" class="collapse"><i class="aw-loading"></i> <?php _e('文件上传中...'); ?></span>
+							<p><?php _e('最大 %s KB', intval(get_setting('upload_size_limit'))); ?></p>
+							<a class="btn btn-mini btn-success" id="avatar_uploader" href="javascript:;"><?php _e('上传头像'); ?></a>
+							<br />
+							<span id="avatar_uploading_status" class="collapse"><i class="aw-loading"></i> <?php _e('文件上传中...'); ?></span>
 						</dd>
 					</dl>
 				</div>
