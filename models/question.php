@@ -45,7 +45,7 @@ class question_class extends AWS_MODEL
 			return $list;
 		}
 
-		$list = $this->fetch_page('answer', 'uid = ' . intval($uid), 'answer_id DESC', $page, $per_page);
+		$list = $this->fetch_page('answer', 'uid = ' . intval($uid), 'id DESC', $page, $per_page);
 		foreach ($list AS $key => $val)
 		{
 			$parent_ids[] = $val['question_id'];
@@ -129,7 +129,7 @@ class question_class extends AWS_MODEL
 
 		$this->update('answer', array(
 			'answer_content' => htmlspecialchars($message)
-		), 'answer_id = ' . intval($answer_id));
+		), 'id = ' . intval($answer_id));
 
 		$this->model('content')->log('question', $answer_info['question_id'], '编辑回复', $uid, 'answer', $answer_id);
 
@@ -146,7 +146,7 @@ class question_class extends AWS_MODEL
 
 		$this->update('answer', array(
 			'answer_content' => null
-		), 'answer_id = ' . intval($answer_id));
+		), 'id = ' . intval($answer_id));
 
 		$this->model('content')->log('question', $answer_info['question_id'], '删除回复', $uid, 'answer', $answer_id);
 
@@ -664,7 +664,7 @@ class question_class extends AWS_MODEL
 			'message' => null
 		), "id = " . $comment['id']);
 
-		if ($answer = $this->fetch_row('answer', 'answer_id = ' . intval($comment['answer_id'])))
+		if ($answer = $this->fetch_row('answer', 'id = ' . intval($comment['answer_id'])))
 		{
 			$this->model('content')->log('question', $answer['question_id'], '删除回答讨论', $uid, 'answer_discussion', $comment['id']);
 		}

@@ -60,7 +60,7 @@
 
 <!-- 回答 -->
 <?php if ($val['fold']) continue; ?>
-<div class="aw-item" id="answer_list_<?php echo $val['answer_id']; ?>">
+<div class="aw-item" id="answer_list_<?php echo $val['id']; ?>">
 	<div class="mod-head">
 		<a data-id="<?php echo $val['user_info']['uid']; ?>" class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 		<p class="aw-small-text">
@@ -74,7 +74,7 @@
 	<div class="mod-body clearfix">
 	<!-- 回答 -->
 		<div class="markitup-box">
-			<?php echo CF::reply($val['user_info'], 'answer_' . $val['answer_id'], $val['answer_content']); ?>
+			<?php echo CF::reply($val['user_info'], 'answer_' . $val['id'], $val['answer_content']); ?>
 		</div>
 	<!-- end 回答 -->
 	</div>
@@ -91,16 +91,16 @@
 			<!-- end 投票栏 -->
 
 			<span class="operate">
-				<a class="aw-add-comment" data-id="<?php echo $val['answer_id']; ?>" data-type="answer" data-comment-count="<?php echo $val['comment_count']; ?>" href="javascript:;"><i class="icon icon-comment"></i> <?php if ($val['comment_count']) { ?><?php echo $val['comment_count']; ?><?php } else { ?>0<?php } ?></a>
+				<a class="aw-add-comment" data-id="<?php echo $val['id']; ?>" data-type="answer" data-comment-count="<?php echo $val['comment_count']; ?>" href="javascript:;"><i class="icon icon-comment"></i> <?php if ($val['comment_count']) { ?><?php echo $val['comment_count']; ?><?php } else { ?>0<?php } ?></a>
 			</span>
 
 			<!-- 可显示/隐藏的操作box -->
 			<div class="more-operate">
 
-				<a href="vote/log/item_type-answer__item_id-<?php echo $val['answer_id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
+				<a href="vote/log/item_type-answer__item_id-<?php echo $val['id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
 
 				<?php if ($this->user_id) { ?>
-					<a href="javascript:;" onclick="AWS.User.add_favorite('answer', '<?php echo $val['answer_id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>
+					<a href="javascript:;" onclick="AWS.User.add_favorite('answer', '<?php echo $val['id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>
 				<?php } ?>
 
 			</div>

@@ -136,13 +136,13 @@ class tools extends AWS_ADMIN_CONTROLLER
 			case 'answer':
 				$next_table = 'question_discussion';
 
-				if ($list = AWS_APP::model()->fetch_page($table, null, 'answer_id ASC', $_GET['page'], $_GET['per_page']))
+				if ($list = AWS_APP::model()->fetch_page($table, null, 'id ASC', $_GET['page'], $_GET['per_page']))
 				{
 					foreach ($list as $key => $val)
 					{
 						AWS_APP::model()->update($table, array(
 							'add_time' => fake_time($val['add_time'])
-						), 'answer_id = ' . intval($val['answer_id']));
+						), 'id = ' . intval($val['id']));
 					}
 
 					H::redirect_msg(AWS_APP::lang()->_t('正在处理 '.$table.' 表') . ', ' . AWS_APP::lang()->_t('批次: %s', $_GET['page']), '/admin/tools/blur_time/page-' . ($_GET['page'] + 1) . '__table-'.$table.'__per_page-' . $_GET['per_page']);

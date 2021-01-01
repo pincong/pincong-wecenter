@@ -7,7 +7,7 @@
 
 --
 CREATE TABLE IF NOT EXISTS `aws_answer` (
-  `answer_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '回答id',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '回答id',
   `question_id` int(11) DEFAULT '0' COMMENT '问题id',
   `answer_content` text COMMENT '回答内容',
   `add_time` int(10) DEFAULT '0' COMMENT '添加时间',
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `aws_answer` (
   `uid` int(11) DEFAULT '0' COMMENT '回答问题用户ID',
   `comment_count` int(11) DEFAULT '0' COMMENT '评论总数',
   `fold` tinyint(1) DEFAULT '0',
-  PRIMARY KEY (`answer_id`),
+  PRIMARY KEY (`id`),
   KEY `question_id` (`question_id`),
   KEY `agree_count` (`agree_count`),
   KEY `reputation` (`reputation`),

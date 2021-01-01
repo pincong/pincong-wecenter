@@ -1,6 +1,6 @@
-<div class="aw-item" id="answer_list_<?php echo $this->answer_info['answer_id']; ?>">
+<div class="aw-item" id="answer_list_<?php echo $this->answer_info['id']; ?>">
 	<div class="mod-head">
-		<a class="anchor" name="answer_<?php echo $this->answer_info['answer_id']; ?>"></a>
+		<a class="anchor" name="answer_<?php echo $this->answer_info['id']; ?>"></a>
 
 		<div class="title">
 			<!-- 用户头像 -->
@@ -16,7 +16,7 @@
 	<div class="mod-body clearfix">
 		<!-- 内容 -->
 		<div class="markitup-box">
-			<?php echo CF::reply($this->answer_info['user_info'], 'answer_' . $this->answer_info['answer_id'], $this->answer_info['answer_content']); ?>
+			<?php echo CF::reply($this->answer_info['user_info'], 'answer_' . $this->answer_info['id'], $this->answer_info['answer_content']); ?>
 		</div>
 		<!-- end 内容 -->
 	</div>
@@ -32,19 +32,19 @@
 			</span>
 			<!-- end 投票栏 -->
 			<span class="operate">
-				<a class="aw-add-comment" data-id="<?php echo $this->answer_info['answer_id']; ?>" data-type="answer" href="javascript:;"><i class="icon icon-comment"></i> <?php if ($this->answer_info['comment_count']) { ?><?php echo $this->answer_info['comment_count']; ?><?php } else { ?>0<?php } ?></a>
+				<a class="aw-add-comment" data-id="<?php echo $this->answer_info['id']; ?>" data-type="answer" href="javascript:;"><i class="icon icon-comment"></i> <?php if ($this->answer_info['comment_count']) { ?><?php echo $this->answer_info['comment_count']; ?><?php } else { ?>0<?php } ?></a>
 			</span>
 
 			<!-- 可显示/隐藏的操作box -->
 			<div class="more-operate">
 				<?php if ($this->user_id) { ?>
 					<?php if ($this->answer_info['uid'] == $this->user_id) { // 高级编辑器 ?>
-						<a class="aw-small-text" href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/publish/edit/answer/id-<?php echo $this->answer_info['answer_id']; ?>', AWS.init_answer_editor);"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
+						<a class="aw-small-text" href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/publish/edit/answer/id-<?php echo $this->answer_info['id']; ?>', AWS.init_answer_editor);"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
 					<?php } elseif ($this->user_info['permission']['edit_any_post']) { // 纯文本编辑器 ?>
-						<a class="aw-small-text" href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/publish/edit/answer/id-<?php echo $this->answer_info['answer_id']; ?>');"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
+						<a class="aw-small-text" href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/publish/edit/answer/id-<?php echo $this->answer_info['id']; ?>');"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
 					<?php } ?>
 
-					<a href="javascript:;" onclick="AWS.User.add_favorite('answer', '<?php echo $this->answer_info['answer_id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>
+					<a href="javascript:;" onclick="AWS.User.add_favorite('answer', '<?php echo $this->answer_info['id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php _e('收藏'); ?></a>
 				<?php } ?>
 
 			</div>

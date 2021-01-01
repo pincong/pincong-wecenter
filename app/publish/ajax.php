@@ -973,14 +973,14 @@ class ajax extends AWS_CONTROLLER
 		if ($_POST['do_delete'])
 		{
 			$this->model('question')->clear_answer(
-				$answer_info['answer_id'],
+				$answer_info['id'],
 				$this->user_id
 			);
 		}
 		else
 		{
 			$this->model('question')->modify_answer(
-				$answer_info['answer_id'],
+				$answer_info['id'],
 				$this->user_id,
 				$_POST['message']
 			);

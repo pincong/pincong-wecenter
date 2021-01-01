@@ -77,12 +77,12 @@ class main extends AWS_CONTROLLER
 		if ($_GET['sort_key'] == 'add_time')
 		{
 			//$answer_order_by = "add_time " . $sort;
-			$answer_order_by = "answer_id " . $sort;
+			$answer_order_by = "id " . $sort;
 		}
 		else
 		{
 			//$answer_order_by = "agree_count " . $sort . ", add_time ASC";
-			$answer_order_by = "reputation " . $sort . ", agree_count " . $sort . ", answer_id ASC";
+			$answer_order_by = "reputation " . $sort . ", agree_count " . $sort . ", id ASC";
 		}
 
 		if ($item_id)
@@ -104,7 +104,7 @@ class main extends AWS_CONTROLLER
 
 		foreach ($answer_list as $answer)
 		{
-			$answer_ids[] = $answer['answer_id'];
+			$answer_ids[] = $answer['id'];
 		}
 
 		if ($this->user_id)
@@ -118,7 +118,7 @@ class main extends AWS_CONTROLLER
 
 			if ($this->user_id)
 			{
-				$answer['vote_value'] = $answer_vote_values[$answer['answer_id']];
+				$answer['vote_value'] = $answer_vote_values[$answer['id']];
 			}
 
 			$answers[] = $answer;

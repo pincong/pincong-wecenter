@@ -297,11 +297,6 @@ class vote_class extends AWS_MODEL
 		{
 			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + ' . ($agree_count) . ', reputation = reputation + ' . ($reputation) . ' WHERE question_id = ' . ($item_id);
 		}
-		// TODO: answer_id 字段改名
-		elseif ($type == 'answer')
-		{
-			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + ' . ($agree_count) . ', reputation = reputation + ' . ($reputation) . ' WHERE answer_id = ' . ($item_id);
-		}
 		else
 		{
 			$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + ' . ($agree_count) . ', reputation = reputation + ' . ($reputation) . ' WHERE id = ' . ($item_id);

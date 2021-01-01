@@ -30,14 +30,14 @@ class answer_class extends AWS_MODEL
 
 		return $this->update('answer', array(
 			'comment_count' => $this->count('answer_discussion', "answer_id = " . ($answer_id))
-		), "answer_id = " . ($answer_id));
+		), "id = " . ($answer_id));
 	}
 
 
 	// 同时获取用户信息
 	public function get_answer_by_id($answer_id)
 	{
-		if ($answer = $this->fetch_row('answer', 'answer_id = ' . intval($answer_id)))
+		if ($answer = $this->fetch_row('answer', 'id = ' . intval($answer_id)))
 		{
 			$answer['user_info'] = $this->model('account')->get_user_info_by_uid($answer['uid']);
 
@@ -57,12 +57,12 @@ class answer_class extends AWS_MODEL
 			return false;
 		}
 
-		if ($answers = $this->fetch_all('answer', "answer_id IN (" . implode(', ', $answer_ids) . ")"))
+		if ($answers = $this->fetch_all('answer', "id IN (" . implode(', ', $answer_ids) . ")"))
 		{
 			// 不折叠
 			foreach ($answers AS $key => $val)
 			{
-				$result[$val['answer_id']] = $val;
+				$result[$val['id']] = $val;
 			}
 		}
 
@@ -79,7 +79,7 @@ class answer_class extends AWS_MODEL
 		return $this->count('answer', "question_id = " . intval($question_id) . $where);
 	}
 
-	public function get_answers($question_id, $page, $per_page, $order = 'answer_id ASC')
+	public function get_answers($question_id, $page, $per_page, $order = 'id ASC')
 	{
 		if ($answer_list = $this->fetch_page('answer', 'question_id = ' . intval($question_id), $order, $page, $per_page))
 		{
@@ -124,7 +124,7 @@ class answer_class extends AWS_MODEL
 
 		foreach ($answers as $key => $val)
 		{
-			$answer_ids[] = $val['answer_id'];
+			$answer_ids[] = $val['id'];
 		}
 
 		return $this->remove_answer_by_ids($answer_ids);
@@ -160,7 +160,7 @@ class answer_class extends AWS_MODEL
 			//ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_ANSWER . ' AND associate_id = ' . intval($answer_id));
 			//ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action = ' . ACTION_LOG::ANSWER_QUESTION . ' AND associate_attached = ' . intval($answer_id));
 
-			$this->delete('answer', "answer_id = " . intval($answer_id));
+			$this->delete('answer', "id = " . intval($answer_id));
 
 			$this->model('question')->update_answer_count($answer_info['question_id']);
 		}
@@ -171,7 +171,7 @@ class answer_class extends AWS_MODEL
 
 	public function has_answer_by_uid($question_id, $uid)
 	{
-		return $this->fetch_one('answer', 'answer_id', "question_id = " . intval($question_id) . " AND uid = " . intval($uid));
+		return $this->fetch_one('answer', 'id', "question_id = " . intval($question_id) . " AND uid = " . intval($uid));
 	}
 
 	public function insert_answer_discussion($answer_id, $uid, $message)
@@ -200,7 +200,7 @@ class answer_class extends AWS_MODEL
 			$this->model('notify')->send($uid, $answer_info['uid'], notify_class::TYPE_ANSWER_COMMENT, notify_class::CATEGORY_QUESTION, $answer_info['question_id'], array(
 				'from_uid' => $uid,
 				'question_id' => $answer_info['question_id'],
-				'item_id' => $answer_info['answer_id'],
+				'item_id' => $answer_info['id'],
 				'comment_id' => $comment_id
 			));
 
@@ -215,7 +215,7 @@ class answer_class extends AWS_MODEL
 					$this->model('notify')->send($uid, $user_id, notify_class::TYPE_ANSWER_COMMENT_AT_ME, notify_class::CATEGORY_QUESTION, $answer_info['question_id'], array(
 						'from_uid' => $uid,
 						'question_id' => $answer_info['question_id'],
-						'item_id' => $answer_info['answer_id'],
+						'item_id' => $answer_info['id'],
 						'comment_id' => $comment_id
 					));
 

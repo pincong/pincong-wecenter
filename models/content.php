@@ -125,21 +125,8 @@ class content_class extends AWS_MODEL
 		}
 
 		$where = 'id = ' . ($item_id);
-		// TODO: answer_id 字段改为 id 以避免特殊处理
-		if ($type == 'answer')
-		{
-			$where = 'answer_id = ' . ($item_id);
-		}
 
 		$item_info = $this->fetch_row($type, $where);
-		// TODO: id
-		if ($item_info)
-		{
-			if ($type == 'answer')
-			{
-				$item_info['id'] = $item_info['answer_id'];
-			}
-		}
 
 		$this->cache_content_info($type, $item_id, $item_info);
 		return $item_info;
@@ -161,14 +148,10 @@ class content_class extends AWS_MODEL
 		}
 
 		$where = 'id = ' . ($item_id);
-		// TODO: question_id, answer_id 字段改为 id 以避免特殊处理
+		// TODO: question_id 字段改为 id 以避免特殊处理
 		if ($type == 'question')
 		{
 			$where = 'question_id = ' . ($item_id);
-		}
-		elseif ($type == 'answer')
-		{
-			$where = 'answer_id = ' . ($item_id);
 		}
 
 		$item_info = $this->fetch_row($type, $where);
@@ -178,10 +161,6 @@ class content_class extends AWS_MODEL
 			if ($type == 'question')
 			{
 				$item_info['id'] = $item_info['question_id'];
-			}
-			elseif ($type == 'answer')
-			{
-				$item_info['id'] = $item_info['answer_id'];
 			}
 		}
 
@@ -561,11 +540,7 @@ class content_class extends AWS_MODEL
 		}
 
 		$where = 'id = ' . intval($item_id);
-		// TODO
-		if ($item_type == 'answer')
-		{
-			$where = 'answer_id = ' . intval($item_id);
-		}
+
 		$this->update($item_type, array('fold' => 1), $where);
 
 		$this->model('content')->log($parent_type, $parent_id, '折叠回应', $uid, $item_type, $item_id);
@@ -579,11 +554,7 @@ class content_class extends AWS_MODEL
 		}
 
 		$where = 'id = ' . intval($item_id);
-		// TODO
-		if ($item_type == 'answer')
-		{
-			$where = 'answer_id = ' . intval($item_id);
-		}
+
 		$this->update($item_type, array('fold' => 0), $where);
 
 		$this->model('content')->log($parent_type, $parent_id, '取消折叠回应', $uid, $item_type, $item_id);
