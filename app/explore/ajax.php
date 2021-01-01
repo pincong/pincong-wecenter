@@ -32,6 +32,7 @@ class ajax extends AWS_CONTROLLER
 		return $rule_action;
 	}
 
+	// TODO: 移到/app/topic/
 	public function list_action()
 	{
 		$topic_ids = explode(',', $_GET['topic_id']);
@@ -51,6 +52,6 @@ class ajax extends AWS_CONTROLLER
 
 		TPL::assign('posts_list', $posts_list);
 
-		TPL::output('explore/ajax/list');
+		TPL::output('explore/list_template');
 	}
 }

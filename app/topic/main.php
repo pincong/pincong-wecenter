@@ -124,7 +124,7 @@ class main extends AWS_CONTROLLER
 		}
 
 		TPL::assign('posts_list', $posts_list);
-		TPL::assign('all_list_bit', TPL::render('explore/ajax/list'));
+		TPL::assign('all_list_bit', TPL::render('explore/list_template'));
 
 		TPL::assign('topic_ids', implode(',', $topic_ids));
 
