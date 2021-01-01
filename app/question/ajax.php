@@ -159,6 +159,7 @@ class ajax extends AWS_CONTROLLER
 			'parent_id' => $answer_info['id'],
 			'message' => $message,
 			'uid' => $publish_uid,
+			'permission_inactive_user' => $this->user_info['permission']['inactive_user'],
 		), $this->user_id, false);
 
 		$item_info = $this->model('question')->get_answer_discussion_by_id($item_id);
@@ -262,6 +263,7 @@ class ajax extends AWS_CONTROLLER
 			'parent_id' => $question_info['id'],
 			'message' => $message,
 			'uid' => $publish_uid,
+			'permission_inactive_user' => $this->user_info['permission']['inactive_user'],
 		), $this->user_id, false);
 
 		$item_info = $this->model('question')->get_question_discussion_by_id($item_id);

@@ -416,6 +416,7 @@ class ajax extends AWS_CONTROLLER
 			'topics' => $this->get_topics(),
 			'follow' => !H::POST('anonymous'),
 			'ask_user_id' => H::POST('ask_user_id'),
+			'permission_inactive_user' => $this->user_info['permission']['inactive_user'],
 		), $this->user_id, $delay);
 
 		set_repeat_submission_digest($this->user_id, $title);
@@ -454,6 +455,7 @@ class ajax extends AWS_CONTROLLER
 			'uid' => $publish_uid,
 			'topics' => $this->get_topics(),
 			'follow' => !H::POST('anonymous'),
+			'permission_inactive_user' => $this->user_info['permission']['inactive_user'],
 		), $this->user_id, $delay);
 
 		set_repeat_submission_digest($this->user_id, $title);
@@ -505,6 +507,7 @@ class ajax extends AWS_CONTROLLER
 			'follow' => !H::POST('anonymous'),
 			'source_type' => $metadata['source_type'],
 			'source' => $metadata['source'],
+			'permission_inactive_user' => $this->user_info['permission']['inactive_user'],
 		), $this->user_id, $delay);
 
 		set_repeat_submission_digest($this->user_id, $title);
@@ -549,6 +552,7 @@ class ajax extends AWS_CONTROLLER
 			'uid' => $publish_uid,
 			'follow' => (H::POST('follow') AND !H::POST('anonymous') AND ($this->user_info['permission']['follow_thread'] OR $thread_info['uid'] == $this->user_id)),
 			'permission_affect_currency' => $this->user_info['permission']['affect_currency'],
+			'permission_inactive_user' => $this->user_info['permission']['inactive_user'],
 		), $this->user_id, $delay, $pay);
 
 		set_repeat_submission_digest($this->user_id, $message);
@@ -589,6 +593,7 @@ class ajax extends AWS_CONTROLLER
 			'follow' => (H::POST('follow') AND !H::POST('anonymous') AND ($this->user_info['permission']['follow_thread'] OR $thread_info['uid'] == $this->user_id)),
 			'at_uid' => H::POST('at_uid'),
 			'permission_affect_currency' => $this->user_info['permission']['affect_currency'],
+			'permission_inactive_user' => $this->user_info['permission']['inactive_user'],
 		), $this->user_id, $delay, $pay);
 
 		set_repeat_submission_digest($this->user_id, $message);
@@ -629,6 +634,7 @@ class ajax extends AWS_CONTROLLER
 			'follow' => (H::POST('follow') AND !H::POST('anonymous') AND ($this->user_info['permission']['follow_thread'] OR $thread_info['uid'] == $this->user_id)),
 			'at_uid' => H::POST('at_uid'),
 			'permission_affect_currency' => $this->user_info['permission']['affect_currency'],
+			'permission_inactive_user' => $this->user_info['permission']['inactive_user'],
 		), $this->user_id, $delay, $pay);
 
 		set_repeat_submission_digest($this->user_id, $message);

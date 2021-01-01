@@ -587,7 +587,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 		{
 			if (is_string(H::POST($permission)))
 			{
-				$group_setting[$permission] = H::POST($permission);
+				$group_setting[$permission] = H::POST_S($permission);
 			}
 		}
 

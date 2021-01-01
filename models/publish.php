@@ -231,7 +231,10 @@ class publish_class extends AWS_MODEL
 			$this->model('postfollow')->follow('question', $item_id, $data['uid']);
 		}
 
-		$this->mention_users('question', $item_id, null, 0, $data['uid'], $data['message']);
+		if (!$data['permission_inactive_user'])
+		{
+			$this->mention_users('question', $item_id, null, 0, $data['uid'], $data['message']);
+		}
 
 		// 记录用户动态
 		$this->model('activity')->push('question', $item_id, $data['uid']);
@@ -267,7 +270,10 @@ class publish_class extends AWS_MODEL
 			$this->model('postfollow')->follow('article', $item_id, $data['uid']);
 		}
 
-		$this->mention_users('article', $item_id, null, 0, $data['uid'], $data['message']);
+		if (!$data['permission_inactive_user'])
+		{
+			$this->mention_users('article', $item_id, null, 0, $data['uid'], $data['message']);
+		}
 
 		// 记录用户动态
 		$this->model('activity')->push('article', $item_id, $data['uid']);
@@ -305,7 +311,10 @@ class publish_class extends AWS_MODEL
 			$this->model('postfollow')->follow('video', $item_id, $data['uid']);
 		}
 
-		$this->mention_users('video', $item_id, null, 0, $data['uid'], $data['message']);
+		if (!$data['permission_inactive_user'])
+		{
+			$this->mention_users('video', $item_id, null, 0, $data['uid'], $data['message']);
+		}
 
 		// 记录用户动态
 		$this->model('activity')->push('video', $item_id, $data['uid']);
@@ -352,8 +361,11 @@ class publish_class extends AWS_MODEL
 
 		$this->model('posts')->set_posts_index($data['parent_id'], 'question');
 
-		$this->mention_users('question', $parent_info['id'], 'answer', $item_id, $data['uid'], $data['message']);
-		$this->notify_flowers('question', $parent_info['id'], 'answer', $item_id, $data['uid']);
+		if (!$data['permission_inactive_user'])
+		{
+			$this->mention_users('question', $parent_info['id'], 'answer', $item_id, $data['uid'], $data['message']);
+			$this->notify_flowers('question', $parent_info['id'], 'answer', $item_id, $data['uid']);
+		}
 
 		if ($data['follow'])
 		{
@@ -410,14 +422,17 @@ class publish_class extends AWS_MODEL
 
 		$this->model('posts')->set_posts_index($data['parent_id'], 'article');
 
-		$this->mention_users('article', $parent_info['id'], 'article_comment', $item_id, $data['uid'], $data['message']);
-		if ($data['at_uid'])
+		if (!$data['permission_inactive_user'])
 		{
-			$this->notify_user('article', $parent_info['id'], 'article_comment', $item_id, $data['uid'], $data['at_uid']);
-		}
-		else
-		{
-			$this->notify_flowers('article', $parent_info['id'], 'article_comment', $item_id, $data['uid']);
+			$this->mention_users('article', $parent_info['id'], 'article_comment', $item_id, $data['uid'], $data['message']);
+			if ($data['at_uid'])
+			{
+				$this->notify_user('article', $parent_info['id'], 'article_comment', $item_id, $data['uid'], $data['at_uid']);
+			}
+			else
+			{
+				$this->notify_flowers('article', $parent_info['id'], 'article_comment', $item_id, $data['uid']);
+			}
 		}
 
 		if ($data['follow'])
@@ -470,14 +485,17 @@ class publish_class extends AWS_MODEL
 
 		$this->model('posts')->set_posts_index($data['parent_id'], 'video');
 
-		$this->mention_users('video', $parent_info['id'], 'video_comment', $item_id, $data['uid'], $data['message']);
-		if ($data['at_uid'])
+		if (!$data['permission_inactive_user'])
 		{
-			$this->notify_user('video', $parent_info['id'], 'video_comment', $item_id, $data['uid'], $data['at_uid']);
-		}
-		else
-		{
-			$this->notify_flowers('video', $parent_info['id'], 'video_comment', $item_id, $data['uid']);
+			$this->mention_users('video', $parent_info['id'], 'video_comment', $item_id, $data['uid'], $data['message']);
+			if ($data['at_uid'])
+			{
+				$this->notify_user('video', $parent_info['id'], 'video_comment', $item_id, $data['uid'], $data['at_uid']);
+			}
+			else
+			{
+				$this->notify_flowers('video', $parent_info['id'], 'video_comment', $item_id, $data['uid']);
+			}
 		}
 
 		if ($data['follow'])
@@ -529,9 +547,12 @@ class publish_class extends AWS_MODEL
 			$this->model('posts')->bring_to_top($thread_info['id'], 'question');
 		}
 
-		if (!$this->mention_users('question', $thread_info['id'], null, 0, $data['uid'], $data['message']))
+		if (!$data['permission_inactive_user'])
 		{
-			$this->notify_user('question', $thread_info['id'], null, 0, $data['uid'], $thread_info['uid']);
+			if (!$this->mention_users('question', $thread_info['id'], null, 0, $data['uid'], $data['message']))
+			{
+				$this->notify_user('question', $thread_info['id'], null, 0, $data['uid'], $thread_info['uid']);
+			}
 		}
 
 		// TODO: 记录用户动态
@@ -584,9 +605,12 @@ class publish_class extends AWS_MODEL
 			'comment_count' => $discussion_count,
 		), ['id', 'eq', $data['parent_id'], 'i']);
 
-		if (!$this->mention_users('question', $thread_info['id'], 'answer', $reply_info['id'], $data['uid'], $data['message']))
+		if (!$data['permission_inactive_user'])
 		{
-			$this->notify_user('question', $thread_info['id'], 'answer', $reply_info['id'], $data['uid'], $reply_info['uid']);
+			if (!$this->mention_users('question', $thread_info['id'], 'answer', $reply_info['id'], $data['uid'], $data['message']))
+			{
+				$this->notify_user('question', $thread_info['id'], 'answer', $reply_info['id'], $data['uid'], $reply_info['uid']);
+			}
 		}
 
 		// TODO: 记录用户动态
