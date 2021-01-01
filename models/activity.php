@@ -23,16 +23,18 @@ class activity_class extends AWS_MODEL
 	 * 记录用户动态
 	 * @param string $item_type question|question_discussion|answer|answer_discussion|article|article_comment|video|video_comment
 	 * @param int $item_id
-	 * @param string $note
 	 * @param int $uid
+	 * @param string $thread_type question|article|video
+	 * @param int $thread_id
+	 * @param int $category_id
 	 */
-	public function log($item_type, $item_id, $note, $uid = 0, $thread_id = 0, $category_id = 0)
+	public function log($item_type, $item_id, $uid = 0, $thread_type = null, $thread_id = 0, $category_id = 0)
 	{
 		$this->insert('activity', array(
 			'item_type' => $item_type,
 			'item_id' => intval($item_id),
-			'note' => $note,
 			'uid' => intval($uid),
+			'thread_type' => $thread_type,
 			'thread_id' => intval($thread_id),
 			'category_id' => intval($category_id),
 			'time' => fake_time()

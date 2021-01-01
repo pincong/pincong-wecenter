@@ -255,7 +255,7 @@ class vote_class extends AWS_MODEL
 			return;
 		}
 
-		$parent_info = $this->model('content')->get_item_parent_info_by_id($type, $item_id);
+		$parent_info = $this->model('content')->get_item_thread_info_by_id($type, $item_id);
 		$category_id = intval($parent_info['category_id']);
 
 		$push_categories = get_setting('push_categories');
@@ -272,8 +272,7 @@ class vote_class extends AWS_MODEL
 			}
 		}
 
-		$thread_id = intval($parent_info['id']);
-		$this->model('activity')->log($type, $item_id, null, 0, $thread_id, $category_id);
+		$this->model('activity')->log($type, $item_id, 0, $parent_info['thread_type'], $parent_info['thread_id'], $category_id);
 	}
 
 	// 用于筛选最热帖子 (首页排序)

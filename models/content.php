@@ -158,7 +158,7 @@ class content_class extends AWS_MODEL
 		return $item_info;
 	}
 
-	public function get_item_parent_info_by_id($type, $item_id)
+	public function get_item_thread_info_by_id($type, $item_id)
 	{
 		$item_info = $this->get_thread_or_reply_info_by_id($type, $item_id);
 		if (!$item_info)
@@ -169,18 +169,49 @@ class content_class extends AWS_MODEL
 		switch ($type)
 		{
 			case 'question':
+				$item_info['thread_type'] = 'question';
+				$item_info['thread_id'] = $item_info['id'];
+				return $item_info;
+
 			case 'article':
+				$item_info['thread_type'] = 'article';
+				$item_info['thread_id'] = $item_info['id'];
+				return $item_info;
+
 			case 'video':
+				$item_info['thread_type'] = 'video';
+				$item_info['thread_id'] = $item_info['id'];
 				return $item_info;
 
 			case 'answer':
-				return $this->get_thread_info_by_id('question', $item_info['question_id']);
+				$thread_info = $this->get_thread_info_by_id('question', $item_info['question_id']);
+				if ($thread_info)
+				{
+					$thread_info['thread_type'] = 'question';
+					$thread_info['thread_id'] = $thread_info['id'];
+					return $thread_info;
+				}
+				return false;
 
 			case 'article_comment':
-				return $this->get_thread_info_by_id('article', $item_info['article_id']);
+				$thread_info = $this->get_thread_info_by_id('article', $item_info['article_id']);
+				if ($thread_info)
+				{
+					$thread_info['thread_type'] = 'article';
+					$thread_info['thread_id'] = $thread_info['id'];
+					return $thread_info;
+				}
+				return false;
 
 			case 'video_comment':
-				return $this->get_thread_info_by_id('video', $item_info['video_id']);
+				$thread_info = $this->get_thread_info_by_id('video', $item_info['video_id']);
+				if ($thread_info)
+				{
+					$thread_info['thread_type'] = 'video';
+					$thread_info['thread_id'] = $thread_info['id'];
+					return $thread_info;
+				}
+				return false;
 		}
 
 		return false;
@@ -455,8 +486,11 @@ class content_class extends AWS_MODEL
 		$where = 'id = ' . intval($item_id);
 		$this->update($item_type, array('category_id' => intval($category_id)), $where);
 
-		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
+		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $item_type . "'";
 		$this->update('posts_index', array('category_id' => intval($category_id)), $where);
+
+		$where = "uid = 0 AND thread_id = " . intval($item_id) . " AND thread_type = '" . $item_type . "'";
+		$this->update('activity', array('category_id' => intval($category_id)), $where);
 
 		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '变更分类', $log_uid, 'category', $old_category_id);
 

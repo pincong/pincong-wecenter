@@ -151,7 +151,7 @@ class publish_class extends AWS_MODEL
 		}
 
 		// 记录用户动态
-		$this->model('activity')->log('question', $item_id, '发起了问题', $data['uid']);
+		$this->model('activity')->log('question', $item_id, $data['uid']);
 
 		return $item_id;
 	}
@@ -182,7 +182,7 @@ class publish_class extends AWS_MODEL
 		$this->save_topics('article', $data['uid'], $item_id, $data['topics'], $data['permission_create_topic']);
 
 		// 记录用户动态
-		$this->model('activity')->log('article', $item_id, '发表了文章', $data['uid']);
+		$this->model('activity')->log('article', $item_id, $data['uid']);
 
 		return $item_id;
 	}
@@ -217,7 +217,7 @@ class publish_class extends AWS_MODEL
 		$this->save_topics('video', $data['uid'], $item_id, $data['topics'], $data['permission_create_topic']);
 
 		// 记录用户动态
-		$this->model('activity')->log('video', $item_id, '投稿了影片', $data['uid']);
+		$this->model('activity')->log('video', $item_id, $data['uid']);
 
 		return $item_id;
 	}
@@ -295,7 +295,7 @@ class publish_class extends AWS_MODEL
 		$this->model('invite')->answer_question_invite($data['parent_id'], $data['uid']);
 
 		// 记录用户动态
-		$this->model('activity')->log('answer', $item_id, '回答了问题', $data['uid']);
+		$this->model('activity')->log('answer', $item_id, $data['uid']);
 
 		// TODO: 防止匿名回复刷代币
 		if ($data['permission_affect_currency'] AND $data['uid'] != $parent_info['uid'])
@@ -371,7 +371,7 @@ class publish_class extends AWS_MODEL
 		}
 
 		// 记录用户动态
-		$this->model('activity')->log('article_comment', $item_id, '评论了文章', $data['uid']);
+		$this->model('activity')->log('article_comment', $item_id, $data['uid']);
 
 		// TODO: 防止匿名回复刷代币
 		if ($data['permission_affect_currency'] AND $data['uid'] != $parent_info['uid'])
@@ -455,7 +455,7 @@ class publish_class extends AWS_MODEL
 		}
 
 		// 记录用户动态
-		$this->model('activity')->log('video_comment', $item_id, '评论了影片', $data['uid']);
+		$this->model('activity')->log('video_comment', $item_id, $data['uid']);
 
 		// TODO: 防止匿名回复刷代币
 		if ($data['permission_affect_currency'] AND $data['uid'] != $parent_info['uid'])
