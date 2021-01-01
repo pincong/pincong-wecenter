@@ -5,7 +5,7 @@
 		<div class="row">
 			<div class="aw-content-wrap clearfix">
 				<div class="col-sm-12 col-md-9 aw-main-content aw-article-content">
-					<div class="aw-mod aw-topic-bar" id="question_topic_editor" data-type="article" data-id="<?php echo $this->article_info['id']; ?>">
+					<div class="aw-mod aw-topic-bar" id="question_topic_editor" data-type="article" data-id="<?php echo $this->article_info['id']; ?>" data-category-id="<?php echo $this->article_info['category_id']; ?>">
 						<div class="tag-bar clearfix">
 						<?php if ($this->article_topics) { ?>
 							<?php foreach($this->article_topics as $key => $val) { ?>
