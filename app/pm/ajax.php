@@ -186,7 +186,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => url_rewrite('/pm/read/' . $conversation_id)
+			'conversation' => $conversation_id
 		), 1, null));
 	}
 

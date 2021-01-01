@@ -153,7 +153,7 @@ class usergroup_class extends AWS_MODEL
 
 		if (!$user_group_list = AWS_APP::cache()->get('user_group_list'))
 		{
-			if ($group_array = $this->fetch_all('users_group', null, 'type ASC, reputation_lower ASC, group_id ASC'))
+			if ($group_array = $this->fetch_all('users_group', null, 'type ASC, reputation_higer ASC, group_id ASC'))
 			{
 				foreach ($group_array as $key => $val)
 				{
@@ -349,7 +349,7 @@ class usergroup_class extends AWS_MODEL
 	// 无缓存版
 	public function get_reputation_group_list()
 	{
-		if ($users_groups = $this->fetch_all('users_group', ['type', 'eq', 1], 'reputation_lower ASC'))
+		if ($users_groups = $this->fetch_all('users_group', ['type', 'eq', 1], 'reputation_higer ASC, group_id ASC'))
 		{
 			foreach ($users_groups as $key => $val)
 			{
