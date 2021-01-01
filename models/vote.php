@@ -33,7 +33,7 @@ class vote_class extends AWS_MODEL
 			$recipient_user_infos = $this->model('account')->get_user_info_by_uids($recipient_uids);
 			foreach ($list AS $key => $val)
 			{
-				$list[$key]['recipient_user_info'] = $recipient_user_infos[$val['recipient_uid']];
+				$list[$key]['user_info'] = $recipient_user_infos[$val['recipient_uid']];
 			}
 		}
 
