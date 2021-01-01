@@ -106,7 +106,17 @@ class TPL
 
 			if ($template_dirs[0] != 'admin')
 			{
-				H::sensitive_words_replace($output);
+				// 其实这两个功能是一样的, 为了避免替换内容过多难以维护而设置两个list
+				if (get_setting('html_content_replace') == 'Y')
+				{
+					$replacing_list = get_key_value_pairs('html_replacing_list', '<>', true);
+					H::content_replace($output, $replacing_list);
+				}
+				if (get_setting('sensitive_words_replace') == 'Y')
+				{
+					$replacing_list = get_key_value_pairs('sensitive_words', '<>', true);
+					H::content_replace($output, $replacing_list);
+				}
 			}
 		}
 

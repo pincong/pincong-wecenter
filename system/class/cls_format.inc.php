@@ -110,6 +110,29 @@ class FORMAT
 			$text
 		);
 
+		if ($_GET['app'] == 'admin')
+		{
+			return $text;
+		}
+
+		static $replace;
+		static $replacing_list;
+		if (!isset($replace))
+		{
+			$user_content_replace = get_setting('user_content_replace');
+			if (isset($user_content_replace))
+			{
+				$replace = ($user_content_replace == 'Y');
+				$replacing_list = get_key_value_pairs('content_replacing_list', '<>', true);
+			}
+		}
+
+		// 由于::text()被频繁调用, list设置太复杂会影响性能
+		if ($replace)
+		{
+			H::content_replace($text, $replacing_list);
+		}
+
 		return $text;
 	}
 

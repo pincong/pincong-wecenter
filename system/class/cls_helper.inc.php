@@ -84,30 +84,20 @@ class H
 		return $output;
 	}
 
-	/**
-	 * 敏感词替换
-	 * @param unknown_type $content
-	 * @return mixed
-	 */
-	public static function sensitive_words_replace(&$content)
+
+
+	public static function content_replace(&$content, &$replacing_list)
 	{
-		if (!$content)
+		if (!$content OR !$replacing_list)
 		{
 			return;
 		}
 
-		if (!$sensitive_words_replacement = get_setting('sensitive_words_replacement'))
-		{
-			return;
-		}
-
-		$sensitive_words = get_key_value_pairs('sensitive_words', '<>', true);
-
-		foreach($sensitive_words AS $word => $replacement)
+		foreach($replacing_list AS $word => $replacement)
 		{
 			if (!isset($replacement))
 			{
-				$replacement = $sensitive_words_replacement;
+				$replacement = '';
 			}
 
 			if (substr($word, 0, 1) == '{' AND substr($word, -1, 1) == '}')
@@ -120,6 +110,8 @@ class H
 			}
 		}
 	}
+
+
 
 	// 命中返回 true, 未命中返回 false
 	public static function content_url_whitelist_check($content_url)

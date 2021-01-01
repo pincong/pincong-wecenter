@@ -457,6 +457,61 @@
 				<tr>
 					<td>
 						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('开启用户内容替换'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" name="user_content_replace" value="Y"<?php if ($this->setting['user_content_replace'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" name="user_content_replace" value="N"<?php if ($this->setting['user_content_replace'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('开启网页内容替换'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" name="html_content_replace" value="Y"<?php if ($this->setting['html_content_replace'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" name="html_content_replace" value="N"<?php if ($this->setting['html_content_replace'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('开启敏感词替换'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" name="sensitive_words_replace" value="Y"<?php if ($this->setting['sensitive_words_replace'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" name="sensitive_words_replace" value="N"<?php if ($this->setting['sensitive_words_replace'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('通知未读数刷新间隔时间'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="unread_flush_interval" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['unread_flush_interval']); ?>"/>
@@ -1055,18 +1110,6 @@
 							<div class="col-sm-6 col-xs-8">
 								<label><input type="radio" name="advanced_editor_enable" value="Y"<?php if ($this->setting['advanced_editor_enable'] == 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('高级编辑器'); ?></label>
 								<label class="col-md-offset-1"><input type="radio" name="advanced_editor_enable" value="N"<?php if ($this->setting['advanced_editor_enable'] != 'Y') { ?> checked="checked"<?php } ?> /> <?php _e('纯文本编辑器'); ?></label>
-							</div>
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('敏感词替换'); ?>:</span>
-							<div class="col-sm-5 col-xs-8">
-								<input name="sensitive_words_replacement" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['sensitive_words_replacement']); ?>"/>
-								<span class="help-block"><?php _e('将敏感词替换为别的内容, 留空则不替换'); ?></span>
 							</div>
 						</div>
 					</td>
