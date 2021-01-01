@@ -274,7 +274,7 @@ class AWS_APP
 			}
 			else
 			{
-				HTTP::redirect('/account/login/url-' . base64_current_path());
+				HTTP::redirect('/login/url-' . base64_current_path());
 			}
 		}
 	}
