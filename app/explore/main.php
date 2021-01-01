@@ -63,10 +63,6 @@ class main extends AWS_CONTROLLER
 		// 导航
 		TPL::assign('content_nav_menu', $this->model('menu')->get_nav_menu_list('explore'));
 
-/*
-		// 边栏热门用户
-		TPL::assign('sidebar_hot_users', $this->model('module')->sidebar_hot_users($this->user_id, 5));
-*/
 		// 边栏热门话题
 		TPL::assign('sidebar_hot_topics', $this->model('module')->sidebar_hot_topics($category_info['id']));
 

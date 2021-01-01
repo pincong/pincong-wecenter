@@ -32,9 +32,6 @@ class main extends AWS_CONTROLLER
 	{
 		$this->crumb(AWS_APP::lang()->_t('动态'), '/home/');
 
-		// 边栏可能感兴趣的人或话题
-		TPL::assign('sidebar_recommend_users_topics', $this->model('module')->recommend_users_topics($this->user_id));
-
 		TPL::output('home/index');
 	}
 
@@ -42,18 +39,12 @@ class main extends AWS_CONTROLLER
 	{
 		$this->crumb(AWS_APP::lang()->_t('邀请我回复的问题'), '/home/invite/');
 
-		// 边栏可能感兴趣的人或话题
-		TPL::assign('sidebar_recommend_users_topics', $this->model('module')->recommend_users_topics($this->user_id));
-
 		TPL::output('home/invite');
 	}
 
 	public function question_action()
 	{
 		$this->crumb(AWS_APP::lang()->_t('我关注的问题'), '/home/question/');
-
-		// 边栏可能感兴趣的人或话题
-		TPL::assign('sidebar_recommend_users_topics', $this->model('module')->recommend_users_topics($this->user_id));
 
 		TPL::output('home/question');
 	}

@@ -435,10 +435,4 @@ class ajax extends AWS_CONTROLLER
 		}
 	}
 
-	// TODO: 何处用到
-	public function clean_user_recommend_cache_action()
-	{
-		AWS_APP::cache()->delete('user_recommend_' . $this->user_id);
-	}
-
 }
