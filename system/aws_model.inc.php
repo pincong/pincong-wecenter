@@ -39,7 +39,7 @@ class AWS_MODEL
 
 	private function _db_error($sql, $e)
 	{
-		show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
+		show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage());
 	}
 
 	public function setup()

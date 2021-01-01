@@ -199,13 +199,13 @@ class AWS_APP
 	 * @param	object
 	 */
 	public static function exception_handle($exception)
-    {
-		$exception_message = "Application error\n------\nMessage: " . $exception->getMessage() . "\nFile: " . $exception->getFile() . "\nLine: " . $exception->getLine() . "\nURI: " . $_SERVER['REQUEST_URI'] . "\nAccept Language: " . $_SERVER['HTTP_ACCEPT_LANGUAGE'] . "\n------\n" . $exception->getTraceAsString();
+	{
+		$exception_message = "Application error\n------\nMessage: " . $exception->getMessage() . "\nFile: " . $exception->getFile() . "\nLine: " . $exception->getLine() . "\nURI: " . $_SERVER['REQUEST_URI'] . "\n------\n" . $exception->getTraceAsString();
 
-        show_error($exception_message, $exception->getMessage());
-    }
+		show_error($exception_message);
+	}
 
-   	/**
+	/**
 	 * 格式化系统返回消息
 	 *
 	 * 格式化系统返回的消息 json 数据包给前端进行处理

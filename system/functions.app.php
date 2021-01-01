@@ -265,10 +265,10 @@ function &load_class($class)
 
 function _show_error($exception_message)
 {
-	$name = 'HTTP_HOST'; //strtoupper($_SERVER['HTTP_HOST']);
-
 	if ($exception_message)
 	{
+		$root_dir = rtrim(ROOT_PATH, '/\\');
+		$exception_message = str_replace($root_dir, '', $exception_message);
 		$exception_message = htmlspecialchars($exception_message);
 
 		$errorBlock = "<div style='display:none' id='exception_message'><textarea rows='15' onfocus='this.select()'>{$exception_message}</textarea></div>";
@@ -284,18 +284,11 @@ function _show_error($exception_message)
 EOF;
 }
 
-function show_error($exception_message, $error_message = '')
+function show_error($exception_message)
 {
 	@ob_end_clean();
 
-	if (isset($_SERVER['SERVER_PROTOCOL']) AND strstr($_SERVER['SERVER_PROTOCOL'], '/1.0') !== false)
-	{
-		header("HTTP/1.0 500 Internal Server Error");
-	}
-	else
-	{
-		header("HTTP/1.1 500 Internal Server Error");
-	}
+	header("HTTP/1.1 500 Internal Server Error");
 
 	echo _show_error($exception_message);
 	exit;
