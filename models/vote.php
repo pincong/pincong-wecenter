@@ -186,10 +186,17 @@ class vote_class extends AWS_MODEL
 		$bonus_max_count = intval(get_setting('bonus_max_count'));
 		$bonus_min_count = intval(get_setting('bonus_min_count'));
 
-		$word_count = strlen($item_info['message']);
+		$message = $item_info['message'];
+		if (!$message)
+		{
+			return $factor;
+		}
+
+		$message = preg_replace('/\[quote\](.*?)\[\/quote\]/is', '', $message);
+		$message = preg_replace('/\[(.*?)\]/is', '', $message);
 
 		// 字数 = 字节数 / 3
-		$word_count = intval($word_count / 3);
+		$word_count = intval(strlen($message) / 3);
 
 		// factor设定
 		if ($word_count > $bonus_min_count)
