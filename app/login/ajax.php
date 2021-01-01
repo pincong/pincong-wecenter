@@ -105,7 +105,7 @@ class ajax extends AWS_CONTROLLER
 		if ($user_info['forbidden'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(array(
-				'url' => url_rewrite('/people/') . $user_info['url_token']
+				'url' => UF::url($user_info)
 			), 1, null));
 		}
 

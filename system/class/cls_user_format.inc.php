@@ -79,7 +79,7 @@ class UF
 		{
 			return 'javascript:;';
 		}
-		return url_rewrite('/people/') . $user_info['url_token'];
+		return url_rewrite('/people/') . safe_url_encode($user_info['user_name']);
 	}
 
 	public static function reputation($user_info)

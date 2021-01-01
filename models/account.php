@@ -89,11 +89,6 @@ class account_class extends AWS_MODEL
 			return false;
 		}
 
-		if ($user_info['user_name'])
-		{
-			$user_info['url_token'] = safe_url_encode($user_info['user_name']);
-		}
-
 		$user_group = $this->model('usergroup')->get_user_group_by_user_info($user_info);
 		$user_info['reputation_factor'] = $user_group['reputation_factor'];
 		$user_info['reputation_factor_receive'] = $user_group['reputation_factor_receive'];
@@ -152,11 +147,6 @@ class account_class extends AWS_MODEL
 			return false;
 		}
 
-		if ($user_info['user_name'])
-		{
-			$user_info['url_token'] = safe_url_encode($user_info['user_name']);
-		}
-
 		$users_info[$uid] = $user_info;
 
 		return $user_info;
@@ -190,8 +180,6 @@ class account_class extends AWS_MODEL
 		{
 			foreach ($user_info as $key => $val)
 			{
-				$val['url_token'] = safe_url_encode($val['user_name']);
-
 				unset($val['password'], $val['salt']);
 
 				$data[$val['uid']] = $val;
@@ -456,11 +444,6 @@ class account_class extends AWS_MODEL
 				unset($val['password'], $val['salt']);
 
 				$data[$val['uid']] = $val;
-
-				if ($val['user_name'])
-				{
-					$data[$val['uid']]['url_token'] = safe_url_encode($val['user_name']);
-				}
 
 				$uids[] = $val['uid'];
 			}

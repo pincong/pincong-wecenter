@@ -146,24 +146,18 @@ class main extends AWS_CONTROLLER
 
 		if (is_digits($_GET['id']))
 		{
-			if (!$user = $this->model('account')->get_user_info_by_uid($_GET['id']))
+			$user = $this->model('account')->get_user_info_by_uid($_GET['id']);
+			if (!$user)
 			{
-				$user = $this->model('account')->get_user_info_by_username($_GET['id']);
+				HTTP::error_404();
 			}
-		}
-		else
-		{
-			$user = $this->model('account')->get_user_info_by_username($_GET['id']);
+			HTTP::redirect('/people/' . safe_url_encode($user['user_name']));
 		}
 
+		$user = $this->model('account')->get_user_info_by_username($_GET['id']);
 		if (!$user)
 		{
 			HTTP::error_404();
-		}
-
-		if (safe_url_decode($user['url_token']) != $_GET['id'])
-		{
-			HTTP::redirect('/people/' . $user['url_token']);
 		}
 
 		$user['reputation_group_name'] = $this->model('usergroup')->get_user_group_name_by_user_info($user);

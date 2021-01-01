@@ -75,7 +75,7 @@ class ajax extends AWS_CONTROLLER
 			'signature' => UF::signature($user_info),
 			'focus' => ($user_follow_check ? true : false),
 			'is_me' => (($this->user_id == $user_info['uid']) ? true : false),
-			'url' => url_rewrite('/people/' . $user_info['url_token']),
+			'url' => UF::url($user_info),
 			'verified' => $user_info['verified'],
 			'fans_count' => $user_info['fans_count'],
 			'pm_disabled' => $pm_disabled,
