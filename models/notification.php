@@ -83,7 +83,7 @@ class notification_class extends AWS_MODEL
 	{
 		$this->update('notification', array(
 			'read_flag' => 1
-		), 'read_flag <> 1 AND id = ' . intval($notification_id) . ' AND recipient_uid = ' . intval($uid));
+		), [['read_flag', 'notEq', 1], ['id', 'eq', $notification_id, 'i'], ['recipient_uid', 'eq', $uid, 'i']]);
 
 		$this->model('account')->update_notification_unread($uid);
 	}
@@ -92,7 +92,7 @@ class notification_class extends AWS_MODEL
 	{
 		$this->update('notification', array(
 			'read_flag' => 1
-		), 'read_flag <> 1 AND recipient_uid = ' . intval($uid));
+		), [['read_flag', 'notEq', 1], ['recipient_uid', 'eq', $uid, 'i']]);
 
 		$this->model('account')->update_notification_unread($uid);
 	}
@@ -109,14 +109,14 @@ class notification_class extends AWS_MODEL
 			return false;
 		}
 
-		$where[] = 'recipient_uid = ' . intval($recipient_uid);
+		$where[] = ['recipient_uid', 'eq', $recipient_uid, 'i'];
 
 		if (isset($read_flag))
 		{
-			$where[] = 'read_flag = ' . intval($read_flag);
+			$where[] = ['read_flag', 'eq', $read_flag, 'i'];
 		}
 
-		$list = $this->fetch_page('notification', implode(' AND ', $where), 'id DESC', $page, $per_page);
+		$list = $this->fetch_page('notification', $where, 'id DESC', $page, $per_page);
 		if (!$list)
 		{
 			return false;
@@ -201,6 +201,6 @@ class notification_class extends AWS_MODEL
 		{
 			$time_before = 0;
 		}
-		$this->delete('notification', 'add_time < ' . $time_before);
+		$this->delete('notification', ['add_time', 'lt', $time_before]);
 	}
 }

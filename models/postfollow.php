@@ -33,11 +33,11 @@ class postfollow_class extends AWS_MODEL
 
 	public function get_following_posts($uid, $post_type, $page, $per_page)
 	{
-		$where = "uid = " . intval($uid);
+		$where[] = ['uid', 'eq', $uid, 'i'];
 
 		if ($post_type AND $this->model('content')->check_thread_type($post_type))
 		{
-			$where .= " AND post_type = '" . $post_type . "'";
+			$where[] = ['post_type', 'eq', $post_type];
 		}
 
 		$result = array();
@@ -127,7 +127,7 @@ class postfollow_class extends AWS_MODEL
 		{
 			return false;
 		}
-		$where = "uid = " . intval($uid) . " AND post_id = " . intval($post_id) . " AND post_type = '" . $post_type . "'";
+		$where = [['uid', 'eq', $uid, 'i'], ['post_id', 'eq', $post_id, 'i'], ['post_type', 'eq', $post_type]];
 
 		if (!$this->fetch_one('post_follow', 'id', $where))
 		{
@@ -146,7 +146,7 @@ class postfollow_class extends AWS_MODEL
 		{
 			return false;
 		}
-		$where = "uid = " . intval($uid) . " AND post_id = " . intval($post_id) . " AND post_type = '" . $post_type . "'";
+		$where = [['uid', 'eq', $uid, 'i'], ['post_id', 'eq', $post_id, 'i'], ['post_type', 'eq', $post_type]];
 
 		$this->delete('post_follow', $where);
 	}
@@ -157,7 +157,7 @@ class postfollow_class extends AWS_MODEL
 		{
 			return false;
 		}
-		$where = "uid = " . intval($uid) . " AND post_id = " . intval($post_id) . " AND post_type = '" . $post_type . "'";
+		$where = [['uid', 'eq', $uid, 'i'], ['post_id', 'eq', $post_id, 'i'], ['post_type', 'eq', $post_type]];
 
 		return $this->fetch_one('post_follow', 'id', $where);
 	}

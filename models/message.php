@@ -129,13 +129,13 @@ class message_class extends AWS_MODEL
 		{
 			$this->update('inbox_dialog', array(
 				'sender_unread' => 0
-			), 'sender_uid = ' . intval($uid) . ' AND id = ' . intval($dialog_id));
+			), [['sender_uid', 'eq', $uid, 'i'], ['id', 'eq', $dialog_id, 'i']]);
 
 			if ($receipt)
 			{
 				$this->update('inbox', array(
-				'receipt' => $now
-				), 'receipt = 0 AND uid = ' . $inbox_dialog['recipient_uid'] . ' AND dialog_id = ' . intval($dialog_id));
+					'receipt' => $now
+				), [['receipt', 'eq', 0], ['uid', 'eq', $inbox_dialog['recipient_uid'], 'i'], ['dialog_id', 'eq', $dialog_id, 'i']]);
 			}
 
 		}
@@ -144,13 +144,13 @@ class message_class extends AWS_MODEL
 		{
 			$this->update('inbox_dialog', array(
 				'recipient_unread' => 0
-			), "recipient_uid = " . intval($uid) . " AND id = " . intval($dialog_id));
+			), [['recipient_uid', 'eq', $uid, 'i'], ['id', 'eq', $dialog_id, 'i']]);
 
 			if ($receipt)
 			{
 				$this->update('inbox', array(
 					'receipt' => $now
-				), 'receipt = 0 AND uid = ' . $inbox_dialog['sender_uid'] . ' AND dialog_id = ' . intval($dialog_id));
+				), [['receipt', 'eq', 0], ['uid', 'eq', $inbox_dialog['sender_uid'], 'i'], ['dialog_id', 'eq', $dialog_id, 'i']]);
 			}
 		}
 
@@ -166,11 +166,12 @@ class message_class extends AWS_MODEL
 			return false;
 		}
 
+		$uids = array($inbox_dialog['sender_uid'], $inbox_dialog['recipient_uid']);
 		$this->update('inbox_dialog', array(
-			'sender_count' => $this->count('inbox', 'uid IN(' . $inbox_dialog['sender_uid'] . ', ' . $inbox_dialog['recipient_uid'] . ') AND sender_remove = 0 AND dialog_id = ' . intval($dialog_id)),
-			'recipient_count' => $this->count('inbox', 'uid IN(' . $inbox_dialog['sender_uid'] . ', ' . $inbox_dialog['recipient_uid'] . ') AND recipient_remove = 0 AND dialog_id = ' . intval($dialog_id)),
+			'sender_count' => $this->count('inbox', [['uid', 'in', $uids, 'i'], ['sender_remove', 'eq', 0], ['dialog_id', 'eq', $dialog_id, 'i']]),
+			'recipient_count' => $this->count('inbox', [['uid', 'in', $uids, 'i'], ['recipient_remove', 'eq', 0], ['dialog_id', 'eq', $dialog_id, 'i']]),
 			'update_time' => fake_time()
-		), 'id = ' . intval($dialog_id));
+		), ['id', 'eq', $dialog_id, 'i']);
 
 		if ($inbox_dialog['sender_uid'] == $uid)
 		{
@@ -184,12 +185,12 @@ class message_class extends AWS_MODEL
 
 	public function get_dialog_by_id($dialog_id)
 	{
-		return $this->fetch_row('inbox_dialog', 'id = ' . intval($dialog_id));
+		return $this->fetch_row('inbox_dialog', ['id', 'eq', $dialog_id, 'i']);
 	}
 
 	public function get_message_by_dialog_id($dialog_id)
 	{
-		if ($inbox = $this->fetch_all('inbox', 'dialog_id = ' . intval($dialog_id), 'id DESC'))
+		if ($inbox = $this->fetch_all('inbox', ['dialog_id', 'eq', $dialog_id, 'i'], 'id DESC'))
 		{
 			foreach ($inbox AS $key => $val)
 			{
@@ -214,11 +215,11 @@ class message_class extends AWS_MODEL
 
 			$this->update('inbox_dialog', array(
 				'sender_count' => 0
-			), 'sender_uid = ' . intval($uid) . ' AND id = ' . intval($dialog_id));
+			), [['sender_uid', 'eq', $uid, 'i'], ['id', 'eq', $dialog_id, 'i']]);
 
 			$this->update('inbox', array(
 				'sender_remove' => 1
-			), 'uid IN (' . $inbox_dialog['sender_uid'] . ', ' . $inbox_dialog['recipient_uid'] . ') AND dialog_id = ' . intval($dialog_id));
+			), [['uid', 'in', [$inbox_dialog['sender_uid'], $inbox_dialog['recipient_uid']], 'i'], ['dialog_id', 'eq', $dialog_id, 'i']]);
 		}
 
 		if ($inbox_dialog['recipient_uid'] == $uid)
@@ -227,11 +228,11 @@ class message_class extends AWS_MODEL
 
 			$this->update('inbox_dialog', array(
 				'recipient_count' => 0
-			), 'recipient_uid = ' . intval($uid) . ' AND id = ' . intval($dialog_id));
+			), [['recipient_uid', 'eq', $uid, 'i'], ['id', 'eq', $dialog_id, 'i']]);
 
 			$this->update('inbox', array(
 				'recipient_remove' => 1
-			), 'uid IN (' . $inbox_dialog['sender_uid'] . ', ' . $inbox_dialog['recipient_uid'] . ') AND dialog_id = ' . intval($dialog_id));
+			), [['uid', 'in', [$inbox_dialog['sender_uid'], $inbox_dialog['recipient_uid']], 'i'], ['dialog_id', 'eq', $dialog_id, 'i']]);
 		}
 
 		$this->model('account')->update_inbox_unread($uid);
@@ -241,7 +242,11 @@ class message_class extends AWS_MODEL
 
 	public function get_inbox_message($page = 1, $limit = 10, $uid = null)
 	{
-		return $this->fetch_page('inbox_dialog', '(sender_uid = ' . intval($uid) . ' AND sender_count > 0) OR (recipient_uid = ' . intval($uid) . ' AND recipient_count > 0)', 'update_time DESC', $page, $limit);
+		return $this->fetch_page('inbox_dialog', [
+			[['sender_uid', 'eq', $uid, 'i'], ['sender_count', 'gt', 0]],
+			'or',
+			[['recipient_uid', 'eq', $uid, 'i'], ['recipient_count', 'gt', 0]],
+		], 'update_time DESC', $page, $limit);
 	}
 
 	public function get_last_messages($dialog_ids)
@@ -253,7 +258,7 @@ class message_class extends AWS_MODEL
 
 		foreach ($dialog_ids as $dialog_id)
 		{
-			$dialog_message = $this->fetch_row('inbox', 'dialog_id = ' . intval($dialog_id), 'id DESC');
+			$dialog_message = $this->fetch_row('inbox', ['dialog_id', 'eq', $dialog_id, 'i'], 'id DESC');
 
 			$last_message[$dialog_id] = truncate_text($this->decrypt($dialog_message['message']), 60);
 		}
@@ -263,13 +268,17 @@ class message_class extends AWS_MODEL
 
 	public function get_dialog_by_user($sender_uid, $recipient_uid)
 	{
-		return $this->fetch_row('inbox_dialog', "(`sender_uid` = " . intval($sender_uid) . " AND `recipient_uid` = " . intval($recipient_uid) . ") OR (`recipient_uid` = " . intval($sender_uid) . " AND `sender_uid` = " . intval($recipient_uid) . ")");
+		return $this->fetch_row('inbox_dialog', [
+			[['sender_uid', 'eq', $sender_uid, 'i'], ['recipient_uid', 'eq', $recipient_uid, 'i']],
+			'or',
+			[['recipient_uid', 'eq', $sender_uid, 'i'], ['sender_uid', 'eq', $recipient_uid, 'i']],
+		]);
 	}
 
 	public function removed_message_clean()
 	{
-		$this->delete('inbox', 'sender_remove = 1 AND recipient_remove = 1');
-		$this->delete('inbox_dialog', 'sender_count = 0 AND recipient_count = 0');
+		$this->delete('inbox', [['sender_remove', 'eq', 1], ['recipient_remove', 'eq', 1]]);
+		$this->delete('inbox_dialog', [['sender_count', 'eq', 0], ['recipient_count', 'eq', 0]]);
 	}
 
 	public function delete_expired_messages()
@@ -285,7 +294,7 @@ class message_class extends AWS_MODEL
 		{
 			$time_before = 0;
 		}
-		$this->delete('inbox', 'add_time < ' . $time_before);
+		$this->delete('inbox', ['add_time', 'lt', $time_before]);
 	}
 
 }

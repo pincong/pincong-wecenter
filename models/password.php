@@ -104,7 +104,7 @@ class password_class extends AWS_MODEL
 
 	public function change_password($uid, $scrambled_password, $new_scrambled_password, $new_client_salt)
 	{
-		if (!$user_info = $this->fetch_row('users', 'uid = ' . intval($uid)))
+		if (!$user_info = $this->fetch_row('users', ['uid', 'eq', $uid, 'i']))
 		{
 			return false;
 		}
@@ -123,7 +123,7 @@ class password_class extends AWS_MODEL
 			'password' => $this->hash($new_scrambled_password),
 			'salt' => $new_client_salt,
 			'password_version' => 2
-		), 'uid = ' . intval($uid));
+		), ['uid', 'eq', $uid, 'i']);
 	}
 
 }
