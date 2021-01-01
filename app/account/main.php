@@ -38,8 +38,6 @@ class main extends AWS_CONTROLLER
 
 		$this->model('login')->logout();
 
-		$this->model('admin')->admin_logout();
-
 		{
 			HTTP::redirect($return_url);
 		}

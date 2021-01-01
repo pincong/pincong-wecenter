@@ -113,6 +113,37 @@ class core_auth
 		return false;
 	}
 
+	public function is_admin()
+	{
+		if ($token = HTTP::get_cookie('user_token'))
+		{
+			if ($this->_get_payload_from_token($payload, $token))
+			{
+				if ($payload['admin'])
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public function admin_authorize()
+	{
+		if ($token = HTTP::get_cookie('user_token'))
+		{
+			if ($this->_get_payload_from_token($payload, $token))
+			{
+				if ($token = $this->_create_token(array('uid' => $payload['uid'], 'admin' => 1)))
+				{
+					$this->send_token($token);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public function wipe_cookie()
 	{
 		HTTP::set_cookie('user_login', '', time() - 3600);

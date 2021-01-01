@@ -53,14 +53,9 @@ class main extends AWS_ADMIN_CONTROLLER
 
     public function login_action()
     {
-        if (AWS_APP::session()->admin_login)
+        if (AWS_APP::auth()->is_admin())
         {
-            $admin_info = json_decode(AWS_APP::crypt()->decode(AWS_APP::session()->admin_login), true);
-
-            if ($admin_info['uid'])
-            {
-                HTTP::redirect('/admin/');
-            }
+            HTTP::redirect('/admin/');
         }
 
         TPL::import_css('admin/css/login.css');

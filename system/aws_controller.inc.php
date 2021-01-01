@@ -28,23 +28,10 @@ class AWS_CONTROLLER
 
 	public function __construct($process_setup = true)
 	{
-		// 从 Session 中获取当前用户 User ID
-		if ($uid = AWS_APP::user()->get_session_info('uid'))
+		if (AWS_APP::auth()->authenticate($this->user_info))
 		{
-			$this->user_info = $this->model('account')->get_user_and_group_info_by_uid($uid);
-			if (!$this->user_info)
-			{
-				// 清除 Session Cookie
-				$this->model('login')->logout();
-			}
-			else
-			{
-				$this->user_id = $uid;
-			}
-		}
+			$this->user_id = $this->user_info['uid'];
 
-		if ($this->user_info)
-		{
 			if ($this->user_info['forbidden'] OR $this->user_info['flagged'] > 0)
 			{
 				$this->model('login')->logout();
@@ -257,12 +244,8 @@ class AWS_ADMIN_CONTROLLER extends AWS_CONTROLLER
 			return true;
 		}
 
-		$admin_info = json_decode(AWS_APP::crypt()->decode(AWS_APP::session()->admin_login), true);
-
-		if (!$admin_info OR $admin_info['uid'] != $this->user_id)
+		if (!AWS_APP::auth()->is_admin())
 		{
-			unset(AWS_APP::session()->admin_login);
-
 			if ($_POST['_post_type'] == 'ajax')
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('会话超时, 请重新登录')));

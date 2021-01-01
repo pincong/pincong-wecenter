@@ -36,7 +36,6 @@ class AWS_APP
 	private static $lang;
 	private static $session;
 	private static $captcha;
-	private static $user;
 	private static $crypt;
 	private static $token;
 	private static $auth;
@@ -73,6 +72,8 @@ class AWS_APP
 			$access_rule = $handle_controller->get_access_rule();
 		}
 
+		$uid = $handle_controller->user_id;
+
 		// 判断访问规则使用白名单还是黑名单, 默认使用白名单
 		// 白名单: $access_rule['actions'] 以外的都不允许
 		// 黑名单: $access_rule['actions'] 以外的都允许
@@ -83,7 +84,7 @@ class AWS_APP
 				if (isset($access_rule['actions']) AND in_array(load_class('core_uri')->action, $access_rule['actions']))
 				{
 					// action 在黑名单中, 不允许
-					self::check_login($access_rule['redirect']);
+					self::check_login($uid, $access_rule['redirect']);
 				}
 			}
 			else // 默认使用白名单
@@ -91,17 +92,41 @@ class AWS_APP
 				if (!isset($access_rule['actions']) OR !in_array(load_class('core_uri')->action, $access_rule['actions']))
 				{
 					// action 不在白名单中, 不允许
-					self::check_login($access_rule['redirect']);
+					self::check_login($uid, $access_rule['redirect']);
 				}
 			}
 		}
 		else
 		{
-			self::check_login();
+			self::check_login($uid);
 		}
 
 		// 执行
 		$handle_controller->$action_method();
+	}
+
+	/**
+	 * 检查用户登录状态
+	 *
+	 * 检查用户登录状态并带领用户进入相关操作
+	 */
+	private static function check_login($uid, $redirect = true)
+	{
+		if (!$uid)
+		{
+			if ($redirect === false) // null 也跳转
+			{
+				HTTP::error_403();
+			}
+			elseif (defined('IN_AJAX') OR $_POST['_post_type'] == 'ajax')
+			{
+				H::ajax_json_output(self::RSM(null, -1, AWS_APP::lang()->_t('会话超时, 请重新登录')));
+			}
+			else
+			{
+				HTTP::redirect('/login/');
+			}
+		}
 	}
 
 	/**
@@ -253,30 +278,6 @@ class AWS_APP
 	}
 
 	/**
-	 * 检查用户登录状态
-	 *
-	 * 检查用户登录状态并带领用户进入相关操作
-	 */
-	public static function check_login($redirect = true)
-	{
-		if (! AWS_APP::user()->get_session_info('uid'))
-		{
-			if ($redirect === false) // null 也跳转
-			{
-				HTTP::error_403();
-			}
-			elseif (defined('IN_AJAX') OR $_POST['_post_type'] == 'ajax')
-			{
-				H::ajax_json_output(self::RSM(null, -1, AWS_APP::lang()->_t('会话超时, 请重新登录')));
-			}
-			else
-			{
-				HTTP::redirect('/login/');
-			}
-		}
-	}
-
-	/**
 	 * 获取系统配置
 	 *
 	 * 调用 core/config.php
@@ -292,24 +293,6 @@ class AWS_APP
 		}
 
 		return self::$config;
-	}
-
-	/**
-	 * 获取用户信息类
-	 *
-	 * 调用 core/user.php
-	 *
-	 * @access	public
-	 * @return	object
-	 */
-	public static function user()
-	{
-		if (!self::$user)
-		{
-			self::$user = load_class('core_user');
-		}
-
-		return self::$user;
 	}
 
 	/**

@@ -46,19 +46,14 @@ class admin_class extends AWS_MODEL
         return $admin_menu;
     }
 
-    public function set_admin_login($uid)
+    public function admin_login()
     {
-        AWS_APP::session()->admin_login = AWS_APP::crypt()->encode(json_encode(array(
-            'uid' => $uid
-        )));
+        AWS_APP::auth()->admin_authorize();
     }
 
     public function admin_logout()
     {
-        if (isset(AWS_APP::session()->admin_login))
-        {
-            unset(AWS_APP::session()->admin_login);
-        }
+        AWS_APP::auth()->wipe_token();
     }
 
     public function get_notifications_texts()

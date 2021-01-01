@@ -115,25 +115,20 @@ class login_class extends AWS_MODEL
 			$expire = time() + $expire;
 		}
 
-		$value = AWS_APP::crypt()->encode(json_encode(array(
-			'uid' => $uid,
-			'password' => $scrambled_password
-		)));
-
-		HTTP::set_cookie('user_login', $value, $expire);
+		AWS_APP::auth()->send_cookie($uid, $scrambled_password, $expire);
 
 		return true;
 	}
 
 	public function cookie_logout()
 	{
-		HTTP::set_cookie('user_login', '', time() - 3600);
+		AWS_APP::auth()->wipe_cookie();
 	}
 
 	public function logout()
 	{
-		$this->cookie_logout();
-		AWS_APP::user()->clear_session_info();
+		AWS_APP::auth()->wipe_cookie();
+		AWS_APP::auth()->wipe_token();
 	}
 
 	public function delete_expired_data()
