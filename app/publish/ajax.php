@@ -152,6 +152,11 @@ class ajax extends AWS_CONTROLLER
 		$_POST['message'] = trim($_POST['message']);
 		$this->validate_body_length($type);
 
+		if ($act == 'modify')
+		{
+			return;
+		}
+
 		$topics_limit_min = intval(get_setting('topics_limit_min'));
 		$topics_limit_max = intval(get_setting('topics_limit_max'));
 
@@ -207,11 +212,6 @@ class ajax extends AWS_CONTROLLER
 
 				$_POST['topics'][$key] = $topic_title;
 			}
-		}
-
-		if ($act == 'modify')
-		{
-			return;
 		}
 
 		if (get_setting('category_enable') == 'N')
