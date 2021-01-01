@@ -194,7 +194,7 @@ class content_class extends AWS_MODEL
 				return false;
 
 			case 'article_reply':
-				$thread_info = $this->get_thread_info_by_id('article', $item_info['article_id']);
+				$thread_info = $this->get_thread_info_by_id('article', $item_info['parent_id']);
 				if ($thread_info)
 				{
 					$thread_info['thread_type'] = 'article';
@@ -299,7 +299,7 @@ class content_class extends AWS_MODEL
 
 			case 'article':
 				$reply_type = 'article_reply';
-				$where = [['article_id', 'eq', $thread_id], ['uid', 'eq', $uid]];
+				$where = [['parent_id', 'eq', $thread_id], ['uid', 'eq', $uid]];
 				break;
 
 			case 'video':

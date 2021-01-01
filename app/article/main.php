@@ -48,7 +48,7 @@ class main extends AWS_CONTROLLER
 			{
 				H::error_404();
 			}
-			$thread_id = $reply['article_id'];
+			$thread_id = $reply['parent_id'];
 		}
 		else
 		{

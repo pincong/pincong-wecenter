@@ -46,9 +46,8 @@ class user_class extends AWS_MODEL
 	private function update_article_comment_count($article_id)
 	{
 		$article_id = intval($article_id);
-		// TODO: rename comments to comment_count
 		$this->update('article', array(
-			'comments' => $this->count('article_reply', ['article_id', 'eq', $article_id])
+			'comments' => $this->count('article_reply', ['parent_id', 'eq', $article_id])
 		), ['id', 'eq', $article_id]);
 	}
 
@@ -151,7 +150,7 @@ class user_class extends AWS_MODEL
 
 		foreach ($article_comments AS $key => $val)
 		{
-			$article_ids[$val['article_id']] = $val['article_id'];
+			$article_ids[$val['parent_id']] = $val['parent_id'];
 		}
 
 		if ($article_ids)

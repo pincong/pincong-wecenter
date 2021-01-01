@@ -48,7 +48,7 @@ class article_class extends AWS_MODEL
 		$list = $this->fetch_page('article_reply', ['uid', 'eq', $uid, 'i'], 'id DESC', $page, $per_page);
 		foreach ($list AS $key => $val)
 		{
-			$parent_ids[] = $val['article_id'];
+			$parent_ids[] = $val['parent_id'];
 		}
 
 		if ($parent_ids)
@@ -56,7 +56,7 @@ class article_class extends AWS_MODEL
 			$parents = $this->model('content')->get_posts_by_ids('article', $parent_ids);
 			foreach ($list AS $key => $val)
 			{
-				$list[$key]['article_info'] = $parents[$val['article_id']];
+				$list[$key]['article_info'] = $parents[$val['parent_id']];
 			}
 		}
 
@@ -123,7 +123,7 @@ class article_class extends AWS_MODEL
 			'message' => htmlspecialchars($message)
 		), ['id', 'eq', $id, 'i']);
 
-		$this->model('content')->log('article', $reply_info['article_id'], 'article_reply', $id, '编辑', $log_uid);
+		$this->model('content')->log('article', $reply_info['parent_id'], 'article_reply', $id, '编辑', $log_uid);
 
 		return true;
 	}
@@ -140,7 +140,7 @@ class article_class extends AWS_MODEL
 			'fold' => 1
 		), ['id', 'eq', $id, 'i']);
 
-		$this->model('content')->log('article', $reply_info['article_id'], 'article_reply', $id, '删除', $log_uid);
+		$this->model('content')->log('article', $reply_info['parent_id'], 'article_reply', $id, '删除', $log_uid);
 
 		return true;
 	}
@@ -177,7 +177,7 @@ class article_class extends AWS_MODEL
 	// 同时获取用户信息
 	public function get_article_comments($thread_ids, $page, $per_page, $order = 'id ASC')
 	{
-		$where = ['article_id', 'in', $thread_ids, 'i'];
+		$where = ['parent_id', 'in', $thread_ids, 'i'];
 
 		if ($list = $this->fetch_page('article_reply', $where, $order, $page, $per_page))
 		{

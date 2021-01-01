@@ -104,7 +104,7 @@ class ajax extends AWS_CONTROLLER
 				$thread_id = $reply_info['parent_id'];
 				break;
 			case 'article':
-				$thread_id = $reply_info['article_id'];
+				$thread_id = $reply_info['parent_id'];
 				break;
 			case 'video':
 				$thread_id = $reply_info['video_id'];

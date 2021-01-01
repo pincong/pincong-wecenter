@@ -4,7 +4,7 @@
 	<div class="aw-mod">
 		<div class="mod-head">
 			<h4 class="aw-hide-txt">
-				<a href="<?php echo url_rewrite(); ?>/article/<?php echo $val['article_id']; ?>"><?php if (!$val['article_info']['title']) { ?><s class="aw-deleted"><?php echo _t('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['article_info']['title'], true); ?><?php } ?></a>
+				<a href="<?php echo url_rewrite(); ?>/article/<?php echo $val['parent_id']; ?>"><?php if (!$val['article_info']['title']) { ?><s class="aw-deleted"><?php echo _t('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['article_info']['title'], true); ?><?php } ?></a>
 			</h4>
 		</div>
 		<div class="mod-body">

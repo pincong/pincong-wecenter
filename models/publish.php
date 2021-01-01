@@ -418,7 +418,7 @@ class publish_class extends AWS_MODEL
 
 		$item_id = $this->insert('article_reply', array(
 			'uid' => $data['uid'],
-			'article_id' => $data['parent_id'],
+			'parent_id' => $data['parent_id'],
 			'message' => htmlspecialchars($data['message']),
 			'add_time' => $now,
 			'at_uid' => $data['at_uid'],
@@ -429,9 +429,8 @@ class publish_class extends AWS_MODEL
 			return false;
 		}
 
-		// TODO: comments 字段改为 comment_count
 		$this->update('article', array(
-			'comments' => $this->count('article_reply', ['article_id', 'eq', $data['parent_id'], 'i']),
+			'comments' => $this->count('article_reply', ['parent_id', 'eq', $data['parent_id'], 'i']),
 			'update_time' => $now,
 			'last_uid' => $data['uid']
 		), ['id', 'eq', $data['parent_id'], 'i']);
