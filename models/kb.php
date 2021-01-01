@@ -53,8 +53,6 @@ class kb_class extends AWS_MODEL
 			'update_time' => $now,
 		));
 
-		$this->model('currency')->process($last_uid, 'KB_ADD', get_setting('currency_system_config_kb_add'), '添加内容到知识库');
-
 		return $id;
 	}
 

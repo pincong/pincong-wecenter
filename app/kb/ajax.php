@@ -86,11 +86,6 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('没有权限')));
 		}
 
-		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_kb_add'))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', get_setting('currency_name'))));
-		}
-
 		$this->do_validate();
 
 		if (!check_repeat_submission($this->user_id, $_POST['title']))

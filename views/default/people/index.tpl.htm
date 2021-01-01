@@ -125,7 +125,7 @@
 										<span><?php echo $this->user['reputation_group_name']; ?></span>
 										<p></p>
 
-									<?php if ($this->user_info['permission']['is_moderator']) { ?>
+									<?php if ($this->user_info['permission']['flag_user'] OR $this->user_info['permission']['forbid_user']) { ?>
 										<span><?php _e('UID'); ?> : <?php echo $this->user['uid']; ?></span>
 										<p></p>
 									<?php } ?>
