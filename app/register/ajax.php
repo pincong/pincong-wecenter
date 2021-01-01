@@ -111,6 +111,8 @@ class ajax extends AWS_CONTROLLER
 		AWS_APP::form()->revoke_csrf_token(H::POST('token'));
 		set_user_operation_last_time('register', 0);
 
+		$this->model('account')->welcome_message($uid, $username);
+
 		$this->model('login')->logout();
 
 		$this->model('login')->cookie_login($uid, $scrambled_password);
