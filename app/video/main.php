@@ -210,6 +210,11 @@ class main extends AWS_CONTROLLER
 			TPL::assign('recommend_posts', $recommend_posts);
 		}
 
+		if ($this->user_id)
+		{
+			TPL::assign('following', $this->model('postfollow')->is_following('video', $video_info['id'], $this->user_id));
+		}
+
 		TPL::output('video/index');
 	}
 

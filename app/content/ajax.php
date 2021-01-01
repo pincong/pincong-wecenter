@@ -26,49 +26,47 @@ class ajax extends AWS_CONTROLLER
 		HTTP::no_cache_header();
 	}
 
-	private function validate_thread($permission_name, $item_type, $item_id, &$item_info_out)
+	private function validate_permission($permission_name, $interval_name)
 	{
 		if (!$this->user_info['permission'][$permission_name])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
 		}
 
-		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
+		if (!check_user_operation_interval($interval_name, $this->user_id, $this->user_info['permission']['interval_' . $interval_name]))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
 		}
+	}
+
+	private function validate_thread($permission_name, $interval_name, $item_type, $item_id, &$item_info_out)
+	{
+		$this->validate_permission($permission_name, $interval_name);
 
 		if (!$item_info_out = $this->model('content')->get_thread_info_by_id($item_type, $item_id))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
 		}
 
-		set_user_operation_last_time('manage', $this->user_id);
+		set_user_operation_last_time($interval_name, $this->user_id);
 	}
 
-	private function validate_reply($permission_name, $item_type, $item_id, &$item_info_out)
+	private function validate_reply($permission_name, $interval_name, $item_type, $item_id, &$item_info_out)
 	{
-		if (!$this->user_info['permission'][$permission_name])
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
-		}
-
-		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
-		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
-		}
+		$this->validate_permission($permission_name, $interval_name);
 
 		if (!$item_info_out = $this->model('content')->get_reply_info_by_id($item_type, $item_id))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
 		}
 
-		set_user_operation_last_time('manage', $this->user_id);
+		set_user_operation_last_time($interval_name, $this->user_id);
 	}
+
 
 	public function change_uid_action()
 	{
-		$this->validate_thread('is_moderator', $_POST['item_type'], $_POST['item_id'], $item_info);
+		$this->validate_thread('is_moderator', 'manage', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		$this->model('content')->change_uid(
 			$_POST['item_type'],
@@ -83,7 +81,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function redirect_action()
 	{
-		$this->validate_thread('redirect_post', $_POST['item_type'], $_POST['item_id'], $item_info);
+		$this->validate_thread('redirect_post', 'manage', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		$redirect_id = intval($_POST['redirect_id']);
 		if ($redirect_id == $item_info['id'] OR $redirect_id == $item_info['redirect_id'])
@@ -113,7 +111,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function unredirect_action()
 	{
-		$this->validate_thread('redirect_post', $_POST['item_type'], $_POST['item_id'], $item_info);
+		$this->validate_thread('redirect_post', 'manage', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		if (!$item_info['redirect_id'])
 		{
@@ -132,7 +130,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function change_category_action()
 	{
-		$this->validate_thread('change_category', $_POST['item_type'], $_POST['item_id'], $item_info);
+		$this->validate_thread('change_category', 'manage', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		if (!$category_id = intval($_POST['category_id']))
 		{
@@ -165,7 +163,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function lock_action()
 	{
-		$this->validate_thread('lock_post', $_POST['item_type'], $_POST['item_id'], $item_info);
+		$this->validate_thread('lock_post', 'manage', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		if (!$item_info['lock'])
 		{
@@ -181,7 +179,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function unlock_action()
 	{
-		$this->validate_thread('lock_post', $_POST['item_type'], $_POST['item_id'], $item_info);
+		$this->validate_thread('lock_post', 'manage', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		if ($item_info['lock'])
 		{
@@ -197,7 +195,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function recommend_action()
 	{
-		$this->validate_thread('recommend_post', $_POST['item_type'], $_POST['item_id'], $item_info);
+		$this->validate_thread('recommend_post', 'manage', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		if (!$item_info['recommend'])
 		{
@@ -213,7 +211,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function unrecommend_action()
 	{
-		$this->validate_thread('recommend_post', $_POST['item_type'], $_POST['item_id'], $item_info);
+		$this->validate_thread('recommend_post', 'manage', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		if ($item_info['recommend'])
 		{
@@ -229,7 +227,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function bump_action()
 	{
-		$this->validate_thread('bump_sink', $_POST['item_type'], $_POST['item_id'], $item_info);
+		$this->validate_thread('bump_sink', 'manage', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		$this->model('content')->bump(
 			$_POST['item_type'],
@@ -242,7 +240,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function sink_action()
 	{
-		$this->validate_thread('bump_sink', $_POST['item_type'], $_POST['item_id'], $item_info);
+		$this->validate_thread('bump_sink', 'manage', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		$this->model('content')->sink(
 			$_POST['item_type'],
@@ -257,7 +255,7 @@ class ajax extends AWS_CONTROLLER
 	// 置顶
 	public function pin_action()
 	{
-		$this->validate_thread('pin_post', $_POST['item_type'], $_POST['item_id'], $item_info);
+		$this->validate_thread('pin_post', 'manage', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		if (!$item_info['sort'])
 		{
@@ -274,7 +272,7 @@ class ajax extends AWS_CONTROLLER
 	// 取消置顶
 	public function unpin_action()
 	{
-		$this->validate_thread('pin_post', $_POST['item_type'], $_POST['item_id'], $item_info);
+		$this->validate_thread('pin_post', 'manage', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		if ($item_info['sort'])
 		{
@@ -291,7 +289,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function fold_reply_action()
 	{
-		$this->validate_reply('fold_post', $_POST['item_type'], $_POST['item_id'], $item_info);
+		$this->validate_reply('fold_post', 'manage', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		if (!$item_info['fold'])
 		{
@@ -325,7 +323,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function unfold_reply_action()
 	{
-		$this->validate_reply('fold_post', $_POST['item_type'], $_POST['item_id'], $item_info);
+		$this->validate_reply('fold_post', 'manage', $_POST['item_type'], $_POST['item_id'], $item_info);
 
 		if ($item_info['fold'])
 		{
@@ -353,6 +351,35 @@ class ajax extends AWS_CONTROLLER
 				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
 			);
 		}
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
+
+	// 关注主题
+	public function follow_action()
+	{
+		$this->validate_thread('follow_thread', 'follow', $_POST['item_type'], $_POST['item_id'], $item_info);
+
+		$this->model('postfollow')->follow(
+			$_POST['item_type'],
+			$_POST['item_id'],
+			$this->user_id
+		);
+
+		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
+	}
+
+	// 关注主题
+	public function unfollow_action()
+	{
+		$this->validate_thread('follow_thread', 'follow', $_POST['item_type'], $_POST['item_id'], $item_info);
+
+		$this->model('postfollow')->unfollow(
+			$_POST['item_type'],
+			$_POST['item_id'],
+			$this->user_id
+		);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
