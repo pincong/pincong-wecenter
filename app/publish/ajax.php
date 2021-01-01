@@ -990,7 +990,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		// 删除回复邀请, 如果有
-		$this->model('question')->answer_question_invite($answer_info['question_id'], $this->user_id);
+		$this->model('invite')->answer_question_invite($answer_info['question_id'], $this->user_id);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}

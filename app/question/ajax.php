@@ -282,12 +282,12 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能邀请自己回复问题')));
 		}
 
-		if ($this->model('question')->has_question_invite($_POST['question_id'], $invite_user_info['uid']))
+		if ($this->model('invite')->has_question_invite($_POST['question_id'], $invite_user_info['uid']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已邀请过该用户')));
 		}
 
-		$this->model('question')->add_invite($_POST['question_id'], $this->user_id, $invite_user_info['uid']);
+		$this->model('invite')->add_invite($_POST['question_id'], $this->user_id, $invite_user_info['uid']);
 
 		$this->model('account')->update_question_invite_count($invite_user_info['uid']);
 
@@ -345,7 +345,7 @@ class ajax extends AWS_CONTROLLER
 
 	public function cancel_question_invite_action()
 	{
-		$this->model('question')->cancel_question_invite($_GET['question_id'], $this->user_id, $_GET['recipients_uid']);
+		$this->model('invite')->cancel_question_invite($_GET['question_id'], $this->user_id, $_GET['recipients_uid']);
 
 		$this->model('account')->update_question_invite_count($_GET['recipients_uid']);
 
@@ -356,7 +356,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		$question_invite_id = intval($_POST['question_invite_id']);
 
-		$this->model('question')->delete_question_invite($question_invite_id, $this->user_id);
+		$this->model('invite')->delete_question_invite($question_invite_id, $this->user_id);
 
 		$this->model('account')->update_question_invite_count($this->user_id);
 
@@ -383,7 +383,7 @@ class ajax extends AWS_CONTROLLER
 		set_user_operation_last_time('focus', $this->user_id);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'type' => $this->model('question')->add_focus_question($_POST['question_id'], $this->user_id)
+			'type' => $this->model('focus')->add_focus_question($_POST['question_id'], $this->user_id)
 		), 1, null));
 	}
 

@@ -137,7 +137,7 @@ class publish_class extends AWS_MODEL
 
 		if ($data['ask_user_id'])
 		{
-			$this->model('question')->add_invite($item_id, $data['uid'], $data['ask_user_id']);
+			$this->model('invite')->add_invite($item_id, $data['uid'], $data['ask_user_id']);
 
 			$this->model('notify')->send($data['uid'], $data['ask_user_id'], notify_class::TYPE_INVITE_QUESTION, notify_class::CATEGORY_QUESTION, $item_id, array(
 				'from_uid' => $data['uid'],
@@ -147,7 +147,7 @@ class publish_class extends AWS_MODEL
 
 		if ($data['auto_focus'])
 		{
-			$this->model('question')->add_focus_question($item_id, $data['uid']);
+			$this->model('focus')->add_focus_question($item_id, $data['uid']);
 		}
 
 		// 记录用户动态
@@ -270,13 +270,13 @@ class publish_class extends AWS_MODEL
 
 		if ($data['auto_focus'])
 		{
-			if (!$this->model('question')->has_focus_question($data['parent_id'], $data['uid']))
+			if (!$this->model('focus')->has_focus_question($data['parent_id'], $data['uid']))
 			{
-				$this->model('question')->add_focus_question($data['parent_id'], $data['uid']);
+				$this->model('focus')->add_focus_question($data['parent_id'], $data['uid']);
 			}
 		}
 
-		if ($focus_uids = $this->model('question')->get_focus_uid_by_question_id($data['parent_id']))
+		if ($focus_uids = $this->model('focus')->get_focus_uid_by_question_id($data['parent_id']))
 		{
 			foreach ($focus_uids as $focus_user)
 			{
@@ -292,7 +292,7 @@ class publish_class extends AWS_MODEL
 		}
 
 		// 删除邀请
-		$this->model('question')->answer_question_invite($data['parent_id'], $data['uid']);
+		$this->model('invite')->answer_question_invite($data['parent_id'], $data['uid']);
 
 		// 记录用户动态
 		$this->model('activity')->log('answer', $item_id, '回答了问题', $data['uid']);

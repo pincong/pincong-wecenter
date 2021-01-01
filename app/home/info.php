@@ -54,7 +54,7 @@ class info extends AWS_CONTROLLER
 		// 注意: $limit分页的第一页是从0开始
 		$limit = intval($_GET['page']) * $per_page .', '. $per_page;
 
-		if ($list = $this->model('question')->get_invite_question_list($this->user_id, $limit));
+		if ($list = $this->model('invite')->get_invite_question_list($this->user_id, $limit));
 		{
 			foreach($list as $key => $val)
 			{
@@ -89,7 +89,7 @@ class info extends AWS_CONTROLLER
 		// 注意: $limit分页的第一页是从0开始
 		$limit = intval($_GET['page']) * $per_page .', '. $per_page;
 
-		if ($list = $this->model('question')->get_user_focus($this->user_id, $limit));
+		if ($list = $this->model('focus')->get_user_focus($this->user_id, $limit));
 		{
 			foreach($list as $key => $val)
 			{

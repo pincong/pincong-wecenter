@@ -167,7 +167,7 @@ class main extends AWS_CONTROLLER
 
 		if ($this->user_id)
 		{
-			TPL::assign('invite_users', $this->model('question')->get_invite_users($question_info['id']));
+			TPL::assign('invite_users', $this->model('invite')->get_invite_users($question_info['id']));
 
 			TPL::assign('user_follow_check', $this->model('follow')->user_follow_check($this->user_id, $question_info['uid']));
 
@@ -184,7 +184,7 @@ class main extends AWS_CONTROLLER
 			TPL::assign('redirected_from', $this->model('content')->get_post_by_id('question', $_GET['rf']));
 		}
 
-		TPL::assign('question_focus', $this->model('question')->has_focus_question($question_info['id'], $this->user_id));
+		TPL::assign('question_focus', $this->model('focus')->has_focus_question($question_info['id'], $this->user_id));
 
 		$question_topics = $this->model('topic')->get_topics_by_item_id($question_info['id'], 'question');
 
