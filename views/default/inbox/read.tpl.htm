@@ -44,7 +44,7 @@
 											<?php echo date_friendly($val['add_time']); ?>
 											<?php if ($val['receipt']) { ?> (<?php _e('对方于 %s 已读', date_friendly($val['receipt'])); ?>)<?php } ?>
 										</p>
-										<i class="i-private-reply-triangle"></i>
+										<i class="i-speech-bubble-triangle"></i>
 									</div>
 								</li>
 								<?php } else { ?>
@@ -58,7 +58,7 @@
 											<span class="pull-right aw-reply"><a href="javascript:;" onclick="$.scrollTo(($('#recipient_form').offset()['top']) - 20, 600, {queue:true});$('.message').focus();"><?php _e('回复'); ?></a></span>
 											<?php echo date_friendly($val['add_time']); ?>
 										</p>
-										<i class="i-private-reply-triangle"></i>
+										<i class="i-speech-bubble-triangle"></i>
 									</div>
 								</li>
 								<?php } ?>
