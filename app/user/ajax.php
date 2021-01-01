@@ -27,7 +27,7 @@ class ajax extends AWS_CONTROLLER
 		HTTP::no_cache_header();
 	}
 
-	private function get_user_info($uid, &$user_info)
+	private function get_user_info_and_check_permission($uid, &$user_info)
 	{
 		if ($uid == $this->user_id)
 		{
@@ -45,6 +45,16 @@ class ajax extends AWS_CONTROLLER
 		{
 			// 普通用户不能处理比自己声望高的用户
 			if (intval($this->user_info['reputation']) <= intval($user_info['reputation']))
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+			}
+		}
+
+		if (!$this->user_info['permission']['is_moderator'])
+		{
+			// 普通用户不能处理受保护的用户
+			$user_group = $this->model('usergroup')->get_user_group_by_user_info($user_info);
+			if ($user_group AND $user_group['permission']['protected'])
 			{
 				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
 			}
@@ -96,50 +106,17 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		$status = intval($_POST['status']);
+		if (!in_array($status, array(0, 1)))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('操作失败')));
+		}
+
 		$this->get_reason_and_detail($status, $reason, $detail, $log_detail);
 
 		set_user_operation_last_time('manage', $this->user_id);
 
 		$uid = intval($_POST['uid']);
-		$this->get_user_info($uid, $user_info);
-
-		if ($status)
-		{
-			if ($user_info['forbidden'])
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('该用户已经被封禁')));
-			}
-
-			$user_group = $this->model('usergroup')->get_user_group_by_user_info($user_info);
-			if ($user_group)
-			{
-				$banning_type = $user_group['permission']['banning_type'];
-			}
-
-			if ($banning_type == 'protected')
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('操作失败')));
-			}
-			elseif ($banning_type == 'permanent')
-			{
-				$status = 3;
-			}
-			elseif ($banning_type == 'temporary')
-			{
-				$status = 4;
-			}
-			else
-			{
-				$status = 1;
-			}
-		}
-		else
-		{
-			if (!$user_info['forbidden'])
-			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('该用户没有被封禁')));
-			}
-		}
+		$this->get_user_info_and_check_permission($uid, $user_info);
 
 		$this->model('user')->forbid_user_by_uid(
 			$uid,
@@ -179,7 +156,7 @@ class ajax extends AWS_CONTROLLER
 		set_user_operation_last_time('manage', $this->user_id);
 
 		$uid = intval($_POST['uid']);
-		$this->get_user_info($uid, $user_info);
+		$this->get_user_info_and_check_permission($uid, $user_info);
 
 		if ($status > 0 AND !$this->user_info['permission']['is_moderator'])
 		{
@@ -299,7 +276,7 @@ class ajax extends AWS_CONTROLLER
 		set_user_operation_last_time('manage', $this->user_id);
 
 		$uid = intval($_POST['uid']);
-		$this->get_user_info($uid, $user_info);
+		$this->get_user_info_and_check_permission($uid, $user_info);
 
 		$input_group_id = intval($_POST['group_id']);
 		$group_id = null;

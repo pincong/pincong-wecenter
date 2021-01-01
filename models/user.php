@@ -247,68 +247,13 @@ class user_class extends AWS_MODEL
 		$this->delete('users', 'uid = ' . ($uid));
 	}
 
-	public function auto_delete_users()
-	{
-		$days = intval(get_setting('days_delete_forbidden_users'));
-		if (!$days)
-		{
-			return;
-		}
-		$seconds = $days * 24 * 3600;
-		$time_before = real_time() - $seconds;
-		if ($time_before < 0)
-		{
-			$time_before = 0;
-		}
-
-		$where = 'forbidden = 3 AND user_update_time < ' . $time_before;
-		$users = $this->fetch_all('users', $where);
-		if (!$users)
-		{
-			return;
-		}
-
-		foreach ($users AS $key => $val)
-		{
-			$this->delete_user_by_uid($val['uid']);
-		}
-	}
-
-	public function auto_unforbid_users()
-	{
-		$days = intval(get_setting('days_unforbid_users'));
-		if (!$days)
-		{
-			return;
-		}
-		$seconds = $days * 24 * 3600;
-		$time_before = real_time() - $seconds;
-		if ($time_before < 0)
-		{
-			$time_before = 0;
-		}
-
-		$where = 'forbidden = 4 AND user_update_time < ' . $time_before;
-		$users = $this->fetch_all('users', $where);
-		if (!$users)
-		{
-			return;
-		}
-
-		foreach ($users AS $key => $val)
-		{
-			$this->forbid_user_by_uid($val['uid'], 0);
-		}
-	}
-
-
 
 	// ===== 封禁/标记相关 =====
 
 	public function auto_forbid_user($uid, $forbidden, $agree_count, $reputation, $auto_banning_type)
 	{
-		// 自动封禁/解封, $forbidden == 2 表示已被系统自动封禁
-		if (!$forbidden OR $forbidden == 2)
+		// 自动封禁/解封, $forbidden == -1 表示已被系统自动封禁
+		if (!$forbidden OR $forbidden == -1)
 		{
 			$auto_banning_agree_count = intval(get_setting('auto_banning_agree_count'));
 			$auto_banning_reputation = intval(get_setting('auto_banning_reputation'));
@@ -320,12 +265,12 @@ class user_class extends AWS_MODEL
 				{
 					if (!$forbidden) // 满足封禁条件且未被封禁的用户
 					{
-						$fields = array('forbidden' => 2);
+						$fields = array('forbidden' => -1);
 					}
 				}
 				else
 				{
-					if ($forbidden == 2) // 不满足封禁条件已被封禁的用户
+					if ($forbidden == -1) // 不满足封禁条件已被封禁的用户
 					{
 						$fields = array('forbidden' => 0);
 					}
@@ -338,12 +283,12 @@ class user_class extends AWS_MODEL
 				{
 					if (!$forbidden) // 满足封禁条件且未被封禁的用户
 					{
-						$fields = array('forbidden' => 2);
+						$fields = array('forbidden' => -1);
 					}
 				}
 				else
 				{
-					if ($forbidden == 2) // 不满足封禁条件已被封禁的用户
+					if ($forbidden == -1) // 不满足封禁条件已被封禁的用户
 					{
 						$fields = array('forbidden' => 0);
 					}

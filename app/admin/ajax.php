@@ -587,7 +587,6 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			'bump_sink',
 			'change_category',
 			'protected',
-			'banning_type',
 			'restricted_categories',
 			'interval_post',
 			'interval_modify',
