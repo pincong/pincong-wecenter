@@ -41,21 +41,24 @@ class ajax extends AWS_CONTROLLER
 		HTTP::no_cache_header();
 	}
 
-	public function remove_question_action()
+	private function get_anonymous_uid($type)
 	{
-		if (!$this->user_info['permission']['is_administrator'])
+		if (!$anonymous_uid = $this->model('anonymous')->get_anonymous_uid())
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有删除问题的权限')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('本站未开启匿名功能')));
 		}
 
-		if ($question_info = $this->model('content')->get_thread_info_by_id('question', $_POST['question_id']))
+		if (!$this->model('anonymous')->check_rate_limit($type, $anonymous_uid))
 		{
-			$this->model('question')->clear_question($question_info['id']);
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日匿名额度已经用完')));
 		}
 
-		H::ajax_json_output(AWS_APP::RSM(array(
-			'url' => get_js_url('/')
-		), 1, null));
+		if (!$this->model('anonymous')->check_spam($anonymous_uid))
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('检测到滥用行为, 匿名功能暂时关闭')));
+		}
+
+		return $anonymous_uid;
 	}
 
 	public function save_answer_discussion_action()
@@ -65,7 +68,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
 		}
 
-		if ($_POST['anonymous'])// AND !$this->user_info['permission']['reply_anonymously'])
+		if ($_POST['anonymous'] AND !$this->user_info['permission']['reply_anonymously'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不能匿名')));
 		}
@@ -124,10 +127,19 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能讨论已删除的问题')));
 		}
 
+		if ($_POST['anonymous'])
+		{
+			$publish_uid = $this->get_anonymous_uid('answer_discussion');
+		}
+		else
+		{
+			$publish_uid = $this->user_id;
+		}
+
         set_repeat_submission_digest($this->user_id, $message);
 		set_user_operation_last_time('publish', $this->user_id);
 
-		$this->model('answer')->insert_answer_discussion($_GET['answer_id'], $this->user_id, $message);
+		$this->model('answer')->insert_answer_discussion($_GET['answer_id'], $publish_uid, $message);
 
 		if (get_setting('discussion_bring_top') == 'Y')
 		{
@@ -147,7 +159,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
 		}
 
-		if ($_POST['anonymous'])// AND !$this->user_info['permission']['reply_anonymously'])
+		if ($_POST['anonymous'] AND !$this->user_info['permission']['reply_anonymously'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不能匿名')));
 		}
@@ -201,10 +213,19 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能讨论已删除的问题')));
 		}
 
+		if ($_POST['anonymous'])
+		{
+			$publish_uid = $this->get_anonymous_uid('question_discussion');
+		}
+		else
+		{
+			$publish_uid = $this->user_id;
+		}
+
         set_repeat_submission_digest($this->user_id, $message);
 		set_user_operation_last_time('publish', $this->user_id);
 
-		$this->model('question')->insert_question_discussion($_GET['question_id'], $this->user_id, $message);
+		$this->model('question')->insert_question_discussion($_GET['question_id'], $publish_uid, $message);
 
 		if (get_setting('discussion_bring_top') == 'Y')
 		{
@@ -217,6 +238,23 @@ class ajax extends AWS_CONTROLLER
 		), 1, null));
 	}
 
+
+	public function remove_question_action()
+	{
+		if (!$this->user_info['permission']['is_administrator'])
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有删除问题的权限')));
+		}
+
+		if ($question_info = $this->model('content')->get_thread_info_by_id('question', $_POST['question_id']))
+		{
+			$this->model('question')->clear_question($question_info['id']);
+		}
+
+		H::ajax_json_output(AWS_APP::RSM(array(
+			'url' => get_js_url('/')
+		), 1, null));
+	}
 
 	public function save_invite_action()
 	{
