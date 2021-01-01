@@ -135,6 +135,12 @@ class core_uri
 			$this->controller = 'main';
 			$this->app = $parts[0];
 		}
+		else if ($num_parts == 3)
+		{
+			$this->action = $parts[2];
+			$this->controller = $parts[1];
+			$this->app = $parts[0];
+		}
 		else
 		{
 			$this->action = array_pop($parts);
