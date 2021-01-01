@@ -1,19 +1,28 @@
 <?php TPL::include('global/header.tpl.htm'); ?>
 
 <div class="aw-container-wrap">
+	<?php if ($this->redirected_from) { ?>
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-12">
-				<div class="aw-global-tips">
-					<?php if ($this->redirect_message) { ?>
-					<div class="alert alert-warning fade in">
-						<?php echo FORMAT::text($this->redirect_message); ?>
-					</div>
-					<?php } ?>
+			<div class="col-sm-12 aw-global-tips">
+				<div class="alert alert-warning fade in">
+					<a href="<?php echo url_rewrite(); ?>/topic/topic_id-<?php echo $this->redirected_from['topic_id']; ?>"><?php echo FORMAT::text($this->redirected_from['topic_title']); ?></a> <?php _e('已与当前话题合并'); ?>
 				</div>
 			</div>
 		</div>
 	</div>
+	<?php } ?>
+	<?php if ($this->redirect_info) { ?>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12 aw-global-tips">
+				<div class="alert alert-danger fade in">
+					<?php _e('当前话题已被合并到'); ?>: <a href="<?php echo url_rewrite(); ?>/topic/topic_id-<?php echo $this->redirect_info['topic_id']; ?>__rf-<?php echo $this->topic_info['topic_id']; ?>"><?php echo FORMAT::text($this->redirect_info['topic_title']); ?></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php } ?>
 
 	<div class="container">
 		<div class="row">

@@ -105,24 +105,28 @@ class main extends AWS_CONTROLLER
 			HTTP::error_404();
 		}
 
-		if ($topic_info['merged_id'] AND $topic_info['merged_id'] != $topic_info['topic_id'])
+		if ($topic_info['merged_id'])
 		{
-			if ($this->model('topic')->get_topic_by_id($topic_info['merged_id']))
+			if ($topic_info['merged_id'] != $topic_info['topic_id'] AND $redirect_info = $this->model('topic')->get_topic_by_id($topic_info['merged_id']))
 			{
-				HTTP::redirect('/topic/topic_id-' . $topic_info['merged_id'] . '__rf-' . $topic_info['topic_id']);
+				if (!$_GET['topic_id'])
+				{
+					// 如果未指定$_GET['topic_id']才自动跳转
+					HTTP::redirect('/topic/topic_id-' . $topic_info['merged_id'] . '__rf-' . $topic_info['topic_id']);
+					return;
+				}
+				TPL::assign('redirect_info', $redirect_info);
 			}
 			else
 			{
+				// 删除无效合并
 				$this->model('topic')->remove_merge_topic($topic_info['topic_id'], $topic_info['merged_id']);
 			}
 		}
 
-		if ($_GET['rf'] AND is_digits($_GET['rf']))
+		if ($_GET['rf'])
 		{
-			if ($from_topic = $this->model('topic')->get_topic_by_id($_GET['rf']))
-			{
-				$redirect_message = AWS_APP::lang()->_t('话题 (%s) 已与当前话题合并', $from_topic['topic_title']);
-			}
+			TPL::assign('redirected_from', $this->model('topic')->get_topic_by_id($_GET['rf']));
 		}
 
 		$url_param[] = 'topic_id-' . $topic_info['topic_id'];
@@ -191,8 +195,6 @@ class main extends AWS_CONTROLLER
 			'total_rows' => $this->model('posts')->get_posts_list_total(),
 			'per_page' => S::get_int('contents_per_page')
 		)));
-
-		TPL::assign('redirect_message', $redirect_message);
 
 		TPL::output('topic/index');
 	}
