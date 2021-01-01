@@ -51,7 +51,7 @@ class main extends AWS_CONTROLLER
 		if (S::get('category_enable') != 'N')
 		{
 			TPL::assign('category_current_id', $thread_info['category_id']);
-			TPL::assign('category_list', $this->model('category')->get_category_list_by_user_permission($this->user_info['permission']));
+			TPL::assign('category_list', $this->model('category')->get_allowed_categories($this->user_info));
 		}
 
 		TPL::import_js('js/app/publish.js');
@@ -94,7 +94,7 @@ class main extends AWS_CONTROLLER
 		if (S::get('category_enable') != 'N')
 		{
 			TPL::assign('category_current_id', $thread_info['category_id']);
-			TPL::assign('category_list', $this->model('category')->get_category_list_by_user_permission($this->user_info['permission']));
+			TPL::assign('category_list', $this->model('category')->get_allowed_categories($this->user_info));
 		}
 
 		TPL::import_js('js/app/publish.js');
@@ -137,7 +137,7 @@ class main extends AWS_CONTROLLER
 		if (S::get('category_enable') != 'N')
 		{
 			TPL::assign('category_current_id', $thread_info['category_id']);
-			TPL::assign('category_list', $this->model('category')->get_category_list_by_user_permission($this->user_info['permission']));
+			TPL::assign('category_list', $this->model('category')->get_allowed_categories($this->user_info));
 		}
 
 		TPL::import_js('js/app/publish.js');

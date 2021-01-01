@@ -68,70 +68,66 @@ class category_class extends AWS_MODEL
 		return $category_list[$category_id];
 	}
 
-	public function check_user_permission($category_id, &$user_permission)
+	private function is_restricted($category_id, $restricted_ids)
 	{
-		$restricted_ids = $user_permission['restricted_categories'];
 		if (!$restricted_ids)
+		{
+			return false;
+		}
+		$restricted_ids = array_map('intval', explode(',', $restricted_ids));
+		if (in_array(intval($category_id), $restricted_ids))
 		{
 			return true;
 		}
+		return false;
+	}
 
-		$category_id = intval($category_id);
-
-		$restricted_ids = explode(',', $restricted_ids);
-		foreach ($restricted_ids AS $id)
+	public function check_change_category_permission($new_category_id, $old_category_id, &$user_info)
+	{
+		if (!is_array($user_info) OR !is_array($user_info['permission']))
 		{
-			$id = intval($id);
-			if (!$id)
-			{
-				continue;
-			}
-			if ($category_id == $id)
-			{
-				return false;
-			}
+			return false;
 		}
-
+		if ($this->is_restricted($new_category_id, $user_info['permission']['restricted_categories']))
+		{
+			return false;
+		}
+		if ($this->is_restricted($new_category_id, $user_info['permission']['restricted_categories_move_to']))
+		{
+			return false;
+		}
+		if ($this->is_restricted($old_category_id, $user_info['permission']['restricted_categories_move_from']))
+		{
+			return false;
+		}
 		return true;
 	}
 
-	public function check_user_permission_reply($category_id, &$user_permission)
+	public function check_user_permission($category_id, &$user_info)
 	{
-		$restricted_ids = $user_permission['restricted_categories_reply'];
-		if (!$restricted_ids)
+		if (!is_array($user_info) OR !is_array($user_info['permission']))
 		{
-			return true;
+			return false;
 		}
-
-		$category_id = intval($category_id);
-
-		$restricted_ids = explode(',', $restricted_ids);
-		foreach ($restricted_ids AS $id)
-		{
-			$id = intval($id);
-			if (!$id)
-			{
-				continue;
-			}
-			if ($category_id == $id)
-			{
-				return false;
-			}
-		}
-
-		return true;
+		return !$this->is_restricted($category_id, $user_info['permission']['restricted_categories']);
 	}
 
-	public function get_category_list_by_user_permission(&$user_permission)
+	public function check_user_permission_reply($category_id, &$user_info)
 	{
-		$category_list = $this->get_category_list();
+		if (!is_array($user_info) OR !is_array($user_info['permission']))
+		{
+			return false;
+		}
+		return !$this->is_restricted($category_id, $user_info['permission']['restricted_categories_reply']);
+	}
 
-		$restricted_ids = $user_permission['restricted_categories'];
+
+	private function unset_categories(&$category_list, $restricted_ids)
+	{
 		if (!$restricted_ids)
 		{
-			return $category_list;
+			return;
 		}
-
 		$restricted_ids = explode(',', $restricted_ids);
 		foreach ($restricted_ids AS $id)
 		{
@@ -148,7 +144,28 @@ class category_class extends AWS_MODEL
 				}
 			}
 		}
+	}
 
+	public function get_allowed_categories(&$user_info)
+	{
+		if (!is_array($user_info) OR !is_array($user_info['permission']))
+		{
+			return array();
+		}
+		$category_list = $this->get_category_list();
+		$this->unset_categories($category_list, $user_info['permission']['restricted_categories']);
+		return $category_list;
+	}
+
+	public function get_allowed_categories_change(&$user_info)
+	{
+		if (!is_array($user_info) OR !is_array($user_info['permission']))
+		{
+			return array();
+		}
+		$category_list = $this->get_category_list();
+		$this->unset_categories($category_list, $user_info['permission']['restricted_categories']);
+		$this->unset_categories($category_list, $user_info['permission']['restricted_categories_move_to']);
 		return $category_list;
 	}
 

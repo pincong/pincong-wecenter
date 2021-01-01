@@ -137,27 +137,27 @@ class ajax extends AWS_CONTROLLER
 	{
 		$this->validate_thread('change_category', 'manage', $_POST['item_type'], $_POST['item_id'], $item_info);
 
-		if (!$category_id = intval($_POST['category_id']))
+		if (!$new_category_id = intval($_POST['category_id']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('分类不存在')));
 		}
 
-		if (!$this->model('category')->check_user_permission($category_id, $this->user_info['permission']))
+		if (!$this->model('category')->check_change_category_permission($new_category_id, $item_info['category_id'], $this->user_info))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你的声望还不能在这个分类发言')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能变更到这个分类')));
 		}
 
-		if (!$this->model('category')->category_exists($category_id))
+		if (!$this->model('category')->category_exists($new_category_id))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('分类不存在')));
 		}
 
-		if ($item_info['category_id'] != $category_id)
+		if ($item_info['category_id'] != $new_category_id)
 		{
 			$this->model('content')->change_category(
 				$_POST['item_type'],
 				$_POST['item_id'],
-				$category_id,
+				$new_category_id,
 				$item_info['category_id'],
 				(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null)
 			);
