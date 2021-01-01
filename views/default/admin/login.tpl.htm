@@ -11,20 +11,32 @@
 <meta name="format-detection" content="telephone=no" />
 <title><?php echo $this->page_title; ?></title>
 
-<link type="text/css" rel="stylesheet" href="<?php echo G_STATIC_URL; ?>/css/bootstrap.css?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>" />
-<link type="text/css" rel="stylesheet" href="<?php echo G_STATIC_URL; ?>/css/icon.css?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>" />
-<link type="text/css" rel="stylesheet" href="<?php echo G_STATIC_URL; ?>/admin/css/login.css?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>" />
+<link rel="stylesheet" href="<?php echo G_STATIC_URL; ?>/css/bootstrap.css" />
+<link rel="stylesheet" href="<?php echo G_STATIC_URL; ?>/css/icon.css" />
+<link rel="stylesheet" href="<?php echo G_STATIC_URL; ?>/admin/css/login.css?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>" />
+
+<?php if (is_array($this->_import_css_files)) { ?>
+<?php foreach ($this->_import_css_files AS $import_css) { ?>
+<link rel="stylesheet" href="<?php echo $import_css; ?>?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>" />
+<?php } ?>
+<?php } ?>
+
 <script type="text/javascript">
 var G_BASE_URL = "<?php echo url_rewrite(); ?>";
 </script>
-<?php if (is_array($this->_import_css_files)) { ?>
-<?php foreach ($this->_import_css_files AS $import_css) { ?>
-<link type="text/css" rel="stylesheet" href="<?php echo $import_css; ?>?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>" />
-<?php } ?>
-<?php } ?>
+
+<script src="<?php echo G_STATIC_URL; ?>/js/jquery.2.js"></script>
+<script src="<?php echo G_STATIC_URL; ?>/js/bootstrap.js"></script>
+<script src="<?php echo G_STATIC_URL; ?>/js/jquery.form.js"></script>
+<script src="<?php echo G_STATIC_URL; ?>/js/hogan.js"></script>
+<script src="<?php echo G_STATIC_URL; ?>/admin/js/framework.js"></script>
+<script src="<?php echo G_STATIC_URL; ?>/admin/js/aws_admin.js?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>"></script>
+<script src="<?php echo G_STATIC_URL; ?>/admin/js/aws_admin_template.js?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>"></script>
+<script src="<?php echo G_STATIC_URL; ?>/admin/js/global.js?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>"></script>
+
 <?php if (is_array($this->_import_js_files)) { ?>
 <?php foreach ($this->_import_js_files AS $import_js) { ?>
-<script type="text/javascript" src="<?php echo $import_js; ?>?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>"></script>
+<script src="<?php echo $import_js; ?>?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>"></script>
 <?php } ?>
 <?php } ?>
 </head>

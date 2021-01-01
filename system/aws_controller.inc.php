@@ -58,26 +58,10 @@ class AWS_CONTROLLER
 		TPL::assign('user_id', $this->user_id);
 		TPL::assign('user_info', $this->user_info);
 
-		// 引入系统 CSS 文件
-		TPL::import_css(array(
-			'css/common.css',
-			'css/link.css',
-		));
-
 		if ($lang = AWS_APP::lang()->get_language())
 		{
 			TPL::import_js('language/' . $lang . '.js');
 		}
-
-		// 引入系统 JS 文件
-		TPL::import_js(array(
-			'js/jquery.2.js',
-			'js/jquery.form.js',
-			'js/framework.js',
-			'js/aws.js',
-			'js/aw_template.js',
-			'js/app.js',
-		));
 
 		// 产生面包屑导航数据
 		$this->crumb(S::get('site_name'));
@@ -160,26 +144,6 @@ class AWS_ADMIN_CONTROLLER extends AWS_CONTROLLER
 		}
 
 		$this->per_page = S::get_int('contents_per_page');
-
-		TPL::import_clean();
-
-		if ($lang = AWS_APP::lang()->get_language())
-		{
-			TPL::import_js('language/' . $lang . '.js');
-		}
-
-		TPL::import_js(array(
-			'js/jquery.2.js',
-			'js/jquery.form.js',
-			'admin/js/aws_admin.js',
-			'admin/js/aws_admin_template.js',
-			'admin/js/framework.js',
-			'admin/js/global.js',
-		));
-
-		TPL::import_css(array(
-			'admin/css/common.css'
-		));
 
 		if (!$this->user_info['permission']['is_administrator'])
 		{

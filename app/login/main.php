@@ -46,7 +46,7 @@ class main extends AWS_CONTROLLER
 
 		$this->crumb(_t('登录'));
 
-		TPL::import_css('css/register.css');
+		TPL::import_css('css/default/register.css');
 
 		TPL::assign('token', AWS_APP::form()->create_csrf_token(600, 'login_index'));
 		TPL::assign('captcha_required', $this->model('login')->is_captcha_required());
@@ -88,7 +88,7 @@ class main extends AWS_CONTROLLER
 
 		$this->crumb(_t('登录'));
 
-		TPL::import_css('css/register.css');
+		TPL::import_css('css/default/register.css');
 
 		TPL::import_js('js/openpgp.min.js');
 		TPL::import_js('js/bcrypt.js');

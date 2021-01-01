@@ -23,7 +23,7 @@ class main extends AWS_CONTROLLER
 	{
 		$this->crumb(_t('设置'));
 
-		TPL::import_css('css/user-setting.css');
+		TPL::import_css('css/default/user-setting.css');
 	}
 
 	public function index_action()

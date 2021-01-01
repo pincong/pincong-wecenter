@@ -34,7 +34,7 @@ class main extends AWS_CONTROLLER
 		if (!H::is_post())
 		{
 			$this->crumb(_t('退出'));
-			TPL::import_css('css/register.css');
+			TPL::import_css('css/default/register.css');
 			TPL::output("account/logout");
 		}
 		else
@@ -53,7 +53,7 @@ class main extends AWS_CONTROLLER
 	{
 		$this->crumb(_t('修改密码'));
 
-		TPL::import_css('css/register.css');
+		TPL::import_css('css/default/register.css');
 
 		TPL::import_js('js/openpgp.min.js');
 		TPL::import_js('js/bcrypt.js');

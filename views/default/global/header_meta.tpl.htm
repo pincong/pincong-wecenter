@@ -11,17 +11,19 @@
 <base href="<?php echo url_rewrite('/'); ?>" /><!--[if IE]></base><![endif]-->
 <link href="<?php echo base_url(); ?>/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
-<link rel="stylesheet" type="text/css" href="<?php echo G_STATIC_URL; ?>/css/bootstrap.css" />
-<link rel="stylesheet" type="text/css" href="<?php echo G_STATIC_URL; ?>/css/icon.css" />
+<link rel="stylesheet" href="<?php echo G_STATIC_URL; ?>/css/bootstrap.css" />
+<link rel="stylesheet" href="<?php echo G_STATIC_URL; ?>/css/icon.css" />
+<link rel="stylesheet" href="<?php echo G_STATIC_URL; ?>/css/default/common.css?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>" />
+<link rel="stylesheet" href="<?php echo G_STATIC_URL; ?>/css/default/link.css?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>" />
 
 <?php if (is_array($this->_import_css_files)) { ?>
 <?php foreach ($this->_import_css_files AS $import_css) { ?>
-<link href="<?php echo $import_css; ?>?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="<?php echo $import_css; ?>?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>" />
 <?php } ?>
 <?php } ?>
 
 <?php if ($this->template_name != 'default') { ?>
-<link href="<?php echo G_STATIC_URL; ?>/css/<?php echo $this->template_name; ?>/<?php echo $this->template_name; ?>.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="<?php echo G_STATIC_URL; ?>/css/<?php echo $this->template_name; ?>/<?php echo $this->template_name; ?>.css" />
 <?php } ?>
 
 <?php if (S::get('custom_css')) { ?>
@@ -48,9 +50,20 @@
 	var G_CAN_CREATE_TOPIC = "<?php echo $this->user_info['permission']['create_topic']; ?>";
 	var G_ADVANCED_EDITOR_ENABLE = "<?php echo S::get('advanced_editor_enable'); ?>";
 </script>
+
+<script src="<?php echo G_STATIC_URL; ?>/js/jquery.2.js"></script>
+<script src="<?php echo G_STATIC_URL; ?>/js/bootstrap.js"></script>
+<script src="<?php echo G_STATIC_URL; ?>/js/jquery.form.js"></script>
+<script src="<?php echo G_STATIC_URL; ?>/js/jquery.cookie.js"></script>
+<script src="<?php echo G_STATIC_URL; ?>/js/autosize.js"></script>
+<script src="<?php echo G_STATIC_URL; ?>/js/hogan.js"></script>
+<script src="<?php echo G_STATIC_URL; ?>/js/aws.js?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>"></script>
+<script src="<?php echo G_STATIC_URL; ?>/js/aw_template.js?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>"></script>
+<script src="<?php echo G_STATIC_URL; ?>/js/js/app.js?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>"></script>
+
 <?php if (is_array($this->_import_js_files)) { ?>
 <?php foreach ($this->_import_js_files AS $import_js) { ?>
-<script src="<?php echo $import_js; ?>?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>" type="text/javascript"></script>
+<script src="<?php echo $import_js; ?>?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>"></script>
 <?php } ?>
 <?php } ?>
 

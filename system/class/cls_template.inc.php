@@ -157,11 +157,6 @@ class TPL
 		{
 			foreach ($path AS $key => $val)
 			{
-				if (substr($val, 0, 4) == 'css/')
-				{
-					$val = str_replace('css/', 'css/default/', $val);
-				}
-
 				if (!is_website($val) AND !is_uri_path($val))
 				{
 					$val = G_STATIC_URL . '/' . $val;
@@ -172,11 +167,6 @@ class TPL
 		}
 		else
 		{
-			if (substr($path, 0, 4) == 'css/')
-			{
-				$path = str_replace('css/', 'css/default/', $path);
-			}
-
 			if (!is_website($path) AND !is_uri_path($path))
 			{
 				$path = G_STATIC_URL . '/' . $path;
