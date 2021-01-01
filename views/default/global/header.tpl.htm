@@ -21,6 +21,10 @@
 				<ul class="nav navbar-nav">
 					<li><a href="<?php echo base_url(); ?>" class="<?php if (!$_GET['app'] OR $_GET['app'] == 'explore') { ?>active<?php } ?>"><i class="icon icon-list"></i> <?php _e('发现'); ?></a></li>
 
+					<?php if (is_numeric(get_setting('push_reputation'))) { ?>
+					<li><a href="hot/"<?php if ($_GET['app'] == 'hot') { ?> class="active"<?php } ?>><i class="icon icon-reader"></i> <?php _e('精选'); ?></a></li>
+					<?php } ?>
+
 					<?php if ($this->user_id) { ?>
 					<li><a href="home/"<?php if ($_GET['app'] == 'home') { ?> class="active"<?php } ?>><i class="icon icon-home"></i> <?php _e('动态'); ?></a></li>
 

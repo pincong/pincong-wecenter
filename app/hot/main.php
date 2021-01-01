@@ -38,7 +38,7 @@ class main extends AWS_CONTROLLER
 		$this->crumb(AWS_APP::lang()->_t('精选'));
 
 		// 导航
-		TPL::assign('content_nav_menu', $this->model('menu')->get_nav_menu_list('explore'));
+		TPL::assign('content_nav_menu', $this->model('menu')->get_nav_menu_list('hot'));
 		
 		// 边栏热门话题
 		TPL::assign('sidebar_hot_topics', $this->model('module')->sidebar_hot_topics($category_info['id']));

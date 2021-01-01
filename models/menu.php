@@ -48,24 +48,9 @@ class menu_class extends AWS_MODEL
 		{
 			$category_info = $this->model('category')->get_category_list();
 
-			switch ($app)
+			if ($app)
 			{
-				case 'explore':
-					$url_prefix = 'explore/';
-					break;
-
-				case 'question':
-					$url_prefix = 'question/';
-					break;
-
-				case 'article':
-					$url_prefix = 'article/';
-					break;
-
-				case 'video':
-					$url_prefix = 'video/';
-					break;
-
+				$url_prefix = $app . '/';
 			}
 
 			foreach ($nav_menu_data as $key => $val)
