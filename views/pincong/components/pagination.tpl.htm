@@ -1,0 +1,35 @@
+<?php if ($this->pagination) { ?>
+<ul class="pagination my-0">
+<?php if ($this->pagination['first']) { ?>
+	<li class="page-item">
+		<a class="page-link" href="<?php echo htmlspecialchars($this->pagination['first']); ?>">&lt;&lt;</a>
+	</li>
+<?php } ?>
+<?php if ($this->pagination['prev']) { ?>
+	<li class="page-item">
+		<a class="page-link" href="<?php echo htmlspecialchars($this->pagination['prev']); ?>">&lt;</a>
+	</li>
+<?php } ?>
+<?php foreach($this->pagination['links'] as $num => $url) { ?>
+	<?php if ($num == $this->pagination['cur_page']) { ?>
+	<li class="page-item active">
+		<a class="page-link" href="javascript:;"><?php echo $num; ?></a>
+	</li>
+	<?php } else { ?>
+	<li class="page-item">
+		<a class="page-link" href="<?php echo htmlspecialchars($url); ?>"><?php echo $num; ?></a>
+	</li>
+	<?php } ?>
+<?php } ?>
+<?php if ($this->pagination['next']) { ?>
+	<li class="page-item">
+		<a class="page-link" href="<?php echo htmlspecialchars($this->pagination['next']); ?>">&gt;</a>
+	</li>
+<?php } ?>
+<?php if ($this->pagination['last']) { ?>
+	<li class="page-item">
+		<a class="page-link" href="<?php echo htmlspecialchars($this->pagination['last']); ?>">&gt;&gt;</a>
+	</li>
+<?php } ?>
+</ul>
+<?php } ?>

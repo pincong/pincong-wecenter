@@ -1,0 +1,222 @@
+<?php TPL::include('components/begin.tpl.htm'); ?>
+<?php TPL::include('components/header.tpl.htm'); ?>
+
+<script src="<?php echo G_STATIC_URL; ?>/js/openpgp.min.js"></script>
+<script src="<?php echo G_STATIC_URL; ?>/js/bcrypt.js"></script>
+<script src="<?php echo G_STATIC_URL; ?>/js/passwordutil.js?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>"></script>
+
+<main class="container py-3">
+	<div class="d-flex flex-wrap align-items-center border-bottom py-3">
+		<h2 class="mr-auto"><?php echo _t('私信'); ?></h2>
+		<a class="mr-3 my-2" href="<?php echo url_rewrite(); ?>/profile/privacy/"><?php echo _t('私信设置'); ?></a>
+		<button class="btn btn-success" style="min-width:6rem;" type="button" data-toggle="modal" data-target="#id_pm_compose_modal"><?php echo _t('新私信'); ?></button>
+	</div>
+
+	<div>
+	<?php if ($this->list) { ?>
+		<?php foreach($this->list as $key => $val) { ?>
+		<div class="d-flex border-bottom py-3 my-0 alert rounded-0 <?php if ($val['unread']) { ?>alert-warning<?php } ?>">
+
+			<div class="mt-1 mr-2" style="max-width:3rem;min-width:3rem;">
+				<div class="d-flex flex-wrap rounded overflow-hidden">
+				<?php $valid_member_count = count($val['users']); ?>
+				<?php foreach($val['users'] as $user) { ?>
+					<?php if ($valid_member_count > 1 AND $user['uid'] == $this->user_id) continue; ?>
+					<a href="<?php echo UF::url($user); ?>" style="
+					<?php if ($val['member_count'] <= 2) { ?>
+						width:3rem;height:3rem;
+					<?php } else { ?>
+						width:1.5rem;height:1.5rem;
+					<?php } ?>
+						background:url('<?php echo UF::avatar($user, 'mid'); ?>') 0 0/contain;
+					"></a>
+				<?php } ?>
+				</div>
+			</div>
+
+			<div class="w-100 overflow-hidden">
+				<a class="d-block" href="<?php echo url_rewrite(); ?>/pm/read/<?php echo $val['id']; ?>">
+				<?php foreach($val['users'] as $user) { ?>
+					<?php if ($user['uid'] == $this->user_id) continue; ?>
+					<span><?php echo UF::name($user); ?></span>
+				<?php } ?>
+				</a>
+
+				<?php if (isset($val['last_message']) AND isset($val['last_message']['plaintext'])) { ?>
+				<a class="cls_pm_unencrypted_message text-body d-block" data-message="<?php echo safe_text($val['last_message']['plaintext']); ?>" href="<?php echo url_rewrite(); ?>/pm/read/<?php echo $val['id']; ?>"><i><?php echo _t('请稍候...'); ?></i></a>
+				<?php } else if (isset($val['last_message']) AND isset($val['last_message']['message'])) { ?>
+				<a class="cls_pm_message text-body d-block" data-message="<?php echo safe_text($val['last_message']['message']); ?>" href="<?php echo url_rewrite(); ?>/pm/read/<?php echo $val['id']; ?>"><i><?php echo _t('待解密'); ?></i></a>
+				<?php } else { ?>
+				<a class="text-body d-block" href="<?php echo url_rewrite(); ?>/pm/read/<?php echo $val['id']; ?>"><s><?php echo _t('已刪除'); ?></s></a>
+				<?php } ?>
+
+				<div class="d-flex">
+					<a class="mr-auto" href="<?php echo url_rewrite(); ?>/pm/read/<?php echo $val['id']; ?>"><?php echo date_friendly($val['update_time']); ?></a>
+					<span>
+					<?php if ($val['unread']) { ?>
+						<a href="<?php echo url_rewrite(); ?>/pm/read/<?php echo $val['id']; ?>"><?php echo _t('有 %s 条新私信', $val['unread']); ?></a>
+						&nbsp;
+						<a href="<?php echo url_rewrite(); ?>/pm/read/<?php echo $val['id']; ?>"><?php echo _t('查看'); ?></a>
+					<?php } else { ?>
+						<a href="javascript:;" onclick="AWS.confirm('<?php echo _t('确认删除会话?'); ?>', function(){AWS.ajax_request('<?php echo url_rewrite(); ?>/pm/ajax/exit/', 'id=<?php echo $val['id']; ?>');});"><?php echo _t('删除'); ?></a>
+					<?php } ?>
+					</span>
+				</div>
+			</div>
+		</div>
+		<?php } ?>
+	<?php } ?>
+	</div>
+
+	<div class="d-flex justify-content-center py-3">
+		<?php TPL::include('components/pagination.tpl.htm'); ?>
+	</div>
+</main>
+
+<div id="id_pm_compose_modal" class="modal fade" tabindex="-1" data-backdrop="static" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		<form action="<?php echo url_rewrite(); ?>/pm/new/" method="post">
+			<div class="modal-header">
+				<h5 class="modal-title"><?php echo _t('私信会话'); ?></h5>
+				<button class="close" type="button" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label><?php echo _t('收件人'); ?></label>
+					<input class="form-control" type="text" placeholder="" name="usernames[]" value="">
+				</div>
+				<div class="form-group collapse">
+					<label><?php echo _t('收件人 (2)'); ?></label>
+					<input class="form-control" type="text" placeholder="" name="usernames[]" value="">
+				</div>
+				<div class="form-group collapse">
+					<label><?php echo _t('收件人 (3)'); ?></label>
+					<input class="form-control" type="text" placeholder="" name="usernames[]" value="">
+				</div>
+				<div class="form-group collapse">
+					<label><?php echo _t('收件人 (4)'); ?></label>
+					<input class="form-control" type="text" placeholder="" name="usernames[]" value="">
+				</div>
+				<a class="form-text text-secondary collapse show" href="javascript:;"> +<?php echo _t('增加'); ?></a>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-outline-secondary" type="button" data-dismiss="modal"><?php echo _t('取消'); ?></button>
+				<button class="btn btn-success" type="submit"><?php echo _t('下一步'); ?></button>
+			</div>
+		<form>
+		</div>
+	</div>
+</div>
+
+<script>
+$(document).ready(function () {
+	(function() {
+		var dlg = $('#id_pm_compose_modal');
+		var groups = dlg.find('.form-group.collapse');
+		var a = dlg.find('.form-text.collapse');
+		a.click(function() {
+			for(var i = 0, l = groups.length; i < l; i++) {
+				var group = groups.eq(i);
+				if (!group.hasClass('show')) {
+					group.collapse('show');
+					if (i + 1 == l) a.collapse('hide');
+					break;
+				}
+			}
+		});
+		dlg.on('show.bs.modal', function() {
+			dlg.find('.form-group input').val('');
+			groups.collapse('hide');
+			a.collapse('show');
+		});
+	})();
+
+	function truncate(s) {
+		var n = 60;
+		if (s.length <= n) return s;
+		return s.substr(0, n) + '...';
+	}
+
+	var public_key = '<?php echo $this->user_info['public_key']; ?>';
+
+	function decrypt_key(cb) {
+		AWS.passwordPrompt("<?php echo _t('请输入登录密码以解密私钥'); ?>", function(pwd) {
+			PasswordUtil.password_hash(pwd, public_key).then(function(value) {
+				return PasswordUtil.decrypt_private_key('<?php echo $this->user_info['private_key']; ?>', value);
+			}).then(function(value) {
+				cb(value);
+			}).catch(function(error) {
+				console.log(error);
+				AWS.confirm("<?php echo _t('无法解密私钥, 要再试一次吗？'); ?>", function() {
+					decrypt_key(cb);
+				});
+			});
+		});
+	}
+
+	function read_key() {
+		var k = '<?php echo G_COOKIE_PREFIX; ?>_private_key';
+		return new Promise(function(resolve) {
+			var private_key = localStorage.getItem(k);
+			if (!private_key) {
+				decrypt_key(function(private_key) {
+					localStorage.setItem(k, private_key);
+					resolve(private_key);
+				});
+			} else {
+				resolve(private_key);
+			}
+		}).then(function(value) {
+			return PasswordUtil.read_private_key(value);
+		}).catch(function(error) {
+			localStorage.removeItem(k);
+			throw error;
+		});
+	}
+
+	function decrypt_messages() {
+		if (!public_key) {
+			AWS.alert("<?php echo _t('缺少公钥和私钥, 请重新登录以生成新的公钥和私钥'); ?>");
+			return;
+		}
+		var els = $('.cls_pm_message');
+		if (!els.length) return;
+		read_key().then(function(private_key) {
+			els.each(function() {
+				var el = $(this);
+				var msg = el.data('message');
+				if (!msg) return;
+				PasswordUtil.decrypt(msg, private_key).then(function(value) {
+					el.text(truncate(value));
+				}).catch(function(error) {
+					console.log(error);
+					el.html("<i><?php echo _t('无法解密这一条私信'); ?></i>");
+				});
+			});
+		}).catch(function(error) {
+			console.log(error);
+			AWS.alert("<?php echo _t('无法读取私钥, 请刷新页面重试'); ?>");
+		});
+	}
+
+	function decode_messages() {
+		var els = $('.cls_pm_unencrypted_message');
+		if (!els.length) return;
+		els.each(function() {
+			var el = $(this);
+			var msg = el.data('message');
+			if (!msg) return;
+			el.text(truncate(PasswordUtil.base64_decode(msg)));
+		});
+	}
+
+	decode_messages();
+	decrypt_messages();
+});
+</script>
+
+<?php TPL::include('components/footer.tpl.htm'); ?>
+<?php TPL::include('components/end.tpl.htm'); ?>

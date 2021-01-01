@@ -1,0 +1,87 @@
+<header class="navbar navbar-expand navbar-dark bg-primary">
+	<div class="container-fluid flex-column flex-sm-row justify-content-start">
+		<a class="navbar-brand text-center overflow-hidden text-sm-left mr-0 mr-sm-2" style="<?php echo S::get('logo_link_style'); ?>" href="<?php echo base_url(); ?>/">
+			<img style="max-width:100%;" src="<?php echo S::get('logo_url'); ?>" alt="">
+		</a>
+		<ul class="navbar-nav flex-wrap justify-content-center justify-content-sm-start mr-auto">
+			<li class="nav-item">
+				<a class="nav-link py-1 <?php if ($_GET['app'] == 'explore') { ?>active<?php } ?>" href="<?php echo url_rewrite(); ?>/"><?php echo _t('发现'); ?></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link py-1 <?php if ($_GET['app'] == 'hot') { ?>active<?php } ?>" href="<?php echo url_rewrite(); ?>/hot/"><?php echo _t('精选'); ?></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link py-1 <?php if ($_GET['app'] == 'home') { ?>active<?php } ?>" href="<?php echo url_rewrite(); ?>/home/"><?php echo _t('动态'); ?></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link py-1 <?php if ($_GET['app'] == 'notification') { ?>active<?php } ?>" href="<?php echo url_rewrite(); ?>/notification/"><?php echo _t('通知'); ?></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link py-1 <?php if ($_GET['app'] == 'pm') { ?>active<?php } ?>" href="<?php echo url_rewrite(); ?>/pm/"><?php echo _t('私信'); ?></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link py-1 <?php if ($_GET['app'] == 'search') { ?>active<?php } ?>" href="<?php echo url_rewrite(); ?>/search/"><?php echo _t('搜索'); ?></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link py-1 <?php if ($_GET['app'] == 'topic') { ?>active<?php } ?>" href="<?php echo url_rewrite(); ?>/topic/"><?php echo _t('话题'); ?></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link py-1 <?php if ($_GET['app'] == 'follow') { ?>active<?php } ?>" href="<?php echo url_rewrite(); ?>/home/following/"><?php echo _t('关注'); ?></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link py-1 <?php if ($_GET['app'] == 'favorite') { ?>active<?php } ?>" href="<?php echo url_rewrite(); ?>/favorite/"><?php echo _t('收藏'); ?></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link py-1 <?php if ($_GET['app'] == 'invite') { ?>active<?php } ?>" href="<?php echo url_rewrite(); ?>/home/invite/"><?php echo _t('邀请'); ?></a>
+			</li>
+		</ul>
+		<div class="text-nowrap my-2 my-sm-0">
+		<?php if ($this->user_id) { ?>
+			<?php
+				$publish_url_params = '';
+				if ($_GET['category'])
+				{
+					if ($publish_url_params)
+					{
+						$publish_url_params .= '__';
+					}
+					$publish_url_params .= 'category_id-' . intval($_GET['category']);
+				}
+				if ($this->topic_info)
+				{
+					if ($publish_url_params)
+					{
+						$publish_url_params .= '__';
+					}
+					$publish_url_params .= 'topic_title-' . safe_url_encode($this->topic_info['topic_title']);
+				}
+			?>
+			<div class="btn-group mr-2">
+				<button class="btn btn-outline-light dropdown-toggle" style="min-width:6rem;" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo _t('发起'); ?></button>
+				<div class="dropdown-menu dropdown-menu-right" style="min-width:6rem;">
+					<a class="dropdown-item" href="<?php echo url_rewrite(); ?>/publish/<?php echo $publish_url_params; ?>"><?php echo _t('问题'); ?></a>
+					<a class="dropdown-item" href="<?php echo url_rewrite(); ?>/publish/article/<?php echo $publish_url_params; ?>"><?php echo _t('文章'); ?></a>
+					<a class="dropdown-item" href="<?php echo url_rewrite(); ?>/publish/video/<?php echo $publish_url_params; ?>"><?php echo _t('影片'); ?></a>
+				</div>
+			</div>
+			<div class="dropdown d-inline-block">
+				<a style="cursor:pointer;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<img class="rounded" style="width:2.375rem;height:2.375rem;" src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" alt="">
+				</a>
+				<div class="dropdown-menu dropdown-menu-right" style="min-width:6rem;">
+					<a class="dropdown-item" href="<?php echo UF::url($this->user_info); ?>"><?php echo UF::name($this->user_info); ?></a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="<?php echo url_rewrite(); ?>/profile/"><?php echo _t('设置'); ?></a>
+					<?php if ($this->user_info['permission']['is_administrator']) { ?>
+					<a class="dropdown-item" href="<?php echo url_rewrite(); ?>/admin/"><?php echo _t('管理'); ?></a>
+					<?php } ?>
+					<a class="dropdown-item" href="<?php echo url_rewrite(); ?>/account/logout/" onclick="localStorage.clear();AWS.submit_redirect($(this).attr('href'));return false;"><?php echo _t('退出'); ?></a>
+				</div>
+			</div>
+		<?php } else { ?>
+			<a class="btn btn-outline-light mr-2" style="min-width:6rem;" href="<?php echo url_rewrite(); ?>/login/"><?php echo _t('登录'); ?></a>
+			<a class="btn btn-success" style="min-width:6rem;" href="<?php echo url_rewrite(); ?>/register/"><?php echo _t('注册'); ?></a>
+		<?php } ?>
+		</div>
+	</div>
+</header>

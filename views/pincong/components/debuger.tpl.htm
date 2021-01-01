@@ -1,0 +1,24 @@
+<?php if (AWS_APP::config()->get('system')->debug AND $this->user_info['permission']['debug']) { ?>
+<div class="p-3">
+	<h4 class="font-weight-bold text-danger">Debug messages</h4>
+
+	<h5 class="font-weight-bold text-info">Template</h5>
+	<p><?php echo $this->template_name; ?></p>
+
+	<h5 class="font-weight-bold text-info">Loaded Classes</h5>
+<?php foreach (core_autoload::$loaded_class AS $key => $val) { ?>
+	<p><b><?php echo $key; ?>:</b> <?php echo $val; ?></p>
+<?php } ?>
+
+<?php foreach (AWS_APP::$_debug AS $key => $val) { ?>
+	<h5 class="font-weight-bold text-info"><?php echo ucfirst($key); ?></h5>
+	<?php foreach ($val AS $_key => $_val) { ?>
+	<p>[ <?php echo $_val['log_time']; ?> ] <?php if ($_val['expend_time']) { ?>[ Spent: <?php echo $_val['expend_time']; ?> ]<?php } ?> <?php echo $_val['message']; ?></p>
+	<?php } ?>
+<?php } ?>
+
+	<p class="text-success">Elapsed time: <?php echo (microtime(TRUE) - START_TIME); ?>, <?php echo count(AWS_APP::$_debug['database']); ?> queries<?php if (defined('MEMORY_USAGE_START')) { ?>, PHP Memory usage: <?php echo ((memory_get_usage() - MEMORY_USAGE_START) / 1024); ?> KB<?php } ?>, Server time: <?php echo date('Y-m-d H:i:s', TIMESTAMP); ?></p>
+</div>
+<?php } else if (!defined('IN_AJAX')) { ?>
+<!-- <?php echo (microtime(TRUE) - START_TIME); ?> -->
+<?php } ?>

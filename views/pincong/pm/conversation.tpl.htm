@@ -1,0 +1,259 @@
+<?php TPL::include('components/begin.tpl.htm'); ?>
+<?php TPL::include('components/header.tpl.htm'); ?>
+
+<script src="<?php echo G_STATIC_URL; ?>/js/openpgp.min.js"></script>
+<script src="<?php echo G_STATIC_URL; ?>/js/bcrypt.js"></script>
+<script src="<?php echo G_STATIC_URL; ?>/js/passwordutil.js?v=<?php echo G_DISPLAY_VERSION_BUILD; ?>"></script>
+
+<main class="container py-3">
+	<div class="d-flex flex-wrap align-items-center border-bottom py-3">
+		<h2 class="mr-1 mr-auto"><?php echo _t('私信会话'); ?></h2>
+		<span class="mx-1">
+		<?php foreach($this->conversation['users'] as $user) { ?>
+			<?php if ($user['uid'] == $this->user_id) continue; ?>
+			<a class="text-body mr-1" href="<?php echo UF::url($user); ?>"><?php echo UF::name($user); ?></a>
+		<?php } ?>
+		</span>
+		<a href="<?php echo url_rewrite(); ?>/pm/"><?php echo _t('返回私信列表'); ?> »</a>
+	</div>
+
+	<div class="px-3">
+		<div class="row flex-nowrap my-3">
+			<div class="col-auto p-0">
+				<div class="d-none d-sm-block overflow-hidden" style="width:2.5rem">
+				</div>
+			</div>
+			<div class="col overflow-hidden">
+				<form id="id_pm_form" onsubmit="return false;" method="post">
+					<textarea class="form-control" name="message" rows="5" placeholder="<?php echo _t('想要对ta说点什么'); ?>?"></textarea>
+					<div class="text-right my-3">
+						<button class="btn btn-success" style="min-width:6rem;visibility:hidden;" type="submit"><?php echo _t('发送'); ?></button>
+					</div>
+				</form>
+			</div>
+			<div class="col-auto p-0">
+				<div class="overflow-hidden" style="width:2.5rem">
+					<a href="<?php echo UF::url($this->user_info); ?>">
+						<img class="rounded" style="max-width:100%;" src="<?php echo UF::avatar($this->user_info, 'mid'); ?>" alt="<?php echo UF::name($this->user_info); ?>">
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="px-3">
+	<?php if ($this->list) { ?>
+		<?php foreach($this->list as $key => $val) { ?>
+		<?php $user = $this->conversation['users'][$val['sender_uid']]; ?>
+		<?php $myself = ($val['sender_uid'] == $this->user_id); ?>
+		<div class="row flex-nowrap my-3">
+			<div class="col-auto p-0">
+				<div class="<?php if ($myself) { ?>d-none d-sm-block<?php } ?> overflow-hidden" style="width:2.5rem">
+					<?php if (!$myself) { ?>
+					<a href="<?php echo UF::url($user); ?>">
+						<img class="rounded" style="max-width:100%;" src="<?php echo UF::avatar($user, 'mid'); ?>" alt="<?php echo UF::name($user); ?>">
+					</a>
+					<?php } ?>
+				</div>
+			</div>
+			<div class="col overflow-hidden">
+				<div class="alert my-0 <?php if ($myself) { ?>alert-success<?php } else { ?>alert-primary<?php } ?>">
+					<p>
+						<a href="<?php echo UF::url($user); ?>"><?php echo UF::name($user); ?></a>:
+						<?php if (isset($val['plaintext'])) { ?>
+						<span class="cls_pm_unencrypted_message" style="white-space:pre-wrap;word-break:break-all;" data-message="<?php echo safe_text($val['plaintext']); ?>"><i><?php echo _t('请稍候...'); ?></i></span>
+						<?php } else if (isset($val['message'])) { ?>
+						<span class="cls_pm_message" style="white-space:pre-wrap;word-break:break-all;" data-message="<?php echo safe_text($val['message']); ?>"><i><?php echo _t('待解密'); ?></i></span>
+						<?php } else { ?>
+						<span><s><?php echo _t('已刪除'); ?></s></span>
+						<?php } ?>
+					</p>
+					<div class="d-flex">
+						<span class="mr-auto text-body"><?php echo date_friendly($val['add_time']); ?></span>
+						<span>
+							<?php if ($val['sender_uid'] != $this->user_id) { ?>
+							<a href="javascript:;" onclick="var form=$('#id_pm_form');AWS.scrollTo(form.offset()['top']-20);form.find('textarea').focus();"><?php echo _t('回复'); ?></a>
+							<?php } else if (isset($val['message'])) { ?>
+							<a href="javascript:;" onclick="AWS.confirm('<?php echo _t('确认删除这一条私信?'); ?>', function(){AWS.ajax_request('<?php echo url_rewrite(); ?>/pm/ajax/delete/', 'id=<?php echo $val['id']; ?>');});"><?php echo _t('删除'); ?></a>
+							<?php } ?>
+						</span>
+					</div>
+					<?php foreach($val['receipts'] as $receipt_uid => $receipt_time) { ?>
+					<?php if ($receipt_uid == $val['sender_uid']) continue; ?>
+					<small class="d-block"><?php echo _t('%s0 已读于 %s1', [UF::name($this->conversation['users'][$receipt_uid]), date_friendly($receipt_time)]); ?></small>
+					<?php } ?>
+				</div>
+			</div>
+			<div class="col-auto p-0">
+				<div class="<?php if (!$myself) { ?>d-none d-sm-block<?php } ?> overflow-hidden" style="width:2.5rem">
+					<?php if ($myself) { ?>
+					<a href="<?php echo UF::url($user); ?>">
+						<img class="rounded" style="max-width:100%;" src="<?php echo UF::avatar($user, 'mid'); ?>" alt="<?php echo UF::name($user); ?>">
+					</a>
+					<?php } ?>
+				</div>
+			</div>
+		</div>
+		<?php } ?>
+	<?php } ?>
+	</div>
+
+	<div class="d-flex justify-content-center py-3">
+		<?php TPL::include('components/pagination.tpl.htm'); ?>
+	</div>
+</main>
+<script>
+$(document).ready(function () {
+	var form = $('#id_pm_form');
+	var btn = form.find('button[type=submit]').css('visibility', 'visible');
+	var textarea = form.find('textarea[name=message]');
+	autosize(textarea);
+
+	var public_keys = {
+<?php foreach($this->conversation['users'] as $user) { ?>
+		'<?php echo intval($user['uid']); ?>': '<?php echo addslashes($user['public_key']); ?>',
+<?php } ?>
+	};
+
+	function encrypt(msg) {
+		var result = {};
+		var promises = [];
+		for (var uid in public_keys) {
+			promises.push(PasswordUtil.encrypt(msg, public_keys[uid]));
+		}
+		return Promise.all(promises).then(function(values) {
+			var i = 0;
+			for (var uid in public_keys) {
+				result[uid] = values[i];
+				i++;
+			}
+			return new Promise(function(resolve) {
+				resolve(result);
+			});
+		});
+	}
+
+	form.submit(function(e) {
+		e.preventDefault();
+
+		if (Object.keys(public_keys).length < 2) {
+			AWS.alert("<?php echo _t('当前会话已结束'); ?>");
+			return false;
+		}
+
+		var msg = textarea.val().trim();
+
+		if (!msg) {
+			AWS.alert("<?php echo _t('请输入私信内容'); ?>");
+			return false;
+		}
+
+<?php if ($this->conversation['id']) { ?>
+		var url = '<?php echo url_rewrite(); ?>/pm/ajax/send/';
+		var params = {
+			conversation_id: <?php echo intval($this->conversation['id']); ?>,
+		};
+<?php } else { ?>
+		var url = '<?php echo url_rewrite(); ?>/pm/ajax/new/';
+		var params = {};
+<?php } ?>
+
+		btn.addClass('disabled');
+
+		encrypt(msg).then(function(result) {
+			for (var uid in result) {
+				params['messages[' + uid + ']'] = result[uid];
+			}
+			AWS.ajax_request(url, params, null, function(err) {
+				AWS.alert(err);
+				btn.removeClass('disabled');
+			});
+		}).catch(function(error) {
+			AWS.alert("<?php echo _t('端到端加密出错'); ?>");
+			btn.removeClass('disabled');
+			console.log(error);
+		});
+
+		return false;
+	});
+
+	var public_key = '<?php echo $this->user_info['public_key']; ?>';
+
+	function decrypt_key(cb) {
+		AWS.passwordPrompt("<?php echo _t('请输入登录密码以解密私钥'); ?>", function(pwd) {
+			PasswordUtil.password_hash(pwd, public_key).then(function(value) {
+				return PasswordUtil.decrypt_private_key('<?php echo $this->user_info['private_key']; ?>', value);
+			}).then(function(value) {
+				cb(value);
+			}).catch(function(error) {
+				console.log(error);
+				AWS.confirm("<?php echo _t('无法解密私钥, 要再试一次吗？'); ?>", function() {
+					decrypt_key(cb);
+				});
+			});
+		});
+	}
+
+	function read_key() {
+		var k = '<?php echo G_COOKIE_PREFIX; ?>_private_key';
+		return new Promise(function(resolve) {
+			var private_key = localStorage.getItem(k);
+			if (!private_key) {
+				decrypt_key(function(private_key) {
+					localStorage.setItem(k, private_key);
+					resolve(private_key);
+				});
+			} else {
+				resolve(private_key);
+			}
+		}).then(function(value) {
+			return PasswordUtil.read_private_key(value);
+		}).catch(function(error) {
+			localStorage.removeItem(k);
+			throw error;
+		});
+	}
+
+	function decrypt_messages() {
+		if (!public_key) {
+			AWS.alert("<?php echo _t('缺少公钥和私钥, 请重新登录以生成新的公钥和私钥'); ?>");
+			return;
+		}
+		var els = $('.cls_pm_message');
+		if (!els.length) return;
+		read_key().then(function(private_key) {
+			els.each(function() {
+				var el = $(this);
+				var msg = el.data('message');
+				if (!msg) return;
+				PasswordUtil.decrypt(msg, private_key).then(function(value) {
+					el.text(value);
+				}).catch(function(error) {
+					console.log(error);
+					el.html("<i><?php echo _t('无法解密这一条私信'); ?></i>");
+				});
+			});
+		}).catch(function(error) {
+			console.log(error);
+			AWS.alert("<?php echo _t('无法读取私钥, 请刷新页面重试'); ?>");
+		});
+	}
+
+	function decode_messages() {
+		var els = $('.cls_pm_unencrypted_message');
+		if (!els.length) return;
+		els.each(function() {
+			var el = $(this);
+			var msg = el.data('message');
+			if (!msg) return;
+			el.text(PasswordUtil.base64_decode(msg));
+		});
+	}
+
+	decode_messages();
+	decrypt_messages();
+});
+</script>
+
+<?php TPL::include('components/footer.tpl.htm'); ?>
+<?php TPL::include('components/end.tpl.htm'); ?>
