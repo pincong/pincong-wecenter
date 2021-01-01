@@ -29,6 +29,20 @@ class question_class extends AWS_MODEL
 		}
 
 		$list = $this->fetch_page('question_discussion', 'uid = ' . intval($uid), 'id DESC', $page, $per_page);
+		foreach ($list AS $key => $val)
+		{
+			$parent_ids[] = $val['question_id'];
+		}
+
+		if ($parent_ids)
+		{
+			$parents = $this->get_question_info_by_ids($parent_ids);
+			foreach ($list AS $key => $val)
+			{
+				$list[$key]['question_info'] = $parents[$val['question_id']];
+			}
+		}
+
 		if (count($list) > 0)
 		{
 			AWS_APP::cache()->set($cache_key, $list, get_setting('cache_level_normal'));
@@ -46,6 +60,20 @@ class question_class extends AWS_MODEL
 		}
 
 		$list = $this->fetch_page('answer_discussion', 'uid = ' . intval($uid), 'id DESC', $page, $per_page);
+		foreach ($list AS $key => $val)
+		{
+			$parent_ids[] = $val['answer_id'];
+		}
+
+		if ($parent_ids)
+		{
+			$parents = $this->get_answer_info_by_ids($parent_ids);
+			foreach ($list AS $key => $val)
+			{
+				$list[$key]['answer_info'] = $parents[$val['answer_id']];
+			}
+		}
+
 		if (count($list) > 0)
 		{
 			AWS_APP::cache()->set($cache_key, $list, get_setting('cache_level_normal'));
@@ -225,18 +253,38 @@ class question_class extends AWS_MODEL
 		return $question;
 	}
 
-	public function get_question_info_by_ids($question_ids)
+	public function get_question_info_by_ids($item_ids)
 	{
-		if (!$question_ids)
+		if (!$item_ids)
 		{
 			return false;
 		}
 
-		array_walk_recursive($question_ids, 'intval_string');
+		array_walk_recursive($item_ids, 'intval_string');
 
-		if ($questions_list = $this->fetch_all('question', "id IN(" . implode(',', $question_ids) . ")"))
+		if ($item_list = $this->fetch_all('question', "id IN(" . implode(',', $item_ids) . ")"))
 		{
-			foreach ($questions_list AS $key => $val)
+			foreach ($item_list AS $key => $val)
+			{
+				$result[$val['id']] = $val;
+			}
+		}
+
+		return $result;
+	}
+
+	public function get_answer_info_by_ids($item_ids)
+	{
+		if (!$item_ids)
+		{
+			return false;
+		}
+
+		array_walk_recursive($item_ids, 'intval_string');
+
+		if ($item_list = $this->fetch_all('answer', "id IN(" . implode(',', $item_ids) . ")"))
+		{
+			foreach ($item_list AS $key => $val)
 			{
 				$result[$val['id']] = $val;
 			}

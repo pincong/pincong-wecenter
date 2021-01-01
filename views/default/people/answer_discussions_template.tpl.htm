@@ -3,6 +3,9 @@
 <div class="aw-item">
 	<div class="aw-mod">
 		<div class="mod-head">
+			<h4 class="aw-hide-txt">
+				<a href="question/item_id-<?php echo $val['answer_id']; ?>"><?php if (!$val['answer_info']['message']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo cjk_substr($val['answer_info']['message'], 0, 100, 'UTF-8', '...'); ?><?php } ?></a>
+			</h4>
 		</div>
 		<div class="mod-body">
 			<a class="aw-small-text" href="question/item_id-<?php echo $val['answer_id']; ?>">
