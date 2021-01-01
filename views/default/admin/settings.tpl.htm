@@ -336,7 +336,7 @@
 								<input type="hidden" name="_set_notification_settings" value="1" />
 
 								<?php foreach($this->notify_actions as $key => $val) { ?>
-								<label><input name="new_user_notification_setting[<?php echo $key; ?>]" type="checkbox" value="1"<?php if (!in_array($key, $this->notification_settings)) { ?> checked="checked"<?php } ?> /> <?php _e($val); ?></label>
+								<label><input name="new_user_notification_setting[<?php echo $key; ?>]" type="checkbox" value="1"<?php if (!in_array($key, $this->notification_settings)) { ?> checked="checked"<?php } ?> /> <?php echo safe_text($val); ?></label>
 								<?php } ?>
 							</div>
 						</div>

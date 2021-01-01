@@ -10,10 +10,10 @@
 					switch ($val['status'])
 					{
 						case 0:
-							_e('取消标记');
+							echo _t('取消标记');
 							break;
 						default:
-							_e('标记 (%s)', get_user_group_name_flagged($val['status']));
+							echo _t('标记 (%s)', get_user_group_name_flagged($val['status']));
 							break;
 					}
 					break;
@@ -23,43 +23,43 @@
 					switch ($val['status'])
 					{
 						case 0:
-							_e('取消封禁');
+							echo _t('取消封禁');
 							break;
 						case 1:
-							_e('禁止登录');
+							echo _t('禁止登录');
 							break;
 						case 2:
-							_e('禁止登录 + 隐藏全部发言');
+							echo _t('禁止登录 + 隐藏全部发言');
 							break;
 						case 3:
-							_e('禁止登录 + 替换全部发言');
+							echo _t('禁止登录 + 替换全部发言');
 							break;
 					}
 					break;
 				}
 				case 'change_group':
 				{
-					_e('变更用户组');
+					echo _t('变更用户组');
 					break;
 				}
 				case 'edit_title':
 				{
-					_e('修改头衔');
+					echo _t('修改头衔');
 					break;
 				}
 				case 'edit_signature':
 				{
-					_e('修改签名');
+					echo _t('修改签名');
 					break;
 				}
 				case 'add_blocked':
 				{
-					_e('加入屏蔽列表');
+					echo _t('加入屏蔽列表');
 					break;
 				}
 				case 'delete_user':
 				{
-					_e('刪除');
+					echo _t('刪除');
 					break;
 				}
 			}

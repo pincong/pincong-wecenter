@@ -11,13 +11,13 @@
 			•
 			<a href="<?php echo url_rewrite(); ?>/home/following/type-<?php echo $val['post_type']; ?>"><?php switch ($val['post_type']) {
 				case 'question':
-					_e('问题');
+					echo _t('问题');
 					break;
 				case 'article':
-					_e('文章');
+					echo _t('文章');
 					break;
 				case 'video':
-					_e('影片');
+					echo _t('影片');
 					break;
 			} ?></a>
 			<a class="pull-right" href="javascript:;" onclick="(function(selector){AWS.ajax_request(G_BASE_URL + '/content/ajax/unfollow/', 'item_type=<?php echo $val['post_type']; ?>&item_id=<?php echo $val['id']; ?>', function(){selector.parentsUntil('.aw-item').parent().remove();});})($(this))"><?php echo _t('取消关注'); ?></a>

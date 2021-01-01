@@ -21,11 +21,11 @@ if (!defined('IN_ANWSION'))
 class notification_class extends AWS_MODEL
 {
 	public $notify_action_details = array(
-		'FOLLOW_USER' => '有人关注我',
-		'INVITE_USER' => '有人邀请我',
-		'MENTION_USER' => '有人提到我',
-		'REPLY_THREAD' => '有人回复主题',
-		'REPLY_USER' => '有人回复我',
+		'FOLLOW_USER' => _t('有人关注我'),
+		'INVITE_USER' => _t('有人邀请我'),
+		'MENTION_USER' => _t('有人提到我'),
+		'REPLY_THREAD' => _t('有人回复主题'),
+		'REPLY_USER' => _t('有人回复我'),
 	);
 
 	private function check_notification_setting($recipient_uid, $action)

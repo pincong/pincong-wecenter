@@ -99,7 +99,7 @@
 								<li><a href="#sent_votes" id="page_sent_votes" data-toggle="tab"><?php echo _t('送出的赞'); ?></a></li>
 								<li><a href="#focus" id="page_focus" data-toggle="tab"><?php echo _t('关注'); ?></a></li>
 								<?php if ($this->user_id == $this->user['uid']) { ?>
-								<li><a href="#currency" id="page_currency" data-toggle="tab"><?php echo _t('%s', S::get('currency_name')); ?></a></li>
+								<li><a href="#currency" id="page_currency" data-toggle="tab"><?php _e(S::get('currency_name')); ?></a></li>
 								<?php } ?>
 							</ul>
 						</div>

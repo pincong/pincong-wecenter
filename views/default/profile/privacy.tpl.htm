@@ -44,7 +44,7 @@
 							<?php foreach($this->notify_actions as $key => $val) { ?>
 							<span>
 								<label>
-									<input name="notification_settings[<?php echo $key; ?>]" type="checkbox" value="1"<?php if (!in_array($key, $this->notification_settings['data']) OR !$this->notification_settings['data']) { ?> checked="checked"<?php } ?> /> <?php _e($val); ?>
+									<input name="notification_settings[<?php echo $key; ?>]" type="checkbox" value="1"<?php if (!in_array($key, $this->notification_settings['data']) OR !$this->notification_settings['data']) { ?> checked="checked"<?php } ?> /> <?php echo safe_text($val); ?>
 								</label>
 							</span>
 							<?php } ?>

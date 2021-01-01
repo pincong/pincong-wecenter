@@ -58,7 +58,7 @@
 									</div>
 									<div class="mod-body">
 										<span><?php echo _t('支持以下格式 URL'); ?></span>
-										<pre><?php _e(S::get('video_config_example_url')); ?></pre>
+										<pre><?php echo safe_text(S::get('video_config_example_url')); ?></pre>
 									</div>
 								</div>
 
