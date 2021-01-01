@@ -1,6 +1,6 @@
 <?php if ($this->posts_list) { ?>
 <?php foreach($this->posts_list as $key => $val) { ?>
-<div class="aw-item" data-replies="<?php echo $val['reply_count']; ?>" data-views="<?php echo $val['view_count']; ?>" data-timestamp="<?php echo $val['add_time']; ?>" data-recommended="<?php echo $val['recommend']; ?>" data-pinned="<?php echo $val['sort']; ?>" data-hot="<?php echo $val['hot']; ?>" <?php if ($this->user_info['permission']['is_moderator']) { ?>data-item-reputation="<?php echo $val['reputation']; ?>" data-children-reputation="<?php echo $val['children_reputation']; ?>"<?php } ?>>
+<div class="aw-item" data-type="<?php echo $val['post_type']; ?>" data-id="<?php echo $val['id']; ?>" data-replies="<?php echo $val['reply_count']; ?>" data-views="<?php echo $val['view_count']; ?>" data-created-at="<?php echo $val['add_time']; ?>" data-updated-at="<?php echo $val['update_time']; ?>" data-recommended="<?php echo $val['recommend']; ?>" data-pinned="<?php echo $val['sort']; ?>" data-hot="<?php echo $val['hot']; ?>" <?php if ($this->user_info['permission']['is_moderator']) { ?>data-item-reputation="<?php echo $val['reputation']; ?>" data-children-reputation="<?php echo $val['children_reputation']; ?>"<?php } ?>>
 	<a class="aw-user-name" data-id="<?php echo $val['user_info']['uid']; ?>" data-reputation="<?php echo UF::reputation($val['user_info']); ?>" href="<?php echo UF::url($val['user_info']); ?>" rel="nofollow"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /><?php if ($val['user_info']['verified']) { ?><em class="aw-verified"><?php echo $val['user_info']['verified']; ?></em><?php } ?></a>
 	<div class="aw-question-content">
 		<h4>
@@ -28,15 +28,12 @@
 			<span class="aw-small-text aw-nowrap">
 				<?php switch ($val['post_type']) {
 				case 'question':
-					$reply_count = $val['answer_count'];
 					echo _t('问题');
 					break;
 				case 'article':
-					$reply_count = $val['comments'];
 					echo _t('文章');
 					break;
 				case 'video':
-					$reply_count = $val['comment_count'];
 					echo _t('影片');
 					break;
 				} ?>

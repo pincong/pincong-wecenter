@@ -38,7 +38,7 @@ CREATE TABLE `aws_question` (
 
 
 --
-CREATE TABLE `aws_answer` (
+CREATE TABLE `aws_question_reply` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `question_id` int(11) DEFAULT '0',
   `message` text,
