@@ -97,11 +97,6 @@ class core_token
 		{
 			return false;
 		}
-		$exipre = intval($body['expire']);
-		if ($time >= $exipre)
-		{
-			return false;
-		}
 		if ($single_use)
 		{
 			$this->_set_cache($token['key'], $exipre - $time);
