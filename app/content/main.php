@@ -37,7 +37,7 @@ class main extends AWS_CONTROLLER
 
 	public function log_action()
 	{
-		$this->crumb(AWS_APP::lang()->_t('修改记录'));
+		$this->crumb(_t('修改记录'));
 
 		TPL::output('content/log');
 	}

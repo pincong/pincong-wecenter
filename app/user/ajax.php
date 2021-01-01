@@ -31,14 +31,14 @@ class ajax extends AWS_CONTROLLER
 	{
 		if ($uid == $this->user_id)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你不能对自己进行此操作')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你不能对自己进行此操作')));
 		}
 
 		$user_info = $this->model('account')->get_user_info_by_uid($uid);
 
 		if (!$user_info)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('用户不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('用户不存在')));
 		}
 
 		if (!$this->user_info['permission']['ignore_reputation'])
@@ -46,7 +46,7 @@ class ajax extends AWS_CONTROLLER
 			// 普通用户不能处理比自己声望高的用户
 			if (intval($this->user_info['reputation']) <= intval($user_info['reputation']))
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你没有权限进行此操作')));
 			}
 		}
 
@@ -56,7 +56,7 @@ class ajax extends AWS_CONTROLLER
 			$user_group = $this->model('usergroup')->get_user_group_by_user_info($user_info);
 			if ($user_group AND $user_group['permission']['protected'])
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你没有权限进行此操作')));
 			}
 		}
 	}
@@ -68,7 +68,7 @@ class ajax extends AWS_CONTROLLER
 		// TODO: 字数选项
 		if (iconv_strlen($reason) > 300 OR iconv_strlen($detail) > 300)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('理由太长')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('理由太长')));
 		}
 
 		if (!$this->user_info['permission']['is_moderator'])
@@ -77,7 +77,7 @@ class ajax extends AWS_CONTROLLER
 			{
 				if (!$reason)
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写理由')));
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('请填写理由')));
 				}
 			}
 			else
@@ -85,7 +85,7 @@ class ajax extends AWS_CONTROLLER
 				// 取消时是没有选项列表的
 				if (!$reason AND !$detail)
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写理由')));
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('请填写理由')));
 				}
 			}
 		}
@@ -97,18 +97,18 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['forbid_user'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你没有权限进行此操作')));
 		}
 
 		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('操作过于频繁, 请稍后再试')));
 		}
 
 		$status = H::POST_I('status');
 		if (!in_array($status, array(0, 1, 2, 3)))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('操作失败')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('操作失败')));
 		}
 
 		$this->get_reason_and_detail($status, $reason, $detail, $log_detail);
@@ -125,11 +125,11 @@ class ajax extends AWS_CONTROLLER
 			{
 				if (!$user_info['flagged'])
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对方是正式用户, 请先标记')));
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('对方是正式用户, 请先标记')));
 				}
 				else if ($this->model('account')->get_user_extra_data($uid)['flagged_by'] == $this->user_id)
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('只有第二位管理员可以执行此操作')));
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('只有第二位管理员可以执行此操作')));
 				}
 			}
 		}
@@ -153,18 +153,18 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['flag_user'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你没有权限进行此操作')));
 		}
 
 		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('操作过于频繁, 请稍后再试')));
 		}
 
 		$status = H::POST_I('status');
 		if ($status AND !$this->model('usergroup')->get_group_id_by_value_flagged($status))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('操作失败')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('操作失败')));
 		}
 
 		$this->get_reason_and_detail($status, $reason, $detail, $log_detail);
@@ -193,12 +193,12 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['delete_user'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你没有权限进行此操作')));
 		}
 
 		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('操作过于频繁, 请稍后再试')));
 		}
 
 		$this->get_reason_and_detail(0, $reason, $detail, $log_detail);
@@ -222,12 +222,12 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['edit_user'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你没有权限进行此操作')));
 		}
 
 		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('操作过于频繁, 请稍后再试')));
 		}
 
 		$text = H::POST_S('text');
@@ -258,12 +258,12 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['edit_user'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你没有权限进行此操作')));
 		}
 
 		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('操作过于频繁, 请稍后再试')));
 		}
 
 		$text = H::POST_S('text');
@@ -294,12 +294,12 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['change_user_group'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限进行此操作')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你没有权限进行此操作')));
 		}
 
 		if (!check_user_operation_interval('manage', $this->user_id, $this->user_info['permission']['interval_manage']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('操作过于频繁, 请稍后再试')));
 		}
 
 		set_user_operation_last_time('manage', $this->user_id);
@@ -334,7 +334,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!isset($group_id))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('用户组不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('用户组不存在')));
 		}
 
 		if ($group_id != $user_info['group_id'])

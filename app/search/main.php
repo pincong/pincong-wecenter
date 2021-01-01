@@ -38,7 +38,7 @@ class main extends AWS_CONTROLLER
 	{
 		H::no_cache_header();
 
-		$this->crumb(AWS_APP::lang()->_t('搜索'));
+		$this->crumb(_t('搜索'));
 	}
 
 	public function index_action()

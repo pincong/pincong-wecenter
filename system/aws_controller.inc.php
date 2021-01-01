@@ -35,7 +35,7 @@ class AWS_CONTROLLER
 			if ($this->user_info['forbidden'])
 			{
 				$this->model('login')->logout();
-				H::redirect_msg(AWS_APP::lang()->_t('抱歉, 你的账号已经被禁止登录'), '/');
+				H::redirect_msg(_t('抱歉, 你的账号已经被禁止登录'), '/');
 			}
 
 			$user_settings = unserialize_array($this->user_info['settings']);
@@ -193,7 +193,7 @@ class AWS_ADMIN_CONTROLLER extends AWS_CONTROLLER
 		{
 			if ($_POST['_post_type'] == 'ajax')
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有访问权限, 请重新登录')));
+				H::ajax_json_output(AWS_APP::RSM(null, -1, _t('你没有访问权限, 请重新登录')));
 			}
 			else
 			{
@@ -213,7 +213,7 @@ class AWS_ADMIN_CONTROLLER extends AWS_CONTROLLER
 		{
 			if ($_POST['_post_type'] == 'ajax')
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('会话超时, 请重新登录')));
+				H::ajax_json_output(AWS_APP::RSM(null, -1, _t('会话超时, 请重新登录')));
 			}
 			else
 			{

@@ -68,7 +68,7 @@ class UF
 	{
 		if (!$user_info)
 		{
-			return AWS_APP::lang()->_t('[已注销]');
+			return _t('[已注销]');
 		}
 		return FORMAT::text($user_info['user_name']);
 	}

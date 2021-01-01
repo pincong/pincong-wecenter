@@ -22,7 +22,7 @@ class main extends AWS_ADMIN_CONTROLLER
 {
     public function index_action()
     {
-        $this->crumb(AWS_APP::lang()->_t('概述'));
+        $this->crumb(_t('概述'));
 
         {
             $writable_check = array(
@@ -76,7 +76,7 @@ class main extends AWS_ADMIN_CONTROLLER
 
     public function settings_action()
     {
-        $this->crumb(AWS_APP::lang()->_t('系统设置'));
+        $this->crumb(_t('系统设置'));
 
 		$category = H::GET('category');
         if (!$category)
@@ -105,7 +105,7 @@ class main extends AWS_ADMIN_CONTROLLER
 
     public function nav_menu_action()
     {
-        $this->crumb(AWS_APP::lang()->_t('导航设置'));
+        $this->crumb(_t('导航设置'));
 
         TPL::assign('nav_menu_list', $this->model('menu')->get_nav_menu_list());
 

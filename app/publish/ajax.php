@@ -31,27 +31,27 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_post']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('操作过于频繁, 请稍后再试')));
 		}
 
 		if (!$this->model('publish')->check_user_permission($thread_type, $this->user_info))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不够')));
 		}
 
 		if (!check_repeat_submission($this->user_id, $title))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请不要重复提交')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('请不要重复提交')));
 		}
 
 		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_new_' . $thread_type))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', S::get('currency_name'))));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的剩余%s已经不足以进行此操作', S::get('currency_name'))));
 		}
 
 		if (!$this->model('ratelimit')->check_thread($this->user_id, $this->user_info['permission']['thread_limit_per_day']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日发帖数量已经达到上限')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('今日发帖数量已经达到上限')));
 		}
 	}
 
@@ -60,12 +60,12 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_post']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('操作过于频繁, 请稍后再试')));
 		}
 
 		if (!check_repeat_submission($this->user_id, $message))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请不要重复提交')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('请不要重复提交')));
 		}
 
 		switch ($thread_type)
@@ -86,7 +86,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->model('publish')->check_user_permission($reply_type, $this->user_info))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不够')));
 		}
 
 		switch ($thread_type)
@@ -94,41 +94,41 @@ class ajax extends AWS_CONTROLLER
 			case 'question':
 				if (!$this->model('ratelimit')->check_answer($this->user_id, $this->user_info['permission']['reply_limit_per_day']))
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天的回复已经达到上限')));
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你今天的回复已经达到上限')));
 				}
 				break;
 			case 'article':
 				if (!$this->model('ratelimit')->check_article_comment($this->user_id, $this->user_info['permission']['reply_limit_per_day']))
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天的文章评论已经达到上限')));
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你今天的文章评论已经达到上限')));
 				}
 				break;
 			case 'video':
 				if (!$this->model('ratelimit')->check_video_comment($this->user_id, $this->user_info['permission']['reply_limit_per_day']))
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你今天的影片评论已经达到上限')));
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你今天的影片评论已经达到上限')));
 				}
 				break;
 		}
 
 		if (!$thread_info = $this->model('content')->get_thread_info_by_id($thread_type, $thread_id))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('主题不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('主题不存在')));
 		}
 
 		if ($thread_info['lock'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的主题不能回复')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('已经锁定的主题不能回复')));
 		}
 
 		if (!$thread_info['title'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经删除的主题不能回复')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('已经删除的主题不能回复')));
 		}
 
 		if (!$this->model('category')->check_user_permission_reply($thread_info['category_id'], $this->user_info))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你的声望还不能在这个分类发言')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('你的声望还不能在这个分类发言')));
 		}
 
 		$pay = true;
@@ -140,7 +140,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($pay AND !$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_reply_' . $thread_type))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', S::get('currency_name'))));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的剩余%s已经不足以进行此操作', S::get('currency_name'))));
 		}
 
 		if ($thread_type == 'question')
@@ -150,15 +150,15 @@ class ajax extends AWS_CONTROLLER
 			{
 				if ($replied == 2)
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你已经使用延迟显示功能回复过该问题')));
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你已经使用延迟显示功能回复过该问题')));
 				}
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('一个问题只能回复一次，你可以编辑回复过的回复')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('一个问题只能回复一次，你可以编辑回复过的回复')));
 			}
 
 			// 判断是否是问题发起者
 			if (S::get('answer_self_question') == 'N' AND $thread_info['uid'] == $this->user_id)
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能回复自己发布的问题，你可以修改问题内容')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('不能回复自己发布的问题，你可以修改问题内容')));
 			}
 		}
 
@@ -175,11 +175,11 @@ class ajax extends AWS_CONTROLLER
 		$length = iconv_strlen($title);
 		if ($length_min AND $length < $length_min)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('标题字数不得小于 %s 字', $length_min)));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('标题字数不得小于 %s 字', $length_min)));
 		}
 		if ($length_max AND $length > $length_max)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('标题字数不得大于 %s 字', $length_max)));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('标题字数不得大于 %s 字', $length_max)));
 		}
 
 		if ($thread_type == 'question' AND S::get('question_ends_with_question') == 'Y')
@@ -188,7 +188,7 @@ class ajax extends AWS_CONTROLLER
 				iconv_strpos($title, '?') === false AND
 				iconv_strpos($title, '¿') === false)
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请以问号提问')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('请以问号提问')));
 			}
 		}
 
@@ -213,11 +213,11 @@ class ajax extends AWS_CONTROLLER
 		$length = iconv_strlen($message);
 		if ($length_min AND $length < $length_min)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('正文字数不得小于 %s 字', $length_min)));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('正文字数不得小于 %s 字', $length_min)));
 		}
 		if ($length_max AND $length > $length_max)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('正文字数不得大于 %s 字', $length_max)));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('正文字数不得大于 %s 字', $length_max)));
 		}
 
 		return $message;
@@ -239,11 +239,11 @@ class ajax extends AWS_CONTROLLER
 
 		if ($topics_limit_min AND $num_topics < $topics_limit_min)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题数量最少 %s 个, 请添加话题', $topics_limit_min)));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('话题数量最少 %s 个, 请添加话题', $topics_limit_min)));
 		}
 		if ($topics_limit_max AND $num_topics > $topics_limit_max)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题数量最多 %s 个, 请调整话题数量', $topics_limit_max)));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('话题数量最多 %s 个, 请调整话题数量', $topics_limit_max)));
 		}
 
 		if (!$num_topics)
@@ -256,14 +256,14 @@ class ajax extends AWS_CONTROLLER
 		{
 			if (!$topic_title)
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请填写话题标题')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('请填写话题标题')));
 				break;
 			}
 
 			$topic_title_length = strlen($topic_title);
 			if ($topic_title_length > 100)
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题标题字数超出限制')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('话题标题字数超出限制')));
 				break;
 			}
 
@@ -272,13 +272,13 @@ class ajax extends AWS_CONTROLLER
 			{
 				if (!$this->user_info['permission']['create_topic'])
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不能创建新话题「%s」, 请选择现有话题', $topic_title)));
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不能创建新话题「%s」, 请选择现有话题', $topic_title)));
 					break;
 				}
 
 				if ($topic_title_limit AND $topic_title_length > $topic_title_limit)
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('话题标题字数超出限制')));
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('话题标题字数超出限制')));
 					break;
 				}
 			}
@@ -300,17 +300,17 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$category_id)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请选择分类')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('请选择分类')));
 		}
 
 		if (!$this->model('category')->category_exists($category_id))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('分类不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('分类不存在')));
 		}
 
 		if (!$this->model('category')->check_user_permission($category_id, $this->user_info))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不能在这个分类发言')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不能在这个分类发言')));
 		}
 
 		return $category_id;
@@ -322,30 +322,30 @@ class ajax extends AWS_CONTROLLER
 		{
 			if (!$this->user_info['permission']['post_anonymously'])
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不能匿名')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不能匿名')));
 			}
 		}
 		else
 		{
 			if (!$this->user_info['permission']['reply_anonymously'])
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不能匿名')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不能匿名')));
 			}
 		}
 
 		if (!$anonymous_uid = $this->model('anonymous')->get_anonymous_uid($this->user_info))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('本站未开启匿名功能')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('本站未开启匿名功能')));
 		}
 
 		if (!$this->model('anonymous')->check_rate_limit(null, $anonymous_uid))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日匿名额度已经用完')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('今日匿名额度已经用完')));
 		}
 
 		if (!$this->model('anonymous')->check_spam($anonymous_uid))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('检测到滥用行为, 匿名功能暂时关闭')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('检测到滥用行为, 匿名功能暂时关闭')));
 		}
 
 		return $anonymous_uid;
@@ -360,17 +360,17 @@ class ajax extends AWS_CONTROLLER
 		{
 			if (!$this->user_info['permission']['post_later'])
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不能延迟发布')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不能延迟发布')));
 			}
 
 			if ($later < 10)
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('延迟时间不能小于 10 分钟')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('延迟时间不能小于 10 分钟')));
 			}
 
 			if ($later > 1440)
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('延迟时间不能大于 1440 分钟')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('延迟时间不能大于 1440 分钟')));
 			}
 		}
 
@@ -465,13 +465,13 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$web_url = H::POST_S('web_url'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请输入影片来源')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('请输入影片来源')));
 		}
 
 		$metadata = Services_VideoParser::parse_video_url($web_url);
 		if (!$metadata)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('无法识别影片来源')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('无法识别影片来源')));
 		}
 
 		$title = $this->get_title('video');

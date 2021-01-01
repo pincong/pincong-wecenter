@@ -19,7 +19,7 @@ class CF
 		static $text;
 		if (!isset($text))
 		{
-			$text = '<s class="aw-deleted">' . AWS_APP::lang()->_t('已删除') . '</s>';
+			$text = '<s class="aw-deleted">' . _t('已删除') . '</s>';
 		}
 		return $text;
 	}
@@ -28,7 +28,7 @@ class CF
 		static $text;
 		if (!isset($text))
 		{
-			$text = '<i class="aw-deleted">' . AWS_APP::lang()->_t('已隐藏') . '</i>';
+			$text = '<i class="aw-deleted">' . _t('已隐藏') . '</i>';
 		}
 		return $text;
 	}

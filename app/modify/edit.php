@@ -42,7 +42,7 @@ class edit extends AWS_CONTROLLER
 
 		if (!can_edit_post($reply_info['uid'], $this->user_info))
 		{
-			TPL::assign('dialog_message', AWS_APP::lang()->_t('你没有权限编辑此内容'));
+			TPL::assign('dialog_message', _t('你没有权限编辑此内容'));
 			TPL::output("dialog/alert_template");
 		}
 		else
@@ -66,7 +66,7 @@ class edit extends AWS_CONTROLLER
 
 		if (!can_edit_post($reply_info['uid'], $this->user_info))
 		{
-			TPL::assign('dialog_message', AWS_APP::lang()->_t('你没有权限编辑此内容'));
+			TPL::assign('dialog_message', _t('你没有权限编辑此内容'));
 			TPL::output("dialog/alert_template");
 		}
 		else
@@ -90,7 +90,7 @@ class edit extends AWS_CONTROLLER
 
 		if (!can_edit_post($reply_info['uid'], $this->user_info))
 		{
-			TPL::assign('dialog_message', AWS_APP::lang()->_t('你没有权限编辑此内容'));
+			TPL::assign('dialog_message', _t('你没有权限编辑此内容'));
 			TPL::output("dialog/alert_template");
 		}
 		else

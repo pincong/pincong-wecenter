@@ -42,7 +42,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!check_http_referer())
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('错误的请求')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('错误的请求')));
 		}
 	}
 
@@ -56,7 +56,7 @@ class ajax extends AWS_CONTROLLER
 			!$this->model('password')->check_base64_string($client_salt, 60) OR
 			!$this->model('password')->check_structure($scrambled_password))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的用户名和密码')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('请输入正确的用户名和密码')));
 		}
 
 		$public_key = H::POST('public_key');
@@ -65,12 +65,12 @@ class ajax extends AWS_CONTROLLER
 		if (!$this->model('password')->check_base64_string($public_key, 1000) OR
 			!$this->model('password')->check_base64_string($private_key, 1000))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('密钥无效')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('密钥无效')));
 		}
 
 		if (!AWS_APP::form()->check_csrf_token(H::POST('token'), 'register_next', false))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('页面停留时间过长, 请<a href="%s">刷新页面</a>重试', url_rewrite() . '/register/')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('页面停留时间过长, 请<a href="%s">刷新页面</a>重试', url_rewrite() . '/register/')));
 		}
 
 		// 检查验证码
@@ -78,14 +78,14 @@ class ajax extends AWS_CONTROLLER
 		{
 			if (!AWS_APP::captcha()->is_valid(H::POST('captcha'), H::get_cookie('captcha')))
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请填写正确的验证码')));
+				H::ajax_json_output(AWS_APP::RSM(null, -1, _t('请填写正确的验证码')));
 			}
 		}
 
 		$register_interval = rand_minmax(S::get('register_interval_min'), S::get('register_interval_max'), S::get('register_interval'));
 		if (!check_user_operation_interval('register', 0, $register_interval, false))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('本站已开启注册频率限制, 请稍后再试')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('本站已开启注册频率限制, 请稍后再试')));
 		}
 
 		if ($check_result = $this->model('register')->check_username_char($username))
@@ -96,18 +96,18 @@ class ajax extends AWS_CONTROLLER
 		if ($username != H::POST('username') OR
 			$this->model('register')->check_username_sensitive_words($username) )
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名中包含敏感词或系统保留字')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('用户名中包含敏感词或系统保留字')));
 		}
 
 		if ($this->model('account')->username_exists($username))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名已经存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('用户名已经存在')));
 		}
 
 		$uid = $this->model('register')->register($username, $scrambled_password, $client_salt, $public_key, $private_key);
 		if (!$uid)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('注册失败')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('注册失败')));
 		}
 
 		AWS_APP::form()->revoke_csrf_token(H::POST('token'));

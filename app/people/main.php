@@ -36,7 +36,7 @@ class main extends AWS_CONTROLLER
 
 	private function index_square()
 	{
-		$this->crumb(AWS_APP::lang()->_t('用户列表'));
+		$this->crumb(_t('用户列表'));
 
 		$admin_permission = $this->user_info['permission']['is_administrator'];
 
@@ -163,7 +163,7 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('user_follow_check', $this->model('follow')->user_follow_check($this->user_id, $user['uid']));
 
-		$this->crumb(AWS_APP::lang()->_t('%s 的个人主页', $user['user_name']));
+		$this->crumb(_t('%s 的个人主页', $user['user_name']));
 
 		TPL::import_css('css/user.css');
 

@@ -38,10 +38,10 @@ class main extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['kb_explore'])
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('你的声望还不够'));
+			H::redirect_msg(_t('你的声望还不够'));
 		}
 
-		$this->crumb(AWS_APP::lang()->_t('知识库'));
+		$this->crumb(_t('知识库'));
 
 		$per_page = S::get_int('contents_per_page');
 
@@ -92,7 +92,7 @@ class main extends AWS_CONTROLLER
 
 		if (!$this->user_info['permission']['kb_explore'])
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('你的声望还不够'));
+			H::redirect_msg(_t('你的声望还不够'));
 		}
 
 		if (! $item_info = $this->model('kb')->get(H::GET('id')))

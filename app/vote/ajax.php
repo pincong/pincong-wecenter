@@ -30,44 +30,44 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['vote_agree'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不够')));
 		}
 
 		if (!check_user_operation_interval('vote', $this->user_id, $this->user_info['permission']['interval_vote']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('操作过于频繁, 请稍后再试')));
 		}
 
 		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_agree'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', S::get('currency_name'))));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的剩余%s已经不足以进行此操作', S::get('currency_name'))));
 		}
 
 		if (!$this->model('vote')->check_user_vote_rate_limit($this->user_id, $this->user_info['permission']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日赞同/反对已经达到上限')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('今日赞同/反对已经达到上限')));
 		}
 
 		$item_info = $this->model('content')->get_thread_or_reply_info_by_id(H::POST('type'), H::POST('item_id'));
 		if (!$item_info)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('内容不存在')));
 		}
 
 		if ($item_info['uid'] == $this->user_id)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能赞同/反对自己发表的内容')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('不能赞同/反对自己发表的内容')));
 		}
 
 		if (!$this->model('vote')->check_same_user_limit($this->user_id, $item_info['uid'], 1))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能连续赞同同一个用户, 请明天再试')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('不能连续赞同同一个用户, 请明天再试')));
 		}
 
 		// 恶意行为
 		if ($this->model('vote')->get_user_vote_count($this->user_id, null, null, H::POST('type'), H::POST('item_id')) >= 4)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能反复赞同/反对')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('不能反复赞同/反对')));
 		}
 
 		set_user_operation_last_time('vote', $this->user_id);
@@ -81,44 +81,44 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['vote_disagree'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的声望还不够')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不够')));
 		}
 
 		if (!check_user_operation_interval('vote', $this->user_id, $this->user_info['permission']['interval_vote']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('操作过于频繁, 请稍后再试')));
 		}
 
 		if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_disagree'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', S::get('currency_name'))));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的剩余%s已经不足以进行此操作', S::get('currency_name'))));
 		}
 
 		if (!$this->model('vote')->check_user_vote_rate_limit($this->user_id, $this->user_info['permission']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('今日赞同/反对已经达到上限')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('今日赞同/反对已经达到上限')));
 		}
 
 		$item_info = $this->model('content')->get_thread_or_reply_info_by_id(H::POST('type'), H::POST('item_id'));
 		if (!$item_info)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('内容不存在')));
 		}
 
 		if ($item_info['uid'] == $this->user_id)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能赞同/反对自己发表的内容')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('不能赞同/反对自己发表的内容')));
 		}
 
 		if (!$this->model('vote')->check_same_user_limit($this->user_id, $item_info['uid'], -1))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能连续反对同一个用户, 请明天再试')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('不能连续反对同一个用户, 请明天再试')));
 		}
 
 		// 恶意行为
 		if ($this->model('vote')->get_user_vote_count($this->user_id, null, null, H::POST('type'), H::POST('item_id')) >= 4)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能反复赞同/反对')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('不能反复赞同/反对')));
 		}
 
 		set_user_operation_last_time('vote', $this->user_id);

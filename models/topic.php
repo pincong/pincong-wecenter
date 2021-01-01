@@ -550,28 +550,28 @@ class topic_class extends AWS_MODEL
 			switch (AWS_APP::upload()->get_error())
 			{
 				case 'upload_invalid_filetype':
-					$error = AWS_APP::lang()->_t('文件类型无效');
+					$error = _t('文件类型无效');
 					return false;
 
 				case 'upload_invalid_filesize':
-					$error = AWS_APP::lang()->_t('文件尺寸过大, 最大允许尺寸为 %s KB', S::get('upload_size_limit'));
+					$error = _t('文件尺寸过大, 最大允许尺寸为 %s KB', S::get('upload_size_limit'));
 					return false;
 
 				default:
-					$error = AWS_APP::lang()->_t('错误代码: %s', AWS_APP::upload()->get_error());
+					$error = _t('错误代码: %s', AWS_APP::upload()->get_error());
 					return false;
 			}
 		}
 
 		if (! $upload_data = AWS_APP::upload()->data())
 		{
-			$error = AWS_APP::lang()->_t('上传失败');
+			$error = _t('上传失败');
 			return false;
 		}
 
 		if ($upload_data['is_image'] != 1)
 		{
-			$error = AWS_APP::lang()->_t('文件类型错误');
+			$error = _t('文件类型错误');
 			return false;
 		}
 
@@ -588,7 +588,7 @@ class topic_class extends AWS_MODEL
 
 			if ($result == false)
 			{
-				$error = AWS_APP::lang()->_t('保存失败');
+				$error = _t('保存失败');
 				return false;
 			}
 		}

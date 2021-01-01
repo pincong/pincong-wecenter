@@ -30,7 +30,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission']['is_moderator'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('对不起, 你没有删除文章的权限')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('对不起, 你没有删除文章的权限')));
 		}
 
 		if ($article_info = $this->model('content')->get_thread_info_by_id('article', H::POST('article_id')))

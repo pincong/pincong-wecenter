@@ -79,7 +79,7 @@ class main extends AWS_CONTROLLER
 			'per_page' => $per_page
 		)));
 
-		$this->crumb(AWS_APP::lang()->_t('话题广场'));
+		$this->crumb(_t('话题广场'));
 
 		TPL::output('topic/square');
 	}
@@ -204,22 +204,22 @@ class main extends AWS_CONTROLLER
 	{
 		if (! $topic_info = $this->model('topic')->get_topic_by_id(H::GET('id')))
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('话题不存在'), '/');
+			H::redirect_msg(_t('话题不存在'), '/');
 		}
 
 		if (!($this->user_info['permission']['manage_topic']))
 		{
 			if (!$this->user_info['permission']['edit_topic'])
 			{
-				H::redirect_msg(AWS_APP::lang()->_t('你没有权限进行此操作'));
+				H::redirect_msg(_t('你没有权限进行此操作'));
 			}
 			else if ($this->model('topic')->has_lock_topic(H::GET('id')))
 			{
-				H::redirect_msg(AWS_APP::lang()->_t('已锁定的话题不能编辑'));
+				H::redirect_msg(_t('已锁定的话题不能编辑'));
 			}
 		}
 
-		$this->crumb(AWS_APP::lang()->_t('话题编辑'));
+		$this->crumb(_t('话题编辑'));
 		$this->crumb($topic_info['topic_title']);
 
 		TPL::assign('topic_info', $topic_info);
@@ -232,15 +232,15 @@ class main extends AWS_CONTROLLER
 	{
 		if (! $topic_info = $this->model('topic')->get_topic_by_id(H::GET('id')))
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('话题不存在'), '/');
+			H::redirect_msg(_t('话题不存在'), '/');
 		}
 
-		$this->crumb(AWS_APP::lang()->_t('话题管理'));
+		$this->crumb(_t('话题管理'));
 		$this->crumb($topic_info['topic_title']);
 
 		if (!($this->user_info['permission']['manage_topic']))
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('你没有权限进行此操作'));
+			H::redirect_msg(_t('你没有权限进行此操作'));
 		}
 
 		if ($merged_topic_ids = $this->model('topic')->get_merged_topic_ids_by_id($topic_info['topic_id']))

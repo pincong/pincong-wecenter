@@ -44,7 +44,7 @@ class main extends AWS_CONTROLLER
 			return;
 		}
 
-		$this->crumb(AWS_APP::lang()->_t('登录'));
+		$this->crumb(_t('登录'));
 
 		TPL::import_css('css/register.css');
 
@@ -58,12 +58,12 @@ class main extends AWS_CONTROLLER
 	{
 		if (!check_http_referer())
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('错误的请求'), '/');
+			H::redirect_msg(_t('错误的请求'), '/');
 		}
 
 		if (!AWS_APP::form()->check_csrf_token(H::POST('token'), 'login_index'))
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('页面停留时间过长, 请刷新页面重试'), '/login/');
+			H::redirect_msg(_t('页面停留时间过长, 请刷新页面重试'), '/login/');
 		}
 
 		$captcha_required = $this->model('login')->is_captcha_required();
@@ -73,20 +73,20 @@ class main extends AWS_CONTROLLER
 		{
 			if (H::POST('captcha_enabled') == '0')
 			{
-				H::redirect_msg(AWS_APP::lang()->_t('请填写验证码'), '/login/');
+				H::redirect_msg(_t('请填写验证码'), '/login/');
 			}
 			if (!AWS_APP::captcha()->is_valid(H::POST('captcha'), H::get_cookie('captcha')))
 			{
-				H::redirect_msg(AWS_APP::lang()->_t('请填写正确的验证码'), '/login/');
+				H::redirect_msg(_t('请填写正确的验证码'), '/login/');
 			}
 		}
 
 		if (!$user_info = $this->model('account')->get_user_info_by_username(H::POST_S('username')))
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('用户名不存在'), '/login/');
+			H::redirect_msg(_t('用户名不存在'), '/login/');
 		}
 
-		$this->crumb(AWS_APP::lang()->_t('登录'));
+		$this->crumb(_t('登录'));
 
 		TPL::import_css('css/register.css');
 

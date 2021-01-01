@@ -22,7 +22,7 @@ class main extends AWS_CONTROLLER
 {
 	public function admin_log_action()
 	{
-		$this->crumb(AWS_APP::lang()->_t('管理记录'));
+		$this->crumb(_t('管理记录'));
 
 		TPL::output('user/admin_log');
 	}

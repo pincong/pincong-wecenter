@@ -37,7 +37,7 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		$this->crumb(AWS_APP::lang()->_t('精选'));
+		$this->crumb(_t('精选'));
 
 		// 导航
 		TPL::assign('content_nav_menu', $this->model('menu')->get_nav_menu_list('hot'));

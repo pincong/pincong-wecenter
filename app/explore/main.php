@@ -38,7 +38,7 @@ class main extends AWS_CONTROLLER
 	{
 		if ($this->user_id)
 		{
-			$this->crumb(AWS_APP::lang()->_t('发现'));
+			$this->crumb(_t('发现'));
 		}
 
 		if (H::GET('category'))

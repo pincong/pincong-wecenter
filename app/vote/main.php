@@ -42,7 +42,7 @@ class main extends AWS_CONTROLLER
 			H::error_404();
 		}
 
-		$this->crumb(AWS_APP::lang()->_t('投票记录'));
+		$this->crumb(_t('投票记录'));
 
 		TPL::output('vote/log');
 	}

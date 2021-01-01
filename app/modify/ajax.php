@@ -31,7 +31,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_modify']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('操作过于频繁, 请稍后再试')));
 		}
 
 		switch ($thread_type)
@@ -49,17 +49,17 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$thread_info = $this->model('content')->get_thread_info_by_id($thread_type, $thread_id))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('主题不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('主题不存在')));
 		}
 
 		if ($thread_info['lock'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('主题已锁定, 不能编辑')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('主题已锁定, 不能编辑')));
 		}
 
 		if (!can_edit_post($thread_info['uid'], $this->user_info))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你没有权限编辑此主题')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你没有权限编辑此主题')));
 		}
 
 		set_user_operation_last_time('publish', $this->user_id);
@@ -72,7 +72,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_modify']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('操作过于频繁, 请稍后再试')));
 		}
 
 		switch ($thread_type)
@@ -90,12 +90,12 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$reply_info = $this->model('content')->get_reply_info_by_id($reply_type, H::GET('id')))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('内容不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('内容不存在')));
 		}
 
 		if (!can_edit_post($reply_info['uid'], $this->user_info))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('你没有权限进行此操作')));
 		}
 
 		switch ($thread_type)
@@ -113,12 +113,12 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$tread_info = $this->model('content')->get_thread_info_by_id($thread_type, $thread_id))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('主题不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('主题不存在')));
 		}
 
 		if ($tread_info['lock'] AND !$tread_info['redirect_id'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经锁定的主题不能编辑')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('已经锁定的主题不能编辑')));
 		}
 
 		set_user_operation_last_time('publish', $this->user_id);
@@ -136,11 +136,11 @@ class ajax extends AWS_CONTROLLER
 		$length = iconv_strlen($title);
 		if ($length_min AND $length < $length_min)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('标题字数不得小于 %s 字', $length_min)));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('标题字数不得小于 %s 字', $length_min)));
 		}
 		if ($length_max AND $length > $length_max)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('标题字数不得大于 %s 字', $length_max)));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('标题字数不得大于 %s 字', $length_max)));
 		}
 
 		if ($thread_type == 'question' AND S::get('question_ends_with_question') == 'Y')
@@ -149,7 +149,7 @@ class ajax extends AWS_CONTROLLER
 				iconv_strpos($title, '?') === false AND
 				iconv_strpos($title, '¿') === false)
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('请以问号提问')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('请以问号提问')));
 			}
 		}
 
@@ -174,11 +174,11 @@ class ajax extends AWS_CONTROLLER
 		$length = iconv_strlen($message);
 		if ($length_min AND $length < $length_min)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('正文字数不得小于 %s 字', $length_min)));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('正文字数不得小于 %s 字', $length_min)));
 		}
 		if ($length_max AND $length > $length_max)
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('正文字数不得大于 %s 字', $length_max)));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('正文字数不得大于 %s 字', $length_max)));
 		}
 
 		return $message;
@@ -255,7 +255,7 @@ class ajax extends AWS_CONTROLLER
 				$metadata = Services_VideoParser::parse_video_url($web_url);
 				if (!$metadata)
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, - 1, AWS_APP::lang()->_t('无法识别影片来源')));
+					H::ajax_json_output(AWS_APP::RSM(null, - 1, _t('无法识别影片来源')));
 				}
 			}
 		}

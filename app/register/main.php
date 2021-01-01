@@ -40,7 +40,7 @@ class main extends AWS_CONTROLLER
 	{
 		if (S::get('register_type') == 'close')
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('本站目前关闭注册'), '/');
+			H::redirect_msg(_t('本站目前关闭注册'), '/');
 		}
 		else if (S::get('register_type') == 'custom')
 		{
@@ -52,7 +52,7 @@ class main extends AWS_CONTROLLER
 			H::redirect($register_url);
 		}
 
-		$this->crumb(AWS_APP::lang()->_t('注册'));
+		$this->crumb(_t('注册'));
 
 		TPL::import_css('css/register.css');
 
@@ -66,17 +66,17 @@ class main extends AWS_CONTROLLER
 	{
 		if (!check_http_referer())
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('错误的请求'), '/');
+			H::redirect_msg(_t('错误的请求'), '/');
 		}
 
 		if (!H::POST_I('agree'))
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('你必需同意 %s 才能继续', S::get('user_agreement_name')), '/register/');
+			H::redirect_msg(_t('你必需同意 %s 才能继续', S::get('user_agreement_name')), '/register/');
 		}
 
 		if (!AWS_APP::form()->check_csrf_token(H::POST('token'), 'register_index'))
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('页面停留时间过长, 请刷新页面重试'), '/register/');
+			H::redirect_msg(_t('页面停留时间过长, 请刷新页面重试'), '/register/');
 		}
 
 		$captcha_required = $this->model('register')->is_captcha_required();
@@ -86,11 +86,11 @@ class main extends AWS_CONTROLLER
 		{
 			if (!AWS_APP::captcha()->is_valid(H::POST('captcha'), H::get_cookie('captcha')))
 			{
-				H::redirect_msg(AWS_APP::lang()->_t('请填写正确的验证码'), '/register/');
+				H::redirect_msg(_t('请填写正确的验证码'), '/register/');
 			}
 		}
 
-		$this->crumb(AWS_APP::lang()->_t('注册'));
+		$this->crumb(_t('注册'));
 
 		TPL::import_css('css/register.css');
 

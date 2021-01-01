@@ -23,7 +23,7 @@ class content extends AWS_ADMIN_CONTROLLER
 	public function custom_css_action()
 	{
 		$setting_key = 'custom_css';
-		$setting_title = AWS_APP::lang()->_t('自定义 CSS');
+		$setting_title = _t('自定义 CSS');
 		$this->crumb($setting_title);
 		TPL::assign('setting_key', $setting_key);
 		TPL::assign('setting_title', $setting_title);
@@ -35,7 +35,7 @@ class content extends AWS_ADMIN_CONTROLLER
 	public function custom_head_action()
 	{
 		$setting_key = 'custom_head';
-		$setting_title = AWS_APP::lang()->_t('自定义 head');
+		$setting_title = _t('自定义 head');
 		$this->crumb($setting_title);
 		TPL::assign('setting_key', $setting_key);
 		TPL::assign('setting_title', $setting_title);
@@ -47,7 +47,7 @@ class content extends AWS_ADMIN_CONTROLLER
 	public function custom_body_top_action()
 	{
 		$setting_key = 'custom_body_top';
-		$setting_title = AWS_APP::lang()->_t('自定义 body 顶端');
+		$setting_title = _t('自定义 body 顶端');
 		$this->crumb($setting_title);
 		TPL::assign('setting_key', $setting_key);
 		TPL::assign('setting_title', $setting_title);
@@ -59,7 +59,7 @@ class content extends AWS_ADMIN_CONTROLLER
 	public function custom_body_bottom_action()
 	{
 		$setting_key = 'custom_body_bottom';
-		$setting_title = AWS_APP::lang()->_t('自定义 body 底端');
+		$setting_title = _t('自定义 body 底端');
 		$this->crumb($setting_title);
 		TPL::assign('setting_key', $setting_key);
 		TPL::assign('setting_title', $setting_title);
@@ -71,7 +71,7 @@ class content extends AWS_ADMIN_CONTROLLER
 	public function statistic_code_action()
 	{
 		$setting_key = 'statistic_code';
-		$setting_title = AWS_APP::lang()->_t('网站统计代码');
+		$setting_title = _t('网站统计代码');
 		$this->crumb($setting_title);
 		TPL::assign('setting_key', $setting_key);
 		TPL::assign('setting_title', $setting_title);
@@ -83,7 +83,7 @@ class content extends AWS_ADMIN_CONTROLLER
 	public function content_replacing_list_action()
 	{
 		$setting_key = 'content_replacing_list';
-		$setting_title = AWS_APP::lang()->_t('用户内容替换列表');
+		$setting_title = _t('用户内容替换列表');
 		$this->crumb($setting_title);
 		TPL::assign('setting_key', $setting_key);
 		TPL::assign('setting_title', $setting_title);
@@ -95,7 +95,7 @@ class content extends AWS_ADMIN_CONTROLLER
 	public function html_replacing_list_action()
 	{
 		$setting_key = 'html_replacing_list';
-		$setting_title = AWS_APP::lang()->_t('网页内容替换列表');
+		$setting_title = _t('网页内容替换列表');
 		$this->crumb($setting_title);
 		TPL::assign('setting_key', $setting_key);
 		TPL::assign('setting_title', $setting_title);
@@ -107,7 +107,7 @@ class content extends AWS_ADMIN_CONTROLLER
 	public function sensitive_words_action()
 	{
 		$setting_key = 'sensitive_words';
-		$setting_title = AWS_APP::lang()->_t('敏感词列表');
+		$setting_title = _t('敏感词列表');
 		$this->crumb($setting_title);
 		TPL::assign('setting_key', $setting_key);
 		TPL::assign('setting_title', $setting_title);

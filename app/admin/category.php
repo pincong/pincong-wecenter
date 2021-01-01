@@ -22,7 +22,7 @@ class category extends AWS_ADMIN_CONTROLLER
 {
     public function setup()
     {
-        $this->crumb(AWS_APP::lang()->_t('分类管理'));
+        $this->crumb(_t('分类管理'));
 
         TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(302));
     }
@@ -40,7 +40,7 @@ class category extends AWS_ADMIN_CONTROLLER
     {
         if (!$category_info = $this->model('category')->get_category_info(H::GET('category_id')))
         {
-            H::redirect_msg(AWS_APP::lang()->_t('指定分类不存在'), '/admin/category/list/');
+            H::redirect_msg(_t('指定分类不存在'), '/admin/category/list/');
         }
 
         TPL::assign('category', $category_info);

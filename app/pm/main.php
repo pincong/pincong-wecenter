@@ -22,7 +22,7 @@ class main extends AWS_CONTROLLER
 {
 	public function setup()
 	{
-		$this->crumb(AWS_APP::lang()->_t('私信'));
+		$this->crumb(_t('私信'));
 	}
 
 
@@ -50,7 +50,7 @@ class main extends AWS_CONTROLLER
 		$conversation_id = H::GET_I('id');
 		if (!$conversation = $this->model('pm')->get_conversation($conversation_id, $this->user_id))
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('会话不存在'), '/pm/');
+			H::redirect_msg(_t('会话不存在'), '/pm/');
 		}
 
 		$list = $this->model('pm')->read_conversation_messages($conversation_id, $this->user_id, H::GET('page'), S::get_int('replies_per_page'));
@@ -63,7 +63,7 @@ class main extends AWS_CONTROLLER
 				$usernames[] = $user['user_name'];
 			}
 		}
-		$this->crumb(AWS_APP::lang()->_t('私信会话') . ': ' . implode(', ', $usernames));
+		$this->crumb(_t('私信会话') . ': ' . implode(', ', $usernames));
 
 		TPL::import_js('js/openpgp.min.js');
 		TPL::import_js('js/bcrypt.js');
@@ -86,7 +86,7 @@ class main extends AWS_CONTROLLER
 		$usernames = H::POST_S('usernames');
 		if (!is_array($usernames) OR count($usernames) > 4)
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('内容错误'));
+			H::redirect_msg(_t('内容错误'));
 		}
 		$usernames = array_unique($usernames);
 
@@ -100,7 +100,7 @@ class main extends AWS_CONTROLLER
 			}
 			if ($username == $sender_name)
 			{
-				H::redirect_msg(AWS_APP::lang()->_t('不能给自己发私信'));
+				H::redirect_msg(_t('不能给自己发私信'));
 			}
 			$names[] = $username;
 		}
@@ -108,13 +108,13 @@ class main extends AWS_CONTROLLER
 		$count = count($names);
 		if ($count < 2)
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('内容错误'));
+			H::redirect_msg(_t('内容错误'));
 		}
 
 		$users = $this->model('account')->get_user_info_by_usernames($names);
 		if (!is_array($users) OR count($users) != $count)
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('接收私信的用户不存在'));
+			H::redirect_msg(_t('接收私信的用户不存在'));
 		}
 
 		foreach ($users as $user)
@@ -139,7 +139,7 @@ class main extends AWS_CONTROLLER
 				$usernames[] = $user['user_name'];
 			}
 		}
-		$this->crumb(AWS_APP::lang()->_t('私信会话') . ': ' . implode(', ', $usernames));
+		$this->crumb(_t('私信会话') . ': ' . implode(', ', $usernames));
 
 		TPL::import_js('js/openpgp.min.js');
 		TPL::import_js('js/bcrypt.js');

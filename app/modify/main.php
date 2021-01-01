@@ -22,19 +22,19 @@ class main extends AWS_CONTROLLER
 {
 	public function setup()
 	{
-		$this->crumb(AWS_APP::lang()->_t('编辑'));
+		$this->crumb(_t('编辑'));
 	}
 
 	public function index_action()
 	{
 		if (!$thread_info = $this->model('content')->get_thread_info_by_id('question', H::GET('id')))
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('指定问题不存在'));
+			H::redirect_msg(_t('指定问题不存在'));
 		}
 
 		if (!can_edit_post($thread_info['uid'], $this->user_info))
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑这个问题'), '/question/' . $thread_info['id']);
+			H::redirect_msg(_t('你没有权限编辑这个问题'), '/question/' . $thread_info['id']);
 		}
 
 		if (S::get('category_enable') != 'N')
@@ -59,12 +59,12 @@ class main extends AWS_CONTROLLER
 	{
 		if (!$thread_info = $this->model('content')->get_thread_info_by_id('article', H::GET('id')))
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('指定文章不存在'));
+			H::redirect_msg(_t('指定文章不存在'));
 		}
 
 		if (!can_edit_post($thread_info['uid'], $this->user_info))
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑这个文章'), '/article/' . $thread_info['id']);
+			H::redirect_msg(_t('你没有权限编辑这个文章'), '/article/' . $thread_info['id']);
 		}
 
 		if (S::get('category_enable') != 'N')
@@ -89,12 +89,12 @@ class main extends AWS_CONTROLLER
 	{
 		if (!$thread_info = $this->model('content')->get_thread_info_by_id('video', H::GET('id')))
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('指定影片不存在'));
+			H::redirect_msg(_t('指定影片不存在'));
 		}
 
 		if (!can_edit_post($thread_info['uid'], $this->user_info))
 		{
-			H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑这个影片'), '/video/' . $thread_info['id']);
+			H::redirect_msg(_t('你没有权限编辑这个影片'), '/video/' . $thread_info['id']);
 		}
 
 		if (S::get('category_enable') != 'N')

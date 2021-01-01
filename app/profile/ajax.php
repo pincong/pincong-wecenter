@@ -31,12 +31,12 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (S::get('upload_enable') == 'N')
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('本站未开启上传功能')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('本站未开启上传功能')));
 		}
 
 		if (!check_user_operation_interval('profile', $this->user_id, $this->user_info['permission']['interval_modify']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('操作过于频繁, 请稍后再试')));
 		}
 
 		if (!$this->model('avatar')->upload_avatar('aws_upload_file', $this->user_id, $error))
@@ -73,7 +73,7 @@ class ajax extends AWS_CONTROLLER
 
 		$this->model('account')->update_notification_setting_fields($notification_setting, $this->user_id);
 
-		H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('隐私设置保存成功')));
+		H::ajax_json_output(AWS_APP::RSM(null, -1, _t('隐私设置保存成功')));
 	}
 
 	public function profile_setting_action()
@@ -84,7 +84,7 @@ class ajax extends AWS_CONTROLLER
 			{
 				if (!$this->model('currency')->check_balance_for_operation($this->user_info['currency'], 'currency_system_config_change_username'))
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('你的剩余%s已经不足以进行此操作', S::get('currency_name'))));
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的剩余%s已经不足以进行此操作', S::get('currency_name'))));
 				}
 				if ($check_result = $this->model('register')->check_username_char($user_name))
 				{
@@ -92,11 +92,11 @@ class ajax extends AWS_CONTROLLER
 				}
 				if ($this->model('register')->check_username_sensitive_words($user_name))
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名不符合规则')));
+					H::ajax_json_output(AWS_APP::RSM(null, -1, _t('用户名不符合规则')));
 				}
 				if ($this->model('account')->username_exists($user_name))
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('已经存在相同的姓名, 请重新填写')));
+					H::ajax_json_output(AWS_APP::RSM(null, -1, _t('已经存在相同的姓名, 请重新填写')));
 				}
 				$this->model('account')->update_user_name($user_name, $this->user_id);
 
@@ -117,7 +117,7 @@ class ajax extends AWS_CONTROLLER
 
 		$this->model('account')->set_default_timezone(H::POST_S('default_timezone'), $this->user_id);
 
-		H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('个人资料保存成功')));
+		H::ajax_json_output(AWS_APP::RSM(null, -1, _t('个人资料保存成功')));
 	}
 
 }

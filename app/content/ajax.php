@@ -30,7 +30,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!$this->user_info['permission'][$permission_name])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你没有权限进行此操作')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('你没有权限进行此操作')));
 		}
 	}
 
@@ -38,7 +38,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (!check_user_operation_interval($interval_name, $this->user_id, $this->user_info['permission']['interval_' . $interval_name]))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作过于频繁, 请稍后再试')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('操作过于频繁, 请稍后再试')));
 		}
 	}
 
@@ -49,7 +49,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$item_info_out = $this->model('content')->get_thread_info_by_id($item_type, $item_id))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('内容不存在')));
 		}
 
 		set_user_operation_last_time($interval_name, $this->user_id);
@@ -62,7 +62,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$item_info_out = $this->model('content')->get_reply_info_by_id($item_type, $item_id))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('内容不存在')));
 		}
 
 		set_user_operation_last_time($interval_name, $this->user_id);
@@ -91,17 +91,17 @@ class ajax extends AWS_CONTROLLER
 		$redirect_id = H::POST_I('redirect_id');
 		if ($redirect_id == $item_info['id'] OR $redirect_id == $item_info['redirect_id'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能合并到同一个主题')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('不能合并到同一个主题')));
 		}
 
 		if (!$redirect_item_info = $this->model('content')->get_thread_info_by_id(H::POST('item_type'), $redirect_id))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('合并内容不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('合并内容不存在')));
 		}
 
 		if ($redirect_item_info['redirect_id'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能合并到被合并的主题')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('不能合并到被合并的主题')));
 		}
 
 		$this->model('content')->redirect(
@@ -120,7 +120,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$item_info['redirect_id'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容没有被合并')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('内容没有被合并')));
 		}
 
 		$this->model('content')->unredirect(
@@ -139,17 +139,17 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$new_category_id = H::POST_I('category_id'))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('分类不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('分类不存在')));
 		}
 
 		if (!$this->model('category')->check_change_category_permission($new_category_id, $item_info['category_id'], $this->user_info))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('不能变更到这个分类')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('不能变更到这个分类')));
 		}
 
 		if (!$this->model('category')->category_exists($new_category_id))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('分类不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('分类不存在')));
 		}
 
 		if ($item_info['category_id'] != $new_category_id)
@@ -297,7 +297,7 @@ class ajax extends AWS_CONTROLLER
 		$this->validate_interval('manage');
 		if (!$item_info = $this->model('content')->get_reply_info_by_id(H::POST('item_type'), H::POST('item_id')))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('内容不存在')));
 		}
 
 		if (!$item_info['fold'])
@@ -347,7 +347,7 @@ class ajax extends AWS_CONTROLLER
 		$this->validate_interval('manage');
 		if (!$item_info = $this->model('content')->get_reply_info_by_id(H::POST('item_type'), H::POST('item_id')))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('内容不存在')));
 		}
 
 		if ($item_info['fold'])
@@ -400,7 +400,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$item_info = $this->model('content')->get_thread_info_by_id(H::POST('item_type'), H::POST('item_id')))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('内容不存在')));
 		}
 
 		if ($item_info['uid'] != $this->user_id)
@@ -426,7 +426,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$item_info = $this->model('content')->get_thread_info_by_id(H::POST('item_type'), H::POST('item_id')))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('内容不存在')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('内容不存在')));
 		}
 
 		set_user_operation_last_time('follow', $this->user_id);

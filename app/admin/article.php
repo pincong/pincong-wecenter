@@ -124,7 +124,7 @@ class article extends AWS_ADMIN_CONTROLLER
 			'per_page' => $this->per_page
 		)));
 
-		$this->crumb(AWS_APP::lang()->_t('文章管理'));
+		$this->crumb(_t('文章管理'));
 
 		TPL::assign('articles_count', $search_articles_total);
 		TPL::assign('list', $article_list);

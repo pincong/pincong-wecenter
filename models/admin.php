@@ -61,7 +61,7 @@ class admin_class extends AWS_MODEL
 /*
         $notifications_texts[] = array(
             'url' => 'url',
-            'text' => AWS_APP::lang()->_t('text')
+            'text' => 'text'
         );
 
         return $notifications_texts;

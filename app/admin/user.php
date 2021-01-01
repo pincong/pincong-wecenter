@@ -108,7 +108,7 @@ class user extends AWS_ADMIN_CONTROLLER
             'per_page' => $this->per_page
         )));
 
-        $this->crumb(AWS_APP::lang()->_t('会员列表'));
+        $this->crumb(_t('会员列表'));
 
         TPL::assign('member_group', $this->model('usergroup')->get_reputation_group_list());
         TPL::assign('system_group', $this->model('usergroup')->get_normal_group_list());
@@ -121,7 +121,7 @@ class user extends AWS_ADMIN_CONTROLLER
 
     public function group_list_action()
     {
-        $this->crumb(AWS_APP::lang()->_t('用户组管理'));
+        $this->crumb(_t('用户组管理'));
 
         TPL::assign('member_group', $this->model('usergroup')->get_reputation_group_list());
         TPL::assign('system_group', $this->model('usergroup')->get_system_group_list());
@@ -132,11 +132,11 @@ class user extends AWS_ADMIN_CONTROLLER
 
     public function group_edit_action()
     {
-        $this->crumb(AWS_APP::lang()->_t('修改用户组'));
+        $this->crumb(_t('修改用户组'));
 
         if (! $group = $this->model('usergroup')->get_user_group_by_id(H::GET('group_id')))
         {
-            H::redirect_msg(AWS_APP::lang()->_t('用户组不存在'), '/admin/user/group_list/');
+            H::redirect_msg(_t('用户组不存在'), '/admin/user/group_list/');
         }
 
         TPL::assign('group', $group);
@@ -147,11 +147,11 @@ class user extends AWS_ADMIN_CONTROLLER
 
     public function edit_action()
     {
-        $this->crumb(AWS_APP::lang()->_t('编辑用户资料'));
+        $this->crumb(_t('编辑用户资料'));
 
         if (!$user = $this->model('account')->get_user_info_by_uid(H::GET('uid')))
         {
-            H::redirect_msg(AWS_APP::lang()->_t('用户不存在'), '/admin/user/list/');
+            H::redirect_msg(_t('用户不存在'), '/admin/user/list/');
         }
 
 		TPL::assign('member_group', $this->model('usergroup')->get_user_group_by_id(
@@ -171,7 +171,7 @@ class user extends AWS_ADMIN_CONTROLLER
 
     public function user_add_action()
     {
-        $this->crumb(AWS_APP::lang()->_t('添加用户'));
+        $this->crumb(_t('添加用户'));
 
         TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(402));
 
@@ -210,7 +210,7 @@ class user extends AWS_ADMIN_CONTROLLER
         TPL::assign('user', $this->model('account')->get_user_info_by_uid(H::GET('uid')));
         TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(402));
 
-        $this->crumb(AWS_APP::lang()->_t('代币日志'));
+        $this->crumb(_t('代币日志'));
 
         TPL::output('admin/user/currency_log');
     }

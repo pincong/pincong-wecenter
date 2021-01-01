@@ -26,7 +26,7 @@ class pm_class extends AWS_MODEL
 	{
 		if (!$recipient_user['public_key'])
 		{
-			$error = AWS_APP::lang()->_t('%s 没有公钥, 你无法给 Ta 发送私信', $recipient_user['user_name']);
+			$error = _t('%s 没有公钥, 你无法给 Ta 发送私信', $recipient_user['user_name']);
 			return false;
 		}
 
@@ -44,7 +44,7 @@ class pm_class extends AWS_MODEL
 
 		if ($recipient_user['forbidden'])
 		{
-			$error = AWS_APP::lang()->_t('%s 已经被禁止登录', $recipient_user['user_name']);
+			$error = _t('%s 已经被禁止登录', $recipient_user['user_name']);
 			return false;
 		}
 
@@ -59,13 +59,13 @@ class pm_class extends AWS_MODEL
 			if (!$this_user['permission']['send_pm'])
 			{
 				// 自己不可以发送私信
-				$error = AWS_APP::lang()->_t('你的声望还不能给 %s 发送私信', $recipient_user['user_name']);
+				$error = _t('你的声望还不能给 %s 发送私信', $recipient_user['user_name']);
 				return false;
 			}
 			if (!$recipient_user_group['permission']['send_pm'])
 			{
 				// 对方不可以发送私信
-				$error = AWS_APP::lang()->_t('%s 的声望还不能接收你的私信', $recipient_user['user_name']);
+				$error = _t('%s 的声望还不能接收你的私信', $recipient_user['user_name']);
 				return false;
 			}
 			// 双方都可以发送私信
@@ -79,7 +79,7 @@ class pm_class extends AWS_MODEL
 
 		if ($inbox_recv == 2) // 2为拒绝任何人
 		{
-			$error = AWS_APP::lang()->_t('%s 设置了拒绝接收任何人的私信', $recipient_user['user_name']);
+			$error = _t('%s 设置了拒绝接收任何人的私信', $recipient_user['user_name']);
 			return false;
 		}
 		else if ($inbox_recv == 3) // 3为任何人
@@ -89,7 +89,7 @@ class pm_class extends AWS_MODEL
 
 		if (!$this->model('follow')->user_follow_check($recipient_user['uid'], $this->user_id))
 		{
-			$error = AWS_APP::lang()->_t('%s 未关注你, 你无法给 Ta 发送私信', $recipient_user['user_name']);
+			$error = _t('%s 未关注你, 你无法给 Ta 发送私信', $recipient_user['user_name']);
 			return false;
 		}
 

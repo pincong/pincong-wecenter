@@ -98,13 +98,13 @@ class register_class extends AWS_MODEL
     {
         if (is_numeric($user_name))
         {
-            return AWS_APP::lang()->_t('用户名不能为纯数字');
+            return _t('用户名不能为纯数字');
         }
 
         $char = substr($user_name, 0, 1);
         if (strstr('0123456789_', $char))
         {
-            return AWS_APP::lang()->_t('用户名不能以数字或下划线开头');
+            return _t('用户名不能以数字或下划线开头');
         }
 
         $length_min = S::get_int('username_length_min');
@@ -112,7 +112,7 @@ class register_class extends AWS_MODEL
         $length = iconv_strlen($user_name);
         if ($length < $length_min OR $length > $length_max)
         {
-            return AWS_APP::lang()->_t('用户名字数不符合规则');
+            return _t('用户名字数不符合规则');
         }
 
         $bytes_min = S::get_int('username_bytes_min');
@@ -121,7 +121,7 @@ class register_class extends AWS_MODEL
         if ( ($bytes_min AND $bytes < $bytes_min) OR
             ($bytes_max AND $bytes > $bytes_max) )
         {
-            return AWS_APP::lang()->_t('用户名长度不符合规则');
+            return _t('用户名长度不符合规则');
         }
 
         switch(S::get('username_rule'))
@@ -129,21 +129,21 @@ class register_class extends AWS_MODEL
             case 1:
                 if (!preg_match('/^[\x{4e00}-\x{9fa5}_a-zA-Z0-9]+$/u', $user_name))
                 {
-                    return AWS_APP::lang()->_t('用户名只允许出现汉字、字母、数字或下划线');
+                    return _t('用户名只允许出现汉字、字母、数字或下划线');
                 }
                 break;
 
             case 2:
                 if (!preg_match("/^[a-zA-Z0-9_]+$/i", $user_name))
                 {
-                    return AWS_APP::lang()->_t('用户名只允许出现字母、数字或下划线');
+                    return _t('用户名只允许出现字母、数字或下划线');
                 }
                 break;
 
             case 3:
                 if (!preg_match("/^[\x{4e00}-\x{9fa5}]+$/u", $user_name))
                 {
-                    return AWS_APP::lang()->_t('用户名只允许出现汉字');
+                    return _t('用户名只允许出现汉字');
                 }
                 break;
 

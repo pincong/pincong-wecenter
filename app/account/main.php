@@ -33,7 +33,7 @@ class main extends AWS_CONTROLLER
 	{
 		if (!H::is_post())
 		{
-			$this->crumb(AWS_APP::lang()->_t('退出'));
+			$this->crumb(_t('退出'));
 			TPL::import_css('css/register.css');
 			TPL::output("account/logout");
 		}
@@ -41,7 +41,7 @@ class main extends AWS_CONTROLLER
 		{
 			if (!check_http_referer())
 			{
-				H::redirect_msg(AWS_APP::lang()->_t('错误的请求'), '/');
+				H::redirect_msg(_t('错误的请求'), '/');
 			}
 			$this->model('login')->logout();
 			$return_url = '/';
@@ -51,7 +51,7 @@ class main extends AWS_CONTROLLER
 
 	public function change_password_action()
 	{
-		$this->crumb(AWS_APP::lang()->_t('修改密码'));
+		$this->crumb(_t('修改密码'));
 
 		TPL::import_css('css/register.css');
 
@@ -68,7 +68,7 @@ class main extends AWS_CONTROLLER
 	{
 		$url = '/';
 
-		H::redirect_msg(AWS_APP::lang()->_t('密码修改成功, 请您妥善保管新密码'), $url);
+		H::redirect_msg(_t('密码修改成功, 请您妥善保管新密码'), $url);
 	}
 
 }
