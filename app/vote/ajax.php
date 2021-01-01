@@ -64,11 +64,15 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能连续赞同同一个用户, 请明天再试')));
 		}
 
+		// 恶意行为
+		if ($this->model('vote')->get_user_vote_count($this->user_id, null, null, $_POST['type'], $_POST['item_id']) >= 4)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作失败')));
+		}
+
 		set_user_operation_last_time('vote', $this->user_id);
 
-		$reputation_factor = $this->user_info['reputation_factor'];
-
-		$this->model('vote')->agree($_POST['type'], $_POST['item_id'], $this->user_id, $item_info['uid'], $reputation_factor, $this->user_info['permission']);
+		$this->model('vote')->vote($_POST['type'], $_POST['item_id'], $this->user_id, $item_info['uid'], 1);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
@@ -111,11 +115,15 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能连续反对同一个用户, 请明天再试')));
 		}
 
+		// 恶意行为
+		if ($this->model('vote')->get_user_vote_count($this->user_id, null, null, $_POST['type'], $_POST['item_id']) >= 4)
+		{
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('操作失败')));
+		}
+
 		set_user_operation_last_time('vote', $this->user_id);
 
-		$reputation_factor = $this->user_info['reputation_factor'];
-
-		$this->model('vote')->disagree($_POST['type'], $_POST['item_id'], $this->user_id, $item_info['uid'], $reputation_factor, $this->user_info['permission']);
+		$this->model('vote')->vote($_POST['type'], $_POST['item_id'], $this->user_id, $item_info['uid'], -1);
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}

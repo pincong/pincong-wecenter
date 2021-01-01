@@ -114,14 +114,59 @@ class account_class extends AWS_MODEL
 
     }
 
+
+    /**
+     * 通过 UID 获取用户信息（包含用户组和权限信息）
+     *
+     * 缓存结果
+     *
+     * @param int
+     * @return array
+     */
+    public function get_user_and_group_info_by_uid($uid)
+    {
+        $uid = intval($uid);
+        if ($uid <= 0)
+        {
+            return false;
+        }
+
+        static $users_info;
+
+        if ($users_info[$uid])
+        {
+            return $users_info[$uid];
+        }
+
+        if (! $user_info = $this->fetch_row('users', 'uid = ' . $uid))
+        {
+            return false;
+        }
+
+        if ($user_info['user_name'])
+        {
+            $user_info['url_token'] = urlencode($user_info['user_name']);
+        }
+
+        $user_group = $this->model('usergroup')->get_user_group_by_user_info($user_info);
+        $user_info['reputation_factor'] = $user_group['reputation_factor'];
+        $user_info['reputation_factor_receive'] = $user_group['reputation_factor_receive'];
+        $user_info['permission'] = $user_group['permission'];
+        $user_info['user_group_name'] = $user_group['group_name'];
+        $user_info['user_group_id'] = $user_group['group_id'];
+
+        $users_info[$uid] = $user_info;
+
+        return $user_info;
+    }
+
+
     /**
      * 通过用户名获取用户信息
      *
-     * $attrb 为是否获取附加表信息, $cache_result 为是否缓存结果
+     * 缓存结果
      *
      * @param string
-     * @param boolean
-     * @param boolean
      * @return array
      */
     public function get_user_info_by_username($user_name)
@@ -135,11 +180,9 @@ class account_class extends AWS_MODEL
     /**
      * 通过 UID 获取用户信息
      *
-     * $cache_result 为是否缓存结果
+     * 缓存结果
      *
-     * @param string
-     * @param boolean
-     * @param boolean
+     * @param int
      * @return array
      */
     public function get_user_info_by_uid($uid)
@@ -176,7 +219,6 @@ class account_class extends AWS_MODEL
      * 通过 UID 数组获取用户信息
      *
      * @param array
-     * @param boolean
      * @return array
      */
     public function get_user_info_by_uids($uids)

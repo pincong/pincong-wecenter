@@ -641,6 +641,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			'vote_disagree',
 			'affect_currency',
 			'no_dynamic_reputation_factor',
+			'no_bonus_reputation_factor',
 			'no_upvote_reputation_factor',
 			'no_downvote_reputation_factor',
 			'invite_answer',

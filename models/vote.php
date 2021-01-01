@@ -60,7 +60,7 @@ class vote_class extends AWS_MODEL
 		return $list;
 	}
 
-	private function process_currency_agree(&$type, $item_id, $uid, $item_uid, $affect_currency)
+	private function process_currency_agree(&$type, $item_id, $uid, $item_uid, &$permission)
 	{
 		switch ($type)
 		{
@@ -110,14 +110,14 @@ class vote_class extends AWS_MODEL
 		if (!$this->model('currency')->fetch_log($uid, $type_agree, $item_id))
 		{
 			$this->model('currency')->process($uid, $type_agree, get_setting('currency_system_config_agree'), $note_agree, $item_id, $type);
-			if ($affect_currency)
+			if ($permission['affect_currency'])
 			{
 				$this->model('currency')->process($item_uid, $type_item_agreed, get_setting('currency_system_config_agreed'), $note_item_agreed, $item_id, $type);
 			}
 		}
 	}
 
-	private function process_currency_disagree(&$type, $item_id, $uid, $item_uid, $affect_currency)
+	private function process_currency_disagree(&$type, $item_id, $uid, $item_uid, &$permission)
 	{
 		switch ($type)
 		{
@@ -167,7 +167,7 @@ class vote_class extends AWS_MODEL
 		if (!$this->model('currency')->fetch_log($uid, $type_disagree, $item_id))
 		{
 			$this->model('currency')->process($uid, $type_disagree, get_setting('currency_system_config_disagree'), $note_disagree, $item_id, $type);
-			if ($affect_currency)
+			if ($permission['affect_currency'])
 			{
 				$this->model('currency')->process($item_uid, $type_item_disagreed, get_setting('currency_system_config_disagreed'), $note_item_disagreed, $item_id, $type);
 			}
@@ -175,388 +175,105 @@ class vote_class extends AWS_MODEL
 	}
 
 
-	private function get_bonus_reputation(&$type, $item_id, $factor, $no_dynamic_reputation_factor, &$item_info)
+	/**
+	 *
+	 * 投票
+	 * @param string $type     //被投票内容类型
+	 * @param int $item_id     //被投票内容ID
+	 * @param int $uid         //投票用户ID
+	 * @param int $item_uid    //被投票用户ID
+	 * @param int $action      //1赞同 -1反对
+	 *
+	 * @return boolean true|false
+	 */
+	public function vote($type, $item_id, $uid, $item_uid, $action)
 	{
-		if ($no_dynamic_reputation_factor)
+		if (!$this->model('content')->check_thread_or_reply_type($type))
 		{
-			return $factor;
+			return false;
 		}
 
-		$bonus_factor = get_setting('bonus_factor');
-		if (!is_numeric($bonus_factor))
+		$item_id = intval($item_id);
+		$uid = intval($uid);
+		$item_uid = intval($item_uid);
+
+		$where = "`type` = '" . ($type) . "' AND item_id = " . ($item_id) . " AND uid = " . ($uid);
+		$vote_info = $this->fetch_row('vote', $where, 'id DESC');
+
+		if (!$vote_info OR !$vote_info['value'])
 		{
-			return $factor;
+			// 未投票或已取消之前的投票
+			$value = ($action == 1 ? 1 : -1);
+			$count = $value;
+		}
+		else if ($vote_info['value'] > 0)
+		{
+			// 已赞同
+			// 取消赞同
+			$value = 0;
+			// 计数減1
+			$count = -1;
+		}
+		else // if ($vote_info['value'] < 0)
+		{
+			// 已反对
+			// 取消反对
+			$value = 0;
+			// 计数加1
+			$count = 1;
 		}
 
-		$bonus_max_count = intval(get_setting('bonus_max_count'));
-		$bonus_min_count = intval(get_setting('bonus_min_count'));
+		$this->insert('vote', array(
+			'type' => $type,
+			'item_id' => $item_id,
+			'uid' => $uid,
+			'recipient_uid' => $item_uid,
+			'value' => $value,
+			'add_time' => fake_time()
+		));
 
-		$message = $item_info['message'];
-		if (!$message)
+		// 游戏币跟声望只算一次
+		if (!$vote_info)
 		{
-			return $factor;
-		}
-
-		$message = preg_replace('/\[quote\](.*?)\[\/quote\]/is', '', $message);
-		$message = preg_replace('/\[(.*?)\]/is', '', $message);
-
-		// 字数 = 字节数 / 3
-		$word_count = intval(strlen($message) / 3);
-
-		// factor设定
-		if ($word_count > $bonus_min_count)
-		{
-			$sigmoid = 1 / (1 + exp(-6 * (($word_count - $bonus_min_count) / $bonus_max_count - 0.5)));
-			if ($word_count < ($bonus_max_count / 2))
+			// 已缓存过
+			$vote_user = $this->model('account')->get_user_and_group_info_by_uid($uid);
+			if ($action == 1)
 			{
-				$factor = $bonus_factor / 4 * (1 + $sigmoid) * $factor;
+				$this->process_currency_agree($type, $item_id, $uid, $item_uid, $vote_user['permission']);
 			}
 			else
 			{
-				$factor = $bonus_factor / 2 * (1 + $sigmoid) * $factor;
-			}
-			$factor = round($factor, 6);
-			if (is_infinite($factor))
-			{
-				$factor = 0;
+				$this->process_currency_disagree($type, $item_id, $uid, $item_uid, $vote_user['permission']);
 			}
 		}
-		return $factor;
-	}
-
-	// 推入精选
-	private function push_item_with_high_reputation(&$type, $item_id, $item_reputation)
-	{
-		$push_reputation = get_setting('push_reputation');
-
-		if (!is_numeric($push_reputation) OR $item_reputation < $push_reputation)
-		{
-			return;
-		}
-
-		if (!$this->model('activity')->check_push_type($type))
-		{
-			return;
-		}
-
-		if (!!$this->fetch_row('activity', "`uid` = 0 AND `item_type` = '". ($type) . "' AND `item_id` = " . ($item_id)))
-		{
-			return;
-		}
-
-		$parent_info = $this->model('content')->get_item_thread_info_by_id($type, $item_id);
-		$category_id = intval($parent_info['category_id']);
-
-		if (!$this->model('activity')->check_push_category($category_id))
-		{
-			return;
-		}
-
-		$this->model('activity')->log($type, $item_id, 0, $parent_info['thread_type'], $parent_info['thread_id'], $category_id);
-	}
-
-	// 用于热门排序
-	private function update_index_reputation(&$type, $item_id, $value)
-	{
-		if (!$this->model('content')->check_thread_type($type))
-		{
-			return;
-		}
-
-		$where = "post_id = " . $item_id . " AND post_type = '" . $type . "'";
-		$sql = 'UPDATE ' . $this->get_table('posts_index') . ' SET reputation = reputation + ' . $value . ' WHERE ' . $where;
-		$this->query($sql);
-	}
-
-	private function check_reputation_type(&$type)
-	{
-		$reputation_types = get_setting('reputation_types');
-		if (!$reputation_types)
-		{
-			return true;
-		}
-		$reputation_types = explode(',', $reputation_types);
-		if (!is_array($reputation_types))
-		{
-			return false;
-		}
-		$reputation_types = array_map('trim', $reputation_types);
-		if (!in_array($type, $reputation_types))
-		{
-			return false;
-		}
-		return true;
-	}
-
-	private function update_item_agree_count_and_reputation(&$type, $item_id, $agree_count, $reputation)
-	{
-		$sql = 'UPDATE ' . $this->get_table($type) . ' SET agree_count = agree_count + ' . ($agree_count) . ', reputation = reputation + ' . ($reputation) . ' WHERE id = ' . ($item_id);
-		$this->query($sql);
-	}
-
-	private function increase_count_and_reputation(&$type, $item_id, $uid, $item_uid, $factor, $no_dynamic_reputation_factor = false)
-	{
-		if (!$factor OR !$this->check_reputation_type($type))
-		{
-			$reputation = 0;
-		}
-		else
-		{
-			$item_info = $this->model('content')->get_thread_or_reply_info_by_id($type, $item_id);
-			$reputation = floatval($this->get_bonus_reputation($type, $item_id, $factor, $no_dynamic_reputation_factor, $item_info));
-		}
-
-		// 更新被赞post赞数和声望(热度)
-		$this->update_item_agree_count_and_reputation($type, $item_id, 1, $reputation);
-
-		if ($reputation)
-		{
-			$this->push_item_with_high_reputation($type, $item_id, $item_info['reputation'] + $reputation);
-
-			// 更新帖子声望(热度)
-			$this->update_index_reputation($type, $item_id, $reputation);
-			// 计算被赞用户所获声望
-			if (!$no_dynamic_reputation_factor)
-			{
-				$reputation = $this->calc_upvote_reputation($uid, $reputation);
-			}
-		}
-		// 更新被赞用户赞数和声望
-		$this->model('reputation')->update_user_agree_count_and_reputation($item_uid, 1, $reputation);
-	}
-
-	private function decrease_count_and_reputation(&$type, $item_id, $uid, $item_uid, $factor, $no_dynamic_reputation_factor = false)
-	{
-		if (!$factor)
-		{
-			$reputation = 0;
-		}
-		else
-		{
-			$item_info = $this->model('content')->get_thread_or_reply_info_by_id($type, $item_id);
-			$reputation = floatval($this->get_bonus_reputation($type, $item_id, $factor, $no_dynamic_reputation_factor, $item_info));
-		}
-
-		// 更新被赞post赞数和声望(热度)
-		$this->update_item_agree_count_and_reputation($type, $item_id, -1, -$reputation);
-
-		if ($reputation)
-		{
-			// 更新帖子声望(热度)
-			$this->update_index_reputation($type, $item_id, -$reputation);
-			// 计算被赞用户所获声望
-			if (!$no_dynamic_reputation_factor)
-			{
-				$reputation = $this->calc_downvote_reputation($uid, $reputation);
-			}
-		}
-		// 更新被赞用户赞数和声望
-		$this->model('reputation')->update_user_agree_count_and_reputation($item_uid, -1, -$reputation);
-	}
-
-	private function calc_upvote_reputation($uid, $reputation)
-	{
-		$arg = get_setting('reputation_dynamic_weight_agree');
-		if (is_numeric($arg))
-		{
-			$reputation = $this->calc_dynamic_reputation($reputation, $arg, $this->get_user_upvotes_last_week($uid));
-		}
-		return $reputation;
-	}
-
-	private function calc_downvote_reputation($uid, $reputation)
-	{
-		$arg = get_setting('reputation_dynamic_weight_disagree');
-		if (is_numeric($arg))
-		{
-			$reputation = $this->calc_dynamic_reputation($reputation, $arg, $this->get_user_downvotes_last_week($uid));
-		}
-		return $reputation;
-	}
-
-	private function calc_dynamic_reputation($reputation, $arg, $total)
-	{
-		if ($total > 0)
-		{
-			$reputation = $reputation * round(exp(-floatval($arg) * $total), 6);
-		}
-		return $reputation;
-	}
-
-	private function get_user_upvotes_last_week($uid)
-	{
-		$time_after = real_time() - 24 * 3600 * 7;
-
-		$where = "add_time > " . $time_after . " AND value > 0 AND uid =" . intval($uid);
-		return intval($this->count('vote', $where));
-	}
-
-	private function get_user_downvotes_last_week($uid)
-	{
-		$time_after = real_time() - 24 * 3600 * 7;
-
-		$where = "add_time > " . $time_after . " AND value < 0 AND uid =" . intval($uid);
-		return intval($this->count('vote', $where));
-	}
-
-	private function increase_vote_value($id)
-	{
-		$this->query('UPDATE ' . $this->get_table('vote') . ' SET value = value + 1 WHERE id = ' . intval($id));
-	}
-
-	private function decrease_vote_value($id)
-	{
-		$this->query('UPDATE ' . $this->get_table('vote') . ' SET value = value - 1 WHERE id = ' . intval($id));
-	}
-
-	private function clear_vote_value($id)
-	{
-		$this->update('vote', array(
-			'value' => 0,
-			'add_time' => fake_time()
-		), 'id = ' . $id);
-	}
-
-
-	/**
-	 *
-	 * 赞同投票
-	 * @param string $type     //被投票内容类型
-	 * @param int $item_id     //被投票内容ID
-	 * @param int $uid         //投票用户ID
-	 * @param int $item_uid    //被投票用户ID
-	 * @param int $factor      //声望系数
-	 * @param array $permission //['affect_currency']是否影响被投票用户游戏币
-	 *
-	 * @return boolean true|false
-	 */
-	public function agree($type, $item_id, $uid, $item_uid, $factor, &$permission)
-	{
-		if (!$this->model('content')->check_thread_or_reply_type($type))
-		{
-			return false;
-		}
-
-		$item_id = intval($item_id);
-		$uid = intval($uid);
-		$item_uid = intval($item_uid);
-
-		$where = "`type` = '" . ($type) . "' AND item_id = " . ($item_id) . " AND uid = " . ($uid);
-		$vote_info = $this->fetch_row('vote', $where);
-
-		// 未曾投票过
-		if (!$vote_info)
-		{
-			$this->insert('vote', array(
-				'type' => $type,
-				'item_id' => $item_id,
-				'uid' => $uid,
-				'recipient_uid' => $item_uid,
-				'value' => 1,
-				'add_time' => fake_time()
-			));
-
-			$this->increase_count_and_reputation($type, $item_id, $uid, $item_uid, $factor, $permission['no_dynamic_reputation_factor']);
-			$this->process_currency_agree($type, $item_id, $uid, $item_uid, $permission['affect_currency']);
-			return true;
-		}
-
-		// 曾经投票过
-		$factor = 0; // 重新投票不计声望
-		$vote_value = $vote_info['value'];
-		if ($vote_value == 0) // 已归零 则重新赞同
-		{
-			$this->increase_vote_value($vote_info['id']);
-			$this->increase_count_and_reputation($type, $item_id, $uid, $item_uid, $factor);
-			$this->process_currency_agree($type, $item_id, $uid, $item_uid, $permission['affect_currency']);
-		}
-		elseif ($vote_value > 0) // 已赞同 则减1
-		{
-			$this->decrease_vote_value($vote_info['id']);
-			$this->decrease_count_and_reputation($type, $item_id, $uid, $item_uid, $factor);
-		}
-		elseif ($vote_value < 0) // 已反对 则加1
-		{
-			$this->increase_vote_value($vote_info['id']);
-			$this->increase_count_and_reputation($type, $item_id, $uid, $item_uid, $factor);
-		}
-		else // 数据错误
-		{
-			$this->clear_vote_value($vote_info['id']);
-		}
+		$this->model('reputation')->update($type, $item_id, $uid, $item_uid, $count, !!$vote_info);
 
 		return true;
 	}
 
 
-	/**
-	 *
-	 * 反对投票
-	 * @param string $type     //被投票内容类型
-	 * @param int $item_id     //被投票内容ID
-	 * @param int $uid         //投票用户ID
-	 * @param int $item_uid    //被投票用户ID
-	 * @param int $factor      //声望系数
-	 * @param array $permission //['affect_currency']是否影响被投票用户游戏币
-	 *
-	 * @return boolean true|false
-	 */
-	public function disagree($type, $item_id, $uid, $item_uid, $factor, &$permission)
+	public function get_user_vote_count($uid, $days = null, $value = null, $type = null, $item_id = null)
 	{
-		if (!$this->model('content')->check_thread_or_reply_type($type))
+		$where[] = "uid = " . intval($uid);
+		if (isset($value))
 		{
-			return false;
+			$where[] = "value = " . intval($value);
+		}
+		if (isset($days))
+		{
+			$time_after = real_time() - 24 * 3600 * $days;
+			$where[] = "add_time > " . intval($time_after);
+		}
+		if (isset($type) AND isset($item_id))
+		{
+			if ($this->model('content')->check_thread_or_reply_type($type))
+			{
+				$where[] = "`type` = '" . ($type) . "'";
+				$where[] = "item_id = " . intval($item_id);
+			}
 		}
 
-		$item_id = intval($item_id);
-		$uid = intval($uid);
-		$item_uid = intval($item_uid);
-
-		$where = "`type` = '" . ($type) . "' AND item_id = " . ($item_id) . " AND uid = " . ($uid);
-		$vote_info = $this->fetch_row('vote', $where);
-
-		// 未曾投票过
-		if (!$vote_info)
-		{
-			$this->insert('vote', array(
-				'type' => $type,
-				'item_id' => $item_id,
-				'uid' => $uid,
-				'recipient_uid' => $item_uid,
-				'value' => -1,
-				'add_time' => fake_time()
-			));
-
-			$this->decrease_count_and_reputation($type, $item_id, $uid, $item_uid, $factor, $permission['no_dynamic_reputation_factor']);
-			$this->process_currency_disagree($type, $item_id, $uid, $item_uid, $permission['affect_currency']);
-			return true;
-		}
-
-		// 曾经投票过
-		$factor = 0; // 重新投票不计声望
-		$vote_value = $vote_info['value'];
-		if ($vote_value == 0) // 已归零 则重新反对
-		{
-			$this->decrease_vote_value($vote_info['id']);
-			$this->decrease_count_and_reputation($type, $item_id, $uid, $item_uid, $factor);
-			$this->process_currency_disagree($type, $item_id, $uid, $item_uid, $permission['affect_currency']);
-		}
-		elseif ($vote_value > 0) // 已赞同 则减1
-		{
-			$this->decrease_vote_value($vote_info['id']);
-			$this->decrease_count_and_reputation($type, $item_id, $uid, $item_uid, $factor);
-		}
-		elseif ($vote_value < 0) // 已反对 则加1
-		{
-			$this->increase_vote_value($vote_info['id']);
-			$this->increase_count_and_reputation($type, $item_id, $uid, $item_uid, $factor);
-		}
-		else // 数据错误
-		{
-			$this->clear_vote_value($vote_info['id']);
-		}
-
-		return true;
+		return intval($this->count('vote', implode(' AND ', $where)));
 	}
 
 
@@ -571,7 +288,7 @@ class vote_class extends AWS_MODEL
 		$uid = intval($uid);
 		$time_after = real_time() - 24 * 3600;
 
-		$where = "add_time > " . $time_after . " AND uid =" . $uid;
+		$where = "add_time > " . $time_after . " AND uid = " . $uid;
 		$count = $this->count('vote', $where);
 		if ($count >= $limit)
 		{
@@ -611,7 +328,7 @@ class vote_class extends AWS_MODEL
 		$uid = intval($uid);
 		$time_after = real_time() - 24 * 3600;
 
-		$where = "add_time > " . $time_after . " AND uid =" . $uid . " AND recipient_uid =" . $recipient_uid . " AND value =" . $value;
+		$where = "add_time > " . $time_after . " AND uid = " . $uid . " AND recipient_uid = " . $recipient_uid . " AND value = " . $value;
 		$count = $this->count('vote', $where);
 		if ($count >= $limit)
 		{
@@ -633,7 +350,7 @@ class vote_class extends AWS_MODEL
 		$uid = intval($uid);
 
 		$where = "`type` = '" . ($type) . "' AND item_id = " . ($item_id) . " AND uid = " . ($uid);
-		return $this->fetch_one('vote', 'value', $where);
+		return $this->fetch_one('vote', 'value', $where, 'id DESC');
 	}
 
 	public function get_user_vote_values_by_ids($type, $item_ids, $uid)
@@ -655,7 +372,7 @@ class vote_class extends AWS_MODEL
 		}
 
 		$where = "`type` = '" . ($type) . "' AND uid = " . ($uid) . " AND item_id IN(" . implode(',', $item_ids) . ")";
-		$sql = "SELECT item_id, value FROM " . get_table('vote') . " WHERE " . $where;
+		$sql = "SELECT item_id, value FROM " . get_table('vote') . " WHERE " . $where . " ORDER BY id DESC";
 		$rows = $this->query_all($sql);
 		if (!$rows)
 		{
@@ -664,7 +381,10 @@ class vote_class extends AWS_MODEL
 
 		foreach ($rows AS $key => $val)
 		{
-			$vote_values[$val['item_id']] = $val['value'];
+			if (!isset($vote_values[$val['item_id']]))
+			{
+				$vote_values[$val['item_id']] = $val['value'];
+			}
 		}
 
 		return $vote_values;

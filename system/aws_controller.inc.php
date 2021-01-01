@@ -29,16 +29,22 @@ class AWS_CONTROLLER
 	public function __construct($process_setup = true)
 	{
 		// 从 Session 中获取当前用户 User ID
-		$this->user_id = AWS_APP::user()->get_session_info('uid');
-		if ($this->user_id)
+		if ($uid = AWS_APP::user()->get_session_info('uid'))
 		{
-			$this->user_info = $this->model('account')->get_user_info_by_uid($this->user_id);
+			$this->user_info = $this->model('account')->get_user_and_group_info_by_uid($uid);
+			if (!$this->user_info)
+			{
+				// 清除 Session Cookie
+				$this->model('account')->logout();
+			}
+			else
+			{
+				$this->user_id = $uid;
+			}
 		}
 
 		if ($this->user_info)
 		{
-			$user_group = $this->model('usergroup')->get_user_group_by_user_info($this->user_info);
-
 			$user_settings = unserialize_array($this->user_info['settings']);
 			$this->user_info['default_timezone'] = $user_settings['timezone'];
 
@@ -54,24 +60,12 @@ class AWS_CONTROLLER
 			{
 				$this->model('account')->update_user_last_login($this->user_info['uid']);
 			}*/
-
-		}
-		else if ($this->user_id)
-		{
-			$this->model('account')->logout();
 		}
 		else
 		{
+			// 游客权限
 			$user_group = $this->model('usergroup')->get_user_group_by_id(-1);
-		}
-
-		$this->user_info['group_name'] = $user_group['group_name'];
-		$this->user_info['permission'] = $user_group['permission'];
-
-		$this->user_info['reputation_factor'] = 0;
-		if (!$this->user_info['flagged'])
-		{
-			$this->user_info['reputation_factor'] = $user_group['reputation_factor'];
+			$this->user_info['permission'] = $user_group['permission'];
 		}
 
 		if ($this->user_info['forbidden'])
