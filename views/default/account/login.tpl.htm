@@ -42,7 +42,7 @@ $(document).ready(function () {
 
 		form.find('input[name=password]').val('');
 
-		var new_form = $('<form>', {action: '<?php echo url_rewrite(); ?>/login/next/', method: 'post'});
+		var new_form = $('<form>', {action: '<?php echo url_rewrite(); ?>/login/', method: 'post'});
 		new_form.append($('<input>', {name: 'token', value: '<?php echo $this->token; ?>'}));
 
 		new_form.append($('<input>', {name: 'username', value: form.find('input[name=username]').val()}));

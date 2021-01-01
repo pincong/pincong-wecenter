@@ -38,6 +38,12 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
+		if ($_POST['username'])
+		{
+			$this->next_action();
+			return;
+		}
+
 		$this->crumb(AWS_APP::lang()->_t('登录'));
 
 		TPL::import_css('css/register.css');
