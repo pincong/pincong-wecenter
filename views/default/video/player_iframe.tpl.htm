@@ -14,11 +14,12 @@
 	top: 0;
 	left: 0;
 	background: #000;
+	overflow: hidden;
 }
 </style>
 
 <div class="ab-player">
 	<div class="ab-video">
-		<iframe src="<?php echo $this->video_info['iframe_url']; ?>" frameborder="0"></iframe>
+		<iframe src="<?php echo $this->video_info['iframe_url']; ?>" frameborder="0" scrolling="no" allowfullscreen="true"></iframe>
 	</div>
 </div>
