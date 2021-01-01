@@ -470,7 +470,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经删除的问题不能回复')));
 		}
 
-		if (!$this->model('category')->check_user_permission($question_info['category_id'], $this->user_info['permission']))
+		if (!$this->model('category')->check_user_permission_reply($question_info['category_id'], $this->user_info['permission']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你的声望还不能在这个分类发言')));
 		}
@@ -572,7 +572,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经删除的文章不能回复')));
 		}
 
-		if (!$this->model('category')->check_user_permission($article_info['category_id'], $this->user_info['permission']))
+		if (!$this->model('category')->check_user_permission_reply($article_info['category_id'], $this->user_info['permission']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你的声望还不能在这个分类发言')));
 		}
@@ -656,7 +656,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经删除的影片不能回复')));
 		}
 
-		if (!$this->model('category')->check_user_permission($video_info['category_id'], $this->user_info['permission']))
+		if (!$this->model('category')->check_user_permission_reply($video_info['category_id'], $this->user_info['permission']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你的声望还不能在这个分类发言')));
 		}

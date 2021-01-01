@@ -95,6 +95,33 @@ class category_class extends AWS_MODEL
 		return true;
 	}
 
+	public function check_user_permission_reply($category_id, &$user_permission)
+	{
+		$restricted_ids = $user_permission['restricted_categories_reply'];
+		if (!$restricted_ids)
+		{
+			return true;
+		}
+
+		$category_id = intval($category_id);
+
+		$restricted_ids = explode(',', $restricted_ids);
+		foreach ($restricted_ids AS $id)
+		{
+			$id = intval($id);
+			if (!$id)
+			{
+				continue;
+			}
+			if ($category_id == $id)
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	public function get_category_list_by_user_permission(&$user_permission)
 	{
 		$category_list = $this->get_category_list();

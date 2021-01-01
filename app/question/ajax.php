@@ -126,7 +126,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能讨论已删除的问题')));
 		}
 
-		if (!$this->model('category')->check_user_permission($question_info['category_id'], $this->user_info['permission']))
+		if (!$this->model('category')->check_user_permission_reply($question_info['category_id'], $this->user_info['permission']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你的声望还不能在这个分类发言')));
 		}
@@ -216,7 +216,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('不能讨论已删除的问题')));
 		}
 
-		if (!$this->model('category')->check_user_permission($question_info['category_id'], $this->user_info['permission']))
+		if (!$this->model('category')->check_user_permission_reply($question_info['category_id'], $this->user_info['permission']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('你的声望还不能在这个分类发言')));
 		}
