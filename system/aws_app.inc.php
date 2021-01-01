@@ -54,26 +54,24 @@ class AWS_APP
 		self::init();
 
 		self::$uri = load_class('core_uri');
-		if (!self::$uri->parse())
-		{
-			H::error_404();
-		}
+		self::$uri->parse();
+		$action = self::$uri->action;
 
-		$handle_controller = self::create_controller();
-		$action_method = self::$uri->action . '_action';
+		$controller_instance = self::create_controller();
+		$action_method = $action . '_action';
 
 		// 判断
-		if (!is_object($handle_controller) OR !method_exists($handle_controller, $action_method))
+		if (!is_object($controller_instance) OR !method_exists($controller_instance, $action_method))
 		{
 			H::error_404();
 		}
 
-		if (method_exists($handle_controller, 'get_access_rule'))
+		if (method_exists($controller_instance, 'get_access_rule'))
 		{
-			$access_rule = $handle_controller->get_access_rule();
+			$access_rule = $controller_instance->get_access_rule();
 		}
 
-		$uid = $handle_controller->user_id;
+		$uid = $controller_instance->user_id;
 
 		// 判断访问规则使用白名单还是黑名单, 默认使用白名单
 		// 白名单: $access_rule['actions'] 以外的都不允许
@@ -82,7 +80,7 @@ class AWS_APP
 		{
 			if (isset($access_rule['rule_type']) AND $access_rule['rule_type'] == 'black')
 			{
-				if (isset($access_rule['actions']) AND in_array(self::$uri->action, $access_rule['actions']))
+				if (isset($access_rule['actions']) AND in_array($action, $access_rule['actions']))
 				{
 					// action 在黑名单中, 不允许
 					self::check_login($uid, $access_rule['redirect'] ?? null);
@@ -90,7 +88,7 @@ class AWS_APP
 			}
 			else // 默认使用白名单
 			{
-				if (!isset($access_rule['actions']) OR !in_array(self::$uri->action, $access_rule['actions']))
+				if (!isset($access_rule['actions']) OR !in_array($action, $access_rule['actions']))
 				{
 					// action 不在白名单中, 不允许
 					self::check_login($uid, $access_rule['redirect'] ?? null);
@@ -103,7 +101,7 @@ class AWS_APP
 		}
 
 		// 执行
-		$handle_controller->$action_method();
+		$controller_instance->$action_method();
 	}
 
 	/**
@@ -176,22 +174,41 @@ class AWS_APP
 	// 创建 Controller
 	private static function create_controller()
 	{
-		$controller_class = self::$uri->controller;
+		$app_dir = ROOT_PATH . 'app/' . self::$uri->app . '/';
+		$class_file = $app_dir . self::$uri->controller . '.php';
+		if (!file_exists($class_file))
+		{
+			$app_dir = ROOT_PATH . 'plugins/' . self::$uri->app . '/controller/';
+			$class_file = $app_dir . self::$uri->controller . '.php';
+			if (!file_exists($class_file))
+			{
+				return false;
+			}
+		}
+
+		require_once $class_file;
+
+		$hook_dir = ROOT_PATH . 'hooks/' . self::$uri->app . '/';
+		$hook_file = $hook_dir . self::$uri->controller . '.php';
+		if (file_exists($hook_file))
+		{
+			require_once $hook_file;
+			$controller_class = self::$uri->controller . '_hook';
+		}
+		else
+		{
+			$controller_class = self::$uri->controller;
+		}
 
 		if (!class_exists($controller_class, false))
 		{
-			require_once self::$uri->class_file;
+			return false;
 		}
 
 		// 解析路由查询参数
 		self::$uri->parse_args();
 
-		if (class_exists($controller_class, false))
-		{
-			return new $controller_class();
-		}
-
-		return false;
+		return new $controller_class();
 	}
 
 	private static function set_handlers()

@@ -14,15 +14,12 @@
 
 class core_uri
 {
-	var $app = '';
-	var $controller = '';
-	var $action = '';
+	public $app = '';
+	public $controller = '';
+	public $action = '';
 
-	var $app_dir = '';
-	var $class_file = '';
-
-	var $request_main = '';
-	var $args_var_str = '';
+	private $request_main = '';
+	private $args_var_str = '';
 
 	public function __construct()
 	{
@@ -138,26 +135,9 @@ class core_uri
 			$this->app = implode('/', $parts);
 		}
 
-		$app_dir = ROOT_PATH . 'app/' . $this->app . '/';
-		$class_file = $app_dir . $this->controller . '.php';
-		if (!file_exists($class_file))
-		{
-			$app_dir = ROOT_PATH . 'plugins/' . $this->app . '/controller/';
-			$class_file = $app_dir . $this->controller . '.php';
-			if (!file_exists($class_file))
-			{
-				return false;
-			}
-		}
-
-		$this->app_dir = $app_dir;
-		$this->class_file = $class_file;
-
 		$_GET['c'] = $this->controller;
 		$_GET['act'] = $this->action;
 		$_GET['app'] = $this->app;
-
-		return true;
 	}
 
 	public function parse_args()
@@ -209,8 +189,6 @@ class core_uri
 				}
 			}
 		}
-
-		return true;
 	}
 
 }
