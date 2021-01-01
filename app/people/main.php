@@ -144,7 +144,7 @@ class main extends AWS_CONTROLLER
 			return;
 		}
 
-		if (is_digits($_GET['id']))
+		if (is_numeric($_GET['id']))
 		{
 			$user = $this->model('account')->get_user_info_by_uid($_GET['id']);
 			if (!$user)

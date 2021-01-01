@@ -27,7 +27,7 @@ class search_class extends AWS_MODEL
 		{
 			return false;
 		}
-		$q = escape_like_clause($q);
+		$q = escape_like_clause(htmlspecialchars($q));
 
 		if ($search_type == 'users')
 		{

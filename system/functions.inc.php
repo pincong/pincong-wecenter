@@ -25,36 +25,6 @@
 
 
 /**
- * 检查整型、字符串是否为纯数字（十进制数字，不包括负数和小数）
- *
- * @param integer or string
- * @return boolean
- */
-function is_digits($num)
-{
-	if (!$num AND $num !== 0 AND $num !== '0')
-	{
-		return false;
-	}
-
-	if (is_string($num))
-	{
-		$num_int = intval($num);
-		if ($num_int < 0)
-		{
-			return false;
-		}
-		return ($num === strval($num_int));
-	}
-	else if (is_int($num))
-	{
-		return ($num >= 0);
-	}
-
-	return false;
-}
-
-/**
  * 递归创建目录
  *
  * 与 mkdir 不同之处在于支持一次性多级创建, 比如 /dir/sub/dir/

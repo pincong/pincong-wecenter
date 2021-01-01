@@ -40,7 +40,7 @@ class account_class extends AWS_MODEL
 	{
 		$user_name = trim($user_name);
 
-		return $this->fetch_one('users', 'uid', ['user_name', 'eq', $user_name, 's']);
+		return $this->fetch_one('users', 'uid', ['user_name', 'eq', htmlspecialchars($user_name), 's']);
 	}
 
 	/**
@@ -113,7 +113,7 @@ class account_class extends AWS_MODEL
 	 */
 	public function get_user_info_by_username($user_name)
 	{
-		if ($uid = $this->fetch_one('users', 'uid', ['user_name', 'eq', $user_name, 's']))
+		if ($uid = $this->fetch_one('users', 'uid', ['user_name', 'eq', htmlspecialchars($user_name), 's']))
 		{
 			return $this->get_user_info_by_uid($uid);
 		}
