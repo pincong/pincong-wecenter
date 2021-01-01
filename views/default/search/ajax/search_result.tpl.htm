@@ -22,7 +22,7 @@
 	</p>
 
 	<?php if ($val['type'] == 'users' AND $val['detail']['signature']) { ?>
-	<p class="aw-small-text"><?php echo $val['detail']['signature']; ?></p>
+	<p class="aw-small-text"><?php echo FORMAT::text($val['detail']['signature'], false); ?></p>
 	<?php } ?>
 
 	<p class="aw-text-color-666">

@@ -97,7 +97,7 @@ class FORMAT
 	}
 
 	// 注意是引用
-	public static function &text(&$text)
+	public static function &text(&$text, $nr2br = true)
 	{
 		if (!$text)
 		{

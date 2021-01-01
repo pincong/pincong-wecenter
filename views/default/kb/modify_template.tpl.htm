@@ -9,7 +9,7 @@
 			<div class="modal-body">
 				<div class="alert alert-danger collapse error_message"><i class="icon icon-delete"></i> <em></em></div>
 				<input class="form-control" type="text" name="title" value="<?php echo FORMAT::text($this->item_info['title'], false); ?>" />
-				<textarea name="message" id="editor_reply" class="form-control" rows="10"><?php echo FORMAT::text($this->item_info['message']); ?></textarea>
+				<textarea name="message" id="editor_reply" class="form-control" rows="10"><?php echo FORMAT::text($this->item_info['message'], false); ?></textarea>
 			</div>
 			<div class="modal-footer">
 				<span><input id="anonymous_checkbox" type="checkbox" value="1" name="anonymous" /><label for="anonymous_checkbox"><?php _e(get_setting('anonymous_option_name')); ?></label></span>

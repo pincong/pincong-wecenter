@@ -49,7 +49,7 @@
 						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('话题描述'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
-								<textarea class="form-control" name="topic_description"><?php echo $this->topic_info['topic_description']; ?></textarea>
+								<textarea class="form-control" name="topic_description"><?php echo FORMAT::text($this->topic_info['topic_description'], false); ?></textarea>
 							</div>
 						</div>
 					</td>

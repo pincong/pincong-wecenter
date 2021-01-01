@@ -70,7 +70,7 @@
 						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('简介'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
-								<textarea class="form-control" name="description" rows="5"><?php echo $this->category['description']; ?></textarea>
+								<textarea class="form-control" name="description" rows="5"><?php echo FORMAT::text($this->category['description'], false); ?></textarea>
 							</div>
 						</div>
 					</td>
