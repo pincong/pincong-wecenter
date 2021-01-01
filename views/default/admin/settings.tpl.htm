@@ -936,6 +936,18 @@
                 <tr>
                     <td>
                         <div class="form-group">
+                            <span class="col-sm-4 col-xs-3 control-label"><?php _e('特定发帖用户 UID(s)');?>:</span>
+                            <div class="col-sm-5 col-xs-8">
+                                <input name="specific_post_uids" type="text" class="form-control" value="<?php echo $this->setting['specific_post_uids']; ?>"/>
+                                <span class="help-block"><?php _e('多个用户 UID 请用 , 隔开, 留空则不启用'); ?></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('启用分类功能'); ?>:</span>
                             <div class="col-sm-6 col-xs-8">
                                 <div class="btn-group mod-btn">

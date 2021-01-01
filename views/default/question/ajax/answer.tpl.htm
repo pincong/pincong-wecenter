@@ -40,7 +40,7 @@
 				<?php if ($this->user_id) { ?>
 					<?php if ($this->answer_info['uid'] == $this->user_id) { // 高级编辑器 ?>
 						<a class="aw-small-text" href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/publish/edit/answer/id-<?php echo $this->answer_info['id']; ?>', AWS.init_answer_editor);"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
-					<?php } elseif ($this->user_info['permission']['edit_any_post']) { // 纯文本编辑器 ?>
+					<?php } elseif ($this->user_info['permission']['edit_any_post'] OR $this->user_info['permission']['edit_specific_post']) { // 纯文本编辑器 ?>
 						<a class="aw-small-text" href="javascript:;" onclick="AWS.popup(G_BASE_URL + '/publish/edit/answer/id-<?php echo $this->answer_info['id']; ?>');"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
 					<?php } ?>
 

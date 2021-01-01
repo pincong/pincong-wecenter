@@ -35,7 +35,7 @@ class main extends AWS_CONTROLLER
 				H::redirect_msg(AWS_APP::lang()->_t('指定问题不存在'));
 			}
 
-			if (!$this->user_info['permission']['edit_any_post'] AND $question_info['uid'] != $this->user_id)
+			if ($question_info['uid'] != $this->user_id AND !$this->user_info['permission']['edit_any_post'] AND !$this->user_info['permission']['edit_specific_post'])
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑这个问题'), '/question/' . $question_info['id']);
 			}
@@ -108,7 +108,7 @@ class main extends AWS_CONTROLLER
 				H::redirect_msg(AWS_APP::lang()->_t('指定文章不存在'));
 			}
 
-			if (!$this->user_info['permission']['edit_any_post'] AND $article_info['uid'] != $this->user_id)
+			if ($article_info['uid'] != $this->user_id AND !$this->user_info['permission']['edit_any_post'] AND !$this->user_info['permission']['edit_specific_post'])
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑这个文章'), '/article/' . $article_info['id']);
 			}
@@ -181,7 +181,7 @@ class main extends AWS_CONTROLLER
 				H::redirect_msg(AWS_APP::lang()->_t('指定影片不存在'));
 			}
 
-			if (!$this->user_info['permission']['edit_any_post'] AND $video_info['uid'] != $this->user_id)
+			if ($video_info['uid'] != $this->user_id AND !$this->user_info['permission']['edit_any_post'] AND !$this->user_info['permission']['edit_specific_post'])
 			{
 				H::redirect_msg(AWS_APP::lang()->_t('你没有权限编辑这个影片'), '/video/' . $video_info['id']);
 			}

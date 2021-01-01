@@ -105,7 +105,7 @@ class main extends AWS_ADMIN_CONTROLLER
             break;
         }
 
-        TPL::assign('setting', get_setting(null, false));
+        TPL::assign('setting', get_settings());
 
         TPL::assign('menu_list', $this->model('admin')->fetch_menu_list('SETTINGS_' . strtoupper($_GET['category'])));
 
@@ -125,7 +125,7 @@ class main extends AWS_ADMIN_CONTROLLER
 
         TPL::assign('category_list', $this->model('category')->get_category_list());
 
-        TPL::assign('setting', get_setting());
+        TPL::assign('setting', get_settings());
 
         TPL::assign('menu_list', $this->model('admin')->fetch_menu_list(307));
 

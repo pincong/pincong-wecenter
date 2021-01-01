@@ -122,7 +122,7 @@
 									<a href="javascript:;" class="aw-small-text" onclick="AWS.confirm('<?php _e('确认下沉?'); ?>', function(){AWS.ajax_request(G_BASE_URL + '/content/ajax/sink/', 'item_type=article&item_id=<?php echo $this->article_info['id']; ?>', true);});"><i class="icon icon-down"></i> <?php _e('下沉'); ?></a>
 									<?php } ?>
 
-									<?php if ($this->article_info['uid'] == $this->user_id OR $this->user_info['permission']['edit_any_post']) { ?>
+									<?php if ($this->article_info['uid'] == $this->user_id OR $this->user_info['permission']['edit_any_post'] OR $this->user_info['permission']['edit_specific_post']) { ?>
 									<a class="aw-small-text" href="publish/article/<?php echo $this->article_info['id']; ?>"><i class="icon icon-edit"></i> <?php _e('编辑'); ?></a>
 									<?php } ?>
 

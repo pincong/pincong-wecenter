@@ -659,7 +659,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			'comment_video',
 			'publish_discussion',
             'edit_any_post',
-            'delete_any_post',
+            'edit_specific_post',
             'edit_topic',
             'create_topic',
             'visit_site',

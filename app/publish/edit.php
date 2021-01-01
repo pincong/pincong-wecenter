@@ -39,7 +39,7 @@ class edit extends AWS_CONTROLLER
 		{
 			HTTP::error_403();
 		}
-		if ($answer_info['uid'] != $this->user_id and ! $this->user_info['permission']['edit_any_post'])
+		if ($answer_info['uid'] != $this->user_id AND !$this->user_info['permission']['edit_any_post'] AND !$this->user_info['permission']['edit_specific_post'])
 		{
 			HTTP::error_403();
 		}
@@ -59,7 +59,7 @@ class edit extends AWS_CONTROLLER
 		{
 			HTTP::error_403();
 		}
-		if ($comment_info['uid'] != $this->user_id and ! $this->user_info['permission']['edit_any_post'])
+		if ($comment_info['uid'] != $this->user_id AND !$this->user_info['permission']['edit_any_post'] AND !$this->user_info['permission']['edit_specific_post'])
 		{
 			HTTP::error_403();
 		}
@@ -79,7 +79,7 @@ class edit extends AWS_CONTROLLER
 		{
 			HTTP::error_403();
 		}
-		if ($comment_info['uid'] != $this->user_id and ! $this->user_info['permission']['edit_any_post'])
+		if ($comment_info['uid'] != $this->user_id AND !$this->user_info['permission']['edit_any_post'] AND !$this->user_info['permission']['edit_specific_post'])
 		{
 			HTTP::error_403();
 		}

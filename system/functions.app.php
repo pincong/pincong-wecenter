@@ -220,23 +220,35 @@ function get_table($name)
  * @param  string
  * @return mixed
  */
-function get_setting($varname = null)
+function get_setting($varname)
 {
-	if (! class_exists('AWS_APP', false))
+	if (!class_exists('AWS_APP', false))
 	{
 		return false;
 	}
 
-	$settings = AWS_APP::$settings;
+	return AWS_APP::$settings[$varname];
+}
 
-	if ($varname)
+function get_settings()
+{
+	if (!class_exists('AWS_APP', false))
 	{
-		return $settings[$varname];
+		return false;
 	}
-	else
+
+	return AWS_APP::$settings;
+}
+
+
+function get_setting_array($varname, $separator = ',')
+{
+	if (!class_exists('AWS_APP', false))
 	{
-		return $settings;
+		return false;
 	}
+
+	return array_map('trim', explode($separator, AWS_APP::$settings[$varname]));
 }
 
 /**
