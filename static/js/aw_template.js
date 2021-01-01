@@ -97,7 +97,7 @@ var AW_TEMPLATE = {
 					'<div class="modal-content">'+
 						'<div class="modal-header">'+
 							'<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>'+
-							'<h3 class="modal-title" id="myModalLabel">' + _t('提示信息') + '</h3>'+
+							'<h3 class="modal-title">' + _t('提示信息') + '</h3>'+
 						'</div>'+
 						'<div class="modal-body">'+
 							'<p>{{message}}</p>'+
@@ -112,7 +112,7 @@ var AW_TEMPLATE = {
 				'<div class="modal-content">'+
 					'<div class="modal-header">'+
 						'<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>'+
-						'<h3 class="modal-title" id="myModalLabel">' + _t('提示信息') + '</h3>'+
+						'<h3 class="modal-title">' + _t('提示信息') + '</h3>'+
 					'</div>'+
 					'<div class="modal-body">'+
 						'{{message}}'+
@@ -131,7 +131,7 @@ var AW_TEMPLATE = {
 					'<div class="modal-content">'+
 						'<div class="modal-header">'+
 							'<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>'+
-							'<h3 class="modal-title" id="myModalLabel">{{title}}</h3>'+
+							'<h3 class="modal-title">{{title}}</h3>'+
 						'</div>'+
 							'<div class="modal-body">'+
 								'<input class="form-control" type="text" value="{{message}}" />'+
@@ -150,7 +150,7 @@ var AW_TEMPLATE = {
 					'<div class="modal-content">'+
 						'<div class="modal-header">'+
 							'<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>'+
-							'<h3 class="modal-title" id="myModalLabel">{{title}}</h3>'+
+							'<h3 class="modal-title">{{title}}</h3>'+
 						'</div>'+
 							'<div class="modal-body">'+
 								'<input class="form-control" type="password" value="{{message}}" />'+
@@ -169,7 +169,7 @@ var AW_TEMPLATE = {
 					'<div class="modal-content">'+
 						'<div class="modal-header">'+
 							'<a type="button" class="close icon icon-delete" data-dismiss="modal" aria-hidden="true"></a>'+
-							'<h3 class="modal-title" id="myModalLabel">{{title}}</h3>'+
+							'<h3 class="modal-title">{{title}}</h3>'+
 						'</div>'+
 							'<div class="modal-body">'+
 								'<textarea class="form-control" rows="5">{{message}}</textarea>'+

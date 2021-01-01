@@ -10,7 +10,7 @@ var AW_TEMPLATE = {
 					'<div class="modal-content">'+
 						'<div class="modal-header">'+
 							'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>'+
-							'<h3 class="modal-title" id="myModalLabel">' + _t('提示信息') + '</h3>'+
+							'<h3 class="modal-title">' + _t('提示信息') + '</h3>'+
 						'</div>'+
 						'<div class="modal-body">'+
 							'<p>{{message}}</p>'+
@@ -25,7 +25,7 @@ var AW_TEMPLATE = {
 				'<div class="modal-content">'+
 					'<div class="modal-header">'+
 						'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>'+
-						'<h3 class="modal-title" id="myModalLabel">' + _t('提示信息') + '</h3>'+
+						'<h3 class="modal-title">' + _t('提示信息') + '</h3>'+
 					'</div>'+
 					'<div class="modal-body">'+
 						'{{message}}'+
@@ -46,7 +46,7 @@ var AW_TEMPLATE = {
 					'<div class="modal-content">'+
 						'<div class="modal-header">'+
 							'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>'+
-							'<h3 class="modal-title" id="myModalLabel">{{name}}</h3>'+
+							'<h3 class="modal-title">{{name}}</h3>'+
 						'</div>'+
 						'<div class="modal-body">'+
 							'<div class="alert alert-danger collapse error_message"></div>'+
