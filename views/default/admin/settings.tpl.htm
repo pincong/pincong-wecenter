@@ -660,6 +660,31 @@
 				<tr>
 					<td>
 						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('浏览器端 bcrypt rounds 参数'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input name="client_side_bcrypt_rounds" type="text" class="form-control" value="<?php echo $this->setting['client_side_bcrypt_rounds']; ?>"/>
+
+								<div class="help-block"><?php _e('默认 10'); ?></div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('服务器端 bcrypt rounds 参数'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input name="server_side_bcrypt_rounds" type="text" class="form-control" value="<?php echo $this->setting['server_side_bcrypt_rounds']; ?>"/>
+
+								<div class="help-block"><?php _e('默认 10'); ?></div>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('普通用户登录是否需要验证码'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
