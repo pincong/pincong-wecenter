@@ -1787,7 +1787,7 @@ AWS.Message =
 
 			$('#index_notification ul#notification_list').html('<p align="center" style="padding: 15px 0"><img src="' + G_STATIC_URL + '/common/loading_b.gif"/></p>');
 
-			$.get(G_BASE_URL + '/notification/list/flag-0', function (result)
+			$.get(G_BASE_URL + '/notification/notify/template-list', function (result)
 			{
 				$('#index_notification ul#notification_list').html(result);
 

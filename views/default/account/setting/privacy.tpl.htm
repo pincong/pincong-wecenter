@@ -42,13 +42,11 @@
 						<dt><?php _e('什么情况下给我发送通知'); ?> :</dt>
 						<dd>
 							<?php foreach($this->notify_actions as $key => $val) { ?>
-							<?php if ($val['user_setting']) { ?>
 							<span>
 								<label>
-									<input name="notification_settings[<?php echo $key;?>]" type="checkbox" value="1"<?php if (!in_array($key, $this->notification_settings['data']) OR !$this->notification_settings['data']) { ?> checked="checked"<?php } ?> /> <?php _e($val['desc']); ?>
-									</label>
+									<input name="notification_settings[<?php echo $key;?>]" type="checkbox" value="1"<?php if (!in_array($key, $this->notification_settings['data']) OR !$this->notification_settings['data']) { ?> checked="checked"<?php } ?> /> <?php _e($val); ?>
+								</label>
 							</span>
-							<?php } ?>
 							<?php } ?>
 						</dd>
 					</dl>

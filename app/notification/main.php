@@ -47,7 +47,14 @@ class main extends AWS_CONTROLLER
 		}
 
 		TPL::assign('list', $list);
-		TPL::output("notification/notify_template");
+		if ($_GET['template'] == 'list')
+		{
+			TPL::output("notification/list_template");
+		}
+		else
+		{
+			TPL::output("notification/notify_template");
+		}
 	}
 
 	public function list_action()

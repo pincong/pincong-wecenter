@@ -20,36 +20,13 @@ if (!defined('IN_ANWSION'))
 
 class notification_class extends AWS_MODEL
 {
-	public $notify_action_details = array();
-
-	public function setup()
-	{
-		$this->notify_action_details['FOLLOW_USER'] = array(
-			'user_setting' => 1,
-			'desc' => AWS_APP::lang()->_t('有人关注我')
-		);
-
-		$this->notify_action_details['INVITE_USER'] = array(
-			'user_setting' => 1,
-			'desc' => AWS_APP::lang()->_t('有人邀请我')
-		);
-
-		$this->notify_action_details['INVITE_USER'] = array(
-			'user_setting' => 1,
-			'desc' => AWS_APP::lang()->_t('有人提到我')
-		);
-
-		$this->notify_action_details['REPLY_THREAD'] = array(
-			'user_setting' => 1,
-			'desc' => AWS_APP::lang()->_t('有人回复主题')
-		);
-
-		$this->notify_action_details['REPLY_USER'] = array(
-			'user_setting' => 1,
-			'desc' => AWS_APP::lang()->_t('有人回复我')
-		);
-
-	}
+	public $notify_action_details = array(
+		'FOLLOW_USER' => '有人关注我',
+		'INVITE_USER' => '有人邀请我',
+		'MENTION_USER' => '有人提到我',
+		'REPLY_THREAD' => '有人回复主题',
+		'REPLY_USER' => '有人回复我',
+	);
 
 	private function check_notification_setting($recipient_uid, $action)
 	{
@@ -79,10 +56,10 @@ class notification_class extends AWS_MODEL
 			return false;
 		}
 
-		/*if (!$this->check_notification_setting($recipient_uid, $action))
+		if (!$this->check_notification_setting($recipient_uid, $action))
 		{
 			return false;
-		}*/
+		}
 
 		$add_time = fake_time();
 		if ($notification_id = $this->insert('notification', array(

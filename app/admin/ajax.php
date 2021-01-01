@@ -77,9 +77,9 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
                 foreach ($notify_actions as $key => $val)
                 {
-                    if (! isset($_POST['new_user_notification_setting'][$key]) AND $val['user_setting'])
+                    if (! isset($_POST['new_user_notification_setting'][$key]))
                     {
-                        $notification_setting[] = intval($key);
+                        $notification_setting[] = $key;
                     }
                 }
             }
