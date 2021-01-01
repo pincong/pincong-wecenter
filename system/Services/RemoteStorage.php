@@ -5,8 +5,7 @@ class Services_RemoteStorage
 	// 查看
 	public static function get($filename)
 	{
-		$content = null;
-		return self::request('GET', $filename, $content);
+		return self::request('GET', $filename);
 	}
 
 	// 存放/替换
@@ -18,8 +17,7 @@ class Services_RemoteStorage
 	// 删除
 	public static function delete($filename)
 	{
-		$content = null;
-		return self::request('DELETE', $filename, $content);
+		return self::request('DELETE', $filename);
 	}
 
 
@@ -29,27 +27,39 @@ class Services_RemoteStorage
 	}
 
 
-	private static function request($method, $filename, $content)
+	private static function request($method, $filename, $content = null)
 	{
-		$url = self::get_request_url($filename);
+		$url = str_replace('{$filename}', urlencode($filename), G_REMOTE_STORAGE_REQUEST_URL);
 
-		// array
-		$headers = self::get_request_headers();
-		/*if (!is_null($content))
+		$options = array();
+		if (defined('G_REMOTE_STORAGE_HTTP_OPTIONS'))
 		{
-			$headers[] = 'Content-Length: ' . strlen($content);
-		}*/
+			$options['http'] = G_REMOTE_STORAGE_HTTP_OPTIONS;
+		}
+		else
+		{
+			$options['http'] = array();
+		}
+
+		if (defined('G_REMOTE_STORAGE_SSL_OPTIONS'))
+		{
+			$options['ssl'] = G_REMOTE_STORAGE_SSL_OPTIONS;
+		}
+
+		$options['http']['method'] = $method;
+
+		if (defined('G_REMOTE_STORAGE_REQUEST_HEADERS'))
+		{
+			$options['http']['header'] = implode("\r\n", G_REMOTE_STORAGE_REQUEST_HEADERS);
+		}
+
+		if (!is_null($content))
+		{
+			$options['http']['content'] = $content;
+		}
 
 		// 发起请求
-		$body = @file_get_contents($url, false, stream_context_create(array(
-			'http' => array(
-				'method' => $method,
-				'follow_location' => 0,
-				'protocol_version' => 1.1,
-				'header' => implode("\r\n", $headers),
-				'content' => $content,
-			)
-		)));
+		$body = @file_get_contents($url, false, stream_context_create($options));
 
 		if (!$body)
 		{
@@ -63,21 +73,6 @@ class Services_RemoteStorage
 		}
 
 		return $body;
-	}
-
-
-	private static function get_request_url($filename)
-	{
-		return str_replace('{$filename}', urlencode($filename), G_REMOTE_STORAGE_REQUEST_URL);
-	}
-
-	private static function get_request_headers()
-	{
-		if (!G_REMOTE_STORAGE_REQUEST_HEADERS)
-		{
-			return array();
-		}
-		return G_REMOTE_STORAGE_REQUEST_HEADERS;
 	}
 
 }

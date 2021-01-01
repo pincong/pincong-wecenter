@@ -50,3 +50,11 @@ define('G_REMOTE_STORAGE_REQUEST_URL', 'http://192.168.1.100/storage.php?path={$
 define('G_REMOTE_STORAGE_REQUEST_HEADERS', array(
 	"Authorization: abcdefghijklmnopqrstuvwxyz"
 ));
+define('G_REMOTE_STORAGE_HTTP_OPTIONS', array(
+	'follow_location' => 0,
+	'protocol_version' => 1.1
+));
+define('G_REMOTE_STORAGE_SSL_OPTIONS', array(
+	'verify_peer' => false,
+	'verify_peer_name' => false
+));
