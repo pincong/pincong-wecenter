@@ -38,7 +38,7 @@ class publish_class extends AWS_MODEL
 		}
 	}
 
-	private function mention_users($thread_type, $thread_id, $reply_type, $reply_id, $sender_uid, $recipient_uid, $message)
+	private function mention_users($thread_type, $thread_id, $reply_type, $reply_id, $sender_uid, $message)
 	{
 		if ($mentioned_uids = $this->model('mention')->get_mentioned_uids($message))
 		{
@@ -50,21 +50,13 @@ class publish_class extends AWS_MODEL
 					'MENTION_USER',
 					$thread_type, $thread_id, $reply_type, $reply_id);
 			}
+			return count($mentioned_uids);
 		}
+		return 0;
 	}
 
-	private function notify_users($thread_type, $thread_id, $reply_type, $reply_id, $sender_uid, $recipient_uid, $message)
+	private function notify_flowers($thread_type, $thread_id, $reply_type, $reply_id, $sender_uid)
 	{
-		if ($recipient_uid)
-		{
-			$this->model('notification')->send(
-				$sender_uid,
-				$recipient_uid,
-				'REPLY_USER',
-				$thread_type, $thread_id, $reply_type, $reply_id);
-			return;
-		}
-
 		if ($follower_uids = $this->model('postfollow')->get_follower_uids($thread_type, $thread_id))
 		{
 			foreach ($follower_uids as $uid)
@@ -76,7 +68,15 @@ class publish_class extends AWS_MODEL
 					$thread_type, $thread_id, $reply_type, $reply_id);
 			}
 		}
+	}
 
+	private function notify_user($thread_type, $thread_id, $reply_type, $reply_id, $sender_uid, $recipient_uid)
+	{
+		$this->model('notification')->send(
+			$sender_uid,
+			$recipient_uid,
+			'REPLY_USER',
+			$thread_type, $thread_id, $reply_type, $reply_id);
 	}
 
 	private function publish_scheduled_item($val)
@@ -191,7 +191,7 @@ class publish_class extends AWS_MODEL
 
 		$this->model('posts')->set_posts_index($item_id, 'question');
 
-		$this->save_topics('question', $data['uid'], $item_id, $data['topics'], $data['permission_create_topic']);
+		$this->save_topics('question', $data['uid'], $item_id, $data['topics']);
 
 		if ($data['ask_user_id'])
 		{
@@ -203,7 +203,7 @@ class publish_class extends AWS_MODEL
 			$this->model('postfollow')->follow('question', $item_id, $data['uid']);
 		}
 
-		$this->mention_users('question', $item_id, null, 0, $data['uid'], null, $data['message']);
+		$this->mention_users('question', $item_id, null, 0, $data['uid'], $data['message']);
 
 		// 记录用户动态
 		$this->model('activity')->push('question', $item_id, $data['uid']);
@@ -232,14 +232,14 @@ class publish_class extends AWS_MODEL
 
 		$this->model('posts')->set_posts_index($item_id, 'article');
 
-		$this->save_topics('article', $data['uid'], $item_id, $data['topics'], $data['permission_create_topic']);
+		$this->save_topics('article', $data['uid'], $item_id, $data['topics']);
 
 		if ($data['follow'])
 		{
 			$this->model('postfollow')->follow('article', $item_id, $data['uid']);
 		}
 
-		$this->mention_users('article', $item_id, null, 0, $data['uid'], null, $data['message']);
+		$this->mention_users('article', $item_id, null, 0, $data['uid'], $data['message']);
 
 		// 记录用户动态
 		$this->model('activity')->push('article', $item_id, $data['uid']);
@@ -270,14 +270,14 @@ class publish_class extends AWS_MODEL
 
 		$this->model('posts')->set_posts_index($item_id, 'video');
 
-		$this->save_topics('video', $data['uid'], $item_id, $data['topics'], $data['permission_create_topic']);
+		$this->save_topics('video', $data['uid'], $item_id, $data['topics']);
 
 		if ($data['follow'])
 		{
 			$this->model('postfollow')->follow('video', $item_id, $data['uid']);
 		}
 
-		$this->mention_users('video', $item_id, null, 0, $data['uid'], null, $data['message']);
+		$this->mention_users('video', $item_id, null, 0, $data['uid'], $data['message']);
 
 		// 记录用户动态
 		$this->model('activity')->push('video', $item_id, $data['uid']);
@@ -324,8 +324,8 @@ class publish_class extends AWS_MODEL
 
 		$this->model('posts')->set_posts_index($data['parent_id'], 'question');
 
-		$this->mention_users('question', $parent_info['id'], 'answer', $item_id, $data['uid'], null, $data['message']);
-		$this->notify_users('question', $parent_info['id'], 'answer', $item_id, $data['uid'], null, $data['message']);
+		$this->mention_users('question', $parent_info['id'], 'answer', $item_id, $data['uid'], $data['message']);
+		$this->notify_flowers('question', $parent_info['id'], 'answer', $item_id, $data['uid']);
 
 		if ($data['follow'])
 		{
@@ -382,8 +382,15 @@ class publish_class extends AWS_MODEL
 
 		$this->model('posts')->set_posts_index($data['parent_id'], 'article');
 
-		$this->mention_users('article', $parent_info['id'], 'article_comment', $item_id, $data['uid'], $data['at_uid'], $data['message']);
-		$this->notify_users('article', $parent_info['id'], 'article_comment', $item_id, $data['uid'], $data['at_uid'], $data['message']);
+		$this->mention_users('article', $parent_info['id'], 'article_comment', $item_id, $data['uid'], $data['message']);
+		if ($data['at_uid'])
+		{
+			$this->notify_user('article', $parent_info['id'], 'article_comment', $item_id, $data['uid'], $data['at_uid']);
+		}
+		else
+		{
+			$this->notify_flowers('article', $parent_info['id'], 'article_comment', $item_id, $data['uid']);
+		}
 
 		if ($data['follow'])
 		{
@@ -435,8 +442,15 @@ class publish_class extends AWS_MODEL
 
 		$this->model('posts')->set_posts_index($data['parent_id'], 'video');
 
-		$this->mention_users('video', $parent_info['id'], 'video_comment', $item_id, $data['uid'], $data['at_uid'], $data['message']);
-		$this->notify_users('video', $parent_info['id'], 'video_comment', $item_id, $data['uid'], $data['at_uid'], $data['message']);
+		$this->mention_users('video', $parent_info['id'], 'video_comment', $item_id, $data['uid'], $data['message']);
+		if ($data['at_uid'])
+		{
+			$this->notify_user('video', $parent_info['id'], 'video_comment', $item_id, $data['uid'], $data['at_uid']);
+		}
+		else
+		{
+			$this->notify_flowers('video', $parent_info['id'], 'video_comment', $item_id, $data['uid']);
+		}
 
 		if ($data['follow'])
 		{
@@ -465,7 +479,6 @@ class publish_class extends AWS_MODEL
 			'message' => htmlspecialchars($data['message']),
 			'add_time' => $now,
 			'uid' => $data['uid'],
-			'at_uid' => $data['at_uid'],
 		));
 
 		if (!$item_id)
@@ -492,8 +505,10 @@ class publish_class extends AWS_MODEL
 			), ['id', 'eq', $data['parent_id'], 'i']);
 		}
 
-		$this->mention_users('question', $thread_info['id'], null, 0, $data['uid'], $data['at_uid'], $data['message']);
-		$this->notify_users('question', $thread_info['id'], null, 0, $data['uid'], $data['at_uid'], $data['message']);
+		if (!$this->mention_users('question', $thread_info['id'], null, 0, $data['uid'], $data['message']))
+		{
+			$this->notify_user('question', $thread_info['id'], null, 0, $data['uid'], $thread_info['uid']);
+		}
 
 		// TODO: 记录用户动态
 
@@ -519,7 +534,6 @@ class publish_class extends AWS_MODEL
 			'message' => htmlspecialchars($data['message']),
 			'add_time' => $now,
 			'uid' => $data['uid'],
-			'at_uid' => $data['at_uid'],
 		));
 
 		if (!$item_id)
@@ -545,18 +559,10 @@ class publish_class extends AWS_MODEL
 			'comment_count' => $discussion_count,
 		), ['id', 'eq', $data['parent_id'], 'i']);
 
-
-		if ($data['at_uid'])
+		if (!$this->mention_users('question', $thread_info['id'], 'answer', $reply_info['id'], $data['uid'], $data['message']))
 		{
-			$recipient_uid = $data['at_uid'];
+			$this->notify_user('question', $thread_info['id'], 'answer', $reply_info['id'], $data['uid'], $reply_info['uid']);
 		}
-		else
-		{
-			$recipient_uid = $reply_info['uid'];
-		}
-
-		$this->mention_users('question', $thread_info['id'], 'answer', $reply_info['id'], $data['uid'], $recipient_uid, $data['message']);
-		$this->notify_users('question', $thread_info['id'], 'answer', $reply_info['id'], $data['uid'], $recipient_uid, $data['message']);
 
 		// TODO: 记录用户动态
 

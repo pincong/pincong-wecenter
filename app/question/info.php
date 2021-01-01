@@ -66,11 +66,6 @@ class info extends AWS_CONTROLLER
 
 		$discussions = $this->model('question')->get_question_discussions($post_ids, H::GET('page'), $this->per_page);
 
-		foreach ($discussions as $key => $val)
-		{
-			$discussions[$key]['message'] = $this->model('mention')->parse_at_user($discussions[$key]['message']);
-		}
-
 		TPL::assign('discussions', $discussions);
 
 		TPL::output("question/question_discussions_template");
@@ -79,11 +74,6 @@ class info extends AWS_CONTROLLER
 	public function answer_discussions_action()
 	{
 		$discussions = $this->model('question')->get_answer_discussions($this->parent_id, H::GET('page'), $this->per_page);
-
-		foreach ($discussions as $key => $val)
-		{
-			$discussions[$key]['message'] = $this->model('mention')->parse_at_user($discussions[$key]['message']);
-		}
 
 		TPL::assign('discussions', $discussions);
 

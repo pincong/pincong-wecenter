@@ -152,8 +152,6 @@ class main extends AWS_CONTROLLER
 			{
 				// 当前用户评论点赞状态
 				$comments[$key]['vote_value'] = $comment_vote_values[$val['id']];
-
-				//$comments[$key]['message'] = $this->model('mention')->parse_at_user($val['message']);
 			}
 		}
 

@@ -142,8 +142,6 @@ class main extends AWS_CONTROLLER
 
 		foreach ($answer_list as $answer)
 		{
-			//$answer['message'] = $this->model('mention')->parse_at_user($answer['message']);
-
 			if ($this->user_id)
 			{
 				$answer['vote_value'] = $answer_vote_values[$answer['id']];

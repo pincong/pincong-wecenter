@@ -143,17 +143,13 @@ class ajax extends AWS_CONTROLLER
         set_repeat_submission_digest($this->user_id, $message);
 		set_user_operation_last_time('publish', $this->user_id);
 
-		// TODO: 以H::POST('at_uid')代替
-		$message1 = $this->model('mention')->parse_at_user($message, false, false, true);
-
 		$item_id = $this->model('publish')->publish_answer_discussion(array(
 			'parent_id' => $answer_info['id'],
-			'message' => $message1,
+			'message' => $message,
 			'uid' => $publish_uid,
 		), $this->user_id, false);
 
 		$item_info = $this->model('question')->get_answer_discussion_by_id($item_id);
-		$item_info['message'] = $this->model('mention')->parse_at_user($item_info['message']);
 		TPL::assign('discussion_info', $item_info);
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'ajax_html' => TPL::process('question/ajax_answer_discussion')
@@ -238,17 +234,13 @@ class ajax extends AWS_CONTROLLER
         set_repeat_submission_digest($this->user_id, $message);
 		set_user_operation_last_time('publish', $this->user_id);
 
-		// TODO: 以H::POST('at_uid')代替
-		$message1 = $this->model('mention')->parse_at_user($message, false, false, true);
-
 		$item_id = $this->model('publish')->publish_question_discussion(array(
 			'parent_id' => $question_info['id'],
-			'message' => $message1,
+			'message' => $message,
 			'uid' => $publish_uid,
 		), $this->user_id, false);
 
 		$item_info = $this->model('question')->get_question_discussion_by_id($item_id);
-		$item_info['message'] = $this->model('mention')->parse_at_user($item_info['message']);
 		TPL::assign('discussion_info', $item_info);
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'ajax_html' => TPL::process('question/ajax_question_discussion')
