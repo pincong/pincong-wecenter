@@ -141,7 +141,13 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		$this->model('user')->forbid_user_by_uid($uid, $status, $this->user_id, $reason, $detail);
+		$this->model('user')->forbid_user_by_uid(
+			$uid,
+			$status,
+			(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null),
+			$reason,
+			$detail
+		);
 		if (!$this->user_info['permission']['is_moderator'])
 		{
 			$this->model('user')->insert_admin_log($uid, $this->user_id, 'forbid_user', $status, $log_detail);
@@ -191,7 +197,13 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
-		$this->model('user')->flag_user_by_uid($uid, $status, $this->user_id, $reason, $detail);
+		$this->model('user')->flag_user_by_uid(
+			$uid,
+			$status,
+			(!$this->user_info['permission']['is_moderator'] ? $this->user_id : null),
+			$reason,
+			$detail
+		);
 		if (!$this->user_info['permission']['is_moderator'])
 		{
 			$this->model('user')->insert_admin_log($uid, $this->user_id, 'flag_user', $status, $log_detail);
