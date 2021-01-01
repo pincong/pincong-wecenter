@@ -50,7 +50,7 @@ class main extends AWS_CONTROLLER
 
 	public function list_logs_action()
 	{
-		if ($log = $this->model('currency')->fetch_page('currency_log', 'uid = ' . $this->user_id, 'id DESC', $_GET['page'], S::get_int('contents_per_page')))
+		if ($log = $this->model('currency')->fetch_page('currency_log', ['uid', 'eq', $this->user_id, 'i'], 'id DESC', $_GET['page'], S::get_int('contents_per_page')))
 		{
 			foreach ($log AS $key => $val)
 			{

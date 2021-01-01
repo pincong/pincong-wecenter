@@ -230,7 +230,7 @@ class question_class extends AWS_MODEL
 			'message' => null
 		), ['id', 'eq', $comment['id'], 'i']);
 
-		if ($answer = $this->fetch_row('answer', 'id = ' . intval($comment['answer_id'])))
+		if ($answer = $this->fetch_row('answer', ['id', 'eq', $comment['answer_id'], 'i']))
 		{
 			$this->model('content')->log('question', $answer['question_id'], 'answer_discussion', $comment['id'], '删除', $log_uid);
 		}

@@ -66,7 +66,7 @@ class main extends AWS_CONTROLLER
 		{
 			if ($all_groups[$group_id]['type'] == 2 OR ($admin_permission AND $all_groups[$group_id]['type'] == 0))
 			{
-				$where[] = '(group_id = ' . $group_id . ' OR flagged = ' . $group_id . ')';
+				$where[] = [['group_id', 'eq', $group_id], 'or', ['flagged', 'eq', $group_id]];
 				$url_param[] = 'group_id-' . $group_id;
 			}
 		}
@@ -79,19 +79,19 @@ class main extends AWS_CONTROLLER
 
 			if ($is_forbidden)
 			{
-				$where[] = 'forbidden <> 0';
+				$where[] = ['forbidden', 'notEq', 0];
 				$url_param[] = 'forbidden-1';
 			}
 
 			if ($is_flagged)
 			{
-				$where[] = 'flagged <> 0';
+				$where[] = ['flagged', 'notEq', 0];
 				$url_param[] = 'flagged-1';
 			}
 		}
 		else
 		{
-			$where[] = 'forbidden = 0';
+			$where[] = ['forbidden', 'eq', 0];
 		}
 
 		if ($_GET['sort_key'] == 'uid')
@@ -99,8 +99,6 @@ class main extends AWS_CONTROLLER
 			$order = 'uid ASC';
 			$url_param[] = 'sort_key-uid';
 		}
-
-		$where = implode(' AND ', $where);
 
 		$users_list = $this->model('account')->get_user_list($where, $order, $_GET['page'], S::get_int('contents_per_page'));
 

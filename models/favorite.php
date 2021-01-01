@@ -35,12 +35,12 @@ class favorite_class extends AWS_MODEL
 
 	public function add_favorite($item_id, $item_type, $uid)
 	{
-		if (!$item_id OR !$item_type OR !$uid)
+		if (!$item_id OR !$uid OR !$this->check_item_type($item_type))
 		{
 			return false;
 		}
 
-		if (!$this->fetch_one('favorite', 'id', "type = '" . $this->escape($item_type) . "' AND item_id = " . intval($item_id) . ' AND uid = ' . intval($uid)))
+		if (!$this->fetch_one('favorite', 'id', [['type', 'eq', $item_type], ['item_id', 'eq', $item_id, 'i'], ['uid', 'eq', $uid, 'i']]))
 		{
 			return $this->insert('favorite', array(
 				'item_id' => intval($item_id),
@@ -53,17 +53,17 @@ class favorite_class extends AWS_MODEL
 
 	public function remove_favorite_item($item_id, $item_type, $uid)
 	{
-		if (!$item_id OR !$item_type OR !$uid)
+		if (!$item_id OR !$uid OR !$this->check_item_type($item_type))
 		{
 			return false;
 		}
 
-		$this->delete('favorite', "item_id = " . intval($item_id) . " AND `type` = '" . $this->escape($item_type) . "' AND uid = " . intval($uid));
+		$this->delete('favorite', [['type', 'eq', $item_type], ['item_id', 'eq', $item_id, 'i'], ['uid', 'eq', $uid, 'i']]);
 	}
 
-	public function count_favorite_items($uid, $tag = null)
+	public function count_favorite_items($uid)
 	{
-		return $this->count('favorite', 'uid = ' . intval($uid));
+		return $this->count('favorite', ['uid', 'eq', $uid, 'i']);
 	}
 
 	public function get_item_list($uid, $page, $per_page)
@@ -73,7 +73,7 @@ class favorite_class extends AWS_MODEL
 			return false;
 		}
 
-		$favorite_items = $this->fetch_page('favorite', "uid = " . intval($uid), 'item_id DESC', $page, $per_page);
+		$favorite_items = $this->fetch_page('favorite', ['uid', 'eq', $uid, 'i'], 'item_id DESC', $page, $per_page);
 
 		$this->process_list_data($favorite_items);
 		return $favorite_items;
