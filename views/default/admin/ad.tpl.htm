@@ -2,88 +2,88 @@
 <?php TPL::include('admin/global/nav_menu.tpl.htm'); ?>
 
 <div class="aw-content-wrap">
-    <form action="admin/ajax/save_settings/" id="settings_form" method="post" onsubmit="return false">
-    <div class="mod">
+	<form action="admin/ajax/save_settings/" id="settings_form" method="post" onsubmit="return false">
+	<div class="mod">
 
-        <div class="mod-head">
-            <h3>
-                <span class="pull-left"><?php _e('广告位'); ?></span>
+		<div class="mod-head">
+			<h3>
+				<span class="pull-left"><?php _e('广告位'); ?></span>
 
-                <span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php _e('快速保存'); ?></a></span>
-            </h3>
-        </div>
-        <div class="tab-content mod-content">
-            <table class="table table-striped">
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-2 col-xs-2 control-label"><?php _e('广告位 A1'); ?>:</span>
-                            <div class="col-sm-10 col-xs-10">
-                                <textarea class="form-control textarea" name="ad_space_a1" rows="6"><?php echo $this->setting['ad_space_a1']; ?></textarea>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-2 col-xs-2 control-label"><?php _e('广告位 A2'); ?>:</span>
-                            <div class="col-sm-10 col-xs-10">
-                                <textarea class="form-control textarea" name="ad_space_a2" rows="6"><?php echo $this->setting['ad_space_a2']; ?></textarea>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-2 col-xs-2 control-label"><?php _e('广告位 A3'); ?>:</span>
-                            <div class="col-sm-10 col-xs-10">
-                                <textarea class="form-control textarea" name="ad_space_a3" rows="6"><?php echo $this->setting['ad_space_a3']; ?></textarea>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-2 col-xs-2 control-label"><?php _e('广告位 B1'); ?>:</span>
-                            <div class="col-sm-10 col-xs-10">
-                                <textarea class="form-control textarea" name="ad_space_b1" rows="6"><?php echo $this->setting['ad_space_b1']; ?></textarea>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-2 col-xs-2 control-label"><?php _e('广告位 B2'); ?>:</span>
-                            <div class="col-sm-10 col-xs-10">
-                                <textarea class="form-control textarea" name="ad_space_b2" rows="6"><?php echo $this->setting['ad_space_b2']; ?></textarea>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <span class="col-sm-2 col-xs-2 control-label"><?php _e('广告位 B3'); ?>:</span>
-                            <div class="col-sm-10 col-xs-10">
-                                <textarea class="form-control textarea" name="ad_space_b3" rows="6"><?php echo $this->setting['ad_space_b3']; ?></textarea>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
+				<span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php _e('快速保存'); ?></a></span>
+			</h3>
+		</div>
+		<div class="tab-content mod-content">
+			<table class="table table-striped">
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-2 col-xs-2 control-label"><?php _e('广告位 A1'); ?>:</span>
+							<div class="col-sm-10 col-xs-10">
+								<textarea class="form-control textarea" name="ad_space_a1" rows="6"><?php echo $this->setting['ad_space_a1']; ?></textarea>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-2 col-xs-2 control-label"><?php _e('广告位 A2'); ?>:</span>
+							<div class="col-sm-10 col-xs-10">
+								<textarea class="form-control textarea" name="ad_space_a2" rows="6"><?php echo $this->setting['ad_space_a2']; ?></textarea>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-2 col-xs-2 control-label"><?php _e('广告位 A3'); ?>:</span>
+							<div class="col-sm-10 col-xs-10">
+								<textarea class="form-control textarea" name="ad_space_a3" rows="6"><?php echo $this->setting['ad_space_a3']; ?></textarea>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-2 col-xs-2 control-label"><?php _e('广告位 B1'); ?>:</span>
+							<div class="col-sm-10 col-xs-10">
+								<textarea class="form-control textarea" name="ad_space_b1" rows="6"><?php echo $this->setting['ad_space_b1']; ?></textarea>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-2 col-xs-2 control-label"><?php _e('广告位 B2'); ?>:</span>
+							<div class="col-sm-10 col-xs-10">
+								<textarea class="form-control textarea" name="ad_space_b2" rows="6"><?php echo $this->setting['ad_space_b2']; ?></textarea>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-2 col-xs-2 control-label"><?php _e('广告位 B3'); ?>:</span>
+							<div class="col-sm-10 col-xs-10">
+								<textarea class="form-control textarea" name="ad_space_b3" rows="6"><?php echo $this->setting['ad_space_b3']; ?></textarea>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
 
-        <div class="tab-content mod-content mod-one-btn">
-            <div class="center-block">
-                <input type="button" value="<?php _e('保存设置'); ?>" class="btn btn-primary" onclick="AWS.ajax_post($('#settings_form'));" />
-            </div>
-        </div>
-    </div>
-    </form>
+		<div class="tab-content mod-content mod-one-btn">
+			<div class="center-block">
+				<input type="button" value="<?php _e('保存设置'); ?>" class="btn btn-primary" onclick="AWS.ajax_post($('#settings_form'));" />
+			</div>
+		</div>
+	</div>
+	</form>
 </div>
 
 <?php TPL::include('admin/global/footer.tpl.htm'); ?>

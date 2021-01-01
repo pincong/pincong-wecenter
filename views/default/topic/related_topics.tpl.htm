@@ -9,7 +9,7 @@
 					<?php foreach($this->related_topics as $key => $val){ ?>
 					<span class="topic-tag" data-id="<?php echo $val['topic_id']; ?>">
 						<a class="text" href="topic/<?php echo urlencode($val['topic_title']); ?>"><?php echo $val['topic_title']; ?></a>
-					</span>	
+					</span>
 					<?php } ?>
 				<?php } ?>
 				<?php if ($this->topic_info['topic_lock'] == 0 AND $this->user_info['permission']['edit_topic']) { ?>

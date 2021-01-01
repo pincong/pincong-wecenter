@@ -1,1 +1,59 @@
-<?php if ($this->list) { ?><?php foreach($this->list AS $key => $val) { ?><li id="notification_<?php echo $val['id']; ?>"<?php if ($val['read_flag'] == 0) { ?> class="active"<?php } ?>>	<?php if ($val['read_flag'] == 0) { ?>	<i class="icon-tips"></i>	<?php } ?>	<p class="moreContent">		<a href="<?php echo UF::url($val['user_info']); ?>" data-id="<?php echo $val['user_info']['uid']; ?>"><?php echo UF::name($val['user_info']); ?></a>		<span><?php			switch ($val['action'])			{				case 'FOLLOW_USER':				{					_e('关注了你');					break;				}				case 'INVITE_USER':				{					_e('邀请你参与');					break;				}				case 'MENTION_USER':				{					_e('提到了你');					break;				}				case 'REPLY_USER':				{					_e('回复了你');					break;				}				case 'REPLY_THREAD':				{					_e('回复了主题');					break;				}			}		?></span>		<?php if ($val['thread_info']) { ?>			<?php if ($val['item_id']) { ?>			<a href="<?php echo $val['thread_type']; ?>/item_id-<?php echo $val['item_id']; ?>__notification_id-<?php echo $val['id']; ?>">			<?php } else { ?>			<a href="<?php echo $val['thread_type']; ?>/id-<?php echo $val['thread_info']['id']; ?>__notification_id-<?php echo $val['id']; ?>">			<?php } ?>				<?php if (!$val['thread_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['thread_info']['title']; ?><?php } ?>			</a>		<?php } ?>	</p>	<p class="aw-small-text">		<?php echo date_friendly($val['add_time']); ?>		<?php if ($val['read_flag'] == 0) { ?>		<a class="read pull-right" onclick="AWS.Message.read_notification($(this).parents('li'), <?php echo $val['id']; ?>, false);"><?php _e('标为已读'); ?></a>		<?php } ?>	</p></li><?php } ?><?php } ?>
+<?php if ($this->list) { ?>
+<?php foreach($this->list AS $key => $val) { ?>
+<li id="notification_<?php echo $val['id']; ?>"<?php if ($val['read_flag'] == 0) { ?> class="active"<?php } ?>>
+	<?php if ($val['read_flag'] == 0) { ?>
+	<i class="icon-tips"></i>
+	<?php } ?>
+
+	<p class="moreContent">
+		<a href="<?php echo UF::url($val['user_info']); ?>" data-id="<?php echo $val['user_info']['uid']; ?>"><?php echo UF::name($val['user_info']); ?></a>
+		<span><?php
+			switch ($val['action'])
+			{
+				case 'FOLLOW_USER':
+				{
+					_e('关注了你');
+					break;
+				}
+				case 'INVITE_USER':
+				{
+					_e('邀请你参与');
+					break;
+				}
+				case 'MENTION_USER':
+				{
+					_e('提到了你');
+					break;
+				}
+				case 'REPLY_USER':
+				{
+					_e('回复了你');
+					break;
+				}
+				case 'REPLY_THREAD':
+				{
+					_e('回复了主题');
+					break;
+				}
+			}
+		?></span>
+		<?php if ($val['thread_info']) { ?>
+			<?php if ($val['item_id']) { ?>
+			<a href="<?php echo $val['thread_type']; ?>/item_id-<?php echo $val['item_id']; ?>__notification_id-<?php echo $val['id']; ?>">
+			<?php } else { ?>
+			<a href="<?php echo $val['thread_type']; ?>/id-<?php echo $val['thread_info']['id']; ?>__notification_id-<?php echo $val['id']; ?>">
+			<?php } ?>
+				<?php if (!$val['thread_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo $val['thread_info']['title']; ?><?php } ?>
+			</a>
+		<?php } ?>
+	</p>
+
+	<p class="aw-small-text">
+		<?php echo date_friendly($val['add_time']); ?>
+		<?php if ($val['read_flag'] == 0) { ?>
+		<a class="read pull-right" onclick="AWS.Message.read_notification($(this).parents('li'), <?php echo $val['id']; ?>, false);"><?php _e('标为已读'); ?></a>
+		<?php } ?>
+	</p>
+</li>
+<?php } ?>
+<?php } ?>

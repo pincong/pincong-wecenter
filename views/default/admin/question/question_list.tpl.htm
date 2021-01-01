@@ -29,9 +29,7 @@
 								<th><?php _e('回答'); ?></th>
 								<th><?php _e('关注'); ?></th>
 								<th><?php _e('浏览'); ?></th>
-								<?php /*
-                                <th><?php _e('作者'); ?></th>
-								*/ ?>
+								<th><?php _e('作者'); ?></th>
 								<th><?php _e('发布时间'); ?></th>
 								<th><?php _e('最后更新'); ?></th>
 								<th><?php _e('操作'); ?></th>
@@ -45,9 +43,7 @@
 								<td><?php if ($val['answer_count']) { ?><?php echo $val['answer_count']; ?><?php } else { ?>0<?php } ?></td>
 								<td><?php echo $val['focus_count']; ?></td>
 								<td><?php echo $val['view_count']; ?></td>
-								<?php /*
 								<td><a href="<?php echo UF::url($val['user_info']); ?>" target="_blank"><?php echo UF::name($val['user_info']); ?></a></td>
-								*/ ?>
 								<td><?php echo date_friendly($val['add_time']); ?></td>
 								<td><?php echo date_friendly($val['update_time']); ?></td>
 								<td><a href="modify/<?php echo $val['id']; ?>" target="_blank" class="icon icon-edit md-tip" title="<?php _e('编辑'); ?>"></a></td>
@@ -94,7 +90,7 @@
 
 						<div class="col-sm-6 col-xs-9">
 							<div class="row">
-								<div class="col-xs-11  col-sm-5 mod-double">
+								<div class="col-xs-11 col-sm-5 mod-double">
 									<input type="text" class="form-control mod-data" value="<?php echo base64_decode($_GET['start_date']); ?>" name="start_date" />
 									<i class="icon icon-date"></i>
 								</div>
@@ -122,7 +118,7 @@
 
 						<div class="col-sm-6 col-xs-9">
 							<div class="row">
-								<div class="col-xs-11  col-sm-5 mod-double">
+								<div class="col-xs-11 col-sm-5 mod-double">
 									<input type="text" class="form-control" name="answer_count_min" value="<?php echo intval($_GET['answer_count_min']); ?>" />
 								</div>
 								<span class="mod-symbol col-xs-1 col-sm-1">

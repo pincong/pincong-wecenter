@@ -1,1 +1,65 @@
-<?php TPL::include('global/header.tpl.htm'); ?><?php TPL::include('account/setting/setting_header.tpl.htm'); ?><div class="aw-mod mod-setting-privacy">	<div class="mod-body">		<form id="setting_form" method="post" action="account/ajax/privacy_setting/">			<div class="aw-mod">				<div class="mod-head">					<h3><?php _e('私信设置'); ?></h3>				</div>				<div class="mod-body">					<dl>						<dt><?php _e('谁可以给我发私信'); ?> :</dt>						<dd><?php	$inbox_recv = $this->user_info['inbox_recv'];	if ($inbox_recv != 1 AND $inbox_recv != 2 AND $inbox_recv != 3)	{		$inbox_recv = intval(get_setting('default_inbox_recv'));		if (!$inbox_recv)		{			$inbox_recv = 1;		}	}?>							<label><input type="radio" value="0" name="inbox_recv" /> <?php _e('默认'); ?></label>							<label><input type="radio" value="3" name="inbox_recv"<?php if ($inbox_recv == 3) { ?> checked="checked"<?php } ?> /> <?php _e('所有人'); ?></label>							<label><input type="radio" value="1" name="inbox_recv"<?php if ($inbox_recv == 1) { ?> checked="checked"<?php } ?> /> <?php _e('我关注的人'); ?></label>							<label><input type="radio" value="2" name="inbox_recv"<?php if ($inbox_recv == 2) { ?> checked="checked"<?php } ?> /> <?php _e('拒绝任何人'); ?></label>						</dd>					</dl>				</div>			</div>			<div class="aw-mod">				<div class="mod-head">					<h3><?php _e('通知设置'); ?></h3>				</div>				<div class="mod-body">					<dl>						<dt><?php _e('什么情况下给我发送通知'); ?> :</dt>						<dd>							<?php foreach($this->notify_actions as $key => $val) { ?>							<?php if ($val['user_setting']) { ?>							<span>								<label>									<input name="notification_settings[<?php echo $key;?>]" type="checkbox" value="1"<?php if (!in_array($key, $this->notification_settings['data']) OR !$this->notification_settings['data']) { ?> checked="checked"<?php } ?> /> <?php _e($val['desc']); ?>									</label>							</span>							<?php } ?>							<?php } ?>						</dd>					</dl>				</div>			</div>		</form>	</div>	<div class="mod-footer clearfix">		<a href="javascript:;" class="btn btn-large btn-success pull-right" onclick="AWS.submit($('#setting_form'), $(this));"><?php _e('保存'); ?></a>	</div></div><?php TPL::include('account/setting/setting_footer.tpl.htm'); ?><?php TPL::include('global/footer.tpl.htm'); ?>
+<?php TPL::include('global/header.tpl.htm'); ?>
+<?php TPL::include('account/setting/setting_header.tpl.htm'); ?>
+
+<div class="aw-mod mod-setting-privacy">
+	<div class="mod-body">
+		<form id="setting_form" method="post" action="account/ajax/privacy_setting/">
+
+			<div class="aw-mod">
+				<div class="mod-head">
+					<h3><?php _e('私信设置'); ?></h3>
+				</div>
+				<div class="mod-body">
+					<dl>
+						<dt><?php _e('谁可以给我发私信'); ?> :</dt>
+						<dd>
+<?php
+	$inbox_recv = $this->user_info['inbox_recv'];
+	if ($inbox_recv != 1 AND $inbox_recv != 2 AND $inbox_recv != 3)
+	{
+		$inbox_recv = intval(get_setting('default_inbox_recv'));
+		if (!$inbox_recv)
+		{
+			$inbox_recv = 1;
+		}
+	}
+?>
+							<label><input type="radio" value="0" name="inbox_recv" /> <?php _e('默认'); ?></label>
+							<label><input type="radio" value="3" name="inbox_recv"<?php if ($inbox_recv == 3) { ?> checked="checked"<?php } ?> /> <?php _e('所有人'); ?></label>
+							<label><input type="radio" value="1" name="inbox_recv"<?php if ($inbox_recv == 1) { ?> checked="checked"<?php } ?> /> <?php _e('我关注的人'); ?></label>
+							<label><input type="radio" value="2" name="inbox_recv"<?php if ($inbox_recv == 2) { ?> checked="checked"<?php } ?> /> <?php _e('拒绝任何人'); ?></label>
+						</dd>
+					</dl>
+				</div>
+			</div>
+
+			<div class="aw-mod">
+				<div class="mod-head">
+					<h3><?php _e('通知设置'); ?></h3>
+				</div>
+				<div class="mod-body">
+					<dl>
+						<dt><?php _e('什么情况下给我发送通知'); ?> :</dt>
+						<dd>
+							<?php foreach($this->notify_actions as $key => $val) { ?>
+							<?php if ($val['user_setting']) { ?>
+							<span>
+								<label>
+									<input name="notification_settings[<?php echo $key;?>]" type="checkbox" value="1"<?php if (!in_array($key, $this->notification_settings['data']) OR !$this->notification_settings['data']) { ?> checked="checked"<?php } ?> /> <?php _e($val['desc']); ?>
+									</label>
+							</span>
+							<?php } ?>
+							<?php } ?>
+						</dd>
+					</dl>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="mod-footer clearfix">
+		<a href="javascript:;" class="btn btn-large btn-success pull-right" onclick="AWS.submit($('#setting_form'), $(this));"><?php _e('保存'); ?></a>
+	</div>
+</div>
+
+<?php TPL::include('account/setting/setting_footer.tpl.htm'); ?>
+<?php TPL::include('global/footer.tpl.htm'); ?>

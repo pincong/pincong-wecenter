@@ -2,19 +2,19 @@
 <?php TPL::include('admin/global/nav_menu.tpl.htm'); ?>
 
 <div class="aw-content-wrap">
-    <div class="mod">
-        <div class="mod-head">
-            <h3>
+	<div class="mod">
+		<div class="mod-head">
+			<h3>
 				<ul class="nav nav-tabs">
 					<li class="<?php if ($_GET['act'] == 'list') { ?> active<?php } ?>"><a href="admin/feature/list/"><?php _e('列表'); ?></a></li>
-				    <li class="<?php if ($_GET['act'] == 'add') { ?> active<?php } ?>"><a href="admin/feature/add/"><?php _e('添加'); ?></a></li>
+					<li class="<?php if ($_GET['act'] == 'add') { ?> active<?php } ?>"><a href="admin/feature/add/"><?php _e('添加'); ?></a></li>
 				</ul>
-            </h3>
-        </div>
+			</h3>
+		</div>
 
 		<div class="mod-body tab-content">
 			<div class="alert alert-success collapse error_message"></div>
-			
+
 			<form action="admin/ajax/save_feature_status/" method="post" id="feature_form">
 			<div class="table-responsive">
 			<?php if ($this->list) { ?>
@@ -33,7 +33,7 @@
 						<tr>
 							<td>
 								<input type="hidden" name="feature_ids[<?php echo $val['id']; ?>]" value="<?php echo $val['id']; ?>" />
-								
+
 								<input type="checkbox" class="enabled-status" name="enabled_status[<?php echo $val['id']; ?>]" value="1"<?php if ($val['enabled']) { ?> checked="checked"<?php } ?> />
 							</td>
 							<td><?php echo $val['title']; ?></td>
@@ -58,7 +58,7 @@
 <script type="text/javascript">
 	$(document).ready(function () {
 		$('input.enabled-status').on('ifChanged', function () {
-			AWS.ajax_post($('#feature_form'),  AWS.ajax_processer, 'error_message');
+			AWS.ajax_post($('#feature_form'), AWS.ajax_processer, 'error_message');
 		});
 	});
 </script>

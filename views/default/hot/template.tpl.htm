@@ -41,7 +41,7 @@
 			<!-- 可显示/隐藏的操作box -->
 			<div class="more-operate">
 				<a data-id="<?php echo $val['id']; ?>" data-type="question" class="aw-add-comment aw-small-text <?php if ($val['comment_count'] > 0) {?>active<?php }?>" data-comment-count="<?php echo $val['comment_count']; ?>" style="margin-right: 15px;"><i class="icon icon-comment"></i> <?php if ($val['comment_count']) { ?><?php _e('%s 条讨论', $val['comment_count']); ?><?php } else { ?><?php _e('添加讨论'); ?><?php } ?></a>
-				
+
 				<a href="vote/log/item_type-question__item_id-<?php echo $val['id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
 
 				<?php if ($this->user_id) { ?>
@@ -195,7 +195,7 @@
 				</a>
 			</span>
 			<!-- end 投票栏 -->
-			
+
 			<div class="more-operate">
 				<a href="vote/log/item_type-article_comment__item_id-<?php echo $val['id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
 			</div>
@@ -239,7 +239,7 @@
 				</a>
 			</span>
 			<!-- end 投票栏 -->
-			
+
 			<!-- 可显示/隐藏的操作box -->
 			<div class="more-operate">
 
@@ -287,7 +287,7 @@
 				</a>
 			</span>
 			<!-- end 投票栏 -->
-			
+
 			<div class="more-operate">
 				<a href="vote/log/item_type-video_comment__item_id-<?php echo $val['id']; ?>" class="aw-small-text" rel="nofollow" target="_blank"><i class="icon icon-users"></i></a>
 			</div>
