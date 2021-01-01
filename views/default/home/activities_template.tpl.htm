@@ -65,7 +65,7 @@
 			•
 			<?php echo date_friendly($val['add_time']); ?>
 			•
-			<?php echo _t('%s 个评论', $val['comments']); ?>
+			<?php echo _t('%s 个评论', $val['reply_count']); ?>
 		</p>
 		<h4>
 			<a href="<?php echo url_rewrite(); ?>/article/<?php echo $val['id']; ?>"><?php echo FORMAT::text($val['title'], true); ?></a>

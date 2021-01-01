@@ -116,7 +116,7 @@ class main extends AWS_CONTROLLER
 		$page_title = CF::page_title($thread_info);
 		$this->crumb($page_title);
 
-		$reply_count = $thread_info['comments'];
+		$reply_count = $thread_info['reply_count'];
 		// 判断是否已合并
 		if ($redirect_posts = $this->model('content')->get_redirect_posts('article', $thread_info['id']))
 		{
@@ -124,7 +124,7 @@ class main extends AWS_CONTROLLER
 			{
 				$post_ids[] = $val['id'];
 				// 修复合并后回复数
-				$reply_count += $val['comments'];
+				$reply_count += $val['reply_count'];
 			}
 		}
 		$post_ids[] = $thread_info['id'];

@@ -430,7 +430,7 @@ class publish_class extends AWS_MODEL
 		}
 
 		$this->update('article', array(
-			'comments' => $this->count('article_reply', ['parent_id', 'eq', $data['parent_id'], 'i']),
+			'reply_count' => $this->count('article_reply', ['parent_id', 'eq', $data['parent_id'], 'i']),
 			'update_time' => $now,
 			'last_uid' => $data['uid']
 		), ['id', 'eq', $data['parent_id'], 'i']);

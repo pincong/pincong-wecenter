@@ -86,7 +86,7 @@ class posts_class extends AWS_MODEL
 					'view_count' => $result['view_count'],
 					'uid' => $result['uid'],
 					'agree_count' => $result['agree_count'],
-					'reply_count' => $result['comments'],
+					'reply_count' => $result['reply_count'],
 					'lock' => $result['lock'],
 					'recommend' => $result['recommend'],
 				);

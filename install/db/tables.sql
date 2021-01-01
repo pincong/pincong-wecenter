@@ -118,7 +118,7 @@ CREATE TABLE `aws_article` (
   `redirect_id` int(11) DEFAULT '0',
   `title` varchar(240) DEFAULT NULL,
   `message` text,
-  `comments` int(11) DEFAULT '0',
+  `reply_count` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`),
   KEY `category_id` (`category_id`),
@@ -130,7 +130,7 @@ CREATE TABLE `aws_article` (
   KEY `lock` (`lock`),
   KEY `recommend` (`recommend`),
   KEY `sort` (`sort`),
-  KEY `comments` (`comments`)
+  KEY `reply_count` (`reply_count`)
 ) DEFAULT CHARSET=utf8mb4;
 
 --

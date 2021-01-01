@@ -75,12 +75,12 @@ class article extends AWS_ADMIN_CONTROLLER
 
 		if (H::GET('comment_count_min'))
 		{
-			$where[] = ['comments', 'gte', H::GET('comment_count_min'), 'i'];
+			$where[] = ['reply_count', 'gte', H::GET('comment_count_min'), 'i'];
 		}
 
 		if (H::GET('answer_count_max'))
 		{
-			$where[] = ['comments', 'lte', H::GET('comment_count_max'), 'i'];
+			$where[] = ['reply_count', 'lte', H::GET('comment_count_max'), 'i'];
 		}
 
 		if ($article_list = $this->model('article')->fetch_page('article', $where, 'id DESC', H::GET('page'), $this->per_page))

@@ -99,13 +99,9 @@ class postfollow_class extends AWS_MODEL
 			{
 				case 'question':
 					$result[$key] = $question_infos[$val['post_id']];
-					// TODO: 统一字段名称
-					$result[$key]['reply_count'] = $question_infos[$val['post_id']]['reply_count'];
 					break;
 				case 'article':
 					$result[$key] = $article_infos[$val['post_id']];
-					// TODO: 统一字段名称
-					$result[$key]['reply_count'] = $article_infos[$val['post_id']]['comments'];
 					break;
 				case 'video':
 					$result[$key] = $video_infos[$val['post_id']];

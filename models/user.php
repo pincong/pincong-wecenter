@@ -47,7 +47,7 @@ class user_class extends AWS_MODEL
 	{
 		$article_id = intval($article_id);
 		$this->update('article', array(
-			'comments' => $this->count('article_reply', ['parent_id', 'eq', $article_id])
+			'reply_count' => $this->count('article_reply', ['parent_id', 'eq', $article_id])
 		), ['id', 'eq', $article_id]);
 	}
 
