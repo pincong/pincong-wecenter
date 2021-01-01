@@ -68,11 +68,11 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('item_list', $item_list);
 
-		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
+		TPL::assign('pagination', AWS_APP::pagination()->create(array(
 			'base_url' => url_rewrite('/kb/'),
 			'total_rows' => $count,
 			'per_page' => $per_page
-		))->create_links());
+		)));
 
 		if (S::get('advanced_editor_enable') == 'Y')
 		{

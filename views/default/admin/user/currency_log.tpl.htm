@@ -62,7 +62,7 @@
 					</div>
 					<div class="col-sm-10 col-md-4">
 						<a onclick="AWS.ajax_post($('#currency_form'));" class="btn-primary btn"><?php _e('提交'); ?></a>
-						<div class="pull-right"><?php echo $this->pagination; ?></div>
+						<div class="pull-right"><?php TPL::include('global/pagination.tpl.htm'); ?></div>
 					</div>
 				</form>
 				</div>

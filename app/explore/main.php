@@ -162,11 +162,11 @@ class main extends AWS_CONTROLLER
 			$base_url .= 'recommend-1';
 		}
 
-		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
+		TPL::assign('pagination', AWS_APP::pagination()->create(array(
 			'base_url' => url_rewrite('/') . $base_url,
 			'total_rows' => $this->model('posts')->get_posts_list_total(),
 			'per_page' => S::get('contents_per_page')
-		))->create_links());
+		)));
 
 		TPL::assign('posts_list', $posts_list);
 		TPL::assign('posts_list_bit', TPL::render('explore/list_template'));

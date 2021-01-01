@@ -117,11 +117,11 @@ class question extends AWS_ADMIN_CONTROLLER
 			}
 		}
 
-		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
+		TPL::assign('pagination', AWS_APP::pagination()->create(array(
 			'base_url' => url_rewrite('/admin/question/question_list/') . implode('__', $url_param),
 			'total_rows' => $total_rows,
 			'per_page' => $this->per_page
-		))->create_links());
+		)));
 
 		$this->crumb(AWS_APP::lang()->_t('问题管理'));
 

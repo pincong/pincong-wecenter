@@ -67,7 +67,7 @@
 				</div>
 
 				<div class="mod-table-foot">
-					<?php echo $this->pagination; ?>
+					<?php TPL::include('global/pagination.tpl.htm'); ?>
 
 					<a class="btn btn-danger" onclick="$('#action').val('remove'); AWS.ajax_post($('#batchs_form'));"><?php _e('删除话题'); ?></a>
 					<a class="btn btn-primary" onclick="$('#action').val('lock'); AWS.ajax_post($('#batchs_form'));"><?php _e('锁定话题'); ?></a>

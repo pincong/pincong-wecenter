@@ -92,11 +92,11 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('list', $data);
 
-		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
+		TPL::assign('pagination', AWS_APP::pagination()->create(array(
 			'base_url' => url_rewrite('/inbox/'),
 			'total_rows' => $inbox_total_rows,
 			'per_page' => S::get('contents_per_page')
-		))->create_links());
+		)));
 
 		TPL::output('inbox/index');
 	}

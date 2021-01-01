@@ -31,11 +31,11 @@ class feature extends AWS_ADMIN_CONTROLLER
 
         $feature_list = $this->model('feature')->get_feature_list($_GET['page'], $this->per_page);
 
-        TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
+        TPL::assign('pagination', AWS_APP::pagination()->create(array(
             'base_url' => url_rewrite('/admin/feature/list/'),
             'total_rows' => $this->model('feature')->found_rows(),
             'per_page' => 20
-        ))->create_links());
+        )));
 
         TPL::assign('list', $feature_list);
 

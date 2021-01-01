@@ -95,11 +95,11 @@ class main extends AWS_CONTROLLER
 
 		$users_list = $this->model('account')->get_user_list($where, calc_page_limit($_GET['page'], S::get('contents_per_page')), $order);
 
-		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
+		TPL::assign('pagination', AWS_APP::pagination()->create(array(
 			'base_url' => url_rewrite('/people/') . implode('__', $url_param),
 			'total_rows' => $this->model('account')->get_user_count($where),
 			'per_page' => S::get('contents_per_page')
-		))->create_links());
+		)));
 
 		if ($users_list)
 		{

@@ -14,255 +14,131 @@
 
 class core_pagination
 {
-	var $base_url			= ''; // The page we are linking to
-	var $prefix				= ''; // A custom prefix added to the path.
-	var $suffix				= ''; // A custom suffix added to the path.
-
-	var $total_rows			= ''; // Total number of items (database results)
-	var $per_page			= 10; // Max number of items you want shown per page
-	var $num_links			=  2; // Number of "digit" links to show before/after the currently viewed page
-	var $cur_page			=  0; // The current page being viewed
-	var $first_link			= '&lsaquo; First';
-	var $next_link			= '&gt;';
-	var $prev_link			= '&lt;';
-	var $last_link			= 'Last &rsaquo;';
-	var $uri_segment		= 3;
-	var $full_tag_open		= '';
-	var $full_tag_close		= '';
-	var $first_tag_open		= '';
-	var $first_tag_close	= '&nbsp;';
-	var $last_tag_open		= '&nbsp;';
-	var $last_tag_close		= '';
-	var $first_url			= ''; // Alternative URL for the First Page.
-	var $cur_tag_open		= '&nbsp;<strong>';
-	var $cur_tag_close		= '</strong>';
-	var $next_tag_open		= '&nbsp;';
-	var $next_tag_close		= '&nbsp;';
-	var $prev_tag_open		= '&nbsp;';
-	var $prev_tag_close		= '';
-	var $num_tag_open		= '&nbsp;';
-	var $num_tag_close		= '';
-	var $query_string_segment = 'page';
-	var $display_pages		= TRUE;
-
-	var $page_base_url = '';
-
-	/**
-	 * Constructor
-	 *
-	 * @access	public
-	 * @param	array	initialization parameters
-	 */
-	public function __construct($params = array())
+	public function create($params)
 	{
-		if (file_exists(ROOT_PATH . 'views/' . S::get('ui_style') . '/config/pagination.php'))
+		if ($params['total_rows'] == 0 OR $params['per_page'] == 0)
 		{
-			include(ROOT_PATH . 'views/' . S::get('ui_style') . '/config/pagination.php');
-		}
-		else
-		{
-			include(ROOT_PATH . 'views/default/config/pagination.php');
+			return null;
 		}
 
-		$this->initialize($config);
-
-		if (count($params) > 0)
+		$num_pages = ceil($params['total_rows'] / $params['per_page']);
+		if ($num_pages < 2)
 		{
-			$this->initialize($params);
+			return null;
 		}
 
-		if ($this->anchor_class != '')
+		$result = array(
+			'links' => array()
+		);
+
+		$cur_page = intval($_GET['page']);
+		if ($cur_page < 1)
 		{
-			$this->anchor_class = 'class="'.$this->anchor_class.'" ';
+			$cur_page = 1;
 		}
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Initialize Preferences
-	 *
-	 * @access	public
-	 * @param	array	initialization parameters
-	 * @return	void
-	 */
-	public function initialize($params = array())
-	{
-		if (count($params) > 0)
+		else if ($cur_page > $num_pages)
 		{
-			foreach ($params as $key => $val)
+			$cur_page = $num_pages;
+		}
+		$result['cur_page'] = $cur_page;
+
+		$num_links = $params['num_links']; // 当前页码前后各显示多少页
+		if (!$num_links)
+		{
+			$num_links = 3;
+		}
+		else if ($num_links < 1)
+		{
+			$num_links = 1;
+		}
+
+		if (isset($params['base_url']))
+		{
+			$base_url = $params['base_url'];
+			if (substr($base_url, -1, 1) == '/')
 			{
-				if (isset($this->$key))
-				{
-					$this->$key = $val;
-				}
-			}
-		}
-
-		return $this;
-	}
-
-	// --------------------------------------------------------------------
-
-	/**
-	 * Generate the pagination links
-	 *
-	 * @access	public
-	 * @return	string
-	 */
-	public function create_links()
-	{
-		// If our item count or per-page total is zero there is no need to continue.
-		if ($this->total_rows == 0 OR $this->per_page == 0)
-		{
-			return '';
-			//return $this->full_tag_open.$this->full_tag_close;
-		}
-
-		// Calculate the total number of pages
-		$num_pages = ceil($this->total_rows / $this->per_page);
-
-		// Is there only one page? Hm... nothing more to do here then.
-		if ($num_pages == 1)
-		{
-			return '';
-			//return $this->full_tag_open.$this->full_tag_close;
-		}
-
-		if ($_GET[$this->query_string_segment] != 0)
-		{
-			$this->cur_page = $_GET[$this->query_string_segment];
-
-			// Prep the current page - no funny business!
-			$this->cur_page = (int) $this->cur_page;
-		}
-		else
-		{
-			$this->cur_page = 1;
-		}
-
-		$this->num_links = (int)$this->num_links;
-
-		if ($this->num_links < 1)
-		{
-			throw new Zend_Exception('Your number of links must be a positive number.');
-		}
-
-		if ( ! is_digits($this->cur_page))
-		{
-			$this->cur_page = 0;
-		}
-
-		// Is the page number beyond the result range?
-		// If so we show the last page
-		if ($this->cur_page > $this->total_rows)
-		{
-			$this->cur_page = ($num_pages - 1) * $this->per_page;
-		}
-
-		$uri_page_number = $this->cur_page;
-		//$this->cur_page = floor(($this->cur_page/$this->per_page) + 1);
-
-		// Calculate the start and end numbers. These determine
-		// which number to start and end the digit links with
-		$start = (($this->cur_page - $this->num_links) > 0) ? $this->cur_page - ($this->num_links - 1) : 1;
-		$end   = (($this->cur_page + $this->num_links) < $num_pages) ? $this->cur_page + $this->num_links : $num_pages;
-
-
-		if (substr($this->base_url, -1, 1) == '/')
-		{
-			$this->page_base_url = rtrim($this->base_url).$this->query_string_segment.'-';
-		}
-		else
-		{
-			$this->page_base_url = rtrim($this->base_url).'__'.$this->query_string_segment.'-';
-		}
-
-		// And here we go...
-		$output = '';
-
-		// Render the "First" link
-		if  ($this->first_link !== FALSE AND $this->cur_page > ($this->num_links + 1))
-		{
-			$first_url = ($this->first_url == '') ? $this->base_url : $this->first_url;
-
-			$output .= $this->first_tag_open.'<a '.$this->anchor_class.'href="'.$first_url.'">'.$this->first_link.'</a>'.$this->first_tag_close;
-		}
-
-		// Render the "previous" link
-		if  ($this->prev_link !== FALSE AND $this->cur_page != 1)
-		{
-			$i = $uri_page_number - 1;
-
-			if ($i == 1)
-			{
-				$output .= $this->prev_tag_open.'<a '.$this->anchor_class.'href="'.$this->base_url.'">'.$this->prev_link.'</a>'.$this->prev_tag_close;
+				$page_base_url = $base_url . 'page-';
 			}
 			else
 			{
-				$i = ($i == 0) ? '' : $this->prefix.$i.$this->suffix;
-
-				$output .= $this->prev_tag_open.'<a '.$this->anchor_class.'href="'.$this->page_base_url.$i.'">'.$this->prev_link . '</a>'.$this->prev_tag_close;
+				$page_base_url = $base_url . '__page-';
 			}
-
+		}
+		else
+		{
+			$base_url = '';
+			$page_base_url = 'page-';
 		}
 
-		// Render the pages
-		if ($this->display_pages !== FALSE)
+		if (isset($params['prefix']))
 		{
-			// Write the digit links
-			for ($loop = $start -1; $loop <= $end; $loop++)
+			$prefix = $params['prefix'];
+		}
+		else
+		{
+			$prefix = '';
+		}
+
+		if (isset($params['suffix']))
+		{
+			$suffix = $params['suffix'];
+		}
+		else
+		{
+			$suffix = '';
+		}
+
+		if ($cur_page > ($num_links + 1))
+		{
+			$result['first'] = $prefix . $base_url . $suffix;
+		}
+
+		if (($cur_page + $num_links) < $num_pages)
+		{
+			$result['last'] = $prefix . $page_base_url . $num_pages . $suffix;
+		}
+
+		if  ($cur_page > 1)
+		{
+			if ($cur_page == 2)
 			{
-				$i = ($loop * $this->per_page) - $this->per_page;
-
-				if ($i >= 0)
-				{
-					if ($this->cur_page == $loop)
-					{
-						$output .= $this->cur_tag_open.$loop.$this->cur_tag_close; // Current page
-					}
-					else
-					{
-						$n = ($i == 0) ? '' : $i;
-
-						$n = $n / $this->per_page + 1;	// by Anwsion
-
-						if ($n == 1)
-						{
-							$output .= $this->num_tag_open.'<a '.$this->anchor_class.'href="'.$this->base_url.'">'.$loop.'</a>'.$this->num_tag_close;
-						}
-						else
-						{
-							$n = ($n == '') ? '' : $this->prefix.$n.$this->suffix;
-
-							$output .= $this->num_tag_open.'<a '.$this->anchor_class.'href="'.$this->page_base_url.$n.'">'.$loop.'</a>'.$this->num_tag_close;
-						}
-					}
-				}
+				$result['prev'] = $prefix . $base_url . $suffix;
+			}
+			else
+			{
+				$result['prev'] = $prefix . $page_base_url . ($cur_page - 1) . $suffix;
 			}
 		}
 
-		// Render the "next" link
-		if ($this->next_link !== FALSE AND $this->cur_page < $num_pages)
+		if ($cur_page < $num_pages)
 		{
-			$output .= $this->next_tag_open.'<a '.$this->anchor_class.'href="'.$this->page_base_url.$this->prefix.($this->cur_page + 1).$this->suffix.'">'.$this->next_link.'</a>'.$this->next_tag_close;
+			$result['next'] = $prefix . $page_base_url . ($cur_page + 1) . $suffix;
 		}
 
-		// Render the "Last" link
-		if ($this->last_link !== FALSE AND ($this->cur_page + $this->num_links) < $num_pages)
+		$start = $cur_page - $num_links;
+		if ($start < 1)
 		{
-			//$i = (($num_pages * $this->per_page) - $this->per_page);
-			$i = $num_pages;
-			$output .= $this->last_tag_open.'<a '.$this->anchor_class.'href="'.$this->page_base_url.$this->prefix.$i.$this->suffix.'">'.$this->last_link.'</a>'.$this->last_tag_close;
+			$start = 1;
+		}
+		$end = $cur_page + $num_links;
+		if ($end > $num_pages)
+		{
+			$end = $num_pages;
 		}
 
-		// Kill double slashes.  Note: Sometimes we can end up with a double slash
-		// in the penultimate link so we'll kill all double slashes.
-		$output = preg_replace("#([^:])//+#", "\\1/", $output);
+		for ($n = $start; $n <= $end; $n++)
+		{
+			if ($n == 1)
+			{
+				$result['links'][$n] = $prefix . $base_url . $suffix;
+			}
+			else
+			{
+				$result['links'][$n] = $prefix . $page_base_url . $n . $suffix;
+			}
+		}
 
-		// Add the wrapper HTML if exists
-		$output = $this->full_tag_open.$output.$this->full_tag_close;
-
-		return $output;
+		return $result;
 	}
+
 }

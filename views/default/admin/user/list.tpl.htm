@@ -71,7 +71,7 @@
 						<a class="btn btn-danger" onclick="AWS.ajax_post($('#users_form'));"><?php _e('删除'); ?></a>
 					</div>
 					<div class="col-xs-12 col-sm-8">
-						<?php echo $this->pagination; ?>
+						<?php TPL::include('global/pagination.tpl.htm'); ?>
 					</div>
 				</div>
 			</div>

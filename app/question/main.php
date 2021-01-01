@@ -203,11 +203,11 @@ class main extends AWS_CONTROLLER
 		$page_title = CF::page_title($question_info['user_info'], 'question_' . $question_info['id'], $question_info['title']);
 		$this->crumb($page_title);
 
-		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
+		TPL::assign('pagination', AWS_APP::pagination()->create(array(
 			'base_url' => url_rewrite('/question/') . implode('__', $url_param),
 			'total_rows' => $reply_count,
 			'per_page' => $replies_per_page
-		))->create_links());
+		)));
 
 		TPL::set_meta('keywords', implode(',', $this->model('system')->analysis_keyword($question_info['title'])));
 

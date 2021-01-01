@@ -109,11 +109,11 @@ class topic extends AWS_ADMIN_CONTROLLER
 			}
 		}
 
-		TPL::assign('pagination', AWS_APP::pagination()->initialize(array(
+		TPL::assign('pagination', AWS_APP::pagination()->create(array(
 			'base_url' => url_rewrite('/admin/topic/list/') . implode('__', $url_param),
 			'total_rows' => $total_rows,
 			'per_page' => $this->per_page
-		))->create_links());
+		)));
 
 		TPL::assign('topics_count', $total_rows);
 		TPL::assign('list', $topic_list);

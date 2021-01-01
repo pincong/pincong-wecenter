@@ -259,7 +259,7 @@
 					<!-- 问题回复 -->
 					<div class="aw-mod">
 						<?php if ($this->pagination) { ?>
-							<div class="clearfix"><?php echo $this->pagination; ?></div>
+							<div class="clearfix"><?php TPL::include('global/pagination.tpl.htm'); ?></div>
 						<?php } ?>
 
 						<div class="mod-head">
@@ -313,7 +313,7 @@
 						</div>
 
 						<?php if ($this->pagination) { ?>
-							<div class="clearfix"><?php echo $this->pagination; ?></div>
+							<div class="clearfix"><?php TPL::include('global/pagination.tpl.htm'); ?></div>
 						<?php } ?>
 					</div>
 					<!-- end 问题回复 -->
