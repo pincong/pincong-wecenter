@@ -198,7 +198,7 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		$this->model('content')->update_view_count('question', $question_info['id'], session_id());
+		$this->model('content')->update_view_count('question', $question_info['id']);
 
 		$page_title = CF::page_title($question_info['user_info'], 'question_' . $question_info['id'], $question_info['title']);
 		$this->crumb($page_title);

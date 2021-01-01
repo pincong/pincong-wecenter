@@ -29,18 +29,13 @@ class main extends AWS_CONTROLLER
 		HTTP::redirect('/profile/');
 	}
 
-	public function logout_action($return_url = '/')
+	public function logout_action()
 	{
-		if ($_GET['key'] != md5(session_id()))
-		{
-			H::redirect_msg(AWS_APP::lang()->_t('正在准备退出, 请稍候...'), '/account/logout/?key=' . md5(session_id()));
-		}
-
 		$this->model('login')->logout();
 
-		{
-			HTTP::redirect($return_url);
-		}
+		$return_url = '/';
+
+		HTTP::redirect($return_url);
 	}
 
 	public function change_password_action()

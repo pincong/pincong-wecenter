@@ -474,20 +474,6 @@ CREATE TABLE IF NOT EXISTS `aws_search_cache` (
 
 
 --
-CREATE TABLE IF NOT EXISTS `aws_sessions` (
-  `id` varchar(32) NOT NULL,
-  `modified` int(11) NOT NULL,
-  `data` text NOT NULL,
-  `lifetime` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `modified` (`modified`),
-  KEY `lifetime` (`lifetime`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
---
-
-
---
 CREATE TABLE IF NOT EXISTS `aws_system_setting` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `varname` varchar(240) NOT NULL COMMENT '字段名',

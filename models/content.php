@@ -432,14 +432,14 @@ class content_class extends AWS_MODEL
 		$this->delete('content_log', 'time < ' . $time_before);
 	}
 
-	public function update_view_count($item_type, $item_id, $session_id)
+	public function update_view_count($item_type, $item_id)
 	{
 		if (!$this->check_thread_type($item_type))
 		{
 			return false;
 		}
 
-		$key = 'update_view_count_' . $item_type . '_' . intval($item_id) . '_' . md5($session_id);
+		$key = 'update_view_count_' . $item_type . '_' . intval($item_id);
 		if (AWS_APP::cache()->get($key))
 		{
 			return false;

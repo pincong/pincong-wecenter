@@ -162,7 +162,7 @@ class main extends AWS_CONTROLLER
 
 		$user['data'] = unserialize_array($user['extra_data']);
 
-		$this->model('people')->update_view_count($user['uid'], session_id());
+		$this->model('people')->update_view_count($user['uid']);
 
 		TPL::assign('user', $user);
 

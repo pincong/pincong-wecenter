@@ -34,13 +34,10 @@ class AWS_APP
 	private static $pagination;
 	private static $cache;
 	private static $lang;
-	private static $session;
 	private static $captcha;
 	private static $crypt;
 	private static $token;
 	private static $auth;
-
-	public static $session_type = 'file';
 
 	private static $models = array();
 
@@ -140,37 +137,6 @@ class AWS_APP
 		self::$db = load_class('core_db');
 
 		self::$settings = self::model('setting')->get_settings();
-
-		if ((!defined('G_SESSION_SAVE') OR G_SESSION_SAVE == 'db') AND get_setting('db_version') > 20121123)
-		{
-			Zend_Session::setSaveHandler(new Zend_Session_SaveHandler_DbTable(array(
-			    'name' 					=> get_table('sessions'),
-			    'primary'				=> 'id',
-			    'modifiedColumn'		=> 'modified',
-			    'dataColumn'			=> 'data',
-			    'lifetimeColumn'		=> 'lifetime',
-				//'authIdentityColumn'	=> 'uid'
-			)));
-
-			self::$session_type = 'db';
-		}
-
-		Zend_Session::setOptions(array(
-			'name' => G_COOKIE_PREFIX . '_Session',
-			'cookie_httponly' => true,
-			'cookie_domain' => G_COOKIE_DOMAIN
-		));
-
-		if (G_SESSION_SAVE == 'file' AND G_SESSION_SAVE_PATH)
-		{
-			Zend_Session::setOptions(array(
-				'save_path' => G_SESSION_SAVE_PATH
-			));
-		}
-
-		Zend_Session::start();
-
-		self::$session = new Zend_Session_Namespace(G_COOKIE_PREFIX . '_Anwsion');
 
 		if ($default_timezone = get_setting('default_timezone'))
 		{
@@ -419,19 +385,6 @@ class AWS_APP
 		}
 
 		return self::$pagination;
-	}
-
-	/**
-	 * 调用系统 Session
-	 *
-	 * 此功能基于 Zend_Session 类库
-	 *
-	 * @access	public
-	 * @return	object
-	 */
-	public static function session()
-	{
-		return self::$session;
 	}
 
 	/**

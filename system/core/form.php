@@ -14,25 +14,20 @@
 
 class core_form
 {
-	private $csrf_key = '';
+	private $secret;
 
 	public function __construct()
 	{
-		$this->csrf_key = md5(G_COOKIE_HASH_KEY . $_SERVER['HTTP_USER_AGENT'] . session_id());
+		$this->secret = AWS_APP::token()->new_secret('form_csrf_passphrase_' . G_COOKIE_HASH_KEY);
 	}
 
-	public function new_post_hash()
+	public function create_csrf_token($expire)
 	{
-		return $this->csrf_key;
+		return AWS_APP::token()->create(time(), $expire, $this->secret);
 	}
-	
-	public function valid_post_hash($post_hash)
-	{
-		if ($post_hash == $this->csrf_key)
-		{
-			return TRUE;
-		}
 
-		return FALSE;
+	public function check_csrf_token($token)
+	{
+		return AWS_APP::token()->check($token, $this->secret);
 	}
 }

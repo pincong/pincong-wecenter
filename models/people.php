@@ -20,9 +20,9 @@ if (!defined('IN_ANWSION'))
 
 class people_class extends AWS_MODEL
 {
-	public function update_view_count($uid, $session_id)
+	public function update_view_count($uid)
 	{
-		$key = 'update_view_count_people_' . intval($uid) . '_' . md5($session_id);
+		$key = 'update_view_count_people_' . intval($uid);
 		if (AWS_APP::cache()->get($key))
 		{
 			return false;

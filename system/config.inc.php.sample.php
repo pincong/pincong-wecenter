@@ -27,12 +27,6 @@ define('G_COOKIE_HASH_KEY', 'abcdefghijklmnop');	// 请修改此处
 // GZIP 压缩输出页面
 define('G_GZIP_COMPRESS', FALSE);
 
-// Session 存储类型 (db, file)
-define('G_SESSION_SAVE', 'db');
-
-// Session 文件存储路径
-define('G_SESSION_SAVE_PATH', '');
-
 // Cache 命名空间
 define('G_CACHE_NAMESPACE', 'aws');		// 建议修改此处
 

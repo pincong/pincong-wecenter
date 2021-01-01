@@ -199,11 +199,6 @@ class system_class extends AWS_MODEL
 		return $result;
 	}
 
-	public function clean_session()
-	{
-		return $this->delete('sessions', '`modified` < ' . (time() - 3600));
-	}
-
 	public function statistic($tag, $start_time = null, $end_time = null)
 	{
 		if (!$start_time)
