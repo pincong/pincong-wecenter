@@ -42,8 +42,8 @@ var observer = new MutationObserver(function(mutations) {
 	mutations.forEach(function(mutationRecord) {
 		if (mutationRecord.type == 'childList' && mutationRecord.addedNodes.length > 1) {
 			// 问题页添加讨论
-			$(document).off('click', '.aw-add-comment');
-			AWS.Init.init_comment_box('.aw-add-comment');
+			//$(document).off('click', '.aw-add-comment');
+			//AWS.Init.init_comment_box('.aw-add-comment');
 			// RFC-091 展開閱讀全文 此功能由 onemorecat 提供
 			$('.mod-body.aw-feed-list .aw-item .markitup-box').each(function () {
 				var $contentDiv = $(this);

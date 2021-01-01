@@ -221,9 +221,9 @@
 					<div class="aw-mod aw-reply-box">
 						<a name="answer_form"></a>
 						<?php if ($this->video_info['lock']) { ?>
-						<p align="center"><?php _e('该影片目前已经被锁定, 无法添加新评论'); ?></p>
+						<p align="center"><?php _e('该主题目前已经被锁定, 无法添加新回复'); ?></p>
 						<?php } else if (!$this->user_id) { ?>
-						<p align="center"><?php _e('要回复影片请先<a href="<?php echo url_rewrite(); ?>/login/">登录</a>或<a href="<?php echo url_rewrite(); ?>/register/">注册</a>'); ?></p>
+						<p align="center"><?php _e('要发言请先<a href="%s0">登录</a>或<a href="%s1">注册</a>', array(url_rewrite() . '/login/', url_rewrite(). '/register/')); ?></p>
 						<?php } else { ?>
 						<form action="<?php echo url_rewrite(); ?>/publish/ajax/publish_video_comment/" onsubmit="return false;" method="post" id="answer_form" class="question_answer_form">
 						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
@@ -281,16 +281,16 @@
 					<!-- 回复编辑器 -->
 					<div id="user_reply_box" class="aw-article-reply-box clearfix">
 						<?php if ($this->video_info['lock']) { ?>
-						<p align="center"><?php _e('该文章目前已经被锁定, 无法添加新评论'); ?></p>
+						<p align="center"><?php _e('该主题目前已经被锁定, 无法添加新回复'); ?></p>
 						<?php } else if (!$this->user_id) { ?>
-						<p align="center"><?php _e('要回复文章请先<a href="<?php echo url_rewrite(); ?>/login/">登录</a>或<a href="<?php echo url_rewrite(); ?>/register/">注册</a>'); ?></p>
+						<p align="center"><?php _e('要发言请先<a href="%s0">登录</a>或<a href="%s1">注册</a>', array(url_rewrite() . '/login/', url_rewrite(). '/register/')); ?></p>
 						<?php } else { ?>
 						<form action="<?php echo url_rewrite(); ?>/publish/ajax/publish_video_comment/" onsubmit="return false;" method="post" id="answer_form_2">
 						<input type="hidden" name="post_hash" value="<?php echo new_post_hash(); ?>" />
 						<input type="hidden" name="video_id" value="<?php echo $this->video_info['id']; ?>" />
 						<input type="hidden" id="user_reply_box_at_uid" name="at_uid" value="" />
 						<div class="mod-body">
-							<textarea style="min-height:54px" rows="3" name="message" class="form-control autosize" placeholder="写下你的评论..." /></textarea>
+							<textarea style="min-height:54px" rows="3" name="message" class="form-control autosize" placeholder="<?php _e('写下你的评论...'); ?>" /></textarea>
 						</div>
 						<div class="mod-footer">
 

@@ -3,7 +3,6 @@ $(function()
 	//邀请回答按钮操作
 	$('.aw-question-detail .aw-invite-reply').click(function()
 	{
-		$('.aw-question-detail .aw-comment-box, .aw-question-detail .aw-question-related-box').hide();
 		if ($('.aw-question-detail .aw-invite-box').is(':visible'))
 		{
 			$('.aw-question-detail .aw-invite-box').fadeOut();

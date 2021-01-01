@@ -1778,7 +1778,7 @@ AWS.Init =
 	{
 		$(document).on('click', selector, function ()
 		{
-			$(this).parents('.aw-question-detail').find('.aw-invite-box, .aw-question-related-box').hide();
+			//$(this).parents('.aw-question-detail').find('.aw-invite-box').hide();
 
 			if (!$(this).attr('data-type') || !$(this).attr('data-id'))
 			{

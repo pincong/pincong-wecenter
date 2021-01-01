@@ -146,17 +146,20 @@ class ajax extends AWS_CONTROLLER
 		set_user_operation_last_time('publish', $this->user_id);
 
 		// TODO: 以$_POST['at_uid']代替
-		$message = $this->model('mention')->parse_at_user($message, false, false, true);
+		$message1 = $this->model('mention')->parse_at_user($message, false, false, true);
 
 		$this->model('publish')->publish_answer_discussion(array(
 			'parent_id' => $answer_info['id'],
-			'message' => $message,
+			'message' => $message1,
 			'uid' => $publish_uid,
 		), $this->user_id, false);
 
-		H::ajax_json_output(AWS_APP::RSM(array(
+		/*H::ajax_json_output(AWS_APP::RSM(array(
 			'item_id' => $answer_info['id'],
 			'type_name' => 'answer'
+		), 1, null));*/
+		H::ajax_json_output(AWS_APP::RSM(array(
+			'ajax_html' => '<div>' . $message . '</div>'
 		), 1, null));
 	}
 
@@ -239,17 +242,20 @@ class ajax extends AWS_CONTROLLER
 		set_user_operation_last_time('publish', $this->user_id);
 
 		// TODO: 以$_POST['at_uid']代替
-		$message = $this->model('mention')->parse_at_user($message, false, false, true);
+		$message1 = $this->model('mention')->parse_at_user($message, false, false, true);
 
 		$this->model('publish')->publish_question_discussion(array(
 			'parent_id' => $question_info['id'],
-			'message' => $message,
+			'message' => $message1,
 			'uid' => $publish_uid,
 		), $this->user_id, false);
 
-		H::ajax_json_output(AWS_APP::RSM(array(
+		/*H::ajax_json_output(AWS_APP::RSM(array(
 			'item_id' => $question_info['id'],
 			'type_name' => 'question'
+		), 1, null));*/
+		H::ajax_json_output(AWS_APP::RSM(array(
+			'ajax_html' => '<div>' . $message . '</div>'
 		), 1, null));
 	}
 

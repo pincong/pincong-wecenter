@@ -64,7 +64,7 @@
 			<!-- end 投票栏 -->
 
 			<span class="operate">
-				<a class="aw-add-comment" data-id="<?php echo $val['id']; ?>" data-type="answer" data-comment-count="<?php echo $val['comment_count']; ?>" href="javascript:;"><i class="icon icon-comment"></i> <?php if ($val['comment_count']) { ?><?php echo $val['comment_count']; ?><?php } else { ?>0<?php } ?></a>
+				<a href="javascript:;" onclick="toggle_disscusion($(this));" class="aw-add-comment" data-id="<?php echo $val['id']; ?>" data-type="answer" data-comment-count="<?php echo $val['comment_count']; ?>"><i class="icon icon-comment"></i> <?php if ($val['comment_count']) { ?><?php echo $val['comment_count']; ?><?php } else { ?>0<?php } ?></a>
 			</span>
 
 			<!-- 可显示/隐藏的操作box -->
@@ -95,6 +95,31 @@
 
 		</div>
 		<!-- end 社交操作 -->
+
+		<!-- 讨论 -->
+		<div class="aw-comment-box" style="display:none">
+			<div class="aw-comment-list"></div>
+			<?php if ($this->question_info['lock']) { ?>
+			<p align="center"><?php _e('该主题目前已经被锁定, 无法添加新回复'); ?></p>
+			<?php } else if (!$this->user_id) { ?>
+			<p align="center"><?php _e('要发言请先<a href="%s0">登录</a>或<a href="%s1">注册</a>', array(url_rewrite() . '/login/', url_rewrite(). '/register/')); ?></p>
+			<?php } else { ?>
+			<form action="<?php echo url_rewrite(); ?>/question/ajax/save_answer_discussion/answer_id-<?php echo $val['id']; ?>" method="post" onsubmit="return false">
+				<div class="aw-comment-box-main">
+					<textarea class="aw-comment-txt autosize form-control" rows="2" name="message" placeholder="<?php _e('讨论一下...'); ?>"></textarea>
+					<div class="aw-comment-box-btn">
+						<span class="pull-right">
+							<?php if ($this->user_info['permission']['reply_anonymously']) { ?>
+							<label><input type="checkbox" name="anonymous" value="1"> <?php _e(get_setting('anonymous_option_name')); ?></label>
+							<?php } ?>
+							<a href="javascript:;" class="btn btn-mini btn-success" onclick="AWS.submit_append($(this).closest('form'), $(this), $(this).closest('.aw-comment-box').find('.aw-comment-list'));"><?php _e('讨论'); ?></a>
+						</span>
+					</div>
+				</div>
+			</form>
+			<?php } ?>
+		</div>
+		<!-- end 讨论 -->
 	</div>
 </div>
 <?php } ?>
