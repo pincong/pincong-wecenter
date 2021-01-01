@@ -172,6 +172,22 @@ class usergroup_class extends AWS_MODEL
 		}
 	}
 
+	// 得到声望组或特殊组的名字, 不包括系统组
+	public function get_user_group_name_by_user_info(&$user_info)
+	{
+		if ($all_groups = $this->get_all_groups())
+		{
+			foreach ($all_groups as $key => $val)
+			{
+				if ($val['type'] == 2 AND $val['group_id'] == $user_info['group_id'])
+				{
+					return $val['group_name'];
+				}
+			}
+		}
+		return $this->get_group_name_by_reputation($user_info['reputation']);
+	}
+
 	public function get_user_group_by_user_info(&$user_info)
 	{
 		$group_id = intval($user_info['group_id']);

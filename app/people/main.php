@@ -59,7 +59,7 @@ class main extends AWS_CONTROLLER
 			HTTP::redirect('/people/' . $user['url_token']);
 		}
 
-		$user['reputation_group_name'] = $this->model('usergroup')->get_group_name_by_reputation($user['reputation']);
+		$user['reputation_group_name'] = $this->model('usergroup')->get_user_group_name_by_user_info($user);
 
 		$user['data'] = unserialize_array($user['extra_data']);
 
