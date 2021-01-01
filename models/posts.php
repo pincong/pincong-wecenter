@@ -421,7 +421,7 @@ class posts_class extends AWS_MODEL
 		return $recommend_posts;
 	}
 
-	public function bring_to_top($uid, $post_id, $post_type)
+	public function bring_to_top($post_id, $post_type)
 	{
 		$post_id = intval($post_id);
 

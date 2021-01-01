@@ -143,11 +143,17 @@ class ajax extends AWS_CONTROLLER
 
 		if (get_setting('discussion_bring_top') == 'Y')
 		{
+			$question_id = $question_info['redirect_id'] ? $question_info['redirect_id'] : $question_info['id'];
+
 			$this->model('posts')->bring_to_top(
-				$this->user_id,
-				$question_info['redirect_id'] ? $question_info['redirect_id'] : $question_info['id'],
+				$question_id,
 				'question'
 			);
+
+			$this->model('question')->update('question', array(
+				'last_uid' => $publish_uid,
+				'update_time' => fake_time()
+			), 'id = ' . intval($question_id));
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
@@ -233,7 +239,12 @@ class ajax extends AWS_CONTROLLER
 
 		if (get_setting('discussion_bring_top') == 'Y')
 		{
-			$this->model('posts')->bring_to_top($this->user_id, $question_info['id'], 'question');
+			$this->model('posts')->bring_to_top($question_info['id'], 'question');
+
+			$this->model('question')->update('question', array(
+				'last_uid' => $publish_uid,
+				'update_time' => fake_time()
+			), 'id = ' . intval($question_info['id']));
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(array(
