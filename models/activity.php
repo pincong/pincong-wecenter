@@ -174,7 +174,7 @@ class activity_class extends AWS_MODEL
 			foreach ($answers AS $key => $val)
 			{
 				$uids[$val['uid']] = $val['uid'];
-				$question_ids[] = $val['question_id'];
+				$question_ids[] = $val['parent_id'];
 			}
 		}
 		if ($question_ids)
@@ -188,7 +188,7 @@ class activity_class extends AWS_MODEL
 			{
 				foreach ($answers AS $key => $val)
 				{
-					$answers[$key]['thread_info'] = $questions[$val['question_id']];
+					$answers[$key]['thread_info'] = $questions[$val['parent_id']];
 				}
 			}
 		}

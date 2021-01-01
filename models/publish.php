@@ -354,7 +354,7 @@ class publish_class extends AWS_MODEL
 		$now = fake_time();
 
 		$item_id = $this->insert('question_reply', array(
-			'question_id' => $data['parent_id'],
+			'parent_id' => $data['parent_id'],
 			'message' => htmlspecialchars($data['message']),
 			'add_time' => $now,
 			'uid' => $data['uid'],
@@ -366,7 +366,7 @@ class publish_class extends AWS_MODEL
 		}
 
 		$this->update('question', array(
-			'answer_count' => $this->count('question_reply', ['question_id', 'eq', $data['parent_id'], 'i']),
+			'answer_count' => $this->count('question_reply', ['parent_id', 'eq', $data['parent_id'], 'i']),
 			'update_time' => $now,
 			'last_uid' => $data['uid']
 		), ['id', 'eq', $data['parent_id'], 'i']);
@@ -595,7 +595,7 @@ class publish_class extends AWS_MODEL
 		{
 			return false;
 		}
-		if (!$thread_info = $this->model('content')->get_thread_info_by_id('question', $reply_info['question_id']))
+		if (!$thread_info = $this->model('content')->get_thread_info_by_id('question', $reply_info['parent_id']))
 		{
 			return false;
 		}

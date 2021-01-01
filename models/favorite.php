@@ -114,7 +114,7 @@ class favorite_class extends AWS_MODEL
 			{
 				foreach ($answer_infos AS $key => $data)
 				{
-					$question_ids[$data['question_id']] = $data['question_id'];
+					$question_ids[$data['parent_id']] = $data['parent_id'];
 
 					$favorite_uids[$data['uid']] = $data['uid'];
 				}
@@ -163,7 +163,7 @@ class favorite_class extends AWS_MODEL
 				case 'question_reply':
 					$favorite_items[$key]['item'] = $answer_infos[$data['item_id']];
 					$favorite_items[$key]['user_info'] = $users_info[$answer_infos[$data['item_id']]['uid']];
-					$favorite_items[$key]['item']['question_info'] = $question_infos[$answer_infos[$data['item_id']]['question_id']];
+					$favorite_items[$key]['item']['question_info'] = $question_infos[$answer_infos[$data['item_id']]['parent_id']];
 				break;
 
 				case 'question':

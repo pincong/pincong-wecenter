@@ -94,7 +94,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_error((_t('今日讨论回复已经达到上限')));
 		}
 
-		$question_info = $this->model('content')->get_thread_info_by_id('question', $answer_info['question_id']);
+		$question_info = $this->model('content')->get_thread_info_by_id('question', $answer_info['parent_id']);
 		if (!$question_info)
 		{
 			H::ajax_error((_t('问题不存在')));

@@ -101,7 +101,7 @@ class ajax extends AWS_CONTROLLER
 		switch ($thread_type)
 		{
 			case 'question':
-				$thread_id = $reply_info['question_id'];
+				$thread_id = $reply_info['parent_id'];
 				break;
 			case 'article':
 				$thread_id = $reply_info['article_id'];

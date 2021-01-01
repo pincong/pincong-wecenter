@@ -85,7 +85,7 @@ class invite_class extends AWS_MODEL
 			return true;
 		}
 
-		$where = [['question_id', 'eq', $question_id, 'i'], ['uid', 'eq', $recipients_uid, 'i']];
+		$where = [['parent_id', 'eq', $question_id, 'i'], ['uid', 'eq', $recipients_uid, 'i']];
 		if ($this->fetch_one('question_reply', 'id', $where))
 		{
 			return true;

@@ -167,7 +167,7 @@ class currency_class extends AWS_MODEL
 					{
 						$result[$log_id] = array(
 							'title' => truncate_text($answers[$item['item_id']]['message'], 24),
-							'url' => url_rewrite('/question/' . $answers[$item['item_id']]['question_id'])
+							'url' => url_rewrite('/question/' . $answers[$item['item_id']]['parent_id'])
 						);
 					}
 				break;
