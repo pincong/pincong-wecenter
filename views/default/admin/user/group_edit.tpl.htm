@@ -7,7 +7,8 @@
 	<div class="mod">
 		<div class="mod-head">
 			<h3>
-				<span class="pull-left"><?php _e('用户组权限'); ?>: <?php echo $this->group['group_name']; ?></span>
+				<span class="pull-left"><?php _e('用户组权限'); ?>: (<?php echo $this->group['group_id']; ?>) <?php echo $this->group['group_name']; ?></span>
+				<span class="pull-right"><a href="javascript:;" onclick="AWS.ajax_post($('#settings_form'));" class="btn btn-xs btn-primary mod-site-save"><?php _e('快速保存'); ?></a></span>
 			</h3>
 		</div>
 		<div class="tab-content mod-content">
@@ -204,24 +205,6 @@
 				<tr>
 					<td>
 						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许折叠'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="fold_post"<?php if ($this->group_pms['fold_post']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="fold_post"<?php if (!$this->group_pms['fold_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许推荐'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
@@ -231,24 +214,6 @@
 
 									<label type="button" class="btn mod-btn-color">
 										<input type="radio" value="0" name="recommend_post"<?php if (!$this->group_pms['recommend_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
-									</label>
-								</div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许锁定'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="1" name="lock_post"<?php if ($this->group_pms['lock_post']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" value="0" name="lock_post"<?php if (!$this->group_pms['lock_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -285,6 +250,96 @@
 
 									<label type="button" class="btn mod-btn-color">
 										<input type="radio" value="0" name="bump_sink"<?php if (!$this->group_pms['bump_sink']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许提升'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="bump_post"<?php if ($this->group_pms['bump_post']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="bump_post"<?php if (!$this->group_pms['bump_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许下沉'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="sink_post"<?php if ($this->group_pms['sink_post']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="sink_post"<?php if (!$this->group_pms['sink_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许锁定'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="lock_post"<?php if ($this->group_pms['lock_post']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="lock_post"<?php if (!$this->group_pms['lock_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许折叠'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="fold_post"<?php if ($this->group_pms['fold_post']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="fold_post"<?php if (!$this->group_pms['fold_post']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许楼主折叠'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="fold_post_own_thread"<?php if ($this->group_pms['fold_post_own_thread']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="fold_post_own_thread"<?php if (!$this->group_pms['fold_post_own_thread']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
 									</label>
 								</div>
 							</div>
@@ -479,6 +534,30 @@
 								<input type="text" name="restricted_categories_reply" class="form-control" value="<?php echo $this->group_pms['restricted_categories_reply']; ?>" />
 
 								<span class="help-block"><?php _e('禁止回应的分类 ID (多个分类请用逗号","隔开, 留空为不限制)'); ?></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('受限分类 (移入)'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input type="text" name="restricted_categories_move_to" class="form-control" value="<?php echo $this->group_pms['restricted_categories_move_to']; ?>" />
+
+								<span class="help-block"><?php _e('禁止移入的分类 ID (多个分类请用逗号","隔开, 留空为不限制)'); ?></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('受限分类 (移出)'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input type="text" name="restricted_categories_move_from" class="form-control" value="<?php echo $this->group_pms['restricted_categories_move_from']; ?>" />
+
+								<span class="help-block"><?php _e('禁止移出的分类 ID (多个分类请用逗号","隔开, 留空为不限制)'); ?></span>
 							</div>
 						</div>
 					</td>
