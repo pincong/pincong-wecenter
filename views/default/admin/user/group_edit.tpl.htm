@@ -76,6 +76,25 @@
 				<tr>
 					<td>
 						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许取消封禁用户'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="unforbid_user"<?php if ($this->group_pms['unforbid_user']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="unforbid_user"<?php if (!$this->group_pms['unforbid_user']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许标记用户'); ?>:</span>
 							<div class="col-sm-6 col-xs-8">
 								<div class="btn-group mod-btn">
@@ -91,6 +110,25 @@
 						</div>
 					</td>
 				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('允许取消标记用户'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="unflag_user"<?php if ($this->group_pms['unflag_user']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="unflag_user"<?php if (!$this->group_pms['unflag_user']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+
 				<tr>
 					<td>
 						<div class="form-group">
@@ -668,6 +706,94 @@
 								<input type="text" name="user_vote_limit_per_day" class="form-control" value="<?php echo intval($this->group_pms['user_vote_limit_per_day']); ?>" />
 
 								<span class="help-block"><?php _e('设置 0 为不限制'); ?></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('内容声望低于多少则自动标记'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input type="text" name="flagging_reputation_lt" class="form-control" value="<?php echo intval($this->group_pms['flagging_reputation_lt']); ?>" />
+
+								<span class="help-block"><?php _e('留空为不启用, 在下方填写相应用户组 ID'); ?></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('低内容声望自动标记为用户组 ID'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input type="text" name="flagging_reputation_lt_group_id" class="form-control" value="<?php echo intval($this->group_pms['flagging_reputation_lt_group_id']); ?>" />
+
+								<span class="help-block"><?php _e('留空为不启用, 设置 0 为取消标记'); ?></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('内容声望高于多少则自动标记'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input type="text" name="flagging_reputation_gt" class="form-control" value="<?php echo intval($this->group_pms['flagging_reputation_gt']); ?>" />
+
+								<span class="help-block"><?php _e('留空为不启用, 在下方填写相应用户组 ID'); ?></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('高内容声望自动标记为用户组 ID'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input type="text" name="flagging_reputation_gt_group_id" class="form-control" value="<?php echo intval($this->group_pms['flagging_reputation_gt_group_id']); ?>" />
+
+								<span class="help-block"><?php _e('留空为不启用, 设置 0 为取消标记'); ?></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('非正式用户'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="informal_user"<?php if ($this->group_pms['informal_user']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="informal_user"<?php if (!$this->group_pms['informal_user']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('不可与他人互动'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="1" name="inactive_user"<?php if ($this->group_pms['inactive_user']) { ?> checked="checked"<?php } ?>> <?php _e('是'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" value="0" name="inactive_user"<?php if (!$this->group_pms['inactive_user']) { ?> checked="checked"<?php } ?>> <?php _e('否'); ?>
+									</label>
+								</div>
 							</div>
 						</div>
 					</td>
