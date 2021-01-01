@@ -16,13 +16,11 @@
 					<?php _e('我关注的问题'); ?>
 				</a>
 			</li>
-			<!-- TODO
 			<li>
-				<a href="home/">
+				<a href="topic/channel-focus">
 					<?php _e('我关注的话题'); ?>
 				</a>
 			</li>
-			-->
 			<li>
 				<a href="home/invite/"<?php if ($_GET['app'] == 'home' AND $_GET['act'] == 'invite') { ?> class="active"<?php } ?>>
 					<?php _e('邀请我回复的问题'); ?><?php if ($this->user_info['invite_count']) { ?><span class="badge"><?php echo $this->user_info['invite_count']; ?></span><?php } ?>

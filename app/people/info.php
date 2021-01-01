@@ -34,7 +34,6 @@ class info extends AWS_CONTROLLER
 			$rule_action['actions'][] = 'videos';
 			$rule_action['actions'][] = 'video_comments';
 			$rule_action['actions'][] = 'followers';
-			$rule_action['actions'][] = 'topics';
 			$rule_action['actions'][] = 'received_votes';
 			$rule_action['actions'][] = 'sent_votes';
 		}
@@ -152,31 +151,4 @@ class info extends AWS_CONTROLLER
 		TPL::output('people/followers_template');
 	}
 
-	public function topics_action()
-	{
-		$topic_list = $this->model('topic')->get_focus_topic_list($_GET['uid'], (($_GET['page']) * $this->per_page) . ", {$this->per_page}");
-		if ($topic_list AND $this->user_id)
-		{
-			$topic_ids = array();
-
-			foreach ($topic_list as $key => $val)
-			{
-				$topic_ids[] = $val['topic_id'];
-			}
-
-			if ($topic_ids)
-			{
-				$topic_focus = $this->model('topic')->has_focus_topics($this->user_id, $topic_ids);
-
-				foreach ($topic_list as $key => $val)
-				{
-					$topic_list[$key]['has_focus'] = $topic_focus[$val['topic_id']];
-				}
-			}
-		}
-
-		TPL::assign('topic_list', $topic_list);
-
-		TPL::output('people/topics_template');
-	}
 }

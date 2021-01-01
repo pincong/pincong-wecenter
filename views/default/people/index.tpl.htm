@@ -349,7 +349,6 @@
 										<ul>
 											<li class="active"><a><?php _e('关注的人'); ?></a></li>
 											<li><a><?php _e('关注者'); ?></a></li>
-											<li><a><?php _e('关注的话题'); ?></a></li>
 										</ul>
 									</div>
 									<div class="mod-body">
@@ -373,18 +372,6 @@
 												<div class="mod-footer">
 													<!-- 加载更多内容 -->
 													<a class="aw-load-more-content" id="bp_user_fans_more">
-														<span><?php _e('更多'); ?></span>
-													</a>
-													<!-- end 加载更多内容 -->
-												</div>
-											</div>
-											<div class="aw-mod aw-user-center-follow-mod collapse">
-												<div class="mod-body">
-													<ul id="contents_user_topics" class="clearfix"></ul>
-												</div>
-												<div class="mod-footer">
-													<!-- 加载更多内容 -->
-													<a class="aw-load-more-content" id="bp_user_topics_more">
 														<span><?php _e('更多'); ?></span>
 													</a>
 													<!-- end 加载更多内容 -->
@@ -502,7 +489,6 @@ $(document).ready(function () {
 		page_focus_inited = true;
 		AWS.load_list_view(G_BASE_URL + '/people/info/followers/type-following__uid-<?php echo $this->user['uid']; ?>', $('#bp_user_follows_more'), $('#contents_user_follows'));
 		AWS.load_list_view(G_BASE_URL + '/people/info/followers/type-followers__uid-<?php echo $this->user['uid']; ?>', $('#bp_user_fans_more'), $('#contents_user_fans'));
-		AWS.load_list_view(G_BASE_URL + '/people/info/topics/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_topics_more'), $('#contents_user_topics'));
 	});
 
 	<?php if ($this->user_id == $this->user['uid']) { ?>
