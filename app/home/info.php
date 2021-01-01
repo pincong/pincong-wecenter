@@ -29,15 +29,6 @@ class info extends AWS_CONTROLLER
 		return $rule_action;
 	}
 
-	public function activities_action()
-	{
-		$per_page = S::get_int('index_per_page');
-
-		TPL::assign('list', $this->model('activity')->list_activities($this->user_id, H::GET('page'), $per_page));
-
-		TPL::output('home/activities_template');
-	}
-
 	// 邀请我回答的问题
 	public function invites_action()
 	{

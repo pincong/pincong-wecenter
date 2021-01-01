@@ -5,22 +5,7 @@
 		<div class="row">
 			<div class="aw-content-wrap clearfix">
 				<div class="col-sm-12 col-md-9 aw-main-content">
-					<a name="c_contents"></a>
-					<div class="aw-mod clearfix">
-						<div class="mod-head common-head">
-							<h2 id="main_title"><?php echo _t('最新动态'); ?></h2>
-						</div>
 
-						<div class="mod-body aw-feed-list clearfix" id="main_contents"></div>
-
-						<div class="mod-footer">
-							<!-- 加载更多内容 -->
-							<a id="bp_more" class="aw-load-more-content">
-								<span><?php echo _t('更多'); ?></span>
-							</a>
-							<!-- end 加载更多内容 -->
-						</div>
-					</div>
 				</div>
 				<!-- 侧边栏 -->
 				<div class="col-sm-12 col-md-3 aw-side-bar">
@@ -52,7 +37,7 @@ $(document).ready(function () {
 <?php } else { ?>
 <script type="text/javascript">
 $(document).ready(function () {
-	AWS.load_list_view(G_BASE_URL + '/home/info/activities/', $('#bp_more'), $('#main_contents'), 1);
+	window.location = '<?php echo url_rewrite(); ?>/favorite/';
 });
 </script>
 <?php } ?>

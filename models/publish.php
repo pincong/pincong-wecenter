@@ -230,9 +230,6 @@ class publish_class extends AWS_MODEL
 			$this->mention_users('question', $item_id, null, 0, $data['uid'], $data['message']);
 		}
 
-		// 记录用户动态
-		$this->model('activity')->push('question', $item_id, $data['uid']);
-
 		$this->model('account')->update_user_fields(array(
 			'user_update_time' => $now
 		), $data['uid']);
@@ -272,9 +269,6 @@ class publish_class extends AWS_MODEL
 		{
 			$this->mention_users('article', $item_id, null, 0, $data['uid'], $data['message']);
 		}
-
-		// 记录用户动态
-		$this->model('activity')->push('article', $item_id, $data['uid']);
 
 		$this->model('account')->update_user_fields(array(
 			'user_update_time' => $now
@@ -317,9 +311,6 @@ class publish_class extends AWS_MODEL
 		{
 			$this->mention_users('video', $item_id, null, 0, $data['uid'], $data['message']);
 		}
-
-		// 记录用户动态
-		$this->model('activity')->push('video', $item_id, $data['uid']);
 
 		$this->model('account')->update_user_fields(array(
 			'user_update_time' => $now
@@ -377,9 +368,6 @@ class publish_class extends AWS_MODEL
 		{
 			$this->model('postfollow')->follow('question', $data['parent_id'], $data['uid']);
 		}
-
-		// 记录用户动态
-		$this->model('activity')->push('question_reply', $item_id, $data['uid']);
 
 		$this->model('account')->update_user_fields(array(
 			'user_update_time' => $now
@@ -449,9 +437,6 @@ class publish_class extends AWS_MODEL
 			$this->model('postfollow')->follow('article', $data['parent_id'], $data['uid']);
 		}
 
-		// 记录用户动态
-		$this->model('activity')->push('article_reply', $item_id, $data['uid']);
-
 		$this->model('account')->update_user_fields(array(
 			'user_update_time' => $now
 		), $data['uid']);
@@ -515,9 +500,6 @@ class publish_class extends AWS_MODEL
 		{
 			$this->model('postfollow')->follow('video', $data['parent_id'], $data['uid']);
 		}
-
-		// 记录用户动态
-		$this->model('activity')->push('video_reply', $item_id, $data['uid']);
 
 		$this->model('account')->update_user_fields(array(
 			'user_update_time' => $now

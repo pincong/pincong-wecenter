@@ -2,11 +2,6 @@
 	<div class="mod-body">
 		<ul>
 			<li>
-				<a href="<?php echo url_rewrite(); ?>/home/"<?php if ($_GET['app'] == 'home' AND $_GET['act'] == 'index') { ?> class="active"<?php } ?>>
-					<?php echo _t('最新动态'); ?>
-				</a>
-			</li>
-			<li>
 				<a href="<?php echo url_rewrite(); ?>/favorite/"<?php if ($_GET['app'] == 'favorite') { ?> class="active"<?php } ?>>
 					<?php echo _t('我的收藏'); ?>
 				</a>
