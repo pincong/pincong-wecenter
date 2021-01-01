@@ -36,7 +36,7 @@
 								<a href="account/setting/profile/" class="btn btn-mini btn-success"><?php _e('编辑'); ?></a>
 							<?php } ?>
 							</span>
-							<span><?php echo UF::name($this->user); ?></span>
+							<span class="aw-nowrap"><?php echo UF::name($this->user); ?></span>
 							<?php if ($this->user['verified']) { ?><em class="aw-verified"><?php echo $this->user['verified']; ?></em><?php } ?>
 							<!-- 封禁 -->
 							<?php if ($this->user['forbidden'] == 2) { ?>
