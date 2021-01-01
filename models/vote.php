@@ -168,7 +168,7 @@ class vote_class extends AWS_MODEL
 		$item_uid = intval($item_uid);
 
 		$where = [
-			['type', 'eq', $type, false],
+			['type', 'eq', $type],
 			['item_id', 'eq', $item_id],
 			['uid', 'eq', $uid]
 		];
@@ -242,7 +242,7 @@ class vote_class extends AWS_MODEL
 		{
 			if ($this->model('content')->check_thread_or_reply_type($type))
 			{
-				$where[] = ['type', 'eq', $type, false];
+				$where[] = ['type', 'eq', $type];
 				$where[] = ['item_id', 'eq', $item_id, 'i'];
 			}
 		}
@@ -332,7 +332,7 @@ class vote_class extends AWS_MODEL
 		$uid = intval($uid);
 
 		$where = [
-			['type', 'eq', $type, false],
+			['type', 'eq', $type],
 			['item_id', 'eq', $item_id],
 			['uid', 'eq', $uid]
 		];
@@ -358,7 +358,7 @@ class vote_class extends AWS_MODEL
 		}
 
 		$where = [
-			['type', 'eq', $type, false],
+			['type', 'eq', $type],
 			['uid', 'eq', $uid, 'i'],
 			['item_id', 'in', $item_ids, 'i']
 		];
@@ -414,7 +414,7 @@ class vote_class extends AWS_MODEL
 		}
 
 		$where = [
-			['type', 'eq', $type, false],
+			['type', 'eq', $type],
 			['item_id', 'eq', $item_id, 'i']
 		];
 

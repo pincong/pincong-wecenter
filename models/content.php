@@ -302,7 +302,7 @@ class content_class extends AWS_MODEL
 		if ($check_scheduled_posts)
 		{
 			if ($this->fetch_one('scheduled_posts', 'id', [
-				['type', 'eq', $reply_type, false],
+				['type', 'eq', $reply_type],
 				['parent_id', 'eq', $thread_id],
 				['uid', 'eq', $uid]
 			]))
@@ -373,7 +373,7 @@ class content_class extends AWS_MODEL
 		$where = array();
 		if ($thread_type)
 		{
-			$where[] = ['thread_type', 'eq', $thread_type, false];
+			$where[] = ['thread_type', 'eq', $thread_type];
 		}
 		if ($thread_id = intval($thread_id))
 		{
@@ -381,7 +381,7 @@ class content_class extends AWS_MODEL
 		}
 		if ($item_type)
 		{
-			$where[] = ['item_type', 'eq', $item_type, false];
+			$where[] = ['item_type', 'eq', $item_type];
 		}
 		if ($item_id = intval($item_id))
 		{
@@ -496,7 +496,7 @@ class content_class extends AWS_MODEL
 		$where = ['id', 'eq', $item_id, 'i'];
 		$this->update($item_type, array('uid' => ($new_uid)), $where);
 
-		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type, false]];
+		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type]];
 		$this->update('posts_index', array('uid' => ($new_uid)), $where);
 
 		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '变更作者', $log_uid, 'user', $old_uid);
@@ -550,10 +550,10 @@ class content_class extends AWS_MODEL
 		$where = ['id', 'eq', $item_id, 'i'];
 		$this->update($item_type, array('category_id' => intval($category_id)), $where);
 
-		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type, false]];
+		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type]];
 		$this->update('posts_index', array('category_id' => intval($category_id)), $where);
 
-		$where = [['uid', 'eq', 0], ['thread_id', 'eq', $item_id, 'i'], ['thread_type', 'eq', $item_type, false]];
+		$where = [['uid', 'eq', 0], ['thread_id', 'eq', $item_id, 'i'], ['thread_type', 'eq', $item_type]];
 		$this->update('activity', array('category_id' => intval($category_id)), $where);
 
 		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '变更分类', $log_uid, 'category', $old_category_id);
@@ -600,7 +600,7 @@ class content_class extends AWS_MODEL
 			return false;
 		}
 
-		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type, false]];
+		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type]];
 
 		$this->update('posts_index', array(
 			'update_time' => $this->model('posts')->get_last_update_time()
@@ -618,7 +618,7 @@ class content_class extends AWS_MODEL
 			return false;
 		}
 
-		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type, false]];
+		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type]];
 
 		$this->update('posts_index', array(
 			'update_time' => $this->model('posts')->get_last_update_time() - (7 * 24 * 3600)
@@ -639,7 +639,7 @@ class content_class extends AWS_MODEL
 		$where = ['id', 'eq', $item_id, 'i'];
 		$this->update($item_type, array('recommend' => 1), $where);
 
-		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type, false]];
+		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type]];
 		$this->update('posts_index', array('recommend' => 1), $where);
 
 		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '推荐', $log_uid);
@@ -655,7 +655,7 @@ class content_class extends AWS_MODEL
 		$where = ['id', 'eq', $item_id, 'i'];
 		$this->update($item_type, array('recommend' => 0), $where);
 
-		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type, false]];
+		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type]];
 		$this->update('posts_index', array('recommend' => 0), $where);
 
 		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '取消推荐', $log_uid);
@@ -672,7 +672,7 @@ class content_class extends AWS_MODEL
 		$where = ['id', 'eq', $item_id, 'i'];
 		$this->update($item_type, array('sort' => 1), $where);
 
-		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type, false]];
+		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type]];
 		$this->update('posts_index', array('sort' => 1), $where);
 
 		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '置顶', $log_uid);
@@ -688,7 +688,7 @@ class content_class extends AWS_MODEL
 		$where = ['id', 'eq', $item_id, 'i'];
 		$this->update($item_type, array('sort' => 0), $where);
 
-		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type, false]];
+		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type]];
 		$this->update('posts_index', array('sort' => 0), $where);
 
 		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '取消置顶', $log_uid);
@@ -711,7 +711,7 @@ class content_class extends AWS_MODEL
 			'read_flag' => 1
 		), [
 			['id', 'notEq', 1],
-			['item_type', 'eq', $item_type, false],
+			['item_type', 'eq', $item_type],
 			['item_id', 'eq', $item_id, 'i']
 		]);
 

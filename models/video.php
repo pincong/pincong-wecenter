@@ -106,7 +106,7 @@ class video_class extends AWS_MODEL
 		$trash_category_id = S::get_int('trash_category_id');
 		if ($trash_category_id)
 		{
-			$where = [['post_id', 'eq', $id, 'i'], ['post_type', 'eq', 'video', false]];
+			$where = [['post_id', 'eq', $id, 'i'], ['post_type', 'eq', 'video']];
 			$this->update('posts_index', array('category_id' => $trash_category_id), $where);
 			$data['category_id'] = $trash_category_id;
 		}

@@ -166,7 +166,7 @@ class question_class extends AWS_MODEL
 		$trash_category_id = S::get_int('trash_category_id');
 		if ($trash_category_id)
 		{
-			$where = [['post_id', 'eq', $id, 'i'], ['post_type', 'eq', 'question', false]];
+			$where = [['post_id', 'eq', $id, 'i'], ['post_type', 'eq', 'question']];
 			$this->update('posts_index', array('category_id' => $trash_category_id), $where);
 			$data['category_id'] = $trash_category_id;
 		}
@@ -409,7 +409,7 @@ class question_class extends AWS_MODEL
 
 		$where = [
 			['item_id', 'in', $question_ids, 'i'],
-			['type', 'eq', 'question', false]
+			['type', 'eq', 'question']
 		];
 		if ($topic_relation = $this->fetch_all('topic_relation', $where))
 		{
@@ -444,7 +444,7 @@ class question_class extends AWS_MODEL
 
 			$where = [
 				['item_id', 'in', $question_related_ids, 'i'],
-				['type', 'eq', 'question', false]
+				['type', 'eq', 'question']
 			];
 			if (!$topic_ids_query = $this->fetch_all('topic_relation', $where))
 			{

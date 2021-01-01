@@ -30,7 +30,50 @@ class Services_WhereBuilder
 		's',
 	);
 
-	private static function _convert_data_auto($val, $raw_string)
+
+	private static function _is_safe_string($string)
+	{
+		for ($i = 0, $l = strlen($string); $i < $l; $i++) {
+			$c = ord($string[$i]);
+			if ($c == 0x5f) // _
+			{
+				continue;
+			}
+			elseif ($c >= 0x30 AND $c <= 0x39) // 0-9
+			{
+				continue;
+			}
+			elseif ($c >= 0x41 AND $c <= 0x5a) // A-Z
+			{
+				continue;
+			}
+			elseif ($c >= 0x61 AND $c <= 0x7a) // a-z
+			{
+				continue;
+			}
+			return false;
+		}
+		return true;
+	}
+
+	private static function _convert_data_string($val)
+	{
+		if (!self::_is_safe_string($val))
+		{
+			$val = bin2hex($val);
+			if (!$val)
+			{
+				return "''";
+			}
+			return '0x' . $val;
+		}
+		else
+		{
+			return "'" . $val . "'";
+		}
+	}
+
+	private static function _convert_data_auto($val)
 	{
 		if (is_int($val))
 		{
@@ -46,16 +89,7 @@ class Services_WhereBuilder
 		}
 		elseif (is_string($val))
 		{
-			if ($raw_string)
-			{
-				return "'" . $val . "'";
-			}
-			$val = bin2hex($val);
-			if (!$val)
-			{
-				return "''";
-			}
-			return '0x' . $val;
+			return self::_convert_data_string($val);
 		}
 		else
 		{
@@ -65,14 +99,19 @@ class Services_WhereBuilder
 
 	private static function _convert_data($val, $type)
 	{
-		if (!$type OR !is_string($type))
+		if (!isset($type))
 		{
-			return self::_convert_data_auto($val, $type === false);
+			return self::_convert_data_auto($val);
 		}
 
-		if (!in_array($type, self::$data_types))
+		if ($type === true)
 		{
-			$type = 'i';
+			return $val;
+		}
+
+		if (!is_string($type) OR !in_array($type, self::$data_types))
+		{
+			return intval($val);
 		}
 
 		if ($type == 'i')
@@ -89,12 +128,7 @@ class Services_WhereBuilder
 		}
 		elseif ($type == 's')
 		{
-			$val = bin2hex($val);
-			if (!$val)
-			{
-				return "''";
-			}
-			return '0x' . $val;
+			return self::_convert_data_string(strval($val));
 		}
 	}
 
@@ -175,7 +209,7 @@ class Services_WhereBuilder
 	private static function _parse_condition($params)
 	{
 		$column = $params[0];
-		if (!$column OR !is_string($column) OR strpos($column, '`') !== false)
+		if (!$column OR !is_string($column) OR !self::_is_safe_string($column))
 		{
 			return false;
 		}

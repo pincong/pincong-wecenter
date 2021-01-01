@@ -76,7 +76,7 @@ class activity_class extends AWS_MODEL
 
 		$where = [
 			['uid', 'eq', 0],
-			['item_type', 'eq', $item_type, false],
+			['item_type', 'eq', $item_type],
 			['item_id', 'eq', $item_id, 'i'],
 		];
 

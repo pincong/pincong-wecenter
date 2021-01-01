@@ -103,7 +103,7 @@ class article_class extends AWS_MODEL
 		$trash_category_id = S::get_int('trash_category_id');
 		if ($trash_category_id)
 		{
-			$where = [['post_id', 'eq', $id, 'i'], ['post_type', 'eq', 'article', false]];
+			$where = [['post_id', 'eq', $id, 'i'], ['post_type', 'eq', 'article']];
 			$this->update('posts_index', array('category_id' => $trash_category_id), $where);
 			$data['category_id'] = $trash_category_id;
 		}
