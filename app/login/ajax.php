@@ -74,6 +74,22 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入正确的用户名和密码')));
 		}
 
+		if ($user_info['password_version'] < 2)
+		{
+			if (!$this->model('password')->check_structure($_POST['new_scrambled_password'], $_POST['client_salt']))
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('登录失败')));
+			}
+			if (!$this->model('password')->update_password($user_info['uid'], $_POST['new_scrambled_password'], $_POST['client_salt']))
+			{
+				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('登录失败')));
+			}
+			$scrambled_password = $_POST['new_scrambled_password'];
+		}
+		else
+		{
+			$scrambled_password = $_POST['scrambled_password'];
+		}
 
 		if ($user_info['forbidden'] OR $user_info['flagged'] > 0)
 		{
@@ -91,7 +107,7 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		$this->model('login')->cookie_logout();
-		$this->model('login')->cookie_login($user_info['uid'], $_POST['scrambled_password'], $expire);
+		$this->model('login')->cookie_login($user_info['uid'], $scrambled_password, $expire);
 
 		$url = url_rewrite('/');
 

@@ -1,7 +1,5 @@
 $(function () {
 
-    $('#captcha').click();
-
     // bs自带方法-气泡提示
     $('.aw-content-wrap .md-tip').tooltip('hide');
 

@@ -5,9 +5,6 @@ $(document).ready(function ()
     // fix form bug...
     $("form[action='']").attr('action', window.location.href);
 
-    // 验证码
-    $('img#captcha').attr('src', G_BASE_URL + '/captcha/');
-
     // 输入框自动增高
     $('.autosize').autosize();
 

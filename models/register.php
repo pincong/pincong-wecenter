@@ -75,12 +75,19 @@ class register_class extends AWS_MODEL
 			return false;
 		}
 
+		$flagged = 0;
+		if (get_setting('new_user_watching') == 'Y')
+		{
+			$flagged = -1;
+		}
+
 		$uid = $this->insert('users', array(
 			'user_name' => htmlspecialchars($username),
 			'password' => $this->model('password')->hash($scrambled_password),
 			'salt' => $client_salt,
 			'password_version' => 2,
 			'group_id' => 0,
+			'flagged' => $flagged,
 			'sex' => 0,
 			'avatar_file' => null,
 			'reg_time' => fake_time()

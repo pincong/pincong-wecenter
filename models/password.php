@@ -108,13 +108,11 @@ class password_class extends AWS_MODEL
 
 	public function update_password($uid, $new_scrambled_password, $new_client_salt)
 	{
-		$this->update('users', array(
+		return !!$this->update('users', array(
 			'password' => $this->hash($new_scrambled_password),
 			'salt' => $new_client_salt,
 			'password_version' => 2
 		), 'uid = ' . intval($uid));
-
-		return true;
 	}
 
 }

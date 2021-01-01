@@ -1,5 +1,5 @@
 -- --------------------------------------------------------
 
 
-INSERT INTO `aws_users` (`user_name`, `password`, `salt`, `group_id`) VALUES
-	('admin', '$2y$10$TaEOhERXEB51Ds8i/iBbq.Qy2v82s3yidCLGz/iv25PJ7hxXnq7r.', 'gzeu', 1);
+INSERT INTO `aws_users` (`user_name`, `password`, `salt`, `password_version`, `group_id`) VALUES
+	('admin', '$2y$10$Rh0TmB5qZD1fiX8f/jNfIeQAVttBbXA6h/bGvQHeeHIBzAZE8tzXS', '$2y$10$WozDzj9Kjjnad2QAHbq1ju', 2, 1);

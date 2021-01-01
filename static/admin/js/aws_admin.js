@@ -211,10 +211,6 @@ var AWS =
 						$('.error_message').fadeIn();
 					}
 
-					if ($('#captcha').length)
-					{
-						$('#captcha').click();
-					}
 				break;
 			}
 		}

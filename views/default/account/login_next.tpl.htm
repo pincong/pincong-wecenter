@@ -22,7 +22,7 @@
 				</li>
 				<?php if ($this->captcha_required) { ?>
 				<li class="aw-register-verify">
-					<img class="pull-right" id="captcha" onclick="this.src = G_BASE_URL + '/captcha/' + Math.floor(Math.random() * 10000);" src="">
+					<img class="pull-right" onclick="this.src = G_BASE_URL + '/captcha/' + Math.floor(Math.random() * 10000);" src="<?php echo url_rewrite(); ?>/captcha/">
 
 					<input type="text" class="form-control" name="captcha" placeholder="<?php _e('验证码'); ?>">
 				</li>
@@ -84,7 +84,7 @@ $(document).ready(function () {
 <?php } ?>
 
 		AWS.submit_form(new_form, form.find('input[type=submit]'), form.find('.error_message'), function() {
-			$('#captcha').click();
+			$('.aw-register-verify img').click();
 		});
 
 		return false;
