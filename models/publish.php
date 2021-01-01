@@ -38,9 +38,9 @@ class publish_class extends AWS_MODEL
 		}
 	}
 
-	private function notify_users($thread_type, $thread_id, $reply_type, $reply_id, $sender_uid, $recipient_uid, &$message)
+	private function mention_users($thread_type, $thread_id, $reply_type, $reply_id, $sender_uid, $recipient_uid, &$message)
 	{
-		if ($mentioned_uids = $this->model('mention')->parse_at_user($message, false, true))
+		if ($mentioned_uids = $this->model('mention')->get_mentioned_uids($message))
 		{
 			foreach ($mentioned_uids as $mentioned_uid)
 			{
@@ -51,7 +51,10 @@ class publish_class extends AWS_MODEL
 					$thread_type, $thread_id, $reply_type, $reply_id);
 			}
 		}
+	}
 
+	private function notify_users($thread_type, $thread_id, $reply_type, $reply_id, $sender_uid, $recipient_uid, &$message)
+	{
 		if ($recipient_uid)
 		{
 			$this->model('notification')->send(
@@ -183,6 +186,8 @@ class publish_class extends AWS_MODEL
 			$this->model('postfollow')->follow('question', $item_id, $data['uid']);
 		}
 
+		$this->mention_users('question', $item_id, null, 0, $data['uid'], null, $data['message']);
+
 		// 记录用户动态
 		$this->model('activity')->push('question', $item_id, $data['uid']);
 
@@ -218,6 +223,8 @@ class publish_class extends AWS_MODEL
 		{
 			$this->model('postfollow')->follow('article', $item_id, $data['uid']);
 		}
+
+		$this->mention_users('article', $item_id, null, 0, $data['uid'], null, $data['message']);
 
 		// 记录用户动态
 		$this->model('activity')->push('article', $item_id, $data['uid']);
@@ -257,6 +264,8 @@ class publish_class extends AWS_MODEL
 		{
 			$this->model('postfollow')->follow('video', $item_id, $data['uid']);
 		}
+
+		$this->mention_users('video', $item_id, null, 0, $data['uid'], null, $data['message']);
 
 		// 记录用户动态
 		$this->model('activity')->push('video', $item_id, $data['uid']);
@@ -303,7 +312,7 @@ class publish_class extends AWS_MODEL
 
 		$this->model('posts')->set_posts_index($data['parent_id'], 'question');
 
-
+		$this->mention_users('question', $parent_info['id'], 'answer', $item_id, $data['uid'], null, $data['message']);
 		$this->notify_users('question', $parent_info['id'], 'answer', $item_id, $data['uid'], null, $data['message']);
 
 		if ($data['follow'])
@@ -361,7 +370,7 @@ class publish_class extends AWS_MODEL
 
 		$this->model('posts')->set_posts_index($data['parent_id'], 'article');
 
-
+		$this->mention_users('article', $parent_info['id'], 'article_comment', $item_id, $data['uid'], $data['at_uid'], $data['message']);
 		$this->notify_users('article', $parent_info['id'], 'article_comment', $item_id, $data['uid'], $data['at_uid'], $data['message']);
 
 		if ($data['follow'])
@@ -414,7 +423,7 @@ class publish_class extends AWS_MODEL
 
 		$this->model('posts')->set_posts_index($data['parent_id'], 'video');
 
-
+		$this->mention_users('video', $parent_info['id'], 'video_comment', $item_id, $data['uid'], $data['at_uid'], $data['message']);
 		$this->notify_users('video', $parent_info['id'], 'video_comment', $item_id, $data['uid'], $data['at_uid'], $data['message']);
 
 		if ($data['follow'])
@@ -471,7 +480,7 @@ class publish_class extends AWS_MODEL
 			), 'id = ' . intval($data['parent_id']));
 		}
 
-
+		$this->mention_users('question', $thread_info['id'], null, 0, $data['uid'], $data['at_uid'], $data['message']);
 		$this->notify_users('question', $thread_info['id'], null, 0, $data['uid'], $data['at_uid'], $data['message']);
 
 		// TODO: 记录用户动态
@@ -532,6 +541,7 @@ class publish_class extends AWS_MODEL
 			$recipient_uid = $reply_info['uid'];
 		}
 
+		$this->mention_users('question', $thread_info['id'], 'answer', $reply_info['id'], $data['uid'], $recipient_uid, $data['message']);
 		$this->notify_users('question', $thread_info['id'], 'answer', $reply_info['id'], $data['uid'], $recipient_uid, $data['message']);
 
 		// TODO: 记录用户动态

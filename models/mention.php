@@ -19,6 +19,7 @@ if (!defined('IN_ANWSION'))
 
 class mention_class extends AWS_MODEL
 {
+	// TODO: 刪
 	public function parse_at_user($content, $popup = false, $with_user = false, $to_uid = false)
 	{
 		preg_match_all('/@([^@,:\s,]+)/i', strip_tags($content), $matchs);
@@ -86,6 +87,44 @@ class mention_class extends AWS_MODEL
 		}
 
 		return $content;
+	}
+
+
+	public function get_mentioned_uids($content)
+	{
+		$result = array();
+		$max_at_users = intval(get_setting('max_at_users'));
+		if ($max_at_users <= 0)
+		{
+			return $result;
+		}
+
+		preg_match_all('/@([^@,:\s,]+)/i', strip_tags($content), $matches);
+
+		if (is_array($matches[1]))
+		{
+			$usernames = array();
+
+			foreach ($matches[1] as $key => $username)
+			{
+				if (in_array($username, $usernames))
+				{
+					continue;
+				}
+				if (!$user_info = $this->model('account')->get_user_info_by_username($username))
+				{
+					continue;
+				}
+				$result[] = $user_info['uid'];
+				$usernames[] = $username;
+				if (count($usernames) >= $max_at_users)
+				{
+					break;
+				}
+			}
+		}
+
+		return $result;
 	}
 
 }
