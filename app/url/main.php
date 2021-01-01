@@ -39,7 +39,7 @@ class main extends AWS_CONTROLLER
 		{
 			die;
 		}
-		TPL::assign('url', htmlspecialchars($url));
+		TPL::assign('url', safe_text($url));
 		TPL::output('url/img');
 	}
 
@@ -54,7 +54,7 @@ class main extends AWS_CONTROLLER
 		{
 			die;
 		}
-		TPL::assign('url', htmlspecialchars($url));
+		TPL::assign('url', safe_text($url));
 		TPL::output('url/link');
 	}
 }

@@ -22,76 +22,78 @@ class FORMAT
 	// 然后被解析成：<img src="http://localhost/favicon.ico?<a href="http://localhost/favicon.ico? onload='alert(1)' onerror='alert(2)'">此处省略</a>">
 	// onload或onerror会被执行
 
-	public static function parse_image($url)
+	public static function parse_image($orig_url)
 	{
-		if (stripos($url, 'https://') !== 0 && stripos($url, 'http://') !== 0)
+		$url = safe_text($orig_url);
+
+		if (!is_website($orig_url))
 		{
 			return $url;
 		}
-		if (!H::content_url_whitelist_check($url))
+		if (!H::content_url_whitelist_check($orig_url))
 		{
-			return self::parse_link($url);
+			return self::parse_link($orig_url);
 		}
 
-		$url = safe_text($url);
-
-		return '<a href="url/img/' . safe_base64_encode(htmlspecialchars_decode($url)) . '" title="' . $url . '" rel="nofollow noreferrer noopener" target="_blank">' . 
+		return '<a href="url/img/' . safe_base64_encode(htmlspecialchars_decode($orig_url)) . '" title="' . $url . '" rel="nofollow noreferrer noopener" target="_blank">' . 
 			'<img src="' . $url . '" alt="' . $url . '" style="max-width:100%">' . 
 			'</a>';
 	}
 
-	public static function parse_video($url)
+	public static function parse_video($orig_url)
 	{
-		if (stripos($url, 'https://') !== 0 && stripos($url, 'http://') !== 0)
+		$url = safe_text($orig_url);
+
+		if (!is_website($orig_url))
 		{
 			return $url;
 		}
-		if (!H::content_url_whitelist_check($url))
+		if (!H::content_url_whitelist_check($orig_url))
 		{
-			return self::parse_link($url);
+			return self::parse_link($orig_url);
 		}
-
-		$url = safe_text($url);
 
 		return "<video controls preload=\"none\" src=\"$url\" style=\"max-width:100%\"></video>";
 	}
 
 
-	public static function parse_link($url, $title = null)
+	public static function parse_link($orig_url, $title = null)
 	{
+		$url = safe_text($orig_url);
+
 		if ($title === null)
 		{
 			$title = $url;
 		}
+		else
+		{
+			$title = safe_text($title);
+		}
 
-		if (stripos($url, 'https://') !== 0 && stripos($url, 'http://') !== 0)
+		if (!is_website($orig_url))
 		{
 			return $title;
 		}
 
-		if (H::hyperlink_whitelist_check($url))
+		if (H::hyperlink_whitelist_check($orig_url))
 		{
-			$url = safe_text($url);
-
-			if (is_inside_url($url))
+			if (is_inside_url($orig_url))
 			{
 				return '<a href="' . $url . '" title="' . $url . '">' . $title . '</a>';
 			}
 			return '<a href="' . $url . '" title="' . $url . '" rel="nofollow noreferrer noopener" target="_blank">' . $title . '</a>';
 		}
 
-		if (H::hyperlink_blacklist_check($url))
+		if (H::hyperlink_blacklist_check($orig_url))
 		{
 			return $title;
 		}
 
-		$url = safe_text($url);
-
-		if (is_inside_url($url))
+		if (is_inside_url($orig_url))
 		{
 			return '<a href="' . $url . '" title="' . $url . '">' . $title . '</a>';
 		}
-		return '<a href="url/link/' . safe_base64_encode(htmlspecialchars_decode($url)) . '" title="' . $url . '" rel="nofollow noreferrer noopener" target="_blank">' . $title . '</a>';
+		return '<a href="url/link/' . safe_base64_encode(htmlspecialchars_decode($orig_url)) . '" title="' . $url . '" rel="nofollow noreferrer noopener" target="_blank">' . $title . '</a>';
 	}
 
 	private static function _link_callback($matches)

@@ -6,8 +6,34 @@ class Services_BBCode
 
 	private function _code_callback($match)
 	{
-		return "<pre>" . str_replace('[', '<span>[</span>', $match[1]) . "</pre>";
+		return "<pre>" . unnest_bbcode($match[1]) . "</pre>";
 	}
+
+	private function _url_callback($match)
+	{
+		return FORMAT::parse_link(unnest_bbcode($match[1]));
+	}
+
+	private function _url_2_callback($match)
+	{
+		return FORMAT::parse_link(unnest_bbcode($match[1]), $match[2]);
+	}
+
+	private function _img_callback($match)
+	{
+		return FORMAT::parse_image(unnest_bbcode($match[1]));
+	}
+
+	private function _img_2_callback($match)
+	{
+		return FORMAT::parse_image(unnest_bbcode($match[2]));
+	}
+
+	private function _video_callback($match)
+	{
+		return FORMAT::parse_video(unnest_bbcode($match[1]));
+	}
+
 
 	private function _plain_text_callback($match)
 	{
@@ -54,31 +80,6 @@ class Services_BBCode
 		return '<span style="text-decoration:underline;">' . $match[1] . '</span>';
 	}
 
-	private function _url_callback($match)
-	{
-		return FORMAT::parse_link($match[1]);
-	}
-
-	private function _url_2_callback($match)
-	{
-		return FORMAT::parse_link($match[1], $match[2]);
-	}
-
-	private function _img_callback($match)
-	{
-		return FORMAT::parse_image($match[1]);
-	}
-
-	private function _img_2_callback($match)
-	{
-		return FORMAT::parse_image($match[2]);
-	}
-
-	private function _video_callback($match)
-	{
-		return FORMAT::parse_video($match[1]);
-	}
-
 	private function _list_callback($match)
 	{
 		$match[1] = preg_replace_callback("/\[\*\](.*?)\[\/\*\]/is", array(&$this, '_list_element_callback'), $match[1]);
@@ -120,29 +121,14 @@ class Services_BBCode
 
 	public function __construct()
 	{
-		// 最先解析 [code]
+		// [code] 里面不允许嵌套其他tags, 最先解析
+
 		// Replace [code]...[/code] with <pre><code>...</code></pre>
 		$this->bbcode_table["/\[code\](.*?)\[\/code\]/is"] = '_code_callback';
-		// (.*?) 改为 (((?![\[code\]]).*?)+)
-		// 意味 [code]...[/code] 中间不能包含 [code]
-		// 像这样 [code].[code]..[/code]
-		// 更新：当内容过长时会出现 bug 已弃用
-		//$this->bbcode_table["/\[code\](((?![\[code\]]).*?)+)\[\/code\]/is"] = '_code_callback';
 
-		$this->bbcode_table["/\[left\](.*?)\[\/left\]/is"] = '_plain_text_callback';
-		$this->bbcode_table["/\[right\](.*?)\[\/right\]/is"] = '_plain_text_callback';
-		$this->bbcode_table["/\[justify\](.*?)\[\/justify\]/is"] = '_plain_text_callback';
-		$this->bbcode_table["/\[sub\](.*?)\[\/sub\]/is"] = '_plain_text_callback';
-		$this->bbcode_table["/\[sup\](.*?)\[\/sup\]/is"] = '_plain_text_callback';
-		$this->bbcode_table["/\[ltr\](.*?)\[\/ltr\]/is"] = '_plain_text_callback';
-		$this->bbcode_table["/\[rtl\](.*?)\[\/rtl\]/is"] = '_plain_text_callback';
 
-		$this->bbcode_table["/\[cp\](.*?)\[\/cp\]/is"] = '_plain_text_callback';
-
-		$this->bbcode_table["/\[size=(.*?)\](.*?)\[\/size\]/is"] = '_plain_text_2_callback';
-		$this->bbcode_table["/\[font=(.*?)\](.*?)\[\/font\]/is"] = '_plain_text_2_callback';
-		$this->bbcode_table["/\[color=(.*?)\](.*?)\[\/color\]/is"] = '_plain_text_2_callback';
-
+		// 优先解析有引号的html elements (img, video, a)
+		// [img] [video] [url] 里面不允许嵌套
 
 		// Replace [img]...[/img] with <img src="..."/>
 		$this->bbcode_table["/\[img\](.*?)\[\/img\]/is"] = '_img_callback';
@@ -158,6 +144,23 @@ class Services_BBCode
 
 		// Replace [url=http://www.google.com/]A link to google[/url] with <a href="http://www.google.com/">A link to google</a>
 		$this->bbcode_table["/\[url=(.*?)\](.*?)\[\/url\]/is"] = '_url_2_callback';
+
+
+		// 纯文本tags
+		$this->bbcode_table["/\[left\](.*?)\[\/left\]/is"] = '_plain_text_callback';
+		$this->bbcode_table["/\[right\](.*?)\[\/right\]/is"] = '_plain_text_callback';
+		$this->bbcode_table["/\[justify\](.*?)\[\/justify\]/is"] = '_plain_text_callback';
+		$this->bbcode_table["/\[sub\](.*?)\[\/sub\]/is"] = '_plain_text_callback';
+		$this->bbcode_table["/\[sup\](.*?)\[\/sup\]/is"] = '_plain_text_callback';
+		$this->bbcode_table["/\[ltr\](.*?)\[\/ltr\]/is"] = '_plain_text_callback';
+		$this->bbcode_table["/\[rtl\](.*?)\[\/rtl\]/is"] = '_plain_text_callback';
+
+		$this->bbcode_table["/\[cp\](.*?)\[\/cp\]/is"] = '_plain_text_callback';
+
+		$this->bbcode_table["/\[size=(.*?)\](.*?)\[\/size\]/is"] = '_plain_text_2_callback';
+		$this->bbcode_table["/\[font=(.*?)\](.*?)\[\/font\]/is"] = '_plain_text_2_callback';
+		$this->bbcode_table["/\[color=(.*?)\](.*?)\[\/color\]/is"] = '_plain_text_2_callback';
+
 
 		// Replace [hr] with <hr>
 		$this->bbcode_table["/\[hr\]/is"] = '_hr_callback';

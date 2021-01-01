@@ -483,8 +483,16 @@ function &safe_base64_decode($string) {
 function &safe_text($html) {
 	return str_replace(
 		array('<', '>', '"', "'"),
-		array('&lt;', '&gt;', '&quot;', "&#039;"),
+		array('&lt;', '&gt;', '&quot;', '&#39;'),
 		$html
+	);
+}
+
+function &unnest_bbcode($text) {
+	return str_replace(
+		array('[', ']'),
+		array('&#91;', '&#93;'),
+		$text
 	);
 }
 
@@ -538,4 +546,19 @@ function is_javascript($url)
 	}
 
 	return false;
+}
+
+function is_website($url)
+{
+	if (!$url)
+	{
+		return false;
+	}
+
+	if (stripos($url, 'https://') !== 0 AND stripos($url, 'http://') !== 0)
+	{
+		return false;
+	}
+
+	return true;
 }
