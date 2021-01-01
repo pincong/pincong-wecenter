@@ -24,8 +24,8 @@ class FORMAT
 		{
 			return self::parse_link($url);
 		}
-		return '<a href="url/img/' . safe_base64_encode(htmlspecialchars_decode($url)) . '" rel="nofollow noreferrer noopener" target="_blank">' . 
-			'<img src="' . $url .'" alt="" style="max-width:100%">' . 
+		return '<a href="url/img/' . safe_base64_encode(htmlspecialchars_decode($url)) . '" title="' . $url . '" rel="nofollow noreferrer noopener" target="_blank">' . 
+			'<img src="' . $url . '" alt="' . $url . '" style="max-width:100%">' . 
 			'</a>';
 	}
 
@@ -59,9 +59,9 @@ class FORMAT
 		{
 			if (is_inside_url($url))
 			{
-				return '<a href="' . $url . '">' . $title . '</a>';
+				return '<a href="' . $url . '" title="' . $url . '">' . $title . '</a>';
 			}
-			return '<a href="' . $url . '" rel="nofollow noreferrer noopener" target="_blank">' . $title . '</a>';
+			return '<a href="' . $url . '" title="' . $url . '" rel="nofollow noreferrer noopener" target="_blank">' . $title . '</a>';
 		}
 
 		if (H::hyperlink_blacklist_check($url))
@@ -71,9 +71,9 @@ class FORMAT
 
 		if (is_inside_url($url))
 		{
-			return '<a href="' . $url . '">' . $title . '</a>';
+			return '<a href="' . $url . '" title="' . $url . '">' . $title . '</a>';
 		}
-		return '<a href="url/link/' . safe_base64_encode(htmlspecialchars_decode($url)) . '" rel="nofollow noreferrer noopener" target="_blank">' . $title . '</a>';
+		return '<a href="url/link/' . safe_base64_encode(htmlspecialchars_decode($url)) . '" title="' . $url . '" rel="nofollow noreferrer noopener" target="_blank">' . $title . '</a>';
 	}
 
 	private static function _link_callback($matches)
