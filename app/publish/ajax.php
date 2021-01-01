@@ -558,7 +558,7 @@ class ajax extends AWS_CONTROLLER
 		$answer_info['message'] = $this->model('mention')->parse_at_user($answer_info['message']);
 		TPL::assign('answer_info', $answer_info);
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'ajax_html' => TPL::process('question/ajax/answer')
+			'ajax_html' => TPL::process('question/ajax_reply')
 		), 1, null));
 	}
 
@@ -640,7 +640,7 @@ class ajax extends AWS_CONTROLLER
 		$comment_info['message'] = $this->model('mention')->parse_at_user($comment_info['message']);
 		TPL::assign('comment_info', $comment_info);
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'ajax_html' => TPL::process('article/ajax/comment')
+			'ajax_html' => TPL::process('article/ajax_reply')
 		), 1, null));
 	}
 
@@ -722,7 +722,7 @@ class ajax extends AWS_CONTROLLER
 		$comment_info['message'] = $this->model('mention')->parse_at_user($comment_info['message']);
 		TPL::assign('comment_info', $comment_info);
 		H::ajax_json_output(AWS_APP::RSM(array(
-			'ajax_html' => TPL::process('video/ajax/comment')
+			'ajax_html' => TPL::process('video/ajax_reply')
 		), 1, null));
 	}
 

@@ -1,6 +1,4 @@
-<?php if ($this->comments) { ?>
-<?php foreach ($this->comments AS $key => $val) { ?>
-<?php if (CF::skip($val['user_info'])) continue; ?>
+<?php $val = $this->comment_info; ?>
 <div class="aw-item" id="answer_list_<?php echo $val['id']; ?>" data-item-id="<?php echo $val['id']; ?>" data-fold="<?php echo $val['fold']; ?>">
 	<div class="mod-head">
 		<!-- 用户头像 -->
@@ -95,5 +93,3 @@
 		</div>
 	</div>
 </div>
-<?php } ?>
-<?php } ?>

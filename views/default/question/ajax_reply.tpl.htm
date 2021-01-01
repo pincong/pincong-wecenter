@@ -1,6 +1,4 @@
-<?php if ($this->answers) { ?>
-<?php foreach ($this->answers AS $key => $val) { ?>
-<?php if (CF::skip($val['user_info'])) continue; ?>
+<?php $val = $this->answer_info; ?>
 <div class="aw-item" id="answer_list_<?php echo $val['id']; ?>" data-item-id="<?php echo $val['id']; ?>" data-fold="<?php echo $val['fold']; ?>">
 	<div class="mod-head">
 		<a class="anchor" name="answer_<?php echo $val['id']; ?>"></a>
@@ -99,5 +97,3 @@
 		<!-- end 社交操作 -->
 	</div>
 </div>
-<?php } ?>
-<?php } ?>
