@@ -17,8 +17,8 @@
 									<a href="javascript:;" class="aw-small-text" onclick="AWS.popup(G_BASE_URL + '/user/edit/change_group/uid-<?php echo $this->user['uid']; ?>');"><i class="icon icon-edit"></i> <?php _e('用户组'); ?></a>
 								<?php } ?>
 								<?php if ($this->user_info['permission']['edit_user']) { ?>
-									<a href="javascript:;" class="aw-small-text" onclick="AWS.User.edit_verified_title('<?php echo $this->user['uid']; ?>', decodeURIComponent('<?php echo rawurlencode(FORMAT::text($this->user['verified'], false)); ?>'));"><i class="icon icon-edit"></i> <?php _e('头衔'); ?></a>
-									<a href="javascript:;" class="aw-small-text" onclick="AWS.User.edit_signature('<?php echo $this->user['uid']; ?>', decodeURIComponent('<?php echo rawurlencode(FORMAT::text($this->user['signature'], false)); ?>'));"><i class="icon icon-edit"></i> <?php _e('签名'); ?></a>
+									<a href="javascript:;" class="aw-small-text" onclick="AWS.User.edit_verified_title('<?php echo $this->user['uid']; ?>', decodeURIComponent('<?php echo rawurlencode(FORMAT::text($this->user['verified'])); ?>'));"><i class="icon icon-edit"></i> <?php _e('头衔'); ?></a>
+									<a href="javascript:;" class="aw-small-text" onclick="AWS.User.edit_signature('<?php echo $this->user['uid']; ?>', decodeURIComponent('<?php echo rawurlencode(FORMAT::text($this->user['signature'])); ?>'));"><i class="icon icon-edit"></i> <?php _e('签名'); ?></a>
 								<?php } ?>
 
 								<?php if ($this->user_info['permission']['forbid_user']) { ?>
@@ -46,7 +46,7 @@
 							<?php } else if ($this->user['forbidden']) { ?>
 								<span class="aw-small-text"><a href="<?php echo url_rewrite(); ?>/people/<?php echo $this->user['data']['banned_by']; ?>"><?php _e('管理员'); ?></a><?php _e('封禁'); ?></span>
 								<br />
-								<span class="aw-small-text"><?php _e('封禁理由'); ?> : <?php echo FORMAT::text($this->user['data']['banned_reason'], false); ?> <?php echo FORMAT::text($this->user['data']['banned_detail'], false); ?></span>
+								<span class="aw-small-text"><?php _e('封禁理由'); ?> : <?php echo FORMAT::text($this->user['data']['banned_reason']); ?> <?php echo FORMAT::text($this->user['data']['banned_detail']); ?></span>
 							<?php } ?>
 							<!-- end 封禁 -->
 							<?php if ($this->user['flagged']) { ?>
@@ -62,7 +62,7 @@
 								<?php } elseif ($this->user['flagged'] == 3) { ?>
 									(<?php _e('禁止登录 + 替换全部发言'); ?>)
 								<?php } ?>
-								: <?php echo FORMAT::text($this->user['data']['flagged_reason'], false); ?> <?php echo FORMAT::text($this->user['data']['flagged_detail'], false); ?>
+								: <?php echo FORMAT::text($this->user['data']['flagged_reason']); ?> <?php echo FORMAT::text($this->user['data']['flagged_detail']); ?>
 							</span>
 							<?php } ?>
 							<?php if ($this->user_id) { ?>

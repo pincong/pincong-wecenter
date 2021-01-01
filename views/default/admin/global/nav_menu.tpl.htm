@@ -26,7 +26,7 @@
 			<?php foreach ($this->menu_list as $key => $val) { ?>
 			<li>
 				<a href="<?php if ($val['url']) { ?><?php echo url_rewrite(); ?><?php echo $val['url']; ?><?php } else { ?>javascript:;<?php } ?>" class=" icon icon-<?php echo $val['cname']; if ($val['select']) { ?> active<?php } ?>"<?php if ($val['children']) { ?> data="icon"<?php } ?>>
-					<span><?php echo FORMAT::text($val['title'], false); ?></span>
+					<span><?php echo FORMAT::text($val['title']); ?></span>
 				</a>
 				<?php if ($val['children']) { ?>
 
@@ -34,7 +34,7 @@
 					<?php foreach ($val['children'] as $child) { ?>
 					<li>
 						<a <?php if ($child['select']) { ?> class="active"<?php } ?> href="<?php echo url_rewrite(); ?><?php echo $child['url']; ?>">
-							<span><?php echo FORMAT::text($child['title'], false); ?></span>
+							<span><?php echo FORMAT::text($child['title']); ?></span>
 						</a>
 					</li>
 					<?php } ?>

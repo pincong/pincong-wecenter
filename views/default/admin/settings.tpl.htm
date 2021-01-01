@@ -2013,7 +2013,7 @@
 							<div class="col-sm-5 col-xs-8">
 								<select class="form-control" name="ui_style">
 								<?php foreach($this->styles as $skey => $val) { ?>
-									<option value="<?php echo $val['id']; ?>"<?php if ($this->setting['ui_style'] == $val['id']) { ?> selected="selected"<?php } ?>><?php echo FORMAT::text($val['title'], false); ?></option>
+									<option value="<?php echo $val['id']; ?>"<?php if ($this->setting['ui_style'] == $val['id']) { ?> selected="selected"<?php } ?>><?php echo FORMAT::text($val['title']); ?></option>
 									<?php } ?>
 								</select>
 							</div>

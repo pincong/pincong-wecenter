@@ -61,7 +61,7 @@ class UF
 		{
 			return '';
 		}
-		return FORMAT::text($user_info['signature'], false);
+		return FORMAT::text($user_info['signature']);
 	}
 
 	public static function name(&$user_info)
@@ -70,7 +70,7 @@ class UF
 		{
 			return AWS_APP::lang()->_t('[已注销]');
 		}
-		return FORMAT::text($user_info['user_name'], false);
+		return FORMAT::text($user_info['user_name']);
 	}
 
 	public static function url(&$user_info)

@@ -7,7 +7,7 @@
 				<div class="aw-global-tips">
 					<?php if ($this->redirect_message) { ?>
 					<div class="alert alert-warning fade in">
-						<?php echo FORMAT::text($this->redirect_message, false); ?>
+						<?php echo FORMAT::text($this->redirect_message); ?>
 					</div>
 					<?php } ?>
 				</div>
@@ -21,8 +21,8 @@
 				<div class="col-sm-12 col-md-9 aw-main-content">
 					<div class="aw-mod aw-topic-detail-title">
 						<div class="mod-body">
-							<img src="<?php echo get_topic_pic_url($this->topic_info, 'max'); ?>" alt="<?php echo FORMAT::text($this->topic_info['topic_title'], false); ?>" />
-							<h2 class="pull-left"><?php echo FORMAT::text($this->topic_info['topic_title'], false); ?> <?php if ($this->topic_info['topic_lock']) { ?><i class="aw-icon i-lock" title="<?php _e('已锁定'); ?>"></i><?php } ?></h2>
+							<img src="<?php echo get_topic_pic_url($this->topic_info, 'max'); ?>" alt="<?php echo FORMAT::text($this->topic_info['topic_title']); ?>" />
+							<h2 class="pull-left"><?php echo FORMAT::text($this->topic_info['topic_title']); ?> <?php if ($this->topic_info['topic_lock']) { ?><i class="aw-icon i-lock" title="<?php _e('已锁定'); ?>"></i><?php } ?></h2>
 							<div class="aw-topic-operate aw-small-text">
 								<?php if ($this->user_id) { ?>
 								<a href="javascript:;" onclick="AWS.User.follow($(this), 'topic', <?php echo $this->topic_info['topic_id']; ?>);" class="follow btn btn-normal btn-success<?php if ($this->topic_info['has_focus']) { ?> active<?php } ?>"><span><?php if ($this->topic_info['has_focus']) { ?><?php _e('取消关注'); ?><?php } else { ?><?php _e('关注'); ?><?php } ?></span> <em>|</em> <b><?php echo $this->topic_info['focus_count']; ?></b></a>

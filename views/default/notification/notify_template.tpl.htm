@@ -40,7 +40,7 @@
 			<?php } else { ?>
 			<a href="<?php echo url_rewrite(); ?>/<?php echo $val['thread_type']; ?>/id-<?php echo $val['thread_info']['id']; ?>__notification_id-<?php echo $val['id']; ?>">
 			<?php } ?>
-				<?php if (!$val['thread_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['thread_info']['title'], false); ?><?php } ?>
+				<?php if (!$val['thread_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['thread_info']['title']); ?><?php } ?>
 			</a>
 		<?php } ?>
 	</span>

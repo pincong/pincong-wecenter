@@ -24,7 +24,7 @@ class FORMAT
 
 	public static function parse_image($orig_url)
 	{
-		$url = self::text($orig_url, false);
+		$url = self::text($orig_url);
 
 		if (!is_website($orig_url) AND !is_uri_path($orig_url))
 		{
@@ -42,7 +42,7 @@ class FORMAT
 
 	public static function parse_video($orig_url)
 	{
-		$url = self::text($orig_url, false);
+		$url = self::text($orig_url);
 
 		if (!is_website($orig_url) AND !is_uri_path($orig_url))
 		{
@@ -59,7 +59,7 @@ class FORMAT
 
 	public static function parse_link($orig_url, $title = null, $allow_nested = false)
 	{
-		$url = self::text($orig_url, false);
+		$url = self::text($orig_url);
 
 		if ($title === null)
 		{
@@ -67,7 +67,7 @@ class FORMAT
 		}
 		else if (!$allow_nested)
 		{
-			$title = self::text($title, false);
+			$title = self::text($title);
 		}
 
 		if (!is_website($orig_url) AND !is_uri_path($orig_url))
@@ -97,7 +97,7 @@ class FORMAT
 	}
 
 	// 注意是引用
-	public static function &text(&$text, $nr2br = true)
+	public static function &text(&$text)
 	{
 		if (!$text)
 		{
@@ -110,17 +110,21 @@ class FORMAT
 			$text
 		);
 
-		if ($nr2br)
-		{
-			$text = nl2br($text);
-		}
 		return $text;
 	}
 
 	// 注意是引用
-	public static function &hyperlink(&$text, $nr2br = true)
+	public static function &message(&$text)
 	{
-		$text = self::text($text, false);
+		$text = self::text($text);
+
+		return nl2br($text);
+	}
+
+	// 注意是引用
+	public static function &hyperlink(&$text)
+	{
+		$text = self::text($text);
 
 		$text = @preg_replace_callback(
 			'/(?<!!!\[\]\(|"|\'|\)|>)(https?:\/\/[-a-zA-Z0-9@:;%_\+.~#?\&\/\/=!]+)(?!"|\'|\)|>)/i',
@@ -128,11 +132,7 @@ class FORMAT
 			$text
 		);
 
-		if ($nr2br)
-		{
-			$text = nl2br($text);
-		}
-		return $text;
+		return nl2br($text);
 	}
 
 	private static function _hyperlink_callback($matches)
@@ -141,20 +141,16 @@ class FORMAT
 	}
 
 	// 注意是引用
-	public static function &bbcode(&$text, $nr2br = true)
+	public static function &bbcode(&$text)
 	{
-		$text = self::text($text, false);
+		$text = self::text($text);
 
 		// 不再主动解析链接
 		// Bug: [url]https://web.archive.org/web/20170602230234/http://www.sohu.com/a/145581401_670685[/url]
 		// return self::hyperlink(load_class('Services_BBCode')->parse($text), false);
 		$text = load_class('Services_BBCode')->parse($text);
 
-		if ($nr2br)
-		{
-			$text = nl2br($text);
-		}
-		return $text;
+		return nl2br($text);
 	}
 
 }

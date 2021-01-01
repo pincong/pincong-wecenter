@@ -8,12 +8,12 @@
 		<?php foreach($this->sidebar_hot_topics AS $key => $val) { ?>
 			<dl>
 				<dt class="pull-left aw-border-radius-5">
-					<a href="<?php echo url_rewrite(); ?>/topic/<?php echo FORMAT::text($val['topic_title'], false); ?>"><img alt="" src="<?php echo get_topic_pic_url($val, 'mid'); ?>" /></a>
+					<a href="<?php echo url_rewrite(); ?>/topic/<?php echo FORMAT::text($val['topic_title']); ?>"><img alt="" src="<?php echo get_topic_pic_url($val, 'mid'); ?>" /></a>
 				</dt>
 				<dd class="pull-left">
 					<p class="clearfix">
 						<span class="topic-tag">
-							<a href="<?php echo url_rewrite(); ?>/topic/<?php echo FORMAT::text($val['topic_title'], false); ?>" class="text" data-id="<?php echo $val['topic_id']; ?>"><?php echo FORMAT::text($val['topic_title'], false); ?></a>
+							<a href="<?php echo url_rewrite(); ?>/topic/<?php echo FORMAT::text($val['topic_title']); ?>" class="text" data-id="<?php echo $val['topic_id']; ?>"><?php echo FORMAT::text($val['topic_title']); ?></a>
 						</span>
 					</p>
 					<p><?php _e('%s 个问题', '<b>' . $val['discuss_count'] . '</b>'); ?>, <?php _e('%s 人关注', '<b>' . $val['focus_count'] . '</b>'); ?></p>

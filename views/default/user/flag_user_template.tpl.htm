@@ -26,11 +26,11 @@
 					</select>
 				</div>
 				<div class="aw-margin-y-10">
-					<textarea name="detail" class="form-control" rows="3" placeholder="<?php _e('详情...'); ?>"><?php echo FORMAT::text($this->user['data']['flagged_detail'], false); ?></textarea>
+					<textarea name="detail" class="form-control" rows="3" placeholder="<?php _e('详情...'); ?>"><?php echo FORMAT::text($this->user['data']['flagged_detail']); ?></textarea>
 				</div>
 				<?php } else { ?>
 				<div class="aw-margin-y-10">
-					<textarea name="reason" class="form-control" rows="4" placeholder="<?php _e('详情...'); ?>"><?php echo FORMAT::text($this->user['data']['flagged_reason'], false); ?></textarea>
+					<textarea name="reason" class="form-control" rows="4" placeholder="<?php _e('详情...'); ?>"><?php echo FORMAT::text($this->user['data']['flagged_reason']); ?></textarea>
 				</div>
 				<?php } ?>
 			</div>

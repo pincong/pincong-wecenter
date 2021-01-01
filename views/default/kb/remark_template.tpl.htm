@@ -8,7 +8,7 @@
 			<form action="<?php echo url_rewrite(); ?>/kb/ajax/remark/id-<?php echo $this->item_info['id']; ?>" method="post" onsubmit="return false" id="edit_form">
 			<div class="modal-body">
 				<div class="alert alert-danger collapse error_message"><i class="icon icon-delete"></i> <em></em></div>
-				<textarea name="remarks" id="editor_reply" class="form-control" rows="10"><?php echo FORMAT::text($this->item_info['remarks'], false); ?></textarea>
+				<textarea name="remarks" id="editor_reply" class="form-control" rows="10"><?php echo FORMAT::text($this->item_info['remarks']); ?></textarea>
 			</div>
 			<div class="modal-footer">
 				<button class="btn btn-large btn-success" onclick="AWS.submit_form($('#edit_form'), $(this), $('.error_message'));return false;"><?php _e('确定'); ?></button>

@@ -6,7 +6,7 @@
 		<div class="row">
 			<div class="col-sm-12 aw-global-tips">
 				<div class="alert alert-warning fade in">
-					<a href="<?php echo url_rewrite(); ?>/video/<?php echo $this->redirected_from['id']; ?>"><?php echo FORMAT::text($this->redirected_from['title'], false); ?></a> <?php _e('已与本影片合并'); ?>
+					<a href="<?php echo url_rewrite(); ?>/video/<?php echo $this->redirected_from['id']; ?>"><?php echo FORMAT::text($this->redirected_from['title']); ?></a> <?php _e('已与本影片合并'); ?>
 				</div>
 			</div>
 		</div>
@@ -17,7 +17,7 @@
 		<div class="row">
 			<div class="col-sm-12 aw-global-tips">
 				<div class="alert alert-danger fade in">
-					<?php _e('本影片已被合并到'); ?>: <a href="<?php echo url_rewrite(); ?>/video/id-<?php echo $this->redirect_info['id']; ?>__rf-<?php echo $this->video_info['id']; ?>"><?php echo FORMAT::text($this->redirect_info['title'], false); ?></a>
+					<?php _e('本影片已被合并到'); ?>: <a href="<?php echo url_rewrite(); ?>/video/id-<?php echo $this->redirect_info['id']; ?>__rf-<?php echo $this->video_info['id']; ?>"><?php echo FORMAT::text($this->redirect_info['title']); ?></a>
 				</div>
 			</div>
 		</div>
@@ -33,7 +33,7 @@
 						<?php if ($this->video_topics) { ?>
 							<?php foreach($this->video_topics as $key => $val) { ?>
 							<span class="topic-tag" data-id="<?php echo $val['topic_id']; ?>">
-								<a class="text" href="<?php echo url_rewrite(); ?>/topic/<?php echo urlencode($val['topic_title']); ?>"><?php echo FORMAT::text($val['topic_title'], false); ?></a>
+								<a class="text" href="<?php echo url_rewrite(); ?>/topic/<?php echo urlencode($val['topic_title']); ?>"><?php echo FORMAT::text($val['topic_title']); ?></a>
 							</span>
 							<?php } ?>
 						<?php } else if (!$this->user_id) { ?>
@@ -347,11 +347,11 @@
 								<?php foreach($this->recommend_posts AS $key => $val) { ?>
 								<li>
 									<?php if ($val['post_type'] == 'question') { ?>
-									<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title'], false); ?><?php } ?></a>
+									<a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a>
 									<?php } elseif ($val['post_type'] == 'article') { ?>
-									<a href="<?php echo url_rewrite(); ?>/article/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title'], false); ?><?php } ?></a>
+									<a href="<?php echo url_rewrite(); ?>/article/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a>
 									<?php } elseif ($val['post_type'] == 'video') { ?>
-									<a href="<?php echo url_rewrite(); ?>/video/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title'], false); ?><?php } ?></a>
+									<a href="<?php echo url_rewrite(); ?>/video/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a>
 									<?php } ?>
 								</li>
 								<?php } ?>
@@ -370,7 +370,7 @@
 						<div class="mod-body aw-size-12">
 							<ul>
 								<?php foreach($this->question_related_list AS $key => $val) { ?>
-								<li><a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title'], false); ?><?php } ?></a></li>
+								<li><a href="<?php echo url_rewrite(); ?>/question/<?php echo $val['id']; ?>"><?php if (!$val['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['title']); ?><?php } ?></a></li>
 								<?php } ?>
 							</ul>
 						</div>

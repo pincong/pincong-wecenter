@@ -10,7 +10,7 @@
 			<?php echo date_friendly($val['add_time']); ?>
 		</p>
 		<h4>
-			<a href="<?php echo url_rewrite(); ?>/<?php echo $val['post_type']; ?>/<?php echo $val['post_id']; ?>"><?php if (!$val['post_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['post_info']['title'], false); ?><?php } ?></a>
+			<a href="<?php echo url_rewrite(); ?>/<?php echo $val['post_type']; ?>/<?php echo $val['post_id']; ?>"><?php if (!$val['post_info']['title']) { ?><s class="aw-deleted"><?php _e('已删除'); ?></s><?php } else { ?><?php echo FORMAT::text($val['post_info']['title']); ?><?php } ?></a>
 		</h4>
 	</div>
 </div>
