@@ -26,7 +26,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		H::no_cache_header();
 	}
-
+/*
 	public function add_favorite_action()
 	{
 		if (!$this->model('favorite')->check_item_type(H::POST('item_type')))
@@ -50,7 +50,7 @@ class ajax extends AWS_CONTROLLER
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));
 	}
-
+*/
 	public function remove_favorite_item_action()
 	{
 		if (!$this->model('favorite')->check_item_type(H::POST('item_type')))

@@ -71,10 +71,6 @@ $(document).ready(function ()
                 data_url = G_BASE_URL + '/topic/ajax/remove_related_topic/related_id-' + $(this).parents('.topic-tag').attr('data-id') + '__topic_id-' + data_id;
                 break;
 
-            case 'favorite':
-                data_url = G_BASE_URL + '/favorite/ajax/remove_favorite_tag/';
-                break;
-
             case 'article':
                 data_url = G_BASE_URL + '/topic/ajax/remove_topic_relation/';
                 break;
@@ -92,18 +88,6 @@ $(document).ready(function ()
         if (data_type == 'topic')
         {
             $.get(data_url);
-        }
-        else if (data_type == 'favorite')
-        {
-            $.post(data_url, 
-            {
-                'item_type': data_type,
-                'topic_id': topic_id,
-                'item_id' : data_id,
-                'tags' : $.trim($(this).parents('.topic-tag').text())
-            }, function (result)
-            {
-            }, 'json');
         }
         else if (data_url)
         {

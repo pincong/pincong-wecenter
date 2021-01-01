@@ -17,7 +17,7 @@ $(function () {
 
     //图表数据接入
     var echart = new Echarts('#main', 'line', G_BASE_URL + '/admin/ajax/statistic/?tag=new_user,user_valid&start_date=' + dateArr[3] + '&end_date=' + dateArr[2]);
-    var echart2 = new Echarts('#main2', 'line', G_BASE_URL + '/admin/ajax/statistic/?tag=new_question,new_answer,new_topic,new_favorite_item&start_date=' + dateArr[3] + '&end_date=' + dateArr[2]);
+    var echart2 = new Echarts('#main2', 'line', G_BASE_URL + '/admin/ajax/statistic/?tag=new_question,new_answer,new_topic&start_date=' + dateArr[3] + '&end_date=' + dateArr[2]);
     var echart3 = new Echarts('#main3', 'line', G_BASE_URL + '/admin/ajax/statistic/?tag=new_answer_vote&start_date=' + dateArr[3] + '&end_date=' + dateArr[2]);
 
 
@@ -271,10 +271,6 @@ Echarts.prototype = {
 
             case 'new_answer_vote':
                 arr.push('新增回复投票');
-                break;
-
-            case 'new_favorite_item':
-                arr.push('新增收藏');
                 break;
             }
         }

@@ -234,11 +234,6 @@ class system_class extends AWS_MODEL
 			case 'new_answer_vote':
 				$query = "SELECT COUNT(id) AS count, FROM_UNIXTIME(add_time, '%y-%m') AS statistic_date FROM " . $this->get_table('vote') . " WHERE add_time BETWEEN " . intval($start_time) . " AND " . intval($end_time) . " GROUP BY statistic_date ASC";
 			break;
-
-			case 'new_favorite_item':
-				$query = "SELECT COUNT(id) AS count, FROM_UNIXTIME(time, '%y-%m') AS statistic_date FROM " . $this->get_table('favorite') . " WHERE time BETWEEN " . intval($start_time) . " AND " . intval($end_time) . " GROUP BY statistic_date ASC";
-			break;
-
 		}
 
 		if ($query)
