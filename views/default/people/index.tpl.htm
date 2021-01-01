@@ -58,6 +58,8 @@
 										<?php _e('禁止登录 + 隐藏全部发言'); ?>
 									<?php } elseif ($this->user['forbidden'] == 3) { ?>
 										<?php _e('禁止登录 + 替换全部发言'); ?>
+									<?php } else { ?>
+										<?php _e('禁止登录 (自动)'); ?>
 									<?php } ?>
 								</a>
 								<?php echo FORMAT::text($this->user['data']['banned_reason']); ?> <?php echo FORMAT::text($this->user['data']['banned_detail']); ?>

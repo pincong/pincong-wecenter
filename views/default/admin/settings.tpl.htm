@@ -1275,6 +1275,36 @@
 				<tr>
 					<td>
 						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('自动封禁非正式用户'); ?>:</span>
+							<div class="col-sm-6 col-xs-8">
+								<div class="btn-group mod-btn">
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" name="auto_banning_type" value="ON"<?php if ($this->setting['auto_banning_type'] == 'ON') { ?> checked="checked"<?php } ?> /> <?php _e('ON'); ?>
+									</label>
+
+									<label type="button" class="btn mod-btn-color">
+										<input type="radio" name="auto_banning_type" value="OFF"<?php if ($this->setting['auto_banning_type'] == 'OFF') { ?> checked="checked"<?php } ?> /> <?php _e('OFF'); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="form-group">
+							<span class="col-sm-4 col-xs-3 control-label"><?php _e('內容声望小于等于多少时自动封禁'); ?>:</span>
+							<div class="col-sm-5 col-xs-8">
+								<input name="auto_banning_reputation" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['auto_banning_reputation']); ?>"/>
+								<div class="help-block"><?php _e('应填写负数, 任意一则贴文的声望'); ?></div>
+							</div>
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="form-group">
 							<span class="col-sm-4 col-xs-3 control-label"><?php _e('长文奖励因子'); ?>:</span>
 							<div class="col-sm-5 col-xs-8">
 								<input name="bonus_factor" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['bonus_factor']); ?>"/>
@@ -1958,54 +1988,6 @@
 								<input name="user_operation_interval" class="form-control" type="text" value="<?php echo htmlspecialchars($this->setting['user_operation_interval']); ?>"/>
 
 								<div class="help-block"><?php _e('两次操作的时间间隔 (单位: 秒, 设置 0 为不限制)'); ?></div>
-							</div>
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('用户赞同小于等于多少时自动封禁'); ?>:</span>
-							<div class="col-sm-5 col-xs-8">
-								<input name="auto_banning_agree_count" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['auto_banning_agree_count']); ?>"/>
-								<div class="help-block"><?php _e('应填写负数'); ?></div>
-							</div>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('用户声望小于等于多少时自动封禁'); ?>:</span>
-							<div class="col-sm-5 col-xs-8">
-								<input name="auto_banning_reputation" type="text" class="form-control" value="<?php echo htmlspecialchars($this->setting['auto_banning_reputation']); ?>"/>
-								<div class="help-block"><?php _e('应填写负数'); ?></div>
-							</div>
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td>
-						<div class="form-group">
-							<span class="col-sm-4 col-xs-3 control-label"><?php _e('自动封禁条件'); ?>:</span>
-							<div class="col-sm-6 col-xs-8">
-								<div class="btn-group mod-btn">
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="auto_banning_type" value="AND"<?php if ($this->setting['auto_banning_type'] == 'AND') { ?> checked="checked"<?php } ?> /> <?php _e('AND'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="auto_banning_type" value="OR"<?php if ($this->setting['auto_banning_type'] == 'OR') { ?> checked="checked"<?php } ?> /> <?php _e('OR'); ?>
-									</label>
-
-									<label type="button" class="btn mod-btn-color">
-										<input type="radio" name="auto_banning_type" value="OFF"<?php if ($this->setting['auto_banning_type'] == 'OFF') { ?> checked="checked"<?php } ?> /> <?php _e('OFF'); ?>
-									</label>
-
-									<span class="help-block"><?php _e('AND: 需满足全部条件, OR: 只需满足一个条件, OFF: 关闭'); ?></span>
-								</div>
 							</div>
 						</div>
 					</td>

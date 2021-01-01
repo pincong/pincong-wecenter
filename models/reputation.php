@@ -20,6 +20,28 @@ if (!defined('IN_ANWSION'))
 
 class reputation_class extends AWS_MODEL
 {
+	private function should_user_be_banned($recipient_user, $content_reputation)
+	{
+		if (!$recipient_user OR !!$recipient_user['forbidden'])
+		{
+			return false;
+		}
+		if (S::get('auto_banning_type') != 'ON')
+		{
+			return false;
+		}
+		if (S::get_float('auto_banning_reputation') < $content_reputation)
+		{
+			return false;
+		}
+		$reputation_formal_user = S::get('reputation_formal_user');
+		if (is_numeric($reputation_formal_user) AND $recipient_user['reputation'] >= $reputation_formal_user)
+		{
+			return false;
+		}
+		return true;
+	}
+
 	private function check_reputation_type(&$item_type)
 	{
 		$reputation_types = S::get('reputation_types');
@@ -41,7 +63,7 @@ class reputation_class extends AWS_MODEL
 	}
 
 	// 更新被赞用户赞数和声望
-	private function update_user_agree_count_and_reputation(&$item_type, &$recipient_user, $agree_value, $reputation_value)
+	private function update_user_agree_count_and_reputation(&$item_type, &$recipient_user, $agree_value, $reputation_value, $auto_ban)
 	{
 		// 用户已注销
 		if (!$recipient_user)
@@ -49,7 +71,7 @@ class reputation_class extends AWS_MODEL
 			return;
 		}
 
-		if ($reputation_value > 0)
+		if ($agree_value > 0)
 		{
 			// 被标记的用户不增加声望
 			// reputation_types以外post不增加声望
@@ -66,19 +88,14 @@ class reputation_class extends AWS_MODEL
 			}
 		}
 
-		$sql = 'UPDATE ' . $this->get_table('users') . ' SET agree_count = agree_count + ' . ($agree_value) . ', reputation = reputation + ' . ($reputation_value) . ' WHERE uid = ' . ($recipient_user['uid']);
-		$this->query($sql);
-
-		// 如果开启了自动封禁功能
-		if ($auto_banning_type = S::get('auto_banning_type'))
+		$set = 'agree_count = agree_count + ' . ($agree_value) . ', reputation = reputation + ' . ($reputation_value);
+		if ($auto_ban)
 		{
-			if ($auto_banning_type != 'OFF')
-			{
-				$agree_count = $recipient_user['agree_count'] + $agree_value;
-				$reputation = $recipient_user['reputation'] + $reputation_value;
-				$this->model('user')->auto_forbid_user($uid, $recipient_user['forbidden'], $agree_count, $reputation, $auto_banning_type);
-			}
+			$set .= ', forbidden = -1';
 		}
+
+		$sql = 'UPDATE ' . $this->get_table('users') . ' SET ' . $set . ' WHERE uid = ' . ($recipient_user['uid']);
+		$this->query($sql);
 	}
 
 	// 更新被赞post赞数和声望(热度)
@@ -186,6 +203,8 @@ class reputation_class extends AWS_MODEL
 
 	private function update_agree_count_and_reputation($item_type, $item_id, &$vote_user, &$recipient_user, $agree_value, $user_reputation_value, $content_reputation_value)
 	{
+		$auto_ban = false;
+
 		if ($user_reputation_value OR $content_reputation_value)
 		{
 			// 已缓存过
@@ -219,16 +238,21 @@ class reputation_class extends AWS_MODEL
 
 			if ($content_reputation_value)
 			{
+				$content_reputation_now = $item_info['reputation'] + $content_reputation_value;
 				if ($agree_value > 0)
 				{
-					$this->model('activity')->push_item_with_high_reputation($item_type, $item_id, $item_info['reputation'] + $content_reputation_value, $item_info['uid']);
+					$this->model('activity')->push_item_with_high_reputation($item_type, $item_id, $content_reputation_now, $item_info['uid']);
+				}
+				else
+				{
+					$auto_ban = $this->should_user_be_banned($recipient_user, $content_reputation_now);
 				}
 				$this->update_index_reputation($item_type, $item_id, $item_info, $content_reputation_value);
 			}
 		}
 
 		$this->update_item_agree_count_and_reputation($item_type, $item_id, $agree_value, $content_reputation_value);
-		$this->update_user_agree_count_and_reputation($item_type, $recipient_user, $agree_value, $user_reputation_value);
+		$this->update_user_agree_count_and_reputation($item_type, $recipient_user, $agree_value, $user_reputation_value, $auto_ban);
 	}
 
 

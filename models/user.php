@@ -295,59 +295,6 @@ class user_class extends AWS_MODEL
 
 	// ===== 封禁/标记相关 =====
 
-	public function auto_forbid_user($uid, $forbidden, $agree_count, $reputation, $auto_banning_type)
-	{
-		// 自动封禁/解封, $forbidden == -1 表示已被系统自动封禁
-		if (!$forbidden OR $forbidden == -1)
-		{
-			$auto_banning_agree_count = S::get_int('auto_banning_agree_count');
-			$auto_banning_reputation = S::get_int('auto_banning_reputation');
-
-			if ($auto_banning_type == 'AND')
-			{
-				if ( ($auto_banning_agree_count >= $agree_count)
-					AND ($auto_banning_reputation >= $reputation) )
-				{
-					if (!$forbidden) // 满足封禁条件且未被封禁的用户
-					{
-						$fields = array('forbidden' => -1);
-					}
-				}
-				else
-				{
-					if ($forbidden == -1) // 不满足封禁条件已被封禁的用户
-					{
-						$fields = array('forbidden' => 0);
-					}
-				}
-			}
-			else
-			{
-				if ( ($auto_banning_agree_count >= $agree_count)
-					OR ($auto_banning_reputation >= $reputation) )
-				{
-					if (!$forbidden) // 满足封禁条件且未被封禁的用户
-					{
-						$fields = array('forbidden' => -1);
-					}
-				}
-				else
-				{
-					if ($forbidden == -1) // 不满足封禁条件已被封禁的用户
-					{
-						$fields = array('forbidden' => 0);
-					}
-				}
-			}
-		}
-
-		if ($fields)
-		{
-			$this->update('users', $fields, 'uid = ' . intval($uid));
-		}
-	}
-
-
 	public function forbid_user_by_uid($uid, $status, $admin_uid = null, $reason = null, $detail = null)
 	{
 		if (!$uid)
