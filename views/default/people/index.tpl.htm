@@ -180,39 +180,85 @@
 							</div>
 
 							<div class="tab-pane" id="questions">
+								<!-- 自定义切换 -->
 								<div class="aw-mod">
-									<div class="mod-head">
-										<h3><?php _e('问题'); ?></h3>
+									<div class="aw-tabs text-center">
+										<ul>
+											<li class="active"><a><?php _e('问题'); ?></a></li>
+											<li><a><?php _e('讨论'); ?></a></li>
+										</ul>
 									</div>
 									<div class="mod-body">
-										<div class="aw-profile-publish-list" id="contents_user_questions"></div>
-									</div>
-									<div class="mod-footer">
-										<!-- 加载更多内容 -->
-										<a class="aw-load-more-content" id="bp_user_questions_more">
-											<span><?php _e('更多'); ?></span>
-										</a>
-										<!-- end 加载更多内容 -->
+										<div class="aw-tab-content" style="margin-top: 20px;">
+											<div class="aw-mod aw-user-center-follow-mod">
+												<div class="mod-body">
+													<div class="aw-profile-publish-list" id="contents_user_questions"></div>
+												</div>
+												<div class="mod-footer">
+													<!-- 加载更多内容 -->
+													<a class="aw-load-more-content" id="bp_user_questions_more">
+														<span><?php _e('更多'); ?></span>
+													</a>
+													<!-- end 加载更多内容 -->
+												</div>
+											</div>
+											<div class="aw-mod aw-user-center-follow-mod collapse">
+												<div class="mod-body">
+													<div class="aw-profile-answer-list" id="contents_user_question_discussions"></div>
+												</div>
+												<div class="mod-footer">
+													<!-- 加载更多内容 -->
+													<a class="aw-load-more-content" id="bp_user_question_discussions_more">
+														<span><?php _e('更多'); ?></span>
+													</a>
+													<!-- end 加载更多内容 -->
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
+								<!-- end 自定义切换 -->
 							</div>
 
 							<div class="tab-pane" id="answers">
+								<!-- 自定义切换 -->
 								<div class="aw-mod">
-									<div class="mod-head">
-										<h3><?php _e('回答'); ?></h3>
+									<div class="aw-tabs text-center">
+										<ul>
+											<li class="active"><a><?php _e('回答'); ?></a></li>
+											<li><a><?php _e('讨论'); ?></a></li>
+										</ul>
 									</div>
 									<div class="mod-body">
-										<div class="aw-profile-answer-list" id="contents_user_answers"></div>
-									</div>
-									<div class="mod-footer">
-										<!-- 加载更多内容 -->
-										<a class="aw-load-more-content" id="bp_user_answers_more">
-											<span><?php _e('更多'); ?></span>
-										</a>
-										<!-- end 加载更多内容 -->
+										<div class="aw-tab-content" style="margin-top: 20px;">
+											<div class="aw-mod aw-user-center-follow-mod">
+												<div class="mod-body">
+													<div class="aw-profile-answer-list" id="contents_user_answers"></div>
+												</div>
+												<div class="mod-footer">
+													<!-- 加载更多内容 -->
+													<a class="aw-load-more-content" id="bp_user_answers_more">
+														<span><?php _e('更多'); ?></span>
+													</a>
+													<!-- end 加载更多内容 -->
+												</div>
+											</div>
+											<div class="aw-mod aw-user-center-follow-mod collapse">
+												<div class="mod-body">
+													<div class="aw-profile-answer-list" id="contents_user_answer_discussions"></div>
+												</div>
+												<div class="mod-footer">
+													<!-- 加载更多内容 -->
+													<a class="aw-load-more-content" id="bp_user_answer_discussions_more">
+														<span><?php _e('更多'); ?></span>
+													</a>
+													<!-- end 加载更多内容 -->
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
+								<!-- end 自定义切换 -->
 							</div>
 
 							<div class="tab-pane" id="articles">
@@ -413,6 +459,7 @@ $(document).ready(function () {
 		if (page_questions_inited) return;
 		page_questions_inited = true;
 		AWS.load_list_view(G_BASE_URL + '/people/info/questions/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_questions_more'), $('#contents_user_questions'), 1);
+		AWS.load_list_view(G_BASE_URL + '/people/info/question_discussions/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_question_discussions_more'), $('#contents_user_question_discussions'), 1);
 	});
 
 	var page_answers_inited = false;
@@ -420,6 +467,7 @@ $(document).ready(function () {
 		if (page_answers_inited) return;
 		page_answers_inited = true;
 		AWS.load_list_view(G_BASE_URL + '/people/info/answers/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_answers_more'), $('#contents_user_answers'), 1);
+		AWS.load_list_view(G_BASE_URL + '/people/info/answer_discussions/uid-<?php echo $this->user['uid']; ?>', $('#bp_user_answer_discussions_more'), $('#contents_user_answer_discussions'), 1);
 	});
 
 	var page_articles_inited = false;
@@ -481,7 +529,17 @@ $(document).ready(function () {
 	});
 	<?php } ?>
 
-	$('.aw-tabs li').click(function() {
+	$('#questions .aw-tabs li').click(function() {
+		$(this).addClass('active').siblings().removeClass('active');
+		$('#questions .aw-user-center-follow-mod').eq($(this).index()).show().siblings().hide();
+	});
+
+	$('#answers .aw-tabs li').click(function() {
+		$(this).addClass('active').siblings().removeClass('active');
+		$('#answers .aw-user-center-follow-mod').eq($(this).index()).show().siblings().hide();
+	});
+
+	$('#focus .aw-tabs li').click(function() {
 		$(this).addClass('active').siblings().removeClass('active');
 		$('#focus .aw-user-center-follow-mod').eq($(this).index()).show().siblings().hide();
 	});

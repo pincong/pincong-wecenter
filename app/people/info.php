@@ -27,6 +27,8 @@ class info extends AWS_CONTROLLER
 
 		if ($this->user_info['permission']['visit_people'] AND $this->user_info['permission']['visit_site'])
 		{
+			$rule_action['actions'][] = 'question_discussions';
+			$rule_action['actions'][] = 'answer_discussions';
 			$rule_action['actions'][] = 'questions';
 			$rule_action['actions'][] = 'answers';
 			$rule_action['actions'][] = 'articles';
@@ -57,6 +59,20 @@ class info extends AWS_CONTROLLER
 		}
 
 		$this->per_page = intval(get_setting('contents_per_page'));
+	}
+
+	public function question_discussions_action()
+	{
+		TPL::assign('list', $this->model('question')->get_question_discussions_by_uid($_GET['uid'], $_GET['page'], $this->per_page));
+
+		TPL::output('people/question_discussions_template');
+	}
+
+	public function answer_discussions_action()
+	{
+		TPL::assign('list', $this->model('question')->get_answer_discussions_by_uid($_GET['uid'], $_GET['page'], $this->per_page));
+
+		TPL::output('people/answer_discussions_template');
 	}
 
 	public function questions_action()

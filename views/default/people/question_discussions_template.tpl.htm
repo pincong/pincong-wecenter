@@ -1,0 +1,21 @@
+<?php if (is_array($this->list)) { ?>
+<?php foreach ($this->list AS $key => $val) { ?>
+<div class="aw-item">
+	<div class="aw-mod">
+		<div class="mod-head">
+		</div>
+		<div class="mod-body">
+			<a class="aw-small-text" href="question/<?php echo $val['question_id']; ?>">
+			<?php if (!$val['message']) { ?>
+				<s class="aw-deleted"><?php _e('已删除'); ?></s>
+			<?php } else { ?>
+				<?php echo cjk_substr($val['message'], 0, 200, 'UTF-8', '...'); ?>
+			<?php } ?>
+			</a>
+
+			<p class="aw-small-text"><?php echo date_friendly($val['add_time']); ?></p>
+		</div>
+	</div>
+</div>
+<?php } ?>
+<?php } ?>

@@ -20,6 +20,40 @@ if (!defined('IN_ANWSION'))
 
 class question_class extends AWS_MODEL
 {
+	public function get_question_discussions_by_uid($uid, $page, $per_page)
+	{
+		$cache_key = 'user_question_discussions_' . intval($uid) . '_page_' . intval($page);
+		if ($list = AWS_APP::cache()->get($cache_key))
+		{
+			return $list;
+		}
+
+		$list = $this->fetch_page('question_discussion', 'uid = ' . intval($uid), 'id DESC', $page, $per_page);
+		if (count($list) > 0)
+		{
+			AWS_APP::cache()->set($cache_key, $list, get_setting('cache_level_normal'));
+		}
+
+		return $list;
+	}
+
+	public function get_answer_discussions_by_uid($uid, $page, $per_page)
+	{
+		$cache_key = 'user_answer_discussions_' . intval($uid) . '_page_' . intval($page);
+		if ($list = AWS_APP::cache()->get($cache_key))
+		{
+			return $list;
+		}
+
+		$list = $this->fetch_page('answer_discussion', 'uid = ' . intval($uid), 'id DESC', $page, $per_page);
+		if (count($list) > 0)
+		{
+			AWS_APP::cache()->set($cache_key, $list, get_setting('cache_level_normal'));
+		}
+
+		return $list;
+	}
+
 	public function get_questions_by_uid($uid, $page, $per_page)
 	{
 		$cache_key = 'user_questions_' . intval($uid) . '_page_' . intval($page);
