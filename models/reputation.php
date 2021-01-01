@@ -214,7 +214,7 @@ class reputation_class extends AWS_MODEL
 			{
 				if ($agree_value > 0)
 				{
-					$this->model('activity')->push_item_with_high_reputation($item_type, $item_id, $item_info['reputation'] + $content_reputation_value);
+					$this->model('activity')->push_item_with_high_reputation($item_type, $item_id, $item_info['reputation'] + $content_reputation_value, $item_info['uid']);
 				}
 				$this->update_index_reputation($item_type, $item_id, $item_info, $content_reputation_value);
 			}

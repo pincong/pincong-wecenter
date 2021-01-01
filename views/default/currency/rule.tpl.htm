@@ -18,6 +18,11 @@
 					</dl>
 
 					<dl>
+						<dt><?php _e('内容被评为精选'); ?></dt>
+						<dd><span class="<?php if (get_setting('currency_system_config_hot_post') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_hot_post'), get_setting('currency_unit'))); ?></span></dd>
+					</dl>
+
+					<dl>
 						<dt><?php _e('发布问题'); ?></dt>
 						<dd><span class="<?php if (get_setting('currency_system_config_new_question') >= 0) { ?>green<?php } else { ?>red<?php } ?>"><?php _e('%s0 %s1', array(get_setting('currency_system_config_new_question'), get_setting('currency_unit'))); ?></span></dd>
 					</dl>

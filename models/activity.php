@@ -60,7 +60,7 @@ class activity_class extends AWS_MODEL
 	}
 
 	// 推入精选
-	public function push_item_with_high_reputation($item_type, $item_id, $item_reputation)
+	public function push_item_with_high_reputation($item_type, $item_id, $item_reputation, $item_uid)
 	{
 		$push_reputation = get_setting('push_reputation');
 
@@ -89,6 +89,8 @@ class activity_class extends AWS_MODEL
 		}
 
 		$this->log($item_type, $item_id, 0, $parent_info['thread_type'], $parent_info['thread_id'], $category_id);
+
+		$this->model('currency')->process($item_uid, 'HOT_POST', get_setting('currency_system_config_hot_post'), '内容被评为精选', $item_id, $item_type);
 	}
 
 
