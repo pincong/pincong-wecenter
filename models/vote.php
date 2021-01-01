@@ -255,31 +255,15 @@ class vote_class extends AWS_MODEL
 		$this->model('activity')->log($type, $item_id, 0, $parent_info['thread_type'], $parent_info['thread_id'], $category_id);
 	}
 
-	// 用于筛选最热帖子 (首页排序)
-	private function update_parent_reputation(&$type, $item_id, $value, &$item_info)
+	// 用于热门排序
+	private function update_index_reputation(&$type, $item_id, $value)
 	{
-		switch ($type)
+		if (!$this->model('content')->check_thread_type($type))
 		{
-			case 'answer':
-				$parent_id = $item_info['question_id'];
-				$parent_type = 'question';
-				break;
-
-			case 'article_comment':
-				$parent_id = $item_info['article_id'];
-				$parent_type = 'article';
-				break;
-
-			case 'video_comment':
-				$parent_id = $item_info['video_id'];
-				$parent_type = 'video';
-				break;
-
-			default:
-				return;
+			return;
 		}
 
-		$where = "post_id = " . $parent_id . " AND post_type = '" . $parent_type . "'";
+		$where = "post_id = " . $item_id . " AND post_type = '" . $type . "'";
 		$sql = 'UPDATE ' . $this->get_table('posts_index') . ' SET reputation = reputation + ' . $value . ' WHERE ' . $where;
 		$this->query($sql);
 	}
@@ -330,7 +314,7 @@ class vote_class extends AWS_MODEL
 			$this->push_item_with_high_reputation($type, $item_id, $item_info['reputation'] + $reputation);
 
 			// 更新帖子声望(热度)
-			$this->update_parent_reputation($type, $item_id, $reputation, $item_info);
+			$this->update_index_reputation($type, $item_id, $reputation);
 			// 计算被赞用户所获声望
 			if (!$no_dynamic_reputation_factor)
 			{
@@ -359,7 +343,7 @@ class vote_class extends AWS_MODEL
 		if ($reputation)
 		{
 			// 更新帖子声望(热度)
-			$this->update_parent_reputation($type, $item_id, -$reputation, $item_info);
+			$this->update_index_reputation($type, $item_id, -$reputation);
 			// 计算被赞用户所获声望
 			if (!$no_dynamic_reputation_factor)
 			{
