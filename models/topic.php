@@ -867,7 +867,7 @@ class topic_class extends AWS_MODEL
 			}
 		}
 
-		$this->update_topic(null, $id, null, null, fetch_salt(4)); // 生成随机字符串
+		$this->update_topic(null, $id, null, null, random_string(4)); // 生成随机字符串
 
 		return true;
 	}

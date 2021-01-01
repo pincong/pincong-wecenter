@@ -95,7 +95,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1,  AWS_APP::lang()->_t('恢复码无效')));
 		}
 
-		$this->model('account')->update_user_password_ingore_oldpassword($_POST['password'], $user_info['uid']);
+		$this->model('password')->update_user_password_ingore_oldpassword($_POST['password'], $user_info['uid']);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'url' => url_rewrite('/account/find_password/process_success/')
@@ -209,7 +209,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('密码长度不符合规则')));
 		}
 
-		if ($this->model('account')->update_user_password($_POST['password'], $this->user_id, $_POST['old_password'], $this->user_info['salt']))
+		if ($this->model('password')->update_user_password($_POST['password'], $this->user_id, $_POST['old_password'], $this->user_info['salt']))
 		{
 			$this->model('account')->logout();
 			H::ajax_json_output(AWS_APP::RSM(array(

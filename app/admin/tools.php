@@ -334,7 +334,7 @@ class tools extends AWS_ADMIN_CONTROLLER
 				if ($file_exists == true)
 				{
 					$this->model('account')->update_user_fields(array(
-						'avatar_file' => fetch_salt(4) // 生成随机字符串
+						'avatar_file' => random_string(4) // 生成随机字符串
 					), $val['uid']);
 				}
 				else

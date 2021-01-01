@@ -152,7 +152,7 @@ class avatar_class extends AWS_MODEL
 			}
 		}
 
-		$update_data['avatar_file'] = fetch_salt(4); // 生成随机字符串
+		$update_data['avatar_file'] = random_string(4); // 生成随机字符串
 
 		// 更新主表
 		$this->model('account')->update_user_fields($update_data, $uid);

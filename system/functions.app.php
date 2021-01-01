@@ -420,30 +420,6 @@ function calc_page_limit($page, $per_page)
 }
 
 /**
- * 将用户登录信息编译成 hash 字符串，用于发送 Cookie
- *
- * @param  string
- * @param  string
- * @param  string
- * @param  integer
- * @param  boolean
- * @return string
- */
-function get_login_cookie_hash($user_name, $password, $salt, $uid)
-{
-	$password = compile_password($password, $salt);
-
-	//$auth_hash_key = AWS_APP::crypt()->new_key(md5(G_COOKIE_HASH_KEY . $_SERVER['HTTP_USER_AGENT']));
-	$auth_hash_key = null;
-
-	return AWS_APP::crypt()->encode(json_encode(array(
-		'uid' => $uid,
-		'user_name' => $user_name,
-		'password' => $password
-	)), $auth_hash_key);
-}
-
-/**
  * 检查队列中是否存在指定的 hash 值, 并移除之, 用于表单提交验证
  *
  * @param  string

@@ -93,7 +93,8 @@ class login_class extends AWS_MODEL
 			}
 		}
 
-		if (!$this->model('account')->check_password($password, $user_info['password'], $user_info['salt']))
+		$password = compile_password($password, $user_info['salt']);
+		if (!$this->model('password')->compare($password, $user_info['password']))
 		{
 			$this->log_failed_login($uid);
 			// TODO: 给用户发送警告

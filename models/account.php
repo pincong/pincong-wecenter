@@ -4,411 +4,358 @@
  *
  * An open source application development framework for PHP 5.2.2 or newer
  *
- * @package     WeCenter Framework
- * @author      WeCenter Dev Team
+ * @package	 WeCenter Framework
+ * @author	  WeCenter Dev Team
  * @copyright   Copyright (c) 2011 - 2014, WeCenter, Inc.
- * @license     http://www.wecenter.com/license/
- * @link        http://www.wecenter.com/
- * @since       Version 1.0
+ * @license	 http://www.wecenter.com/license/
+ * @link		http://www.wecenter.com/
+ * @since	   Version 1.0
  * @filesource
  */
 
 /**
  * WeCenter APP 函数类
  *
- * @package     WeCenter
+ * @package	 WeCenter
  * @subpackage  App
- * @category    Model
- * @author      WeCenter Dev Team
+ * @category	Model
+ * @author	  WeCenter Dev Team
  */
 
 
 if (!defined('IN_ANWSION'))
 {
-    die;
+	die;
 }
 
 class account_class extends AWS_MODEL
 {
-    /**
-     * 检查用户名是否已经存在
-     *
-     * @param string
-     * @return boolean
-     */
-    public function username_exists($user_name)
-    {
-    	$user_name = trim($user_name);
+	/**
+	 * 检查用户名是否已经存在
+	 *
+	 * @param string
+	 * @return boolean
+	 */
+	public function username_exists($user_name)
+	{
+		$user_name = trim($user_name);
 
-        return $this->fetch_one('users', 'uid', "user_name = '" . $this->quote($user_name) . "'");
-    }
+		return $this->fetch_one('users', 'uid', "user_name = '" . $this->quote($user_name) . "'");
+	}
 
-    /**
-     * 检查用户 ID 是否已经存在
-     *
-     * @param string
-     * @return boolean
-     */
+	/**
+	 * 检查用户 ID 是否已经存在
+	 *
+	 * @param string
+	 * @return boolean
+	 */
 
-    public function uid_exists($uid)
-    {
+	public function uid_exists($uid)
+	{
 		$uid = intval($uid);
 		if ($uid <= 0)
 		{
 			return false;
 		}
-        return $this->fetch_one('users', 'uid', 'uid = ' . ($uid));
-    }
+		return $this->fetch_one('users', 'uid', 'uid = ' . ($uid));
+	}
 
 
-    /**
-     * 用户登录验证 (MD5 验证)
-     *
-     * @param string
-     * @param string
-     * @return array
-     */
-    public function check_hash_login($user_name, $password_md5)
-    {
-        if (!$user_name OR !$password_md5)
-        {
-            return false;
-        }
+	/**
+	 * 通过 UID 获取用户信息（包含用户组和权限信息）
+	 *
+	 * 缓存结果
+	 *
+	 * @param int
+	 * @return array
+	 */
+	public function get_user_and_group_info_by_uid($uid)
+	{
+		$uid = intval($uid);
+		if ($uid <= 0)
+		{
+			return false;
+		}
 
-        $user_info = $this->get_user_info_by_username($user_name);
+		static $users_info;
 
-        if (! $user_info)
-        {
-            return false;
-        }
+		if ($users_info[$uid])
+		{
+			return $users_info[$uid];
+		}
 
-        if (!password_verify($password_md5, $user_info['password']))
-        {
-            return false;
-        }
-        else
-        {
-            return $user_info;
-        }
+		if (! $user_info = $this->fetch_row('users', 'uid = ' . $uid))
+		{
+			return false;
+		}
 
-    }
+		if ($user_info['user_name'])
+		{
+			$user_info['url_token'] = urlencode($user_info['user_name']);
+		}
 
-    /**
-     * 用户密码验证
-     *
-     * @param string
-     * @param string
-     * @param string
-     * @return boolean
-     */
-    public function check_password($password, $db_password, $salt)
-    {
-        $password = compile_password($password, $salt);
+		$user_group = $this->model('usergroup')->get_user_group_by_user_info($user_info);
+		$user_info['reputation_factor'] = $user_group['reputation_factor'];
+		$user_info['reputation_factor_receive'] = $user_group['reputation_factor_receive'];
+		$user_info['content_reputation_factor'] = $user_group['content_reputation_factor'];
+		$user_info['permission'] = $user_group['permission'];
+		$user_info['user_group_name'] = $user_group['group_name'];
+		$user_info['user_group_id'] = $user_group['group_id'];
 
-        if (password_verify($password, $db_password))
-        {
-            return true;
-        }
+		$users_info[$uid] = $user_info;
 
-        return false;
-
-    }
+		return $user_info;
+	}
 
 
-    /**
-     * 通过 UID 获取用户信息（包含用户组和权限信息）
-     *
-     * 缓存结果
-     *
-     * @param int
-     * @return array
-     */
-    public function get_user_and_group_info_by_uid($uid)
-    {
-        $uid = intval($uid);
-        if ($uid <= 0)
-        {
-            return false;
-        }
+	/**
+	 * 通过用户名获取用户信息
+	 *
+	 * 缓存结果
+	 *
+	 * @param string
+	 * @return array
+	 */
+	public function get_user_info_by_username($user_name)
+	{
+		if ($uid = $this->fetch_one('users', 'uid', "user_name = '" . $this->quote($user_name) . "'"))
+		{
+			return $this->get_user_info_by_uid($uid);
+		}
+	}
 
-        static $users_info;
+	/**
+	 * 通过 UID 获取用户信息
+	 *
+	 * 缓存结果
+	 *
+	 * @param int
+	 * @return array
+	 */
+	public function get_user_info_by_uid($uid)
+	{
+		$uid = intval($uid);
+		if ($uid <= 0)
+		{
+			return false;
+		}
 
-        if ($users_info[$uid])
-        {
-            return $users_info[$uid];
-        }
+		static $users_info;
 
-        if (! $user_info = $this->fetch_row('users', 'uid = ' . $uid))
-        {
-            return false;
-        }
+		if ($users_info[$uid])
+		{
+			return $users_info[$uid];
+		}
 
-        if ($user_info['user_name'])
-        {
-            $user_info['url_token'] = urlencode($user_info['user_name']);
-        }
+		if (! $user_info = $this->fetch_row('users', 'uid = ' . $uid))
+		{
+			return false;
+		}
 
-        $user_group = $this->model('usergroup')->get_user_group_by_user_info($user_info);
-        $user_info['reputation_factor'] = $user_group['reputation_factor'];
-        $user_info['reputation_factor_receive'] = $user_group['reputation_factor_receive'];
-        $user_info['content_reputation_factor'] = $user_group['content_reputation_factor'];
-        $user_info['permission'] = $user_group['permission'];
-        $user_info['user_group_name'] = $user_group['group_name'];
-        $user_info['user_group_id'] = $user_group['group_id'];
+		if ($user_info['user_name'])
+		{
+			$user_info['url_token'] = urlencode($user_info['user_name']);
+		}
 
-        $users_info[$uid] = $user_info;
+		$users_info[$uid] = $user_info;
 
-        return $user_info;
-    }
+		return $user_info;
+	}
 
+	/**
+	 * 通过 UID 数组获取用户信息
+	 *
+	 * @param array
+	 * @return array
+	 */
+	public function get_user_info_by_uids($uids)
+	{
+		if (! is_array($uids) OR sizeof($uids) == 0)
+		{
+			return false;
+		}
 
-    /**
-     * 通过用户名获取用户信息
-     *
-     * 缓存结果
-     *
-     * @param string
-     * @return array
-     */
-    public function get_user_info_by_username($user_name)
-    {
-        if ($uid = $this->fetch_one('users', 'uid', "user_name = '" . $this->quote($user_name) . "'"))
-        {
-            return $this->get_user_info_by_uid($uid);
-        }
-    }
+		array_walk_recursive($uids, 'intval_string');
 
-    /**
-     * 通过 UID 获取用户信息
-     *
-     * 缓存结果
-     *
-     * @param int
-     * @return array
-     */
-    public function get_user_info_by_uid($uid)
-    {
-        $uid = intval($uid);
-        if ($uid <= 0)
-        {
-            return false;
-        }
+		$uids = array_unique($uids);
 
-        static $users_info;
+		static $users_info;
 
-        if ($users_info[$uid])
-        {
-            return $users_info[$uid];
-        }
+		if ($users_info[implode('_', $uids)])
+		{
+			return $users_info[implode('_', $uids)];
+		}
 
-        if (! $user_info = $this->fetch_row('users', 'uid = ' . $uid))
-        {
-            return false;
-        }
+		if ($user_info = $this->fetch_all('users', "uid IN(" . implode(',', $uids) . ")"))
+		{
+			foreach ($user_info as $key => $val)
+			{
+				$val['url_token'] = urlencode($val['user_name']);
 
-        if ($user_info['user_name'])
-        {
-            $user_info['url_token'] = urlencode($user_info['user_name']);
-        }
+				unset($val['password'], $val['salt']);
 
-        $users_info[$uid] = $user_info;
+				$data[$val['uid']] = $val;
+			}
 
-        return $user_info;
-    }
+			foreach ($uids AS $uid)
+			{
+				if ($data[$uid])
+				{
+					$result[$uid] = $data[$uid];
+				}
+			}
 
-    /**
-     * 通过 UID 数组获取用户信息
-     *
-     * @param array
-     * @return array
-     */
-    public function get_user_info_by_uids($uids)
-    {
-        if (! is_array($uids) OR sizeof($uids) == 0)
-        {
-            return false;
-        }
+			$users_info[implode('_', $uids)] = $data;
+		}
 
-        array_walk_recursive($uids, 'intval_string');
+		return $result;
+	}
 
-        $uids = array_unique($uids);
+	/**
+	 * 根据用户ID获取用户通知设置
+	 * @param $uid
+	 */
+	public function get_notification_setting_by_uid($uid)
+	{
+		if (!$setting = $this->fetch_row('users_notification_setting', 'uid = ' . intval($uid)))
+		{
+			return array('data' => array());
+		}
 
-        static $users_info;
+		$setting['data'] = unserialize($setting['data']);
 
-        if ($users_info[implode('_', $uids)])
-        {
-            return $users_info[implode('_', $uids)];
-        }
+		if (!$setting['data'])
+		{
+			$setting['data'] = array();
+		}
 
-        if ($user_info = $this->fetch_all('users', "uid IN(" . implode(',', $uids) . ")"))
-        {
-            foreach ($user_info as $key => $val)
-            {
-                $val['url_token'] = urlencode($val['user_name']);
+		return $setting;
+	}
 
-                unset($val['password'], $val['salt']);
+	/**
+	 * 插入用户数据
+	 *
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @param int
+	 * @param string
+	 * @return int
+	 */
+	public function insert_user($user_name, $password)
+	{
+		if (!$user_name OR !$password)
+		{
+			return false;
+		}
 
-                $data[$val['uid']] = $val;
-            }
+		if ($this->username_exists($user_name))
+		{
+			return false;
+		}
 
-            foreach ($uids AS $uid)
-            {
-                if ($data[$uid])
-                {
-                    $result[$uid] = $data[$uid];
-                }
-            }
+		$salt = $this->model('password')->generate_salt();
+		$password = compile_password($password, $salt);
 
-            $users_info[implode('_', $uids)] = $data;
-        }
+		if ($uid = $this->insert('users', array(
+			'user_name' => htmlspecialchars($user_name),
+			'password' => $this->model('password')->hash($password),
+			'salt' => $salt,
+			'sex' => 0,
+			'group_id' => 0,
+			'avatar_file' => null, // 无头像
+			'reg_time' => fake_time()
+		)))
+		{
+			$this->update_notification_setting_fields(get_setting('new_user_notification_setting'), $uid);
 
-        return $result;
-    }
+			//$this->model('search_fulltext')->push_index('user', $user_name, $uid);
+		}
 
-    /**
-     * 根据用户ID获取用户通知设置
-     * @param $uid
-     */
-    public function get_notification_setting_by_uid($uid)
-    {
-        if (!$setting = $this->fetch_row('users_notification_setting', 'uid = ' . intval($uid)))
-        {
-            return array('data' => array());
-        }
+		return $uid;
+	}
 
-        $setting['data'] = unserialize($setting['data']);
+	/**
+	 * 注册用户
+	 *
+	 * @param string
+	 * @param string
+	 * @param string
+	 * @return int
+	 */
+	public function user_register($user_name, $password = null)
+	{
+		if ($uid = $this->insert_user($user_name, $password))
+		{
+			if ($def_focus_uids_str = get_setting('def_focus_uids'))
+			{
+				$def_focus_uids = explode(',', $def_focus_uids_str);
 
-        if (!$setting['data'])
-        {
-            $setting['data'] = array();
-        }
+				foreach ($def_focus_uids as $key => $val)
+				{
+					$this->model('follow')->user_follow_add($uid, $val);
+				}
+			}
 
-        return $setting;
-    }
+			$this->model('currency')->process($uid, 'REGISTER', get_setting('currency_system_config_register'), '初始资本');
+		}
 
-    /**
-     * 插入用户数据
-     *
-     * @param string
-     * @param string
-     * @param string
-     * @param int
-     * @param string
-     * @return int
-     */
-    public function insert_user($user_name, $password)
-    {
-        if (!$user_name OR !$password)
-        {
-            return false;
-        }
+		return $uid;
+	}
 
-        if ($this->username_exists($user_name))
-        {
-            return false;
-        }
+	/**
+	 * 发送欢迎信息
+	 *
+	 * @param int
+	 * @param string
+	 */
+	public function welcome_message($uid, $user_name)
+	{
+		if (get_setting('welcome_message_pm'))
+		{
+			$this->model('message')->send_message($uid, $uid, str_replace(array('{username}', '{time}', '{sitename}'), array($user_name, date('Y-m-d H:i:s', time()), get_setting('site_name')), get_setting('welcome_message_pm')));
+		}
+	}
 
-        $salt = fetch_salt();
+	/**
+	 * 更新用户表字段
+	 *
+	 * @param array
+	 * @param uid
+	 * @return int
+	 */
+	public function update_user_fields($update_data, $uid)
+	{
+		return $this->update('users', $update_data, 'uid = ' . intval($uid));
+	}
 
-        if ($uid = $this->insert('users', array(
-            'user_name' => htmlspecialchars($user_name),
-            'password' => bcrypt_password_hash(compile_password($password, $salt)),
-            'salt' => $salt,
-            'sex' => 0,
-            'group_id' => 0,
-            'avatar_file' => null, // 无头像
-            'reg_time' => fake_time()
-        )))
-        {
-            $this->update_notification_setting_fields(get_setting('new_user_notification_setting'), $uid);
+	/**
+	 * 更新用户名
+	 *
+	 * @param string
+	 * @param uid
+	 */
+	public function update_user_name($user_name, $uid)
+	{
+		$this->update('users', array(
+			'user_name' => htmlspecialchars($user_name),
+			'user_update_time' => fake_time()
+		), 'uid = ' . intval($uid));
 
-            //$this->model('search_fulltext')->push_index('user', $user_name, $uid);
-        }
+		//return $this->model('search_fulltext')->push_index('user', $user_name, $uid);
 
-        return $uid;
-    }
+		return true;
+	}
 
-    /**
-     * 注册用户
-     *
-     * @param string
-     * @param string
-     * @param string
-     * @return int
-     */
-    public function user_register($user_name, $password = null)
-    {
-        if ($uid = $this->insert_user($user_name, $password))
-        {
-            if ($def_focus_uids_str = get_setting('def_focus_uids'))
-            {
-                $def_focus_uids = explode(',', $def_focus_uids_str);
-
-                foreach ($def_focus_uids as $key => $val)
-                {
-                    $this->model('follow')->user_follow_add($uid, $val);
-                }
-            }
-
-            $this->model('currency')->process($uid, 'REGISTER', get_setting('currency_system_config_register'), '初始资本');
-        }
-
-        return $uid;
-    }
-
-    /**
-     * 发送欢迎信息
-     *
-     * @param int
-     * @param string
-     */
-    public function welcome_message($uid, $user_name)
-    {
-        if (get_setting('welcome_message_pm'))
-        {
-            $this->model('message')->send_message($uid, $uid, str_replace(array('{username}', '{time}', '{sitename}'), array($user_name, date('Y-m-d H:i:s', time()), get_setting('site_name')), get_setting('welcome_message_pm')));
-        }
-    }
-
-    /**
-     * 更新用户表字段
-     *
-     * @param array
-     * @param uid
-     * @return int
-     */
-    public function update_user_fields($update_data, $uid)
-    {
-        return $this->update('users', $update_data, 'uid = ' . intval($uid));
-    }
-
-    /**
-     * 更新用户名
-     *
-     * @param string
-     * @param uid
-     */
-    public function update_user_name($user_name, $uid)
-    {
-        $this->update('users', array(
-            'user_name' => htmlspecialchars($user_name),
-            'user_update_time' => fake_time()
-        ), 'uid = ' . intval($uid));
-
-        //return $this->model('search_fulltext')->push_index('user', $user_name, $uid);
-
-        return true;
-    }
-
-    /**
-     * 获取用户表 extra_data 字段
-     *
-     * @param array
-     * @param uid
-     * @return mixed	成功返回 array, 失败返回 false
-     */
-    public function get_user_extra_data($uid)
-    {
+	/**
+	 * 获取用户表 extra_data 字段
+	 *
+	 * @param array
+	 * @param uid
+	 * @return mixed	成功返回 array, 失败返回 false
+	 */
+	public function get_user_extra_data($uid)
+	{
 		$user_info = $this->fetch_row('users', 'uid = ' . intval($uid));
 		if (!$user_info)
 		{
@@ -417,17 +364,17 @@ class account_class extends AWS_MODEL
 		}
 
 		return unserialize_array($user_info['extra_data']);
-    }
+	}
 
-    /**
-     * 更新用户表 extra_data 字段
-     *
-     * @param array
-     * @param uid
-     * @return void
-     */
-    public function update_user_extra_data($data, $uid)
-    {
+	/**
+	 * 更新用户表 extra_data 字段
+	 *
+	 * @param array
+	 * @param uid
+	 * @return void
+	 */
+	public function update_user_extra_data($data, $uid)
+	{
 		if (!is_array($data))
 		{
 			return;
@@ -453,17 +400,17 @@ class account_class extends AWS_MODEL
 		}
 
 		$this->update_user_fields(array('extra_data' => serialize_array($extra_data)), $uid);
-    }
+	}
 
-    /**
-     * 获取用户表 settings 字段
-     *
-     * @param array
-     * @param uid
-     * @return mixed	成功返回 array, 失败返回 false
-     */
-    public function get_user_settings($uid)
-    {
+	/**
+	 * 获取用户表 settings 字段
+	 *
+	 * @param array
+	 * @param uid
+	 * @return mixed	成功返回 array, 失败返回 false
+	 */
+	public function get_user_settings($uid)
+	{
 		$user_info = $this->fetch_row('users', 'uid = ' . intval($uid));
 		if (!$user_info)
 		{
@@ -472,17 +419,17 @@ class account_class extends AWS_MODEL
 		}
 
 		return unserialize_array($user_info['settings']);
-    }
+	}
 
-    /**
-     * 更新用户表 settings 字段
-     *
-     * @param array
-     * @param uid
-     * @return void
-     */
-    public function update_user_settings($data, $uid)
-    {
+	/**
+	 * 更新用户表 settings 字段
+	 *
+	 * @param array
+	 * @param uid
+	 * @return void
+	 */
+	public function update_user_settings($data, $uid)
+	{
 		if (!is_array($data))
 		{
 			return;
@@ -508,201 +455,145 @@ class account_class extends AWS_MODEL
 		}
 
 		$this->update_user_fields(array('settings' => serialize_array($settings)), $uid);
-    }
+	}
 
 
-    /**
-     * 更改用户密码
-     *
-     * @param  string
-     * @param  string
-     * @param  int
-     * @param  string
-     */
-    public function update_user_password($password, $uid, $oldpassword, $salt)
-    {
-        if (!$salt OR !$uid)
-        {
-            return false;
-        }
+	/**
+	 * 更新用户最后登录时间
+	 *
+	 * @param  int
+	 */
+	public function update_user_last_login($uid)
+	{
+		if (! $uid)
+		{
+			return false;
+		}
 
-        if (! $user_info = $this->fetch_row('users', 'uid = ' . intval($uid)))
-        {
-            return false;
-        }
+		return $this->update('users', array(
+			'last_login' => fake_time()
+		), 'uid = ' . intval($uid));
+	}
 
-        $oldpassword = compile_password($oldpassword, $salt);
+	/**
+	 * 更新用户通知设置
+	 *
+	 * @param  array
+	 * @param  int
+	 * @return boolean
+	 */
+	public function update_notification_setting_fields($data, $uid)
+	{
+		if (!$this->count('users_notification_setting', 'uid = ' . intval($uid)))
+		{
+			$this->insert('users_notification_setting', array(
+				'data' => serialize($data),
+				'uid' => intval($uid)
+			));
+		}
+		else
+		{
+			$this->update('users_notification_setting', array(
+				'data' => serialize($data)
+			), 'uid = ' . intval($uid));
+		}
 
-        if (!password_verify($oldpassword, $user_info['password']))
-        {
-            return false;
-        }
+		return true;
+	}
 
-        return $this->update_user_password_ingore_oldpassword($password, $uid);
-    }
+	public function update_notification_unread($uid)
+	{
+		return $this->update('users', array(
+			'notification_unread' => $this->count('notification', 'read_flag = 0 AND recipient_uid = ' . intval($uid))
+		), 'uid = ' . intval($uid));
+	}
 
-    /**
-     * 更改用户不用旧密码密码
-     *
-     * @param  string
-     * @param  int
-     * @param  string
-     */
-    public function update_user_password_ingore_oldpassword($password, $uid)
-    {
-        if (!$password OR !$uid)
-        {
-            return false;
-        }
+	public function update_question_invite_count($uid)
+	{
+		return $this->update('users', array(
+			'invite_count' => $this->count('question_invite', 'recipients_uid = ' . intval($uid))
+		), 'uid = ' . intval($uid));
+	}
 
-        $salt = fetch_salt();
-
-        $this->update('users', array(
-            'password' => bcrypt_password_hash(compile_password($password, $salt)),
-            'salt' => $salt
-        ), 'uid = ' . intval($uid));
-
-        return true;
-    }
-
-    /**
-     * 更新用户最后登录时间
-     *
-     * @param  int
-     */
-    public function update_user_last_login($uid)
-    {
-        if (! $uid)
-        {
-            return false;
-        }
-
-        return $this->update('users', array(
-            'last_login' => fake_time()
-        ), 'uid = ' . intval($uid));
-    }
-
-    /**
-     * 更新用户通知设置
-     *
-     * @param  array
-     * @param  int
-     * @return boolean
-     */
-    public function update_notification_setting_fields($data, $uid)
-    {
-        if (!$this->count('users_notification_setting', 'uid = ' . intval($uid)))
-        {
-            $this->insert('users_notification_setting', array(
-                'data' => serialize($data),
-                'uid' => intval($uid)
-            ));
-        }
-        else
-        {
-            $this->update('users_notification_setting', array(
-                'data' => serialize($data)
-            ), 'uid = ' . intval($uid));
-        }
-
-        return true;
-    }
-
-    public function update_notification_unread($uid)
-    {
-        return $this->update('users', array(
-            'notification_unread' => $this->count('notification', 'read_flag = 0 AND recipient_uid = ' . intval($uid))
-        ), 'uid = ' . intval($uid));
-    }
-
-    public function update_question_invite_count($uid)
-    {
-        return $this->update('users', array(
-            'invite_count' => $this->count('question_invite', 'recipients_uid = ' . intval($uid))
-        ), 'uid = ' . intval($uid));
-    }
-
-    public function update_inbox_unread($uid)
-    {
-        return $this->update('users', array(
-            'inbox_unread' => ($this->sum('inbox_dialog', 'sender_unread', 'sender_uid = ' . intval($uid)) + $this->sum('inbox_dialog', 'recipient_unread', 'recipient_uid = ' . intval($uid)))
-        ), 'uid = ' . intval($uid));
-    }
+	public function update_inbox_unread($uid)
+	{
+		return $this->update('users', array(
+			'inbox_unread' => ($this->sum('inbox_dialog', 'sender_unread', 'sender_uid = ' . intval($uid)) + $this->sum('inbox_dialog', 'recipient_unread', 'recipient_uid = ' . intval($uid)))
+		), 'uid = ' . intval($uid));
+	}
 
 
-    public function setcookie_login($uid, $user_name, $password, $salt, $expire = null)
-    {
-        if (! $uid)
-        {
-            return false;
-        }
+	public function setcookie_login($uid, $password, $salt, $expire = null)
+	{
+		if (!$uid)
+		{
+			return false;
+		}
 
-        if (! $expire)
-        {
-            HTTP::set_cookie('_user_login', get_login_cookie_hash($user_name, $password, $salt, $uid));
-        }
-        else
-        {
-            HTTP::set_cookie('_user_login', get_login_cookie_hash($user_name, $password, $salt, $uid), (time() + $expire));
-        }
+		if ($expire)
+		{
+			$expire = time() + $expire;
+		}
 
-        return true;
-    }
+		HTTP::set_cookie('_user_login', $this->model('password')->make_cookie($uid, $password, $salt), $expire);
 
-    public function setcookie_logout()
-    {
-        HTTP::set_cookie('_user_login', '', time() - 3600);
-    }
+		return true;
+	}
 
-    public function logout()
-    {
-        $this->setcookie_logout();
-        $this->setsession_logout();
-    }
+	public function setcookie_logout()
+	{
+		HTTP::set_cookie('_user_login', '', time() - 3600);
+	}
 
-    public function setsession_logout()
-    {
-        AWS_APP::user()->clear_session_info();
-    }
+	public function logout()
+	{
+		$this->setcookie_logout();
+		$this->setsession_logout();
+	}
 
-    public function get_user_list($where = null, $limit = 10, $orderby = 'uid DESC')
-    {
-        $result = $this->fetch_all('users', $where, $orderby, $limit);
+	public function setsession_logout()
+	{
+		AWS_APP::user()->clear_session_info();
+	}
 
-        if ($result)
-        {
-            foreach ($result AS $key => $val)
-            {
-                unset($val['password'], $val['salt']);
+	public function get_user_list($where = null, $limit = 10, $orderby = 'uid DESC')
+	{
+		$result = $this->fetch_all('users', $where, $orderby, $limit);
 
-                $data[$val['uid']] = $val;
+		if ($result)
+		{
+			foreach ($result AS $key => $val)
+			{
+				unset($val['password'], $val['salt']);
 
-                if ($val['user_name'])
-                {
-                    $data[$val['uid']]['url_token'] = urlencode($val['user_name']);
-                }
+				$data[$val['uid']] = $val;
 
-                $uids[] = $val['uid'];
-            }
-        }
+				if ($val['user_name'])
+				{
+					$data[$val['uid']]['url_token'] = urlencode($val['user_name']);
+				}
 
-        return $data;
-    }
+				$uids[] = $val['uid'];
+			}
+		}
 
-    /**
-     * 根据 WHERE 条件获取用户数量
-     *
-     * @param string
-     * @return int
-     */
-    public function get_user_count($where = null)
-    {
-        return $this->count('users', $where);
-    }
+		return $data;
+	}
+
+	/**
+	 * 根据 WHERE 条件获取用户数量
+	 *
+	 * @param string
+	 * @return int
+	 */
+	public function get_user_count($where = null)
+	{
+		return $this->count('users', $where);
+	}
 
 
-    public function set_default_timezone($timezone, $uid)
-    {
+	public function set_default_timezone($timezone, $uid)
+	{
 		if (!is_valid_timezone($timezone))
 		{
 			$timezone = null;
@@ -710,42 +601,42 @@ class account_class extends AWS_MODEL
 		$this->update_user_settings(array(
 			'timezone' => $timezone
 		), $uid);
-    }
+	}
 
-    public function save_recent_topics($uid, $topic_title)
-    {
-        if (!$user_info = $this->get_user_info_by_uid($uid))
-        {
-            return false;
-        }
+	public function save_recent_topics($uid, $topic_title)
+	{
+		if (!$user_info = $this->get_user_info_by_uid($uid))
+		{
+			return false;
+		}
 
-        if ($user_info['recent_topics'])
-        {
-            $recent_topics = unserialize($user_info['recent_topics']);
-        }
+		if ($user_info['recent_topics'])
+		{
+			$recent_topics = unserialize($user_info['recent_topics']);
+		}
 
-        $new_recent_topics[0] = $topic_title;
+		$new_recent_topics[0] = $topic_title;
 
-        if ($recent_topics)
-        {
-            foreach ($recent_topics AS $key => $val)
-            {
-                if ($val != $topic_title)
-                {
-                    $new_recent_topics[] = $val;
-                }
-            }
-        }
+		if ($recent_topics)
+		{
+			foreach ($recent_topics AS $key => $val)
+			{
+				if ($val != $topic_title)
+				{
+					$new_recent_topics[] = $val;
+				}
+			}
+		}
 
-        if (count($new_recent_topics) > 10)
-        {
-            $new_recent_topics = array_slice($new_recent_topics, 0, 10);
-        }
+		if (count($new_recent_topics) > 10)
+		{
+			$new_recent_topics = array_slice($new_recent_topics, 0, 10);
+		}
 
-        return $this->update('users', array(
-            'recent_topics' => serialize($new_recent_topics)
-        ), 'uid = ' . intval($uid));
-    }
+		return $this->update('users', array(
+			'recent_topics' => serialize($new_recent_topics)
+		), 'uid = ' . intval($uid));
+	}
 
 	public function calc_user_recovery_code($uid)
 	{

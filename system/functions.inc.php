@@ -231,19 +231,19 @@ function is_really_writable($file)
 }
 
 /**
- * 生成密码种子
+ * 生成随机字符串
  *
  * @param  integer
  * @return string
  */
-function fetch_salt($length = 8)
+function random_string($length = 8)
 {
 	for ($i = 0; $i < $length; $i++)
 	{
-		$salt .= chr(rand(97, 122));
+		$str .= chr(rand(97, 122));
 	}
 
-	return $salt;
+	return $str;
 }
 
 /**
@@ -258,11 +258,6 @@ function compile_password($password, $salt)
 	$password = md5(md5($password) . $salt);
 
 	return $password;
-}
-
-function bcrypt_password_hash($password)
-{
-	return password_hash($password, PASSWORD_BCRYPT);
 }
 
 /**

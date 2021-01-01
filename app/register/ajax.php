@@ -145,7 +145,7 @@ class ajax extends AWS_CONTROLLER
 
 		$user_info = $this->model('account')->get_user_info_by_uid($uid);
 
-		$this->model('account')->setcookie_login($user_info['uid'], $user_info['user_name'], $_POST['password'], $user_info['salt']);
+		$this->model('account')->setcookie_login($user_info['uid'], $_POST['password'], $user_info['salt']);
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'url' => url_rewrite('/home/first_login-TRUE')

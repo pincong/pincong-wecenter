@@ -32,14 +32,17 @@ class core_user
 		}
 
 		// 解码 Cookie
-		$sso_user_login = json_decode(AWS_APP::crypt()->decode($_COOKIE[G_COOKIE_PREFIX . '_user_login']), true);
+		$cookie = json_decode(AWS_APP::crypt()->decode($_COOKIE[G_COOKIE_PREFIX . '_user_login']), true);
 
-		if ($sso_user_login['user_name'] AND $sso_user_login['password'] AND $sso_user_login['uid'])
+		if ($cookie['uid'] AND $cookie['password'])
 		{
-			if ($user_info = AWS_APP::model('account')->check_hash_login($sso_user_login['user_name'], $sso_user_login['password']))
+			if ($user_info = AWS_APP::model('account')->get_user_info_by_uid($cookie['uid']))
 			{
-				$this->set_session_info('uid', $user_info['uid']);
-				return true; // 已登录状态
+				if (AWS_APP::model('password')->compare($cookie['password'], $user_info['password']))
+				{
+					$this->set_session_info('uid', $user_info['uid']);
+					return true; // 已登录状态
+				}
 			}
 		}
 
