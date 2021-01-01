@@ -16,7 +16,6 @@ a:hover{text-decoration: none;color: #404451;}
 .aw-nav-tabs > li > a:hover{border:none;border-bottom:2px solid #155faa;background-color: #fff;color: #333;}
 .aw-nav-tabs > li.active a{line-height:30px;background-color: #fff;border:none;border-bottom:2px solid #155faa;font-weight: bold;color: #333;}
 .aw-nav-tabs > li.active a:hover, .aw-nav-tabs > li.active a:focus, .aw-nav-tabs > li > a:focus{border:none;border-bottom:2px solid #155faa;background-color: #fff;}
-.aw-dropdown .aw-dropdown-list li.question .icon-bestbg{display: none;margin:15px 5px 0 0;color: #666c82;}
 .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus{background-color: #404451;color: #fff;border-color: #404451;}
 .icon-inverse.follow:hover{color: #404451;}
 .aw-top-menu-wrap{position:relative;z-index:1001;width:100%;min-height:50px;background-color:#404451;}
@@ -35,10 +34,7 @@ a:hover{text-decoration: none;color: #404451;}
 .aw-comment-box .aw-comment-list a{color: #23527c;}
 /*.aw-comment-box .aw-comment-list a{color: #083156;}*/
 .aw-invite-box .mod-footer a{display: inline-block;width: 28px;height: 24px;line-height:22px;background-color: #555c6c;text-align: center;border-radius: 4px;color: #fff;}
-.aw-article-list .aw-item h2 a:hover, .aw-article-list .aw-item .aw-mod-footer span a:hover{color: #4d8bcd;}
-.aw-article-list .aw-item .mod-footer span a:hover{color: #555c6c;}
 .aw-article-vote a:hover, .aw-article-vote a.active{background-color: #404451;color: #fff;}
-.aw-mod-search-result .aw-item .icon-bestbg{margin-right: 5px;font-size: 15px;color: #666c82;}
 .aw-first-login .mod-head ul{background: #697287;color: #fff;}
 .navbar-collapse {background: #404451;}
 .aw-common-list .aw-question-content h4{font-size: 15px;font-weight: bold;}
