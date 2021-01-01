@@ -209,7 +209,7 @@ class Services_WhereBuilder
 	private static function _parse_condition($params)
 	{
 		$column = $params[0];
-		if (!$column OR !is_string($column) OR !self::_is_safe_string($column))
+		if (!is_string($column) OR $column == '' OR !self::_is_safe_string($column))
 		{
 			return false;
 		}
@@ -312,11 +312,7 @@ class Services_WhereBuilder
 			$val = $array[$i];
 			if (!is_array($val)) // string
 			{
-				if (in_array($val, self::$concatenation_operators)) // and, or
-				{
-					self::_append($result, strtoupper($val));
-				}
-				elseif ($i == 0 AND $l > 1 AND in_array($array[$i + 1], self::$condition_operators))
+				if ($i == 0 AND $l > 1 AND in_array($array[$i + 1], self::$condition_operators))
 				{
 					$r = self::_parse_condition($array);
 					if ($r === false)
@@ -325,6 +321,10 @@ class Services_WhereBuilder
 					}
 					self::_append($result, $r);
 					break;
+				}
+				elseif (in_array($val, self::$concatenation_operators)) // and, or
+				{
+					self::_append($result, strtoupper($val));
 				}
 				else
 				{
