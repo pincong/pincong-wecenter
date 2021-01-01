@@ -141,42 +141,6 @@ class AWS_MODEL
 	}
 
 	/**
-	 * 开始事务处理
-	 *
-	 * 此功能只在 Pdo 数据库驱动下有效
-	 */
-	public function begin_transaction()
-	{
-		$this->master();
-
-		$this->db()->beginTransaction();
-	}
-
-	/**
-	 * 事务处理回滚
-	 *
-	 * 此功能只在 Pdo 数据库驱动下有效
-	 */
-	public function roll_back()
-	{
-		$this->master();
-
-		$this->db()->roll_back();
-	}
-
-	/**
-	 * 事务处理提交
-	 *
-	 * 此功能只在 Pdo 数据库驱动下有效
-	 */
-	public function commit()
-	{
-		$this->master();
-
-		$this->db()->commit();
-	}
-
-	/**
 	 * 插入数据
 	 *
 	 * 面向对象数据库操作, 表名无需加表前缀, 数据也无需使用 $this->quote 进行过滤
@@ -408,28 +372,13 @@ class AWS_MODEL
 	 * @param	string
 	 * @return	boolean
 	 */
-	public function query($sql, $limit = null, $offset = null, $where = null)
+	public function query($sql)
 	{
 		$this->slave();
 
 		if (!$sql)
 		{
 			throw new Exception('Query was empty.');
-		}
-
-		if ($where)
-		{
-			$sql .= ' WHERE ' . $where;
-		}
-
-		if ($limit)
-		{
-			$sql .= ' LIMIT ' . $limit;
-		}
-
-		if ($offset)
-		{
-			$sql .= ' OFFSET ' . $offset;
 		}
 
 		if ($this->_debug)
@@ -439,48 +388,6 @@ class AWS_MODEL
 
 		try {
 			$result = $this->db()->query($sql);
-		} catch (Exception $e) {
-			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
-		}
-
-		if ($this->_debug)
-		{
-			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
-		}
-
-		return $result;
-	}
-
-	/**
-	 * 查询一行数据, 返回数组, key 为 字段名
-	 *
-	 * 执行 SQL 语句, 表名要使用 get_table 函数获取, 外来数据要使用 $this->quote() 过滤
-	 *
-	 * @param	string
-	 * @param	string
-	 * @return	array
-	 */
-	public function query_row($sql, $where = null)
-	{
-		$this->slave();
-
-		if (!$sql)
-		{
-			throw new Exception('Query was empty.');
-		}
-
-		if ($where)
-		{
-			$sql .= ' WHERE ' . $where;
-		}
-
-		if ($this->_debug)
-		{
-			$start_time = microtime(TRUE);
-		}
-
-		try {
-			$result = $this->db()->fetchRow($sql);
 		} catch (Exception $e) {
 			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
 		}
@@ -505,23 +412,13 @@ class AWS_MODEL
 	 * @param	string
 	 * @return	array
 	 */
-	public function query_all($sql, $limit = null, $offset = null, $where = null, $group_by = null)
+	public function query_all($sql, $limit = null, $offset = null)
 	{
 		$this->slave();
 
 		if (!$sql)
 		{
 			throw new Exception('Query was empty.');
-		}
-
-		if ($where)
-		{
-			$sql .= ' WHERE ' . $where;
-		}
-
-		if ($group_by)
-		{
-			$sql .= " GROUP BY `" . $this->quote($group_by) . "`";
 		}
 
 		if ($limit)
@@ -552,12 +449,6 @@ class AWS_MODEL
 
 		return $result;
 	}
-
-	/*public function found_rows()
-	{
-		$this->slave();
-		return $this->db()->fetchOne('SELECT FOUND_ROWS()');
-	}*/
 
 	/**
 	 * 获取上一次查询中的全部 ROWS
@@ -844,94 +735,6 @@ class AWS_MODEL
 	}
 
 	/**
-	 * 计算字段最大值, SELECT MAX() 方法
-	 *
-	 * 面向对象数据库操作, 表名无需加表前缀, 数据也无需使用 $this->quote 进行过滤 ($where 条件除外)
-	 *
-	 * @param	string
-	 * @param	string
-	 * @param	string
-	 * @return	int
-	 */
-	public function max($table, $column, $where = '')
-	{
-		$this->slave();
-
-		$select = $this->select();
-		$select->from($this->get_table($table), 'MAX(' . $column . ') AS n');
-
-		if ($where)
-		{
-			$select->where($where);
-		}
-
-		$sql = $select->__toString();
-
-		if ($this->_debug)
-		{
-			$start_time = microtime(TRUE);
-		}
-
-		try {
-			$result = $this->db()->fetchRow($select);
-		} catch (Exception $e) {
-			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
-		}
-
-		if ($this->_debug)
-		{
-			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
-		}
-
-		return $result['n'];
-	}
-
-	/**
-	 * 计算字段最小值, SELECT MIN() 方法
-	 *
-	 * 面向对象数据库操作, 表名无需加表前缀, 数据也无需使用 $this->quote 进行过滤 ($where 条件除外)
-	 *
-	 * @param	string
-	 * @param	string
-	 * @param	string
-	 * @return	int
-	 */
-	public function min($table, $column, $where = '')
-	{
-		$this->slave();
-
-		$select = $this->select();
-		$select->from($this->get_table($table), 'MIN(' . $column . ') AS n');
-
-		if ($where)
-		{
-			$select->where($where);
-		}
-
-		$row = $this->db()->fetchRow($select);
-
-		$sql = $select->__toString();
-
-		if ($this->_debug)
-		{
-			$start_time = microtime(TRUE);
-		}
-
-		try {
-			$result = $this->db()->fetchRow($select);
-		} catch (Exception $e) {
-			show_error("Database error\n------\n\nSQL: {$sql}\n\nError Message: " . $e->getMessage(), $e->getMessage());
-		}
-
-		if ($this->_debug)
-		{
-			AWS_APP::debug_log('database', (microtime(TRUE) - $start_time), $sql);
-		}
-
-		return $result['n'];
-	}
-
-	/**
 	 * 计算字段总和, SELECT SUM() 方法
 	 *
 	 * 面向对象数据库操作, 表名无需加表前缀, 数据也无需使用 $this->quote 进行过滤 ($where 条件除外)
@@ -984,28 +787,14 @@ class AWS_MODEL
 	 */
 	public function quote($string)
 	{
-		if (is_object($this->db()))
+		$_quote = $this->db()->quote($string);
+
+		if (substr($_quote, 0, 1) == "'")
 		{
-			$_quote = $this->db()->quote($string);
-
-			if (substr($_quote, 0, 1) == "'")
-			{
-				$_quote = substr(substr($_quote, 1), 0, -1);
-			}
-
-			return $_quote;
+			$_quote = substr(substr($_quote, 1), 0, -1);
 		}
 
-		if (function_exists('mysql_escape_string'))
-		{
-			$string = @mysql_escape_string($string);
-		}
-		else
-		{
-			$string = addslashes($string);
-		}
-
-		return $string;
+		return $_quote;
 	}
 
 }
