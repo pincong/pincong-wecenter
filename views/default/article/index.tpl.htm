@@ -172,7 +172,7 @@
 									<a class="aw-small-text" href="<?php echo url_rewrite(); ?>/modify/article/<?php echo $this->article_info['id']; ?>"><i class="icon icon-edit"></i> <?php echo _t('编辑'); ?></a>
 									<?php } ?>
 
-									<!--a href="javascript:;" onclick="AWS.User.add_favorite('article', '<?php echo $this->article_info['id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php echo _t('收藏'); ?></a-->
+									<a href="javascript:;" onclick="AWS.User.add_favorite('article', '<?php echo $this->article_info['id']; ?>');" class="aw-small-text"><i class="icon icon-favor"></i> <?php echo _t('收藏'); ?></a>
 								<?php } ?>
 
 									<a href="javascript:;" class="aw-small-text" onclick="AWS.User.share_out();"><i class="icon icon-share"></i> <?php echo _t('分享'); ?></a>
