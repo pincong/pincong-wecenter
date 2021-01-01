@@ -38,6 +38,44 @@ class publish_class extends AWS_MODEL
 		}
 	}
 
+	private function notify_users($thread_type, $thread_id, $reply_type, $reply_id, $sender_uid, $recipient_uid, &$message)
+	{
+		if ($mentioned_uids = $this->model('mention')->parse_at_user($message, false, true))
+		{
+			foreach ($mentioned_uids as $mentioned_uid)
+			{
+				$this->model('notification')->send(
+					$sender_uid,
+					$mentioned_uid,
+					'MENTION_USER',
+					$thread_type, $thread_id, $reply_type, $reply_id);
+			}
+		}
+
+		if ($recipient_uid)
+		{
+			$this->model('notification')->send(
+				$sender_uid,
+				$recipient_uid,
+				'REPLY_USER',
+				$thread_type, $thread_id, $reply_type, $reply_id);
+			return;
+		}
+
+		if ($followers = $this->model('postfollow')->get_followers($thread_type, $thread_id))
+		{
+			foreach ($followers as $follower)
+			{
+				$this->model('notification')->send(
+					$sender_uid,
+					$follower['uid'],
+					'REPLY_THREAD',
+					$thread_type, $thread_id, $reply_type, $reply_id);
+			}
+		}
+
+	}
+
 	private function publish_scheduled_item(&$val)
 	{
 		// 暂时用 model('message')->decrypt
@@ -267,32 +305,7 @@ class publish_class extends AWS_MODEL
 		$this->model('posts')->set_posts_index($data['parent_id'], 'question');
 
 
-		if ($mentioned_uids = $this->model('mention')->parse_at_user($data['message'], false, true))
-		{
-			foreach ($mentioned_uids as $user_id)
-			{
-				$this->model('notification')->send(
-					$data['uid'],
-					$user_id,
-					'MENTION_USER',
-					'question', $parent_info['id'], 'answer', $item_id);
-			}
-		}
-
-		if ($focus_users = $this->model('postfollow')->get_followers('question', $data['parent_id']))
-		{
-			foreach ($focus_users as $focus_user)
-			{
-				$this->model('notification')->send(
-					$data['uid'],
-					$focus_user['uid'],
-					'REPLY_THREAD',
-					'question', $parent_info['id'], 'answer', $item_id);
-			}
-		}
-
-		// 删除邀请
-		$this->model('invite')->answer_question_invite($data['parent_id'], $data['uid']);
+		$this->notify_users('question', $parent_info['id'], 'answer', $item_id, $data['uid'], null, $data['message']);
 
 		if ($data['follow'])
 		{
@@ -301,6 +314,10 @@ class publish_class extends AWS_MODEL
 
 		// 记录用户动态
 		$this->model('activity')->push('answer', $item_id, $data['uid']);
+
+
+		// 删除邀请
+		$this->model('invite')->answer_question_invite($data['parent_id'], $data['uid']);
 
 		return $item_id;
 	}
@@ -345,35 +362,8 @@ class publish_class extends AWS_MODEL
 
 		$this->model('posts')->set_posts_index($data['parent_id'], 'article');
 
-		$notification_sent = $this->model('notification')->send(
-			$data['uid'],
-			$parent_info['uid'],
-			'REPLY_THREAD',
-			'article', $parent_info['id'], 'article_comment', $item_id);
 
-		if (!$notification_sent OR ($data['at_uid'] AND $data['at_uid'] != $parent_info['uid']))
-		{
-			$notification_sent = $this->model('notification')->send(
-				$data['uid'],
-				$data['at_uid'],
-				'REPLY_USER',
-				'article', $parent_info['id'], 'article_comment', $item_id);
-		}
-
-		if ($mentioned_uids = $this->model('mention')->parse_at_user($data['message'], false, true))
-		{
-			foreach ($mentioned_uids as $user_id)
-			{
-				if (!$notification_sent OR ($user_id != $data['at_uid'] AND $user_id != $parent_info['uid']))
-				{
-					$this->model('notification')->send(
-						$data['uid'],
-						$user_id,
-						'MENTION_USER',
-						'article', $parent_info['id'], 'article_comment', $item_id);
-				}
-			}
-		}
+		$this->notify_users('article', $parent_info['id'], 'article_comment', $item_id, $data['uid'], $data['at_uid'], $data['message']);
 
 		if ($data['follow'])
 		{
@@ -426,34 +416,7 @@ class publish_class extends AWS_MODEL
 		$this->model('posts')->set_posts_index($data['parent_id'], 'video');
 
 
-		$notification_sent = $this->model('notification')->send(
-			$data['uid'],
-			$parent_info['uid'],
-			'REPLY_THREAD',
-			'video', $parent_info['id'], 'video_comment', $item_id);
-
-		if (!$notification_sent OR ($data['at_uid'] AND $data['at_uid'] != $parent_info['uid']))
-		{
-			$notification_sent = $this->model('notification')->send(
-				$data['uid'],
-				$data['at_uid'],
-				'REPLY_USER',
-				'video', $parent_info['id'], 'video_comment', $item_id);
-		}
-
-		if ($mentioned_uids = $this->model('mention')->parse_at_user($data['message'], false, true))
-		{
-			foreach ($mentioned_uids as $user_id)
-			{
-				if (!$notification_sent OR ($user_id != $data['at_uid'] AND $user_id != $parent_info['uid']))
-				{
-					$this->model('notification')->send(
-						$data['uid'],
-						$user_id, 'MENTION_USER',
-						'video', $parent_info['id'], 'video_comment', $item_id);
-				}
-			}
-		}
+		$this->notify_users('video', $parent_info['id'], 'video_comment', $item_id, $data['uid'], $data['at_uid'], $data['message']);
 
 		if ($data['follow'])
 		{
