@@ -151,7 +151,7 @@ class publish_class extends AWS_MODEL
 		}
 
 		// 记录用户动态
-		$this->model('activity')->log('question', $item_id, $data['uid']);
+		$this->model('activity')->push('question', $item_id, $data['uid']);
 
 		return $item_id;
 	}
@@ -182,7 +182,7 @@ class publish_class extends AWS_MODEL
 		$this->save_topics('article', $data['uid'], $item_id, $data['topics'], $data['permission_create_topic']);
 
 		// 记录用户动态
-		$this->model('activity')->log('article', $item_id, $data['uid']);
+		$this->model('activity')->push('article', $item_id, $data['uid']);
 
 		return $item_id;
 	}
@@ -217,7 +217,7 @@ class publish_class extends AWS_MODEL
 		$this->save_topics('video', $data['uid'], $item_id, $data['topics'], $data['permission_create_topic']);
 
 		// 记录用户动态
-		$this->model('activity')->log('video', $item_id, $data['uid']);
+		$this->model('activity')->push('video', $item_id, $data['uid']);
 
 		return $item_id;
 	}
@@ -295,7 +295,7 @@ class publish_class extends AWS_MODEL
 		$this->model('invite')->answer_question_invite($data['parent_id'], $data['uid']);
 
 		// 记录用户动态
-		$this->model('activity')->log('answer', $item_id, $data['uid']);
+		$this->model('activity')->push('answer', $item_id, $data['uid']);
 
 		// TODO: 防止匿名回复刷代币
 		if ($data['permission_affect_currency'] AND $data['uid'] != $parent_info['uid'])
@@ -371,7 +371,7 @@ class publish_class extends AWS_MODEL
 		}
 
 		// 记录用户动态
-		$this->model('activity')->log('article_comment', $item_id, $data['uid']);
+		$this->model('activity')->push('article_comment', $item_id, $data['uid']);
 
 		// TODO: 防止匿名回复刷代币
 		if ($data['permission_affect_currency'] AND $data['uid'] != $parent_info['uid'])
@@ -455,7 +455,7 @@ class publish_class extends AWS_MODEL
 		}
 
 		// 记录用户动态
-		$this->model('activity')->log('video_comment', $item_id, $data['uid']);
+		$this->model('activity')->push('video_comment', $item_id, $data['uid']);
 
 		// TODO: 防止匿名回复刷代币
 		if ($data['permission_affect_currency'] AND $data['uid'] != $parent_info['uid'])

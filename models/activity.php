@@ -19,9 +19,62 @@ if (!defined('IN_ANWSION'))
 
 class activity_class extends AWS_MODEL
 {
+	public function check_push_category($category_id)
+	{
+		$push_categories = get_setting('push_categories');
+		if (!$push_categories)
+		{
+			return true;
+		}
+		$push_categories = explode(',', $push_categories);
+		if (!is_array($push_categories))
+		{
+			return false;
+		}
+		$push_categories = array_map('intval', $push_categories);
+		if (!in_array($category_id, $push_categories))
+		{
+			return false;
+		}
+		return true;
+	}
+
+	public function check_push_type($type)
+	{
+		$push_types = get_setting('push_types');
+		if (!$push_types)
+		{
+			return true;
+		}
+		$push_types = explode(',', $push_types);
+		if (!is_array($push_types))
+		{
+			return false;
+		}
+		$push_types = array_map('trim', $push_types);
+		if (!in_array($type, $push_types))
+		{
+			return false;
+		}
+		return true;
+	}
+
+	public function push($item_type, $item_id, $uid = 0, $thread_type = null, $thread_id = 0, $category_id = 0)
+	{
+		if (!$this->check_push_type($item_type))
+		{
+			return;
+		}
+		if ($category_id AND !$this->check_push_category($category_id))
+		{
+			return;
+		}
+		$this->log($item_type, $item_id, $uid, $thread_type, $thread_id, $category_id);
+	}
+
 	/**
-	 * 记录用户动态
-	 * @param string $item_type question|question_discussion|answer|answer_discussion|article|article_comment|video|video_comment
+	 * 记录动态
+	 * @param string $item_type question|answer|article|article_comment|video|video_comment
 	 * @param int $item_id
 	 * @param int $uid
 	 * @param string $thread_type question|article|video

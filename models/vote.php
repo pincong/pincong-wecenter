@@ -234,18 +234,7 @@ class vote_class extends AWS_MODEL
 			return;
 		}
 
-		$push_types = get_setting('push_types');
-		if (!$push_types)
-		{
-			return;
-		}
-		$push_types = explode(',', $push_types);
-		if (!is_array($push_types))
-		{
-			return;
-		}
-		$push_types = array_map('trim', $push_types);
-		if (!in_array($type, $push_types))
+		if (!$this->model('activity')->check_push_type($type))
 		{
 			return;
 		}
@@ -258,18 +247,9 @@ class vote_class extends AWS_MODEL
 		$parent_info = $this->model('content')->get_item_thread_info_by_id($type, $item_id);
 		$category_id = intval($parent_info['category_id']);
 
-		$push_categories = get_setting('push_categories');
-		if (!!$push_categories)
+		if (!$this->model('activity')->check_push_category($category_id))
 		{
-			$push_categories = explode(',', $push_categories);
-			if (is_array($push_categories) AND count($push_categories) > 0)
-			{
-				$push_categories = array_map('intval', $push_categories);
-				if (!in_array($category_id, $push_categories))
-				{
-					return;
-				}
-			}
+			return;
 		}
 
 		$this->model('activity')->log($type, $item_id, 0, $parent_info['thread_type'], $parent_info['thread_id'], $category_id);
