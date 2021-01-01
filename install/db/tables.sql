@@ -516,6 +516,7 @@ CREATE TABLE `aws_users` (
   `reputation` float DEFAULT '0',
   `currency` int(11) DEFAULT '0',
   `user_update_time` int(11) DEFAULT '0' COMMENT '用户最后发言时间',
+  `mod_time` int(11) DEFAULT '0',
   `settings` text,
   `verified` varchar(32) DEFAULT NULL COMMENT '认证头衔',
   `signature` varchar(140) DEFAULT NULL COMMENT '个人签名',
@@ -530,7 +531,8 @@ CREATE TABLE `aws_users` (
   KEY `reputation` (`reputation`),
   KEY `agree_count` (`agree_count`),
   KEY `currency` (`currency`),
-  KEY `user_update_time` (`user_update_time`)
+  KEY `user_update_time` (`user_update_time`),
+  KEY `mod_time` (`mod_time`)
 ) DEFAULT CHARSET=utf8mb4;
 
 --

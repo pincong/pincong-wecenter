@@ -38,7 +38,8 @@ class main extends AWS_CONTROLLER
 	{
 		$this->crumb(_t('用户列表'));
 
-		$admin_permission = $this->user_info['permission']['is_administrator'];
+		$is_admin = $this->user_info['permission']['is_administrator'];
+		$is_mod = $this->user_info['permission']['is_moderator'];
 
 		$all_groups = $this->model('usergroup')->get_all_groups();
 		foreach ($all_groups as $key => $val)
@@ -48,7 +49,7 @@ class main extends AWS_CONTROLLER
 				$custom_group[] = $val;
 			}
 
-			if ($admin_permission AND $val['type'] == 0 AND $val['group_id'] > 0)
+			if ($is_admin AND $val['type'] == 0 AND $val['group_id'] > 0)
 			{
 				$custom_group[] = $val;
 			}
@@ -66,10 +67,21 @@ class main extends AWS_CONTROLLER
 			$sort = 'DESC';
 		}
 
-		if (H::GET('sort_key') == 'uid')
+		$sort_key = H::GET('sort_key');
+		if ($sort_key == 'uid')
 		{
-			$order = 'uid ' . $sort;
-			$url_param[] = 'sort_key-uid';
+			$order = $sort_key . ' ' . $sort;
+			$url_param[] = 'sort_key-' . $sort_key;
+		}
+		else if ($is_mod AND $sort_key == 'user_update_time')
+		{
+			$order = $sort_key . ' ' . $sort;
+			$url_param[] = 'sort_key-' . $sort_key;
+		}
+		else if ($is_mod AND $sort_key == 'mod_time')
+		{
+			$order = $sort_key . ' ' . $sort;
+			$url_param[] = 'sort_key-' . $sort_key;
 		}
 		else
 		{
@@ -79,24 +91,24 @@ class main extends AWS_CONTROLLER
 		$group_id = H::GET_I('group_id');
 		if ($group_id > 0)
 		{
-			if ($all_groups[$group_id]['type'] == 2 OR ($admin_permission AND $all_groups[$group_id]['type'] == 0))
+			if ($all_groups[$group_id]['type'] == 2 OR ($is_admin AND $all_groups[$group_id]['type'] == 0))
 			{
 				$where[] = [['group_id', 'eq', $group_id], 'or', ['flagged', 'eq', $group_id]];
 				$url_param[] = 'group_id-' . $group_id;
 			}
 		}
 
-		$is_forbidden = H::GET_I('forbidden');
-		$is_flagged = H::GET_I('flagged');
-		if ($is_forbidden OR $is_flagged)
+		$forbidden = H::GET_I('forbidden');
+		$flagged = H::GET_I('flagged');
+		if ($forbidden OR $flagged)
 		{
-			if ($is_forbidden)
+			if ($forbidden)
 			{
 				$where[] = ['forbidden', 'notEq', 0];
 				$url_param[] = 'forbidden-1';
 			}
 
-			if ($is_flagged)
+			if ($flagged)
 			{
 				$where[] = ['flagged', 'notEq', 0];
 				$url_param[] = 'flagged-1';
