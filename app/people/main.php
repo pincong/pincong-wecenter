@@ -54,8 +54,27 @@ class main extends AWS_CONTROLLER
 			}
 		}
 
-		$order = 'reputation DESC, uid ASC';
 		$url_param = [];
+
+		if (H::GET('sort') == 'ASC')
+		{
+			$sort = 'ASC';
+			$url_param[] = 'sort-' . $sort;
+		}
+		else
+		{
+			$sort = 'DESC';
+		}
+
+		if (H::GET('sort_key') == 'uid')
+		{
+			$order = 'uid ' . $sort;
+			$url_param[] = 'sort_key-uid';
+		}
+		else
+		{
+			$order = 'reputation ' . $sort . ', uid ' . $sort;
+		}
 
 		$group_id = H::GET_I('group_id');
 		if ($group_id > 0)
@@ -71,8 +90,6 @@ class main extends AWS_CONTROLLER
 		$is_flagged = H::GET_I('flagged');
 		if ($is_forbidden OR $is_flagged)
 		{
-			$order = 'user_update_time ASC, uid ASC';
-
 			if ($is_forbidden)
 			{
 				$where[] = ['forbidden', 'notEq', 0];
@@ -88,12 +105,6 @@ class main extends AWS_CONTROLLER
 		else
 		{
 			$where[] = ['forbidden', 'eq', 0];
-		}
-
-		if (H::GET('sort_key') == 'uid')
-		{
-			$order = 'uid ASC';
-			$url_param[] = 'sort_key-uid';
 		}
 
 		$users_list = $this->model('account')->get_user_list($where, $order, H::GET('page'), S::get_int('contents_per_page'));

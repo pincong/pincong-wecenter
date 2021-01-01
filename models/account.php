@@ -283,7 +283,6 @@ class account_class extends AWS_MODEL
 	{
 		$this->update('users', array(
 			'user_name' => htmlspecialchars($user_name),
-			'user_update_time' => fake_time()
 		), ['uid', 'eq', $uid, 'i']);
 
 		return true;

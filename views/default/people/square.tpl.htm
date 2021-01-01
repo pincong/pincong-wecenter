@@ -11,9 +11,14 @@
 						</div>
 						<div class="mod-body aw-people-list">
 							<?php if ($this->users_list) { ?>
+							<?php $page_num = intval($_GET['page']); if (!$page_num) $page_num = 1; $user_num = ($page_num - 1) * S::get_int('contents_per_page'); ?>
 							<?php foreach($this->users_list as $key => $val) { ?>
 							<div class="aw-item">
-								<span class="aw-user-sort-count aw-border-radius-5<?php if (($key + 1 + ((intval($_GET['page']) - 1) * S::get_int('contents_per_page'))) <= 3) { ?> active<?php } ?>"><i class="icon icon-flag"></i> <em><?php if (($key + 1 + ((intval($_GET['page']) - 1) * S::get_int('contents_per_page'))) < 99) { echo ($key + 1 + ((intval($_GET['page']) - 1) * S::get_int('contents_per_page'))); } else { echo '*'; }; ?></em></span>
+								<?php if ($key + 1 + $user_num <= 100) { ?>
+								<span class="aw-user-sort-count aw-border-radius-5 active"><i class="icon icon-flag"></i> <em><?php echo ($key + 1 + $user_num); ?></em></span>
+								<?php } else { ?>
+								<span class="aw-user-sort-count aw-border-radius-5"><i class="icon icon-flag"></i> <em>*</em></span>
+								<?php } ?>
 								<a class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val); ?>">
 									<img alt="" src="<?php echo UF::avatar($val, 'mid'); ?>" />
 								</a>

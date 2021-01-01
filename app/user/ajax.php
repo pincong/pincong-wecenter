@@ -392,7 +392,6 @@ class ajax extends AWS_CONTROLLER
 		{
 			$this->model('account')->update_user_fields(array(
 				'group_id' => ($group_id),
-				'user_update_time' => fake_time()
 			), $uid);
 
 			if (!$this->user_info['permission']['is_moderator'])
