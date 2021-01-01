@@ -79,9 +79,9 @@ class answer_class extends AWS_MODEL
 		return $this->count('answer', "question_id = " . intval($question_id) . $where);
 	}
 
-	public function get_answer_list_by_question_id($question_id, $limit = 20, $order = 'answer_id DESC')
+	public function get_answers($question_id, $page, $per_page, $order = 'answer_id ASC')
 	{
-		if ($answer_list = $this->fetch_all('answer', 'question_id = ' . intval($question_id), $order, $limit))
+		if ($answer_list = $this->fetch_page('answer', 'question_id = ' . intval($question_id), $order, $page, $per_page))
 		{
 			$downvote_fold = get_setting('downvote_fold');
 			foreach($answer_list as $key => $val)
@@ -113,6 +113,8 @@ class answer_class extends AWS_MODEL
 	/**
 	 * 删除问题关联的所有回复及相关的内容
 	 */
+	// TODO:
+	/*
 	public function remove_answers_by_question_id($question_id)
 	{
 		if (!$answers = $this->get_answer_list_by_question_id($question_id))
@@ -127,10 +129,13 @@ class answer_class extends AWS_MODEL
 
 		return $this->remove_answer_by_ids($answer_ids);
 	}
+	*/
 
 	/**
 	 * 根据回复集合批量删除回复
 	 */
+	// TODO:
+	/*
 	public function remove_answer_by_ids($answer_ids)
 	{
 		if (!is_array($answer_ids))
@@ -162,6 +167,7 @@ class answer_class extends AWS_MODEL
 
 		return true;
 	}
+	*/
 
 	public function has_answer_by_uid($question_id, $uid)
 	{

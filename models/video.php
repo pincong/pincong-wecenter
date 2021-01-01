@@ -255,9 +255,9 @@ class video_class extends AWS_MODEL
 		return $video_comments;
 	}
 
-	public function get_comments($video_id, $page, $per_page)
+	public function get_comments($video_id, $page, $per_page, $order = 'id ASC')
 	{
-		if ($comments = $this->fetch_page('video_comment', 'video_id = ' . intval($video_id), 'id ASC', $page, $per_page))
+		if ($comments = $this->fetch_page('video_comment', 'video_id = ' . intval($video_id), $order, $page, $per_page))
 		{
 			$downvote_fold = get_setting('downvote_fold');
 			foreach ($comments AS $key => $val)

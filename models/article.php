@@ -239,9 +239,9 @@ class article_class extends AWS_MODEL
 		return $article_comments;
 	}
 
-	public function get_comments($article_id, $page, $per_page)
+	public function get_comments($article_id, $page, $per_page, $order = 'id ASC')
 	{
-		if ($comments = $this->fetch_page('article_comment', 'article_id = ' . intval($article_id), 'id ASC', $page, $per_page))
+		if ($comments = $this->fetch_page('article_comment', 'article_id = ' . intval($article_id), $order, $page, $per_page))
 		{
 			$downvote_fold = get_setting('downvote_fold');
 			foreach ($comments AS $key => $val)

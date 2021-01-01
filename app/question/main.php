@@ -91,7 +91,7 @@ class main extends AWS_CONTROLLER
 		}
 		else
 		{
-			$answer_list = $this->model('answer')->get_answer_list_by_question_id($question_info['question_id'], calc_page_limit($_GET['page'], $replies_per_page), null, $answer_order_by);
+			$answer_list = $this->model('answer')->get_answers($question_info['question_id'], $_GET['page'], $replies_per_page, $answer_order_by);
 		}
 
 		if (! is_array($answer_list))
