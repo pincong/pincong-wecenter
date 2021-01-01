@@ -68,7 +68,7 @@ class article_class extends AWS_MODEL
 		return $list;
 	}
 
-	public function modify_article($id, $uid, $title, $message)
+	public function modify_article($id, $title, $message, $log_uid)
 	{
 		if (!$item_info = $this->model('content')->get_thread_info_by_id('article', $id))
 		{
@@ -82,12 +82,12 @@ class article_class extends AWS_MODEL
 			'message' => htmlspecialchars($message)
 		), 'id = ' . intval($id));
 
-		$this->model('content')->log('article', $id, 'article', $id, '编辑', $uid);
+		$this->model('content')->log('article', $id, 'article', $id, '编辑', $log_uid);
 
 		return true;
 	}
 
-	public function clear_article($id, $uid)
+	public function clear_article($id, $log_uid)
 	{
 		if (!$item_info = $this->model('content')->get_thread_info_by_id('article', $id))
 		{
@@ -110,12 +110,12 @@ class article_class extends AWS_MODEL
 
 		$this->update('article', $data, 'id = ' . intval($id));
 
-		$this->model('content')->log('article', $id, 'article', $id, '删除', $uid, 'category', $item_info['category_id']);
+		$this->model('content')->log('article', $id, 'article', $id, '删除', $log_uid, 'category', $item_info['category_id']);
 
 		return true;
 	}
 
-	public function modify_article_comment($comment_id, $uid, $message)
+	public function modify_article_comment($comment_id, $message, $log_uid)
 	{
 		if (!$comment_info = $this->model('content')->get_reply_info_by_id('article_comment', $comment_id))
 		{
@@ -126,12 +126,12 @@ class article_class extends AWS_MODEL
 			'message' => htmlspecialchars($message)
 		), 'id = ' . intval($comment_id));
 
-		$this->model('content')->log('article', $comment_info['article_id'], 'article_comment', $comment_id, '编辑', $uid);
+		$this->model('content')->log('article', $comment_info['article_id'], 'article_comment', $comment_id, '编辑', $log_uid);
 
 		return true;
 	}
 
-	public function clear_article_comment($comment_id, $uid)
+	public function clear_article_comment($comment_id, $log_uid)
 	{
 		if (!$comment_info = $this->model('content')->get_reply_info_by_id('article_comment', $comment_id))
 		{
@@ -142,7 +142,7 @@ class article_class extends AWS_MODEL
 			'message' => null
 		), 'id = ' . intval($comment_id));
 
-		$this->model('content')->log('article', $comment_info['article_id'], 'article_comment', $comment_id, '删除', $uid);
+		$this->model('content')->log('article', $comment_info['article_id'], 'article_comment', $comment_id, '删除', $log_uid);
 
 		return true;
 	}
@@ -259,31 +259,6 @@ class article_class extends AWS_MODEL
 
 		return $comments;
 	}
-
-	// TODO
-	/*
-	public function remove_article($article_id)
-	{
-		if (!$article_info = $this->model('content')->get_thread_info_by_id('article', $article_id))
-		{
-			return false;
-		}
-
-		$this->delete('article_log', 'item_id = ' . intval($article_id));
-
-		$this->delete('article_comment', "article_id = " . intval($article_id)); // 删除关联的回复内容
-
-		$this->delete('topic_relation', "`type` = 'article' AND item_id = " . intval($article_id));		// 删除话题关联
-
-		//ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action IN(' . ACTION_LOG::ADD_ARTICLE . ', ' . ACTION_LOG::ADD_AGREE_ARTICLE . ', ' . ACTION_LOG::ADD_COMMENT_ARTICLE . ') AND associate_id = ' . intval($article_id));	// 删除动作
-
-		$this->model('notify')->delete_notify('model_type = 8 AND source_id = ' . intval($article_id));	// 删除相关的通知
-
-		$this->model('posts')->remove_posts_index($article_id, 'article');
-
-		return $this->delete('article', 'id = ' . intval($article_id));
-	}
-	*/
 
 	public function get_article_list($category_id, $page, $per_page, $order_by, $day = null)
 	{

@@ -420,11 +420,17 @@ class ajax extends AWS_CONTROLLER
 
 		if ($_GET['type'] == 'answer')
 		{
-			$this->model('question')->remove_answer_discussion($comment, $this->user_id);
+			$this->model('question')->remove_answer_discussion(
+				$comment,
+				$this->user_id
+			);
 		}
 		else if ($_GET['type'] == 'question')
 		{
-			$this->model('question')->remove_question_discussion($comment, $this->user_id);
+			$this->model('question')->remove_question_discussion(
+				$comment,
+				$this->user_id
+			);
 		}
 
 		H::ajax_json_output(AWS_APP::RSM(null, 1, null));

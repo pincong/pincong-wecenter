@@ -340,7 +340,7 @@ class content_class extends AWS_MODEL
 		return true;
 	}
 
-	public function change_uid($item_type, $item_id, $new_uid, $old_uid, $uid)
+	public function change_uid($item_type, $item_id, $new_uid, $old_uid, $log_uid)
 	{
 		$new_uid = intval($new_uid);
 		if (!$new_uid OR $new_uid == $old_uid)
@@ -359,12 +359,12 @@ class content_class extends AWS_MODEL
 		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
 		$this->update('posts_index', array('uid' => ($new_uid)), $where);
 
-		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '变更作者', $uid, 'user', $old_uid);
+		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '变更作者', $log_uid, 'user', $old_uid);
 
 		return true;
 	}
 
-	public function change_category($item_type, $item_id, $category_id, $old_category_id, $uid)
+	public function change_category($item_type, $item_id, $category_id, $old_category_id, $log_uid)
 	{
 		if (!$this->check_thread_type($item_type))
 		{
@@ -377,13 +377,13 @@ class content_class extends AWS_MODEL
 		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
 		$this->update('posts_index', array('category_id' => intval($category_id)), $where);
 
-		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '变更分类', $uid, 'category', $old_category_id);
+		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '变更分类', $log_uid, 'category', $old_category_id);
 
 		return true;
 	}
 
 
-	public function lock($item_type, $item_id, $uid)
+	public function lock($item_type, $item_id, $log_uid)
 	{
 		if (!$this->check_thread_type($item_type))
 		{
@@ -393,12 +393,12 @@ class content_class extends AWS_MODEL
 		$where = 'id = ' . intval($item_id);
 		$this->update($item_type, array('lock' => 1), $where);
 
-		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '锁定', $uid);
+		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '锁定', $log_uid);
 
 		return true;
 	}
 
-	public function unlock($item_type, $item_id, $uid)
+	public function unlock($item_type, $item_id, $log_uid)
 	{
 		if (!$this->check_thread_type($item_type))
 		{
@@ -408,13 +408,13 @@ class content_class extends AWS_MODEL
 		$where = 'id = ' . intval($item_id);
 		$this->update($item_type, array('lock' => 0), $where);
 
-		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '取消锁定', $uid);
+		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '取消锁定', $log_uid);
 
 		return true;
 	}
 
 
-	public function bump($item_type, $item_id, $uid)
+	public function bump($item_type, $item_id, $log_uid)
 	{
 		if (!$this->check_thread_type($item_type))
 		{
@@ -427,12 +427,12 @@ class content_class extends AWS_MODEL
 			'update_time' => $this->model('posts')->get_last_update_time()
 		), $where);
 
-		$this->model('content')->log($item_type, $item_id, '提升', $uid);
+		$this->model('content')->log($item_type, $item_id, '提升', $log_uid);
 
 		return true;
 	}
 
-	public function sink($item_type, $item_id, $uid)
+	public function sink($item_type, $item_id, $log_uid)
 	{
 		if (!$this->check_thread_type($item_type))
 		{
@@ -445,12 +445,12 @@ class content_class extends AWS_MODEL
 			'update_time' => $this->model('posts')->get_last_update_time() - (7 * 24 * 3600)
 		), $where);
 
-		$this->model('content')->log($item_type, $item_id, '下沉', $uid);
+		$this->model('content')->log($item_type, $item_id, '下沉', $log_uid);
 
 		return true;
 	}
 
-	public function recommend($item_type, $item_id, $uid)
+	public function recommend($item_type, $item_id, $log_uid)
 	{
 		if (!$this->check_thread_type($item_type))
 		{
@@ -463,10 +463,10 @@ class content_class extends AWS_MODEL
 		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
 		$this->update('posts_index', array('recommend' => 1), $where);
 
-		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '推荐', $uid);
+		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '推荐', $log_uid);
 	}
 
-	public function unrecommend($item_type, $item_id, $uid)
+	public function unrecommend($item_type, $item_id, $log_uid)
 	{
 		if (!$this->check_thread_type($item_type))
 		{
@@ -479,11 +479,11 @@ class content_class extends AWS_MODEL
 		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
 		$this->update('posts_index', array('recommend' => 0), $where);
 
-		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '取消推荐', $uid);
+		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '取消推荐', $log_uid);
 	}
 
 
-	public function pin($item_type, $item_id, $uid)
+	public function pin($item_type, $item_id, $log_uid)
 	{
 		if (!$this->check_thread_type($item_type))
 		{
@@ -496,10 +496,10 @@ class content_class extends AWS_MODEL
 		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
 		$this->update('posts_index', array('sort' => 1), $where);
 
-		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '置顶', $uid);
+		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '置顶', $log_uid);
 	}
 
-	public function unpin($item_type, $item_id, $uid)
+	public function unpin($item_type, $item_id, $log_uid)
 	{
 		if (!$this->check_thread_type($item_type))
 		{
@@ -512,11 +512,11 @@ class content_class extends AWS_MODEL
 		$where = "post_id = " . intval($item_id) . " AND post_type = '" . $this->quote($item_type) . "'";
 		$this->update('posts_index', array('sort' => 0), $where);
 
-		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '取消置顶', $uid);
+		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '取消置顶', $log_uid);
 	}
 
 
-	public function fold_reply($item_type, $item_id, $parent_type, $parent_id, $uid)
+	public function fold_reply($item_type, $item_id, $parent_type, $parent_id, $log_uid)
 	{
 		if (!$this->check_reply_type($item_type))
 		{
@@ -527,10 +527,10 @@ class content_class extends AWS_MODEL
 
 		$this->update($item_type, array('fold' => 1), $where);
 
-		$this->model('content')->log($parent_type, $parent_id, $item_type, $item_id, '折叠', $uid);
+		$this->model('content')->log($parent_type, $parent_id, $item_type, $item_id, '折叠', $log_uid);
 	}
 
-	public function unfold_reply($item_type, $item_id, $parent_type, $parent_id, $uid)
+	public function unfold_reply($item_type, $item_id, $parent_type, $parent_id, $log_uid)
 	{
 		if (!$this->check_reply_type($item_type))
 		{
@@ -541,7 +541,7 @@ class content_class extends AWS_MODEL
 
 		$this->update($item_type, array('fold' => 0), $where);
 
-		$this->model('content')->log($parent_type, $parent_id, $item_type, $item_id, '取消折叠', $uid);
+		$this->model('content')->log($parent_type, $parent_id, $item_type, $item_id, '取消折叠', $log_uid);
 	}
 
 

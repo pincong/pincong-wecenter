@@ -99,65 +99,6 @@ class answer_class extends AWS_MODEL
 	}
 
 
-	/**
-	 * 删除问题关联的所有回复及相关的内容
-	 */
-	// TODO:
-	/*
-	public function remove_answers_by_question_id($question_id)
-	{
-		if (!$answers = $this->get_answer_list_by_question_id($question_id))
-		{
-			return false;
-		}
-
-		foreach ($answers as $key => $val)
-		{
-			$answer_ids[] = $val['id'];
-		}
-
-		return $this->remove_answer_by_ids($answer_ids);
-	}
-	*/
-
-	/**
-	 * 根据回复集合批量删除回复
-	 */
-	// TODO:
-	/*
-	public function remove_answer_by_ids($answer_ids)
-	{
-		if (!is_array($answer_ids))
-		{
-			return false;
-		}
-
-		foreach ($answer_ids as $answer_id)
-		{
-			$this->remove_answer_by_id($answer_id);
-		}
-
-		return true;
-	}
-
-	public function remove_answer_by_id($answer_id)
-	{
-		if ($answer_info = $this->model('content')->get_reply_info_by_id('answer', $answer_id))
-		{
-			$this->delete('answer_discussion', 'answer_id = ' . intval($answer_id));	// 删除讨论
-
-			//ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_ANSWER . ' AND associate_id = ' . intval($answer_id));
-			//ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action = ' . ACTION_LOG::ANSWER_QUESTION . ' AND associate_attached = ' . intval($answer_id));
-
-			$this->delete('answer', "id = " . intval($answer_id));
-
-			$this->model('question')->update_answer_count($answer_info['question_id']);
-		}
-
-		return true;
-	}
-	*/
-
 	public function has_answer_by_uid($question_id, $uid)
 	{
 		return $this->fetch_one('answer', 'id', "question_id = " . intval($question_id) . " AND uid = " . intval($uid));
@@ -226,10 +167,5 @@ class answer_class extends AWS_MODEL
 	{
 		return $this->fetch_row('answer_discussion', "id = " . intval($comment_id));
 	}
-
-	/*public function remove_answer_discussion($comment_id)
-	{
-		//return $this->delete('answer_discussion', "id = " . intval($comment_id));
-	}*/
 
 }

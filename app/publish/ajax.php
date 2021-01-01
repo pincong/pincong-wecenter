@@ -506,9 +506,9 @@ class ajax extends AWS_CONTROLLER
 		{
 			$this->model('question')->modify_question(
 				$question_info['id'],
-				$this->user_id,
 				$_POST['title'],
-				$_POST['message']
+				$_POST['message'],
+				$this->user_id
 			);
 		}
 
@@ -568,9 +568,9 @@ class ajax extends AWS_CONTROLLER
 		{
 			$this->model('article')->modify_article(
 				$article_info['id'],
-				$this->user_id,
 				$_POST['title'],
-				$_POST['message']
+				$_POST['message'],
+				$this->user_id
 			);
 		}
 
@@ -648,9 +648,9 @@ class ajax extends AWS_CONTROLLER
 
 			$this->model('video')->modify_video(
 				$video_info['id'],
-				$this->user_id,
 				$_POST['title'],
-				$_POST['message']
+				$_POST['message'],
+				$this->user_id
 			);
 		}
 
@@ -984,8 +984,8 @@ class ajax extends AWS_CONTROLLER
 		{
 			$this->model('question')->modify_answer(
 				$answer_info['id'],
-				$this->user_id,
-				$_POST['message']
+				$_POST['message'],
+				$this->user_id
 			);
 		}
 
@@ -1044,8 +1044,8 @@ class ajax extends AWS_CONTROLLER
 		{
 			$this->model('article')->modify_article_comment(
 				$comment_info['id'],
-				$this->user_id,
-				$_POST['message']
+				$_POST['message'],
+				$this->user_id
 			);
 		}
 
@@ -1100,8 +1100,8 @@ class ajax extends AWS_CONTROLLER
 		{
 			$this->model('video')->modify_video_comment(
 				$comment_info['id'],
-				$this->user_id,
-				$_POST['message']
+				$_POST['message'],
+				$this->user_id
 			);
 		}
 

@@ -68,7 +68,7 @@ class question_class extends AWS_MODEL
 		return $list;
 	}
 
-	public function modify_question($id, $uid, $title, $message)
+	public function modify_question($id, $title, $message, $log_uid)
 	{
 		if (!$item_info = $this->model('content')->get_thread_info_by_id('question', $id))
 		{
@@ -82,13 +82,13 @@ class question_class extends AWS_MODEL
 			'message' => htmlspecialchars($message)
 		), 'id = ' . intval($id));
 
-		$this->model('content')->log('question', $id, 'question', $id, '编辑', $uid);
+		$this->model('content')->log('question', $id, 'question', $id, '编辑', $log_uid);
 
 		return true;
 	}
 
 
-	public function clear_question($id, $uid)
+	public function clear_question($id, $log_uid)
 	{
 		if (!$item_info = $this->model('content')->get_thread_info_by_id('question', $id))
 		{
@@ -111,13 +111,13 @@ class question_class extends AWS_MODEL
 
 		$this->update('question', $data, 'id = ' . intval($id));
 
-		$this->model('content')->log('question', $id, 'question', $id, '删除', $uid, 'category', $item_info['category_id']);
+		$this->model('content')->log('question', $id, 'question', $id, '删除', $log_uid, 'category', $item_info['category_id']);
 
 		return true;
 	}
 
 
-	public function modify_answer($answer_id, $uid, $message)
+	public function modify_answer($answer_id, $message, $log_uid)
 	{
 		if (!$answer_info = $this->model('content')->get_reply_info_by_id('answer', $answer_id))
 		{
@@ -128,13 +128,13 @@ class question_class extends AWS_MODEL
 			'message' => htmlspecialchars($message)
 		), 'id = ' . intval($answer_id));
 
-		$this->model('content')->log('question', $answer_info['question_id'], 'answer', $answer_id, '编辑', $uid);
+		$this->model('content')->log('question', $answer_info['question_id'], 'answer', $answer_id, '编辑', $log_uid);
 
 		return true;
 	}
 
 
-	public function clear_answer($answer_id, $uid)
+	public function clear_answer($answer_id, $log_uid)
 	{
 		if (!$answer_info = $this->model('content')->get_reply_info_by_id('answer', $answer_id))
 		{
@@ -145,7 +145,7 @@ class question_class extends AWS_MODEL
 			'message' => null
 		), 'id = ' . intval($answer_id));
 
-		$this->model('content')->log('question', $answer_info['question_id'], 'answer', $answer_id, '删除', $uid);
+		$this->model('content')->log('question', $answer_info['question_id'], 'answer', $answer_id, '删除', $log_uid);
 
 		return true;
 	}
@@ -215,40 +215,6 @@ class question_class extends AWS_MODEL
 		return $result;
 	}
 
-	// TODO
-	/*
-	public function remove_question($question_id)
-	{
-		if (!$question_info = $this->model('content')->get_thread_info_by_id('question', $question_id))
-		{
-			return false;
-		}
-
-		$this->model('answer')->remove_answers_by_question_id($question_id); // 删除关联的回复内容
-
-		$this->delete('question_log', 'item_id = ' . intval($question_id));
-
-		$this->delete('question_discussion', 'question_id = ' . intval($question_id)); // 删除讨论
-
-		$this->delete('question_focus', 'question_id = ' . intval($question_id));
-
-		$this->delete('topic_relation', "`type` = 'question' AND item_id = " . intval($question_id));		// 删除话题关联
-
-		$this->delete('question_invite', 'question_id = ' . intval($question_id));	// 删除邀请记录
-
-		//ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION .  ' AND associate_id = ' . intval($question_id));	// 删除动作
-
-		//ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION .  ' AND associate_action = ' . ACTION_LOG::ANSWER_QUESTION . ' AND associate_attached = ' . intval($question_id));	// 删除动作
-
-		$this->model('notify')->delete_notify('model_type = 1 AND source_id = ' . intval($question_id));	// 删除相关的通知
-
-		$this->model('posts')->remove_posts_index($question_id, 'question');
-
-		$this->delete('question', 'id = ' . intval($question_id));
-
-	}
-	*/
-
 	public function add_focus_question($question_id, $uid)
 	{
 		if (!$question_id OR !$uid)
@@ -294,8 +260,6 @@ class question_class extends AWS_MODEL
 		{
 			return false;
 		}
-
-		//ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action = ' . ACTION_LOG::ADD_REQUESTION_FOCUS . ' AND uid = ' . intval($uid) . ' AND associate_id = ' . intval($question_id));
 
 		return $this->delete('question_focus', 'question_id = ' . intval($question_id) . " AND uid = " . intval($uid));
 	}
@@ -638,24 +602,20 @@ class question_class extends AWS_MODEL
 		return $this->fetch_row('question_discussion', "id = " . intval($comment_id));
 	}
 
-	/*public function remove_question_discussion($comment_id)
-	{
-		//return $this->delete('question_discussion', "id = " . intval($comment_id));
-	}*/
 
 	// 只清空不删除
-	public function remove_question_discussion(&$comment, $uid)
+	public function remove_question_discussion(&$comment, $log_uid)
 	{
 		$this->update('question_discussion', array(
 			'message' => null
 		), "id = " . $comment['id']);
 
-		$this->model('content')->log('question', $comment['question_id'], 'question_discussion', $comment['id'], '删除', $uid);
+		$this->model('content')->log('question', $comment['question_id'], 'question_discussion', $comment['id'], '删除', $log_uid);
 
 		return true;
 	}
 
-	public function remove_answer_discussion(&$comment, $uid)
+	public function remove_answer_discussion(&$comment, $log_uid)
 	{
 		$this->update('answer_discussion', array(
 			'message' => null
@@ -663,7 +623,7 @@ class question_class extends AWS_MODEL
 
 		if ($answer = $this->fetch_row('answer', 'id = ' . intval($comment['answer_id'])))
 		{
-			$this->model('content')->log('question', $answer['question_id'], 'answer_discussion', $comment['id'], '删除', $uid);
+			$this->model('content')->log('question', $answer['question_id'], 'answer_discussion', $comment['id'], '删除', $log_uid);
 		}
 
 		return true;

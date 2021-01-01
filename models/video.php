@@ -68,7 +68,7 @@ class video_class extends AWS_MODEL
 		return $list;
 	}
 
-	public function modify_video($id, $uid, $title, $message)
+	public function modify_video($id, $title, $message, $log_uid)
 	{
 		if (!$item_info = $this->model('content')->get_thread_info_by_id('video', $id))
 		{
@@ -82,13 +82,13 @@ class video_class extends AWS_MODEL
 			'message' => htmlspecialchars($message)
 		), 'id = ' . intval($id));
 
-		$this->model('content')->log('video', $id, 'video', $id, '编辑', $uid);
+		$this->model('content')->log('video', $id, 'video', $id, '编辑', $log_uid);
 
 		return true;
 	}
 
 
-	public function clear_video($id, $uid)
+	public function clear_video($id, $log_uid)
 	{
 		if (!$item_info = $this->model('content')->get_thread_info_by_id('video', $id))
 		{
@@ -114,13 +114,13 @@ class video_class extends AWS_MODEL
 
 		$this->update('video', $data, 'id = ' . intval($id));
 
-		$this->model('content')->log('video', $id, 'video', $id, '删除', $uid, 'category', $item_info['category_id']);
+		$this->model('content')->log('video', $id, 'video', $id, '删除', $log_uid, 'category', $item_info['category_id']);
 
 		return true;
 	}
 
 
-	public function modify_video_comment($comment_id, $uid, $message)
+	public function modify_video_comment($comment_id, $message, $log_uid)
 	{
 		if (!$comment_info = $this->model('content')->get_reply_info_by_id('video_comment', $comment_id))
 		{
@@ -131,12 +131,12 @@ class video_class extends AWS_MODEL
 			'message' => htmlspecialchars($message)
 		), 'id = ' . intval($comment_id));
 
-		$this->model('content')->log('video', $comment_info['video_id'], 'video_comment', $comment_id, '编辑', $uid);
+		$this->model('content')->log('video', $comment_info['video_id'], 'video_comment', $comment_id, '编辑', $log_uid);
 
 		return true;
 	}
 
-	public function clear_video_comment($comment_id, $uid)
+	public function clear_video_comment($comment_id, $log_uid)
 	{
 		if (!$comment_info = $this->model('content')->get_reply_info_by_id('video_comment', $comment_id))
 		{
@@ -147,7 +147,7 @@ class video_class extends AWS_MODEL
 			'message' => null
 		), 'id = ' . intval($comment_id));
 
-		$this->model('content')->log('video', $comment_info['video_id'], 'video_comment', $comment_id, '删除', $uid);
+		$this->model('content')->log('video', $comment_info['video_id'], 'video_comment', $comment_id, '删除', $log_uid);
 
 		return true;
 	}
@@ -275,31 +275,6 @@ class video_class extends AWS_MODEL
 
 		return $comments;
 	}
-
-	// TODO
-	/*
-	public function remove_video($video_id)
-	{
-		if (!$video_info = $this->model('content')->get_thread_info_by_id('video', $video_id))
-		{
-			return false;
-		}
-
-		$this->delete('video_log', 'item_id = ' . intval($video_id));
-
-		$this->delete('video_comment', "video_id = " . intval($video_id)); // 删除关联的回复内容
-
-		$this->delete('topic_relation', "`type` = 'video' AND item_id = " . intval($video_id));		// 删除话题关联
-
-		//ACTION_LOG::delete_action_history('associate_type = ' . ACTION_LOG::CATEGORY_QUESTION . ' AND associate_action IN(' . ACTION_LOG::ADD_VIDEO . ', ' . ACTION_LOG::ADD_AGREE_VIDEO . ', ' . ACTION_LOG::ADD_COMMENT_VIDEO . ') AND associate_id = ' . intval($video_id));	// 删除动作
-
-		//$this->model('notify')->delete_notify('model_type = 8 AND source_id = ' . intval($video_id));	// 删除相关的通知
-
-		$this->model('posts')->remove_posts_index($video_id, 'video');
-
-		return $this->delete('video', 'id = ' . intval($video_id));
-	}
-	*/
 
 	public function get_video_list($category_id, $page, $per_page, $order_by, $day = null)
 	{
