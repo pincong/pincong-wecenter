@@ -31,7 +31,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		H::ajax_response(array(
 			'inbox_num' => $this->user_info['inbox_unread'],
-			'notifications_num' => $this->user_info['notification_unread']
+			'notifications_num' => $this->model('notification')->count_unread($this->user_id)
 		));
 	}
 

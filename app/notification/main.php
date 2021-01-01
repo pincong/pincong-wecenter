@@ -41,11 +41,6 @@ class main extends AWS_CONTROLLER
 
 		$list = $this->model('notification')->list_notifications($this->user_id, 0, 1, 5);
 
-		if (!$list AND $this->user_info['notification_unread'] != 0)
-		{
-			$this->model('account')->update_notification_unread($this->user_id);
-		}
-
 		TPL::assign('list', $list);
 		if (H::GET('template') == 'list')
 		{
@@ -62,11 +57,6 @@ class main extends AWS_CONTROLLER
 		H::no_cache_header();
 
 		$list = $this->model('notification')->list_notifications($this->user_id, H::GET('flag'), H::GET('page'), S::get_int('notifications_per_page'));
-
-		if (!$list AND $this->user_info['notification_unread'] != 0)
-		{
-			$this->model('account')->update_notification_unread($this->user_id);
-		}
 
 		TPL::assign('list', $list);
 		TPL::output("notification/list_template");

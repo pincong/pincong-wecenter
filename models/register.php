@@ -34,7 +34,7 @@ class register_class extends AWS_MODEL
 	{
 		if ($uid = $this->insert_user($username, $scrambled_password, $client_salt, $public_key, $private_key))
 		{
-			$this->model('account')->update_notification_setting_fields(S::get('new_user_notification_setting'), $uid);
+			//$this->model('account')->update_notification_setting_fields(S::get('new_user_notification_setting'), $uid);
 
 			if ($def_focus_uids_str = S::get('def_focus_uids'))
 			{

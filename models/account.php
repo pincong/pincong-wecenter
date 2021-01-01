@@ -230,22 +230,6 @@ class account_class extends AWS_MODEL
 
 
 	/**
-	 * 根据用户ID获取用户通知设置
-	 * @param $uid
-	 */
-	public function get_notification_setting_by_uid($uid)
-	{
-		if (!$setting = $this->fetch_row('users_notification_setting', ['uid', 'eq', $uid, 'i']))
-		{
-			return array('data' => array());
-		}
-
-		$setting['data'] = unserialize_array($setting['data']);
-
-		return $setting;
-	}
-
-	/**
 	 * 发送欢迎信息
 	 *
 	 * @param int
@@ -396,40 +380,6 @@ class account_class extends AWS_MODEL
 		}
 
 		$this->update_user_fields(array('settings' => serialize_array($settings)), $uid);
-	}
-
-
-	/**
-	 * 更新用户通知设置
-	 *
-	 * @param  array
-	 * @param  int
-	 * @return boolean
-	 */
-	public function update_notification_setting_fields($data, $uid)
-	{
-		if (!$this->count('users_notification_setting', ['uid', 'eq', $uid, 'i']))
-		{
-			$this->insert('users_notification_setting', array(
-				'data' => serialize($data),
-				'uid' => intval($uid)
-			));
-		}
-		else
-		{
-			$this->update('users_notification_setting', array(
-				'data' => serialize($data)
-			), ['uid', 'eq', $uid, 'i']);
-		}
-
-		return true;
-	}
-
-	public function update_notification_unread($uid)
-	{
-		return $this->update('users', array(
-			'notification_unread' => $this->count('notification', [['read_flag', 'eq', 0], ['recipient_uid', 'eq', $uid, 'i']])
-		), ['uid', 'eq', $uid, 'i']);
 	}
 
 	public function update_question_invite_count($uid)

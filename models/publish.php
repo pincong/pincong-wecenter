@@ -70,14 +70,11 @@ class publish_class extends AWS_MODEL
 	{
 		if ($mentioned_uids = $this->model('mention')->get_mentioned_uids($message))
 		{
-			foreach ($mentioned_uids as $mentioned_uid)
-			{
-				$this->model('notification')->send(
-					$sender_uid,
-					$mentioned_uid,
-					'MENTION_USER',
-					$thread_type, $thread_id, $reply_type, $reply_id);
-			}
+			$this->model('notification')->multi_send(
+				$sender_uid,
+				$mentioned_uids,
+				'MENTION_USER',
+				$thread_type, $thread_id, $reply_type, $reply_id);
 			return count($mentioned_uids);
 		}
 		return 0;
@@ -87,14 +84,11 @@ class publish_class extends AWS_MODEL
 	{
 		if ($follower_uids = $this->model('postfollow')->get_follower_uids($thread_type, $thread_id))
 		{
-			foreach ($follower_uids as $uid)
-			{
-				$this->model('notification')->send(
-					$sender_uid,
-					$uid,
-					'REPLY_THREAD',
-					$thread_type, $thread_id, $reply_type, $reply_id);
-			}
+			$this->model('notification')->multi_send(
+				$sender_uid,
+				$follower_uids,
+				'REPLY_THREAD',
+				$thread_type, $thread_id, $reply_type, $reply_id);
 		}
 	}
 

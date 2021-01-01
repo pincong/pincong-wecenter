@@ -35,8 +35,8 @@ class main extends AWS_CONTROLLER
 	{
 		$this->crumb(_t('隐私/提醒'));
 
-		TPL::assign('notification_settings', $this->model('account')->get_notification_setting_by_uid($this->user_id));
-		TPL::assign('notify_actions', $this->model('notification')->notify_action_details());
+		TPL::assign('notification_ignore_list', $this->model('notification')->get_user_ignore_list($this->user_id));
+		TPL::assign('notification_all_options', $this->model('notification')->get_all_options());
 
 		TPL::output('profile/privacy');
 	}

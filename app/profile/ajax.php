@@ -54,24 +54,11 @@ class ajax extends AWS_CONTROLLER
 
 	public function privacy_setting_action()
 	{
-		if ($notify_actions = $this->model('notification')->notify_action_details())
-		{
-			$notification_setting = array();
-
-			foreach ($notify_actions as $key => $val)
-			{
-				if (! isset($_POST['notification_settings'][$key]))
-				{
-					$notification_setting[] = $key;
-				}
-			}
-		}
-
 		$this->model('account')->update_user_fields(array(
 			'inbox_recv' => H::POST_I('inbox_recv')
 		), $this->user_id);
 
-		$this->model('account')->update_notification_setting_fields($notification_setting, $this->user_id);
+		$this->model('notification')->set_user_ignore_list($this->user_id, H::POST('notification_settings'), true);
 
 		H::ajax_error((_t('隐私设置保存成功')));
 	}

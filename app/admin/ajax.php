@@ -45,9 +45,9 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
 	public function save_settings_action()
 	{
-		if ($_POST['_set_notification_settings'])
+		/*if ($_POST['_set_notification_settings'])
 		{
-			if ($notify_actions = $this->model('notification')->notify_action_details())
+			if ($notify_actions = $this->model('notification')->get_all_options())
 			{
 				$notification_setting = array();
 
@@ -61,7 +61,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			}
 
 			$_POST['new_user_notification_setting'] = $notification_setting;
-		}
+		}*/
 
 		$this->model('setting')->set_vars($_POST);
 

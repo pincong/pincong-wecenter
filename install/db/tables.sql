@@ -557,18 +557,6 @@ CREATE TABLE `aws_users_group` (
 
 
 --
-CREATE TABLE `aws_users_notification_setting` (
-  `notice_setting_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
-  `uid` int(11) DEFAULT '0',
-  `data` text COMMENT '设置数据',
-  PRIMARY KEY (`notice_setting_id`),
-  KEY `uid` (`uid`)
-) DEFAULT CHARSET=utf8mb4;
-
---
-
-
---
 CREATE TABLE `aws_user_follow` (
   `follow_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `fans_uid` int(11) DEFAULT '0' COMMENT '关注人的UID',
@@ -595,6 +583,18 @@ CREATE TABLE `aws_user_relation` (
   KEY `target_uid` (`target_uid`),
   KEY `value` (`value`),
   KEY `time` (`time`)
+) DEFAULT CHARSET=utf8mb4;
+
+--
+
+
+--
+CREATE TABLE `aws_user_notification_settings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) DEFAULT '0',
+  `data` text,
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`)
 ) DEFAULT CHARSET=utf8mb4;
 
 --

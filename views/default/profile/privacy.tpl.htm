@@ -41,10 +41,10 @@
 					<dl>
 						<dt><?php echo _t('什么情况下给我发送通知'); ?> :</dt>
 						<dd>
-							<?php foreach($this->notify_actions as $key => $val) { ?>
+							<?php foreach($this->notification_all_options as $key => $val) { ?>
 							<span>
 								<label>
-									<input name="notification_settings[<?php echo $key; ?>]" type="checkbox" value="1"<?php if (!in_array($key, $this->notification_settings['data']) OR !$this->notification_settings['data']) { ?> checked="checked"<?php } ?> /> <?php echo safe_text($val); ?>
+									<input name="notification_settings[]" type="checkbox" value="<?php echo $key; ?>" <?php if (!in_array($key, $this->notification_ignore_list)) { ?>checked<?php } ?>> <?php echo safe_text($val); ?>
 								</label>
 							</span>
 							<?php } ?>
