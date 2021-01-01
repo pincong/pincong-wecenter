@@ -22,7 +22,7 @@ class postfollow_class extends AWS_MODEL
 {
 	public function get_follower_uids($post_type, $post_id)
 	{
-		if (!$this->model('thread')->check_thread_type($post_type))
+		if (!$this->model('post')->check_thread_type($post_type))
 		{
 			return false;
 		}
@@ -34,7 +34,7 @@ class postfollow_class extends AWS_MODEL
 	{
 		$where[] = ['uid', 'eq', $uid, 'i'];
 
-		if ($post_type AND $this->model('thread')->check_thread_type($post_type))
+		if ($post_type AND $this->model('post')->check_thread_type($post_type))
 		{
 			$where[] = ['post_type', 'eq', $post_type];
 		}
@@ -65,7 +65,7 @@ class postfollow_class extends AWS_MODEL
 
 		if ($question_ids)
 		{
-			$question_infos = $this->model('thread')->get_posts_by_ids('question', $question_ids);
+			$question_infos = $this->model('post')->get_posts_by_ids('question', $question_ids);
 			foreach ($question_infos as $key => $val)
 			{
 				$uids[] = $val['uid'];
@@ -73,7 +73,7 @@ class postfollow_class extends AWS_MODEL
 		}
 		if ($article_ids)
 		{
-			$article_infos = $this->model('thread')->get_posts_by_ids('article', $article_ids);
+			$article_infos = $this->model('post')->get_posts_by_ids('article', $article_ids);
 			foreach ($article_infos as $key => $val)
 			{
 				$uids[] = $val['uid'];
@@ -81,7 +81,7 @@ class postfollow_class extends AWS_MODEL
 		}
 		if ($video_ids)
 		{
-			$video_infos = $this->model('thread')->get_posts_by_ids('video', $video_ids);
+			$video_infos = $this->model('post')->get_posts_by_ids('video', $video_ids);
 			foreach ($video_infos as $key => $val)
 			{
 				$uids[] = $val['uid'];
@@ -116,7 +116,7 @@ class postfollow_class extends AWS_MODEL
 
 	public function follow($post_type, $post_id, $uid)
 	{
-		if (!$this->model('thread')->check_thread_type($post_type))
+		if (!$this->model('post')->check_thread_type($post_type))
 		{
 			return false;
 		}
@@ -135,7 +135,7 @@ class postfollow_class extends AWS_MODEL
 
 	public function unfollow($post_type, $post_id, $uid)
 	{
-		if (!$this->model('thread')->check_thread_type($post_type))
+		if (!$this->model('post')->check_thread_type($post_type))
 		{
 			return false;
 		}
@@ -146,7 +146,7 @@ class postfollow_class extends AWS_MODEL
 
 	public function is_following($post_type, $post_id, $uid)
 	{
-		if (!$this->model('thread')->check_thread_type($post_type))
+		if (!$this->model('post')->check_thread_type($post_type))
 		{
 			return false;
 		}

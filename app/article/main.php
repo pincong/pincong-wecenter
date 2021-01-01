@@ -106,11 +106,11 @@ class main extends AWS_CONTROLLER
 		TPL::assign('article_info', $thread_info);
 		if ($thread_info['redirect_id'])
 		{
-			TPL::assign('redirect_info', $this->model('thread')->get_post_by_id('article', $thread_info['redirect_id']));
+			TPL::assign('redirect_info', $this->model('post')->get_post_by_id('article', $thread_info['redirect_id']));
 		}
 		if (H::GET('rf'))
 		{
-			TPL::assign('redirected_from', $this->model('thread')->get_post_by_id('article', H::GET('rf')));
+			TPL::assign('redirected_from', $this->model('post')->get_post_by_id('article', H::GET('rf')));
 		}
 
 		$page_title = CF::page_title($thread_info);
@@ -118,7 +118,7 @@ class main extends AWS_CONTROLLER
 
 		$reply_count = $thread_info['reply_count'];
 		// 判断是否已合并
-		if ($redirect_posts = $this->model('thread')->get_redirect_posts('article', $thread_info['id']))
+		if ($redirect_posts = $this->model('post')->get_redirect_threads('article', $thread_info['id']))
 		{
 			foreach ($redirect_posts AS $key => $val)
 			{
@@ -157,10 +157,10 @@ class main extends AWS_CONTROLLER
 
 		if ($this->user_id)
 		{
-			TPL::assign('user_follow_check', $this->model('follow')->user_follow_check($this->user_id, $thread_info['uid']));
+			TPL::assign('user_follow_check', $this->model('userfollow')->user_follow_check($this->user_id, $thread_info['uid']));
 		}
 
-		$this->model('thread')->update_view_count('article', $thread_info['id']);
+		$this->model('post')->update_view_count('article', $thread_info['id']);
 
 		TPL::assign('comments', $comments);
 		TPL::assign('comments_count', $reply_count);
@@ -181,8 +181,8 @@ class main extends AWS_CONTROLLER
 			TPL::assign('topics', $this->model('topic')->get_topics_by_ids($topic_ids));
 		}
 
-		TPL::assign('related_posts', $this->model('posts')->get_related_posts_by_topic_ids('article', $topic_ids, $thread_info['id']));
-		TPL::assign('recommended_posts', $this->model('posts')->get_recommended_posts('article', $thread_info['id']));
+		TPL::assign('related_posts', $this->model('threadindex')->get_related_posts_by_topic_ids('article', $topic_ids, $thread_info['id']));
+		TPL::assign('recommended_posts', $this->model('threadindex')->get_recommended_posts('article', $thread_info['id']));
 
 		if ($this->user_id)
 		{

@@ -132,7 +132,7 @@ class main extends AWS_CONTROLLER
 
 		$url_param[] = 'topic_id-' . $topic_info['topic_id'];
 		$type = H::GET('type');
-		if ($type AND $this->model('thread')->check_thread_type($type))
+		if ($type AND $this->model('post')->check_thread_type($type))
 		{
 			$url_param[] = 'type-' . $type;
 		}
@@ -177,7 +177,7 @@ class main extends AWS_CONTROLLER
 		$topic_ids = $this->model('topic')->get_merged_topic_ids_by_id($topic_info['topic_id']);
 		$topic_ids[] = $topic_info['topic_id'];
 
-		if ($posts_list = $this->model('posts')->get_posts_list_by_topic_ids($type, $topic_ids, H::GET('page'), S::get_int('contents_per_page')))
+		if ($posts_list = $this->model('threadindex')->get_posts_list_by_topic_ids($type, $topic_ids, H::GET('page'), S::get_int('contents_per_page')))
 		{
 			foreach ($posts_list AS $key => $val)
 			{
@@ -193,7 +193,7 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('pagination', AWS_APP::pagination()->create(array(
 			'base_url' => url_rewrite('/topic/') . implode('__', $url_param),
-			'total_rows' => $this->model('posts')->get_posts_list_total(),
+			'total_rows' => $this->model('threadindex')->get_posts_list_total(),
 			'per_page' => S::get_int('contents_per_page')
 		)));
 

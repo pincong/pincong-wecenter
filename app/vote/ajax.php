@@ -48,7 +48,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_error((_t('今日赞同/反对已经达到上限')));
 		}
 
-		$item_info = $this->model('thread')->get_thread_or_reply_info_by_id(H::POST('type'), H::POST('item_id'));
+		$item_info = $this->model('post')->get_thread_or_reply_info_by_id(H::POST('type'), H::POST('item_id'));
 		if (!$item_info)
 		{
 			H::ajax_error((_t('内容不存在')));
@@ -99,7 +99,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_error((_t('今日赞同/反对已经达到上限')));
 		}
 
-		$item_info = $this->model('thread')->get_thread_or_reply_info_by_id(H::POST('type'), H::POST('item_id'));
+		$item_info = $this->model('post')->get_thread_or_reply_info_by_id(H::POST('type'), H::POST('item_id'));
 		if (!$item_info)
 		{
 			H::ajax_error((_t('内容不存在')));

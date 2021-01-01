@@ -158,7 +158,7 @@ class vote_class extends AWS_MODEL
 	 */
 	public function vote($type, $item_id, $uid, $item_uid, $action)
 	{
-		if (!$this->model('thread')->check_thread_or_reply_type($type))
+		if (!$this->model('post')->check_thread_or_reply_type($type))
 		{
 			return false;
 		}
@@ -240,7 +240,7 @@ class vote_class extends AWS_MODEL
 		}
 		if (isset($type) AND isset($item_id))
 		{
-			if ($this->model('thread')->check_thread_or_reply_type($type))
+			if ($this->model('post')->check_thread_or_reply_type($type))
 			{
 				$where[] = ['type', 'eq', $type];
 				$where[] = ['item_id', 'eq', $item_id, 'i'];
@@ -323,7 +323,7 @@ class vote_class extends AWS_MODEL
 
 	public function get_user_vote_value_by_id($type, $item_id, $uid)
 	{
-		if (!$this->model('thread')->check_thread_or_reply_type($type))
+		if (!$this->model('post')->check_thread_or_reply_type($type))
 		{
 			return false;
 		}
@@ -341,7 +341,7 @@ class vote_class extends AWS_MODEL
 
 	public function get_user_vote_values_by_ids($type, $item_ids, $uid)
 	{
-		if (!$this->model('thread')->check_thread_or_reply_type($type))
+		if (!$this->model('post')->check_thread_or_reply_type($type))
 		{
 			return false;
 		}
@@ -393,7 +393,7 @@ class vote_class extends AWS_MODEL
 	 */
 	public function list_logs($type, $item_id, $page, $per_page)
 	{
-		if (!$this->model('thread')->check_thread_or_reply_type($type))
+		if (!$this->model('post')->check_thread_or_reply_type($type))
 		{
 			return false;
 		}

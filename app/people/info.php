@@ -131,11 +131,11 @@ class info extends AWS_CONTROLLER
 		switch (H::GET('type'))
 		{
 			case 'following':
-				$users_list = $this->model('follow')->get_user_friends(H::GET('uid'), H::GET('page'), $this->per_page);
+				$users_list = $this->model('userfollow')->get_user_friends(H::GET('uid'), H::GET('page'), $this->per_page);
 			break;
 
 			case 'followers':
-				$users_list = $this->model('follow')->get_user_fans(H::GET('uid'), H::GET('page'), $this->per_page);
+				$users_list = $this->model('userfollow')->get_user_fans(H::GET('uid'), H::GET('page'), $this->per_page);
 			break;
 		}
 
@@ -148,7 +148,7 @@ class info extends AWS_CONTROLLER
 
 			if ($users_ids)
 			{
-				$follow_checks = $this->model('follow')->users_follow_check($this->user_id, $users_ids);
+				$follow_checks = $this->model('userfollow')->users_follow_check($this->user_id, $users_ids);
 
 				foreach ($users_list as $key => $val)
 				{

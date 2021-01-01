@@ -18,7 +18,7 @@ if (!defined('IN_ANWSION'))
 	die;
 }
 
-class follow_class extends AWS_MODEL
+class userfollow_class extends AWS_MODEL
 {
 	public function user_follow_add($fans_uid, $friend_uid)
 	{

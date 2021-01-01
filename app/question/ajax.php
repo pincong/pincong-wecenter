@@ -83,7 +83,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_error((_t('讨论内容字数不得超过 %s 字', $discussion_length_max)));
 		}
 
-		$answer_info = $this->model('thread')->get_reply_info_by_id('question_reply', H::GET('answer_id'));
+		$answer_info = $this->model('post')->get_reply_info_by_id('question_reply', H::GET('answer_id'));
 		if (!$answer_info)
 		{
 			H::ajax_error((_t('回复不存在')));
@@ -94,7 +94,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_error((_t('今日讨论回复已经达到上限')));
 		}
 
-		$question_info = $this->model('thread')->get_thread_info_by_id('question', $answer_info['parent_id']);
+		$question_info = $this->model('post')->get_thread_info_by_id('question', $answer_info['parent_id']);
 		if (!$question_info)
 		{
 			H::ajax_error((_t('问题不存在')));
@@ -104,7 +104,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($question_info['redirect_id'])
 		{
-			$question_info = $this->model('thread')->get_thread_info_by_id('question', $question_info['redirect_id']);
+			$question_info = $this->model('post')->get_thread_info_by_id('question', $question_info['redirect_id']);
 			if (!$question_info)
 			{
 				H::ajax_error((_t('合并问题不存在')));
@@ -204,7 +204,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_error((_t('讨论内容字数不得超过 %s 字', $discussion_length_max)));
 		}
 
-		$question_info = $this->model('thread')->get_thread_info_by_id('question', H::GET('question_id'));
+		$question_info = $this->model('post')->get_thread_info_by_id('question', H::GET('question_id'));
 		if (!$question_info)
 		{
 			H::ajax_error((_t('问题不存在')));
@@ -281,7 +281,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_error((_t('对不起, 你没有删除问题的权限')));
 		}
 
-		if ($question_info = $this->model('thread')->get_thread_info_by_id('question', H::POST('question_id')))
+		if ($question_info = $this->model('post')->get_thread_info_by_id('question', H::POST('question_id')))
 		{
 			$this->model('question')->clear_question($question_info['id'], null);
 		}
@@ -296,7 +296,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_error((_t('你的声望还不够')));
 		}
 
-		if (!$question_info = $this->model('thread')->get_thread_info_by_id('question', H::POST('question_id')))
+		if (!$question_info = $this->model('post')->get_thread_info_by_id('question', H::POST('question_id')))
 		{
 			H::ajax_error((_t('问题不存在或已被删除')));
 		}

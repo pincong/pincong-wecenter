@@ -66,11 +66,11 @@ class content_class extends AWS_MODEL
 	 */
 	public function list_logs($thread_type, $thread_id, $item_type, $item_id, $uid, $page, $per_page)
 	{
-		if ($thread_type AND !$this->model('thread')->check_thread_type($thread_type))
+		if ($thread_type AND !$this->model('post')->check_thread_type($thread_type))
 		{
 			return false;
 		}
-		if ($item_type AND !$this->model('thread')->check_item_type($item_type))
+		if ($item_type AND !$this->model('post')->check_post_type($item_type))
 		{
 			return false;
 		}
@@ -133,7 +133,7 @@ class content_class extends AWS_MODEL
 			return false;
 		}
 
-		if (!$this->model('thread')->check_thread_type($item_type))
+		if (!$this->model('post')->check_thread_type($item_type))
 		{
 			return false;
 		}
@@ -151,7 +151,7 @@ class content_class extends AWS_MODEL
 
 	public function redirect($item_type, $item_id, $redirect_id, $log_uid)
 	{
-		if (!$this->model('thread')->check_thread_type($item_type))
+		if (!$this->model('post')->check_thread_type($item_type))
 		{
 			return false;
 		}
@@ -169,7 +169,7 @@ class content_class extends AWS_MODEL
 
 	public function unredirect($item_type, $item_id, $redirect_id, $log_uid)
 	{
-		if (!$this->model('thread')->check_thread_type($item_type))
+		if (!$this->model('post')->check_thread_type($item_type))
 		{
 			return false;
 		}
@@ -187,7 +187,7 @@ class content_class extends AWS_MODEL
 
 	public function change_category($item_type, $item_id, $category_id, $old_category_id, $log_uid)
 	{
-		if (!$this->model('thread')->check_thread_type($item_type))
+		if (!$this->model('post')->check_thread_type($item_type))
 		{
 			return false;
 		}
@@ -209,7 +209,7 @@ class content_class extends AWS_MODEL
 
 	public function lock($item_type, $item_id, $log_uid)
 	{
-		if (!$this->model('thread')->check_thread_type($item_type))
+		if (!$this->model('post')->check_thread_type($item_type))
 		{
 			return false;
 		}
@@ -224,7 +224,7 @@ class content_class extends AWS_MODEL
 
 	public function unlock($item_type, $item_id, $log_uid)
 	{
-		if (!$this->model('thread')->check_thread_type($item_type))
+		if (!$this->model('post')->check_thread_type($item_type))
 		{
 			return false;
 		}
@@ -240,7 +240,7 @@ class content_class extends AWS_MODEL
 
 	public function bump($item_type, $item_id, $log_uid)
 	{
-		if (!$this->model('thread')->check_thread_type($item_type))
+		if (!$this->model('post')->check_thread_type($item_type))
 		{
 			return false;
 		}
@@ -248,7 +248,7 @@ class content_class extends AWS_MODEL
 		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type]];
 
 		$this->update('posts_index', array(
-			'update_time' => $this->model('posts')->get_last_update_time()
+			'update_time' => $this->model('threadindex')->get_last_update_time()
 		), $where);
 
 		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '提升', $log_uid);
@@ -258,7 +258,7 @@ class content_class extends AWS_MODEL
 
 	public function sink($item_type, $item_id, $log_uid)
 	{
-		if (!$this->model('thread')->check_thread_type($item_type))
+		if (!$this->model('post')->check_thread_type($item_type))
 		{
 			return false;
 		}
@@ -266,7 +266,7 @@ class content_class extends AWS_MODEL
 		$where = [['post_id', 'eq', $item_id, 'i'], ['post_type', 'eq', $item_type]];
 
 		$this->update('posts_index', array(
-			'update_time' => $this->model('posts')->get_last_update_time() - (7 * 24 * 3600)
+			'update_time' => $this->model('threadindex')->get_last_update_time() - (7 * 24 * 3600)
 		), $where);
 
 		$this->model('content')->log($item_type, $item_id, $item_type, $item_id, '下沉', $log_uid);
@@ -276,7 +276,7 @@ class content_class extends AWS_MODEL
 
 	public function recommend($item_type, $item_id, $log_uid)
 	{
-		if (!$this->model('thread')->check_thread_type($item_type))
+		if (!$this->model('post')->check_thread_type($item_type))
 		{
 			return false;
 		}
@@ -292,7 +292,7 @@ class content_class extends AWS_MODEL
 
 	public function unrecommend($item_type, $item_id, $log_uid)
 	{
-		if (!$this->model('thread')->check_thread_type($item_type))
+		if (!$this->model('post')->check_thread_type($item_type))
 		{
 			return false;
 		}
@@ -309,7 +309,7 @@ class content_class extends AWS_MODEL
 
 	public function pin($item_type, $item_id, $log_uid)
 	{
-		if (!$this->model('thread')->check_thread_type($item_type))
+		if (!$this->model('post')->check_thread_type($item_type))
 		{
 			return false;
 		}
@@ -325,7 +325,7 @@ class content_class extends AWS_MODEL
 
 	public function unpin($item_type, $item_id, $log_uid)
 	{
-		if (!$this->model('thread')->check_thread_type($item_type))
+		if (!$this->model('post')->check_thread_type($item_type))
 		{
 			return false;
 		}
@@ -340,9 +340,9 @@ class content_class extends AWS_MODEL
 	}
 
 
-	public function fold_reply($item_type, $item_id, $parent_type, $parent_id, $log_uid)
+	public function fold_reply($item_type, $item_id, $thread_type, $thread_id, $log_uid)
 	{
-		if (!$this->model('thread')->check_reply_type($item_type))
+		if (!$this->model('post')->check_reply_type($item_type))
 		{
 			return false;
 		}
@@ -360,12 +360,12 @@ class content_class extends AWS_MODEL
 			['item_id', 'eq', $item_id, 'i']
 		]);
 
-		$this->model('content')->log($parent_type, $parent_id, $item_type, $item_id, '折叠', $log_uid);
+		$this->model('content')->log($thread_type, $thread_id, $item_type, $item_id, '折叠', $log_uid);
 	}
 
-	public function unfold_reply($item_type, $item_id, $parent_type, $parent_id, $log_uid)
+	public function unfold_reply($item_type, $item_id, $thread_type, $thread_id, $log_uid)
 	{
-		if (!$this->model('thread')->check_reply_type($item_type))
+		if (!$this->model('post')->check_reply_type($item_type))
 		{
 			return false;
 		}
@@ -374,7 +374,7 @@ class content_class extends AWS_MODEL
 
 		$this->update($item_type, array('fold' => 0), $where);
 
-		$this->model('content')->log($parent_type, $parent_id, $item_type, $item_id, '取消折叠', $log_uid);
+		$this->model('content')->log($thread_type, $thread_id, $item_type, $item_id, '取消折叠', $log_uid);
 	}
 
 

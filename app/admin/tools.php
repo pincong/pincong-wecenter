@@ -52,7 +52,7 @@ class tools extends AWS_ADMIN_CONTROLLER
         {
             foreach ($questions_list as $key => $val)
             {
-                $this->model('posts')->set_posts_index($val['id'], 'question', $val);
+                $this->model('threadindex')->set_posts_index($val['id'], 'question', $val);
             }
 
             H::redirect_msg(_t('正在更新问题搜索索引') . ', ' . _t('批次: %s', H::GET('page')), '/admin/tools/update_question_search_index/page-' . (H::GET('page') + 1) . '__per_page-' . H::GET('per_page'));
@@ -69,7 +69,7 @@ class tools extends AWS_ADMIN_CONTROLLER
         {
             foreach ($article_list as $key => $val)
             {
-                $this->model('posts')->set_posts_index($val['id'], 'article', $val);
+                $this->model('threadindex')->set_posts_index($val['id'], 'article', $val);
             }
 
             H::redirect_msg(_t('正在更新文章搜索索引') . ', ' . _t('批次: %s', H::GET('page')), '/admin/tools/update_article_search_index/page-' . (H::GET('page') + 1) . '__per_page-' . H::GET('per_page'));

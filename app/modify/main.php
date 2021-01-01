@@ -27,7 +27,7 @@ class main extends AWS_CONTROLLER
 
 	public function index_action()
 	{
-		if (!$thread_info = $this->model('thread')->get_thread_info_by_id('question', H::GET('id')))
+		if (!$thread_info = $this->model('post')->get_thread_info_by_id('question', H::GET('id')))
 		{
 			H::redirect_msg(_t('指定问题不存在'));
 		}
@@ -50,7 +50,7 @@ class main extends AWS_CONTROLLER
 
 	public function article_action()
 	{
-		if (!$thread_info = $this->model('thread')->get_thread_info_by_id('article', H::GET('id')))
+		if (!$thread_info = $this->model('post')->get_thread_info_by_id('article', H::GET('id')))
 		{
 			H::redirect_msg(_t('指定文章不存在'));
 		}
@@ -73,7 +73,7 @@ class main extends AWS_CONTROLLER
 
 	public function video_action()
 	{
-		if (!$thread_info = $this->model('thread')->get_thread_info_by_id('video', H::GET('id')))
+		if (!$thread_info = $this->model('post')->get_thread_info_by_id('video', H::GET('id')))
 		{
 			H::redirect_msg(_t('指定影片不存在'));
 		}

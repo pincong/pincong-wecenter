@@ -41,6 +41,10 @@ class activity_class extends AWS_MODEL
 
 	public function check_push_type($type)
 	{
+		if (!$this->model('post')->check_thread_or_reply_type($type))
+		{
+			return false;
+		}
 		$push_types = S::get('push_types');
 		if (!$push_types)
 		{
@@ -85,7 +89,7 @@ class activity_class extends AWS_MODEL
 			return;
 		}
 
-		$parent_info = $this->model('thread')->get_item_thread_info_by_id($item_type, $item_id);
+		$parent_info = $this->model('post')->get_post_thread_info_by_id($item_type, $item_id);
 		$category_id = intval($parent_info['category_id']);
 
 		if (!$this->check_push_category($category_id))
@@ -170,7 +174,7 @@ class activity_class extends AWS_MODEL
 		// 获取问题和回答
 		if ($answer_ids)
 		{
-			$answers = $this->model('thread')->get_posts_by_ids('question_reply', $answer_ids);
+			$answers = $this->model('post')->get_posts_by_ids('question_reply', $answer_ids);
 			foreach ($answers AS $key => $val)
 			{
 				$uids[$val['uid']] = $val['uid'];
@@ -179,7 +183,7 @@ class activity_class extends AWS_MODEL
 		}
 		if ($question_ids)
 		{
-			$questions = $this->model('thread')->get_posts_by_ids('question', $question_ids);
+			$questions = $this->model('post')->get_posts_by_ids('question', $question_ids);
 			foreach ($questions AS $key => $val)
 			{
 				$uids[$val['uid']] = $val['uid'];
@@ -196,7 +200,7 @@ class activity_class extends AWS_MODEL
 		// 获取文章和评论
 		if ($article_comment_ids)
 		{
-			$article_comments = $this->model('thread')->get_posts_by_ids('article_reply', $article_comment_ids);
+			$article_comments = $this->model('post')->get_posts_by_ids('article_reply', $article_comment_ids);
 			foreach ($article_comments AS $key => $val)
 			{
 				$uids[$val['uid']] = $val['uid'];
@@ -205,7 +209,7 @@ class activity_class extends AWS_MODEL
 		}
 		if ($article_ids)
 		{
-			$articles = $this->model('thread')->get_posts_by_ids('article', $article_ids);
+			$articles = $this->model('post')->get_posts_by_ids('article', $article_ids);
 			foreach ($articles AS $key => $val)
 			{
 				$uids[$val['uid']] = $val['uid'];
@@ -222,7 +226,7 @@ class activity_class extends AWS_MODEL
 		// 获取影片和评论
 		if ($video_comment_ids)
 		{
-			$video_comments = $this->model('thread')->get_posts_by_ids('video_reply', $video_comment_ids);
+			$video_comments = $this->model('post')->get_posts_by_ids('video_reply', $video_comment_ids);
 			foreach ($video_comments AS $key => $val)
 			{
 				$uids[$val['uid']] = $val['uid'];
@@ -231,7 +235,7 @@ class activity_class extends AWS_MODEL
 		}
 		if ($video_ids)
 		{
-			$videos = $this->model('thread')->get_posts_by_ids('video', $video_ids);
+			$videos = $this->model('post')->get_posts_by_ids('video', $video_ids);
 			foreach ($videos AS $key => $val)
 			{
 				$uids[$val['uid']] = $val['uid'];
@@ -308,7 +312,7 @@ class activity_class extends AWS_MODEL
 			return $list;
 		}
 
-		$following_uids = $this->model('follow')->get_user_friends_ids($uid, 1000);
+		$following_uids = $this->model('userfollow')->get_user_friends_ids($uid, 1000);
 		if (!$following_uids)
 		{
 			return array();
@@ -342,7 +346,7 @@ class activity_class extends AWS_MODEL
 		}
 		else
 		{
-			$where[] = ['category_id', 'in', $this->model('posts')->get_default_category_ids(), 'i'];
+			$where[] = ['category_id', 'in', $this->model('threadindex')->get_default_category_ids(), 'i'];
 		}
 
 		$list = $this->query_activities($where, $page, $per_page);

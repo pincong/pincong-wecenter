@@ -138,7 +138,7 @@ class main extends AWS_CONTROLLER
 
 				if ($uids)
 				{
-					$users_follow_check = $this->model('follow')->users_follow_check($this->user_id, $uids);
+					$users_follow_check = $this->model('userfollow')->users_follow_check($this->user_id, $uids);
 					foreach ($users_list as $key => $val)
 					{
 						$users_list[$key]['focus'] = $users_follow_check[$val['uid']];
@@ -184,12 +184,12 @@ class main extends AWS_CONTROLLER
 
 		TPL::assign('user', $user);
 
-		TPL::assign('user_follow_check', $this->model('follow')->user_follow_check($this->user_id, $user['uid']));
+		TPL::assign('user_follow_check', $this->model('userfollow')->user_follow_check($this->user_id, $user['uid']));
 
 		$this->crumb(_t('%s 的个人主页', $user['user_name']));
 
-		TPL::assign('fans_list', $this->model('follow')->get_user_fans($user['uid'], 1, 5));
-		TPL::assign('friends_list', $this->model('follow')->get_user_friends($user['uid'], 1, 5));
+		TPL::assign('fans_list', $this->model('userfollow')->get_user_fans($user['uid'], 1, 5));
+		TPL::assign('friends_list', $this->model('userfollow')->get_user_friends($user['uid'], 1, 5));
 
 		TPL::output('people/index');
 	}

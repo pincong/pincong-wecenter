@@ -42,7 +42,7 @@ class register_class extends AWS_MODEL
 
 				foreach ($def_focus_uids as $key => $val)
 				{
-					$this->model('follow')->user_follow_add($uid, $val);
+					$this->model('userfollow')->user_follow_add($uid, $val);
 				}
 			}
 

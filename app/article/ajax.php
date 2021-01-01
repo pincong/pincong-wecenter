@@ -33,7 +33,7 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_error((_t('对不起, 你没有删除文章的权限')));
 		}
 
-		if ($article_info = $this->model('thread')->get_thread_info_by_id('article', H::POST('article_id')))
+		if ($article_info = $this->model('post')->get_thread_info_by_id('article', H::POST('article_id')))
 		{
 			$this->model('article')->clear_article($article_info['id'], null);
 		}

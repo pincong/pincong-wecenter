@@ -100,32 +100,32 @@ class currency_class extends AWS_MODEL
 
 		if ($question_ids)
 		{
-			$questions = $this->model('thread')->get_posts_by_ids('question', $question_ids);
+			$questions = $this->model('post')->get_posts_by_ids('question', $question_ids);
 		}
 
 		if ($article_ids)
 		{
-			$articles = $this->model('thread')->get_posts_by_ids('article', $article_ids);
+			$articles = $this->model('post')->get_posts_by_ids('article', $article_ids);
 		}
 
 		if ($video_ids)
 		{
-			$videos = $this->model('thread')->get_posts_by_ids('video', $video_ids);
+			$videos = $this->model('post')->get_posts_by_ids('video', $video_ids);
 		}
 
 		if ($answer_ids)
 		{
-			$answers = $this->model('thread')->get_posts_by_ids('question_reply', $answer_ids);
+			$answers = $this->model('post')->get_posts_by_ids('question_reply', $answer_ids);
 		}
 
 		if ($article_comment_ids)
 		{
-			$article_comments = $this->model('thread')->get_posts_by_ids('article_reply', $article_comment_ids);
+			$article_comments = $this->model('post')->get_posts_by_ids('article_reply', $article_comment_ids);
 		}
 
 		if ($video_comment_ids)
 		{
-			$video_comments = $this->model('thread')->get_posts_by_ids('video_reply', $video_comment_ids);
+			$video_comments = $this->model('post')->get_posts_by_ids('video_reply', $video_comment_ids);
 		}
 
 		foreach ($parse_items AS $log_id => $item)

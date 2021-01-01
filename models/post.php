@@ -18,7 +18,7 @@ if (!defined('IN_ANWSION'))
 	die;
 }
 
-class thread_class extends AWS_MODEL
+class post_class extends AWS_MODEL
 {
 	private $cached_contents = array();
 
@@ -32,6 +32,23 @@ class thread_class extends AWS_MODEL
 		$this->cached_contents[$type . '_' . $item_id] = $content_info;
 	}
 
+	private function get_content_info($type, $item_id)
+	{
+		$item_info = $this->get_cached_content_info($type, $item_id);
+		if (isset($item_info))
+		{
+			return $item_info;
+		}
+
+		$where = ['id', 'eq', $item_id];
+
+		$item_info = $this->fetch_row($type, $where);
+
+		$this->cache_content_info($type, $item_id, $item_info);
+		return $item_info;
+	}
+
+
 	public function check_thread_type($type)
 	{
 		switch ($type)
@@ -44,7 +61,6 @@ class thread_class extends AWS_MODEL
 		return false;
 	}
 
-
 	public function check_reply_type($type)
 	{
 		switch ($type)
@@ -52,6 +68,30 @@ class thread_class extends AWS_MODEL
 			case 'question_reply':
 			case 'article_reply':
 			case 'video_reply':
+				return true;
+		}
+		return false;
+	}
+
+	public function check_comment_type($type)
+	{
+		switch ($type)
+		{
+			case 'question_comment':
+			//case 'article_comment':
+			//case 'video_comment':
+				return true;
+		}
+		return false;
+	}
+
+	public function check_discussion_type($type)
+	{
+		switch ($type)
+		{
+			case 'question_discussion':
+			//case 'article_discussion':
+			//case 'video_discussion':
 				return true;
 		}
 		return false;
@@ -72,7 +112,7 @@ class thread_class extends AWS_MODEL
 		return false;
 	}
 
-	public function check_item_type($type)
+	public function check_post_type($type)
 	{
 		switch ($type)
 		{
@@ -82,13 +122,28 @@ class thread_class extends AWS_MODEL
 			case 'question_discussion':
 			case 'article':
 			case 'article_reply':
+			//case 'article_comment':
+			//case 'article_discussion':
 			case 'video':
 			case 'video_reply':
+			//case 'video_comment':
+			//case 'video_discussion':
 				return true;
 		}
 		return false;
 	}
 
+
+	public function get_post_info_by_id($type, $item_id)
+	{
+		$item_id = intval($item_id);
+		if (!$item_id OR !$this->check_post_type($type))
+		{
+			return false;
+		}
+
+		return $this->get_content_info($type, $item_id);
+	}
 
 	public function get_thread_info_by_id($type, $item_id)
 	{
@@ -98,20 +153,8 @@ class thread_class extends AWS_MODEL
 			return false;
 		}
 
-		$item_info = $this->get_cached_content_info($type, $item_id);
-		if (isset($item_info))
-		{
-			return $item_info;
-		}
-
-		$where = ['id', 'eq', $item_id];
-
-		$item_info = $this->fetch_row($type, $where);
-
-		$this->cache_content_info($type, $item_id, $item_info);
-		return $item_info;
+		return $this->get_content_info($type, $item_id);
 	}
-
 
 	public function get_reply_info_by_id($type, $item_id)
 	{
@@ -121,20 +164,8 @@ class thread_class extends AWS_MODEL
 			return false;
 		}
 
-		$item_info = $this->get_cached_content_info($type, $item_id);
-		if (isset($item_info))
-		{
-			return $item_info;
-		}
-
-		$where = ['id', 'eq', $item_id];
-
-		$item_info = $this->fetch_row($type, $where);
-
-		$this->cache_content_info($type, $item_id, $item_info);
-		return $item_info;
+		return $this->get_content_info($type, $item_id);
 	}
-
 
 	public function get_thread_or_reply_info_by_id($type, $item_id)
 	{
@@ -144,23 +175,78 @@ class thread_class extends AWS_MODEL
 			return false;
 		}
 
-		$item_info = $this->get_cached_content_info($type, $item_id);
-		if (isset($item_info))
+		return $this->get_content_info($type, $item_id);
+	}
+
+	public function get_post_thread_info_by_id($type, $item_id)
+	{
+		$item_info = $this->get_post_info_by_id($type, $item_id);
+		if (!$item_info)
 		{
-			return $item_info;
+			return false;
 		}
 
-		$where = ['id', 'eq', $item_id];
+		switch ($type)
+		{
+			case 'question':
+			case 'article':
+			case 'video':
+				$item_info['thread_type'] = $type;
+				$item_info['thread_id'] = $item_info['id'];
+				return $item_info;
 
-		$item_info = $this->fetch_row($type, $where);
+			case 'question_reply':
+			case 'article_reply':
+			case 'video_reply':
+				$thread_type = substr($type, 0, strlen($type) - strlen('_reply'));
+				$thread_info = $this->get_thread_info_by_id($thread_type, $item_info['parent_id']);
+				if ($thread_info)
+				{
+					$thread_info['thread_type'] = $thread_type;
+					$thread_info['thread_id'] = $thread_info['id'];
+					return $thread_info;
+				}
+				return false;
 
-		$this->cache_content_info($type, $item_id, $item_info);
-		return $item_info;
+			case 'question_comment':
+			case 'article_comment':
+			case 'video_comment':
+				$thread_type = substr($type, 0, strlen($type) - strlen('_comment'));
+				$thread_info = $this->get_thread_info_by_id($thread_type, $item_info['parent_id']);
+				if ($thread_info)
+				{
+					$thread_info['thread_type'] = $thread_type;
+					$thread_info['thread_id'] = $thread_info['id'];
+					return $thread_info;
+				}
+				return false;
+
+			case 'question_discussion':
+			case 'article_discussion':
+			case 'video_discussion':
+				$thread_type = substr($type, 0, strlen($type) - strlen('_discussion'));
+				$reply_type = $thread_type . '_reply';
+				$relpy_info = $this->get_relpy_info_by_id($relpy_type, $item_info['parent_id']);
+				if ($relpy_info)
+				{
+					$thread_info = $this->get_thread_info_by_id($thread_type, $relpy_info['parent_id']);
+					if ($thread_info)
+					{
+						$thread_info['thread_type'] = $thread_type;
+						$thread_info['thread_id'] = $thread_info['id'];
+						return $thread_info;
+					}
+					return false;
+				}
+				return false;
+		}
+
+		return false;
 	}
 
 	public function get_item_thread_info_by_id($type, $item_id)
 	{
-		$item_info = $this->get_thread_or_reply_info_by_id($type, $item_id);
+		$item_info = $this->get_post_info_by_id($type, $item_id);
 		if (!$item_info)
 		{
 			return false;
@@ -217,22 +303,12 @@ class thread_class extends AWS_MODEL
 		return false;
 	}
 
-	public function get_redirect_posts($type, $redirect_id)
-	{
-		$redirect_id = intval($redirect_id);
-		if (!$redirect_id OR !$this->check_thread_type($type))
-		{
-			return false;
-		}
-		return $this->fetch_all($type, ['redirect_id', 'eq', $redirect_id]);
-	}
-
 
 	// 不缓存版
 	public function get_post_by_id($type, $item_id)
 	{
 		$item_id = intval($item_id);
-		if (!$item_id OR !$this->check_thread_or_reply_type($type))
+		if (!$item_id OR !$this->check_post_type($type))
 		{
 			return false;
 		}
@@ -244,7 +320,7 @@ class thread_class extends AWS_MODEL
 	// 不缓存版
 	public function get_posts_by_ids($type, $item_ids)
 	{
-		if (!$item_ids OR !$this->check_thread_or_reply_type($type))
+		if (!$item_ids OR !$this->check_post_type($type))
 		{
 			return false;
 		}
@@ -277,6 +353,17 @@ class thread_class extends AWS_MODEL
 		}
 
 		return $result;
+	}
+
+
+	public function get_redirect_threads($type, $redirect_id)
+	{
+		$redirect_id = intval($redirect_id);
+		if (!$redirect_id OR !$this->check_thread_type($type))
+		{
+			return false;
+		}
+		return $this->fetch_all($type, ['redirect_id', 'eq', $redirect_id]);
 	}
 
 

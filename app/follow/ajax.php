@@ -34,11 +34,11 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		// 首先判断是否存在关注
-		if ($this->model('follow')->user_follow_check($this->user_id, H::POST('uid')))
+		if ($this->model('userfollow')->user_follow_check($this->user_id, H::POST('uid')))
 		{
 			$action = 'remove';
 
-			$this->model('follow')->user_follow_del($this->user_id, H::POST('uid'));
+			$this->model('userfollow')->user_follow_del($this->user_id, H::POST('uid'));
 		}
 		else
 		{
@@ -49,7 +49,7 @@ class ajax extends AWS_CONTROLLER
 
 			$action = 'add';
 
-			if ($this->model('follow')->user_follow_add($this->user_id, H::POST('uid')))
+			if ($this->model('userfollow')->user_follow_add($this->user_id, H::POST('uid')))
 			{
 				$this->model('notification')->send($this->user_id, H::POST('uid'), 'FOLLOW_USER');
 			}

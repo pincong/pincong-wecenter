@@ -18,7 +18,7 @@ if (!defined('IN_ANWSION'))
 	die;
 }
 
-class posts_class extends AWS_MODEL
+class threadindex_class extends AWS_MODEL
 {
 	// 得到最后一次发帖/回复时间
 	public function get_last_update_time()
@@ -174,7 +174,7 @@ class posts_class extends AWS_MODEL
 
 		foreach ($info as $type => $ids)
 		{
-			$threads = $this->model('thread')->get_threads_by_ids($type, $ids);
+			$threads = $this->model('post')->get_threads_by_ids($type, $ids);
 			if (!$threads)
 			{
 				$threads = array();
@@ -249,7 +249,7 @@ class posts_class extends AWS_MODEL
 			$where[] = ['category_id', 'in', $this->get_default_category_ids(), 'i'];
 		}
 
-		if ($post_type AND $this->model('thread')->check_thread_type($post_type))
+		if ($post_type AND $this->model('post')->check_thread_type($post_type))
 		{
 			$where[] = ['post_type', 'eq', $post_type];
 		}
@@ -269,7 +269,7 @@ class posts_class extends AWS_MODEL
 			$where[] = ['add_time', 'gt', $add_time, 'i'];
 		}
 
-		if ($post_type AND $this->model('thread')->check_thread_type($post_type))
+		if ($post_type AND $this->model('post')->check_thread_type($post_type))
 		{
 			$where[] = ['post_type', 'eq', $post_type];
 		}
@@ -295,7 +295,7 @@ class posts_class extends AWS_MODEL
 
 		$topic_relation_where[] = ['topic_id', 'in', $topic_ids, 'i'];
 
-		if ($post_type AND $this->model('thread')->check_thread_type($post_type))
+		if ($post_type AND $this->model('post')->check_thread_type($post_type))
 		{
 			$topic_relation_where[] = ['type', 'eq', $post_type];
 		}
@@ -328,7 +328,7 @@ class posts_class extends AWS_MODEL
 
 	public function get_related_posts_by_topic_ids($post_type, $topic_ids, $exclude_post_id = 0, $limit = 10)
 	{
-		if (!$this->model('thread')->check_thread_type($post_type) OR !is_array($topic_ids) OR count($topic_ids) < 1)
+		if (!$this->model('post')->check_thread_type($post_type) OR !is_array($topic_ids) OR count($topic_ids) < 1)
 		{
 			return false;
 		}

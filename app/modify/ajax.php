@@ -47,7 +47,7 @@ class ajax extends AWS_CONTROLLER
 				break;
 		}
 
-		if (!$thread_info = $this->model('thread')->get_thread_info_by_id($thread_type, $thread_id))
+		if (!$thread_info = $this->model('post')->get_thread_info_by_id($thread_type, $thread_id))
 		{
 			H::ajax_error((_t('主题不存在')));
 		}
@@ -88,7 +88,7 @@ class ajax extends AWS_CONTROLLER
 				break;
 		}
 
-		if (!$reply_info = $this->model('thread')->get_reply_info_by_id($reply_type, H::GET('id')))
+		if (!$reply_info = $this->model('post')->get_reply_info_by_id($reply_type, H::GET('id')))
 		{
 			H::ajax_error((_t('内容不存在')));
 		}
@@ -100,7 +100,7 @@ class ajax extends AWS_CONTROLLER
 
 		$thread_id = $reply_info['parent_id'];
 
-		if (!$tread_info = $this->model('thread')->get_thread_info_by_id($thread_type, $thread_id))
+		if (!$tread_info = $this->model('post')->get_thread_info_by_id($thread_type, $thread_id))
 		{
 			H::ajax_error((_t('主题不存在')));
 		}
