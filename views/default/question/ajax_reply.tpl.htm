@@ -3,11 +3,11 @@
 	<div class="mod-head">
 		<div class="title">
 			<!-- 用户头像 -->
-			<a class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>" data-id="<?php echo $val['uid']; ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid', $this->user_info['permission']['is_moderator']); ?>" alt="" /></a>
+			<a class="aw-user-img aw-border-radius-5" href="<?php echo UF::url($val['user_info']); ?>" data-id="<?php echo $val['uid']; ?>"><img src="<?php echo UF::avatar($val['user_info'], 'mid'); ?>" alt="" /></a>
 			<!-- end 用户头像 -->
 
 			<!-- 用户名 -->
-			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>" data-id="<?php echo $val['user_info']['uid']; ?>" data-reputation="<?php echo intval($val['user_info']['reputation']); ?>">
+			<a class="aw-user-name" href="<?php echo UF::url($val['user_info']); ?>" data-id="<?php echo $val['user_info']['uid']; ?>" data-reputation="<?php echo UF::reputation($val['user_info']); ?>">
 			<?php if ($val['user_info']['flagged'] > 0) { ?>
 				<s><?php echo UF::name($val['user_info']); ?></s>
 			<?php } else { ?>
@@ -17,7 +17,7 @@
 			<?php if ($val['user_info']['flagged'] == -1) { ?><sup><?php _e('观察'); ?></sup><?php } ?>
 			<?php if ($val['user_info']['forbidden']) { ?><sup><?php _e('封禁'); ?></sup><?php } ?>
 			<?php if ($val['user_info']['verified']) { ?><em class="aw-verified"><?php echo $val['user_info']['verified']; ?></em><?php } ?>
-			<span class="aw-small-text"><?php echo UF::signature($val['user_info'], $this->user_info['permission']['is_moderator']); ?></span>
+			<span class="aw-small-text"><?php echo UF::signature($val['user_info']); ?></span>
 			<!-- end 用户名 -->
 		</div>
 	</div>

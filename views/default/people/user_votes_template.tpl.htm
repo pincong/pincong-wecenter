@@ -12,7 +12,7 @@
 		</a>
 		<?php if ($val['user_info']['flagged'] == -1) { ?><sup><?php _e('观察'); ?></sup><?php } ?>
 		<?php if ($val['user_info']['forbidden']) { ?><sup><?php _e('封禁'); ?></sup><?php } ?>
-		(<i class="icon icon-prestige"></i><?php echo intval($val['user_info']['reputation']); ?>
+		(<i class="icon icon-prestige"></i><?php echo UF::reputation($val['user_info']); ?>
 		<i class="icon icon-agree"></i><?php echo $val['user_info']['agree_count']; ?>)
 		•
 		<?php echo date_friendly($val['add_time']); ?>

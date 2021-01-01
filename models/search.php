@@ -150,7 +150,7 @@ class search_class extends AWS_MODEL
 			$detail = array(
 				'avatar_file' => UF::avatar($user_info, 'mid'),	// 头像
 				'signature' => $user_info['signature'],	// 签名
-				'reputation' =>  $user_info['reputation'],	// 声望
+				'reputation' =>  intval($user_info['reputation']),	// 声望
 				'agree_count' =>  $user_info['agree_count'],	// 赞同
 				'fans_count' =>  $user_info['fans_count'],	// 关注数
 			);

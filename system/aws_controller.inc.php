@@ -45,6 +45,12 @@ class AWS_CONTROLLER
 
 		if ($this->user_info)
 		{
+			if ($this->user_info['forbidden'] OR $this->user_info['flagged'] > 0)
+			{
+				$this->model('account')->logout();
+				H::redirect_msg(AWS_APP::lang()->_t('抱歉, 你的账号已经被禁止登录'), '/');
+			}
+
 			$user_settings = unserialize_array($this->user_info['settings']);
 			$this->user_info['default_timezone'] = $user_settings['timezone'];
 
@@ -68,24 +74,10 @@ class AWS_CONTROLLER
 			$this->user_info['permission'] = $user_group['permission'];
 		}
 
-		if ($this->user_info['forbidden'])
-		{
-			$this->model('account')->logout();
+		UF::set_permissions($this->user_info['permission']);
 
-			H::redirect_msg(AWS_APP::lang()->_t('抱歉, 你的账号已经被禁止登录'), '/');
-		}
-		elseif ($this->user_info['flagged'] > 0)
-		{
-			$this->model('account')->logout();
-
-			//HTTP::redirect('/');
-			H::redirect_msg(AWS_APP::lang()->_t('抱歉, 你的账号已经被禁止登录'), '/');
-		}
-		else
-		{
-			TPL::assign('user_id', $this->user_id);
-			TPL::assign('user_info', $this->user_info);
-		}
+		TPL::assign('user_id', $this->user_id);
+		TPL::assign('user_info', $this->user_info);
 
 		// 引入系统 CSS 文件
 		TPL::import_css(array(
