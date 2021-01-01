@@ -26,7 +26,7 @@ class pm_class extends AWS_MODEL
 	{
 		if (!$recipient_user['public_key'])
 		{
-			$error = _t('%s 没有公钥, 你无法给 Ta 发送私信', $recipient_user['user_name']);
+			$error = _t('%s 没有公钥, 无法发送私信', $recipient_user['user_name']);
 			return false;
 		}
 
@@ -59,13 +59,13 @@ class pm_class extends AWS_MODEL
 			if (!$this_user['permission']['send_pm'])
 			{
 				// 自己不可以发送私信
-				$error = _t('你的声望还不能给 %s 发送私信', $recipient_user['user_name']);
+				$error = _t('你的声望还不够, 不能给 %s 发送私信', $recipient_user['user_name']);
 				return false;
 			}
 			if (!$recipient_user_group['permission']['send_pm'])
 			{
 				// 对方不可以发送私信
-				$error = _t('%s 的声望还不能接收你的私信', $recipient_user['user_name']);
+				$error = _t('%s 的声望还不够, 不能接收你的私信', $recipient_user['user_name']);
 				return false;
 			}
 			// 双方都可以发送私信

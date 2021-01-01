@@ -92,7 +92,7 @@ class main extends AWS_CONTROLLER
 
 		if (!$this->user_info['permission']['kb_explore'])
 		{
-			H::redirect_msg(_t('你的声望还不够'));
+			H::redirect_msg(_t('你的声望还不够, 无法进行此操作'));
 		}
 
 		if (! $item_info = $this->model('kb')->get(H::GET('id')))

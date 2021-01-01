@@ -4,7 +4,7 @@
 	<div class="container aw-topic-edit">
 		<div class="row">
 			<div class="aw-content-wrap clearfix">
-				<div class="col-sm-9 aw-main-content">
+				<div class="col-sm-12 aw-main-content">
 					<div class="aw-mod">
 						<div class="mod-head common-head">
 							<h2><a class="btn btn-mini pull-right" href="<?php echo url_rewrite(); ?>/topic/<?php echo safe_url_encode($this->topic_info['topic_title']); ?>"><?php echo _t('返回话题'); ?> »</a><?php echo _t('话题编辑'); ?></h2>
@@ -14,10 +14,10 @@
 						<div class="mod-head clearfix">
 							<a href="javascript:;" class="img" style="background:url('<?php echo get_topic_pic_url($this->topic_info, 'mid'); ?>') no-repeat;" <?php if ($this->topic_info['topic_lock'] == 0 AND $this->user_info['permission']['edit_topic']) { ?> id="topic_pic_uploader"<?php } ?>>
 								<span class="mask"></span>
-								<b>修改</b>
+								<b><?php echo _t('修改'); ?></b>
 							</a>
 							<h3><?php echo FORMAT::text($this->topic_info['topic_title']); ?></h3>
-							<span class="pull-left"><?php echo _t('相关话题'); ?> : </span>
+							<span class="pull-left"><?php echo _t('相关话题'); ?>: </span>
 							<div class="aw-topic-bar pull-left" data-type="topic" data-id="<?php echo $this->topic_info['topic_id']; ?>">
 								<div class="tag-bar clearfix">
 									<?php if ($this->related_topics) { ?>
@@ -49,19 +49,6 @@
 						</div>
 					</div>
 				</div>
-				<!-- 侧边栏 -->
-				<div class="col-sm-3 aw-side-bar">
-					<div class="aw-mod topic-edit-help">
-						<div class="mod-head">
-							<h3><?php echo _t('话题编辑指南'); ?></h3>
-						</div>
-						<div class="mod-body">
-							 <p><b>• <?php echo _t('相关话题'); ?>:</b> <?php echo _t('添加和该话题词义相近或者相似的话题'); ?></p>
-							 <p><b>• <?php echo _t('话题内容'); ?>:</b> <?php echo _t('话题是用来组织内容的一个节点, 也是根据内容提炼出来的知识点. 话题是构成讨论内容的基本单元, 是对各种事物、现象等概念的解释. 如果您针对本话题的定义非常清晰, 请帮忙完善该话题并帮助社区用户对该话题的理解, 谢谢您的分享和贡献'); ?></p>
-						</div>
-					</div>
-				</div>
-				<!-- end 侧边栏 -->
 			</div>
 		</div>
 	</div>

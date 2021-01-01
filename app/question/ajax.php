@@ -52,7 +52,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (H::POST_I('anonymous') AND !$this->user_info['permission']['reply_anonymously'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不能匿名')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不够, 不能匿名')));
 		}
 
 		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_post']))
@@ -128,7 +128,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->model('category')->check_user_permission_reply($question_info['category_id'], $this->user_info))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('你的声望还不能在这个分类发言')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('你的声望还不够, 不能在这个分类发言')));
 		}
 
 		if (H::POST_I('anonymous'))
@@ -160,7 +160,7 @@ class ajax extends AWS_CONTROLLER
 	{
 		if (H::POST_I('anonymous') AND !$this->user_info['permission']['reply_anonymously'])
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不能匿名')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不够, 不能匿名')));
 		}
 
 		if (!check_user_operation_interval('publish', $this->user_id, $this->user_info['permission']['interval_post']))
@@ -214,7 +214,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->model('category')->check_user_permission_reply($question_info['category_id'], $this->user_info))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('你的声望还不能在这个分类发言')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('你的声望还不够, 不能在这个分类发言')));
 		}
 
 		if (!$this->model('ratelimit')->check_question_discussion($this->user_id, $this->user_info['permission']['discussion_limit_per_day']))

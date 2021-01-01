@@ -65,7 +65,7 @@
 						<?php if (!$this->user_id) { ?>
 						<p align="center"><?php echo _t('要添加内容请先<a href="<?php echo url_rewrite(); ?>/login/">登录</a>或<a href="<?php echo url_rewrite(); ?>/register/">注册</a>'); ?></p>
 						<?php } else if (!$this->user_info['permission']['kb_add']) { ?>
-						<p align="center"><?php echo _t('你的声望无法添加内容'); ?></p>
+						<p align="center"><?php echo _t('你没有权限添加内容'); ?></p>
 						<?php } else { ?>
 						<form action="<?php echo url_rewrite(); ?>/kb/ajax/publish/" onsubmit="return false;" method="post" id="publish_form">
 						<div class="mod-head">

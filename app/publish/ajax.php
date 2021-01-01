@@ -128,7 +128,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->model('category')->check_user_permission_reply($thread_info['category_id'], $this->user_info))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('你的声望还不能在这个分类发言')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, _t('你的声望还不够, 不能在这个分类发言')));
 		}
 
 		$pay = true;
@@ -272,7 +272,7 @@ class ajax extends AWS_CONTROLLER
 			{
 				if (!$this->user_info['permission']['create_topic'])
 				{
-					H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不能创建新话题「%s」, 请选择现有话题', $topic_title)));
+					H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不够, 不能创建新话题「%s」, 请选择现有话题', $topic_title)));
 					break;
 				}
 
@@ -310,7 +310,7 @@ class ajax extends AWS_CONTROLLER
 
 		if (!$this->model('category')->check_user_permission($category_id, $this->user_info))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不能在这个分类发言')));
+			H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不够, 不能在这个分类发言')));
 		}
 
 		return $category_id;
@@ -322,14 +322,14 @@ class ajax extends AWS_CONTROLLER
 		{
 			if (!$this->user_info['permission']['post_anonymously'])
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不能匿名')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不够, 不能匿名')));
 			}
 		}
 		else
 		{
 			if (!$this->user_info['permission']['reply_anonymously'])
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不能匿名')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不够, 不能匿名')));
 			}
 		}
 
@@ -360,7 +360,7 @@ class ajax extends AWS_CONTROLLER
 		{
 			if (!$this->user_info['permission']['post_later'])
 			{
-				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不能延迟发布')));
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', _t('你的声望还不够, 不能延迟发布')));
 			}
 
 			if ($later < 10)
