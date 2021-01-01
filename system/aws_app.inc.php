@@ -38,6 +38,7 @@ class AWS_APP
 	private static $crypt;
 	private static $token;
 	private static $auth;
+	private static $uri;
 
 	private static $models = array();
 
@@ -50,15 +51,17 @@ class AWS_APP
 	{
 		self::init();
 
-		load_class('core_uri')->set_rewrite();
+		self::$uri = load_class('core_uri');
+		if (!self::$uri->parse())
+		{
+			HTTP::error_404();
+		}
 
-		// 传入应用目录, 返回控制器对象
-		$handle_controller = self::create_controller(load_class('core_uri')->controller, load_class('core_uri')->app_dir);
-
-		$action_method = load_class('core_uri')->action . '_action';
+		$handle_controller = self::create_controller();
+		$action_method = self::$uri->action . '_action';
 
 		// 判断
-		if (! is_object($handle_controller) OR ! method_exists($handle_controller, $action_method))
+		if (!is_object($handle_controller) OR !method_exists($handle_controller, $action_method))
 		{
 			HTTP::error_404();
 		}
@@ -77,7 +80,7 @@ class AWS_APP
 		{
 			if (isset($access_rule['rule_type']) AND $access_rule['rule_type'] == 'black')
 			{
-				if (isset($access_rule['actions']) AND in_array(load_class('core_uri')->action, $access_rule['actions']))
+				if (isset($access_rule['actions']) AND in_array(self::$uri->action, $access_rule['actions']))
 				{
 					// action 在黑名单中, 不允许
 					self::check_login($uid, $access_rule['redirect']);
@@ -85,7 +88,7 @@ class AWS_APP
 			}
 			else // 默认使用白名单
 			{
-				if (!isset($access_rule['actions']) OR !in_array(load_class('core_uri')->action, $access_rule['actions']))
+				if (!isset($access_rule['actions']) OR !in_array(self::$uri->action, $access_rule['actions']))
 				{
 					// action 不在白名单中, 不允许
 					self::check_login($uid, $access_rule['redirect']);
@@ -166,39 +169,18 @@ class AWS_APP
 		}
 	}
 
-	/**
-	 * 创建 Controller
-	 *
-	 * 根据传入的控制器名称与 app_dir 载入 Controller 相关文件
-	 *
-	 * @access	public
-	 * @param	string
-	 * @param	string
-	 * @return	object
-	 */
-	public static function create_controller($controller, $app_dir)
+	// 创建 Controller
+	private static function create_controller()
 	{
-		if ($app_dir == '' OR trim($controller, '/') === '')
+		$controller_class = self::$uri->controller;
+
+		if (!class_exists($controller_class, false))
 		{
-			return false;
-		}
-
-		$class_file = $app_dir . $controller . '.php';
-
-		$controller_class = str_replace('/', '_', $controller);
-
-		if (! file_exists($class_file))
-		{
-			return false;
-		}
-
-		if (! class_exists($controller_class, false))
-		{
-			require_once $class_file;
+			require_once self::$uri->class_file;
 		}
 
 		// 解析路由查询参数
-		load_class('core_uri')->parse_args();
+		self::$uri->parse_args();
 
 		if (class_exists($controller_class, false))
 		{

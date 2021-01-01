@@ -210,7 +210,7 @@ function base_url()
 	static $base_url;
 	if (!isset($base_url))
 	{
-		$base_url = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+		$base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
 	}
 	return $base_url;
 }
