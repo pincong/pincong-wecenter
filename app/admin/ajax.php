@@ -781,7 +781,7 @@ class ajax extends AWS_ADMIN_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请填写理由')));
 		}
 
-		$this->model('currency')->process($_POST['uid'], 'AWARD', $_POST['currency'], $_POST['note']);
+		$this->model('currency')->process($_POST['uid'], 'AWARD', $_POST['currency'], htmlspecialchars($_POST['note']));
 
 		H::ajax_json_output(AWS_APP::RSM(array(
 			'url' => url_rewrite('/admin/user/currency_log/uid-' . $_POST['uid'])
